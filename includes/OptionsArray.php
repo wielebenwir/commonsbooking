@@ -1160,6 +1160,39 @@ Return date: {{booking:returnDatetime}}
 						'id'            => 'redis_connection-status',
 						'type'          => 'text',
 						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderREDISConnectionStatus' ),
+					),
+
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Enable PDO Caching (experimental)', 'commonsbooking' ) ),
+						'id'            => 'pdo_enabled',
+						'type'          => 'checkbox'
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'PDO DSN', 'commonsbooking' ) ),
+						'id'            => 'pdo_dsn',
+						'type'          => 'text',
+						'default'       => 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Database Username', 'commonsbooking' ) ),
+						'id'            => 'pdo_user',
+						'type'          => 'text',
+						'default'       => DB_USER,
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Database Password', 'commonsbooking' ) ),
+						'id'            => 'pdo_pass',
+						'type'          => 'text',
+						'attributes'    => array(
+							'type' => 'password',
+						),
+						'default'       => DB_PASSWORD,
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
+						'id'            => 'pdo_connection-status',
+						'type'          => 'text',
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderPDOConnectionStatus' ),
 					)
 				)
 			),
