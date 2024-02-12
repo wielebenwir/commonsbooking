@@ -31,7 +31,7 @@ class Plugin {
 
 	use Cache;
 
-	private static TagAwareAdapterInterface $pdoAdapter;
+	private static ?TagAwareAdapterInterface $pdoAdapter = null;
 
 	/**
 	 * CB-Manager id.
