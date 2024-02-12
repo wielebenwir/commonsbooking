@@ -27,7 +27,7 @@ use Symfony\Component\Cache\CacheItem;
  */
 trait Cache {
 
-	private static TagAwareAdapterInterface $pdoAdapter = null;
+	private static ?TagAwareAdapterInterface $pdoAdapter = null;
 
 	/**
 	 * Returns cache item based on calling class, function and args.
