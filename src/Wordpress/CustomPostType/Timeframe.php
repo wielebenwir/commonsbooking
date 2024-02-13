@@ -13,6 +13,7 @@ use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Service\Holiday;
+use DateTime;
 
 /**
  * Configures WordPress custom post type for access in admin backend.
@@ -108,6 +109,9 @@ class Timeframe extends CustomPostType {
 
 		// List settings
 		$this->removeListDateColumn();
+
+        // Add action to process manual dates by strtotime rules
+        add_action('wp_ajax_processStrtotimeStrings', [$this, 'processStrtotimeStringsCallback']);
 	}
 
 	/**
@@ -153,6 +157,44 @@ class Timeframe extends CustomPostType {
 		<br>
 		<?php
 	}
+
+  
+    /**
+     * Converts StroTime String into dates
+     * 
+     * This is used to generate dates for the holiday form / individual holiday dates
+     *
+     * @return void
+     */
+    public function processStrtotimeStringsCallback() {
+        // Security checks can be added here (e.g., nonce verification)
+    
+        // Retrieve input from $_POST
+        $input = $_POST['strtotimeStrings'];
+        // Split input line by line
+        $lines = explode("\n", $input);
+        $dates = [];
+    
+        foreach ($lines as $line) {
+            // Separate the strtotime string from the duration
+            list($strtotimeString, $months) = explode('#', $line) + [null, null];
+    
+            // Check if both parts are present
+            if ($strtotimeString && $months) {
+                $baseTime = strtotime('today');
+                for ($i = 0; $i < (int)$months; $i++) {
+                    // Calculate the date for each month
+                    $date = date('Y-m-d', strtotime("+$i month " . $strtotimeString, $baseTime));
+                    $dates[] = $date;
+                }
+            }
+        }
+    
+        // Output the generated dates
+        echo implode(",", $dates);
+        wp_die(); // Properly terminate execution in the WordPress context
+    }
+
 
 	/**
 	 * Priorities:
@@ -672,6 +714,15 @@ class Timeframe extends CustomPostType {
 				'id'   => "_cmb2_holiday",
 				'type' => 'holiday_get_fields'
 			),
+            array(
+				'name' => esc_html__( 'Generate dates', 'commonsbooking' ),
+				'desc' => esc_html__(
+					'Syntax: Strotime-string#Months (example: First Monday of#12) -> Generates date values for every first Monday of the month for a duration of 12 months.'
+					, 'commonsbooking' ),
+				'id'   => "_cmb2_manualreprule_string",
+                'type' => 'textarea_small',
+                'after' => '<button id="generate-dates-button" type="button">Datumswerte generieren</button>', // Button-HTML
+			),
 			array(
 				'name' => esc_html__( "Configure repetition", 'commonsbooking' ),
 				'desc' => esc_html__( 'Below you can make settings regarding the time frame repetition. ', 'commonsbooking' ),
@@ -917,11 +968,11 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Validates timeframe and sets state to draft if invalid.
 	 *
-	 * @param Timeframe $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return bool
 	 */
-	protected static function validateTimeFrame( $timeframe ): bool {
+	protected static function validateTimeFrame( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 		try {
 			$timeframe->isValid();
 		}

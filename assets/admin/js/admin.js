@@ -768,3 +768,36 @@
     exports.isSunOrHoliday = isSunOrHoliday;
     exports.setLanguage = setLanguage;
 });
+
+
+// 
+jQuery(document).ready(function($) {
+    // Function to process the strtotime strings
+    function processStrtotimeStrings() {
+        var strtotimeStrings = $('#_cmb2_manualreprule_string').val();
+ 
+        $.ajax({
+            url: ajaxurl, // WordPress AJAX
+            type: 'POST',
+            data: {
+                action: 'processStrtotimeStrings', // PHP Function
+                strtotimeStrings: strtotimeStrings,
+            },
+            success: function(response) {
+                // CMB2-Field (defined in Wordpress:Timeframe metafield setting)
+                $('#timeframe_manual_date').val(function(index, value) {
+                    return value + "\n" + response; // Add new dates
+                });
+            }
+        });
+    }
+
+    // Button-Click-Event
+    $('#generate-dates-button').on('click', function(e) {
+        e.preventDefault();
+        processStrtotimeStrings();
+    });
+});
+
+
+
