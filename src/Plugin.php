@@ -87,6 +87,7 @@ class Plugin {
 		foreach ( $adminAllowedCPT as $customPostType ) {
 			self::addRoleCaps( $customPostType::$postType, 'administrator' );
 			//assign all capabilities of admin to CB-Manager (see comment above)
+			//We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
 			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
 		}
 		/*
@@ -104,6 +105,7 @@ class Plugin {
 	public static function getRoleCapMapping( $roleName = null) {
 		if ( $roleName === null ) {
 			return [
+				//We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
 				self::$CB_MANAGER_ID => [
 					'read'                                 => true,
 					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,

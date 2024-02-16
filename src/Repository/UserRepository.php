@@ -14,9 +14,11 @@ class UserRepository {
 	 * @return mixed
 	 */
 	public static function getSelectableCBManagers() {
-        $managerRoles = [Plugin::$CB_MANAGER_ID];
-        $managerRoles = apply_filters("commonsbooking_manager_roles",$managerRoles);
-        return get_users( ['role__in' => $managerRoles] );
+        return get_users( ['role__in' => self::getManagerRoles()] );
+	}
+
+	public static function getManagerRoles() : array {
+		return apply_filters("commonsbooking_manager_roles",[Plugin::$CB_MANAGER_ID]);
 	}
 
 	/**
