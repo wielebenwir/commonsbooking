@@ -113,6 +113,7 @@ class Booking extends View {
 			}
 
 			// Prepare Templatedata and remove invalid posts
+			/** @var \CommonsBooking\Model\Booking $booking */
 			foreach ( $posts as $booking ) {
 
 				// Get user infos

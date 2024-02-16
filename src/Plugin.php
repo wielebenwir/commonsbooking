@@ -375,13 +375,16 @@ class Plugin {
     /**
 	 * Registers category taxonomy for Custom Post Type Item
      *
+     * TODO: This can probably be re-factored to the more generic CustomPostType
+     *
 	 * @return void
 	 */
 	public static function registerItemTaxonomy() {
 		$customPostType = Item::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
 				'label'        => esc_html__( 'Item Category', 'commonsbooking' ),
@@ -396,6 +399,10 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
 
 		//hook this for later, if we run it now, it would fail
 		add_action( 'cmb2_admin_init', array( self::class, 'registerItemTaxonomyMetaboxes' ) );
@@ -431,9 +438,10 @@ class Plugin {
 	 */
 	public static function registerLocationTaxonomy() {
 		$customPostType = Location::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
 				'label'        => esc_html__( 'Location Category', 'commonsbooking' ),
@@ -447,6 +455,10 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the location post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -776,7 +788,7 @@ class Plugin {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public function savePostActions( $post_id, $post, $update ) {
-		if ( ! in_array( $post->post_type, self::getCustomPostTypesLabels() ) ) {
+		if ( ! self::isPostCustomPostType( $post ) ) {
 			return;
 		}
 
