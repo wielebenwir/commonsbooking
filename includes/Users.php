@@ -195,6 +195,7 @@ function commonsbooking_isUserAdmin(\WP_User $user) {
 }
 
 function commonsbooking_isUserCBManager( \WP_User $user ): bool {
+	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
 	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
 }
 
@@ -208,11 +209,7 @@ function commonsbooking_isCurrentUserSubscriber() {
 // check if current user has CBManager role
 function commonsbooking_isCurrentUserCBManager() {
 	if (! is_user_logged_in()){ return false; }
-	$user = wp_get_current_user();
-
-	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
-
-	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
+	return commonsbooking_isUserCBManager( wp_get_current_user() );
 
 }
 
