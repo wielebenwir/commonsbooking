@@ -203,17 +203,19 @@ class Item extends CustomPostType {
 
 	public function getTemplate( $content ) {
 		$cb_content = '';
+		$errormessage = '';
 		if ( is_singular( self::getPostType() ) && is_main_query() && get_post_type() == self::getPostType() ) {
 			ob_start();
 			global $post;
 
 			$item = new \CommonsBooking\Model\Item( $post );
+			$errormessage = \CommonsBooking\View\Booking::getError();
 			set_query_var( 'item', $item );
 			commonsbooking_get_template_part( 'item', 'single' );
 			$cb_content   = ob_get_clean();
 		}
 
-		return $content . $cb_content;
+		return $errormessage . $content . $cb_content;
 	}
 
 	/**
