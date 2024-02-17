@@ -1385,21 +1385,21 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:297
-#: src/Plugin.php:298
+#: src/Plugin.php:299
+#: src/Plugin.php:300
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:307
-#: src/Plugin.php:308
+#: src/Plugin.php:309
+#: src/Plugin.php:310
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:390
+#: src/Plugin.php:392
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:421
+#: src/Plugin.php:423
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -3438,8 +3438,8 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:623
-#: src/Plugin.php:638
+#: src/Plugin.php:625
+#: src/Plugin.php:640
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
