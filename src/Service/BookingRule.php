@@ -14,7 +14,7 @@ use Exception;
  * This class represents a Booking Rule in an abstract way and cannot be applied for enforcement of its rule.
  * See {@see BookingRuleApplied} for a booking rule which can be applied to bookings.
  *
- * Instead this class defines the basic data structure, which is used to display the common properties of a BookingRule in the
+ * Instead, this class defines the basic data structure, which is used to display the common properties of a BookingRule in the
  * backend, where it can be configured.
  *
  *
