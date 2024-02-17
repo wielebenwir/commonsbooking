@@ -69,7 +69,7 @@ var cb_map_positioning = {
         }
 
         const noAddressFound = function () {
-            // show error message if adress couldnt be found
+            // show error message if address couldn't be found
             if(document.getElementById("_cb_location_street").value.length != 0)
             {
                 jQuery( "#nogpsresult" ).show();
