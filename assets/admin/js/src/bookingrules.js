@@ -22,23 +22,27 @@
                 // https://github.com/CMB2/CMB2/issues/1149 this is why we have to do this weird selection style
 
                 //find all of our fields
-                let currentGroup = $('#' + groupID + i);
-                let ruleSelector = currentGroup.find('#' + groupName + '_' + i + '_'  + ruleSelectorID);
-                let ruleDescription = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find('.cmb2-metabox-description');
-                let ruleAppliesAll = currentGroup.find('[class*="' + ruleAppliesAllID + '"]');
-                let ruleAppliesCategories = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
-                let exemptRoles = currentGroup.find('[class*="' + exemptRolesID + '"]');
-                let ruleParam1 = currentGroup.find('[class*="' + ruleParam1ID + '"]');
-                let ruleParam1Input = ruleParam1.find('.cmb2-text-small');
-                let ruleParam1InputLabel = $(ruleParam1Input.labels()[0]);
-                let ruleParam1Desc = ruleParam1.find('.cmb2-metabox-description');
-                let ruleParam2 = currentGroup.find('[class*="' + ruleParam2ID + '"]');
-                let ruleParam2Input = ruleParam2.find('.cmb2-text-small');
-                let ruleParam2InputLabel = $(ruleParam2Input.labels()[0]);
-                let ruleParam2Desc = ruleParam2.find('.cmb2-metabox-description');
-                let ruleSelectParam = currentGroup.find('[class*="' + ruleSelectParamID + '"]');
-                let ruleSelectParamDesc = ruleSelectParam.find('.cmb2-metabox-description');
-                let ruleSelectParamOptions = ruleSelectParam.find('.cmb2_select');
+                let currentGroup            = $('#' + groupID + i);
+                let ruleSelector            = currentGroup.find('#' + groupName + '_' + i + '_'  + ruleSelectorID);
+                let ruleDescription         = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find('.cmb2-metabox-description');
+                let ruleAppliesAll          = currentGroup.find('[class*="' + ruleAppliesAllID + '"]');
+                let ruleAppliesCategories   = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
+                let exemptRoles             = currentGroup.find('[class*="' + exemptRolesID + '"]');
+
+                let ruleParam1              = currentGroup.find('[class*="' + ruleParam1ID + '"]');
+                let ruleParam1Input         = ruleParam1.find('.cmb2-text-small');
+                let ruleParam1InputLabel    = $(ruleParam1Input.labels()[0]);
+                let ruleParam1Desc          = ruleParam1.find('.cmb2-metabox-description');
+
+                let ruleParam2              = currentGroup.find('[class*="' + ruleParam2ID + '"]');
+                let ruleParam2Input         = ruleParam2.find('.cmb2-text-small');
+                let ruleParam2InputLabel    = $(ruleParam2Input.labels()[0]);
+                let ruleParam2Desc          = ruleParam2.find('.cmb2-metabox-description');
+
+                let ruleSelectParam         = currentGroup.find('[class*="' + ruleSelectParamID + '"]');
+                let ruleSelectParamDesc     = ruleSelectParam.find('.cmb2-metabox-description');
+                let ruleSelectParamOptions  = ruleSelectParam.find('.cmb2_select');
+
                 //bind events
                 ruleSelector.change(function() {handleRuleSelection();});
 
@@ -55,11 +59,13 @@
                     //so that other properties are not set
                     return;
                 }
+
                 //apply to description & parameter count for the found rule, are passed using wp_inline_script as cb_booking_rules
                 cb_booking_rules.forEach(rule => {
                     if (rule.name == selectedRule) {
                         ruleDescription.text(rule.description);
                         ruleSelector.width(300); // Just make it big enough to fit most options
+
                         //check if params exist and set description / visibility accordingly
                         ruleAppliesAll.show();
                         ruleAppliesCategories.show();
@@ -91,10 +97,12 @@
                             ruleParam2.hide();
                             ruleParam2.val('');
                         }
+
                         if (rule.hasOwnProperty("selectParam") && rule.selectParam.length > 0){
                             ruleSelectParam.show();
                             ruleSelectParamDesc.text(rule.selectParam[0]);
                             let ruleOptions = rule.selectParam[1];
+
                             //clear the select field
                             ruleSelectParamOptions.empty();
                             //now add the options one by one
