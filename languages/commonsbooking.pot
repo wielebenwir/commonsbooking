@@ -9,28 +9,33 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-08T16:50:25+00:00\n"
+"POT-Creation-Date: 2024-02-17T17:19:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: commonsbooking\n"
 
 #. Plugin Name of the plugin
+#: commonsbooking.php
 msgid "Commons Booking"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: commonsbooking.php
 msgid "https://commonsbooking.org"
 msgstr ""
 
 #. Description of the plugin
+#: commonsbooking.php
 msgid "A wordpress plugin for management and booking of common goods."
 msgstr ""
 
 #. Author of the plugin
+#: commonsbooking.php
 msgid "wielebenwir e.V."
 msgstr ""
 
 #. Author URI of the plugin
+#: commonsbooking.php
 msgid "https://wielebenwir.de/"
 msgstr ""
 
@@ -1487,7 +1492,7 @@ msgid "Year"
 msgstr ""
 
 #: src/Service/Holiday.php:42
-#: src/Wordpress/CustomPostType/Restriction.php:474
+msgctxt "territory"
 msgid "State"
 msgstr ""
 
@@ -1547,6 +1552,7 @@ msgstr ""
 
 #: src/View/Booking.php:167
 #: src/Wordpress/CustomPostType/Booking.php:994
+#: src/Wordpress/CustomPostType/Restriction.php:474
 msgid "Status"
 msgstr ""
 
