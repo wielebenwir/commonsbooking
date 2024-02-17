@@ -681,7 +681,7 @@ class Plugin {
 		add_filter( 'parent_file', array( $this, 'setParentFile' ) );
 
 		// register scripts
-		add_action('wp_enqueue_scripts', array($this, 'registerScriptsAndStyles'));
+		add_action('init', array($this, 'registerScriptsAndStyles'));
 
 		// register shortcodes
 		add_action('init', array($this, 'registerShortcodes'));
