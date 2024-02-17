@@ -273,7 +273,6 @@ class Booking extends PostRepository {
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );
 
-
 		return self::getModelsFromQuery( $args );
 	}
 
@@ -304,11 +303,11 @@ class Booking extends PostRepository {
 			if ( $posts ) {
 				// Check if it is the main query and one of our custom post types
 				$posts = array_filter(
-                    $posts,
-                    function ( $post ) use ( $user ) {
-                        return commonsbooking_isUserAllowedToSee( $post, $user );
-                    }
-                );
+					$posts,
+					function ( $post ) use ( $user ) {
+						return commonsbooking_isUserAllowedToSee( $post, $user );
+					}
+				);
 			}
 
 			Plugin::setCacheItem(
@@ -344,12 +343,12 @@ class Booking extends PostRepository {
 	 * Returns bookings. This uses the CommonsBooking\Repository\Timeframe::get() method which
 	 * is not based on the WP_Query class but will perform its own SQL query.
 	 *
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param string|null  $date
-	 * @param bool         $returnAsModel
+	 * @param array $locations
+	 * @param array $items
+	 * @param string|null $date Date-String in format YYYY-mm-dd
+	 * @param bool $returnAsModel
 	 * @param $minTimestamp
-	 * @param array        $postStatus
+	 * @param array $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -443,7 +442,7 @@ class Booking extends PostRepository {
 	 * @param $locationId
 	 * @param $startDate
 	 * @param $endDate
-	 * @param null       $postId
+	 * @param null $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|null
 	 */
@@ -459,12 +458,12 @@ class Booking extends PostRepository {
 		);
 
 		// remove the given $postID from result
-		      // remove the given $postID from result
-        foreach ( $existingBookingsInRange as $key => $val ) {
-            if ( $val->ID === $postId ) {
-                unset( $existingBookingsInRange[ $key ] );
-            }
-        }
+		// remove the given $postID from result
+		foreach ( $existingBookingsInRange as $key => $val ) {
+			if ( $val->ID === $postId ) {
+				unset( $existingBookingsInRange[ $key ] );
+			}
+		}
 
 		return $existingBookingsInRange;
 
@@ -499,6 +498,42 @@ class Booking extends PostRepository {
 		}
 
 		return [];
+	}
+
+	/**
+	 * Returns bookings for location and / or item that don't have a corresponding timeframe
+	 * Will only consider bookings in the future
+	 *
+	 * @param int|null $startdate
+	 * @param int[] $items
+	 * @param int[] $locations
+	 *
+	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @throws Exception
+	 */
+	public static function getOrphaned (
+		int $startdate = null,
+		array $items = [],
+		array $locations = []
+	): ? array
+	{
+		$startdate = $startdate ? $startdate : time(); //set startdate to now when no startdate is defined
+
+		$bookings = self::get($locations,$items,null,true,$startdate,['confirmed']);
+
+		//check for bookings where location does not exist anymore
+
+		$bookings = array_filter($bookings,function($booking) {
+			if ($booking->getBookableTimeFrame()){
+				return false;
+			}
+			else {
+				return true;
+			}
+
+		});
+
+		return $bookings;
 	}
 
 }
