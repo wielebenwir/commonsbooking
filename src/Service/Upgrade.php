@@ -49,7 +49,7 @@ class Upgrade {
 		'2.9.0' => [
 			[self::class, 'setMultiSelectTimeFrameDefault']
 		],
-		'2.9.1' => [
+		'2.9.1' => [ //TODO this is anticipated
 			[self::class, 'enableLocationBookingNotification']
 		]
 	];
@@ -317,7 +317,7 @@ class Upgrade {
 	 * Previously, if a location email was set that meant that they also receive a copy of each booking / cancellation email.
 	 * Now we have a separate checkbox to enable that which should be enabled for existing locations so that they will still receive emails after upgrade.
 	 *
-	 * @since 2.9.1 (Anticipated)
+	 * @since 2.9.1 (Anticipated) //TODO
 	 * @return void
 	 */
 	public static function enableLocationBookingNotification() {
