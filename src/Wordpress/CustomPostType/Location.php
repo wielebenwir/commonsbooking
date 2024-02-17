@@ -336,6 +336,15 @@ class Location extends CustomPostType {
 			// 'repeatable'      => true,
 		) );
 
+		// checkbox BCC bookings / cancellations to location email
+		$cmb->add_field( array(
+			'name'       => esc_html__( 'Send copy of bookings / cancellations to location email', 'commonsbooking' ),
+			'desc'       => esc_html__( 'If enabled, the location email will receive a copy of all booking and cancellation notifications.', 'commonsbooking' ),
+			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc',
+			'type'       => 'checkbox',
+			'default_cb' => 'cmb2_set_checkbox_default_for_new_post'
+		) );
+
 		// pickup description
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Pickup instructions', 'commonsbooking' ),
