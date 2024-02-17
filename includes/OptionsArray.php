@@ -678,7 +678,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 			),
 			'bookingRules' => array(
 				'title' => commonsbooking_sanitizeHTML( __( 'Restrict bookings by booking rules', 'commonsbooking') ),
-				'desc'  => commonsbooking_sanitizeHTML( __( 'You can apply rules to items or item / location categories that will restrict how users can book and abort the booking if one of the rules are violated')),
+				'desc'  => commonsbooking_sanitizeHTML( __( 'You can apply rules to individual items or categories of items/locations, which will restrict how users are able to book and, if violated, abort the booking process')),
 				'id'    => 'bookingrules',
 				'fields'=> array(
 					array(
