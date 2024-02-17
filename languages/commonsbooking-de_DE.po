@@ -1533,19 +1533,19 @@ msgstr "Keine Buchungen im Papierkorb gefunden."
 msgid "No locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
-#: src/View/Map.php:35
+#: src/View/Map.php:36
 msgid "Set / Update GPS Coordinates"
 msgstr "GPS-Koordinaten abrufen / aktualisieren"
 
-#: src/View/Map.php:39
+#: src/View/Map.php:40
 msgid "Set / update GPS coordinates from address"
 msgstr "GPS-Koordinaten von Adresse abrufen / aktualisieren"
 
-#: src/View/Map.php:42
+#: src/View/Map.php:43
 msgid "Click this button to automatically set the GPS coordinates based on the given address and set the marker on the map.<br> <strong>Save or update this location after setting the gps data.</strong>"
 msgstr "Klicke auf diese Schaltfläche, um die GPS-Koordinaten basierend auf der angegebenen Adresse automatisch abzurufen und die Markierung auf der Karte festzulegen.<br><strong>Speichere oder aktualisiere diesen Standort-Eintrag, nachdem die GPS-Daten aktualisiert wurden.</strong>"
 
-#: src/View/Map.php:45
+#: src/View/Map.php:46
 msgid "<strong>No GPS data could be found for the address entered</strong>. <br>Please check if the address is written correctly. <br>Alternatively, you can enter the GPS data manually into the corresponding fields."
 msgstr "<strong>Für die eingegebene Adresse konnten keine GPS-Daten gefunden werden</strong>. <br>Bitte überprüfe, ob die Adresse korrekt geschrieben ist. <br>Alternativ kannst du die GPS-Daten auch manuell in die entsprechenden Felder eingeben."
 
