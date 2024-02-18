@@ -76,7 +76,7 @@ class UserRepository {
 		$rolesArray = $wp_roles->roles;
 		$roles      = [];
 		foreach ( $rolesArray as $roleID => $value ) {
-			if ($value['name'] == 'Administrator') {
+			if ($roleID == 'administrator') {
 				continue;
 			}
 			$roles[ $roleID ] = translate_user_role( $value['name'] );
