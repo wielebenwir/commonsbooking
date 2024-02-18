@@ -11,8 +11,15 @@ use DateTime;
 use Exception;
 
 /**
- * This class is a Booking Rule BEFORE it is applied, an object from this class can be used to show the configuration for a
- * BookingRule in the backend. It also contains the definitions and closures for the individual rules.
+ * This class represents a Booking Rule in an abstract way and cannot be applied for enforcement of its rule.
+ * See {@see BookingRuleApplied} for a booking rule which can be applied to bookings.
+ *
+ * Instead, this class defines the basic data structure, which is used to display the common properties of a BookingRule in the
+ * backend, where it can be configured.
+ *
+ *
+ * It also contains the definitions and closures for individual rules that are maintained by the
+ * core plugin, see {@see BookingRule::init()}.
  */
 class BookingRule {
 	/**
@@ -37,7 +44,7 @@ class BookingRule {
 	protected string $errorMessage;
 	/**
 	 * Allows to set a custom error message that can be based on parameters (i.e. "You can only book for %s days")
-	 * @var Closure
+	 * @var ?Closure
 	 */
 	protected ?Closure $errorFromArgs;
 	/**
@@ -162,8 +169,9 @@ class BookingRule {
 	}
 
 	/**
-	 * Gets a string of all rule properties, so they can be displayed using CMB2
-	 * @return string
+	 * Returns a string of all rule properties encoded as JSON object, so they can be parsed and displayed using CMB2
+	 *
+	 * @return string booking rules JSON object
 	 */
 	public static function getRulesJSON(): string {
 		try {
@@ -310,8 +318,8 @@ class BookingRule {
 	}
 
 	/**
-	 * Will check if there are booking at the same time as the defined booking.
-	 * If the user has booking at the same day it will return an array with ust one conflicting booking
+	 * Will check if there are bookings at the same time as the defined booking.
+	 * If the user has bookings at the same day it will return an array with conflicting bookings
 	 * If there is no booking at the same day, will return null
 	 *
 	 *
@@ -336,7 +344,6 @@ class BookingRule {
 
 	/**
 	 * Will check if there are chained bookings for the current item that go over the total booking limit .
-	 *
 	 * If the user has chained too many days in that timespan will return the conflicting bookings
 	 * If the user bookings are NOT above the limit, will return null
 	 *

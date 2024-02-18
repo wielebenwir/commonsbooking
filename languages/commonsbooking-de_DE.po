@@ -8,28 +8,33 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2024-01-10 10:43-0700\n"
+"PO-Revision-Date: 2024-02-09 20:06+0100\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.1\n"
 
 #. Plugin Name of the plugin
+#: commonsbooking.php
 msgid "Commons Booking"
 msgstr "Commons Booking"
 
 #. Plugin URI of the plugin
+#: commonsbooking.php
 msgid "https://commonsbooking.org"
 msgstr "https://commonsbooking.org"
 
 #. Description of the plugin
+#: commonsbooking.php
 msgid "A wordpress plugin for management and booking of common goods."
 msgstr "Ein WordPress-Plugin für die Verwaltung und Buchung von Gemeingütern."
 
 #. Author of the plugin
+#: commonsbooking.php
 msgid "wielebenwir e.V."
 msgstr "wielebenwir e.V."
 
 #. Author URI of the plugin
+#: commonsbooking.php
 msgid "https://wielebenwir.de/"
 msgstr "https://wielebenwir.de/"
 
@@ -1380,21 +1385,21 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:297
-#: src/Plugin.php:298
+#: src/Plugin.php:299
+#: src/Plugin.php:300
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:307
-#: src/Plugin.php:308
+#: src/Plugin.php:309
+#: src/Plugin.php:310
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:390
+#: src/Plugin.php:392
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:421
+#: src/Plugin.php:423
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -1470,6 +1475,7 @@ msgstr "Nutzende*r"
 
 #: src/View/Booking.php:167
 #: src/Wordpress/CustomPostType/Booking.php:994
+#: src/Wordpress/CustomPostType/Restriction.php:474
 msgid "Status"
 msgstr "Status"
 
@@ -1527,19 +1533,19 @@ msgstr "Keine Buchungen im Papierkorb gefunden."
 msgid "No locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
-#: src/View/Map.php:35
+#: src/View/Map.php:36
 msgid "Set / Update GPS Coordinates"
 msgstr "GPS-Koordinaten abrufen / aktualisieren"
 
-#: src/View/Map.php:39
+#: src/View/Map.php:40
 msgid "Set / update GPS coordinates from address"
 msgstr "GPS-Koordinaten von Adresse abrufen / aktualisieren"
 
-#: src/View/Map.php:42
+#: src/View/Map.php:43
 msgid "Click this button to automatically set the GPS coordinates based on the given address and set the marker on the map.<br> <strong>Save or update this location after setting the gps data.</strong>"
 msgstr "Klicke auf diese Schaltfläche, um die GPS-Koordinaten basierend auf der angegebenen Adresse automatisch abzurufen und die Markierung auf der Karte festzulegen.<br><strong>Speichere oder aktualisiere diesen Standort-Eintrag, nachdem die GPS-Daten aktualisiert wurden.</strong>"
 
-#: src/View/Map.php:45
+#: src/View/Map.php:46
 msgid "<strong>No GPS data could be found for the address entered</strong>. <br>Please check if the address is written correctly. <br>Alternatively, you can enter the GPS data manually into the corresponding fields."
 msgstr "<strong>Für die eingegebene Adresse konnten keine GPS-Daten gefunden werden</strong>. <br>Bitte überprüfe, ob die Adresse korrekt geschrieben ist. <br>Alternativ kannst du die GPS-Daten auch manuell in die entsprechenden Felder eingeben."
 
@@ -2010,7 +2016,7 @@ msgstr "E-Mail-Adresse des Artikelbetreuers"
 
 #: src/Wordpress/CustomPostType/Item.php:260
 msgid "Email addresses to which notifications about a change of item status (restriction, breakdown) shall be sent. You can enter multiple addresses separated by commas."
-msgstr "E-Mail-Adressen, an die eine Kopie der Buchungsbestätigung / Stornierung gesendet werden soll. Es können mehrere Adressen durch Komma getrennt eingeben werden."
+msgstr "E-Mail-Adressen die benachrichtigt werden soll, wenn eine Nutzungseinschränkung für den Artikel eingerichtet wurde (Hinweis oder Totalausfall). Es können mehrere Adressen durch Komma getrennt eingeben werden."
 
 #: src/Wordpress/CustomPostType/Item.php:275
 msgid "Item Meta-Data"
@@ -2370,11 +2376,6 @@ msgstr "Startdatums und der Startzeit festlegen"
 #: src/Wordpress/CustomPostType/Restriction.php:459
 msgid "Set the estimated end date and time"
 msgstr "Das geschätzte Enddatum und die geschätzten Endzeit festlegen"
-
-#: src/Service/Holiday.php:42
-#: src/Wordpress/CustomPostType/Restriction.php:474
-msgid "State"
-msgstr "Status"
 
 #: src/Wordpress/CustomPostType/Restriction.php:476
 msgid ""
@@ -3437,8 +3438,8 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:623
-#: src/Plugin.php:638
+#: src/Plugin.php:625
+#: src/Plugin.php:640
 #: src/Wordpress/CustomPostType/Booking.php:957
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
@@ -3818,6 +3819,42 @@ msgstr "Alle Cache-Elemente löschen"
 msgid "Cache cleared."
 msgstr "Cache geleert."
 
+#: src/Wordpress/CustomPostType/Timeframe.php:491
+msgid "Location Category Selection"
+msgstr "Standortkategorie auswählen"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:499
+msgid "Location Selection"
+msgstr "Standort auswählen"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:507
+msgid "Select one or more locations"
+msgstr "Wähle einen oder mehrere Standorte aus"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:514
+msgid "Item Selection"
+msgstr "Artikel auswählen"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:522
+msgid "Select one or more items"
+msgstr "Wähle einen oder mehrere Artikel aus"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:529
+msgid "Item Category Selection"
+msgstr "Artikelkategorie auswählen"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:537
+msgid "Item selection"
+msgstr "Artikel auswählen"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:809
+msgid "Manual selection"
+msgstr "Manuelle Auswahl"
+
+#: src/Wordpress/CustomPostType/Timeframe.php:810
+msgid "Select by category"
+msgstr "Kategorie auswählen"
+
 #: src/Model/Booking.php:596
 #~ msgid "Unconfirmed"
 #~ msgstr "Unbestätigt"
@@ -3826,38 +3863,7 @@ msgstr "Cache geleert."
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:491
-msgid "Location Category Selection"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:499
-msgid "Location Selection"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:507
-msgid "Select one or more locations"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:514
-msgid "Item Selection"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:522
-msgid "Select one or more items"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:529
-msgid "Item Category Selection"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:537
-msgid "Item selection"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:809
-msgid "Manual selection"
-msgstr ""
-
-#: src/Wordpress/CustomPostType/Timeframe.php:810
-msgid "Select by category"
+#: src/Service/Holiday.php:42
+msgctxt "territory"
+msgid "State"
 msgstr ""

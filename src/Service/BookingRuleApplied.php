@@ -10,9 +10,11 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 
 /**
- * An object of this class represents a saved BookingRule, that can be applied to bookings.
- * Apart from the properties and methods of the BookingRule class, this also contains
- * the configured parameters for the rule, the categories it applies to and the roles it is exempt from. (Configured when setting up a rule from the backend)
+ * Represents a valid configuration of a {@see BookingRule}, which can be applied to bookings.
+ * Instances of BookingRule's are saved when configured via admin backend access.
+ *
+ * It extends BookingRule to also hold the configured parameters for the rule, the categories it applies to and
+ * the roles it is exempt from. (Configured when setting up a rule from the backend)
  */
 class BookingRuleApplied extends BookingRule {
 
