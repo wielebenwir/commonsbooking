@@ -188,11 +188,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
+        /**
+         * Count overbooked days (holiday or lock-day) in range from calendar data
+         * @param start
+         * @param end
+         */
         const countOverbookedDays = (start,end) => {
-            let startDate = globalCalendarData['days'][moment(start).format('YYYY-MM-DD')];
-            let endDate = globalCalendarData['days'][moment(end).format('YYYY-MM-DD')];
-            const startDay = globalCalendarData['days'][moment(start).format('YYYY-MM-DD')];
-            const endDay = globalCalendarData['days'][moment(end).format('YYYY-MM-DD')];
+            const startDay     = globalCalendarData['days'][moment(start).format('YYYY-MM-DD')];
+            const endDay       = globalCalendarData['days'][moment(end).format('YYYY-MM-DD')];
+            let startDate      = globalCalendarData['days'][moment(start).format('YYYY-MM-DD')];
+            let endDate        = globalCalendarData['days'][moment(end).format('YYYY-MM-DD')];
             let overbookedDays = 0;
             for (let day in globalCalendarData['days']) {
                 //iterate through all days in range and count the overbooked days (either holidays or locked days)
