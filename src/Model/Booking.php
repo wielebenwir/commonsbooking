@@ -658,7 +658,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * When a booking is confirmed or unconfirmed, it will return the whole amount of days in the booking interval.
 	 * When a booking is cancelled, it will only return the amount of days the item has been "used" (from start to cancellation).
 	 *
-	 * A day counts as "used" after the first hour of the day has passed.
+	 * A day is counted after the first hour of the day has passed.
 	 *
 	 * @return int
 	 */
