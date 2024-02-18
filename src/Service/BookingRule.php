@@ -630,7 +630,7 @@ class BookingRule {
 	 * @return Booking[]
 	 */
 	private static function filterEmptyBookings( array $bookings ) {
-		return array_filter( $bookings, fn( $booking ) => $booking->getLength() > 0 );
+		return array_filter( $bookings, fn( $booking ) => $booking->getDuration() > 0 );
 	}
 
 	/**
@@ -674,8 +674,8 @@ class BookingRule {
 		if ( empty ( $rangeBookingsArray ) ) {
 			return null;
 		}
-		$totalLength     = Booking::getTotalLength( $rangeBookingsArray );
-		$length          = $booking->getLength();
+		$totalLength     = Booking::getTotalDuration( $rangeBookingsArray );
+		$length          = $booking->getDuration();
 		$totalLengthDays = $totalLength + $length;
 		if ( $totalLengthDays > $allowedBookableDays ) {
 			return $rangeBookingsArray;

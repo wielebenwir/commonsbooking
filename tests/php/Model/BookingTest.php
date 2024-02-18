@@ -94,8 +94,8 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testGetLength(){
-		$this->assertEquals(1,$this->testBookingTomorrow->getLength());
-		$this->assertEquals(1,$this->testBookingPast->getLength());
+		$this->assertEquals(1,$this->testBookingTomorrow->getDuration());
+		$this->assertEquals(1,$this->testBookingPast->getDuration());
 
 		//we now create a booking and cancel it shortly after it ends
 		//this way we can test if all days are counted when it is cancelled shortly before end of the tf
@@ -109,14 +109,14 @@ class BookingTest extends CustomPostTypeTest {
 		$cancelBooking = new Booking(
 			$cancelBookingId
 		);
-		$this->assertEquals(3,$cancelBooking->getLength());
+		$this->assertEquals(3,$cancelBooking->getDuration());
 		$shortlyBeforeEnd = new \DateTime();
 		$shortlyBeforeEnd->setTimestamp($endTime)->modify('-10 minutes');
 		ClockMock::freeze($shortlyBeforeEnd);
 		$this->cancelBooking($cancelBooking);
 		$cancelBooking = new Booking( $cancelBookingId );
 
-		$this->assertEquals(3,$cancelBooking->getLength());
+		$this->assertEquals(3,$cancelBooking->getDuration());
 
 		//now we test what happens when a booking is cancelled in the middle of the tf
 		$endTime         = strtotime( '+5 days', strtotime( self::CURRENT_DATE ) );
@@ -129,13 +129,13 @@ class BookingTest extends CustomPostTypeTest {
 		$cancelBooking = new Booking(
 			$cancelBookingId
 		);
-		$this->assertEquals(4,$cancelBooking->getLength());
+		$this->assertEquals(4,$cancelBooking->getDuration());
 		$halfBeforeEnd = new \DateTime();
 		$halfBeforeEnd->setTimestamp($endTime)->modify('-2 days');
 		ClockMock::freeze($halfBeforeEnd);
 		$this->cancelBooking($cancelBooking);
 		$cancelBooking = new Booking( $cancelBookingId );
-		$this->assertEquals(2,$cancelBooking->getLength());
+		$this->assertEquals(2,$cancelBooking->getDuration());
 
 		//now we test what happens when a booking is cancelled before it starts. It should have a length of 0
 		$cancelBookingId = $this->createBooking(
@@ -147,13 +147,13 @@ class BookingTest extends CustomPostTypeTest {
 		$cancelBooking = new Booking(
 			$cancelBookingId
 		);
-		$this->assertEquals(2,$cancelBooking->getLength());
+		$this->assertEquals(2,$cancelBooking->getDuration());
 		$shortlyBeforeStart = new \DateTime();
 		$shortlyBeforeStart->setTimestamp(strtotime( '+10 day', strtotime( self::CURRENT_DATE ) ));
 		ClockMock::freeze($shortlyBeforeStart);
 		$this->cancelBooking($cancelBooking);
 		$cancelBooking = new Booking( $cancelBookingId );
-		$this->assertEquals(0,$cancelBooking->getLength());
+		$this->assertEquals(0,$cancelBooking->getDuration());
 
 		// now test with overbooked days
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_in_range', 'on' );
@@ -165,7 +165,7 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
 		));
 		$overbookedBooking->setOverbookedDays(2);
-		$this->assertEquals(2,$overbookedBooking->getLength());
+		$this->assertEquals(2,$overbookedBooking->getDuration());
 
 	}
 

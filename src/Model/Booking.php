@@ -662,7 +662,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return int
 	 */
-	public function getLength(): int{
+	public function getDuration(): int{
 		$interval = null;
 		if ( $this->isUnconfirmed() || $this->isConfirmed() ) {
 			$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime()->modify("+5 min"));
@@ -796,10 +796,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return void
 	 */
-	public static function getTotalLength ( array $bookings ): int {
+	public static function getTotalDuration ( array $bookings ): int {
 		$lengthDays = 0;
 		foreach ($bookings as $booking){
-			$lengthDays += $booking->getLength();
+			$lengthDays += $booking->getDuration();
 		}
 		return $lengthDays;
 	}
