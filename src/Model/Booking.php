@@ -364,14 +364,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Will set the postmeta field for the amount of days that have been overbooked for this booking.
-	 * The raw amount of days that span a locked / holiday are passed to this function, and it uses
-	 * the location settings to determine how many days were not counted towards the maximum booking length.
-	 * Overbooked days are taken into account when calculating the booking length, all days that are considered overbooked are not counted towards the length.
+	 * Will set the postmeta field for the amount of days that have been overbooked and were not counted.
 	 *
-	 * @param int $rawDaysOverbooked The days a booking spans over a locked / holiday.
+	 * @param int $rawDaysOverbooked The raw days a booking spans over a locked / holiday.
 	 *
-	 * @return int
+	 * @return int The amount of those days that were not counted towards the maximum booking length.
 	 */
 	public function setOverbookedDays(int $rawDaysOverbooked): int {
 		$location = $this->getLocation();
@@ -609,7 +606,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Checks if the given user / current user is administrator of item / location or the website and therefore enjoys special booking rights
+	 * Checks if the given user / current user is administrator of item / location of the booking or of the whole website and therefore enjoys special booking rights
 	 *
 	 * @param \WP_User|null $user
 	 *
@@ -662,6 +659,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * When a booking is cancelled, it will only return the amount of days the item has been "used" (from start to cancellation).
 	 *
 	 * A day counts as "used" after the first hour of the day has passed.
+	 *
 	 * @return int
 	 */
 	public function getLength(): int{
@@ -686,7 +684,6 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			//no interval created
 			return 0;
 		}
-		//get the fully completed days and also count a just started day as one day
 		$days = $interval->d;
 		//when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
 		if ($interval->h > 0){
@@ -793,7 +790,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Gets the total length (days) of an array of bookings
+	 * Sums the total duration of an array of individual bookings
 	 *
 	 * @param   \CommonsBooking\Model\Booking[]  $bookings
 	 *
@@ -808,13 +805,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Filters an array of Bookings on the condition weather they apply to term(s) or not
+	 * Filters an array of Bookings on the condition whether they apply to given terms
 	 * Will return null if no booking in the array matches the terms
 	 *
 	 * Checks if it has actually received $terms and not an empty variable so that it can just return all bookings if not checking against any terms
 	 *
-	 * @param Booking[] $bookings
-	 * @param array|false $terms
+	 * @param Booking[] $bookings The booking to check
+	 * @param array|false $terms The terms that the bookings are filtered against
 	 *
 	 * @return array|null
 	 */
