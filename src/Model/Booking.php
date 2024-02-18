@@ -365,6 +365,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Will set the postmeta field for the amount of days that have been overbooked and were not counted.
+	 * This value is written through the Booking request form and provides the "raw" days were overbooked.
+	 * This method cleans up that value to only count the days that were not counted towards the maximum booking length.
 	 *
 	 * @param int $rawDaysOverbooked The raw days a booking spans over a locked / holiday.
 	 *
