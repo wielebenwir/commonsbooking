@@ -235,39 +235,23 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
-	 * Gets the booking that is directly previous to this booking at the same place / location.
+	 * Gets the booking that is directly adjacent to this booking at the same place / location.
 	 *
+	 * @param bool $previous True: Get booking previous to this booking. False: Get booking following this booking.
 	 * @return Booking|null
 	 */
-	public function getPreviousAdjacent(): ?Booking {
-		$adjacentBookings = \CommonsBooking\Repository\Booking::getByTimerange(
-			$this->getStartDateDateTime()->modify( "-2 minute" )->getTimestamp(),
-			$this->getStartDateDateTime()->modify( "-1 minute" )->getTimestamp(),
-			$this->getLocationID(),
-			$this->getItemID(),
-			[],
-			[ 'confirmed' ]
-		);
-		if (count($adjacentBookings) == 1){
-			return reset($adjacentBookings);
-		}
-		elseif (count($adjacentBookings) > 1){
-			throw new Exception("Overlapping booking detected.");
+	private function adjacent( bool $previous = true ): ?Booking {
+		if ( $previous ) {
+			$startDate = $this->getStartDateDateTime()->modify( '-2 minutes' )->getTimestamp();
+			$endDate   = $this->getStartDateDateTime()->modify( '-1 minute' )->getTimestamp();
 		}
 		else {
-			return null;
+			$startDate = $this->getEndDateDateTime()->modify( '+1 minute' )->getTimestamp();
+			$endDate   = $this->getEndDateDateTime()->modify( '+2 minutes' )->getTimestamp();
 		}
-	}
-
-	/**
-	 * Gets the booking that is directly following this booking at the same place / location.
-	 *
-	 * @return Booking|null
-	 */
-	public function getFollowingAdjacent(): ?Booking {
 		$adjacentBookings = \CommonsBooking\Repository\Booking::getByTimerange(
-			$this->getEndDateDateTime()->modify( "+1 minute" )->getTimestamp(),
-			$this->getEndDateDateTime()->modify( "+2 minute" )->getTimestamp(),
+			$startDate,
+			$endDate,
 			$this->getLocationID(),
 			$this->getItemID(),
 			[],
@@ -290,8 +274,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return array
 	 */
 	public function getAdjacentBookings(): ?array {
-		$previousAdjacent = $this->getPreviousAdjacent();
-		$followingAdjacent = $this->getFollowingAdjacent();
+		$previousAdjacent = $this->adjacent();
+		$followingAdjacent = $this->adjacent( false );
 		return array_filter([$previousAdjacent, $followingAdjacent]);
 	}
 
@@ -304,24 +288,24 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function getBookingChain(WP_User $user){
 		$bookingChain = [];
-		$previousBooking = $this->getPreviousAdjacent();
+		$previousBooking = $this->adjacent();
 		if ($previousBooking && $previousBooking->getUserData()->ID != $user->ID){
 			$previousBooking = null;
 		}
-		$followingBooking = $this->getFollowingAdjacent();
+		$followingBooking = $this->adjacent( false );
 		if ($followingBooking && $followingBooking->getUserData()->ID != $user->ID){
 			$followingBooking = null;
 		}
 		while ($previousBooking != null){
 			$bookingChain[] = $previousBooking;
-			$previousBooking = $previousBooking->getPreviousAdjacent();
+			$previousBooking = $previousBooking->adjacent();
 			if ($previousBooking && $previousBooking->getUserData()->ID != $user->ID){
 				$previousBooking = null;
 			}
 		}
 		while ($followingBooking != null){
 			$bookingChain[] = $followingBooking;
-			$followingBooking = $followingBooking->getFollowingAdjacent();
+			$followingBooking = $followingBooking->adjacent( false );
 			if ($followingBooking && $followingBooking->getUserData()->ID != $user->ID){
 				$followingBooking = null;
 			}
