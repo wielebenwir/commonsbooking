@@ -89,23 +89,17 @@ class UserRepository {
 	 * Checks if user has one of the given roles.
 	 * Can either take an array of roles or a single role as string.
 	 *
-	 * @param $userID
-	 * @param $roles
+	 * @param int $userID
+	 * @param string|array $roles
 	 *
 	 * @return bool
 	 */
-	public static function userHasRoles($userID, $roles): bool {
+	public static function userHasRoles(int $userID, $roles): bool {
 		$user = get_userdata($userID);
 		if (is_array($roles)) {
-			foreach ($roles as $role) {
-				if (in_array($role, $user->roles)) {
-					return true;
-				}
-			}
+			return ! empty( array_intersect($roles, $user->roles) );
 		} else {
-			if (in_array($roles, $user->roles)) {
-				return true;
-			}
+			return in_array($roles, $user->roles);
 		}
 		return false;
 	}
