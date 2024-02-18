@@ -334,7 +334,11 @@ class Booking extends PostRepository {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getForCurrentUser( bool $asModel = false, $startDate = null, $postStatus = null ): array {
+	public static function getForCurrentUser(
+		bool $asModel = false,
+		$startDate = null,
+		$postStatus = [ 'canceled', 'confirmed', 'unconfirmed' ]
+	): array {
 		if ( ! is_user_logged_in() ) {
 			return [];
 		}
