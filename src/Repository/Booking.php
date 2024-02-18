@@ -286,9 +286,13 @@ class Booking extends PostRepository {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getForUser( \WP_User $user, bool $asModel = false, $minTimestamp = null, array $postStatus = null ): array {
+	public static function getForUser(
+		\WP_User $user,
+		bool $asModel = false,
+		$minTimestamp = null,
+		array $postStatus = [ 'canceled', 'confirmed', 'unconfirmed']
+	): array {
 		$customId = $user->ID;
-		$postStatus ??= [ 'canceled', 'confirmed', 'unconfirmed' ];
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
