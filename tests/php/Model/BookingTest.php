@@ -93,7 +93,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertEquals($this->testBookingTomorrow,$filteredBookings[0]);
 	}
 
-	public function testGetLength(){
+	public function testGetDuration(){
 		$this->assertEquals(1,$this->testBookingTomorrow->getDuration());
 		$this->assertEquals(1,$this->testBookingPast->getDuration());
 

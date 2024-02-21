@@ -799,11 +799,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return void
 	 */
 	public static function getTotalDuration ( array $bookings ): int {
-		$lengthDays = 0;
+		$totalDurationOfDays = 0;
 		foreach ($bookings as $booking){
-			$lengthDays += $booking->getDuration();
+			$totalDurationOfDays += $booking->getDuration();
 		}
-		return $lengthDays;
+		return $totalDurationOfDays;
 	}
 
 	/**
@@ -817,7 +817,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return array|null
 	 */
-	public static function filterTermsApply ( array $bookings, $terms): ?array {
+	public static function filterTermsApply ( array $bookings, $terms ): ?array {
 		if ( ! empty($terms) ){
 			$filteredBookingsArray = array_filter($bookings,
 				fn( Booking $booking ) => $booking->termsApply($terms)
