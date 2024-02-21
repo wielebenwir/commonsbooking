@@ -96,13 +96,12 @@ class UserRepository {
 	 * @return bool
 	 */
 	public static function userHasRoles(int $userID, $roles): bool {
-		$user = get_userdata($userID);
-		if (is_array($roles)) {
-			return ! empty( array_intersect($roles, $user->roles) );
+		$user = get_userdata( $userID );
+		if ( is_array( $roles ) ) {
+			return ! empty( array_intersect( $roles, $user->roles ) );
 		} else {
-			return in_array($roles, $user->roles);
+			return in_array( $roles, $user->roles );
 		}
-		return false;
 	}
 
 }
