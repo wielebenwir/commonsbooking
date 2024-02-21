@@ -89,9 +89,10 @@ class UserRepository {
 	 * Checks if user has one of the given roles.
 	 * Can either take an array of roles or a single role as string.
 	 *
+	 * @since 2.9.0
+	 *
 	 * @param int $userID
 	 * @param string|array $roles
-	 *
 	 * @return bool
 	 */
 	public static function userHasRoles(int $userID, $roles): bool {

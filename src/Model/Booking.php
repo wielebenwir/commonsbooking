@@ -271,7 +271,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Gets the bookings directly adjacent to the current booking (with same item / location of course)
 	 *
-	 * @return array
+	 * @since 2.9.0
+	 *
+	 * @return array|null
+	 * @throws Exception
 	 */
 	public function getAdjacentBookings(): ?array {
 		$previousAdjacent = $this->adjacent();
@@ -282,11 +285,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Get the bookings directly adjacent to the current users booking. Limited to a specific user to reduce load.
 	 *
-	 * @param WP_User $user
+	 * @since 2.9.0
 	 *
+	 * @param WP_User $user
 	 * @return array
 	 */
-	public function getBookingChain(WP_User $user){
+	public function getBookingChain(WP_User $user): array {
 		$bookingChain = [];
 		$previousBooking = $this->adjacent();
 		if ($previousBooking && $previousBooking->getUserData()->ID != $user->ID){
@@ -368,8 +372,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * This value is written through the Booking request form and provides the "raw" days were overbooked.
 	 * This method cleans up that value to only count the days that were not counted towards the maximum booking length.
 	 *
-	 * @param int $rawDaysOverbooked The raw days a booking spans over a locked / holiday.
+	 * @since 2.9.0
 	 *
+	 * @param int $rawDaysOverbooked The raw days a booking spans over a locked / holiday.
 	 * @return int The amount of those days that were not counted towards the maximum booking length.
 	 */
 	public function setOverbookedDays(int $rawDaysOverbooked): int {
@@ -391,6 +396,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Will get the amount of days that were not counted towards the maximum booking length because they were overbooked.
+	 *
+	 * @since 2.9.0
+	 *
 	 * @return int
 	 */
 	public function getOverbookedDays(): int {
@@ -403,6 +411,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Get the booking date in a human-readable format.
 	 * This is used in the booking confirmation email as a template tag.
+	 *
 	 * @return string
 	 */
 	public function formattedBookingDate(): string {
@@ -610,11 +619,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Checks if the given user / current user is administrator of item / location of the booking or of the whole website and therefore enjoys special booking rights
 	 *
-	 * @param \WP_User|null $user
+	 * @since 2.9.0
 	 *
+	 * @param WP_User|null $user
 	 * @return bool
 	 */
-	public function isUserPrivileged(\WP_User $user = null): bool {
+	public function isUserPrivileged( WP_User $user = null): bool {
 		$user ??= $this->getUserData();
 		return parent::isUserPrivileged($user);
 	}
@@ -636,8 +646,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Will check if a single term / multiple terms are applicable for the current bookings location or item
-	 * @param int|array|string $term
 	 *
+	 * @since 2.9.0
+	 *
+	 * @param int|array|string $term
 	 * @return bool
 	 */
 	public function termsApply( $term ): bool {
@@ -661,6 +673,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * When a booking is cancelled, it will only return the amount of days the item has been "used" (from start to cancellation).
 	 *
 	 * A day is counted after the first hour of the day has passed.
+	 *
+	 * @since 2.9.0
 	 *
 	 * @return int
 	 */
@@ -698,7 +712,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Will get the DateTime object of the cancellation date.
 	 * The cancellation date will be saved as postmeta when a booking is cancelled.
 	 * Will return null when the booking is not cancelled.
-	 * @return DateTime
+	 *
+	 * @since 2.9.0
+	 *
+	 * @return DateTime|null
+	 * @throws Exception
 	 */
 	public function getCancellationDateDateTime(): ?DateTime {
 		if ( ! $this->isCancelled() ) {
@@ -794,8 +812,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Sums the total duration of an array of individual bookings
 	 *
-	 * @param   \CommonsBooking\Model\Booking[]  $bookings
+	 * @since 2.9.0
 	 *
+	 * @param   \CommonsBooking\Model\Booking[]  $bookings
 	 * @return void
 	 */
 	public static function getTotalDuration ( array $bookings ): int {
@@ -812,9 +831,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * Checks if it has actually received $terms and not an empty variable so that it can just return all bookings if not checking against any terms
 	 *
+	 * @since 2.9.0
+	 *
 	 * @param Booking[] $bookings The booking to check
 	 * @param array|false $terms The terms that the bookings are filtered against
-	 *
 	 * @return array|null
 	 */
 	public static function filterTermsApply ( array $bookings, $terms ): ?array {
@@ -837,9 +857,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Filters an array of bookings on the condition if they belong to a specific user
 	 * Will return null if none of the bookings apply to the specified user
-	 * @param   array     $bookings
-	 * @param   \WP_User  $user
 	 *
+	 * @since 2.9.0
+	 *
+	 * @param   array     $bookings
+	 * @param WP_User  $user
 	 * @return array|null
 	 */
 	public static function filterForUser ( array $bookings, WP_User $user): ?array {

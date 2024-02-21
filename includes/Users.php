@@ -194,6 +194,14 @@ function commonsbooking_isUserAdmin(\WP_User $user) {
 	return false;
 }
 
+/**
+ * Returns whether given user is given the cb manager role
+ *
+ * @since 2.9.0
+ *
+ * @param WP_User $user
+ * @return bool
+ */
 function commonsbooking_isUserCBManager( \WP_User $user ): bool {
 	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
 }

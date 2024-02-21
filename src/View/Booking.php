@@ -294,6 +294,8 @@ class Booking extends View {
 	 * Gets the error for frontend notice. We use transients to pass the error message.
 	 * It is ensured that only the user where the error occurred can see the error message.
 	 *
+	 * @since 2.9.0 returns string instead of using printf
+	 *
 	 * @return string
 	 */
 	public static function getError(): string {
