@@ -1985,10 +1985,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
             }
         };
         const countOverbookedDays = (start, end) => {
-            let startDate = globalCalendarData["days"][moment(start).format("YYYY-MM-DD")];
-            let endDate = globalCalendarData["days"][moment(end).format("YYYY-MM-DD")];
             const startDay = globalCalendarData["days"][moment(start).format("YYYY-MM-DD")];
             const endDay = globalCalendarData["days"][moment(end).format("YYYY-MM-DD")];
+            let startDate = globalCalendarData["days"][moment(start).format("YYYY-MM-DD")];
+            let endDate = globalCalendarData["days"][moment(end).format("YYYY-MM-DD")];
             let overbookedDays = 0;
             for (let day in globalCalendarData["days"]) {
                 if (moment(day).isBetween(moment(start).format("YYYY-MM-DD"), moment(end).format("YYYY-MM-DD"))) {
