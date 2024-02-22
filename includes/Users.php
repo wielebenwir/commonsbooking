@@ -194,6 +194,18 @@ function commonsbooking_isUserAdmin(\WP_User $user) {
 	return false;
 }
 
+/**
+ * Returns whether given user is given the cb manager role
+ *
+ * @since 2.9.0
+ *
+ * @param WP_User $user
+ * @return bool
+ */
+function commonsbooking_isUserCBManager( \WP_User $user ): bool {
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+}
+
 // Check if current user has subscriber role
 function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
@@ -203,6 +215,7 @@ function commonsbooking_isCurrentUserSubscriber() {
 
 // check if current user has CBManager role
 function commonsbooking_isCurrentUserCBManager() {
+
 	$user = wp_get_current_user();
 
 	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );

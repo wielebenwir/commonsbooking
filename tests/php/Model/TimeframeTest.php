@@ -494,6 +494,25 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertTrue($isOverlapping->isValid());
 	}
 
+	public function testIsUserPrivileged() {
+		$this->createSubscriber();
+		$this->createCBManager();
+		$this->createAdministrator();
+		$managedItem = $this->createItem("Managed Item", 'publish',[$this->cbManagerUserID]);
+		$unmanagedLocation = $this->createLocation("Unmanaged Location", 'publish');
+		$timeframe = $this->createBookableTimeFrameIncludingCurrentDay($unmanagedLocation,$managedItem);
+		$timeframe = new Timeframe($timeframe);
+
+		wp_set_current_user($this->subscriberId);
+		$this->assertFalse($timeframe->isUserPrivileged());
+
+		wp_set_current_user($this->cbManagerUserID);
+		$this->assertTrue($timeframe->isUserPrivileged());
+
+		wp_set_current_user($this->adminUserID);
+		$this->assertTrue($timeframe->isUserPrivileged());
+	}
+
 	public function testisValid_throwsException() {
 
 		$secondLocation = $this->createLocation("Newest Location", 'publish');

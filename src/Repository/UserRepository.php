@@ -70,13 +70,38 @@ class UserRepository {
 	 */
 	public static function getUserRoles(): array {
 		global $wp_roles;
+		if ( $wp_roles === null ){
+			return [];
+		}
 		$rolesArray = $wp_roles->roles;
 		$roles      = [];
 		foreach ( $rolesArray as $roleID => $value ) {
+			if ($roleID == 'administrator') {
+				continue;
+			}
 			$roles[ $roleID ] = translate_user_role( $value['name'] );
 		}
 
 		return $roles;
+	}
+
+	/**
+	 * Checks if user has one of the given roles.
+	 * Can either take an array of roles or a single role as string.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param int $userID
+	 * @param string|array $roles
+	 * @return bool
+	 */
+	public static function userHasRoles(int $userID, $roles): bool {
+		$user = get_userdata( $userID );
+		if ( is_array( $roles ) ) {
+			return ! empty( array_intersect( $roles, $user->roles ) );
+		} else {
+			return in_array( $roles, $user->roles );
+		}
 	}
 
 }

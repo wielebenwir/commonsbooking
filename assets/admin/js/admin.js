@@ -1,6 +1,138 @@
 (function($) {
     "use strict";
     $(function() {
+        const groupName = "rules_group";
+        const groupID = "cmb-group-rules_group-";
+        const ruleSelectorID = "rule-type";
+        const ruleDescriptionID = "rule-description";
+        const ruleAppliesAllID = "rule-applies-all";
+        const ruleAppliesCategoriesID = "rule-applies-categories";
+        const ruleParam1ID = "rule-param1";
+        const ruleParam2ID = "rule-param2";
+        const ruleSelectParamID = "rule-select-param";
+        const exemptRolesID = "exempt-roles";
+        const handleRuleSelection = function() {
+            let groupFields = $("#" + groupName + "_repeat");
+            groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
+                handleRuleSelection();
+            });
+            for (let i = 0; i < groupFields.children().length - 1; i++) {
+                let currentGroup = $("#" + groupID + i);
+                let ruleSelector = currentGroup.find("#" + groupName + "_" + i + "_" + ruleSelectorID);
+                let ruleDescription = currentGroup.find('[class*="' + ruleDescriptionID + '"]').find(".cmb2-metabox-description");
+                let ruleAppliesAll = currentGroup.find('[class*="' + ruleAppliesAllID + '"]');
+                let ruleAppliesCategories = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
+                let exemptRoles = currentGroup.find('[class*="' + exemptRolesID + '"]');
+                let ruleParam1 = currentGroup.find('[class*="' + ruleParam1ID + '"]');
+                let ruleParam1Input = ruleParam1.find(".cmb2-text-small");
+                let ruleParam1InputLabel = $(ruleParam1Input.labels()[0]);
+                let ruleParam1Desc = ruleParam1.find(".cmb2-metabox-description");
+                let ruleParam2 = currentGroup.find('[class*="' + ruleParam2ID + '"]');
+                let ruleParam2Input = ruleParam2.find(".cmb2-text-small");
+                let ruleParam2InputLabel = $(ruleParam2Input.labels()[0]);
+                let ruleParam2Desc = ruleParam2.find(".cmb2-metabox-description");
+                let ruleSelectParam = currentGroup.find('[class*="' + ruleSelectParamID + '"]');
+                let ruleSelectParamDesc = ruleSelectParam.find(".cmb2-metabox-description");
+                let ruleSelectParamOptions = ruleSelectParam.find(".cmb2_select");
+                ruleSelector.change(function() {
+                    handleRuleSelection();
+                });
+                const selectedRule = $("option:selected", ruleSelector).val();
+                if (selectedRule === "") {
+                    ruleDescription.hide();
+                    ruleParam1.hide();
+                    ruleParam2.hide();
+                    ruleSelectParam.hide();
+                    ruleAppliesAll.hide();
+                    ruleAppliesCategories.hide();
+                    exemptRoles.hide();
+                    return;
+                }
+                cb_booking_rules.forEach(rule => {
+                    if (rule.name == selectedRule) {
+                        ruleDescription.text(rule.description);
+                        ruleSelector.width(300);
+                        ruleAppliesAll.show();
+                        ruleAppliesCategories.show();
+                        exemptRoles.show();
+                        ruleDescription.show();
+                        if (rule.hasOwnProperty("params") && rule.params.length > 0) {
+                            switch (rule.params.length) {
+                              case 1:
+                                ruleParam1.show();
+                                ruleParam2.hide();
+                                ruleParam1InputLabel.text(rule.params[0]["title"]);
+                                ruleParam1Desc.text(rule.params[0]["description"]);
+                                ruleParam2.val("");
+                                break;
+
+                              case 2:
+                                ruleParam1.show();
+                                ruleParam2.show();
+                                ruleParam1InputLabel.text(rule.params[0]["title"]);
+                                ruleParam1Desc.text(rule.params[0]["description"]);
+                                ruleParam2InputLabel.text(rule.params[1]["title"]);
+                                ruleParam2Desc.text(rule.params[1]["description"]);
+                                break;
+                            }
+                        } else {
+                            ruleParam1.hide();
+                            ruleParam1.val("");
+                            ruleParam2.hide();
+                            ruleParam2.val("");
+                        }
+                        if (rule.hasOwnProperty("selectParam") && rule.selectParam.length > 0) {
+                            ruleSelectParam.show();
+                            ruleSelectParamDesc.text(rule.selectParam[0]);
+                            let ruleOptions = rule.selectParam[1];
+                            ruleSelectParamOptions.empty();
+                            for (var key in ruleOptions) {
+                                ruleSelectParamOptions.append($("<option>", {
+                                    value: key,
+                                    text: ruleOptions[key]
+                                }));
+                            }
+                            ruleSelectParamOptions.width(150);
+                            let appliedRule = cb_applied_booking_rules.filter(appliedRule => {
+                                return appliedRule.name == rule.name;
+                            });
+                            if (appliedRule.length === 1) {
+                                ruleSelectParamOptions.val(appliedRule[0].appliedSelectParam);
+                            }
+                        } else {
+                            ruleSelectParam.hide();
+                        }
+                    }
+                });
+            }
+        };
+        const handleAppliesToAll = function() {
+            let groupFields = $("#" + groupName + "_repeat");
+            groupFields.on("cmb2_add_row cmb2_remove_row cmb2_shift_rows_complete", function() {
+                handleAppliesToAll();
+            });
+            for (let i = 0; i < groupFields.children().length - 1; i++) {
+                let currentGroup = $("#" + groupID + i);
+                let ruleAppliesAll = currentGroup.find('[class*="' + ruleAppliesAllID + '"]').find(".cmb2-option");
+                let ruleAppliesCategories = currentGroup.find('[class*="' + ruleAppliesCategoriesID + '"]');
+                ruleAppliesAll.change(function() {
+                    handleAppliesToAll();
+                });
+                if (ruleAppliesAll.prop("checked")) {
+                    ruleAppliesCategories.hide();
+                } else {
+                    ruleAppliesCategories.show();
+                }
+            }
+        };
+        handleAppliesToAll();
+        handleRuleSelection();
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
         const holidayLoadButton = $("#holiday_load_btn");
         const manualDateInput = $("#timeframe_manual_date");
         const manualDatePicker = $("#cmb2_multiselect_datepicker");
