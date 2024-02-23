@@ -79,7 +79,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
-### 2.9 (19.02.2024)
+### 2.9 (23.02.2024)
 NEW: You can now schedule automated emails with booking codes to be sent to stations in custom intervals. (Thanks @printpagestopdf)
 NEW: You can now apply custom rules to restrict bookings to a certain limit (e.g. max. 3 bookings per user per month).
 NEW: An experimental new frontend shortcode as a drop-in replacement for the [cb_map] shortcode called [cb_search]. Read the documentation for more information. (Thanks @kmohrf)
