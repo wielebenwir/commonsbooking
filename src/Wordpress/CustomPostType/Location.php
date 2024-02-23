@@ -318,6 +318,15 @@ class Location extends CustomPostType {
 			// 'repeatable'      => true,
 		) );
 
+		// location email activate
+		$cmb->add_field( array(
+			'name'       => esc_html__( 'Activate copy of booking confirmation / cancellation', 'commonsbooking' ),
+			'desc'       => commonsbooking_sanitizeHTML( __( 'If selected, this location receives a copy of the booking confirmation and booking cancellation email. The notifications are sent to all addresses specified in the location email list. This type of notifications need to be activated in the <a href="admin.php?page=commonsbooking_options_reminder">general CommonsBooking settings</a>.' ),
+				'commonsbooking' ),
+			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_confirm_cancel_copy',
+			'type'       => 'checkbox',
+		) );
+
 		// pickup description
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Pickup instructions', 'commonsbooking' ),
@@ -374,14 +383,14 @@ class Location extends CustomPostType {
 
 		$cmb->add_field( array(
 			'name' => esc_html__( 'Receive booking start reminder', 'commonsbooking' ),
-			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder">general CommonsBooking settings</a>.', 'commonsbooking' ) ),
 			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder',
 			'type' => 'checkbox',
 		) );
 
 		$cmb->add_field( array(
 			'name' => esc_html__( 'Receive booking end reminder', 'commonsbooking' ),
-			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder">general CommonsBooking settings</a>.', 'commonsbooking' ) ),
 			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder',
 			'type' => 'checkbox',
 		) );

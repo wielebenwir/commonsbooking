@@ -45,6 +45,9 @@ class Upgrade {
 		],
 		'2.8.5' => [
 			[self::class, 'removeBreakingPostmeta']
+		],
+		'2.8.6' => [
+			[self::class, 'updateLocationEmailSettings']
 		]
 	];
 
@@ -252,6 +255,23 @@ class Upgrade {
 		);
 		foreach ($timeframes as $timeframe) {
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::removeIrrelevantPostmeta($timeframe);
+		}
+	}
+
+	/**
+	 * As am additional checkbox was introduced for locations to activate sending of booking confirmation / cancellation emails 
+	 * the corresponding post_meta needs to be set for all locations which have email addresses stored previously
+	 * 
+	 * @since 2.8.6
+	 * @return void
+	 */
+	public static function updateLocationEmailSettings() {
+		$locations = \CommonsBooking\Repository\Location::get();
+		foreach ($locations as $location) {
+			$location_emails = get_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email', true);
+			if( !empty($location_emails) ) {
+				update_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_confirm_cancel_copy', 'on');
+			}
 		}
 	}
 

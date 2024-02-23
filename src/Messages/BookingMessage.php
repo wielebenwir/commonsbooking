@@ -34,7 +34,8 @@ class BookingMessage extends Message {
 		// get location email adresses to send them bcc copies
 		$location = get_post($booking->getMeta('location-id'));
 		$location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ) ; /*  email addresses, comma-seperated  */
-		if ($location_emails) {
+		$location_emails_activated = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_confirm_cancel_copy', $location );
+		if ($location_emails && $location_emails_activated) {
 			$bcc_adresses = str_replace(' ','',$location_emails);
 		} else {
 			$bcc_adresses = null;
