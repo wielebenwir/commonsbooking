@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
 Requires at least: 5.6  
 Tested up to: 6.4.1
-Stable Tag: 2.8.6
+Stable Tag: 2.9
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -78,6 +78,19 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.9 (23.02.2024)
+NEW: You can now schedule automated emails with booking codes to be sent to stations in custom intervals. (Thanks @printpagestopdf)
+NEW: You can now apply custom rules to restrict bookings to a certain limit (e.g. max. 3 bookings per user per month).
+NEW: An experimental new frontend shortcode as a drop-in replacement for the [cb_map] shortcode called [cb_search]. Read the documentation for more information. (Thanks @kmohrf)
+NEW: You can now create holiday timeframes with manually defined dates and import holidays for German states.
+NEW: You can now make items bookable for pre-defined dates (e.g. events) without just one timeframe.
+ENHANCED: Added button to clear cache from the advanced options tab.
+FIXED: Sender and subject of emails can now contain special characters. (Thanks @nelarsen)
+FIXED: Fixed issues with booking code generation (Thanks @nelarsen)
+FIXED: Commons API crashing when WP_DEBUG is enabled.
+FIXED: Deprecation warnings for PHP 8.X
+FIXED: Updated some packages
 
 ### 2.8.6 (02.12.2023)
 FIXED: Holidays sometimes bookable when they should not be bookable
