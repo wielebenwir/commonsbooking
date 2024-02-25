@@ -12,6 +12,14 @@ class SearchShortcode extends BaseShortcode {
 	}
 
 	protected function inject_script( $cb_map_id ) {
+
+		// Adds unknown mime types for cjs files
+		add_filter( 'mime_types', function( $wp_mime_types_for ) {
+			$file_extension = 'cjs';
+			$wp_mime_types_for[ $file_extension ] = 'application/javascript';
+			return $wp_mime_types_for;
+		});
+
 		wp_enqueue_style('cb-commons-search');
 		wp_enqueue_script('cb-commons-search');
 	}
