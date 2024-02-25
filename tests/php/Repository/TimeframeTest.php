@@ -142,7 +142,8 @@ class TimeframeTest extends CustomPostTypeTest {
 			3,
 			30
 		);
-		\CommonsBooking\Wordpress\CustomPostType\Timeframe::savePost(
+		$tfCPT = new \CommonsBooking\Wordpress\CustomPostType\Timeframe();
+		$tfCPT->savePost(
 			$holidayInFuture,
 			get_post($holidayInFuture)
 		);
