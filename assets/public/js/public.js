@@ -1860,6 +1860,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", function(event) {
     if (typeof calendarData !== "undefined") {
         let globalCalendarData = calendarData;
+        let globalPickedStartDate = false;
         const fadeOutCalendar = () => {
             jQuery("#litepicker .litepicker .container__days").css("visibility", "hidden");
         };
@@ -1920,6 +1921,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             return "landscape";
         };
         const initStartSelect = date => {
+            globalPickedStartDate = date;
             const day1 = globalCalendarData["days"][moment(date).format("YYYY-MM-DD")];
             const startDate = moment(date).format("DD.MM.YYYY");
             jQuery(".time-selection.repetition-start").find(".hint-selection").hide();
@@ -1981,6 +1983,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
             } else {
                 jQuery(".time-selection.repetition-end").find("select").show();
             }
+        };
+        const countOverbookedDays = (start, end) => {
+            const startDay = globalCalendarData["days"][moment(start).format("YYYY-MM-DD")];
+            const endDay = globalCalendarData["days"][moment(end).format("YYYY-MM-DD")];
+            let startDate = globalCalendarData["days"][moment(start).format("YYYY-MM-DD")];
+            let endDate = globalCalendarData["days"][moment(end).format("YYYY-MM-DD")];
+            let overbookedDays = 0;
+            for (let day in globalCalendarData["days"]) {
+                if (moment(day).isBetween(moment(start).format("YYYY-MM-DD"), moment(end).format("YYYY-MM-DD"))) {
+                    if (globalCalendarData["days"][day]["holiday"] || globalCalendarData["days"][day]["locked"]) {
+                        overbookedDays++;
+                    }
+                }
+            }
+            jQuery('input[name="days-overbooked"]').val(overbookedDays);
         };
         const getCalendarColumns = () => {
             let columns = 2;
@@ -2091,6 +2108,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         if (datepicked == 2) {
                             initEndSelect(date);
                             updateStartSelect();
+                            countOverbookedDays(globalPickedStartDate, date);
                         }
                     }
                 },
@@ -2110,6 +2128,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         };
         const resetDatepickerSelection = () => {
             picker.clearSelection();
+            globalPickedStartDate = false;
             jQuery(".hint-selection").show();
             jQuery(".time-selection .date").text("");
             jQuery(".time-selection select").hide();
