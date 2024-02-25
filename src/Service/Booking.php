@@ -74,6 +74,9 @@ class Booking {
 
 		if ( count( $bookings ) ) {
 			foreach ( $bookings as $booking ) {
+				if ( $booking->hasTotalBreakdown() ) {
+					continue;
+				}
 				$reminderMessage = new BookingReminderMessage( $booking->getPost()->ID, 'pre-booking-reminder' );
 				$reminderMessage->sendMessage();
 			}
@@ -113,6 +116,9 @@ class Booking {
 
 		if ( count( $bookings ) ) {
 			foreach ( $bookings as $booking ) {
+				if ( $booking->hasTotalBreakdown() ) {
+					continue;
+				}
 				$reminderMessage = new BookingReminderMessage( $booking->getPost()->ID, 'post-booking-notice' );
 				$reminderMessage->sendMessage();
 			}

@@ -764,6 +764,21 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				)
 			)
 			/* field group email templates end */
+			/* field group restriction settings start */
+			'restrictionsettings' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Restriction settings', 'commonsbooking' ) ),
+				'id'     => 'restrictionsettings',
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Settings for restrictions.<br><a href="https://commonsbooking.org/?p=1762" target="_blank">More Information in the documentation</a>', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Do not cancel bookings on total breakdown', 'commonsbooking' ) ),
+						'id'      => 'restrictions-no-cancel-on-total-breakdown',
+						'type'    => 'checkbox',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'If checked, bookings will not be cancelled if the item has broken down. The user will be notified and once the item becomes available again, the old bookings are still valid.', 'commonsbooking' ) ),
+					)
+				)
+			)
+			/* field group restriction settings end */
 		)
 	),
 	/* Tab: restrictions end*/

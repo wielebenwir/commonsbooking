@@ -309,6 +309,20 @@ public function testCanCancelBaseCase() {
 		$this->assertTrue( commonsbooking_isCurrentUserAdmin() );
 	}
 
+	public function testHasTotalBreakdown() {
+		$testBooking = new Booking( $this->createConfirmedBookingStartingToday() );
+		$this->assertFalse( $this->testBookingTomorrow->hasTotalBreakdown() );
+		//create a total breakdown
+		$totalBreakdown = $this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
+		);
+		$this->assertTrue( $testBooking->hasTotalBreakdown() );
+	}
+
 	/**
 	 * This tests the distinctions of CB Managers when they have been assigned an item or not.
 	 * Generally speaking, CB Managers should be able to only cancel bookings of items / locations they manage.
