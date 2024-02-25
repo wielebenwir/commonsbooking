@@ -13,10 +13,10 @@ class SearchShortcode extends BaseShortcode {
 
 	protected function inject_script( $cb_map_id ) {
 
-		// Adds unknown mime types for cjs files
+		// Adds unknown mime types for cjs files (only if unknown)
 		add_filter( 'mime_types', function( $wp_mime_types_for ) {
 			$file_extension = 'cjs';
-			$wp_mime_types_for[ $file_extension ] = 'application/javascript';
+			$wp_mime_types_for[ $file_extension ] ??= 'application/javascript';
 			return $wp_mime_types_for;
 		});
 
