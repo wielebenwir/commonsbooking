@@ -2,15 +2,16 @@
 
 
 use CommonsBooking\Helper;
+use CommonsBooking\Service\BookingRule;
 use CommonsBooking\View\Migration;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names don't work for datepicker
 $dateFormat = "d/m/Y";
@@ -675,6 +676,93 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 					),
 				)
 			),
+			'bookingRules' => array(
+				'title' => commonsbooking_sanitizeHTML( __( 'Restrict bookings by booking rules', 'commonsbooking') ),
+				'desc'  => commonsbooking_sanitizeHTML( __( 'You can apply rules to individual items or categories of items/locations, which will restrict how users are able to book and, if violated, abort the booking process')),
+				'id'    => 'bookingrules',
+				'fields'=> array(
+					array(
+						'name'  => commonsbooking_sanitizeHTML( __('Count cancelled bookings towards quota', 'commonsbooking') ),
+						'desc'  => commonsbooking_sanitizeHTML( __('Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=2157\">More info in the documentation</a>', 'commonsbooking') ),
+						'id'    => 'bookingrules-count-cancelled',
+						'type'  => 'checkbox'
+					),
+					array(
+						'id'        => 'rules_group',
+						'type'      => 'group',
+						'repeatable'=> true,
+						'options'   => array(
+							'group_title'   => commonsbooking_sanitizeHTML( __( 'Rule ', 'commonsbooking') ) .  '{#}',
+							'add_button'    => commonsbooking_sanitizeHTML( __( 'Add another rule', 'commonsbooking') ),
+							'remove_button' => commonsbooking_sanitizeHTML( __( 'Remove rule', 'commonsbooking') ),
+						),
+						'fields' => array(
+							array(
+								'name'      => commonsbooking_sanitizeHTML( __('Rule type', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Select the kind of rule', 'commonsbooking') ),
+								'id'        => 'rule-type',
+								'type'      => 'select',
+								'show_option_none' => true,
+								'default'   => 'none',
+								'options'   => BookingRule::getRulesForSelect(),
+
+							),
+							//The following labels are not translated because they are replaced by the rule
+							array(
+								'name' => commonsbooking_sanitizeHTML( __( 'Rule description', 'commonsbooking' ) ),
+								'desc' => commonsbooking_sanitizeHTML( 'You shall be replaced' ),
+								'id'   => 'rule-description',
+								'type' => 'title',
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( 'Parameter 1' ),
+								'desc'  => 'Parameter description',
+								'id'    => 'rule-param1',
+								'type'  => 'text_small'
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( 'Parameter 2' ),
+								'desc'  => 'Parameter description',
+								'id'    => 'rule-param2',
+								'type'  => 'text_small'
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( __('Select an option', 'commonsbooking') ),
+								'desc'  => 'Select parameter description',
+								'id'    => 'rule-select-param',
+								'type'  => 'select',
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( __('Applies to all', 'commonsbooking') ),
+								'desc'  => commonsbooking_sanitizeHTML( __('Check if this rule applies to all items', 'commonsbooking') ),
+								'id'    => 'rule-applies-all',
+								'type'  => 'checkbox'
+							),
+							array(
+								'name'      => commonsbooking_sanitizeHTML( __('Applies to categories', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Check the categories that these rules apply to', 'commonsbooking') ),
+								'id'        => 'rule-applies-categories',
+								'type'      => 'multicheck',
+								'options'   =>  CustomPostType::sanitizeOptions(
+									array_merge(
+										\CommonsBooking\Repository\Item::getTerms(),
+										\CommonsBooking\Repository\Location::getTerms())
+									)
+							),
+							array(
+								'name'      => commonsbooking_sanitizeHTML( __('Groups exempt from rule', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Here you can define if the rule should not apply to a specific user group. Will apply to all groups if left empty (Administrators and item / location admins are always excluded).', 'commonsbooking') ),
+								'id'        => 'rule-exempt-roles',
+								'type'      => 'pw_multiselect',
+								'options'   =>  CustomPostType::sanitizeOptions(
+									UserRepository::getUserRoles()
+								)
+							)
+						)
+					)
+
+				)
+			)
 			/* field group email templates end */
 		)
 	),
@@ -1126,6 +1214,12 @@ Return date: {{booking:returnDatetime}}
 				'desc'   =>
 					commonsbooking_sanitizeHTML( __( 'Allows you to change options regarding the caching system', 'commonsbooking' ) ),
 				'fields' => array(
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Clear Cache', 'commonsbooking' ) ),
+						'id'            => 'commonsbooking-clear_cache-button',
+						'type'          => 'text',
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' )
+					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
 						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),

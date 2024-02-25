@@ -46,12 +46,13 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
+     *
+     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
 	 * @param bool $userRoleSensitive if false, the cache will be shared between all users
 	 *
 	 * @return string
-	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 */
 	public static function getCacheId( $custom_id = null, bool $userRoleSensitive = true ): string {
 		$backtrace     = debug_backtrace()[2];
@@ -338,6 +339,22 @@ trait Cache {
 			</div>
 		</div>
 		<?php
+	}
+
+	public static function renderClearCacheButton( $field_args, $field ) {
+		?>
+		<div class="cmb-row cmb-type-text ">
+			<div class="cmb-th">
+				<label for="clear-cache-button"><?php echo esc_html__( 'Clear all cache items', 'commonsbooking' ); ?></label>
+			</div>
+			<div class="cmb-td">
+				<button type="submit" id="clear-cache-button" class="button button-secondary" name="submit-cmb"
+				        value="clear-cache">
+					<?php echo esc_html__( 'Clear Cache', 'commonsbooking' ); ?>
+				</button>
+			</div>
+		</div>
+	<?php
 	}
 
 	/**

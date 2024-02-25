@@ -37,6 +37,24 @@ class Location extends CustomPostType {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
+
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
+		}
+	}
+
+	/**
+	 * Handles the creation and editing of the terms in the taxonomy for the location post type
+	 * @param $term_id
+	 * @param $tt_id
+	 * @param $taxonomy
+	 *
+	 * @return void
+	 */
+	public static function termChange($term_id, $tt_id, $taxonomy) {
+		if ( $taxonomy == self::$postType . 's_category' ) {
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
 		}
 	}
 
