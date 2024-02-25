@@ -361,7 +361,7 @@ class Booking extends Timeframe {
 			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription, $template_objects ) ) );
 			$calendar = $booking->getiCal($eventTitle,$eventDescription);
 			header('Content-Type: text/calendar; charset=utf-8');
-			header('Content-Disposition: attachment; filename="cal.ics"');
+			header('Content-Disposition: attachment; filename="booking.ics"');
 			echo $calendar;
 			exit;
 		}
