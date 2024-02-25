@@ -4,20 +4,30 @@ namespace CommonsBooking\Tests\Wordpress;
 
 use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Tests\BaseTestCase;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use PHPUnit\Framework\TestCase;
 use SlopeIt\ClockMock\ClockMock;
 
-abstract class CustomPostTypeTest extends TestCase {
+abstract class CustomPostTypeTest extends BaseTestCase {
 
+	/**
+	 * This is the date that is used in the tests.
+	 * It is a thursday.
+	 */
 	const CURRENT_DATE = '01.07.2021';
 
 	const CURRENT_DATE_FORMATTED = 'July 1, 2021';
+
+	/**
+	 * The same date, but in Y-m-d format
+	 * @var string
+	 */
+	protected string $dateFormatted;
 
 	const USER_ID = 1;
 
@@ -44,6 +54,7 @@ abstract class CustomPostTypeTest extends TestCase {
 	protected int $adminUserID;
 
 	protected int $cbManagerUserID;
+	protected int $editorUserID;
 
 	protected function createTimeframe(
 		$locationId,
@@ -58,6 +69,7 @@ abstract class CustomPostTypeTest extends TestCase {
 		$endTime = '12:00 PM',
 		$postStatus = 'publish',
 		$weekdays = [ "1", "2", "3", "4", "5", "6", "7" ],
+		$manualSelectionDays = "",
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
@@ -75,11 +87,30 @@ abstract class CustomPostTypeTest extends TestCase {
 		] );
 
 		update_post_meta( $timeframeId, 'type', $type );
-		update_post_meta( $timeframeId, 'location-id', $locationId );
-		update_post_meta( $timeframeId, 'item-id', $itemId );
+		// we need to map the multi-location array and multi-item array on a string array because that is the way it is also saved from the WP-backend
+		if ( is_array($locationId) ) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
+				array_map('strval',$locationId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+				$locationId );
+		}
+		if (is_array($itemId)) {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
+				array_map('strval', $itemId ));
+		}
+		else {
+			update_post_meta( $timeframeId,
+				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+				$itemId );
+		}
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
-		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
-		update_post_meta( $timeframeId, 'booking-startday-offset', $bookingStartdayOffset );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
 		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
 		if ( $repetitionStart ) {
@@ -88,13 +119,15 @@ abstract class CustomPostTypeTest extends TestCase {
 		if ( $repetitionEnd ) {
 			update_post_meta( $timeframeId, 'repetition-end', $repetitionEnd );
 		}
-
 		update_post_meta( $timeframeId, 'start-time', $startTime );
 		update_post_meta( $timeframeId, 'end-time', $endTime );
 		update_post_meta( $timeframeId, 'grid', $grid );
 		update_post_meta( $timeframeId, 'weekdays', $weekdays );
-		update_post_meta( $timeframeId, 'show-booking-codes', $showBookingCodes );
-		update_post_meta( $timeframeId, 'create-booking-codes', $createBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION, $manualSelectionDays);
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES, $showBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
+		//TODO: Make this value configurable
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
 
 		$this->timeframeIds[] = $timeframeId;
 
@@ -136,6 +169,10 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $restrictionId;
 	}
 
+	/**
+	 * Creates booking from -1 day -> +1 day midnight (relative to self::CURRENT_DATE)
+	 * @return int|\WP_Error
+	 */
 	protected function createConfirmedBookingEndingToday() {
 		return $this->createBooking(
 			$this->locationId,
@@ -145,6 +182,10 @@ abstract class CustomPostTypeTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Creates booking from -1 day -> +2 days midnight (relative to self::CURRENT_DATE)
+	 * @return int|\WP_Error
+	 */
 	protected function createUnconfirmedBookingEndingTomorrow() {
 		return $this->createBooking(
 			$this->locationId,
@@ -162,8 +203,8 @@ abstract class CustomPostTypeTest extends TestCase {
 		$itemId,
 		$repetitionStart,
 		$repetitionEnd,
-		$startTime = '8:00 AM',
-		$endTime = '12:00 PM',
+		$startTime = '12:00 AM',
+		$endTime = '23:59 PM',
 		$postStatus = 'confirmed',
 		$postAuthor = self::USER_ID,
 		$timeframeRepetition = 'w',
@@ -197,19 +238,51 @@ abstract class CustomPostTypeTest extends TestCase {
 		return $bookingId;
 	}
 
+	/**
+	 * This method is Unit Test specific. Because we need to flush the cache after cancelling.
+	 * @param \CommonsBooking\Model\Booking $b
+	 *
+	 * @return void
+	 */
+	protected function cancelBooking( \CommonsBooking\Model\Booking $b ) {
+		$b->cancel();
+		//flush cache to reflect updated post
+		wp_cache_flush();
+	}
+
 	protected function getEndOfDayTimestamp( $date ) {
 		return strtotime( '+1 day midnight', strtotime( $date ) ) - 1;
 	}
 
-	protected function createConfirmedBookingStartingToday() {
+	/**
+	 * Creates booking from midnight -> +2 days (relative to self::CURRENT_DATE)
+	 * @param $locationId
+	 * @param $itemId
+	 *
+	 * @return int|\WP_Error
+	 */
+	protected function createConfirmedBookingStartingToday($locationId = null, $itemId = null) {
+		if ( $locationId === null ) {
+			$locationId = $this->locationId;
+		}
+		if ( $itemId === null ) {
+			$itemId = $this->itemId;
+		}
 		return $this->createBooking(
-			$this->locationId,
-			$this->itemId,
+			$locationId,
+			$itemId,
 			strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
 		);
 	}
 
+	/**
+	 * Creates timeframe from -1 day -> +1 day (relative to self::CURRENT_DATE)
+	 * @param $locationId
+	 * @param $itemId
+	 *
+	 * @return int|\WP_Error
+	 */
 	protected function createBookableTimeFrameIncludingCurrentDay($locationId = null, $itemId = null) {
 		if ( $locationId === null ) {
 			$locationId = $this->locationId;
@@ -223,6 +296,29 @@ abstract class CustomPostTypeTest extends TestCase {
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
 		);
+	}
+
+	protected function createHolidayTimeframeForAllItemsAndLocations() {
+		$timeframe =  $this->createTimeframe(
+			$this->locationId,
+			"",
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			Timeframe::HOLIDAYS_ID,
+		);
+
+		//now, let's set our timeframe to be assigned to all items
+		update_post_meta( $timeframe,
+			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
+			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
+		);
+		update_post_meta( $timeframe,
+			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
+			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
+		);
+		//and run our function to update the information
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta($timeframe);
+		return $timeframe;
 	}
 
 	/**
@@ -273,6 +369,13 @@ abstract class CustomPostTypeTest extends TestCase {
 		return [ $tf1, $tf2 ];
 	}
 
+	/**
+	 * Creates timeframe from +7 days -> +30 days (relative to self::CURRENT_DATE)
+	 * @param $locationId
+	 * @param $itemId
+	 *
+	 * @return int|\WP_Error
+	 */
 	protected function createBookableTimeFrameStartingInAWeek($locationId = null, $itemId = null) {
 		if ( $locationId === null ) {
 			$locationId = $this->locationId;
@@ -289,11 +392,12 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Item
-	protected function createItem($title, $postStatus, $admins = []) {
+	protected function createItem($title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID) {
 		$itemId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Item::$postType,
-			'post_status' => $postStatus
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
 		] );
 
 		$this->itemIds[] = $itemId;
@@ -306,11 +410,12 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
 	// Create Location
-	protected function createLocation($title, $postStatus, $admins = []) {
+	protected function createLocation($title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID) {
 		$locationId = wp_insert_post( [
 			'post_title'  => $title,
 			'post_type'   => Location::$postType,
-			'post_status' => $postStatus
+			'post_status' => $postStatus,
+			'post_author' => $postAuthor
 		] );
 
 		$this->locationIds[] = $locationId;
@@ -366,6 +471,22 @@ abstract class CustomPostTypeTest extends TestCase {
 		}
 	}
 
+	/**
+	 * We use this role to test assigning capabilities to other roles than the CBManager.
+	 * @return void
+	 */
+	protected function createEditor(){
+		$wp_user = get_user_by('email',"editor@editor.de");
+		if (! $wp_user) {
+			$this->editorUserID = wp_create_user( "editoruser", "editor", "editor@editor.de" );
+			$user               = new \WP_User( $this->editorUserID );
+			$user->set_role( 'editor' );
+		}
+		else {
+			$this->editorUserID = $wp_user->ID;
+		}
+	}
+
 	public function createCBManager(){
 		//we need to run the functions that add the custom user role and assign it to the user
 		Plugin::addCustomUserRoles();
@@ -383,9 +504,12 @@ abstract class CustomPostTypeTest extends TestCase {
 	}
 
   protected function setUp() : void {
-        parent::setUp();
+		parent::setUp();
 
-		$this->setUpBookingCodesTable();
+	$this->dateFormatted  = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
+
+
+	  $this->setUpBookingCodesTable();
 
 		// Create location
 		$this->locationId = self::createLocation('Testlocation', 'publish');

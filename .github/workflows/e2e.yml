@@ -2,6 +2,9 @@ name: E2E Tests
 
 on:
   push:
+    branches:
+      - 'master'
+      - 'release/**'
     paths-ignore:
       - '**.md'
       - '**.txt'
@@ -9,42 +12,42 @@ on:
     branches:
       - 'master'
 
+
 env:
   DB_DATABASE: wordpress_test
   DB_USER: root
   DB_PASSWORD: ''
 
 jobs:
-  build:
-
+  e2e:
+    name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
     runs-on: ubuntu-20.04
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - '7.4'
+          - '8.2'
+        core:
+          - {name: 'tested', version: 'null'}
+          - {name: 'minimum', version: 'WordPress/WordPress#5.6'}
+          - {name: 'trunk', version: 'WordPress/WordPress#master'}
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '7.4'
+      - uses: ./.github/actions/build-plugin
 
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
+      - name: Overwrite PHP versions & core for wp-env 
+        if: matrix.core.version != 'null'
+        run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
+      - name: setup wp env
+        run: npm run env:start
 
-      - name: Install dependencies
-        run: |
-          composer install --no-dev --prefer-dist --no-progress
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - run: npm ci --legacy-peer-deps --include=dev
-      - run: docker-compose -v
+      - name: Overwrite PHP version for wp-env
+        if: matrix.core.version == 'null'
+        run: jq '. + {"phpVersion":"${{ matrix.php }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
       - name: setup wp env
         run: npm run env:start
 
@@ -57,7 +60,9 @@ jobs:
           install: false
           config-file: tests/cypress/cypress.config.js
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Cypress screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ matrix.php }}_${{ matrix.core.name }}
           path: ${{ github.workspace }}/tests/cypress/screenshots/

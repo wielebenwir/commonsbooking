@@ -1,19 +1,19 @@
 === CommonsBooking ===
-Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
+Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
-Requires at least: 5.2  
-Tested up to: 6.3  
-Stable Tag: 2.8.4
+Requires at least: 5.6  
+Tested up to: 6.4.1
+Stable Tag: 2.9
 Requires PHP: 7.4 or higher  
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-Commons Booking is a plugin for management and booking of common goods. 
+CommonsBooking is a plugin for management and booking of common goods. 
 
 ## Description
 
-This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
+This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of the commons and sharing resources for the benefit of the community.
 
 CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
 
@@ -77,9 +77,35 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 3. Booking confirmation
 4. User bookings list
 
-## Changelog 
+## Changelog
 
-### 2.8.4 (xx.09.2023)
+### 2.9 (23.02.2024)
+NEW: You can now schedule automated emails with booking codes to be sent to stations in custom intervals. (Thanks @printpagestopdf)
+NEW: You can now apply custom rules to restrict bookings to a certain limit (e.g. max. 3 bookings per user per month).
+NEW: An experimental new frontend shortcode as a drop-in replacement for the [cb_map] shortcode called [cb_search]. Read the documentation for more information. (Thanks @kmohrf)
+NEW: You can now create holiday timeframes with manually defined dates and import holidays for German states.
+NEW: You can now make items bookable for pre-defined dates (e.g. events) without just one timeframe.
+ENHANCED: Added button to clear cache from the advanced options tab.
+FIXED: Sender and subject of emails can now contain special characters. (Thanks @nelarsen)
+FIXED: Fixed issues with booking code generation (Thanks @nelarsen)
+FIXED: Commons API crashing when WP_DEBUG is enabled.
+FIXED: Deprecation warnings for PHP 8.X
+FIXED: Updated some packages
+
+### 2.8.6 (02.12.2023)
+FIXED: Holidays sometimes bookable when they should not be bookable
+
+### 2.8.5 (03.11.2023)
+ADDED: Support for WordPress Personal Data Exporter & Personal Data Eraser
+ENHANCED: The amount of days that will be counted when creating a booking over closed days / holidays is now configurable.
+FIXED: Sorting the table of bookings / locations / timeframes in backend
+FIXED: Wrong error messages when creating a new timeframe
+FIXED: Availabilities of items in GBFS API
+FIXED: Rendering error in item table
+FIXED: Holidays not working when they are more than 30 days in the future
+FIXED: Map sometimes not loading
+
+### 2.8.4 (20.09.2023)
 FIXED: Incorrect time in booking confirmation
 FIXED: Can now trash bookings again (thanks @danielappelt)
 FIXED: URL prefix for GBFS root (thanks @futuretap)

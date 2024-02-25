@@ -25,13 +25,17 @@ class ItemTest extends CustomPostTypeTest {
 	*/
 
 	public function testGetAdmins() {
+		// Case: No admins
+		//$this->assertEquals([], $this->itemModel->getAdmins()); - Currently this function includes the post author
+		$this->assertEquals([self::USER_ID], $this->itemModel->getAdmins());
 
-		$userArray[] = $this->subscriberId;
+		//Case: CB Manager as admin
+		$this->createCBManager();
 		$adminItemModel = new Item(
-			$this->createItem("Testitem2",'publish', $userArray)
+			$this->createItem("Testitem2",'publish', [$this->cbManagerUserID])
 		);
-		//$this->assertEquals($userArray, $adminItemModel->getAdmins()); - This should work when postAuthor is not appended anymore
-		$this->assertContains($this->subscriberId, $adminItemModel->getAdmins());
+		//$this->assertEquals([$this->cbManagerUserID], $adminItemModel->getAdmins()); - Currently this function includes the post author
+		$this->assertEquals([$this->cbManagerUserID, self::USER_ID], $adminItemModel->getAdmins());
 	}
 
 

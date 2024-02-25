@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Repository;
 
+use CommonsBooking\Plugin;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
@@ -46,9 +47,29 @@ class UserRepositoryTest extends CustomPostTypeTest
 		$this->assertEquals($this->cbManagerUserID, reset($owners)->ID);
 	}
 
+	public function testUserHasRoles() {
+		$this->createEditor();
+		$this->assertTrue(UserRepository::userHasRoles($this->editorUserID, array('editor')));
+		$this->assertTrue(UserRepository::userHasRoles($this->editorUserID, 'editor'));
+		//now, let's also make the editor a cb_manager, for this we need to create one first so the role is created
+		$this->createCBManager();
+		$user = new \WP_User( $this->editorUserID );
+		$user->add_role( Plugin::$CB_MANAGER_ID );
+		$this->assertTrue(UserRepository::userHasRoles($this->editorUserID, array('editor','cb_manager')));
+		$this->assertTrue(UserRepository::userHasRoles($this->editorUserID, 'cb_manager'));
+		$this->assertTrue(UserRepository::userHasRoles($this->editorUserID, 'editor'));
+		$this->assertFalse(UserRepository::userHasRoles($this->editorUserID, array('subscriber')));
+		$this->assertFalse(UserRepository::userHasRoles($this->editorUserID, 'subscriber'));
+
+		//remove the role again for cleanup
+		$user->remove_role( Plugin::$CB_MANAGER_ID );
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->createCBManager();
+		$this->createSubscriber();
+		$this->createAdministrator();
 	}
 
 	protected function tearDown(): void {

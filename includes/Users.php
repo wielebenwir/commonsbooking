@@ -138,7 +138,7 @@ function commonsbooking_custom_view_count( $views ) {
 // fixes counts for custom posts countings in admin list
 function commonsbooking_fix_view_counts( $postType, $views ) {
 	// admin is allowed to see all posts
-	if(current_user_can('administrator')) {
+	if( commonsbooking_isCurrentUserAdmin() ){
 		return $views;
 	}
 
@@ -169,9 +169,10 @@ function commonsbooking_fix_view_counts( $postType, $views ) {
 
 // Check if current user has admin role
 function commonsbooking_isCurrentUserAdmin() {
+	if (! is_user_logged_in() ) { return false; }
 	$user = wp_get_current_user();
 
-	return apply_filters( 'commonsbooking_isCurrentUserAdmin', in_array( 'administrator', $user->roles ), $user );
+	return apply_filters( 'commonsbooking_isCurrentUserAdmin', commonsbooking_isUserAdmin( $user ) );
 }
 
 /**
@@ -185,14 +186,24 @@ function commonsbooking_isCurrentUserAdmin() {
  * @return bool
  */
 function commonsbooking_isUserAdmin(\WP_User $user) {
-	$adminRoles = ['administrator'];
-	$adminRoles = apply_filters('commonsbooking_admin_roles', $adminRoles);
-	foreach ($adminRoles as $adminRole) {
+	foreach (\CommonsBooking\Repository\UserRepository::getAdminRoles() as $adminRole) {
 		if (in_array($adminRole, $user->roles)) {
 			return true;
 		}
 	}
 	return false;
+}
+
+/**
+ * Returns whether given user is given the cb manager role
+ *
+ * @since 2.9.0
+ *
+ * @param WP_User $user
+ * @return bool
+ */
+function commonsbooking_isUserCBManager( \WP_User $user ): bool {
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
 }
 
 // Check if current user has subscriber role
@@ -204,9 +215,12 @@ function commonsbooking_isCurrentUserSubscriber() {
 
 // check if current user has CBManager role
 function commonsbooking_isCurrentUserCBManager() {
+
 	$user = wp_get_current_user();
 
-	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
+
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
 
 }
 
@@ -218,9 +232,9 @@ function commonsbooking_isCurrentUserCBManager() {
  * @return bool
  */
 function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ):bool {
-	$allowedUserRoles = get_post_meta( $timeframeID, 'allowed_user_roles', true );
+	$allowedUserRoles = get_post_meta( $timeframeID, \CommonsBooking\Model\Timeframe::META_ALLOWED_USER_ROLES, true );
 
-	if ( empty( $allowedUserRoles ) || ( current_user_can('administrator') ) ) {
+	if ( empty( $allowedUserRoles ) || ( commonsbooking_isCurrentUserAdmin() ) ) {
 		return true;
 	}
 

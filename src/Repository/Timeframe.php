@@ -6,9 +6,15 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
+use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
 use Exception;
 
+/*
+ * Implements data access to timeframe custom post objects
+ *
+ * @since 2.9.0 Supports now single and multi selection of items and locations
+ */
 class Timeframe extends PostRepository {
 
 	/**
@@ -85,15 +91,15 @@ class Timeframe extends PostRepository {
 	 *      In this case we need this function.
 	 *      Other functions use this one as base function for more specialized searches.
 	 *
+	 * TODO: Investigate
+	 *       This function is not based on the WP_Query class, probably because of performance reasons.
+	 *
 	 * @param array $locations
 	 * @param array $items
 	 * @param array $types
 	 * @param string|null $date Date-String in format YYYY-mm-dd
-	 *
 	 * @param bool $returnAsModel
-	 *
 	 * @param int|null $minTimestamp
-	 *
 	 * @param string[] $postStatus
 	 *
 	 * @return array
@@ -159,12 +165,15 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns Post-IDs by type(s), item(s), location(s)
+	 * Returns Post-IDs of timeframes by type(s), item(s), location(s)
+	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.
 	 *
-	 * @param array $types
-	 * @param array $items
-	 * @param array $locations
+	 * @param array $types the types of timeframes to return, will return default set when not set
+	 * @param array $items the items that the timeframes should be applicable to, will return all if not set
+	 * @param array $locations the locations that the timeframes should be applicable to, will return all if not set
+     *
+     * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
@@ -189,8 +198,6 @@ class Timeframe extends PostRepository {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
 
-			$itemQuery = "";
-
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
 
@@ -199,35 +206,35 @@ class Timeframe extends PostRepository {
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
-
-			// Query for item(s)
+			$itemQuery = "";
 			if ( count( $items ) > 0 ) {
-				$itemQuery = " 
-                    INNER JOIN $table_postmeta pm2 ON
-                        pm2.post_id = pm1.post_id AND
-                        pm2.meta_key = 'item-id' AND
-                        pm2.meta_value IN (" . implode( ',', $items ) . ")
-                ";
+				$itemQuery = self::getEntityQuery(
+					"pm2",
+					$table_postmeta,
+					$items,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST
+				);
 			}
 
-			// Query for location(s)
 			$locationQuery = "";
 			if ( count( $locations ) > 0 ) {
-				$locationQuery = " 
-                    INNER JOIN $table_postmeta pm3 ON
-                        pm3.post_id = pm1.post_id AND
-                        pm3.meta_key = 'location-id' AND
-                        pm3.meta_value IN (" . implode( ',', $locations ) . ")
-                ";
+				$locationQuery = self::getEntityQuery(
+					"pm3",
+					$table_postmeta,
+					$locations,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST
+				);
 			}
 
 			// Complete query, including types
 			$query = "
-                SELECT DISTINCT pm1.post_id from $table_postmeta pm1 
+                SELECT DISTINCT pm1.post_id from $table_postmeta pm1
                 " .
 			         $itemQuery .
 			         $locationQuery .
-			         "   
+			         "
                  WHERE
                     pm1.meta_key = 'type' AND
 	                pm1.meta_value IN (" . implode( ',', $types ) . ")
@@ -254,6 +261,39 @@ class Timeframe extends PostRepository {
 
 			return $postIds;
 		}
+	}
+
+	/**
+	* Returns entity query as join statement, which considers single and multi selection.
+	* 
+    * @since 2.9.0 Supports now single and multi selection for items and locations
+    *
+	* @return string join statement
+	*/
+	private static function getEntityQuery( string $joinAlias, string $table_postmeta, array $entities, string $singleEntityKey, string $multiEntityKey ): string {
+		$locationQueryParts = [];
+
+		// Single select
+		$singleLocationQuery = "(
+		                        $joinAlias.meta_key = '" . $singleEntityKey . "' AND
+		                        $joinAlias.meta_value IN (" . implode( ',', $entities ) . ")
+	                        )";
+		$locationQueryParts[] = $singleLocationQuery;
+
+		// Multi select
+		$multiLocationQueries = [];
+		foreach( $entities as $entityId ) {
+			$multiLocationQueries[] = "$joinAlias.meta_value LIKE '%:\"$entityId\";%'";
+		}
+		$multiLocationQuery = "(
+					$joinAlias.meta_key = '" . $multiEntityKey . "' AND
+					(" . implode( ' OR ', $multiLocationQueries ) . ") 
+				)";
+		$locationQueryParts[] = $multiLocationQuery;
+
+		return "INNER JOIN $table_postmeta $joinAlias ON
+                    $joinAlias.post_id = pm1.post_id AND
+                    (" . implode( ' OR ', $locationQueryParts ) . ")";
 	}
 
 	/**
@@ -332,7 +372,7 @@ class Timeframe extends PostRepository {
 			"INNER JOIN $table_postmeta pm4 ON
                 pm4.post_id = pm1.id AND
                 pm4.meta_key = %s AND
-                pm4.meta_value BETWEEN 0 AND %d 
+                pm4.meta_value BETWEEN 0 AND %d
             INNER JOIN $table_postmeta pm5 ON
                 pm5.post_id = pm1.id AND (
                     (
@@ -341,12 +381,12 @@ class Timeframe extends PostRepository {
                     ) OR
                     (
                         pm1.id not in (
-                            SELECT post_id FROM $table_postmeta 
-                            WHERE 
+                            SELECT post_id FROM $table_postmeta
+                            WHERE
                                 meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "'
                         )
                     )
-                )                        
+                )
             ",
 			\CommonsBooking\Model\Timeframe::REPETITION_START,
 			strtotime( $date . 'T23:59' ),
@@ -369,13 +409,13 @@ class Timeframe extends PostRepository {
 		return $wpdb->prepare(
 			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
-	                ( 
+	                (
 	                    pm4.meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "' AND
 	                    pm4.meta_value >= %d
 	                ) OR
 	                (
 	                    pm1.id not in (
-	                        SELECT post_id FROM $table_postmeta 
+	                        SELECT post_id FROM $table_postmeta
 	                        WHERE
 	                            meta_key = '" . \CommonsBooking\Model\Timeframe::REPETITION_END . "'
 	                    )
@@ -399,21 +439,21 @@ class Timeframe extends PostRepository {
 			"INNER JOIN $table_postmeta pm4 ON
 	            pm4.post_id = pm1.id AND (
 	                pm4.meta_key = %s AND
-	                pm4.meta_value <= %d                  
+	                pm4.meta_value <= %d
 	            )
 	        INNER JOIN $table_postmeta pm5 ON
-	            pm5.post_id = pm1.id AND (   
-	                (                         
+	            pm5.post_id = pm1.id AND (
+	                (
 	                    pm5.meta_key = %s AND
 	                    pm5.meta_value >= %d
 	                ) OR (
-	                    NOT EXISTS ( 
-	                        SELECT * FROM $table_postmeta 
+	                    NOT EXISTS (
+	                        SELECT * FROM $table_postmeta
 	                        WHERE
 	                            meta_key = %s AND
 	                            post_id = pm5.post_id
 	                    )
-	                )                          
+	                )
 	            )
 	        ",
 			\CommonsBooking\Model\Timeframe::REPETITION_START,
@@ -458,17 +498,22 @@ class Timeframe extends PostRepository {
 		} else {
 			if ( $date ) {
 				$posts = array_filter( $posts, function ( $post ) use ( $date ) {
-					if ( $weekdays = get_post_meta( $post->ID, 'weekdays', true ) ) {
-						$day = date( 'N', strtotime( $date ) );
+					try {
+						$timeframe = new \CommonsBooking\Model\Timeframe( $post );
+						$day       = new Day( $date );
 
-						return in_array( $day, $weekdays );
+						return $day->isInTimeframe( $timeframe );
+					} catch ( Exception $e ) {
+						//this was also default behaviour before #802 (before #802 the function would just check the weekly repetition and if it was active on the given day return true)
+						//When none were set, it would return true for all days.
+						return true;
 					}
-
-					return true;
-				} );
+				}
+				);
 			}
 
-			Plugin::setCacheItem($posts, Wordpress::getTags($posts));
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
+
 			return $posts;
 		}
 	}

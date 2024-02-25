@@ -2,15 +2,16 @@
 
 
 use CommonsBooking\Helper;
+use CommonsBooking\Service\BookingRule;
 use CommonsBooking\View\Migration;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use CommonsBooking\Service\Cache;
 
 // We need static types, because german month names don't work for datepicker
 $dateFormat = "d/m/Y";
@@ -133,7 +134,7 @@ return array(
 						'id'          => 'booking-comment-title',
 						'description' => commonsbooking_sanitizeHTML( __( 'Text that will be shown above the comment field in the booking confirmation page.', 'commonsbooking' ) ),
 						'type'        => 'text',
-						'default'     => __( 'Booking comment', 'commonstbooking' ),
+						'default'     => __( 'Booking comment', 'commonsbooking' ),
 					),
 					array(
 						'name'        => commonsbooking_sanitizeHTML( __( 'Description', 'commonsbooking' ) ),
@@ -143,27 +144,84 @@ return array(
 						'default'     => __( 'Here you can leave a comment about your booking. This will be sent to the station.', 'commonsbooking' ),
 					),
 				)
+			),
+			'globalLocationSettings' => array(
+				'title'  => __( "Global location settings", 'commonsbooking' ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'These settings are used for all locations. You can overwrite these settings for each location in the location settings.', 'commonsbooking' ) ),
+				'id'     => 'globalLocationSettings',
+				'fields' => Location::getOverbookingSettingsMetaboxes()
 			)
 		)
 	),
 	/* Tab: general end*/
 
-	/* Tab Booking Codes start */
+	/* Tab booking codes start */
 	'bookingcodes' => array(
-		'title'        => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+		'title'        => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 		'id'           => 'bookingcodes',
 		'field_groups' => array(
 			'bookingcodes' => array(
-				'title'  => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 				'id'     => 'bookingcodes',
 				'desc'   =>
 					commonsbooking_sanitizeHTML( __( 'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking Codes</a>', 'commonsbooking' ) ),
+                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking codes</a>', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Booking Codes', 'commonsbooking' ) ),
+						'name' => commonsbooking_sanitizeHTML( __( 'Booking codes', 'commonsbooking' ) ),
 						'id'   => 'bookingcodes',
 						'type' => 'textarea',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Show booking codes for x days', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Displays booking codes for the next x days on the timeframe page', 'commonsbooking' ) ),
+						'id'      => 'bookingcodes-listed-timeframe',
+						'type'       => 'text_small',
+						'attributes' => array(
+							'type' => 'number',
+							'min'  => '0',
+						),
+						'default' => '30',
+					),
+				)
+			),
+			'mail_booking_codes' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Booking codes by email', 'commonsbooking' ) ),
+				'id'     => 'mail-booking-codes',
+				'desc'   =>
+					commonsbooking_sanitizeHTML( __( 'Send booking codes by email to location email(s) (automated by cron or ad hoc)', 'commonsbooking' ) ),
+				'fields' => array(
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Subject for booking codes email', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-subject',
+						'type'    => 'text',
+						'default' => commonsbooking_sanitizeHTML( __( 'Booking codes for {{codes:formatDateRange}} {{item:post_title}}', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Body for booking codes email', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-body',
+						'type'    => 'textarea',
+						'default' => commonsbooking_sanitizeHTML( __( '
+<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>
+
+<p>Booking codes Table:</p>
+<br>   
+{{codes:codeTable}}
+<br>          
+<p>Thanks, the Team.</p>
+                            ', 'commonsbooking' ) ),
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Backup E-Mail for booking codes email', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'Email address that receives a bcc copy of booking codes mailing (not used if empty)', 'commonsbooking' ) ),
+						'id'      => 'mail-booking-codes-bcc',
+						'type'    => 'text',
+					),
+					array(
+						'name'        => commonsbooking_sanitizeHTML( __('Attach iCalendar file to booking codes email', 'commonsbooking') ),
+						'id'          => 'mail-booking-codes-attach-ical',
+						'description' => commonsbooking_sanitizeHTML( __( 'Will attach an iCalendar compatible file with booking codes per day to import in their respective calendar application.', 'commonsbooking' ) ),
+						'type'        => 'checkbox',
 					),
 				)
 			)
@@ -618,6 +676,93 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 					),
 				)
 			),
+			'bookingRules' => array(
+				'title' => commonsbooking_sanitizeHTML( __( 'Restrict bookings by booking rules', 'commonsbooking') ),
+				'desc'  => commonsbooking_sanitizeHTML( __( 'You can apply rules to individual items or categories of items/locations, which will restrict how users are able to book and, if violated, abort the booking process')),
+				'id'    => 'bookingrules',
+				'fields'=> array(
+					array(
+						'name'  => commonsbooking_sanitizeHTML( __('Count cancelled bookings towards quota', 'commonsbooking') ),
+						'desc'  => commonsbooking_sanitizeHTML( __('Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=2157\">More info in the documentation</a>', 'commonsbooking') ),
+						'id'    => 'bookingrules-count-cancelled',
+						'type'  => 'checkbox'
+					),
+					array(
+						'id'        => 'rules_group',
+						'type'      => 'group',
+						'repeatable'=> true,
+						'options'   => array(
+							'group_title'   => commonsbooking_sanitizeHTML( __( 'Rule ', 'commonsbooking') ) .  '{#}',
+							'add_button'    => commonsbooking_sanitizeHTML( __( 'Add another rule', 'commonsbooking') ),
+							'remove_button' => commonsbooking_sanitizeHTML( __( 'Remove rule', 'commonsbooking') ),
+						),
+						'fields' => array(
+							array(
+								'name'      => commonsbooking_sanitizeHTML( __('Rule type', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Select the kind of rule', 'commonsbooking') ),
+								'id'        => 'rule-type',
+								'type'      => 'select',
+								'show_option_none' => true,
+								'default'   => 'none',
+								'options'   => BookingRule::getRulesForSelect(),
+
+							),
+							//The following labels are not translated because they are replaced by the rule
+							array(
+								'name' => commonsbooking_sanitizeHTML( __( 'Rule description', 'commonsbooking' ) ),
+								'desc' => commonsbooking_sanitizeHTML( 'You shall be replaced' ),
+								'id'   => 'rule-description',
+								'type' => 'title',
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( 'Parameter 1' ),
+								'desc'  => 'Parameter description',
+								'id'    => 'rule-param1',
+								'type'  => 'text_small'
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( 'Parameter 2' ),
+								'desc'  => 'Parameter description',
+								'id'    => 'rule-param2',
+								'type'  => 'text_small'
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( __('Select an option', 'commonsbooking') ),
+								'desc'  => 'Select parameter description',
+								'id'    => 'rule-select-param',
+								'type'  => 'select',
+							),
+							array(
+								'name'  => commonsbooking_sanitizeHTML( __('Applies to all', 'commonsbooking') ),
+								'desc'  => commonsbooking_sanitizeHTML( __('Check if this rule applies to all items', 'commonsbooking') ),
+								'id'    => 'rule-applies-all',
+								'type'  => 'checkbox'
+							),
+							array(
+								'name'      => commonsbooking_sanitizeHTML( __('Applies to categories', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Check the categories that these rules apply to', 'commonsbooking') ),
+								'id'        => 'rule-applies-categories',
+								'type'      => 'multicheck',
+								'options'   =>  CustomPostType::sanitizeOptions(
+									array_merge(
+										\CommonsBooking\Repository\Item::getTerms(),
+										\CommonsBooking\Repository\Location::getTerms())
+									)
+							),
+							array(
+								'name'      => commonsbooking_sanitizeHTML( __('Groups exempt from rule', 'commonsbooking') ),
+								'desc'      => commonsbooking_sanitizeHTML( __('Here you can define if the rule should not apply to a specific user group. Will apply to all groups if left empty (Administrators and item / location admins are always excluded).', 'commonsbooking') ),
+								'id'        => 'rule-exempt-roles',
+								'type'      => 'pw_multiselect',
+								'options'   =>  CustomPostType::sanitizeOptions(
+									UserRepository::getUserRoles()
+								)
+							)
+						)
+					)
+
+				)
+			)
 			/* field group email templates end */
 		)
 	),
@@ -1070,6 +1215,12 @@ Return date: {{booking:returnDatetime}}
 					commonsbooking_sanitizeHTML( __( 'Allows you to change options regarding the caching system', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Clear Cache', 'commonsbooking' ) ),
+						'id'            => 'commonsbooking-clear_cache-button',
+						'type'          => 'text',
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' )
+					),
+					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
 						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
 						'id'            => 'cache_path',
@@ -1080,7 +1231,7 @@ Return date: {{booking:returnDatetime}}
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'filesystem-status',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderFilesystemStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderFilesystemStatus' ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
@@ -1097,7 +1248,7 @@ Return date: {{booking:returnDatetime}}
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
 						'id'            => 'redis_connection-status',
 						'type'          => 'text',
-						'render_row_cb' => array( Cache::class, 'renderREDISConnectionStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderREDISConnectionStatus' ),
 					)
 				)
 			),

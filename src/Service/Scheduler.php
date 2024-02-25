@@ -35,12 +35,12 @@ class Scheduler {
 	 * @param string $updateHook The wordpress hook that should update the option
 	 */
 	function __construct(
-		string $jobhook, //the action hook to run when the event is executed
-		callable $callback, //the callback function of that hook
-		string $reccurence, //how often the event should subsequently recur
-		string $executionTime = '', //takes time of day the job should be executed, only for daily reccurence
-		array $option = array(), //first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
-		string $updateHook= ''  //The wordpress hook that should update the option
+		string $jobhook,
+		callable $callback,
+		string $reccurence,
+		string $executionTime = '',
+		array $option = array(),
+		string $updateHook= ''
 	)
 	{
 		// Add custom cron intervals
@@ -162,6 +162,14 @@ class Scheduler {
 			'update_option_commonsbooking_options_reminder'
 		);
 
+		// Init email booking codes job
+		New Scheduler(
+			'email_bookingcodes',
+			array( \CommonsBooking\Service\BookingCodes::class, 'sendBookingCodesMessage' ),
+			'daily',
+			'today midnight +3 hour'
+		);
+
 		// Init timeframe export job
 		$exportPath = Settings::getOption( 'commonsbooking_options_export', 'export-filepath' );
 		$exportInterval = Settings::getOption( 'commonsbooking_options_export', 'export-interval' );
@@ -178,6 +186,15 @@ class Scheduler {
 	}
 
 	/**
+	 * Returns the jobhook of the current job
+	 *
+	 * @return string
+	 */
+	public function getJobhook(): string {
+		return $this->jobhook;
+	}
+
+	/**
 	 * Unschedules the current job.
 	 * This can have multiple reasons:
 	 * - The job is no longer needed
@@ -186,12 +203,7 @@ class Scheduler {
 	 * @return boolean
 	 */
 	private function unscheduleJob() {
-		$timestamp = wp_next_scheduled($this->jobhook);
-		if ($timestamp){
-			wp_unschedule_event($timestamp,$this->jobhook);
-			return true;
-		}
-		return false;
+		return wp_clear_scheduled_hook($this->jobhook);
 	}
 
 	/**
@@ -211,8 +223,7 @@ class Scheduler {
 		];
 
 		foreach ( $cbCronHooks as $cbCronHook ) {
-			$timestamp = wp_next_scheduled( $cbCronHook );
-			wp_unschedule_event( $timestamp, $cbCronHook );
+			wp_clear_scheduled_hook($cbCronHook);
 		}
 	}
 }

@@ -1,0 +1,76 @@
+name: Compile changes
+on:
+  push:
+    branches:
+      - master
+      - 'release/**'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+    
+jobs:
+  i18n-coverage:
+    runs-on: ubuntu-20.04
+    name: Check i18n coverage
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install WP-CLI
+        run: |
+          curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x wp-cli.phar
+          sudo mv wp-cli.phar /usr/local/bin/wp
+
+      - name: Generate pot files
+        run: bin/update-pot.sh
+        
+      - name: Commit changes
+        uses: elstudio/actions-js-build/commit@v4
+        with:
+          commitMessage: Ran wp i18n make-pot
+
+      - name: Check i18n coverage
+        uses: alexkiro/i18n-coverage@v1.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          translations-path: 'languages/*.po'
+          ignore-languages: 'en'
+
+  grunt:
+    runs-on: ubuntu-20.04
+    name: Run grunt and commit changes
+    needs: i18n-coverage
+    steps:
+
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }} # checkout the latest commit so that we can push changes
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+
+    - run: npm ci --legacy-peer-deps --include=dev
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+
+    - name: Compile with Grunt
+      uses: elstudio/actions-js-build/build@v4
+      with:
+        args: build
+
+    - name: Commit changes
+      uses: elstudio/actions-js-build/commit@v4
+      with:
+        commitMessage: Ran grunt 
