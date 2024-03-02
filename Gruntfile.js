@@ -133,7 +133,7 @@ module.exports = function (grunt) {
 						dest: nodePackagesDestDir + 'commons-search/',
 						expand: true,
 						cwd: 'node_modules/@commonsbooking/frontend/dist/lib/commons-search/',
-						src: ['commons-search.umd.cjs', 'style.css'],
+						src: ['commons-search.umd.js', 'style.css'],
 					},
 					{
 						dest: nodePackagesDestDir + 'vue/',
