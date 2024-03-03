@@ -1631,11 +1631,11 @@ msgid "Download Export"
 msgstr "Download Export"
 
 #: src/Model/Booking.php:886
-#: src/View/TimeframeExport.php:238
-#: src/View/TimeframeExport.php:248
-#: src/View/TimeframeExport.php:254
-#: src/View/TimeframeExport.php:264
-#: src/View/TimeframeExport.php:274
+#: src/View/TimeframeExport.php:241
+#: src/View/TimeframeExport.php:251
+#: src/View/TimeframeExport.php:257
+#: src/View/TimeframeExport.php:267
+#: src/View/TimeframeExport.php:277
 msgid "Unknown"
 msgstr "Unbekannt"
 
