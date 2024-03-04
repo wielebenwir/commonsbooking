@@ -130,26 +130,26 @@ class BaseRoute extends WP_REST_Controller {
 	/**
 	 * Returns schema json for current route.
 	 *
-	 * @return array|WP_Error
+	 * @throws RuntimeException On missing schema files.
+	 * @return string
 	 */
-	protected function getSchemaJson() {
-		$schemaArray = wp_remote_get( $this->schemaUrl );
-		if ( is_array( $schemaArray ) && ! is_wp_error( $schemaArray )) {
+	protected function getSchemaJson(): string {
+		$schemaArray = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $schemaArray ) {
 			return $schemaArray;
 		} else {
-			throw new RuntimeException("Could not retrieve schema json from " . $this->schemaUrl );
+			throw new RuntimeException( 'Could not retrieve schema json from ' . esc_url( $this->schemaUrl ) );
 		}
 	}
 
 	/**
 	 * Adds schema-fields for output to current route.
 	 *
-	 * @param array $schema
-	 *
+	 * @param array $schema Assoc array of schema json object.
 	 * @return array
 	 */
 	public function add_additional_fields_schema( $schema ): array {
-		$schemaArray = json_decode( $this->getSchemaJson(), true ); // TODO verify that this works and doesn't expects ['body'] from wp_remote_get?
+		$schemaArray = json_decode( $this->getSchemaJson(), true );
 
 		return array_merge( $schema, $schemaArray );
 	}
