@@ -92,19 +92,21 @@ class BaseRoute extends WP_REST_Controller {
 		$validator = new Validator();
 
 		try {
-			$result = $validator->schemaValidation( $data, $this->getSchemaObject() );
-			if ( $result->hasErrors() ) {
+			$result = $validator->validate( $data, $this->getSchemaObject() );
+			if ( $result->hasError() ) {
 				if ( WP_DEBUG ) {
-					var_dump( $result->getErrors() );
+					var_dump( $result->error() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_dump
 					die;
 				}
 			}
 		} catch ( Exception $e ) {
+			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			if ( WP_DEBUG ) {
 				error_log( 'Problem while trying to access wp rest endpoint url for schema ' . $this->schemaUrl );
 				error_log( $e );
 				die;
 			}
+			// phpcs:enable
 		}
 	}
 
@@ -118,7 +120,9 @@ class BaseRoute extends WP_REST_Controller {
 		unset( $schemaObject->{'$schema'} );
 		unset( $schemaObject->{'$id'} );
 
-		return Schema::fromJsonString( wp_json_encode( $schemaObject ) );
+		$validator = new Validator();
+
+		return $validator->loader()->loadObjectSchema( $schemaObject );
 	}
 
 	/**
