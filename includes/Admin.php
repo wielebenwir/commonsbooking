@@ -29,8 +29,6 @@ function commonsbooking_admin() {
 		);
 	}
 
-	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
-
     // Map marker upload scripts
     // TODO needs to be evaluated. Maybe not working on all systems
     if ( get_current_screen()->id == 'cb_map' ) {
