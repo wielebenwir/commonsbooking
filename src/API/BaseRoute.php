@@ -10,6 +10,7 @@ use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
+use Opis\JsonSchema\Helper;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Server;
@@ -115,14 +116,12 @@ class BaseRoute extends WP_REST_Controller {
 	 *
 	 * @return Schema
 	 */
-	protected function getSchemaObject(): Schema {
+	protected function getSchemaObject(): object {
 		$schemaObject = json_decode( $this->getSchemaJson() );
 		unset( $schemaObject->{'$schema'} );
 		unset( $schemaObject->{'$id'} );
 
-		$validator = new Validator();
-
-		return $validator->loader()->loadObjectSchema( $schemaObject );
+		return $schemaObject;
 	}
 
 	/**
