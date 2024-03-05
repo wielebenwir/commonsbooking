@@ -141,6 +141,12 @@ module.exports = function (grunt) {
 						cwd: 'node_modules/vue/dist/',
 						src: 'vue.runtime.global.prod.js',
 					},
+                    {
+                        dest: 'includes/commons-api-json-schema/',
+                        expand: true,
+                        cwd: 'node_modules/commons-api/',
+                        src: '**schema.json',
+                    }
 				],
 			},
 		},
