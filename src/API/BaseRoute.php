@@ -90,12 +90,6 @@ class BaseRoute extends WP_REST_Controller {
 	 */
 	public function validateData( $data ) {
 		$validator = new Validator();
-		//the validation routes are not shipped with the built plugin
-		$isDevEnvironment = file_exists( COMMONSBOOKING_PLUGIN_DIR . 'node_modules' );
-
-		if ( ! $isDevEnvironment ) {
-			return;
-		}
 
 		try {
 			$result = $validator->schemaValidation( $data, $this->getSchemaObject() );

@@ -30,9 +30,10 @@ class LocationsRoute extends BaseRoute {
 
 	/**
 	 * Commons-API schema definition.
+	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.locations.schema.json";
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'assets/schemas/commons-api/commons-api.locations.schema.json';
 
 	/**
 	 * @var Provider
