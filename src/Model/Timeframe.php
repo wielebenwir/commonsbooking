@@ -31,15 +31,33 @@ class Timeframe extends CustomPost {
 
 	public const REPETITION_END = 'repetition-end';
 
-	public const META_LOCATION_ID = 'location-id';
+	public const META_ITEM_SELECTION_TYPE = 'item-select';
 
 	public const META_ITEM_ID = 'item-id';
+
+	public const META_ITEM_ID_LIST = 'item-id-list';
+
+	public const META_ITEM_CATEGORY_IDS = 'item-category-ids';
+
+	public const META_LOCATION_SELECTION_TYPE = 'location-select';
+
+	public const META_LOCATION_ID = 'location-id';
+
+	public const META_LOCATION_ID_LIST = 'location-id-list';
+
+	public const META_LOCATION_CATEGORY_IDS = 'location-category-ids';
 
 	public const META_REPETITION = 'timeframe-repetition';
 
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
 	public const META_MAX_DAYS = 'timeframe-max-days';
+
+	public const SELECTION_MANUAL_ID = 0;
+
+	public const SELECTION_CATEGORY_ID = 1;
+
+	public const SELECTION_ALL_ID = 2;
 
 	public const META_CREATE_BOOKING_CODES = 'create-booking-codes';
 
@@ -124,9 +142,36 @@ class Timeframe extends CustomPost {
 			return $endDate;
 		}
 
-		// if overall enddate of timeframe is > than latest possible booking date,
-		// we use latest possible booking date as end date
+		// if overall enddate of timeframe is > than the latest possible booking date,
+		// we use the latest possible booking date as end date
 		return $latestPossibleBookingDate;
+	}
+
+	/**
+	 * Checks if the given user is administrator of item / location or the website and therefore enjoys special booking rights
+	 *
+	 * @param \WP_User|null $user
+	 *
+	 * @return bool
+	 */
+	public function isUserPrivileged(\WP_User $user = null): bool {
+		if ( ! $user ) {
+			$user = wp_get_current_user();
+		}
+		if ( ! $user ) {
+			return false;
+		}
+
+		//these roles are always allowed to book
+		$privilegedRoles = [ 'administrator' ];
+		apply_filters( 'commonsbooking_privileged_roles', $privilegedRoles );
+		if (! empty( array_intersect($privilegedRoles, $user->roles) ) ) {
+			return true;
+		}
+
+		$itemAdmin = commonsbooking_isUserAllowedToEdit($this->getItem(),$user);
+		$locationAdmin = commonsbooking_isUserAllowedToEdit($this->getLocation(),$user);
+		return ($itemAdmin || $locationAdmin);
 	}
 
 	/**
@@ -251,6 +296,7 @@ class Timeframe extends CustomPost {
 	/**
 	 * Validates if there can be booking codes created for this timeframe.
      *
+	 * TODO: #507
 	 * @return bool
 	 */
 	public function bookingCodesApplicable(): bool {
@@ -269,11 +315,13 @@ class Timeframe extends CustomPost {
 	 * This should not happen, because the location is a required field.
 	 * But it might happen if the location was deleted.
 	 *
+	 * @deprecated 2.9.0 This should not be used for Timeframes of type HOLIDAYS_ID.
+	 * Use the getLocations() method instead.
 	 * @return Location
 	 * @throws Exception
 	 */
 	public function getLocation(): ?Location {
-		$locationId = $this->getMeta( self::META_LOCATION_ID );
+		$locationId = $this->getLocationID();
 		if ( $locationId ) {
 			if ( $post = get_post( $locationId ) ) {
 				return new Location( $post );
@@ -284,16 +332,82 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Will get corresponding item for this timeframe.
+	 * Returns the corresponding single location id for a timeframe.
+	 * This will solely rely on the location id stored in the timeframe.
+	 * If the location is deleted, this function will still return the old location id.
+	 * @deprecated 2.9.0 This should not be used for Timeframes of type HOLIDAYS_ID.
+	 *
+	 * @return int|null
+	 */
+	public function getLocationID(): ?int {
+		$locationId = $this->getMeta( self::META_LOCATION_ID );
+		if ( $locationId ) {
+			return intval($locationId);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the corresponding multiple locations for a timeframe.
+	 * If multiple locations are not available, it will call the getLocation() method and return an array with one location.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return Location[]
+	 */
+	public function getLocations(): ?array {
+		$locationIds = $this->getLocationIDs();
+		if ( $locationIds ) {
+			$locations = [];
+			foreach ( $locationIds as $locationId ) {
+				if ( $post = get_post( $locationId ) ) {
+					$locations[] = new Location( $post );
+				}
+			}
+
+			return $locations;
+		}
+		else {
+			return [];
+		}
+	}
+
+	/**
+	 * Returns the corresponding location ids for a timeframe.
+	 * If multiple locations are not available, it will call the getLocationID() method and return an array with one location id.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return int[]
+	 */
+	public function getLocationIDs(): array {
+		$locationIds = $this->getMeta( self::META_LOCATION_ID_LIST );
+		if ( $locationIds ) {
+			return array_map('intval', $locationIds);
+		}
+		else {
+			$locationId = $this->getLocationID();
+			if ( $locationId ) {
+				return [ $locationId ];
+			}
+			else {
+				return [];
+			}
+		}
+	}
+
+	/**
+	 * Get the corresponding single item for a timeframe.
+	 * Will get corresponding item object for this timeframe.
 	 * This function will return null if no item is set.
 	 * This should not happen, because the item is a required field.
 	 * But it might happen if the item was deleted.
 	 *
+	 * @deprecated 2.9.0 This method should not be used for timeframes of the type HOLIDAYS_ID.
 	 * @return Item
 	 * @throws Exception
 	 */
 	public function getItem(): ?Item {
-		$itemId = $this->getMeta( self::META_ITEM_ID );
+		$itemId = $this->getItemID();
 		if ( $itemId ) {
 			if ( $post = get_post( $itemId ) ) {
 				return new Item( $post );
@@ -301,6 +415,69 @@ class Timeframe extends CustomPost {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Returns the corresponding single item id for a timeframe.
+	 * This will solely rely on the item id stored in the timeframe. If the item is deleted, this function will still return the old item id.
+	 *
+	 * @deprecated 2.9.0 This method does not work for timeframes of the type HOLIDAYS_ID.
+	 * @return int|null
+	 */
+	public function getItemID(): ?int {
+		$itemId = $this->getMeta( self::META_ITEM_ID );
+		if ( $itemId ) {
+			return intval($itemId);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Gets the corresponding multiple items for a timeframe.
+	 * If multiple items are not available, it will call the getItem() method and return an array with one item.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return Item[]
+	 */
+	public function getItems(): ?array {
+		$itemIds = $this->getItemIDs();
+		if ( $itemIds ) {
+			$items = [];
+			foreach ( $itemIds as $itemId ) {
+				if ( $post = get_post( $itemId ) ) {
+					$items[] = new Item( $post );
+				}
+			}
+
+			return $items;
+		}
+		else {
+			return [];
+		}
+	}
+
+	/**
+	 * Returns the corresponding item ids for a timeframe.
+	 * If multiple items are not available, it will call the getItemID() method and return an array with one item id.
+	 *
+	 * @since 2.9 (anticipated)
+	 * @return int[] - array of item ids, empty array if no item ids are set
+	 */
+	public function getItemIDs(): array {
+		$itemIds = $this->getMeta( self::META_ITEM_ID_LIST );
+		if ( $itemIds ) {
+			return array_map('intval', $itemIds);
+		}
+		else {
+			$itemId = $this->getItemID();
+			if ( $itemId ) {
+				return [ $itemId ];
+			}
+			else {
+				return [];
+			}
+		}
 	}
 
 	/**
@@ -415,7 +592,7 @@ class Timeframe extends CustomPost {
 				// First we check if the item is already connected to another location to avoid overlapping bookable dates
 				$sameItemTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 					[],
-					[ $this->getItem()->ID ],
+					[ $this->getItemID() ],
 					null,
 					true,
 					null,
@@ -444,8 +621,8 @@ class Timeframe extends CustomPost {
 
 				// Get Timeframes with same location, item and a startdate
 				$existingTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
-					[ $this->getLocation()->ID ],
-					[ $this->getItem()->ID ],
+					[ $this->getLocationID() ],
+					[ $this->getItemID() ],
 					null,
 					true
 				);
@@ -821,6 +998,16 @@ class Timeframe extends CustomPost {
 	 * @return DateTime
 	 * @throws Exception
 	 */
+	public function getStartDateDateTime(): DateTime {
+		$startDateString = $this->getMeta( self::REPETITION_START );
+		return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
+	}
+
+	/**
+	 * Returns repetition-start \DateTime.
+	 *
+	 * @return DateTime
+	 */
 	public function getUTCStartDateDateTime(): ?DateTime {
 		$startDateString = $this->getMeta( self::REPETITION_START );
 		if ( ! $startDateString ) {
@@ -957,6 +1144,16 @@ class Timeframe extends CustomPost {
 			$itemAdminIds = $item->getAdmins();
 		}
 
+		if ( empty($locationAdminIds) && empty($itemAdminIds) ) {
+			return [];
+		}
+		if ( empty($locationAdminIds) ) {
+			return $itemAdminIds;
+		}
+		if ( empty($itemAdminIds) ) {
+			return $locationAdminIds;
+		}
+
 		return array_unique( array_merge ($locationAdminIds,$itemAdminIds) );
 	}
 
@@ -987,4 +1184,8 @@ class Timeframe extends CustomPost {
         return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 
     }
+
+	public function getMaxDays():int{
+		return $this->getMeta(self::META_MAX_DAYS);
+	}
 }

@@ -4,11 +4,13 @@
 namespace CommonsBooking;
 
 use CommonsBooking\CB\CB1UserFields;
+use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
@@ -85,6 +87,7 @@ class Plugin {
 		foreach ( $adminAllowedCPT as $customPostType ) {
 			self::addRoleCaps( $customPostType::$postType, 'administrator' );
 			//assign all capabilities of admin to CB-Manager (see comment above)
+			//We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
 			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
 		}
 		/*
@@ -102,6 +105,7 @@ class Plugin {
 	public static function getRoleCapMapping( $roleName = null) {
 		if ( $roleName === null ) {
 			return [
+				//We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
 				self::$CB_MANAGER_ID => [
 					'read'                                 => true,
 					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
@@ -247,6 +251,9 @@ class Plugin {
 			AdminOptions::SetOptionsDefaultValues();
 
 			flush_rewrite_rules();
+
+			//checks if all the booking rules are in the correct format, complain if not
+			BookingRuleApplied::validateRules();
 			set_transient( 'commonsbooking_options_saved', 0 );
 		}
 	}
@@ -314,6 +321,29 @@ class Plugin {
 	}
 
 	/**
+	 * Handles the validation of booking forms. We customize the transient so that only the user that is supposed to see the transient will
+	 * actually see it.
+	 * @return void
+	 */
+	public static function handleBookingForms(): void {
+		try {
+			\CommonsBooking\Wordpress\CustomPostType\Booking::handleFormRequest();
+		}
+		catch ( BookingDeniedException $e ) {
+			set_transient(
+				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
+				$e->getMessage(),
+				30 //Expires very quickly, so that outdated messsages will not be shown to the user
+			);
+			$targetUrl = $e->getRedirectUrl();
+			if ( $targetUrl) {
+				header( 'Location: ' . $targetUrl );
+				exit();
+			}
+		}
+	}
+
+	/**
 	 * Filters the CSS classes for the body tag in the admin.
 	 *
 	 * @param string $classes
@@ -375,13 +405,16 @@ class Plugin {
     /**
 	 * Registers category taxonomy for Custom Post Type Item
      *
+     * TODO: This can probably be re-factored to the more generic CustomPostType
+     *
 	 * @return void
 	 */
 	public static function registerItemTaxonomy() {
 		$customPostType = Item::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
 				'label'        => esc_html__( 'Item Category', 'commonsbooking' ),
@@ -396,6 +429,10 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -405,9 +442,10 @@ class Plugin {
 	 */
 	public static function registerLocationTaxonomy() {
 		$customPostType = Location::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
 				'label'        => esc_html__( 'Location Category', 'commonsbooking' ),
@@ -421,6 +459,10 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the location post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -583,7 +625,7 @@ class Plugin {
 		// commons-search
 		wp_register_script(
 			'cb-commons-search',
-			$base . 'commons-search/commons-search.umd.cjs',
+			$base . 'commons-search/commons-search.umd.js',
 			['cb-leaflet', 'cb-leaflet-markercluster', 'cb-vue'],
 			$versions['@commonsbooking/frontend']
 		);
@@ -642,17 +684,20 @@ class Plugin {
 		add_action( 'init', array( self::class, 'registerCustomPostTypes' ), 0 );
 		add_action( 'init', array( self::class, 'registerPostStates' ), 0 );
 
-		// register admin options page
-		add_action( 'init', array( self::class, 'registerAdminOptions' ), 0 );
-
 		// Register custom post types taxonomy / categories
 		add_action( 'init', array( self::class, 'registerItemTaxonomy' ), 30 );
 
 		// Register custom post types taxonomy / categories
 		add_action( 'init', array( self::class, 'registerLocationTaxonomy' ), 30 );
 
-		// loads the Scheduler
-		add_action( 'init', array( Scheduler::class, 'initHooks' ) );
+		// register admin options page
+		add_action('init', array(self::class, 'registerAdminOptions'), 40);
+
+		//loads the Scheduler
+		add_action( 'init', array( Scheduler::class, 'initHooks' ) , 40);
+
+		//handle the booking forms, needs to happen after taxonomy registration so that we can access the taxonomy
+		add_action('init', array(self::class, 'handleBookingForms'), 50);
 
 		// admin init tasks
 		add_action( 'admin_init', array( self::class, 'admin_init' ), 30 );
@@ -667,7 +712,7 @@ class Plugin {
 		add_filter( 'parent_file', array( $this, 'setParentFile' ) );
 
 		// register scripts
-		add_action('wp_enqueue_scripts', array($this, 'registerScriptsAndStyles'));
+		add_action('init', array($this, 'registerScriptsAndStyles'));
 
 		// register shortcodes
 		add_action('init', array($this, 'registerShortcodes'));
@@ -750,7 +795,7 @@ class Plugin {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public function savePostActions( $post_id, $post, $update ) {
-		if ( ! in_array( $post->post_type, self::getCustomPostTypesLabels() ) ) {
+		if ( ! self::isPostCustomPostType( $post ) ) {
 			return;
 		}
 
