@@ -33,7 +33,6 @@ jobs:
           - { name: 'latest', version: 'latest' }
           - { name: 'minimum', version: '5.9' }
           - { name: 'trunk', version: 'trunk' }
-      fail-fast: false
 
     steps:
     - uses: actions/checkout@v4
