@@ -10,6 +10,7 @@ use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
+use Opis\JsonSchema\Helper;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Server;
@@ -92,19 +93,21 @@ class BaseRoute extends WP_REST_Controller {
 		$validator = new Validator();
 
 		try {
-			$result = $validator->schemaValidation( $data, $this->getSchemaObject() );
-			if ( $result->hasErrors() ) {
+			$result = $validator->validate( $data, $this->getSchemaObject() );
+			if ( $result->hasError() ) {
 				if ( WP_DEBUG ) {
-					var_dump( $result->getErrors() );
+					var_dump( $result->error() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_dump
 					die;
 				}
 			}
 		} catch ( Exception $e ) {
+			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			if ( WP_DEBUG ) {
 				error_log( 'Problem while trying to access wp rest endpoint url for schema ' . $this->schemaUrl );
 				error_log( $e );
 				die;
 			}
+			// phpcs:enable
 		}
 	}
 
@@ -113,12 +116,12 @@ class BaseRoute extends WP_REST_Controller {
 	 *
 	 * @return Schema
 	 */
-	protected function getSchemaObject(): Schema {
+	protected function getSchemaObject(): object {
 		$schemaObject = json_decode( $this->getSchemaJson() );
 		unset( $schemaObject->{'$schema'} );
 		unset( $schemaObject->{'$id'} );
 
-		return Schema::fromJsonString( wp_json_encode( $schemaObject ) );
+		return $schemaObject;
 	}
 
 	/**
