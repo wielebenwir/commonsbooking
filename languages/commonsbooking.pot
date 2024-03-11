@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-11T12:51:25+00:00\n"
+"POT-Creation-Date: 2024-03-11T17:40:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: commonsbooking\n"
@@ -3311,7 +3311,7 @@ msgid "Your E-Mail"
 msgstr ""
 
 #: templates/booking-single.php:144
-msgid "User data"
+msgid "Your data"
 msgstr ""
 
 #: templates/calendar-key.php:12

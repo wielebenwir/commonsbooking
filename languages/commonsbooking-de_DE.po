@@ -2796,10 +2796,6 @@ msgstr "Admin-Buchung von"
 msgid "Your E-Mail"
 msgstr "Deine E-Mail"
 
-#: templates/booking-single.php:144
-msgid "User data"
-msgstr "Nutzenden-Daten"
-
 #: templates/calendar-key.php:12
 msgid "Color legend"
 msgstr "Farblegende"
@@ -4093,3 +4089,7 @@ msgstr "Buchungsregeln: Kein Regeltyp festgelegt."
 #: src/Model/Booking.php:880
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
+
+#: templates/booking-single.php:144
+msgid "Your data"
+msgstr ""
