@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-03T16:41:32+00:00\n"
+"POT-Creation-Date: 2024-03-11T12:51:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: commonsbooking\n"
@@ -1886,11 +1886,11 @@ msgstr ""
 msgid "Email booking codes"
 msgstr ""
 
-#: src/View/Calendar.php:162
+#: src/View/Calendar.php:163
 msgid "No items found."
 msgstr ""
 
-#: src/View/Calendar.php:218
+#: src/View/Calendar.php:219
 #: src/Wordpress/CustomPostType/Booking.php:508
 #: src/Wordpress/CustomPostType/Booking.php:833
 #: src/Wordpress/CustomPostType/Booking.php:1025
@@ -1902,7 +1902,7 @@ msgstr ""
 msgid "Item"
 msgstr ""
 
-#: src/View/Calendar.php:219
+#: src/View/Calendar.php:220
 #: src/Wordpress/CustomPostType/Booking.php:509
 #: src/Wordpress/CustomPostType/Booking.php:827
 #: src/Wordpress/CustomPostType/Booking.php:1021
