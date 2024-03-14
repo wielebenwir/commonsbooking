@@ -14,7 +14,7 @@ class Booking {
 	 * is triggered in  Service\Scheduler initHooks()
 	 * @return void
 	 */
-	public static function cleanupBookings() {
+	private static function cleanupBookings() {
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'post_status' => 'unconfirmed',
@@ -35,6 +35,41 @@ class Booking {
 				wp_delete_post( $post->ID );
 			}
 		}
+	}
+
+	/**
+	 * Will delete all the expired timeframes where the user has set the checkbox to delete them
+	 * @return void
+	 */
+	private static function cleanupTimeframes() {
+
+		$timeframes = \CommonsBooking\Repository\Timeframe::get(
+			[],
+			[],
+			[
+				Timeframe::HOLIDAYS_ID,
+				Timeframe::BOOKABLE_ID,
+				Timeframe::REPAIR_ID
+			],
+			null,
+			true
+		);
+		if ( $timeframes) {
+			foreach ($timeframes as $timeframe){
+				if ($timeframe->getMeta('delete-expired-timeframe') == "on" &&  $timeframe->isPast()){
+					wp_delete_post($timeframe->ID);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Runs the cleanup jobs for bookings and timeframes. Triggered through cronjob.
+	 * @return void
+	 */
+	public static function cleanupJobs(){
+		static::cleanupBookings();
+		static::cleanupTimeframes();
 	}
 
 	/**
