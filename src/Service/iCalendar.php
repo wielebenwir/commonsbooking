@@ -11,7 +11,10 @@ use Eluceo\iCal\Domain\ValueObject\SingleDay;
 use Eluceo\iCal\Domain\ValueObject\TimeSpan;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\DateTime;
+use Eluceo\iCal\Domain\ValueObject\Timestamp;
+use Eluceo\iCal\Domain\Enum\EventStatus;
 use Eluceo\iCal\Domain\ValueObject\Location;
+use Eluceo\iCal\Domain\ValueObject\UniqueIdentifier;
 use Eluceo\iCal\Domain\Entity\Event;
 use Eluceo\iCal\Domain\ValueObject\Date;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
@@ -156,12 +159,22 @@ class iCalendar {
                 );
             }
 
+			$eventStatus = EventStatus::CONFIRMED();
+			if ($booking->isCancelled()) {
+				$eventStatus = EventStatus::CANCELLED();
+			}
+
+			// Create unique identifier
+
+			$uniqueIdentifier = new UniqueIdentifier($booking->post_name);
             // Create Event domain entity.
-            $event = new Event();
+            $event = new Event($uniqueIdentifier);
             $event
                 ->setSummary($eventTitle)
                 ->setDescription($eventDescription)
                 ->setOccurrence($occurrence)
+	            ->setStatus($eventStatus)
+	            ->touch(new Timestamp())
                 ;
 
 			//Add location to domain entity
