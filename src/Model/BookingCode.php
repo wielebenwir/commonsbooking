@@ -111,4 +111,5 @@ class BookingCode {
 		$this->code = $code;
 
 		return $this;
+    }
 }
