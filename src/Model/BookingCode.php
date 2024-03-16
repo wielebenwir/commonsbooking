@@ -95,44 +95,6 @@ class BookingCode {
 	}
 
 	/**
-	 * @return int
-	 */
-	public function getLocation(): int {
-		return $this->location;
-	}
-
-	/**
-	 * @deprecated will be deleted in the next version. This Type should be immutable, use constructor to create a new instance
-	 * @param mixed $location
-	 *
-	 * @return BookingCode
-	 */
-	public function setLocation( $location ): BookingCode {
-		$this->location = $location;
-
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTimeframe(): int {
-		return $this->timeframe;
-	}
-
-	/**
-	 * @deprecated will be deleted in the next version. This Type should be immutable, use constructor to create a new instance
-	 * @param mixed $timeframe
-	 *
-	 * @return BookingCode
-	 */
-	public function setTimeframe( $timeframe ): BookingCode {
-		$this->timeframe = $timeframe;
-
-		return $this;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getCode(): string {
