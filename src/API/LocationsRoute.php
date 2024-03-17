@@ -33,7 +33,7 @@ class LocationsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'assets/schemas/commons-api/commons-api.locations.schema.json';
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.locations.schema.json';
 
 	/**
 	 * @var Provider

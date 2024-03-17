@@ -8,10 +8,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2024-02-23 00:19+0100\n"
+"PO-Revision-Date: 2024-03-11 18:41+0100\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #. Plugin Name of the plugin
 #: commonsbooking.php
@@ -1491,7 +1491,7 @@ msgstr "Die Datei wird als .txt Datei durch Tabstopp getrennt exportiert, sodass
 msgid "Booking codes list"
 msgstr "Liste der Buchungscodes"
 
-#: src/View/Calendar.php:218
+#: src/View/Calendar.php:219
 #: src/Wordpress/CustomPostType/Booking.php:508
 #: src/Wordpress/CustomPostType/Booking.php:833
 #: src/Wordpress/CustomPostType/Booking.php:1025
@@ -1503,11 +1503,11 @@ msgstr "Liste der Buchungscodes"
 msgid "Item"
 msgstr "Artikel"
 
-#: src/View/Calendar.php:162
+#: src/View/Calendar.php:163
 msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
-#: src/View/Calendar.php:219
+#: src/View/Calendar.php:220
 #: src/Wordpress/CustomPostType/Booking.php:509
 #: src/Wordpress/CustomPostType/Booking.php:827
 #: src/Wordpress/CustomPostType/Booking.php:1021
@@ -2796,10 +2796,6 @@ msgstr "Admin-Buchung von"
 msgid "Your E-Mail"
 msgstr "Deine E-Mail"
 
-#: templates/booking-single.php:144
-msgid "User data"
-msgstr "Nutzenden-Daten"
-
 #: templates/calendar-key.php:12
 msgid "Color legend"
 msgstr "Farblegende"
@@ -4085,6 +4081,10 @@ msgstr "Das betrifft folgende Buchungen:"
 #: src/Service/BookingRuleApplied.php:240
 msgid "Booking rules: No rule type specified."
 msgstr "Buchungsregeln: Kein Regeltyp festgelegt."
+
+#: templates/booking-single.php:144
+msgid "Your data"
+msgstr "Deine Daten"
 
 #: src/Model/Booking.php:882
 #~ msgid "Unconfirmed"

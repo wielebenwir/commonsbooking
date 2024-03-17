@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.6  
 Tested up to: 6.4.1
-Stable Tag: 2.9
+Stable Tag: 2.9.1
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -78,6 +78,13 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.9.1 (17.03.2024)
+FIXED: Timeframe export was not working
+FIXED: GBFS Schema was inaccesible
+FIXED: API Routes not working when WP_DEBUG is enabled
+FIXED: cb_search map not working on some servers
+ENHANCED: Minor string changes
 
 ### 2.9 (23.02.2024)
 NEW: You can now schedule automated emails with booking codes to be sent to stations in custom intervals. (Thanks @printpagestopdf)

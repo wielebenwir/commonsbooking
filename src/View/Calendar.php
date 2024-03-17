@@ -101,6 +101,7 @@ class Calendar {
 				'post_type'      => 'cb_item',
 				'post_status'    => 'publish',
 				'order'          => 'ASC',
+                'orderby'        => 'post_title',
 				'posts_per_page' => - 1,
             )
         );
