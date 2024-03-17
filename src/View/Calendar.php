@@ -101,6 +101,7 @@ class Calendar {
 				'post_type'      => 'cb_item',
 				'post_status'    => 'publish',
 				'order'          => 'ASC',
+                'orderby'        => 'post_title',
 				'posts_per_page' => - 1,
             )
         );
@@ -131,7 +132,8 @@ class Calendar {
 				// Collect unique locations from timeframes
 				$locations = [];
 				foreach ( $timeframes as $timeframe ) {
-					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
+					// TODO #507
+					$locations[ $timeframe->getLocationID() ] = $timeframe->getLocation()->post_title;
 				}
 
 				// loop through location

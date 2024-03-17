@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.owners.schema.json",
+    "title": "Commons Api Owners Schema",
+    "description": "A schema for item owners of the Commons API",
+    "definitions": {
+        "owner": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" },
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "required": ["name", "id"]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "owners": {
+            "type": "array",
+            "descriptions": "An array with the item owners as values.",
+            "items": { "$ref": "#/definitions/owner" },
+            "uniqueItems": true
+        }
+    },
+    "required": ["locations"]
+}

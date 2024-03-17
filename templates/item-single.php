@@ -11,8 +11,6 @@
 
     do_action( 'commonsbooking_before_item-single' );
 
-	\CommonsBooking\View\Booking::renderError();
-
     // Single Item View
     if(array_key_exists('location', $templateData) && $templateData['location']) { // item selected, so we display the booking calendar
         echo '<h2>' . esc_html__( $bookThisItemText, 'commonsbooking') . '</h2>';

@@ -28,7 +28,8 @@
 		}    
 		&.error {
 		  background: var(--commonsbooking-color-error);
-		}
+            color: var(--commonsbooking-textcolor-light);
+        }
 	  }
 	 .cb-notice-small {
 		 display: block;
