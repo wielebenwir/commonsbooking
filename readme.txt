@@ -79,7 +79,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
-### 2.9.1 (12.03.2024)
+### 2.9.1 (17.03.2024)
 FIXED: Timeframe export was not working
 FIXED: GBFS Schema was inaccesible
 FIXED: API Routes not working when WP_DEBUG is enabled
