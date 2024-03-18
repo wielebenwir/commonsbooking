@@ -1,7 +1,8 @@
 name: Build zip from PR
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - 'master'
 
 jobs:
   zip-rc:
