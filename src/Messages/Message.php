@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Exception\MessageException;
 use WP_Error;
 use function commonsbooking_parse_template;
 
@@ -183,11 +184,17 @@ abstract class Message {
 		do_action( 'commonsbooking_mail_sent', $this->getAction(), $result );
 	}
 
-	abstract public function sendMessage();
+	/**
+	 * Will send the message, should only be called through @see self::triggerMail() to check if action is valid
+	 * @return void
+	 * @throws MessageException
+	 */
+	abstract protected function sendMessage(): void;
 
 	/**
 	 * Only send mail if action is valid
 	 * @return void
+	 * @throws MessageException
 	 */
 	public function triggerMail(): void {
 		if ( in_array( $this->getAction(), $this->getValidActions() ) ) {

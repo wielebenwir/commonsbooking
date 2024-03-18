@@ -45,7 +45,7 @@ class RestrictionMessage extends Message {
 	/**
 	 * Sends mails related to restriction type and state.
 	 */
-	public function sendMessage() {
+	protected function sendMessage(): void {
 		if ( $this->getRestriction()->isActive() ) {
 			if ( $this->getRestriction()->getType() == Restriction::TYPE_HINT ) {
 				// send hint mail

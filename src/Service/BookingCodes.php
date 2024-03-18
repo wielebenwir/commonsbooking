@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Service;
 
+use CommonsBooking\Exception\MessageException;
 use CommonsBooking\Messages\BookingCodesMessage;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -35,20 +36,21 @@ class BookingCodes {
 				if($params === false) continue;
 
 				$booking_msg = new BookingCodesMessage($post->ID, "codes",$params['from'],$params['to'] );
-				if(!$booking_msg->sendMessage()) {
+				try {
+					$booking_msg->triggerMail();
+					update_post_meta( $post->ID, \CommonsBooking\View\BookingCodes::NEXT_CRON_EMAIL, $params['nextCronEventTs'] );
+				}
+				catch( MessageException $e) {
 					set_transient(
 						BookingCode::ERROR_TYPE,
 						commonsbooking_sanitizeHTML(
 							__( "Error sending booking codes by E-mail for Timeframe ", 'commonsbooking' ) . get_the_title($post) . " ({$post->ID})"
+							. " " . $e->getMessage()
 						),
 						0
 					);
 				}
-				else {
-					update_post_meta( $post->ID, \CommonsBooking\View\BookingCodes::NEXT_CRON_EMAIL, $params['nextCronEventTs'] ); 
-				}
-
-			}	
+			}
 		}
 	}
 

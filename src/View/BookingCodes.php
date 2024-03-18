@@ -508,7 +508,7 @@ HTML;
         , 10, 2 );
 
         $booking_msg = new BookingCodesMessage($timeframeId, "codes",$tsFrom,$tsTo );
-        $booking_msg->sendMessage();
+        $booking_msg->triggerMail();
 
         //this should never happen
         wp_die(

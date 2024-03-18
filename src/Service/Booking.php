@@ -75,7 +75,7 @@ class Booking {
 		if ( count( $bookings ) ) {
 			foreach ( $bookings as $booking ) {
 				$reminderMessage = new BookingReminderMessage( $booking->getPost()->ID, 'pre-booking-reminder' );
-				$reminderMessage->sendMessage();
+				$reminderMessage->triggerMail();
 			}
 		}
 	}
@@ -114,7 +114,7 @@ class Booking {
 		if ( count( $bookings ) ) {
 			foreach ( $bookings as $booking ) {
 				$reminderMessage = new BookingReminderMessage( $booking->getPost()->ID, 'post-booking-notice' );
-				$reminderMessage->sendMessage();
+				$reminderMessage->triggerMail();
 			}
 		}
 	}

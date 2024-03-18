@@ -20,9 +20,8 @@ class BookingReminderMessage extends Message {
 
 	/**
 	 * Sends reminder message.
-	 * @throws \Exception
 	 */
-	public function sendMessage() {
+	protected function sendMessage(): void {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
 		$booking_user = get_userdata( $this->getPost()->post_author );

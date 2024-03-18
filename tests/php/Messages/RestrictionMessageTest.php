@@ -12,7 +12,7 @@ class RestrictionMessageTest extends Email_Test_Case {
 	const RESTRICION_REPAIR_NAME = 'Test Restriction (Repair)';
 
 	private $hintMessageText;
-	private $hintMessage;
+	private RestrictionMessage $hintMessage;
 	private $hintId;
 
 	private $repairMessageText;
@@ -35,7 +35,7 @@ class RestrictionMessageTest extends Email_Test_Case {
     }
 
     public function testSendMessage() {
-		$this->hintMessage->sendMessage();
+		$this->hintMessage->triggerMail();
 		$mailer = $this->getMockMailer();
 		$this->assertEmpty( $mailer->ErrorInfo );
 		$this->assertEquals( self::FROM_MAIL, $mailer->From );
@@ -58,7 +58,7 @@ class RestrictionMessageTest extends Email_Test_Case {
 			\CommonsBooking\Model\Restriction::TYPE_HINT,
 			true
 		);
-		$this->hintMessage->sendMessage();
+		$this->hintMessage->triggerMail();
 		$mailer = $this->getMockMailer();
 		$this->assertEmpty( $mailer->ErrorInfo );
 		$this->assertEquals( self::FROM_MAIL, $mailer->From );
@@ -73,7 +73,7 @@ class RestrictionMessageTest extends Email_Test_Case {
 	    $this->resetMailer();
 
 		//now test repair message
-	    $this->repairMessage->sendMessage();
+	    $this->repairMessage->triggerMail();
 		$mailer = $this->getMockMailer();
 		$this->assertEmpty( $mailer->ErrorInfo );
 		$this->assertEquals( self::FROM_MAIL, $mailer->From );
