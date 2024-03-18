@@ -38,5 +38,5 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: issue_number,
-            body: '[Download zip](http://cbzip.v2202011131270131895.happysrv.de/${{ github.event.number}}/commonsbooking.zip'
+            body: '[Download zip](http://cbzip.v2202011131270131895.happysrv.de/${{ github.event.number}}/commonsbooking.zip)'
           });
