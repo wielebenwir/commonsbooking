@@ -27,16 +27,19 @@ jobs:
          ignore: |
            !commonsbooking.zip
              
-     - name: Comment on PR
-       uses: actions/github-script@v6
+     - name: Find Comment
+       uses: peter-evans/find-comment@v3
+       id: fc
        with:
-         github-token: ${{ secrets.GITHUB_TOKEN }}
-         script: |
-          let fs = require('fs');
-          let issue_number = ${{ github.event.number }};
-          await github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: issue_number,
-            body: '[Download zip](http://cbzip.v2202011131270131895.happysrv.de/${{ github.event.number}}/commonsbooking.zip)'
-          });
+         issue-number: ${{ github.event.pull_request.number }}
+         comment-author: 'github-actions[bot]'
+         body-includes: Download zip
+
+     - name: Create or update comment
+       uses: peter-evans/create-or-update-comment@v4
+       with:
+         comment-id: ${{ steps.fc.outputs.comment-id }}
+         issue-number: ${{ github.event.pull_request.number }}
+         body: |
+           Download zip from [here]([https://cbzip.v2202011131270131895.happysrv.de/${{ github.event.number }}/commonsbooking.zip)
+         edit-mode: replace
