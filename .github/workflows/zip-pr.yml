@@ -21,6 +21,7 @@ jobs:
          server: ${{ secrets.CBZIPUPLOAD_HOST }}
          username: ${{ secrets.CBZIPUPLOAD_USER }}
          key: ${{ secrets.CBZIPUPLOAD_KEY }}
+         delete: true
          uploads: |
            ./ => ./cbzip/${{ github.event.number }}/
          ignore: |
