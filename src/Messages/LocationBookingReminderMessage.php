@@ -9,7 +9,7 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 
 /**
- * This message is sent out to locations to remind them of bookings starting soon.
+ * This message is sent out to locations to remind them of bookings starting soon or ending soon.
  * This is sent using a cron job.
  * @see \CommonsBooking\Service\Scheduler
  */
@@ -21,9 +21,9 @@ class LocationBookingReminderMessage extends Message {
 	protected $validActions = [ "booking-start-location-reminder", "booking-end-location-reminder" ];
 
 	/**
-	 * Prepares reminder message
+	 * Sends reminder message.
 	 */
-	public function prepareMessage() {
+	public function sendMessage() {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking      = Booking::getPostById( $this->getPostId() );
 		$booking_user = get_userdata( $this->getPost()->post_author );
@@ -71,13 +71,10 @@ class LocationBookingReminderMessage extends Message {
 				'user'     => $booking_user,
 			]
 		);
-	}
 
-	/**
-	 * Sends reminder message.
-	 * @throws \Exception
-	 */
-	public function sendMessage() {
-		$this->SendNotificationMail();
+		$sendMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $this );
+		if ( $sendMessage ) {
+			$this->sendNotificationMail();
+		}
 	}
 }

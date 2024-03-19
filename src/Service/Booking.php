@@ -134,6 +134,7 @@ class Booking {
 			return;
 		}
 
+		// current day is saved in options as 1, this is because 0 is an unset value. Subtract 1 to get the correct day
 		$daysBeforeStart = (int) Settings::getOption( 'commonsbooking_options_reminder', 'booking-'.$type.'-location-reminder-day' ) - 1;
 		$startDate = strtotime( '+' . $daysBeforeStart . ' days midnight' );
 
@@ -171,12 +172,7 @@ class Booking {
 		if ( count( $bookings ) ) {
 			foreach ( $bookings as $booking ) {
 				$reminderMessage = new LocationBookingReminderMessage( $booking->getPost()->ID, 'booking-'.$type.'-location-reminder' );
-				$reminderMessage->prepareMessage();
-				$reminderMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $reminderMessage );
-				
-				if($reminderMessage) {
-					$reminderMessage->triggerMail();
-				}
+				$reminderMessage->triggerMail();
 			}
 		}
 	}

@@ -24,7 +24,6 @@ class LocationBookingReminderMessageTest extends Email_Test_Case {
 
 		// Test start reminder
 		$message = new LocationBookingReminderMessage( $this->bookingId, 'booking-start-location-reminder' );
-		$message->prepareMessage();
 		$message->triggerMail();
 
 		$mailer = $this->getMockMailer();
@@ -57,7 +56,6 @@ class LocationBookingReminderMessageTest extends Email_Test_Case {
 
 		// Test end reminder
 		$message = new LocationBookingReminderMessage( $this->bookingId, 'booking-end-location-reminder' );
-		$message->prepareMessage();
 		$message->triggerMail();
 		$mailer = $this->getMockMailer();
 
