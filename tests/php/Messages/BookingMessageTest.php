@@ -23,7 +23,7 @@ class BookingMessageTest extends Email_Test_Case
 		Settings::updateOption('commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach', 'on');
 
 		$bookingMessage = new BookingMessage($this->bookingId, 'confirmed');
-		$bookingMessage->sendMessage();
+		$bookingMessage->triggerMail();
 		$mailer = $this->getMockMailer();
 		$this->assertEmpty($mailer->ErrorInfo);
 		$this->assertEquals(self::FROM_MAIL, $mailer->From);

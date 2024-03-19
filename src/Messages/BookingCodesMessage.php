@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Exception\BookingCodeException;
+use CommonsBooking\Exception\MessageException;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
@@ -36,20 +38,27 @@ class BookingCodesMessage extends Message {
         $this->tsTo=$tsTo;
     }
 
-    /**
-     * prepares Message and sends by E-mail
-     * 
-     * @return bool    true if message was sent, false otherwise. If the message is not sent, an error is raised.
-     */
-	public function sendMessage(): bool {
+	/**
+	 * prepares Message and sends by E-mail
+	 *
+	 * @return void - Exception is thrown on error
+	 * @throws MessageException|BookingCodeException
+	 */
+	protected function sendMessage(): void {
         $timeframeId=(int)$this->getPostId();
         $timeframe=new Timeframe($timeframeId);
 
-        if(!$this->prepareReceivers($timeframe)) return $this->raiseError( 
-                __( "Unable to send Emails. No location email(s) configured, check location", "commonsbooking" ));
+        if(!$this->prepareReceivers($timeframe)) {
+			$this->raiseError(
+		        __( "Unable to send Emails. No location email(s) configured, check location", "commonsbooking" ));
+			throw new MessageException( "Unable to send Emails. No location email(s) configured, check location" );
+        }
 
 		$bookingCodes = BookingCodes::getCodes($timeframeId, $this->tsFrom,$this->tsTo);
-        if(empty($bookingCodes)) return $this->raiseError( __( "Could not find booking codes for this timeframe/period", "commonsbooking" ));
+        if(empty($bookingCodes)) {
+			$this->raiseError( __( "Could not find booking codes for this timeframe/period", "commonsbooking" ));
+			throw new MessageException( "Could not find booking codes for this timeframe/period" );
+        }
         
         $bookingTable=apply_filters('commonsbooking_emailcodes_rendertable',
                                         \CommonsBooking\View\BookingCodes::renderBookingCodesTable( $bookingCodes ),
@@ -108,8 +117,6 @@ class BookingCodesMessage extends Message {
 		    $this->SendNotificationMail();
 
         remove_action( 'commonsbooking_mail_sent',array($this,'updateEmailSent'), 5 );
-        
-        return true;
     }
 
 	/**

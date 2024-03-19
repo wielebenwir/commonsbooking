@@ -19,7 +19,7 @@ class BookingReminderMessageTest extends Email_Test_Case
 	    Settings::updateOption('commonsbooking_options_reminder', 'pre-booking-reminder-body', $body);
 
 	    $bookingMessage = new BookingReminderMessage($this->bookingId, 'pre-booking-reminder');
-	    $bookingMessage->sendMessage();
+	    $bookingMessage->triggerMail();
 	    $mailer = $this->getMockMailer();
 	    $this->assertEmpty($mailer->ErrorInfo);
 	    $this->assertEquals(self::FROM_MAIL, $mailer->From);
