@@ -1,0 +1,45 @@
+name: Build zip from PR
+on:
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  zip-rc:
+    runs-on: ubuntu-20.04
+    steps:
+    
+     - uses: actions/checkout@v4
+
+     - uses: ./.github/actions/build-plugin
+       with:
+         generate_zip: 'true'
+
+     - name: Upload zip
+       uses: Dylan700/sftp-upload-action@latest
+       with:
+         server: v2202011131270131895.happysrv.de
+         username: ${{ secrets.CBZIPUPLOAD_USER }}
+         key: ${{ secrets.CBZIPUPLOAD_KEY }}
+         delete: true
+         uploads: |
+           ./ => ./cbzip/${{ github.event.number }}/
+         ignore: |
+           !commonsbooking.zip
+             
+     - name: Find Comment
+       uses: peter-evans/find-comment@v3
+       id: fc
+       with:
+         issue-number: ${{ github.event.pull_request.number }}
+         comment-author: 'github-actions[bot]'
+         body-includes: Download zip
+
+     - name: Create or update comment
+       uses: peter-evans/create-or-update-comment@v4
+       with:
+         comment-id: ${{ steps.fc.outputs.comment-id }}
+         issue-number: ${{ github.event.pull_request.number }}
+         body: |
+           Download zip from [here](https://cbzip.v2202011131270131895.happysrv.de/${{ github.event.number }}/commonsbooking.zip)
+         edit-mode: replace
