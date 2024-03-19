@@ -175,7 +175,7 @@ class Booking {
 				$reminderMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $reminderMessage );
 				
 				if($reminderMessage) {
-					$reminderMessage->sendMessage();
+					$reminderMessage->triggerMail();
 				}
 			}
 		}
