@@ -2,7 +2,10 @@
 
 namespace CommonsBooking\Tests\Service;
 
+use CommonsBooking\Messages\LocationBookingReminderMessage;
+use CommonsBooking\Messages\Message;
 use CommonsBooking\Service\Booking;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class BookingTest extends CustomPostTypeTest
@@ -27,6 +30,29 @@ class BookingTest extends CustomPostTypeTest
 	    $this->assertNull(get_post($this->bookingId));
     }
 
+	public function testSendMessagesForDay()
+	{
+		$mockMessage = $this->getMockBuilder(Message::class)
+			->disableOriginalConstructor()
+			->onlyMethods(['triggerMail','sendMessage'])
+			->getMock();
+
+		//create confirmed booking starting today
+		$bookingId = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+			'8:00 AM',
+			'12:00 PM',
+			'confirmed'
+		);
+		//expect the message to be triggered with the booking id set as field in the message
+		$mockMessage->expects($this->once())
+			->method('triggerMail');
+
+		Booking::sendMessagesForDay(strtotime( self::CURRENT_DATE ), true, $mockMessage);
+	}
 	protected function setUp(): void {
 		parent::setUp();
 		$this->firstTimeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
