@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\Messages;
 
 use CommonsBooking\Messages\Message;
+use CommonsBooking\Model\MessageRecipient;
 
 
 class MessageTest extends Email_Test_Case {
@@ -167,8 +168,9 @@ class MessageTest extends Email_Test_Case {
 		                      ->setConstructorArgs([$this->postID, self::ACTION])
 		                      ->getMock();
 		$prepareMail   = $this->getReflectionMethod();
+		//TODO: Mock MessageRecipient
 		$prepareMail->invokeArgs( $this->message, [
-			get_userdata( $this->userId ),
+			MessageRecipient::fromUser( get_userdata( $this->userId ) ),
 			self::BODY,
 			$subject,
 			$fromHeader,
@@ -199,8 +201,9 @@ class MessageTest extends Email_Test_Case {
 		                      ->setConstructorArgs([$this->postID, self::ACTION])
 		                      ->getMock();
 		$prepareMail   = $this->getReflectionMethod();
+		//TODO: Mock MessageRecipient
 		$prepareMail->invokeArgs( $this->message, [
-			get_userdata( $this->userId ),
+			MessageRecipient::fromUser( get_userdata( $this->userId ) ),
 			self::BODY,
 			self::SUBJECT,
 			self::FROM_HEADER,

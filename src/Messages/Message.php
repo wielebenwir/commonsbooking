@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Model\MessageRecipient;
 use WP_Error;
 use function commonsbooking_parse_template;
 
@@ -104,15 +105,16 @@ abstract class Message {
 	/**
 	 * Setup the email template, headers (BCC)
 	 *
-	 * @param \WP_User $recipientUser User-Object
+	 * @param MessageRecipient $recipientUser User-Object
 	 * @param string $template_body template string
 	 * @param string $template_subject template string
 	 * @param string $from_headers From-Header (From:xxx)
 	 * @param string|null $bcc_adresses comma separated string with e-mail adresses
 	 * @param object[] $objects objects used in parse template function
+	 * @param array|null $attachment
 	 */
 	protected function prepareMail(
-		\WP_User $recipientUser,
+		MessageRecipient $recipientUser,
 		string $template_body,
 		string $template_subject,
 		string $from_headers,
@@ -121,10 +123,10 @@ abstract class Message {
 		array $attachment = null
 	): void {
 		// Setup email: Recipient
-		$this->to = sprintf( '%s <%s>', $recipientUser->user_nicename, $recipientUser->user_email );
+		$this->to = sprintf( '%s <%s>', $recipientUser->getNiceName(), $recipientUser->getEmail() );
 
 		// WPML: Switch system language to user´s set lang https://wpml.org/documentation/support/sending-emails-with-wpml/
-		do_action( 'wpml_switch_language_for_email', $recipientUser->user_email );
+		do_action( 'wpml_switch_language_for_email', $recipientUser->getEmail() );
 
 		// check if templates are available
 		if ( ! $template_body or ! $template_subject ) {

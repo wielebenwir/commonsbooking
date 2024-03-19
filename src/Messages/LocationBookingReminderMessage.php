@@ -3,6 +3,7 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Settings\Settings;
@@ -55,10 +56,8 @@ class LocationBookingReminderMessage extends Message {
 			return;
 		}
 
-		$recipientUser = new \WP_User();
-		$recipientUser->user_nicename = $booking->getLocation()->post_title;
-		$recipientUser->user_email = array_shift($location_emails);
-		$bcc_adresses = implode(',',$location_emails);
+		$recipientUser = new MessageRecipient( array_shift( $location_emails ), $booking->getLocation()->post_title );
+		$bcc_adresses  = implode( ',', $location_emails );
 
 		$this->prepareMail(
 			$recipientUser,
@@ -70,7 +69,7 @@ class LocationBookingReminderMessage extends Message {
 				'booking'  => $booking,
 				'item'     => $booking->getItem(),
 				'location' => $booking->getLocation(),
-        'user'     => $booking_user,
+				'user'     => $booking_user,
 			]
 		);
 	}
