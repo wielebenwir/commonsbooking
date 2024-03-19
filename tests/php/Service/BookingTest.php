@@ -30,6 +30,11 @@ class BookingTest extends CustomPostTypeTest
 	    $this->assertNull(get_post($this->bookingId));
     }
 
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+
 	public function testSendMessagesForDay()
 	{
 		//create confirmed booking starting today
