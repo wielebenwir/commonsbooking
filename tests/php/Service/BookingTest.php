@@ -32,11 +32,6 @@ class BookingTest extends CustomPostTypeTest
 
 	public function testSendMessagesForDay()
 	{
-		$mockMessage = $this->getMockBuilder(Message::class)
-			->disableOriginalConstructor()
-			->onlyMethods(['triggerMail','sendMessage'])
-			->getMock();
-
 		//create confirmed booking starting today
 		$bookingId = $this->createBooking(
 			$this->locationId,
@@ -47,11 +42,17 @@ class BookingTest extends CustomPostTypeTest
 			'12:00 PM',
 			'confirmed'
 		);
-		//expect the message to be triggered with the booking id set as field in the message
-		$mockMessage->expects($this->once())
-			->method('triggerMail');
+		// Mock the Message class and its methods
+		$mockMessage = \Mockery::mock('overload:' . Message::class);
+		$mockMessage->shouldReceive('__construct')->times(1)->with($bookingId, \Mockery::any());
+		$mockMessage->shouldReceive('triggerMail')->once();
+		$mockMessage->shouldReceive('getAction')->andReturn('test');
 
 		Booking::sendMessagesForDay(strtotime( self::CURRENT_DATE ), true, $mockMessage);
+		$mockMessage->shouldHaveReceived('triggerMail');
+
+		//we need this so that PHPUnit won't complain, assertions are made in the mock
+		$this->assertTrue(true);
 	}
 	protected function setUp(): void {
 		parent::setUp();
@@ -69,5 +70,6 @@ class BookingTest extends CustomPostTypeTest
 
 	protected function tearDown(): void {
 		parent::tearDown();
+		\Mockery::close();
 	}
 }
