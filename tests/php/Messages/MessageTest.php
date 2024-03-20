@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\Messages;
 
 use CommonsBooking\Messages\Message;
+use CommonsBooking\Model\MessageRecipient;
 
 
 class MessageTest extends Email_Test_Case {
@@ -32,7 +33,7 @@ class MessageTest extends Email_Test_Case {
 	}
 
 	public function testGetTo() {
-		$this->assertEquals(self::RECIPIENT_NICENAME . ' <' . self::RECIPIENT_EMAIL . '>', $this->message->getTo());
+		$this->assertEquals( self::BOOKINGUSER_NICENAME . ' <' . self::BOOKINGUSER_EMAIL . '>', $this->message->getTo());
 		add_filter( 'commonsbooking_mail_to', function($to) {
 			return 'Filtered To';
 		});
@@ -116,8 +117,8 @@ class MessageTest extends Email_Test_Case {
 		$to = $mailer->getToAddresses();
 		$this->assertCount(1, $to);
 		$to = $to[0];
-		$this->assertEquals(self::RECIPIENT_EMAIL, $to[0]);
-		$this->assertEquals(self::RECIPIENT_NICENAME, $to[1]);
+		$this->assertEquals(self::BOOKINGUSER_EMAIL, $to[0]);
+		$this->assertEquals(self::BOOKINGUSER_NICENAME, $to[1]);
 
 	    $bcc = $mailer->getBccAddresses();
 	    $this->assertCount(1, $bcc);
@@ -167,8 +168,9 @@ class MessageTest extends Email_Test_Case {
 		                      ->setConstructorArgs([$this->postID, self::ACTION])
 		                      ->getMock();
 		$prepareMail   = $this->getReflectionMethod();
+		//TODO: Mock MessageRecipient
 		$prepareMail->invokeArgs( $this->message, [
-			get_userdata( $this->userId ),
+			MessageRecipient::fromUser( get_userdata( $this->userId ) ),
 			self::BODY,
 			$subject,
 			$fromHeader,
@@ -199,8 +201,9 @@ class MessageTest extends Email_Test_Case {
 		                      ->setConstructorArgs([$this->postID, self::ACTION])
 		                      ->getMock();
 		$prepareMail   = $this->getReflectionMethod();
+		//TODO: Mock MessageRecipient
 		$prepareMail->invokeArgs( $this->message, [
-			get_userdata( $this->userId ),
+			MessageRecipient::fromUser( get_userdata( $this->userId ) ),
 			self::BODY,
 			self::SUBJECT,
 			self::FROM_HEADER,
