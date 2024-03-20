@@ -39,7 +39,7 @@ class Booking {
 		}
 	}
 
-	public static function sendMessagesForDay ( int $tsDate, bool $onStartDate, Message $message ) {
+	private static function sendMessagesForDay ( int $tsDate, bool $onStartDate, Message $message ) {
 		if ( $onStartDate ) {
 			$bookings = \CommonsBooking\Repository\Booking::getBeginningBookingsByDate( $tsDate );
 		} else {
