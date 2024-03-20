@@ -934,8 +934,9 @@ Please let us know if any problems occurred.<br>
 					'id'      => 'booking-start-location-reminder-body',
 					'type'    => 'textarea',
 					'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi,</h2>
-<p>The booking period for the item {{item:post_title}} will start soon.<br>
+<p>The booking period for the item {{item:post_title}} at {{location:post_title}} will start soon.<br>
 The booking period: {{booking:formattedBookingDate}}<br><br>
+This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:user_email}} ). <br>
 
 {{booking:getEmailSignature}}', 'commonsbooking' ) ),
 				),
@@ -1002,8 +1003,10 @@ The booking period: {{booking:formattedBookingDate}}<br><br>
 					'id'      => 'booking-end-location-reminder-body',
 					'type'    => 'textarea',
 					'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi,</h2>
-<p>The booking period for the item {{item:post_title}} will end soon.<br>
+<p>The booking period for the item {{item:post_title}} at {{location:post_title}} will end soon.<br>
 The booking period: {{booking:formattedBookingDate}}<br><br>
+This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:user_email}} ). <br>
+
 
 {{booking:getEmailSignature}}', 'commonsbooking' ) ),
 				),
