@@ -150,6 +150,8 @@ class BookingCodesMessage extends Message {
 	/**
 	 * builds e-mail receivers by creating dummy WP_User objects from location emails
 	 *
+	 * TODO: Replace dummy \WP_User objects with @see MessageRecipient
+	 *
 	 * @param Timeframe $timeframe
 	 *
 	 * @return bool
