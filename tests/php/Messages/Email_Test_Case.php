@@ -58,7 +58,8 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 			'post_title'  => self::LOCATION_NAME,
 			'post_status' => 'publish',
 			'meta_input'  => [
-				COMMONSBOOKING_METABOX_PREFIX . 'location_email' => self::LOCATION_EMAIL
+				COMMONSBOOKING_METABOX_PREFIX . 'location_email' => self::LOCATION_EMAIL,
+				COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc' => 'on',
 			]
 		] );
 

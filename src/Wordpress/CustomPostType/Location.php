@@ -325,7 +325,7 @@ class Location extends CustomPostType {
 		// location email
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Location email', 'commonsbooking' ),
-			'desc'       => esc_html__( 'Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas.',
+			'desc'       => esc_html__( 'Email addresses of the owner of the station. Can be reminded about bookings / cancellations and will receive the booking codes (when configured in the timeframe). You can enter multiple addresses separated by commas.',
 				'commonsbooking' ),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
 			'type'       => 'text',
@@ -334,6 +334,15 @@ class Location extends CustomPostType {
 			),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 			// 'repeatable'      => true,
+		) );
+
+		// checkbox BCC bookings / cancellations to location email
+		$cmb->add_field( array(
+			'name'       => esc_html__( 'Send copy of bookings / cancellations to location email', 'commonsbooking' ),
+			'desc'       => esc_html__( 'If enabled, the location email will receive a copy of all booking and cancellation notifications.', 'commonsbooking' ),
+			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc',
+			'type'       => 'checkbox',
+			'default_cb' => 'cmb2_set_checkbox_default_for_new_post'
 		) );
 
 		// pickup description
