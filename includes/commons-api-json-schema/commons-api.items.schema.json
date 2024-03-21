@@ -1,0 +1,72 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.items.schema.json",
+    "title": "Commons Api Items Schema",
+    "description": "A schema for items that can be booked",
+    "definitions": {
+        "item": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "image": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "description": { "type": "string" },
+                "ownerId": { "type": "string" },
+                "projectId": { "type": "string" }
+            },
+            "required": ["id", "name", "url", "ownerId", "projectId"]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "items": {
+            "type": "array",
+            "description": "The items that can be booked on this site.",
+            "items": { "$ref": "#/definitions/item" },
+            "uniqueItems": true
+        },
+        "availability": {
+            "type": "array",
+            "items": {
+                "$ref": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.availability.schema.json#/definitions/availabilitySlot"
+            },
+            "uniqueItems": true
+        },
+        "locations": {
+            "type": "object",
+            "required": ["type", "features"],
+            "properties": {
+                "type": { "type": "string", "enum": ["FeatureCollection"] },
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.locations.schema.json#/definitions/location"
+                    },
+                    "uniqueItems": true
+                }
+            }
+        },
+        "owners": {
+            "type": "array",
+            "items": {
+                "$ref": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.owners.schema.json#/definitions/owner"
+            },
+            "uniqueItems": true
+        },
+        "projects": {
+            "type": "array",
+            "items": {
+                "$ref": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.projects.schema.json#/definitions/project"
+            },
+            "uniqueItems": true
+        }
+    },
+    "required": ["items"]
+}

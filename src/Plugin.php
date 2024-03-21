@@ -625,7 +625,7 @@ class Plugin {
 		// commons-search
 		wp_register_script(
 			'cb-commons-search',
-			$base . 'commons-search/commons-search.umd.cjs',
+			$base . 'commons-search/commons-search.umd.js',
 			['cb-leaflet', 'cb-leaflet-markercluster', 'cb-vue'],
 			$versions['@commonsbooking/frontend']
 		);

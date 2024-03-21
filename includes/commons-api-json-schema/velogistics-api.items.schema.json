@@ -1,0 +1,67 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "https://github.com/wielebenwir/commons-api/blob/master/velogistics-api.schema.json",
+    "title": "Velogistics Api",
+    "description": "Extension of the Commons Api for cargo bikes",
+    "allOf": [
+        {
+            "$ref": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.items.schema.json"
+        },
+        {
+            "type": "object",
+            "properties": {
+                "publishOnVelogistics": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "itemType": {
+                                "type": "string"
+                            },
+                            "features": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "isCommercial": {
+                                "type": "boolean"
+                            },
+                            "nrOfWheels": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "seatsForChildren": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "loadCapacity": {
+                                "type": "number"
+                            },
+                            "boxDimensions": {
+                                "type": "object",
+                                "properties": {
+                                    "length": { "type": "number" },
+                                    "width": { "type": "number" },
+                                    "height": { "type": "number" }
+                                }
+                            },
+                            "bikeDimensions": {
+                                "type": "object",
+                                "properties": {
+                                    "length": { "type": "number" },
+                                    "width": { "type": "number" },
+                                    "height": { "type": "number" }
+                                }
+                            }
+                        }
+                    },
+                    "uniqueItems": true
+                }
+            }
+        }
+    ]
+}

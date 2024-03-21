@@ -141,7 +141,7 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'user_email' ) ); ?></div>
 		</div>
 		<div class="cb-list-content cb-user cb-col-30-70">
-			<div><?php echo esc_html__( 'User data', 'commonsbooking' ); ?></div>
+			<div><?php echo esc_html__( 'Your data', 'commonsbooking' ); ?></div>
 			<div><a href="<?php echo get_edit_profile_url( $user->ID ); ?>"><?php echo esc_html( $user->first_name ) . ' ' . esc_html( $user->last_name ) . ' (' . esc_html( $user->user_login ) . ')'; ?> </a>
                 <br>
                 <?php echo commonsbooking_sanitizeHTML( $formatted_user_info ); ?>

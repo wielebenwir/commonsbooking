@@ -1,0 +1,34 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.projects.schema.json",
+    "title": "Commons Api Projects Schema",
+    "description": "A schema for projects of the Commons API",
+    "definitions": {
+        "project": {
+            "type": "object",
+            "description": "The project that organizes the lending of the items",
+            "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "description": { "type": "string" },
+                "image": { "type": "string", "format": "uri" },
+                "language": { "type": "string" }
+            },
+            "required": ["id", "name", "url"]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "projects": {
+            "type": "array",
+            "descriptions": "An array with the item projects as values.",
+            "items": { "$ref": "#/definitions/project" },
+            "uniqueItems": true
+        }
+    },
+    "required": ["projects"]
+}

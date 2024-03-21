@@ -28,7 +28,7 @@ class ItemsRoute extends BaseRoute {
 	 * Commons-API schema definition.
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.items.schema.json";
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "includes/commons-api-json-schema/commons-api.items.schema.json";
 
 	/**
 	 * Returns raw data collection.

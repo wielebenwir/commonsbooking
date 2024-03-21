@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         Commons Booking
- * Version:             2.9
+ * Version:             2.9.1
  * Requires at least:   5.2
  * Requires PHP:        7.4
  * Plugin URI:          https://commonsbooking.org
@@ -17,8 +17,8 @@
 
 use CommonsBooking\Plugin;
 
-defined('ABSPATH') or die("Thanks for visting");
-define('COMMONSBOOKING_VERSION', '2.9');
+defined('ABSPATH') or die("Thanks for visiting");
+define('COMMONSBOOKING_VERSION', '2.9.1');
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', wp_normalize_path( plugin_dir_path(__FILE__)));
