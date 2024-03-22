@@ -97,14 +97,14 @@ class Calendar {
 		$print .=  '</tr></thead><tbody>';
 
 		$items = get_posts(
-            array(
+			array(
 				'post_type'      => 'cb_item',
 				'post_status'    => 'publish',
-				'order'          => 'ASC',
-                'orderby'        => 'post_title',
+				'order'          => $atts['order'] ?? 'ASC',
+				'orderby'        => $atts['orderby'] ?? 'post_title',
 				'posts_per_page' => - 1,
-            )
-        );
+			)
+		);
 
 		$itemRowsHTML = '';
 
