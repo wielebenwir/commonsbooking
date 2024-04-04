@@ -25,12 +25,17 @@ class LocationTest extends CustomPostTypeTest {
 	}
 
 	public function testGetAdmins() {
-		$userArray[] = $this->subscriberId;
+		// Case: No admins
+		//$this->assertEquals([], $this->locationModel->getAdmins()); - Currently this function includes the post author
+		$this->assertEquals([self::USER_ID], $this->locationModel->getAdmins());
+
+		//Case: CB Manager as admin
+		$this->createCBManager();
 		$adminLocationModel = new Location(
-			$this->createLocation("TestLocation2",'publish', $userArray)
+			$this->createLocation("TestLocation2",'publish', [$this->cbManagerUserID])
 		);
-		//$this->assertEquals($userArray, $adminItemModel->getAdmins()); - This should work when postAuthor is not appended anymore
-		$this->assertContains($this->subscriberId, $adminLocationModel->getAdmins());
+		//$this->assertEquals([$this->cbManagerUserID], $adminLocationModel->getAdmins()); - Currently this function includes the post author
+		$this->assertEquals([$this->cbManagerUserID, self::USER_ID], $adminLocationModel->getAdmins());
 	}
 
 	/**

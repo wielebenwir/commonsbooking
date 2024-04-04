@@ -98,6 +98,25 @@ describe('load shortcodes', () => {
         //TODO: Check for presence of individual items (needs fixing of #1419)
     })
 
+    it ('can load cb_bookings shortcode', function () {
+        cy.visit('/?page_id=128')
+        cy.get('.cb-wrapper').contains('Please login');
+        cy.screenshot( 'cb-bookings-shortcode-loggedout' );
+
+        //login
+        cy.visit( '/wp-login.php' );
+        cy.wait( 1000 );
+        cy.get( '#user_login' ).type( Cypress.env( "wpSubscriber" ) );
+        cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
+        cy.get( '#wp-submit' ).click();
+
+        cy.visit('/?page_id=128')
+        //This depends on the booking-process.cy.js running before this test
+        cy.get('.js-item--infos > :nth-child(2)').contains('Status: canceled')
+        cy.screenshot( 'cb-bookings-shortcode' );
+
+    })
+
     function convertEnDashToHyphen(text) {
         const regex = /–/g; // U+2013 is used here
         const hyphenMinus = '-';

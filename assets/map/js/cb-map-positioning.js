@@ -7,8 +7,6 @@ var cb_map_positioning = {
         // set up the map
         map = new L.Map('cb_positioning_map');
 
-        const self = this;
-        
         // possible fix to avoid missing tiles, found on: https://stackoverflow.com/questions/38832273/leafletjs-not-loading-all-tiles-until-moving-map
         // also see https://github.com/wielebenwir/commonsbooking/issues/1060
         map.on("load", function() { setTimeout(() => {
@@ -70,6 +68,19 @@ var cb_map_positioning = {
             limit: 1
         }
 
+        const noAddressFound = function () {
+            // show error message if address couldn't be found
+            if(document.getElementById("_cb_location_street").value.length != 0)
+            {
+                jQuery( "#nogpsresult" ).show();
+            }
+            cb_map_positioning.init_map(
+                cb_map_positioning.defaults.latitude || 50.937531,
+                cb_map_positioning.defaults.longitude || 6.960279,
+                false
+            );
+        }
+
 
         jQuery.getJSON(url, params, function (data) {
 
@@ -80,19 +91,12 @@ var cb_map_positioning = {
                 cb_map_positioning.set_marker_position( data[0].lat, data[0].lon );
   
             } else {
-        
-                // show error message if adress couldnt be found
-                if(document.getElementById("_cb_location_street").value.length != 0)
-                {
-                    jQuery( "#nogpsresult" ).show();
-                }
-                cb_map_positioning.init_map(
-                    cb_map_positioning.defaults.latitude || 50.937531,
-                    cb_map_positioning.defaults.longitude || 6.960279,
-                    false
-                );
+                noAddressFound();
             }
 
+        })
+        .fail(function() {
+            noAddressFound();
         });
     },
 
