@@ -78,6 +78,44 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		}
 
 	}
+	public function testSanitizeOptions() {
+		//test the sanitization for an array of Items
+		$firstItem = $this->createItem("First Item",'publish');
+		$secondItem = $this->createItem("Second Item",'publish');
+		$thirdItem = $this->createItem("Third Item",'publish');
+		$itemArray = [$firstItem, $secondItem, $thirdItem];
+		$itemArray = array_map('get_post', $itemArray);
+		$expected = array(
+			$firstItem => "First Item",
+			$secondItem => "Second Item",
+			$thirdItem => "Third Item"
+		);
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions($itemArray));
+		//now add in one draft item
+		$draftItem = $this->createItem("Draft Item",'draft');
+		$itemArray[] = get_post($draftItem);
+		$expected[$draftItem] = "Draft Item [Draft]";
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions($itemArray));
+
+		//test the sanitization for terms
+		$term = wp_insert_term("test-item-term", \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category');
+		$term = get_term($term['term_id']);
+		$expected = array(
+			$term->term_id => "test-item-term (". $term->slug .")"
+		);
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions([$term]));
+
+		//other things should just be returned as a numbered array
+		$input = [1,2,3,4,5];
+		$expected = array(
+			0 => 1,
+			1 => 2,
+			2 => 3,
+			3 => 4,
+			4 => 5
+		);
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions($input));
+	}
 
 	public function testGetCMB2FieldsArrayFromCustomMetadata() {
 		$metaDataRaw = 'item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain"';

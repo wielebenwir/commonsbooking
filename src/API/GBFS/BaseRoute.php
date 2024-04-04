@@ -30,7 +30,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		$data                 = new stdClass();
 		$data->data           = new stdClass();
 		$data->data->stations = $this->getItemData( $request );
-		$data->last_updated   = current_time('timestamp');
+		$data->last_updated   = current_time('timestamp', true);
 		$data->ttl            = 60;
 		$data->version        = "2.3";
 

@@ -107,7 +107,7 @@ class Day {
 	 * Returns array with timeframes relevant for the Day.
 	 * This function will only be able to run once.
 	 * When on the first try, no Timeframes are found, it will set it to an empty array
-	 * @return array
+	 * @return \CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
 	public function getTimeframes(): array {
@@ -308,10 +308,9 @@ class Day {
 	 * @throws Exception
 	 */
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
-		if ($repetitionType) {
-			switch ( $repetitionType ) {
+		if ( $timeframe->getRepetition() ) {
+			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
 				case "w":
 					$dayOfWeek         = intval( $this->getDateObject()->format( 'w' ) );
@@ -348,6 +347,12 @@ class Day {
 					} else {
 						return false;
 					}
+
+				// Manual Rep
+				case "manual":
+					return in_array( $this->getDate(), $timeframe->getManualSelectionDates() );
+
+				// No Repetition
 				case "norep":
 					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ));
 					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));

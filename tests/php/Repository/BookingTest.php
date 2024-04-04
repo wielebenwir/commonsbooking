@@ -12,6 +12,8 @@ class BookingTest extends CustomPostTypeTest {
 
 	private $confirmedBookingEndingToday;
 
+	private $confirmedBookingStartingToday;
+
 	private $testItem;
 
 	private $testLocation;
@@ -20,7 +22,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	private $restriction2;
 
-	private $testBooking;
+	protected $testBooking;
 
 	/**
 	 * Test that we only get the booking, ending today.

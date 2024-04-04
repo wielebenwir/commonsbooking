@@ -3,6 +3,7 @@
 namespace CommonsBooking\View;
 
 use CommonsBooking\Map\MapAdmin;
+use CommonsBooking\Plugin;
 
 /**
  * The Map shortcode. Further logic is found in @see \CommonsBooking\Map\
@@ -14,8 +15,8 @@ class Map extends View {
 	 **/
 	public static function render_cb_map( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
 		//map
-		wp_enqueue_style( 'cb_map_leaflet_css', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet.css' );
-		wp_enqueue_script( 'cb_map_leaflet_js', COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet/leaflet-src.js' );
+		wp_enqueue_style( 'cb-leaflet');
+		wp_enqueue_script( 'cb-leaflet');
 
 		echo '<div id="cb_positioning_map" style="width: 100%; height: 400px;"></div>';
         wp_enqueue_script( 'cb-map-positioning_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-positioning.js' );

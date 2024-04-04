@@ -9,16 +9,9 @@ runs:
       with:
         php-version: '7.4'
 
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0.6' # Not needed with a .ruby-version file
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - run: gem install compass
-      shell: bash
-
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -30,7 +23,7 @@ runs:
         composer install --no-dev --prefer-dist --no-progress
       shell: bash
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version-file: '.nvmrc'
         cache: 'npm'
