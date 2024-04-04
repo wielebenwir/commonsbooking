@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-11T20:40:37+00:00\n"
+"POT-Creation-Date: 2024-04-04T13:22:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: commonsbooking\n"
@@ -2306,7 +2306,7 @@ msgstr ""
 msgid "Admin booking by"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/CustomPostType.php:313
+#: src/Wordpress/CustomPostType/CustomPostType.php:317
 msgid "Filter By Category "
 msgstr ""
 
