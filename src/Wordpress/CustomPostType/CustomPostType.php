@@ -123,6 +123,9 @@ abstract class CustomPostType {
 			}
 		}
 
+		//allows to programmatically add custom metaboxes
+		$metaDataFields = apply_filters('commonsbooking_custom_metadata', $metaDataFields);
+
 		if ( array_key_exists( $type, $metaDataFields ) ) {
 			return $metaDataFields[ $type ];
 		} else {
@@ -208,6 +211,7 @@ abstract class CustomPostType {
 				$columns[ $key ] = $key;
 			}
 		}
+
 		return $columns;
 	}
 
