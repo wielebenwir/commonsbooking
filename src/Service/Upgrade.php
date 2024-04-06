@@ -52,6 +52,35 @@ class Upgrade {
 	];
 
 	/**
+	 * The tasks that will be run upon every upgrade.
+	 * @return void
+	 */
+	private function runEveryUpgrade(): void {
+		// set Options default values (e.g. if there are new fields added)
+		AdminOptions::SetOptionsDefaultValues();
+
+		// flush rewrite rules
+		flush_rewrite_rules();
+
+		// Update Location Coordinates
+		self::updateLocationCoordinates();
+
+		// add role caps for custom post types
+		Plugin::addCPTRoleCaps();
+
+		// update version number in options
+		update_option( self::VERSION_OPTION, $this->currentVersion );
+
+		// Clear cache
+		try {
+			Plugin::clearCache();
+		} catch ( InvalidArgumentException $e ) {
+			// Do nothing
+		}
+
+	}
+
+	/**
 	 * Constructs new upgrade object for a version range
 	 *
 	 * @param string $previousVersion
@@ -76,29 +105,8 @@ class Upgrade {
 		// run upgrade tasks that are specific for version updates and should only run once
 		$this->runUpgradeTasks();
 
-		// the following tasks will be run on every update
+		$this->runEveryUpgrade();
 
-		// set Options default values (e.g. if there are new fields added)
-		AdminOptions::SetOptionsDefaultValues();
-
-		// flush rewrite rules
-		flush_rewrite_rules();
-
-		// Update Location Coordinates
-		self::updateLocationCoordinates();
-
-		// add role caps for custom post types
-		Plugin::addCPTRoleCaps();
-
-		// update version number in options
-		update_option( self::VERSION_OPTION, $this->currentVersion );
-
-		// Clear cache
-		try {
-			Plugin::clearCache();
-		} catch ( InvalidArgumentException $e ) {
-			// Do nothing
-		}
 		return true;
 	}
 
