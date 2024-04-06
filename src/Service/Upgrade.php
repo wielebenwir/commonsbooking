@@ -109,14 +109,27 @@ class Upgrade {
 	 */
 	public function runUpgradeTasks() : void {
 		// TODO let thirdparty plugins be able to hook into this part, then they don't have to add their own implementation of this class
-		foreach ( self::$upgradeTasks as $version => $tasks ) {
+		foreach ( $this->getTasksForUpgrade( self::$upgradeTasks ) as $task ) {
+			list($className, $methodName) = $task;
+			call_user_func( array( $className, $methodName ) );
+		}
+	}
+
+	/**
+	 * Returns an array of tasks that need to be run for this upgrade.
+	 *
+	 * @param $upgradeTasks - An associative array with the version as key and the tasks as value (array of tasks).
+	 *
+	 * @return array
+	 */
+	private function getTasksForUpgrade($upgradeTasks): array {
+		$tasks = [];
+		foreach ( $upgradeTasks as $version => $versionTasks ) {
 			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {
-				foreach ( $tasks as $task ) {
-					list($className, $methodName) = $task;
-					call_user_func( array( $className, $methodName ) );
-				}
+				array_merge( $upgradeTasks, $versionTasks);
 			}
 		}
+		return $tasks;
 	}
 
 	/**
