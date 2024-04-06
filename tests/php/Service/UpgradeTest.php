@@ -10,7 +10,8 @@ use SlopeIt\ClockMock\ClockMock;
 class UpgradeTest extends CustomPostTypeTest
 {
 
-    private static bool $functionHasRun = false;
+    private static bool $functionAHasRun = false;
+	private static bool $functionBHasRun = false;
 
     public function testFixBrokenICalTitle()
     {
@@ -51,7 +52,8 @@ class UpgradeTest extends CustomPostTypeTest
 	public function testRunUpgradeTasks($previousVersion, $currentVersion, $shouldRunFunction) {
 		$upgrade = new Upgrade($previousVersion, $currentVersion);
 		$upgrade->runUpgradeTasks();
-		$this->assertEquals($shouldRunFunction, self::$functionHasRun);
+		$this->assertEquals($shouldRunFunction, self::$functionAHasRun);
+		$this->assertEquals($shouldRunFunction, self::$functionBHasRun);
 	}
 
 	/**
@@ -73,9 +75,14 @@ class UpgradeTest extends CustomPostTypeTest
 		);
 	}
 
-	public static function fakeUpdateFunction()
+	public static function fakeUpdateFunctionA()
 	{
-		self::$functionHasRun = true;
+		self::$functionAHasRun = true;
+	}
+
+	public static function fakeUpdateFunctionB()
+	{
+		self::$functionBHasRun = true;
 	}
 
 	public function testRunTasksAfterUpdate() {
@@ -146,14 +153,16 @@ class UpgradeTest extends CustomPostTypeTest
 		$testTasks->setValue(
 			[
 				'2.5.2' => [
-					[self::class, 'fakeUpdateFunction' ]
+					[self::class, 'fakeUpdateFunctionA' ],
+					[self::class, 'fakeUpdateFunctionB' ]
 				]
 			]
 		);
 	}
 
 	protected function tearDown(): void {
-		self::$functionHasRun = false;
+		self::$functionAHasRun = false;
+		self::$functionBHasRun = false;
 		//resets version back to current version
 		update_option(\CommonsBooking\Service\Upgrade::VERSION_OPTION, COMMONSBOOKING_VERSION);
 		parent::tearDown();
