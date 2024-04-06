@@ -126,7 +126,7 @@ class Upgrade {
 		$tasks = [];
 		foreach ( $upgradeTasks as $version => $versionTasks ) {
 			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {
-				array_merge( $upgradeTasks, $versionTasks);
+				$tasks = array_merge( $tasks, $versionTasks);
 			}
 		}
 		return $tasks;
