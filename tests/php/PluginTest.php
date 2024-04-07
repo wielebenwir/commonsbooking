@@ -12,6 +12,7 @@ use SlopeIt\ClockMock\ClockMock;
 class PluginTest extends CustomPostTypeTest
 {
 
+	private $postIDs = [];
     public function testGetCustomPostTypes()
     {
 		$plugin = new Plugin();
@@ -25,6 +26,7 @@ class PluginTest extends CustomPostTypeTest
 		        'post_status' => 'publish'
 	        ]);
 	        $this->assertIsInt($post);
+	        $this->postIDs[] = $post;
 			//then, try to get a model from the post. Every declared CPT should have a model
 			$this->assertInstanceOf(CustomPost::class, CustomPostType::getModel($post));
 		}
@@ -35,6 +37,9 @@ class PluginTest extends CustomPostTypeTest
 	}
 
 	protected function tearDown(): void {
+		foreach ($this->postIDs as $postID){
+			wp_delete_post($postID, true);
+		}
 		parent::tearDown();
 	}
 }
