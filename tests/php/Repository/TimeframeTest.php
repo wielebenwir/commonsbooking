@@ -281,6 +281,45 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals(array_diff($this->allTimeframes, [$this->timeframeManualRepetition]), $postIds);
 	}
 
+	public function testGetAllPaginated() {
+		$response = Timeframe::getAllPaginated( 1, 10 );
+		$allTimeframes = $response->posts;
+		$this->assertEquals( count( $this->allTimeframes ), $response->totalPosts );
+		$this->assertEquals( 1, $response->totalPages );
+		$this->assertTrue( $response->done );
+		$this->assertEquals( count( $this->allTimeframes ), count( $allTimeframes ) );
+		$postIds = array_map( function ( $timeframe ) {
+			return $timeframe->ID;
+		}, $allTimeframes );
+		$this->assertEqualsCanonicalizing( $this->allTimeframes, $postIds );
+
+		//test pagination
+		$response = Timeframe::getAllPaginated( 1, 2 );
+		$timeframes = $response->posts;
+		$this->assertEquals( 2, count( $timeframes ) );
+		$this->assertEquals( count( $this->allTimeframes ), $response->totalPosts );
+		$this->assertEquals( 3, $response->totalPages );
+		$this->assertFalse( $response->done );
+		$allTimeframes = $timeframes;
+
+		$response = Timeframe::getAllPaginated( 2, 2 );
+		$timeframes = $response->posts;
+		$this->assertEquals( 2, count( $timeframes ) );
+		$this->assertFalse( $response->done );
+		$allTimeframes = array_merge( $allTimeframes, $timeframes );
+
+		//last page
+		$response = Timeframe::getAllPaginated( 3, 2 );
+		$timeframes = $response->posts;
+		$this->assertEquals( 1, count( $timeframes ) );
+		$this->assertTrue( $response->done );
+		$allTimeframes = array_merge( $allTimeframes, $timeframes );
+		$postIds = array_map( function ( $timeframe ) {
+			return $timeframe->ID;
+		}, $allTimeframes );
+		$this->assertEqualsCanonicalizing( $this->allTimeframes, $postIds );
+	}
+
 public function testGetPostIdsByType_oneLocationMultiItem() {
 	$otherItemId = $this->createItem( "Other Item" );
 	// Timeframe with enddate and two items
