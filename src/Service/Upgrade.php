@@ -219,8 +219,8 @@ class Upgrade {
 			//check if there are more tasks
 			if ( isset( $totalTasks[ $taskNo + 1 ] ) ) {
 				$response = [
-					'success' => true,
-					'error' => false,
+					'success'  => false,
+					'error'    => false,
 					'progress' => [
 						'task' => $taskNo + 1,
 						'page' => 1
