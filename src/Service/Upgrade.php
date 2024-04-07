@@ -20,6 +20,10 @@ use Psr\Cache\InvalidArgumentException;
 class Upgrade {
 
 	const VERSION_OPTION = COMMONSBOOKING_PLUGIN_SLUG . '_plugin_version';
+	/**
+	 * The number of posts that will be processed in each iteration of the AJAX upgrade tasks.
+	 */
+	const POSTS_PER_ITERATION = 10;
 	private string $previousVersion;
 	private string $currentVersion;
 
@@ -367,20 +371,19 @@ class Upgrade {
 	 * it get filtered out through our GET functions and not display holidays correctly.
 	 * Therefore, we iterate ovr our timeframes and remove the breaking postmeta.
 	 *
+	 * This function is labour intensive and runs in AJAX.
+	 *
+	 * @return int|bool
 	 * @since 2.8.5
-	 * @return void
 	 */
-	public static function removeBreakingPostmeta() {
-		$timeframes = \CommonsBooking\Repository\Timeframe::get(
-			[],
-			[],
-			[],
-			null,
-			true
-		);
-		foreach ($timeframes as $timeframe) {
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::removeIrrelevantPostmeta($timeframe);
+	public static function removeBreakingPostmeta( int $page = 1 ) {
+		$response   = \CommonsBooking\Repository\Timeframe::getAllPaginated( 1, self::POSTS_PER_ITERATION );
+		$timeframes = $response->posts;
+		foreach ( $timeframes as $timeframe ) {
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::removeIrrelevantPostmeta( $timeframe );
 		}
+
+		return $response->done ? true : $page + 1;
 	}
 
 	/**
@@ -418,20 +421,25 @@ class Upgrade {
 	 * sets the default value for multi selection to manual in all existing timeframes.
 	 * Multi selection for timeframes are available since 2.9 (estimated) - all timeframes created prior to this version need to have a value for selection
 	 *
+	 * This function is labour intensive and runs in AJAX.
+	 *
+	 * @param int $page
+	 *
+	 * @return int|bool
 	 * @since 2.9
-	 * @return void
-	 * @throws InvalidArgumentException
 	 */
-	public static function setMultiSelectTimeFrameDefault() {
-		$timeframes = \CommonsBooking\Repository\Timeframe::get( [],[],[], null, true );
-
-		foreach ($timeframes as $timeframe) {
-			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE ) ) ) {
-				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+	public static function setMultiSelectTimeFrameDefault( int $page = 1 ) {
+		$response   = \CommonsBooking\Repository\Timeframe::getAllPaginated( $page, self::POSTS_PER_ITERATION );
+		$timeframes = $response->posts;
+		foreach ( $timeframes as $timeframe ) {
+			if ( empty( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE ) ) ) {
+				update_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
 			}
-			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE ) ) ) {
-				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			if ( empty( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE ) ) ) {
+				update_post_meta( $timeframe->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
 			}
 		}
+
+		return $response->done ? true : $page + 1;
 	}
 }

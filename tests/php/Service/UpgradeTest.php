@@ -143,7 +143,7 @@ class UpgradeTest extends CustomPostTypeTest
 			strtotime('+1 week', strtotime(self::CURRENT_DATE)),
 			strtotime('+2 weeks', strtotime(self::CURRENT_DATE)),
 		);
-		Upgrade::removeBreakingPostmeta();
+		$this->assertTrue( Upgrade::removeBreakingPostmeta() );
 		$this->assertEmpty(get_post_meta($holiday, 'advance_booking_days', true));
 	}
 
@@ -151,7 +151,7 @@ class UpgradeTest extends CustomPostTypeTest
 		$tf = $this->createBookableTimeFrameIncludingCurrentDay();
 		update_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, '');
 		update_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, '');
-		Upgrade::setMultiSelectTimeFrameDefault();
+		$this->assertTrue ( Upgrade::setMultiSelectTimeFrameDefault() );
 		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, true));
 		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, true));
 	}
