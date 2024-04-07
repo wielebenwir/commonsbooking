@@ -42,7 +42,22 @@ class Upgrade {
 		'2.8.2' => [
 			[self::class, 'resetBrokenColorScheme'],
 			[self::class, 'fixBrokenICalTitle']
-		],
+		]
+	];
+
+	/**
+	 * This does the same as the above, but is for tasks that need a long time to run and might time out.
+	 * For this purpose we will use AJAX to run these tasks.
+	 *
+	 * The functions should be static, support being run multiple times,
+	 * take a page argument as the first parameter
+	 * and return an int with the last processed page and true if the task is done.
+	 *
+	 * ATTENTION: These tasks will be ignored upon new installations.
+	 *
+	 * @var array|array[]
+	 */
+	private static array $ajaxUpgradeTasks = [
 		'2.8.5' => [
 			[self::class, 'removeBreakingPostmeta']
 		],
@@ -98,8 +113,15 @@ class Upgrade {
 	 */
 	public function run(): bool {
 		// check if version has changed, or it is a new installation
-		if ( ! empty( $this->previousVersion ) && ( $this->previousVersion === $this->currentVersion ) ) {
-			return false;
+		if ( ! empty( $this->previousVersion ) ) {
+			// version has not changed
+			if ( $this->previousVersion === $this->currentVersion ) {
+				return false;
+			}
+			//upgrade needs to be run in AJAX
+			if ( $this->getTasksForUpgrade( self::$ajaxUpgradeTasks ) ) {
+				return false;
+			}
 		}
 
 		// run upgrade tasks that are specific for version updates and should only run once
@@ -151,6 +173,88 @@ class Upgrade {
 			COMMONSBOOKING_VERSION
 		);
 		$upgrade->run();
+	}
+
+	/**
+	 *
+	 * Test in @see \CommonsBooking\Tests\Service\UpgradeTest_AJAX
+	 *
+	 * @return void
+	 */
+	public static function runAJAXUpgradeTasks() : void {
+		//verify nonce
+		check_ajax_referer('cb_run_upgrade', 'nonce');
+		$progress = isset ( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$progress = commonsbooking_sanitizeArrayorString($progress);
+
+		$taskNo = $progress['task'] ?? 0;
+		$page = $progress['page'] ?? 1;
+
+		$upgrade           = new Upgrade(
+			esc_html( get_option( self::VERSION_OPTION ) ),
+			COMMONSBOOKING_VERSION
+		);
+		$totalTasks = $upgrade->getTasksForUpgrade( self::$ajaxUpgradeTasks );
+		$task              = $totalTasks[ $taskNo ];
+		list ( $className, $methodName ) = $task;
+		$page = call_user_func( array( $className, $methodName ), $page );
+		//previous task was successful
+		if ( $page === true ) {
+			//check if there are more tasks
+			if ( isset( $totalTasks[ $taskNo + 1 ] ) ) {
+				$response = [
+					'success' => true,
+					'error' => false,
+					'data' => [
+						'task' => $taskNo + 1,
+						'page' => 1
+					]
+				];
+			}
+			else {
+				//all tasks are done
+				$response = [
+					'success' => true,
+					'error' => false,
+					'data' => ''
+				];
+			}
+		}
+		else {
+			$response = [
+				'success' => false,
+				'error' => false,
+				'data' => [
+					'task' => $taskNo,
+					'page' => $page
+				]
+			];
+		}
+
+		//run other upgrade actions
+		if ( $response['success'] === true ) {
+			$upgrade->runUpgradeTasks();
+			$upgrade->runEveryUpgrade();
+		}
+
+		wp_send_json( $response );
+	}
+
+	/**
+	 * Will determine if the latest upgrade needs to run AJAX actions to complete.
+	 * @return bool true if AJAX actions are needed, false if not.
+	 */
+	public static function isAJAXUpgrade(): bool {
+		$previousVersion = esc_html( get_option( self::VERSION_OPTION ) );
+		$currentVersion = COMMONSBOOKING_VERSION;
+		if ( empty( $previousVersion ) | $previousVersion === $currentVersion ) {
+			return false;
+		}
+		$upgrade         = new Upgrade(
+			$previousVersion,
+			$currentVersion
+		);
+		return ! empty( $upgrade->getTasksForUpgrade( self::$ajaxUpgradeTasks ) );
 	}
 
 	/**
