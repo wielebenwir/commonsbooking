@@ -22,14 +22,16 @@ class UpgradeTest_AJAX extends \WP_Ajax_UnitTestCase {
 		$firstResponse = $this->_last_response;
 		$response = json_decode( $firstResponse );
 		$this->assertEquals( 2, self::$functionCounter );
-		$this->assertEquals( 2, $response->data->page );
-		$this->assertEquals( 0, $response->data->task );
+		$this->assertEquals( 2, $response->progress->page );
+		$this->assertEquals( 0, $response->progress->task );
 		$this->assertFalse( $response->success );
 
 		// Run the AJAX task again
 		$_POST[ 'data' ] = [
-			'task' => $response->data->task,
-			'page' => $response->data->page
+			'progress' => [
+				'task' => $response->progress->task,
+				'page' => $response->progress->page
+			]
 		];
 		try {
 			$this->_handleAjax( self::ACTION );
@@ -41,14 +43,16 @@ class UpgradeTest_AJAX extends \WP_Ajax_UnitTestCase {
 		$secondResponse = substr( $this->_last_response, strlen( $firstResponse ) );
 		$response = json_decode( $secondResponse );
 		$this->assertEquals( 3, self::$functionCounter );
-		$this->assertEquals( 3, $response->data->page );
-		$this->assertEquals( 0, $response->data->task );
+		$this->assertEquals( 3, $response->progress->page );
+		$this->assertEquals( 0, $response->progress->task );
 		$this->assertFalse( $response->success );
 
 		// Run the AJAX task, it should be successful now
 		$_POST[ 'data' ] = [
-			'task' => $response->data->task,
-			'page' => $response->data->page
+			'progress' => [
+				'task' => $response->progress->task,
+				'page' => $response->progress->page
+			]
 		];
 		try {
 			$this->_handleAjax( self::ACTION );

@@ -6,8 +6,10 @@
             $('#upgrade-in-progress').show();
             $('#run-upgrade').hide();
             let data = {
-            'task': 0,
-            'page:': 1,
+                'progress' : {
+                    'task': 0,
+                    'page': 1,
+                }
             };
 
             const runUpgrade = (data) => {

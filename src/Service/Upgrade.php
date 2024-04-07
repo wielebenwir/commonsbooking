@@ -198,12 +198,14 @@ class Upgrade {
 	public static function runAJAXUpgradeTasks() : void {
 		//verify nonce
 		check_ajax_referer('cb_run_upgrade', 'nonce');
-		$progress = isset ( $_POST['data'] ) ? (array) $_POST['data'] : array();
-		$progress = commonsbooking_sanitizeArrayorString($progress);
+		$data = isset ( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$data = commonsbooking_sanitizeArrayorString($data);
 
-		$taskNo = $progress['task'] ?? 0;
-		$page = $progress['page'] ?? 1;
+		$taskNo = $data['progress']['task'] ?? 0;
+		$page = $data['progress']['page'] ?? 1;
 
+		$taskNo = (int) $taskNo;
+		$page = (int) $page;
 		$upgrade           = new Upgrade(
 			esc_html( get_option( self::VERSION_OPTION ) ),
 			COMMONSBOOKING_VERSION
@@ -219,7 +221,7 @@ class Upgrade {
 				$response = [
 					'success' => true,
 					'error' => false,
-					'data' => [
+					'progress' => [
 						'task' => $taskNo + 1,
 						'page' => 1
 					]
@@ -230,7 +232,6 @@ class Upgrade {
 				$response = [
 					'success' => true,
 					'error' => false,
-					'data' => ''
 				];
 			}
 		}
@@ -238,7 +239,7 @@ class Upgrade {
 			$response = [
 				'success' => false,
 				'error' => false,
-				'data' => [
+				'progress' => [
 					'task' => $taskNo,
 					'page' => $page
 				]
@@ -387,7 +388,7 @@ class Upgrade {
 	 * @since 2.8.5
 	 */
 	public static function removeBreakingPostmeta( int $page = 1 ) {
-		$response   = \CommonsBooking\Repository\Timeframe::getAllPaginated( 1, self::POSTS_PER_ITERATION );
+		$response   = \CommonsBooking\Repository\Timeframe::getAllPaginated( $page, self::POSTS_PER_ITERATION );
 		$timeframes = $response->posts;
 		foreach ( $timeframes as $timeframe ) {
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::removeIrrelevantPostmeta( $timeframe );
