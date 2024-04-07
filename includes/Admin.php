@@ -56,6 +56,16 @@ function commonsbooking_admin() {
 		)
 	);
 
+	// \CommonsBooking\Service\Upgrade Ajax tasks
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_run_upgrade',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_run_upgrade' ),
+		)
+	);
+
 	// Additional info for CMB2 to handle booking rules
 	wp_add_inline_script(
 		'cb-scripts-admin',

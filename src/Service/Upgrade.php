@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Service;
 
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
@@ -124,6 +125,15 @@ class Upgrade {
 			}
 			//upgrade needs to be run in AJAX
 			if ( $this->getTasksForUpgrade( self::$ajaxUpgradeTasks ) ) {
+				new AdminMessage(
+					'<b>CommonsBooking:</b> ' .
+					__( 'There are some tasks that need to be run to complete the update process. <br> This needs to be done so that the plugin can function correctly.', 'commonsbooking' )
+					. '<br>'
+					. '<a href=' . esc_url( admin_url( 'admin.php?page=commonsbooking_options_migration' ) ) . '>'
+					. __( 'Click here to run the upgrade tasks.', 'commonsbooking' ) . '</a>',
+					'warning'
+				);
+
 				return false;
 			}
 		}
