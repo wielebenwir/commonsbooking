@@ -239,13 +239,18 @@
 (function($) {
     "use strict";
     $(function() {
+        if ($("#upgrade-fields").length == 0) {
+            $(".cmb2-id-upgrade-header").hide();
+        }
         $("#cmb2-metabox-migration #run-upgrade").on("click", function(event) {
             event.preventDefault();
             $("#upgrade-in-progress").show();
             $("#run-upgrade").hide();
             let data = {
-                task: 0,
-                "page:": 1
+                progress: {
+                    task: 0,
+                    page: 1
+                }
             };
             const runUpgrade = data => {
                 $.post(cb_ajax_run_upgrade.ajax_url, {

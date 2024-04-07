@@ -928,7 +928,6 @@ Please let us know if any problems occurred.<br>
 						'render_row_cb' => array( Migration::class, 'renderUpgradeForm' ),
 					)
 				],
-				'show_on_cb'  => array( \CommonsBooking\Service\Upgrade::class, 'isAJAXUpgrade' )
 			),
 			// migration cb1 -> cb2
 			'migration'         => array(

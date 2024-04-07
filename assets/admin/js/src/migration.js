@@ -1,6 +1,13 @@
 (function ($) {
     'use strict';
     $(function () {
+
+        //conditionally hide entire field group "upgrade" if render function has not been called
+        //(workaround for show_on_cb not working on field groups)
+        if ($('#upgrade-fields').length == 0) {
+            $('.cmb2-id-upgrade-header').hide();
+        }
+
         $('#cmb2-metabox-migration #run-upgrade').on('click', function (event) {
             event.preventDefault();
             $('#upgrade-in-progress').show();
