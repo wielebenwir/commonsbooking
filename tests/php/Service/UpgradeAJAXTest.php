@@ -7,7 +7,7 @@ use CommonsBooking\Service\Upgrade;
 /**
  * We need this as a separate testing class because we need to inherit the WP_Ajax_UnitTestCase
  */
-class UpgradeTest_AJAX extends \WP_Ajax_UnitTestCase {
+class Upgrade_AJAXTest extends \WP_Ajax_UnitTestCase {
 
 	const ACTION = 'cb_run_upgrade';
 	private static int $functionCounter = 1;
@@ -20,36 +20,34 @@ class UpgradeTest_AJAX extends \WP_Ajax_UnitTestCase {
 		}
 
 		$firstResponse = $this->_last_response;
-		$response = json_decode( $firstResponse );
+		$response      = json_decode( $firstResponse );
 		$this->assertEquals( 2, self::$functionCounter );
 		$this->assertEquals( 2, $response->progress->page );
 		$this->assertEquals( 0, $response->progress->task );
 		$this->assertFalse( $response->success );
 
 		// Run the AJAX task again
-		$_POST[ 'data' ] = [
+		$_POST['data'] = [
 			'progress' => [
 				'task' => $response->progress->task,
 				'page' => $response->progress->page
 			]
 		];
-		$this->fail("Check if reaches");
 		try {
 			$this->_handleAjax( self::ACTION );
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-
 		//trim the first response away, for some reason, the responses are just appended to each other
 		$secondResponse = substr( $this->_last_response, strlen( $firstResponse ) );
-		$response = json_decode( $secondResponse );
+		$response       = json_decode( $secondResponse );
 		$this->assertEquals( 3, self::$functionCounter );
 		$this->assertEquals( 3, $response->progress->page );
 		$this->assertEquals( 0, $response->progress->task );
 		$this->assertFalse( $response->success );
 
 		// Run the AJAX task, it should be successful now
-		$_POST[ 'data' ] = [
+		$_POST['data'] = [
 			'progress' => [
 				'task' => $response->progress->task,
 				'page' => $response->progress->page
@@ -62,7 +60,7 @@ class UpgradeTest_AJAX extends \WP_Ajax_UnitTestCase {
 		}
 
 		$finalResponse = substr( $this->_last_response, strlen( $firstResponse ) + strlen( $secondResponse ) );
-		$response = json_decode( $finalResponse );
+		$response      = json_decode( $finalResponse );
 		$this->assertEquals( 4, self::$functionCounter );
 		$this->assertTrue( $response->success );
 		$this->assertEquals( COMMONSBOOKING_VERSION, get_option( Upgrade::VERSION_OPTION ) );
@@ -76,23 +74,26 @@ class UpgradeTest_AJAX extends \WP_Ajax_UnitTestCase {
 	 * @return int|true
 	 * @throws \Exception
 	 */
-	public static function incrementerFunction(int $page = 1) {
-		if ( $page === 3) {
+	public static function incrementerFunction( int $page = 1 ) {
+		if ( $page === 3 ) {
 			// Task successful after 3 runs
-			++self::$functionCounter;
+			++ self::$functionCounter;
+
 			return true;
 		}
-		if ( $page != self::$functionCounter) {
-			throw new \Exception('Counter is not correct');
+		if ( $page != self::$functionCounter ) {
+			throw new \Exception( 'Counter is not correct' );
 		}
-		return ++self::$functionCounter;
+
+		return ++ self::$functionCounter;
 	}
+
 	public function set_up() {
 		parent::set_up();
-		update_option(Upgrade::VERSION_OPTION, '2.5.1');
-		add_action( 'wp_ajax_' . self::ACTION , array( \CommonsBooking\Service\Upgrade::class, 'runAJAXUpgradeTasks' ) );
+		update_option( Upgrade::VERSION_OPTION, '2.5.1' );
+		add_action( 'wp_ajax_' . self::ACTION, array( \CommonsBooking\Service\Upgrade::class, 'runAJAXUpgradeTasks' ) );
 		$_POST['_wpnonce'] = wp_create_nonce( self::ACTION );
-		$_POST[ 'data' ] = [
+		$_POST['data']     = [
 			'task' => '0',
 			'page' => '1'
 		];
