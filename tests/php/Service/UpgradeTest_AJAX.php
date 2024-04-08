@@ -33,6 +33,7 @@ class UpgradeTest_AJAX extends \WP_Ajax_UnitTestCase {
 				'page' => $response->progress->page
 			]
 		];
+		$this->fail("Check if reaches");
 		try {
 			$this->_handleAjax( self::ACTION );
 		} catch ( \WPAjaxDieContinueException $e ) {
