@@ -11,6 +11,7 @@ class Upgrade_AJAXTest extends \WP_Ajax_UnitTestCase {
 
 	const ACTION = 'cb_run_upgrade';
 	private static int $functionCounter = 1;
+	private static bool $secondTaskHasRun = false;
 
 	public function testRunAJAXUpgradeTasks() {
 		try {
@@ -46,6 +47,24 @@ class Upgrade_AJAXTest extends \WP_Ajax_UnitTestCase {
 		$this->assertEquals( 0, $response->progress->task );
 		$this->assertFalse( $response->success );
 
+		//first task is done, after this the second task should be run
+		$_POST['data'] = [
+			'progress' => [
+				'task' => $response->progress->task,
+				'page' => $response->progress->page
+			]
+		];
+		try {
+			$this->_handleAjax( self::ACTION );
+		} catch ( \WPAjaxDieContinueException $e ) {
+			// We expect this exception to be thrown
+		}
+		$thirdResponse = substr( $this->_last_response, strlen( $firstResponse ) + strlen( $secondResponse ) );
+		$response      = json_decode( $thirdResponse );
+		$this->assertFalse( $response->success );
+		$this->assertEquals( 4, self::$functionCounter );
+		$this->assertEquals( 1, $response->progress->task );
+
 		// Run the AJAX task, it should be successful now
 		$_POST['data'] = [
 			'progress' => [
@@ -59,9 +78,8 @@ class Upgrade_AJAXTest extends \WP_Ajax_UnitTestCase {
 			// We expect this exception to be thrown
 		}
 
-		$finalResponse = substr( $this->_last_response, strlen( $firstResponse ) + strlen( $secondResponse ) );
+		$finalResponse = substr( $this->_last_response, strlen( $firstResponse ) + strlen( $secondResponse ) + strlen( $thirdResponse ) );
 		$response      = json_decode( $finalResponse );
-		$this->assertEquals( 4, self::$functionCounter );
 		$this->assertTrue( $response->success );
 		$this->assertEquals( COMMONSBOOKING_VERSION, get_option( Upgrade::VERSION_OPTION ) );
 	}
@@ -88,6 +106,17 @@ class Upgrade_AJAXTest extends \WP_Ajax_UnitTestCase {
 		return ++ self::$functionCounter;
 	}
 
+	/**
+	 * This is only a dummy function to check if the subsequent task has run
+	 * @param int $page does nothing
+	 *
+	 * @return true
+	 */
+	public static function secondTaskFunction( int $page = 1 ) {
+		self::$secondTaskHasRun = true;
+		return true;
+	}
+
 	public function set_up() {
 		parent::set_up();
 		update_option( Upgrade::VERSION_OPTION, '2.5.1' );
@@ -106,13 +135,15 @@ class Upgrade_AJAXTest extends \WP_Ajax_UnitTestCase {
 		$ajaxTasks->setAccessible( true );
 		$ajaxTasks->setValue( [
 			'2.5.2' => [
-				[ self::class, 'incrementerFunction' ]
+				[ self::class, 'incrementerFunction' ],
+				[ self::class, 'secondTaskFunction' ]
 			]
 		] );
 	}
 
 	public function tear_down() {
 		self::$functionCounter = 1;
+		self::$secondTaskHasRun = false;
 		parent::tear_down();
 	}
 }
