@@ -14,7 +14,57 @@ use Exception;
  *
  * @since 2.9.0 Supports now single and multi selection of items and locations
  */
+
 class Timeframe extends PostRepository {
+
+	/**
+	 * The name of the custom table
+	 * This custom table is used alongside the data stored in the postmeta table
+	 * to allow for faster data access without relying on a lot of cached data.
+	 * The data between this table and the posts in the WP tables should be kept in sync.
+	 *
+	 * Do not change values in this table directly, change the values in the postmeta table instead and run the sync command.
+	 * @var string
+	 */
+	public static string $tableName = 'cb_timeframes';
+
+	public static function createTimeframeTable() {
+		global $wpdb;
+		global $cb_db_version;
+
+		$tableFullname  = $wpdb->prefix . self::$tableName;
+		$charsetCollate = $wpdb->get_charset_collate();
+
+	}
+
+	public static function syncTimeframeTable() {
+		//TODO
+	}
+
+	public static function createEntry( \CommonsBooking\Model\Timeframe $timeframe ) {
+		//TODO
+	}
+
+	public static function syncEntry( \CommonsBooking\Model\Timeframe $timeframe ) {
+		//TODO
+	}
+
+	public static function deleteEntry( \CommonsBooking\Model\Timeframe $timeframe ) {
+		//TODO
+	}
+
+	/**
+	 * Will get an array of timeframe IDs that the meta key applies to.
+	 * The metaQuery works just like the \WP_Query meta_query.
+	 *
+	 * @param array $metaQuery
+	 *
+	 * @return int[]
+	 */
+	public static function getByMeta( array $metaQuery ): array {
+		//TODO
+		return [];
+	}
 
 	/**
 	 * Returns only bookable timeframes.
