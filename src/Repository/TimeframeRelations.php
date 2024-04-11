@@ -79,11 +79,14 @@ class TimeframeRelations
 	 */
 	public static function getRelevantPosts( array $locations, array $items, int $dateTS, array $types ): array {
 		global $wpdb;
+
+        $DateTime = date('Y-m-d H:i:s', $dateTS);
+
 		$tableName = $wpdb->prefix . self::$tableName;
 		$locationString = implode(',', $locations);
 		$itemString = implode(',', $items);
 		$typeString = implode(',', $types);
-		$sql = $wpdb->prepare("SELECT DISTINCT timeframe FROM $tableName WHERE location IN (%s) AND item IN (%s) AND StartDateTime <= %d AND EndDateTime >= %d AND type IN (%s)", $locationString, $itemString, $dateTS, $dateTS, $typeString);
+		$sql = $wpdb->prepare("SELECT DISTINCT timeframe FROM $tableName WHERE location IN (%s) AND StartDateTime <= %s AND EndDateTime >= %s AND type IN (%s)", $locationString, $DateTime, $DateTime, $typeString);
 		$result = $wpdb->get_results($sql);
 		$ids = [];
 		foreach ($result as $row) {

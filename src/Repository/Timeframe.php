@@ -362,6 +362,7 @@ class Timeframe extends PostRepository {
 			if ( $dateTS != null ) {
 				$postIds = TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, $types );
 
+
 				//SAME AS BELOW, TODO DRY YOURSELF
 				// Get Posts
 				$posts = array_map(function($post) {
