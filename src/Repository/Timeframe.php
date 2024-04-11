@@ -462,7 +462,7 @@ class Timeframe extends PostRepository {
 		}
 		$multiLocationQuery   = "(
 					$joinAlias.meta_key = '" . $multiEntityKey . "' AND
-					(" . implode( ' OR ', $multiLocationQueries ) . ') 
+					(" . implode( ' OR ', $multiLocationQueries ) . ')
 				)';
 		$locationQueryParts[] = $multiLocationQuery;
 

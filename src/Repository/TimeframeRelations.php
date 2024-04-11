@@ -30,6 +30,16 @@ class TimeframeRelations
 
 	public static function insertTimeframe ( \CommonsBooking\Model\Timeframe $timeframe ) {
 		global $wpdb;
+
+        $endTimestamp = $timeframe->getEndDate();
+
+        if ($endTimestamp == 0 || empty($endTimestamp)) {
+            $EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
+        } else {
+            $EndDateTime = date('Y-m-d H:i:s', $endTimestamp);
+        }
+
+
 		if (self::hasTimeframe($timeframe)) {
 			return self::updateTimeframe($timeframe);
 		}
@@ -37,12 +47,11 @@ class TimeframeRelations
 		$locationIDs = $timeframe->getLocationIDs();
 		$itemIDs = $timeframe->getItemIDs();
 		$StartDateTime = date('Y-m-d H:i:s', $timeframe->getStartDate());
-		$EndDateTime = date('Y-m-d H:i:s', $timeframe->getEndDate());
 		$type = $timeframe->getType();
 
 		foreach ($locationIDs as $locationID) {
 			foreach ($itemIDs as $itemID) {
-				$sql = $wpdb->prepare("INSERT INTO $tableName (timeframe, location, item, StartDateTime, EndDateTime, type) VALUES (%d, %d, %d, %d, %d, %d)", $timeframe->ID, $locationID, $itemID, $StartDateTime, $EndDateTime, $type);
+				$sql = $wpdb->prepare("INSERT INTO $tableName (timeframe, location, item, StartDateTime, EndDateTime, type) VALUES (%d, %d, %d, %s, %s, %d)", $timeframe->ID, $locationID, $itemID, $StartDateTime, $EndDateTime, $type);
 				$wpdb->query($sql);
 			}
 		}
