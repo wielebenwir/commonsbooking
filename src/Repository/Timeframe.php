@@ -266,6 +266,55 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Will get all timeframes in the database to perform mass operations on (like migrations).
+	 *
+	 * @param int $page
+	 * @param int $perPage
+	 * @param array $customArgs
+	 *
+	 * @return \stdClass Properties: array posts, int totalPosts, int totalPages, bool done
+	 * @throws Exception
+	 */
+	public static function getAllPaginated(
+		int $page = 1,
+		int $perPage = 10,
+		array $customArgs = []
+	): \stdClass {
+		$args  = [
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
+			'paged'          => $page,
+			'posts_per_page' => $perPage,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+		];
+		$args  = array_merge( $args, $customArgs );
+		$query = new \WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+			self::castPostsToModels( $posts );
+
+			return (object) (
+			[
+				'posts'      => $posts,
+				'totalPosts' => $query->found_posts,
+				'totalPages' => $query->max_num_pages,
+				'done'       => $page >= $query->max_num_pages
+			]
+			);
+		}
+
+		return (object) (
+		[
+			'posts'      => [],
+			'totalPosts' => 0,
+			'totalPages' => 0,
+			'done'       => true
+		]
+		);
+	}
+
+	/**
 	 * Returns Post-IDs of timeframes by type(s), item(s), location(s)
 	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.

@@ -162,6 +162,7 @@ add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::cla
 if ( is_admin() ) {
 	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'migrateAll' ) );
 	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
+	add_action( 'wp_ajax_cb_run_upgrade', array( \CommonsBooking\Service\Upgrade::class, 'runAJAXUpgradeTasks' ) );
 }
 
 // Map ajax
