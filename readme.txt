@@ -1,11 +1,11 @@
 === CommonsBooking ===
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar, commoning, open-source, booking system, booking calendar
-Requires at least: 5.6  
-Tested up to: 6.4.1
-Stable Tag: 2.9
-Requires PHP: 7.4 or higher  
+Tags: booking, calendar, sharing, commoning, open-source
+Requires at least: 5.9  
+Tested up to: 6.5
+Stable Tag: 2.9.1
+Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -79,6 +79,13 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
+### 2.9.1 (17.03.2024)
+FIXED: Timeframe export was not working
+FIXED: GBFS Schema was inaccesible
+FIXED: API Routes not working when WP_DEBUG is enabled
+FIXED: cb_search map not working on some servers
+ENHANCED: Minor string changes
+
 ### 2.9 (23.02.2024)
 NEW: You can now schedule automated emails with booking codes to be sent to stations in custom intervals. (Thanks @printpagestopdf)
 NEW: You can now apply custom rules to restrict bookings to a certain limit (e.g. max. 3 bookings per user per month).
@@ -132,8 +139,6 @@ FIXED: User data loading in backend caused timeout on large instances
 ENHANCED: Improved booking validation
 ENHANCED: Default value for days that are bookable in advance set to 31
 
-
-
 ### 2.8 (27.04.2023)
 NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.
 NEW: Added ability to create bookings from the backend.
@@ -178,7 +183,6 @@ FIXED: Migration did not work properly
 ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
 ENHANCED: Unified filter hooks. New hook prefix is commonsbooking_xxx . Please check your custom filters.
 
-
 ### 2.7 (26.04.2022)
 NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section)
 NEW: Added action hooks to templates
@@ -192,7 +196,6 @@ FIXED: Set default advance booking days for existing timeframes to 365 days.
 FIXED: Some rendering issues with the calendar have been fixed.
 FIXED: Issues with already past bookings where cancellation was still possible
 FIXED: Wrong time displayed in cancellation messages
-
 
 ### 2.6.12 (27.02.2022)
 FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 

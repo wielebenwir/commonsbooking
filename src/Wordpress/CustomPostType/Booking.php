@@ -84,8 +84,13 @@ class Booking extends Timeframe {
         $post = $post ?? get_post( $post_id );
         $is_trash_action = str_contains(($_REQUEST ?? array())['action'] ?? '', 'trash');
 
-        // we check if it's a new created post
-        if ( ! empty( $_REQUEST ) && !$is_trash_action && $pagenow === 'post.php' && commonsbooking_isCurrentUserAdmin() ) {
+        // we check if it's a new created post - TODO: This is not the case
+        if (
+			! empty( $_REQUEST ) &&
+			! $is_trash_action &&
+			$pagenow === 'post.php' &&
+			( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() )
+		) {
             // set request variables
             $booking_user = isset( $_REQUEST['booking_user'] ) ? esc_html( $_REQUEST['booking_user'] ) : false;
 

@@ -73,7 +73,6 @@ class TimeframeExport {
 
 		$timeframeDataRows = self::getTimeframeData( $timeframes );
 
-		/** @var \CommonsBooking\Model\Timeframe $timeframePost */
 		foreach ( $timeframeDataRows as $timeframeDataRow ) {
 
 			if ( ! $headline ) {
@@ -96,11 +95,15 @@ class TimeframeExport {
 			// output the column values
 			$valueColumns = array_values( $timeframeDataRow );
 
+			//TODO #507
+			/** @var \CommonsBooking\Model\Timeframe $timeframeDataPost */
+			$timeframeDataPost = new \CommonsBooking\Model\Timeframe( $timeframeDataRow['ID'] );
+
 			// Get values for user defined input fields.
 			foreach ( $inputFields as $type => $fields ) {
 				// Location fields
 				if ( $type == 'location' ) {
-					$location = $timeframePost->getLocation();
+					$location = $timeframeDataPost->getLocation();
 					foreach ( $fields as $field ) {
 						$valueColumns[] = $location->getFieldValue( $field );
 					}
@@ -108,7 +111,7 @@ class TimeframeExport {
 
 				// Item fields
 				if ( $type == 'item' ) {
-					$item = $timeframePost->getItem();
+					$item = $timeframeDataPost->getItem();
 					foreach ( $fields as $field ) {
 						$valueColumns[] = $item->getFieldValue( $field );
 					}
@@ -116,7 +119,7 @@ class TimeframeExport {
 
 				// User fields
 				if ( $type == 'user' ) {
-					$user = $timeframePost->getUserData();
+					$user = $timeframeDataPost->getUserData();
 					foreach ( $fields as $field ) {
 						$valueColumns[] = $user->get( $field );
 					}
@@ -220,7 +223,7 @@ class TimeframeExport {
 	}
 
 	/**
-	 * Takes an array of timeframes and returns an array of timeframe data for the table export
+	 * Takes an array of timeframe posts and returns an array of timeframe assoc array data for the table export
 	 *
 	 * @param \CommonsBooking\Model\Timeframe[] $timeframePosts
 	 *

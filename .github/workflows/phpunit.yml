@@ -20,6 +20,7 @@ env:
 
 jobs:
   phpunit:
+    name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
 
     runs-on: ubuntu-20.04
 
@@ -29,6 +30,10 @@ jobs:
         php:
           - '7.4'
           - '8.2'
+        core:
+          - { name: 'latest', version: 'latest' }
+          - { name: 'minimum', version: '5.9' }
+          - { name: 'trunk', version: 'trunk' }
 
     steps:
     - uses: actions/checkout@v4
@@ -57,13 +62,13 @@ jobs:
     - name: Install dependencies (PHP 7.4)
       if: matrix.php == '7.4'
       run: |
-        bash bin/install-wp-tests.sh wordpress_test root root localhost latest
+        bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.core.version }}
         composer install --prefer-dist --no-progress
 
     - name: Install dependencies (other PHP versions)
       if: matrix.php != '7.4'
       run: |
-        bash bin/install-wp-tests.sh wordpress_test root root localhost latest
+        bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.core.version }}
         composer install --prefer-dist --no-progress --ignore-platform-reqs
 
     - name: Run test suite
