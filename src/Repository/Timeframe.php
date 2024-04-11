@@ -239,6 +239,7 @@ class Timeframe extends PostRepository {
             ];
 		}
 
+
 		$customId = md5( serialize( $types ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
