@@ -235,7 +235,7 @@ class Timeframe extends PostRepository {
 			$posts = [];
 
 			// Get Post-IDs considering types, items and locations
-			$postIds = self::getPostIdsByType( $types, $items, $locations );
+			$postIds = self::getPostIdsByType( $types, $items, $locations, $minTimestamp );
 
 			if ( $postIds && count( $postIds ) ) {
 				$posts = self::getPostsByBaseParams(
@@ -328,7 +328,7 @@ class Timeframe extends PostRepository {
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [], int $dateTS = null ) {
 
 		if ( ! count( $types ) ) {
 			$types = [
@@ -345,8 +345,6 @@ class Timeframe extends PostRepository {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			global $wpdb;
-			$table_postmeta = $wpdb->prefix . 'postmeta';
 
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
@@ -356,6 +354,26 @@ class Timeframe extends PostRepository {
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
+			//Dirty hooking ourselves our new function
+			if ( $dateTS != null ) {
+				$postIds = TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, $types );
+
+				//SAME AS BELOW, TODO DRY YOURSELF
+				// Get Posts
+				$posts = array_map(function($post) {
+					return get_post($post);
+				}, $postIds);
+
+				Plugin::setCacheItem(
+					$postIds,
+					Wordpress::getTags($posts, $items, $locations),
+					$customId
+				);
+				return $postIds;
+			}
+
+			global $wpdb;
+			$table_postmeta = $wpdb->prefix . 'postmeta';
 			$itemQuery = "";
 			if ( count( $items ) > 0 ) {
 				$itemQuery = self::getEntityQuery(

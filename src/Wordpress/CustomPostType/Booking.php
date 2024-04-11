@@ -6,6 +6,7 @@ use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
+use CommonsBooking\Repository\TimeframeRelations;
 use CommonsBooking\Service\BookingRuleApplied;
 use function wp_verify_nonce;
 
@@ -78,6 +79,10 @@ class Booking extends Timeframe {
      */
     public function saveAdminBookingFields( $post_id, $post = null, $update = null ) {
         global $pagenow;
+
+		//Save relations
+		$model = new \CommonsBooking\Model\Booking( $post_id );
+		TimeframeRelations::insertTimeframe( $model );
 
         $post = $post ?? get_post( $post_id );
         $is_trash_action = str_contains(($_REQUEST ?? array())['action'] ?? '', 'trash');

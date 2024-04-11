@@ -5,6 +5,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Repository\TimeframeRelations;
 use WP_Post;
 use Exception;
 use CommonsBooking\CB\CB;
@@ -869,6 +870,9 @@ class Timeframe extends CustomPostType {
 
 		// Validate timeframe
 		$isValid = self::validateTimeFrame( $timeframe );
+
+		// Save to Relations Table
+		TimeframeRelations::insertTimeframe( $timeframe );
 
 		if ( $isValid ) {
 
