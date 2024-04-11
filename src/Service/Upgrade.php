@@ -73,7 +73,7 @@ class Upgrade {
 			[ self::class, 'setMultiSelectTimeFrameDefault' ]
 		],
 		'2.10.0' => [
-			[ self::class, 'migrateTimeframeRelations ' ]
+			[ self::class, 'migrateTimeframeRelations' ]
 		]
 	];
 
