@@ -24,7 +24,7 @@ class Timeframe extends PostRepository {
 	 * to allow for faster data access without relying on a lot of cached data.
 	 * The data between this table and the posts in the WP tables should be kept in sync.
 	 *
-	 * Do not change values in this table directly, change the values in the postmeta table instead and run the sync command with the entry to update.
+	 * Do not change values in this table directly, change the values in the postmeta table instead and run the sync command.
 	 * @var string
 	 */
 	public static string $tableName = 'cb_timeframes';
@@ -38,59 +38,19 @@ class Timeframe extends PostRepository {
 
 	}
 
-	/**
-	 * This will sync the existing timeframe table with the defined postmeta for the timeframes.
-	 * This will NOT sync all the timeframes in the database but only create the missing columns if new postmeta was added.
-	 * @return void
-	 */
-	public static function syncTimeframeTableSchema() {
+	public static function syncTimeframeTable() {
 		//TODO
 	}
 
-	/**
-	 * Takes a timeframe object and updates the corresponding entry in the custom table.
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
-	 *
-	 * @return bool true if the entry was updated, false if something went wrong
-	 */
-	public static function createEntry( \CommonsBooking\Model\Timeframe $timeframe ): bool {
+	public static function createEntry( \CommonsBooking\Model\Timeframe $timeframe ) {
 		//TODO
-		if ( self::hasEntry( $timeframe ) ) {
-			return self::syncEntry( $timeframe );
-		}
-
-		//TODO
-		return true;
 	}
 
-	/**
-	 * This will update an existing entry in the custom table with the new data from the timeframe object.
-	 * Will not create a new entry if the entry does not exist.
-	 *
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
-	 *
-	 * @return bool true if the entry was updated, false if something went wrong
-	 */
-	public static function syncEntry( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-		if ( ! self::hasEntry( $timeframe ) ) {
-			return false;
-		}
+	public static function syncEntry( \CommonsBooking\Model\Timeframe $timeframe ) {
 		//TODO
-		return true;
 	}
 
-	/**
-	 * This will delete an entry from the custom table.
-	 * Will fail, if entry does not exist.
-	 *
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
-	 *
-	 * @return bool true if the entry was deleted, false if something went wrong
-	 */
 	public static function deleteEntry( \CommonsBooking\Model\Timeframe $timeframe ) {
-		if ( ! self::hasEntry( $timeframe ) ) {
-			return false;
-		}
 		//TODO
 	}
 
@@ -105,17 +65,6 @@ class Timeframe extends PostRepository {
 	public static function getByMeta( array $metaQuery ): array {
 		//TODO
 		return [];
-	}
-
-	/**
-	 * Will use the ID to check if the timeframe exists in the custom table.
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
-	 *
-	 * @return bool
-	 */
-	public static function hasEntry ( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-		//TODO
-		return false;
 	}
 
 	/**
