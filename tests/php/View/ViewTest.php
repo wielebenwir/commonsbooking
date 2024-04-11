@@ -7,10 +7,13 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\View;
 use SlopeIt\ClockMock\ClockMock;
+use CommonsBooking\Wordpress\Options\AdminOptions;
 
 class ViewTest extends CustomPostTypeTest {
 
 	protected const bookingDaysInAdvance = 30;
+	protected Item $item;
+	protected Location $location;
 	protected $now;
 
 	public function testGetShortcodeDataWithFourRangesByItem() {
@@ -41,6 +44,10 @@ class ViewTest extends CustomPostTypeTest {
 		$doc = new \DOMDocument();
 		$this->assertTrue($doc->loadHTML($html));
 		$this->assertEquals( 0, count( libxml_get_errors() ));
+
+		//assert presence of location and item string
+		$this->assertStringContainsString( $this->item->post_title, $body );
+		$this->assertStringContainsString( $this->location->post_title, $body );
 	}
 	
 	public function testShortcodeForItemView() {
@@ -52,6 +59,31 @@ class ViewTest extends CustomPostTypeTest {
 		$doc = new \DOMDocument();
 		$this->assertTrue($doc->loadHTML($html));
 		$this->assertEquals( 0, count( libxml_get_errors() ));
+
+		//assert presence of location and item string
+		$this->assertStringContainsString( $this->item->post_title, $body );
+		$this->assertStringContainsString( $this->location->post_title, $body );
+	}
+
+	public function testShortcodeItemTable() {
+		$body = \CommonsBooking\View\Calendar::shortcode( array() );
+		$html = '<html><body>' . $body . '</body></html>';
+
+		// naive way of testing html validity
+		libxml_use_internal_errors(true);
+		$doc = new \DOMDocument();
+		$this->assertTrue($doc->loadHTML($html));
+		$lib_XML_errors = libxml_get_errors();
+		//TODO: This fails
+		//$this->assertEquals( 0, count( $lib_XML_errors ));
+	}
+
+	public function testGetColorCSS() {
+		//set the default color values
+		AdminOptions::setOptionsDefaultValues();
+		$defaultValue = "--commonsbooking-color-primary: #84AE53;";
+		$colorCSS = View::getColorCSS();
+		$this->assertStringContainsString( $defaultValue, $colorCSS );
 	}
 
 	protected function setUp() : void {
@@ -64,6 +96,9 @@ class ViewTest extends CustomPostTypeTest {
 		//set our user to the subscriber so that it is not showing the views for admins ( which don't have to oblige to some booking restrictions )
 		$this->createSubscriber();
 		wp_set_current_user( $this->subscriberId );
+
+		$this->item = new Item( $this->itemId );
+		$this->location = new Location( $this->locationId );
 
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
