@@ -6,6 +6,7 @@ use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
+use CommonsBooking\Repository\TimeframeRelations;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\iCalendar;
 use Exception;
@@ -81,7 +82,11 @@ class Booking extends Timeframe {
 	public function savePost( $post_id, $post = null, $update = null ) {
 		global $pagenow;
 
-		$post            = $post ?? get_post( $post_id );
+	    //Save relations
+	    $model = new \CommonsBooking\Model\Booking( $post_id );
+	    TimeframeRelations::insertTimeframe( $model );
+
+	    $post            = $post ?? get_post( $post_id );
 		$is_trash_action = str_contains( ( $_REQUEST ?? array() )['action'] ?? '', 'trash' );
 
 		// we check if it's a new created post - TODO: This is not the case

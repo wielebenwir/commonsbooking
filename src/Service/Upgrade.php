@@ -7,6 +7,7 @@ use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Map;
+use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use Psr\Cache\InvalidArgumentException;
 
@@ -25,7 +26,8 @@ class Upgrade {
 	/**
 	 * The number of posts that will be processed in each iteration of the AJAX upgrade tasks.
 	 */
-	const POSTS_PER_ITERATION = 10;
+	//TODO: TEMPORARILY RAISED FOR TESTING PURPOSES
+	const POSTS_PER_ITERATION = 100;
 	private string $previousVersion;
 	private string $currentVersion;
 
@@ -75,8 +77,11 @@ class Upgrade {
 			[ self::class, 'removeBreakingPostmeta' ],
 		],
 		'2.9.0' => [
-			[ self::class, 'setMultiSelectTimeFrameDefault' ],
+			[ self::class, 'setMultiSelectTimeFrameDefault' ]
 		],
+		'2.10.3' => [
+			[ self::class, 'migrateTimeframeRelations ' ]
+		]
 	];
 
 	/**
@@ -98,7 +103,8 @@ class Upgrade {
 		Plugin::addCPTRoleCaps();
 
 		// update version number in options
-		update_option( self::VERSION_OPTION, $this->currentVersion );
+		//TODO: We removed this for testing purpose, READD
+		//update_option( self::VERSION_OPTION, $this->currentVersion );
 
 		// Clear cache
 		try {
@@ -560,5 +566,36 @@ class Upgrade {
 				update_post_meta( $map->ID, 'filtergroups', $newCategoryArray );
 			}
 		}
+	}
+
+	public static function migrateTimeframeRelations( int $page = 1 ) {
+		$allBookings   = \CommonsBooking\Repository\Timeframe::getPostIdsByType( [
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID]
+		);
+		asort( $allBookings );
+		$currentPage = array_slice( $allBookings, ( $page - 1 ) * self::POSTS_PER_ITERATION, self::POSTS_PER_ITERATION );
+		if ( empty($currentPage) ) {
+			//We are done
+			return true;
+		}
+		foreach ( $currentPage as $bookingId ) {
+			$post = get_post( $bookingId );
+			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
+				$model = new Timeframe( $post );
+			}
+			elseif ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Booking::getPostType() ) {
+				$model = new \CommonsBooking\Model\Booking( $post );
+			}
+			else {
+				continue;
+			}
+			\CommonsBooking\Repository\TimeframeRelations::insertTimeframe( $model );
+		}
+		return $page + 1;
 	}
 }
