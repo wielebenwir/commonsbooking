@@ -19,7 +19,7 @@ class TimeframeRelations
 			location bigint(20) unsigned NOT NULL,
 			item bigint(20) unsigned NOT NULL,
 			StartDateTime DATETIME NOT NULL,
-			EndDateTime DATETEIME NOT NULL,
+			EndDateTime DATETEIME NULL,
 			type tinyint(1) unsigned NOT NULL,
 			PRIMARY KEY (timeframe, location, item, type)
 		) $charsetCollate;";
@@ -34,7 +34,8 @@ class TimeframeRelations
         $endTimestamp = $timeframe->getEndDate();
 
         if ($endTimestamp == 0 || empty($endTimestamp)) {
-            $EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
+            //$EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
+	        $endDateTime = null;
         } else {
             $EndDateTime = date('Y-m-d H:i:s', $endTimestamp);
         }
@@ -86,8 +87,7 @@ class TimeframeRelations
 		$locationString = implode(',', $locations);
 		$itemString = implode(',', $items);
 		$typeString = implode(',', $types);
-		$sql = $wpdb->prepare("SELECT DISTINCT timeframe FROM $tableName WHERE location IN (%s) AND StartDateTime <= %s AND EndDateTime >= %s AND type IN (%s)", $locationString, $DateTime, $DateTime, $typeString);
-		$result = $wpdb->get_results($sql);
+		$sql = $wpdb->prepare("SELECT DISTINCT timeframe FROM $tableName WHERE location IN (%s) AND StartDateTime <= %s AND (EndDateTime >= %s OR EndDateTime IS NULL) AND type IN (%s)", $locationString, $DateTime, $DateTime, $typeString);		$result = $wpdb->get_results($sql);
 		$ids = [];
 		foreach ($result as $row) {
 			$ids[] = $row->timeframe;
