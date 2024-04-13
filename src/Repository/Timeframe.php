@@ -239,6 +239,7 @@ class Timeframe extends PostRepository {
             ];
 		}
 
+
 		$customId = md5( serialize( $types ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
@@ -256,6 +257,7 @@ class Timeframe extends PostRepository {
 			//Dirty hooking ourselves our new function
 			if ( $dateTS != null ) {
 				$postIds = TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, $types );
+
 
 				//SAME AS BELOW, TODO DRY YOURSELF
 				// Get Posts

@@ -18,8 +18,8 @@ class TimeframeRelations
 			timeframe bigint(20) unsigned NOT NULL,
 			location bigint(20) unsigned NOT NULL,
 			item bigint(20) unsigned NOT NULL,
-			startTS bigint(20) unsigned NOT NULL,
-			endTS bigint(20) unsigned NOT NULL,
+			StartDateTime DATETIME NOT NULL,
+			EndDateTime DATETEIME NOT NULL,
 			type tinyint(1) unsigned NOT NULL,
 			PRIMARY KEY (timeframe, location, item, type)
 		) $charsetCollate;";
@@ -30,19 +30,28 @@ class TimeframeRelations
 
 	public static function insertTimeframe ( \CommonsBooking\Model\Timeframe $timeframe ) {
 		global $wpdb;
+
+        $endTimestamp = $timeframe->getEndDate();
+
+        if ($endTimestamp == 0 || empty($endTimestamp)) {
+            $EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
+        } else {
+            $EndDateTime = date('Y-m-d H:i:s', $endTimestamp);
+        }
+
+
 		if (self::hasTimeframe($timeframe)) {
 			return self::updateTimeframe($timeframe);
 		}
 		$tableName = $wpdb->prefix . self::$tableName;
 		$locationIDs = $timeframe->getLocationIDs();
 		$itemIDs = $timeframe->getItemIDs();
-		$startTS = $timeframe->getStartDate();
-		$endTS = $timeframe->getEndDate();
+		$StartDateTime = date('Y-m-d H:i:s', $timeframe->getStartDate());
 		$type = $timeframe->getType();
 
 		foreach ($locationIDs as $locationID) {
 			foreach ($itemIDs as $itemID) {
-				$sql = $wpdb->prepare("INSERT INTO $tableName (timeframe, location, item, startTS, endTS, type) VALUES (%d, %d, %d, %d, %d, %d)", $timeframe->ID, $locationID, $itemID, $startTS, $endTS, $type);
+				$sql = $wpdb->prepare("INSERT INTO $tableName (timeframe, location, item, StartDateTime, EndDateTime, type) VALUES (%d, %d, %d, %s, %s, %d)", $timeframe->ID, $locationID, $itemID, $StartDateTime, $EndDateTime, $type);
 				$wpdb->query($sql);
 			}
 		}
@@ -70,11 +79,14 @@ class TimeframeRelations
 	 */
 	public static function getRelevantPosts( array $locations, array $items, int $dateTS, array $types ): array {
 		global $wpdb;
+
+        $DateTime = date('Y-m-d H:i:s', $dateTS);
+
 		$tableName = $wpdb->prefix . self::$tableName;
 		$locationString = implode(',', $locations);
 		$itemString = implode(',', $items);
 		$typeString = implode(',', $types);
-		$sql = $wpdb->prepare("SELECT DISTINCT timeframe FROM $tableName WHERE location IN (%s) AND item IN (%s) AND startTS <= %d AND endTS >= %d AND type IN (%s)", $locationString, $itemString, $dateTS, $dateTS, $typeString);
+		$sql = $wpdb->prepare("SELECT DISTINCT timeframe FROM $tableName WHERE location IN (%s) AND StartDateTime <= %s AND EndDateTime >= %s AND type IN (%s)", $locationString, $DateTime, $DateTime, $typeString);
 		$result = $wpdb->get_results($sql);
 		$ids = [];
 		foreach ($result as $row) {
