@@ -19,7 +19,7 @@ class TimeframeRelations
 			location bigint(20) unsigned NOT NULL,
 			item bigint(20) unsigned NOT NULL,
 			StartDateTime DATETIME NOT NULL,
-			EndDateTime DATETEIME NULL,
+			EndDateTime DATETEIME,
 			tftype tinyint(1) unsigned NOT NULL,
 			PRIMARY KEY (timeframe, location, item, type)
 		) $charsetCollate;";
