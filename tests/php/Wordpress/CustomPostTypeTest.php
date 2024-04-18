@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\Wordpress;
 
 use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Repository\TimeframeRelations;
 use CommonsBooking\Tests\BaseTestCase;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -510,6 +511,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 
 	  $this->setUpBookingCodesTable();
+	  TimeframeRelations::initTable();
 
 		// Create location
 		$this->locationId = self::createLocation('Testlocation', 'publish');

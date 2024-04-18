@@ -135,7 +135,7 @@ class Timeframe extends PostRepository {
 
 			$time = hrtime(true);
 			// Get Post-IDs considering types, items and locations
-			$postIds = self::getPostIdsByType( $types, $items, $locations );
+			$postIds = self::getPostIdsByType( $types, $items, $locations, $minTimestamp );
 
 			if (class_exists('WP_CLI')) {
 				$elapsed = hrtime(true) - $time;
@@ -307,6 +307,55 @@ class Timeframe extends PostRepository {
 
 
 	/**
+	 * Will get all timeframes in the database to perform mass operations on (like migrations).
+	 *
+	 * @param int $page
+	 * @param int $perPage
+	 * @param array $customArgs
+	 *
+	 * @return \stdClass Properties: array posts, int totalPosts, int totalPages, bool done
+	 * @throws Exception
+	 */
+	public static function getAllPaginated(
+		int $page = 1,
+		int $perPage = 10,
+		array $customArgs = []
+	): \stdClass {
+		$args  = [
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
+			'paged'          => $page,
+			'posts_per_page' => $perPage,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+		];
+		$args  = array_merge( $args, $customArgs );
+		$query = new \WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+			self::castPostsToModels( $posts );
+
+			return (object) (
+			[
+				'posts'      => $posts,
+				'totalPosts' => $query->found_posts,
+				'totalPages' => $query->max_num_pages,
+				'done'       => $page >= $query->max_num_pages
+			]
+			);
+		}
+
+		return (object) (
+		[
+			'posts'      => [],
+			'totalPosts' => 0,
+			'totalPages' => 0,
+			'done'       => true
+		]
+		);
+	}
+
+	/**
 	 * Returns Post-IDs of timeframes by type(s), item(s), location(s)
 	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.
@@ -320,7 +369,7 @@ class Timeframe extends PostRepository {
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [], int $dateTS = null ) {
 
 		if ( ! count( $types ) ) {
 			$types = [
@@ -332,13 +381,12 @@ class Timeframe extends PostRepository {
             ];
 		}
 
+
 		$customId = md5( serialize( $types ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			global $wpdb;
-			$table_postmeta = $wpdb->prefix . 'postmeta';
 
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
@@ -348,6 +396,27 @@ class Timeframe extends PostRepository {
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
+			//Dirty hooking ourselves our new function
+			if ( $dateTS != null ) {
+				$postIds = TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, $types );
+
+
+				//SAME AS BELOW, TODO DRY YOURSELF
+				// Get Posts
+				$posts = array_map(function($post) {
+					return get_post($post);
+				}, $postIds);
+
+				Plugin::setCacheItem(
+					$postIds,
+					Wordpress::getTags($posts, $items, $locations),
+					$customId
+				);
+				return $postIds;
+			}
+
+			global $wpdb;
+			$table_postmeta = $wpdb->prefix . 'postmeta';
 			$itemQuery = "";
 			if ( count( $items ) > 0 ) {
 				$itemQuery = self::getEntityQuery(
