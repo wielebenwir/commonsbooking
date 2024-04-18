@@ -35,7 +35,7 @@ class TimeframeRelations
 
         if ($endTimestamp == 0 || empty($endTimestamp)) {
             //$EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
-	        $endDateTime = null;
+	        $EndDateTime = null;
         } else {
             $EndDateTime = date('Y-m-d H:i:s', $endTimestamp);
         }
@@ -87,6 +87,9 @@ class TimeframeRelations
 		$querystring = '';
 		if ( ! empty ( $locations ) ) {
 			$locationString = implode( ',', $locations );
+			if ( strpos( $locationString, '39082') ) {
+				$hallo = 1;
+			}
 			$querystring .= "location IN ($locationString)";
 		}
 		if ( ! empty ( $items ) ) {
@@ -107,7 +110,7 @@ class TimeframeRelations
 			if ( ! empty ( $querystring ) ) {
 				$querystring .= ' AND ';
 			}
-			$querystring .= "StartDateTime <= $DateTime AND (EndDateTime >= $DateTime OR EndDateTime IS NULL)";
+			$querystring .= "StartDateTime <= '$DateTime' AND (EndDateTime >= '$DateTime' OR EndDateTime IS NULL)";
 		}
 		$sql = "SELECT DISTINCT timeframe FROM $tableName WHERE $querystring";
 
