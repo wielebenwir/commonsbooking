@@ -10,6 +10,7 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\AsyncJob;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
@@ -803,7 +804,7 @@ class Plugin {
 		if ( ! in_array( $post->post_status, $ignoredStates ) || $update ) {
 			$tags   = Wordpress::getRelatedPostIds( $post_id );
 			$tags[] = 'misc';
-			self::clearCache( $tags );
+			new AsyncJob( array( self::class, 'clearCache' ), [ $tags ] );
 		}
 	}
 
