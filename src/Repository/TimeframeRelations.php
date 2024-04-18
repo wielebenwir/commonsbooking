@@ -21,7 +21,7 @@ class TimeframeRelations
 			StartDateTime DATETIME NOT NULL,
 			EndDateTime DATETEIME,
 			tftype tinyint(1) unsigned NOT NULL,
-			PRIMARY KEY (timeframe, location, item, type)
+			PRIMARY KEY (timeframe, location, item, tftype)
 		) $charsetCollate;";
 
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
