@@ -569,7 +569,7 @@ class Upgrade {
 	}
 
 	public static function migrateTimeframeRelations( int $page = 1 ) {
-		if ($page = 1 ) {
+		if ($page == 1 ) {
 			TimeframeRelations::initTable();
 		}
 		$allBookings   = \CommonsBooking\Repository\Timeframe::getPostIdsByType( [
