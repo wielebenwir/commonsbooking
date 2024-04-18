@@ -105,6 +105,11 @@ class Upgrade {
 		// update version number in options
 		//TODO: We removed this for testing purpose, READD
 		//update_option( self::VERSION_OPTION, $this->currentVersion );
+		//only do in PHPUNIT
+		if ( defined( 'PHPUNIT_COMMONSBOOKING_TESTING' ) ) {
+			update_option( self::VERSION_OPTION, $this->currentVersion );
+		}
+
 
 		// Clear cache
 		try {
