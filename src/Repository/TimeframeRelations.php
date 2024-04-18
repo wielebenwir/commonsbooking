@@ -81,13 +81,39 @@ class TimeframeRelations
 	public static function getRelevantPosts( array $locations, array $items, int $dateTS, array $types ): array {
 		global $wpdb;
 
-        $DateTime = date('Y-m-d H:i:s', $dateTS);
+		$DateTime = date( 'Y-m-d H:i:s', $dateTS );
 
-		$tableName = $wpdb->prefix . self::$tableName;
-		$locationString = implode(',', $locations);
-		$itemString = implode(',', $items);
-		$typeString = implode(',', $types);
-		$sql = $wpdb->prepare("SELECT DISTINCT timeframe FROM $tableName WHERE location IN (%s) AND StartDateTime <= %s AND (EndDateTime >= %s OR EndDateTime IS NULL) AND type IN (%s)", $locationString, $DateTime, $DateTime, $typeString);		$result = $wpdb->get_results($sql);
+		$tableName   = $wpdb->prefix . self::$tableName;
+		$querystring = '';
+		if ( ! empty ( $locations ) ) {
+			$locationString = implode( ',', $locations );
+			$querystring .= "location IN ($locationString)";
+		}
+		if ( ! empty ( $items ) ) {
+			$itemString = implode( ',', $items );
+			if ( ! empty ( $querystring ) ) {
+				$querystring .= ' AND ';
+			}
+			$querystring .= "item IN ($itemString)";
+		}
+		if ( ! empty ( $types ) ) {
+			$typeString = implode( ',', $types );
+			if ( ! empty ( $querystring ) ) {
+				$querystring .= ' AND ';
+			}
+			$querystring .= "type IN ($typeString)";
+		}
+		if ( $dateTS ) {
+			if ( ! empty ( $querystring ) ) {
+				$querystring .= ' AND ';
+			}
+			$querystring .= "StartDateTime <= $DateTime AND (EndDateTime >= $DateTime OR EndDateTime IS NULL)";
+		}
+		$sql = "SELECT DISTINCT timeframe FROM $tableName WHERE $querystring";
+
+
+		$sql = $wpdb->prepare( $sql );
+		$result = $wpdb->get_results($sql);
 		$ids = [];
 		foreach ($result as $row) {
 			$ids[] = $row->timeframe;
