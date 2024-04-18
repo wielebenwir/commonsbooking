@@ -35,7 +35,7 @@ class TimeframeRelations
 
         if ($endTimestamp == 0 || empty($endTimestamp)) {
             //$EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
-	        $EndDateTime = null;
+	        $EndDateTime = 'NULL';
         } else {
             $EndDateTime = date('Y-m-d H:i:s', $endTimestamp);
         }
@@ -53,6 +53,9 @@ class TimeframeRelations
 		foreach ($locationIDs as $locationID) {
 			foreach ($itemIDs as $itemID) {
 				$sql = $wpdb->prepare("INSERT INTO $tableName (timeframe, location, item, StartDateTime, EndDateTime, tftype) VALUES (%d, %d, %d, %s, %s, %d)", $timeframe->ID, $locationID, $itemID, $StartDateTime, $EndDateTime, $type);
+				$wpdb->query($sql);
+				//TODO: Mega dirty aber geht
+				$sql = "UPDATE $tableName SET EndDateTime = NULL WHERE EndDateTime = '0000-00-00 00:00:00'";
 				$wpdb->query($sql);
 			}
 		}
