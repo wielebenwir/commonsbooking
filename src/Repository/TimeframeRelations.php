@@ -20,7 +20,7 @@ class TimeframeRelations
 			item bigint(20) unsigned NOT NULL,
 			StartDateTime DATETIME NOT NULL,
 			EndDateTime DATETEIME NULL,
-			type tinyint(1) unsigned NOT NULL,
+			tftype tinyint(1) unsigned NOT NULL,
 			PRIMARY KEY (timeframe, location, item, type)
 		) $charsetCollate;";
 
@@ -52,7 +52,7 @@ class TimeframeRelations
 
 		foreach ($locationIDs as $locationID) {
 			foreach ($itemIDs as $itemID) {
-				$sql = $wpdb->prepare("INSERT INTO $tableName (timeframe, location, item, StartDateTime, EndDateTime, type) VALUES (%d, %d, %d, %s, %s, %d)", $timeframe->ID, $locationID, $itemID, $StartDateTime, $EndDateTime, $type);
+				$sql = $wpdb->prepare("INSERT INTO $tableName (timeframe, location, item, StartDateTime, EndDateTime, tftype) VALUES (%d, %d, %d, %s, %s, %d)", $timeframe->ID, $locationID, $itemID, $StartDateTime, $EndDateTime, $type);
 				$wpdb->query($sql);
 			}
 		}
@@ -101,7 +101,7 @@ class TimeframeRelations
 			if ( ! empty ( $querystring ) ) {
 				$querystring .= ' AND ';
 			}
-			$querystring .= "type IN ($typeString)";
+			$querystring .= "tftype IN ($typeString)";
 		}
 		if ( $dateTS ) {
 			if ( ! empty ( $querystring ) ) {
