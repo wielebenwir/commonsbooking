@@ -97,10 +97,15 @@ add_filter(
 		if ( is_admin() && array_key_exists( 'post_type', $query->query ) ) {
 			// Post type of current list
 			$postType = $query->query['post_type'];
+			//return when it is not our CPT
+			if ( ! in_array( $postType, Plugin::getCustomPostTypesLabels() ) ) {
+				return $posts;
+			}
+
 			$isAdmin  = commonsbooking_isCurrentUserAdmin();
 
-			// Check if it is the main query and one of our custom post types
-			if ( ! $isAdmin && $query->is_main_query() && in_array( $postType, Plugin::getCustomPostTypesLabels() ) ) {
+			// Check if it is the main query
+			if ( ! $isAdmin && $query->is_main_query() ) {
 				foreach ( $posts as $key => $post ) {
 					if ( ! commonsbooking_isCurrentUserAllowedToEdit( $post ) ) {
 						unset( $posts[ $key ] );
