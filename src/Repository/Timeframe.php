@@ -256,8 +256,48 @@ class Timeframe extends PostRepository {
 
 			//Dirty hooking ourselves our new function
 			if ( $dateTS != null ) {
-				$postIds =   TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, null, $types );
+				//$postIds =   TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, null, $types );
 
+            //---- ORIGINAL BLOCK START -------
+
+                $itemQuery = "";
+                if ( count( $items ) > 0 ) {
+                    $itemQuery = self::getEntityQuery(
+                        "pm2",
+                        $table_postmeta,
+                        $items,
+                        \CommonsBooking\Model\Timeframe::META_ITEM_ID,
+                        \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST
+                    );
+                }
+    
+                $locationQuery = "";
+                if ( count( $locations ) > 0 ) {
+                    $locationQuery = self::getEntityQuery(
+                        "pm3",
+                        $table_postmeta,
+                        $locations,
+                        \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+                        \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST
+                    );
+                }
+    
+                // Complete query, including types
+                $query = "
+                    SELECT DISTINCT pm1.post_id from $table_postmeta pm1
+                    " .
+                         $itemQuery .
+                         $locationQuery .
+                         "
+                     WHERE
+                        pm1.meta_key = 'type' AND
+                        pm1.meta_value IN (" . implode( ',', $types ) . ")
+                ";
+    
+                // Run query
+                $postIds = $wpdb->get_results( $query, ARRAY_N );
+
+                //---- ORIGINAL BLOCK ENDE -------
 
 				//SAME AS BELOW, TODO DRY YOURSELF
 				// Get Posts
