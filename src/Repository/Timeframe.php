@@ -263,6 +263,17 @@ class Timeframe extends PostRepository {
 
             //---- ORIGINAL BLOCK START -------
 
+            global $wpdb;
+			$table_postmeta = $wpdb->prefix . 'postmeta';
+
+			$items     = array_filter( $items );
+			$locations = array_filter( $locations );
+
+            // additional sanitizing. Allow only integer
+            $items      = commonsbooking_sanitizeArrayorString( $items, 'intval' );
+            $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
+            $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
+
                 $itemQuery = "";
                 if ( count( $items ) > 0 ) {
                     $itemQuery = self::getEntityQuery(
