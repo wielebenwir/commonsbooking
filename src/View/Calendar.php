@@ -352,15 +352,15 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
-		// $bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
-		// 	[ $location ],
-		// 	[ $item ],
-		// 	null,
-		// 	true,
-		// 	Helper::getLastFullHourTimestamp()
-		// );
+		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
+			[ $location ],
+			[ $item ],
+			null,
+			true,
+			Helper::getLastFullHourTimestamp()
+		);
 
-        $bookableTimeframes = \CommonsBooking\Repository\TimeframeRelations::getRelevantPosts($item, $location, $startDateString, $endDateString, array(2,6));
+        //$bookableTimeframes = \CommonsBooking\Repository\TimeframeRelations::getRelevantPosts($item, $location, $startDateString, $endDateString, array(2,6));
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );

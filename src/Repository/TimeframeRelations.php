@@ -88,6 +88,8 @@ class TimeframeRelations
             $endDate = $startDate;
         }
 
+        // define types statically
+        $types = array(\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID);
 
 
 		$startDateTime = date( 'Y-m-d H:i:s', $startDate );
@@ -98,7 +100,6 @@ class TimeframeRelations
 		if ( ! empty ( $locations ) ) {
 			$locationString = implode( ',', $locations );
 			if ( strpos( $locationString, '39082') ) {
-				$hallo = 1;
 			}
 			$querystring .= "location IN ($locationString)";
 		}
@@ -107,7 +108,7 @@ class TimeframeRelations
 			if ( ! empty ( $querystring ) ) {
 				$querystring .= ' AND ';
 			}
-			$querystring .= "item IN ($itemString)";
+			//$querystring .= "item IN ($itemString)";
 		}
 		if ( ! empty ( $types ) ) {
 			$typeString = implode( ',', $types );
@@ -116,11 +117,12 @@ class TimeframeRelations
 			}
 			$querystring .= "tftype IN ($typeString)";
 		}
-		if ( $dateTS ) {
+		if ( $startDate ) {
 			if ( ! empty ( $querystring ) ) {
 				$querystring .= ' AND ';
 			}
-			$querystring .= "StartDateTime <= ' . $startDateTime . ' AND (EndDateTime >= ' . $endDateTime . ' OR EndDateTime IS NULL)";
+
+			$querystring .= "StartDateTime <= '" . $startDateTime . "' AND (EndDateTime >= '" . $endDateTime . "' OR EndDateTime IS NULL)";
 		}
 		$sql = "SELECT * FROM $tableName WHERE $querystring";
 

@@ -4,11 +4,11 @@
 namespace CommonsBooking\Repository;
 
 
+use Exception;
+use CommonsBooking\Plugin;
+use CommonsBooking\Model\Day;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
-use CommonsBooking\Model\Day;
-use CommonsBooking\Plugin;
-use Exception;
 
 /*
  * Implements data access to timeframe custom post objects
@@ -256,7 +256,7 @@ class Timeframe extends PostRepository {
 
 			//Dirty hooking ourselves our new function
 			if ( $dateTS != null ) {
-				$postIds = TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, null, $types );
+				$postIds =   TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, null, $types );
 
 
 				//SAME AS BELOW, TODO DRY YOURSELF

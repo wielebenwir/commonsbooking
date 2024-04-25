@@ -239,7 +239,7 @@ abstract class BookablePost extends PostRepository {
 				$posts = $query->get_posts();
 				foreach ( $posts as $key => &$post ) {
 					$class = static::getModelClass();
-					$post  = new $class( $post );
+  					$post  = new $class( $post );
 
 					// If items shall be bookable, we need to check...
 					if ( $bookable && ! $post->isBookable() ) {
