@@ -4,6 +4,7 @@ namespace CommonsBooking\Messages;
 
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -127,7 +128,7 @@ class RestrictionMessage extends Message {
 		}
 
 		$this->prepareMail(
-			$this->getUser(),
+			MessageRecipient::fromUser( $this->getUser() ),
 			$body,
 			$subject,
 			$fromHeader,
