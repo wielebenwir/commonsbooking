@@ -2164,49 +2164,45 @@ msgstr "Allgemeine Standortinformationen"
 msgid "Location email"
 msgstr "Standort E-Mail"
 
-#: src/Wordpress/CustomPostType/Location.php:328
-msgid "Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas."
-msgstr "E-Mail-Adressen, an die eine Kopie der Buchungsbestätigung / Stornierung gesendet werden soll. Es können mehrere Adressen durch Komma getrennt eingeben werden."
-
-#: src/Wordpress/CustomPostType/Location.php:341
+#: src/Wordpress/CustomPostType/Location.php:350
 #: templates/booking-single.php:86
 #: templates/location-single-meta.php:53
 msgid "Pickup instructions"
 msgstr "Abhol-Hinweise"
 
-#: src/Wordpress/CustomPostType/Location.php:342
+#: src/Wordpress/CustomPostType/Location.php:351
 msgid "Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr "Gib hier Informationen über den Abholvorgang ein (z.B. detaillierte Routenbeschreibung, Öffnungszeiten usw.). Dies wird dem Benutzenden im Buchungsprozess und in der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:352
+#: src/Wordpress/CustomPostType/Location.php:361
 msgid "Location contact information"
 msgstr "Standortkontaktinformationen"
 
-#: src/Wordpress/CustomPostType/Location.php:353
+#: src/Wordpress/CustomPostType/Location.php:362
 msgid "information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr "Informationen zur Kontaktaufnahme mit dem Standort (z. B. Ansprechpartner, Telefonnummer, E-Mail usw.). Dies wird dem Nutzenden im Buchungsprozess und bei der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:369
+#: src/Wordpress/CustomPostType/Location.php:378
 msgid "Location Admin(s)"
 msgstr "Standort-Administrator(en)"
 
-#: src/Wordpress/CustomPostType/Location.php:370
+#: src/Wordpress/CustomPostType/Location.php:379
 msgid "choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here."
 msgstr "Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, diesen bestimmten Standort zu bearbeiten und zu verwalten. Hier können nur Benutzer mit der Rolle CommonsBooking Manager ausgewählt werden."
 
-#: src/Wordpress/CustomPostType/Location.php:376
+#: src/Wordpress/CustomPostType/Location.php:385
 msgid "Select location admins."
 msgstr "Wähle Standort-Admins."
 
-#: src/Wordpress/CustomPostType/Location.php:444
+#: src/Wordpress/CustomPostType/Location.php:453
 msgid "Allow locked day overbooking"
 msgstr "Überbuchen von geblockten Tagen erlauben"
 
-#: src/Wordpress/CustomPostType/Location.php:445
+#: src/Wordpress/CustomPostType/Location.php:454
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/?p=435\">Create Locations</a> for more information."
 msgstr "Wenn ausgewählt, können nicht aktivierte Tagen bei der Buchung überbucht werden. Dies gilt für alle Zeitrahmen vom Typ „buchbar“, die mit diesem Standort verknüpft sind. Lies die Dokumentation unter <a href=\"https://commonsbooking.org/?p=435\">Standorte anlegen</a> für mehr Informationen."
 
-#: src/Wordpress/CustomPostType/Location.php:414
+#: src/Wordpress/CustomPostType/Location.php:423
 msgid "Location Meta-Data"
 msgstr "Standort-Metadaten"
 
@@ -3479,11 +3475,11 @@ msgstr "Storniert am"
 msgid "Admin booking by"
 msgstr "Adminbuchung von"
 
-#: src/Service/Upgrade.php:154
+#: src/Service/Upgrade.php:157
 msgid "New features and changes: Please backup your site before upgrading!"
 msgstr "Neue Funktionen und Änderungen: Bitte die Website vor dem Upgrade sichern!"
 
-#: src/Service/Upgrade.php:161
+#: src/Service/Upgrade.php:164
 msgid ""
 "\n"
 "\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
@@ -3503,27 +3499,27 @@ msgstr "Globale Standorteinstellungen"
 msgid "These settings are used for all locations. You can overwrite these settings for each location in the location settings."
 msgstr "Diese Einstellungen werden für alle Standorte verwendet. Die Einstellungen können Sie für jeden Standort individuell in den Standorteinstellungen überschreiben werden."
 
-#: src/Wordpress/CustomPostType/Location.php:382
+#: src/Wordpress/CustomPostType/Location.php:391
 msgid "Use global location settings"
 msgstr "Globale Standorteinstellungen nutzen"
 
-#: src/Wordpress/CustomPostType/Location.php:383
+#: src/Wordpress/CustomPostType/Location.php:392
 msgid "If selected, the global location settings (under the \"General\" tab) will be used for this location. If not selected, the settings below will be used."
 msgstr "Wenn diese Option ausgewählt ist, werden die globalen Standorteinstellungen ( im Reiter \"Allgemein\") für diesen Standort verwendet. Wenn sie nicht ausgewählt ist, werden die Einstellungen unten verwendet."
 
-#: src/Wordpress/CustomPostType/Location.php:450
+#: src/Wordpress/CustomPostType/Location.php:459
 msgid "Count locked days when overbooking"
 msgstr "Gesperrte Tage bei Überbuchung zählen"
 
-#: src/Wordpress/CustomPostType/Location.php:456
+#: src/Wordpress/CustomPostType/Location.php:465
 msgid "Count connected locked days as one"
 msgstr "Zusammenhängende gesperrte Tage werden als Einheit gezählt"
 
-#: src/Wordpress/CustomPostType/Location.php:457
+#: src/Wordpress/CustomPostType/Location.php:466
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
 msgstr "Hier kann festgelegt werden, ob eine zusammenhängende Spanne von überbuchten Tagen einzeln gezählt werden soll oder ob nur x Tage des maximalen Kontingents, das der Benutzer buchen darf, verbraucht werden sollen. Wenn dieses Feld auf 0 gesetzt wird, wird jeder Tag einzeln gezählt. Wenn dieses Feld auf 1 gesetzt wird, werden alle überbuchten Tage, egal wie viele, immer nur als 1 Tag gezählt. Wenn dieses Feld auf 2 gesetzt wird, werden maximal zwei Tage gezählt und so weiter."
 
-#: src/Wordpress/CustomPostType/Location.php:451
+#: src/Wordpress/CustomPostType/Location.php:460
 msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
 
@@ -4174,18 +4170,30 @@ msgstr ""
 msgid "Define for which booking end day the notifications should be sent"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:394
+#: src/Wordpress/CustomPostType/Location.php:403
 msgid "Receive booking start reminder"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:395
+#: src/Wordpress/CustomPostType/Location.php:404
 msgid "If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:401
+#: src/Wordpress/CustomPostType/Location.php:410
 msgid "Receive booking end reminder"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:402
+#: src/Wordpress/CustomPostType/Location.php:411
 msgid "If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:328
+msgid "Email addresses of the owner of the station. Can be reminded about bookings / cancellations and will receive the booking codes (when configured in the timeframe). You can enter multiple addresses separated by commas."
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:341
+msgid "Send copy of bookings / cancellations to location email"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:342
+msgid "If enabled, the location email will receive a copy of all booking and cancellation notifications."
 msgstr ""
