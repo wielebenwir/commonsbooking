@@ -254,6 +254,9 @@ class Timeframe extends PostRepository {
             $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
             $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
+
+
+            
 			//Dirty hooking ourselves our new function
 			if ( $dateTS != null ) {
 				//$postIds =   TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, null, $types );
