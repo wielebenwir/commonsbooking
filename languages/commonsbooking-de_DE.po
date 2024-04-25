@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2024-04-25 15:10+0200\n"
+"PO-Revision-Date: 2024-04-25 15:22+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -4030,7 +4030,7 @@ msgstr "Erinnerung für Standorte vor Buchungsbeginn"
 
 #: includes/OptionsArray.php:914
 msgid "You can set here whether locations should receive a reminder email before the start of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">More Information in the documentation</a>"
-msgstr "Hier können Sie einstellen, ob Standorte vor Beginn einer Buchung eine Erinnerungsmail erhalten sollen.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
+msgstr "Hier kannst du einstellen, ob Standorte vor Beginn einer Buchung eine Erinnerungsmail erhalten sollen.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
 
 #: includes/OptionsArray.php:923 includes/OptionsArray.php:992
 msgid "The reminders need to be enabled for all locations individually. This is only the main on/off switch."
@@ -4058,7 +4058,7 @@ msgstr "Buchungen von"
 
 #: includes/OptionsArray.php:964
 msgid "Define for which booking start day the notifications should be sent"
-msgstr "Definieren Sie, für welchen Tag des Buchungsbeginns die Benachrichtigungen gesendet werden sollen"
+msgstr "Definiert an welchem Tag nach vor Buchungsbeginn die Benachrichtigungen gesendet werden sollen"
 
 #: includes/OptionsArray.php:971 includes/OptionsArray.php:1042
 msgid "current day"
@@ -4066,7 +4066,7 @@ msgstr "Gleicher Tag"
 
 #: includes/OptionsArray.php:972 includes/OptionsArray.php:1043
 msgid "next day"
-msgstr "Nächster Tag"
+msgstr "Nächstem Tag"
 
 #: includes/OptionsArray.php:981
 msgid "Reminder for locations before booking ends"
@@ -4074,7 +4074,7 @@ msgstr "Erinnerung für Standorte vor Buchungsende"
 
 #: includes/OptionsArray.php:983
 msgid "You can set here whether locations should receive a reminder email before the end of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">More Information in the documentation</a>"
-msgstr "Hier können Sie einstellen, ob Standorte vor dem Ende einer Buchung eine Erinnerungs-E-Mail erhalten sollen.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">Mehr Informationen in der Dokumentation</a>"
+msgstr "Hier kannst du einstellen, ob Standorte vor dem Ende einer Buchung eine Erinnerungs-E-Mail erhalten sollen.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">Mehr Informationen in der Dokumentation</a>"
 
 #: includes/OptionsArray.php:999
 msgid "Booking of {{item:post_title}} {{booking:formattedBookingDate}}"
