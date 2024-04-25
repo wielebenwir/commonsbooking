@@ -3,6 +3,7 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -74,7 +75,7 @@ class BookingMessage extends Message {
 		}
 
 		$this->prepareMail(
-			$booking_user,
+			MessageRecipient::fromUser( $booking_user ),
 			$template_body,
 			$template_subject,
 			$fromHeaders,

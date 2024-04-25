@@ -18,8 +18,9 @@ class BookingMessageTest extends Email_Test_Case
 		$this->assertEquals(self::FROM_MAIL, $mailer->From);
 		$this->assertEquals(self::FROM_NAME, $mailer->FromName);
 		$bcc = $mailer->getBccAddresses();
-		$this->assertCount(1, $bcc);
+		$this->assertCount(2, $bcc);
 		$this->assertEquals(self::LOCATION_EMAIL, $bcc[0][0]);
+		$this->assertEquals(self::SECOND_LOCATION_EMAIL, $bcc[1][0]);
 
 		$this->assertEquals($this->expectedSubject, $mailer->Subject);
 		$this->assertEquals($this->expectedBody, $mailer->Body);
@@ -52,7 +53,7 @@ class BookingMessageTest extends Email_Test_Case
 		$body = '{{booking:post_title}} | {{user:user_login}}';
 
 		$this->expectedSubject = self::ITEM_NAME . ' | ' . self::LOCATION_NAME;
-		$this->expectedBody = self::BOOKING_NAME . ' | ' . self::RECIPIENT_USERNAME;
+		$this->expectedBody = self::BOOKING_NAME . ' | ' . self::BOOKINGUSER_USERNAME;
 
 		//set template settings
 		Settings::updateOption('commonsbooking_options_templates', 'emailtemplates_mail-booking-confirmed-subject', $subject);

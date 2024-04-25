@@ -38,6 +38,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
             <input type="hidden" name="type" value="<?php echo esc_attr( $templateData['type'] ); ?>"/>
             <input type="hidden" name="post_type" value="cb_booking"/>
             <input type="hidden" name="post_status" value="unconfirmed"/>
+	        <input type="hidden" name="days-overbooked" value="0"/>
 
             <div class="time-selection-container">
                 <a id="resetPicker">

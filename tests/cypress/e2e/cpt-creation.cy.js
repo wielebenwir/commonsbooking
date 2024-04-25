@@ -32,8 +32,11 @@ describe('correctly render metaboxes for backend CPT creation', () => {
         cy.get('.page-title-action').click();
         cy.get('#_cb_location_adress').should('exist');
         cy.get('#_cb_location_info').should('exist');
-	//TODO: This does not capture all metaboxes in screenshot because of a scrolling div, fix to show metaboxes
         cy.screenshot('cb-location-metaboxes')
+	    //TODO: This does not capture all metaboxes in screenshot because of a scrolling div, fix to show metaboxes
+        //we abuse the fact here, that cypress refuses to take a screenshot if the map does not work, maybe we can do this more elegantly
+        //wait a bit for the map to load
+        cy.wait(5000).get('#cb_positioning_map').scrollIntoView().screenshot('cb-location-metaboxes-positioning-map')
     })
 
     it('shows timeframe metaboxes', () => {

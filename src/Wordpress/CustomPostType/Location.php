@@ -399,6 +399,20 @@ class Location extends CustomPostType {
 			$cmb->add_field( $metabox );
 		}
 
+		$cmb->add_field( array(
+			'name' => esc_html__( 'Receive booking start reminder', 'commonsbooking' ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder',
+			'type' => 'checkbox',
+		) );
+
+		$cmb->add_field( array(
+			'name' => esc_html__( 'Receive booking end reminder', 'commonsbooking' ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder',
+			'type' => 'checkbox',
+		) );
+
 		// Check if custom meta fields are set in CB Options and generate MetaData-Box and fields
 		if ( is_array( self::getCMB2FieldsArrayFromCustomMetadata( 'location' ) ) ) {
 			$customMetaData = self::getCMB2FieldsArrayFromCustomMetadata( 'location' );

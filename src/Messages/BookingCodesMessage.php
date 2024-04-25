@@ -3,6 +3,7 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Model\Timeframe;
@@ -84,7 +85,7 @@ class BookingCodesMessage extends Message {
 		);
 
 		$this->prepareMail(
-			$this->locationAdmins[0],
+			MessageRecipient::fromUser( $this->locationAdmins[0] ),
 			$template_body,
 			$template_subject,
 			$fromHeaders,
@@ -148,6 +149,8 @@ class BookingCodesMessage extends Message {
 
 	/**
 	 * builds e-mail receivers by creating dummy WP_User objects from location emails
+	 *
+	 * TODO: Replace dummy \WP_User objects with @see MessageRecipient
 	 *
 	 * @param Timeframe $timeframe
 	 *

@@ -471,7 +471,7 @@ class Restriction extends CustomPostType {
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
 			),
 			array(
-				'name'             => esc_html__( "State", 'commonsbooking' ),
+				'name'             => esc_html__( "Status", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_STATE,
 				'desc'             => commonsbooking_sanitizeHTML( __( 'Choose status of this restriction. <br>
 				Set to <strong>None</strong> if you want to deactivate the restriction.<br>

@@ -11,7 +11,6 @@
     },
   "autoload": {
     "files": [
-      "includes/OptionsArray.php",
       "includes/Shortcodes.php",
       "includes/Template.php",
       "includes/TemplateParser.php",
