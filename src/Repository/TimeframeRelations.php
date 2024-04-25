@@ -81,10 +81,17 @@ class TimeframeRelations
 	 *
 	 * @return int[] Timeframe IDS
 	 */
-	public static function getRelevantPosts( array $locations, array $items, int $dateTS, array $types ): array {
+	public static function getRelevantPosts( $items, $locations, $startDate, $endDate, array $types ): array {
 		global $wpdb;
 
-		$DateTime = date( 'Y-m-d H:i:s', $dateTS );
+        if ($endDate == null) {
+            $endDate = $startDate;
+        }
+
+
+
+		$startDateTime = date( 'Y-m-d H:i:s', $startDate );
+        $endDateTime = date( 'Y-m-d H:i:s', $endDate );
 
 		$tableName   = $wpdb->prefix . self::$tableName;
 		$querystring = '';
@@ -113,12 +120,12 @@ class TimeframeRelations
 			if ( ! empty ( $querystring ) ) {
 				$querystring .= ' AND ';
 			}
-			$querystring .= "StartDateTime <= '$DateTime' AND (EndDateTime >= '$DateTime' OR EndDateTime IS NULL)";
+			$querystring .= "StartDateTime <= ' . $startDateTime . ' AND (EndDateTime >= ' . $endDateTime . ' OR EndDateTime IS NULL)";
 		}
-		$sql = "SELECT DISTINCT timeframe FROM $tableName WHERE $querystring";
+		$sql = "SELECT * FROM $tableName WHERE $querystring";
 
 
-		$sql = $wpdb->prepare( $sql );
+		//$sql = $wpdb->prepare( $sql );
 		$result = $wpdb->get_results($sql);
 		$ids = [];
 		foreach ($result as $row) {

@@ -256,7 +256,7 @@ class Timeframe extends PostRepository {
 
 			//Dirty hooking ourselves our new function
 			if ( $dateTS != null ) {
-				$postIds = TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, $types );
+				$postIds = TimeframeRelations::getRelevantPosts( $locations, $items, $dateTS, null, $types );
 
 
 				//SAME AS BELOW, TODO DRY YOURSELF
