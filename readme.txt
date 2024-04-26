@@ -79,7 +79,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
-### 2.9.2 (xx.04.2024)
+### 2.9.2 (26.04.2024)
 ADDED: You can now configure reminder emails that are sent to the location before the start and before the end of a booking. (thanks @poilu)
 ENHANCED: You can now disable sending a copy of the booking confirmation email to the location.
 ENHANCED: New filter hooks for metaboxes
