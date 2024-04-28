@@ -3616,6 +3616,12 @@
   box-shadow: none !important;
   font-size: 0.875rem;
 }
+.cb-wrapper input.cb-action-get_ics {
+  background-color: var(--commonsbooking-color-primary);
+  box-shadow: none !important;
+  font-size: 0.875rem;
+  float: left;
+}
 .cb-wrapper #booking-form-container,
 .cb-wrapper #booking-form-container div {
   border-bottom: 0;

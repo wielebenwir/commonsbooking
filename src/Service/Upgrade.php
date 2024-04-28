@@ -47,6 +47,9 @@ class Upgrade {
 		'2.8.2' => [
 			[ self::class, 'resetBrokenColorScheme' ],
 			[ self::class, 'fixBrokenICalTitle' ]
+		],
+		'2.9.2' => [
+			[self::class, 'enableLocationBookingNotification']
 		]
 	];
 
@@ -452,5 +455,20 @@ class Upgrade {
 		}
 
 		return $response->done ? true : $page + 1;
+	}
+
+	/**
+	 * Previously, if a location email was set that meant that they also receive a copy of each booking / cancellation email.
+	 * Now we have a separate checkbox to enable that which should be enabled for existing locations so that they will still receive emails after upgrade.
+	 *
+	 * @since 2.9.2
+	 * @return void
+	 */
+	public static function enableLocationBookingNotification() {
+		$locations = \CommonsBooking\Repository\Location::get();
+
+		foreach ($locations as $location) {
+			update_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on');
+		}
 	}
 }

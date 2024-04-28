@@ -14,9 +14,9 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 	const FROM_NAME = 'siteAdmin';
 	const FROM_HEADER = 'From: ' . self::FROM_NAME . ' <' . self::FROM_MAIL . '>';
 
-	const RECIPIENT_USERNAME = 'testuser';
-	const RECIPIENT_NICENAME = 'testuser';
-	const RECIPIENT_EMAIL = 'user@example.com';
+	const BOOKINGUSER_USERNAME = 'testuser';
+	const BOOKINGUSER_NICENAME = 'testuser';
+	const BOOKINGUSER_EMAIL = 'user@example.com';
 
 	const LOCATION_BCC_ADDRESS = 'location-bcc@example.com';
 	const ITEM_BCC_ADDRESS = 'item-bcc@example.com';
@@ -24,6 +24,7 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 	const ITEM_NAME = 'Test Item';
 	const LOCATION_NAME = 'Test Location';
 	const LOCATION_EMAIL = 'location@example.com';
+	const SECOND_LOCATION_EMAIL = 'locationalias@example.com';
 	const TIMEFRAME_NAME = 'Test Timeframe';
 	const BOOKING_NAME = 'Test Booking';
 
@@ -38,9 +39,9 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 		parent::setUp();
 
 		$this->userId = wp_insert_user( [
-			'user_login' => self::RECIPIENT_USERNAME,
-			'user_nicename' => self::RECIPIENT_NICENAME,
-			'user_email' => self::RECIPIENT_EMAIL,
+			'user_login' => self::BOOKINGUSER_USERNAME,
+			'user_nicename' => self::BOOKINGUSER_NICENAME,
+			'user_email' => self::BOOKINGUSER_EMAIL,
 			'user_pass' => 'testPassword'
 		] );
 
@@ -58,7 +59,8 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 			'post_title'  => self::LOCATION_NAME,
 			'post_status' => 'publish',
 			'meta_input'  => [
-				COMMONSBOOKING_METABOX_PREFIX . 'location_email' => self::LOCATION_EMAIL
+				COMMONSBOOKING_METABOX_PREFIX . 'location_email' => self::LOCATION_EMAIL . ', ' . self::SECOND_LOCATION_EMAIL,
+				COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc' => 'on',
 			]
 		] );
 

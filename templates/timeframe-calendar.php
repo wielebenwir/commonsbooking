@@ -116,7 +116,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			<?php
 			if ( is_user_logged_in() ) {
                 ?>
-                <input type="submit" disabled="disabled"
+                <input type="submit" name="booking-update" disabled="disabled"
                        value="<?php echo esc_html__( 'Continue to booking confirmation', 'commonsbooking' ); ?>"/>
 			<?php } ?>
         </form>

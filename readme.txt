@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.5
-Stable Tag: 2.9.1
+Stable Tag: 2.9.2
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -78,6 +78,16 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.9.2 (26.04.2024)
+ADDED: You can now configure reminder emails that are sent to the location before the start and before the end of a booking. (thanks @poilu)
+ENHANCED: You can now disable sending a copy of the booking confirmation email to the location.
+ENHANCED: New filter hooks for metaboxes
+FIXED: Excerpt of item now shown in map popup
+FIXED: Issue with special characters in booking email (Thanks @nelarsen)
+FIXED: Admin Booking was not sending emails for CB_Manager
+FIXED: API will even return response if the schema is not met and WP_DEBUG is enabled
+FIXED: Incompatibility with "Futurio Extra" plugin
 
 ### 2.9.1 (17.03.2024)
 FIXED: Timeframe export was not working
