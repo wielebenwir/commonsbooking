@@ -247,7 +247,7 @@ class Booking extends Timeframe {
 			);
 
 		// delete unconfirmed booking if booking process is canceled by user
-		if ( $post_status === 'delete_unconfirmed' && $booking->ID === $post_ID ) {
+		if ( $post_status === 'delete_unconfirmed' && $booking->ID && $post_ID && $booking->ID === $post_ID ) {
 			wp_delete_post( $post_ID );
 			throw new BookingDeniedException(
 				__( 'Booking canceled.', 'commonsbooking' ),
