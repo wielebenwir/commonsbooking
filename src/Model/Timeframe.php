@@ -131,6 +131,9 @@ class Timeframe extends CustomPost {
 	 */
 	public function getTimeframeEndDate() {
 		if ( $this->repetitionEnd !== null ) {
+			if ( $this->repetitionEnd === 0 ) {
+				return false;
+			}
 			return $this->repetitionEnd;
 		}
 
@@ -142,7 +145,12 @@ class Timeframe extends CustomPost {
 			$endDate = intval( $endDate );
 		}
 
-		$this->repetitionEnd = $endDate;
+		if ( ! $endDate ) {
+			$this->repetitionEnd = 0;
+		}
+		else {
+			$this->repetitionEnd = $endDate;
+		}
 
 		return $endDate;
 	}
