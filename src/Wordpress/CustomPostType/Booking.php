@@ -7,6 +7,8 @@ use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
+use CommonsBooking\Settings\Settings;
+use Exception;
 use function wp_verify_nonce;
 
 /**
@@ -349,7 +351,30 @@ class Booking extends Timeframe {
 											  PHP_EOL . $postId->get_error_messages()
 			);
 		}
-
+		elseif (
+			function_exists( 'wp_verify_nonce' ) &&
+			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
+			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() ) &&
+			isset ( $_POST['calendar-download'] )
+		){
+			$postID     = intval($_POST['post_ID']);
+			$booking  = New \CommonsBooking\Model\Booking( $postID );
+			$template_objects = [
+				'booking'  => $booking,
+				'item'     => $booking->getItem(),
+				'location' => $booking->getLocation(),
+				'user'     => $booking->getUserData(),
+			];
+			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle, $template_objects ) );
+			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription, $template_objects ) ) );
+			$calendar = $booking->getiCal($eventTitle,$eventDescription);
+			header('Content-Type: text/calendar; charset=utf-8');
+			header('Content-Disposition: attachment; filename="booking.ics"');
+			echo $calendar;
+			exit;
+		}
 		return $postId;
 	}
 

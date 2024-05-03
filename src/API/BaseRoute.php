@@ -10,8 +10,7 @@ use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
-use Opis\JsonSchema\Helper;
-use WP_Error;
+use Opis\JsonSchema\Errors\ErrorFormatter;
 use WP_REST_Controller;
 use WP_REST_Server;
 
@@ -87,7 +86,9 @@ class BaseRoute extends WP_REST_Controller {
 	/**
 	 * Validates data against defined schema.
 	 *
-	 * @param $data
+	 * If WP_DEBUG is enabled, prints schema errors or any exceptions that may occur to error_log.
+	 *
+	 * @param object $data instance of stdclass or object to validate.
 	 */
 	public function validateData( $data ) {
 		$validator = new Validator();
@@ -96,7 +97,25 @@ class BaseRoute extends WP_REST_Controller {
 			$result = $validator->validate( $data, $this->getSchemaObject() );
 			if ( $result->hasError() ) {
 				if ( WP_DEBUG ) {
-					var_dump( $result->error() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_dump
+
+					// Get the error
+					$error = $result->error();
+
+					// Create an error formatter
+					$formatter = new ErrorFormatter();
+
+					// Print helper
+					$print = function ( $value ) {
+						echo wp_json_encode( $value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+					};
+
+					$print(
+						array(
+							'errors'    => $formatter->formatOutput( $error, 'basic' ),
+							'response'  => $data,
+						)
+					);
+
 					die;
 				}
 			}

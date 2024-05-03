@@ -15,6 +15,7 @@ if ( $current_status === 'unconfirmed' && $form_action === 'confirm' ) {
 
 if ( $current_status === 'confirmed' && $form_action === 'cancel' && $booking->canCancel() ) {
     $form_post_status = 'canceled';
+	$icalbutton_label = esc_html__( 'Add to Calendar', 'commonsbooking' );
     $button_label     = esc_html__( 'Cancel Booking', 'commonsbooking' );
 }
 
@@ -43,7 +44,10 @@ if ( isset( $form_post_status ) ) {
         <input type="hidden" name="post_status" value="<?php echo esc_attr( $form_post_status ); ?>"/>
         <input type="hidden" name="repetition-start" value="<?php echo esc_attr( $booking->getMeta( 'repetition-start' ) ); ?>">
         <input type="hidden" name="repetition-end" value="<?php echo esc_attr( $booking->getMeta( 'repetition-end' ) ); ?>">
-        <input type="submit" value="<?php echo esc_attr( $button_label ); ?>" class="<?php echo 'cb-action-' . commonsbooking_sanitizeHTML( $form_post_status ); ?>"/>	
+		<input type="submit" value="<?php echo esc_attr( $button_label ); ?>" class="<?php echo 'cb-action-' . commonsbooking_sanitizeHTML( $form_post_status ); ?>"/>
+		<?php if ( ! empty($icalbutton_label) ) { ?>
+			<input type="submit" name="calendar-download" value="<?php echo esc_attr( $icalbutton_label ) ?>" class="cb-action-get_ics"/>
+		<?php } ?>
 	</form>
 </li>
     </form>
