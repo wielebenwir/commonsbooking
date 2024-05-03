@@ -156,6 +156,16 @@ class DayTest extends CustomPostTypeTest {
 		$this->assertEquals($this->dateFormatted ,$this->instance->getDate() );
 	}
 
+	public function testGetStartTimestamp() {
+		$start = strtotime( self::CURRENT_DATE . ' midnight' );
+		$this->assertEquals( $start, $this->instance->getStartTimestamp() );
+	}
+
+	public function testGetEndTimestamp() {
+		$end = strtotime( self::CURRENT_DATE . ' 23:59:59' );
+		$this->assertEquals( $end, $this->instance->getEndTimestamp() );
+	}
+
 	public function testIsInTimeframe() {
 		$timeframe = new Timeframe( $this->bookableTimeframeForCurrentDayId );
 		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );

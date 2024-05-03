@@ -707,6 +707,32 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * @param \CommonsBooking\Model\Timeframe[] $timeframes
+	 * @param int $startTimestamp
+	 * @param int $endTimestamp
+	 *
+	 * @return \CommonsBooking\Model\Timeframe[]
+	 * @throws Exception
+	 */
+	public static function filterTimeframesForTimerange ( array $timeframes, int $startTimestamp, int $endTimestamp ): array {
+		return array_filter( $timeframes, function ( $timeframe ) use ($startTimestamp, $endTimestamp) {
+			//filter out anything in the future
+			if ( $timeframe->getStartDate() > $endTimestamp ) {
+				return false;
+			}
+			//always include infinite timeframes
+			if ( ! $timeframe->getEndDate() ) {
+				return true;
+			}
+			//filter out anything in the past
+			if ( $timeframe->getEndDate() < $startTimestamp ) {
+				return false;
+			}
+			return true;
+		});
+	}
+
+	/**
 	 * Instantiate models for posts.
 	 * Why? In some cases we need more than WP_Post methods and for this case we have Models, that enrich WP_Post
 	 *      objects with useful additional functions.
