@@ -51,7 +51,7 @@ class Day {
 	 * @param array $types
 	 * @param array $possibleTimeframes
 	 */
-	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = []) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
 		$this->date      = $date;
 		$this->locations = array_map( function ( $location ) {
 			return $location instanceof WP_Post ? $location->ID : $location;
@@ -64,6 +64,7 @@ class Day {
 
 		if ( ! empty ( $possibleTimeframes ) ) {
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
+			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->isInTimeframe( $timeframe ) );
 		}
 	}
 
@@ -388,6 +389,26 @@ class Day {
 						return $timeframeStartsBeforeEndOfToday && $timeframeEndsAfterStartOfToday;
 					}
 			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Can be used as a callback to filter timeframes if they belong
+	 * to the day and are bookable for the current user
+	 *
+	 * @param Timeframe $timeframe
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function filterTimeframe( Timeframe $timeframe ): bool {
+		if ( ! $this->isInTimeframe( $timeframe ) ) {
+			return false;
+		}
+		if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ) {
+			return false;
 		}
 
 		return true;
