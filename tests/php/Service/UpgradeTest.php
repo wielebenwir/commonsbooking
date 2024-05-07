@@ -10,7 +10,10 @@ use SlopeIt\ClockMock\ClockMock;
 class UpgradeTest extends CustomPostTypeTest
 {
 
-    private static bool $functionHasRun = false;
+    private static bool $functionAHasRun = false;
+	private static bool $functionBHasRun = false;
+	private $testTasks;
+	private $ajaxTasks;
 
     public function testFixBrokenICalTitle()
     {
@@ -51,7 +54,8 @@ class UpgradeTest extends CustomPostTypeTest
 	public function testRunUpgradeTasks($previousVersion, $currentVersion, $shouldRunFunction) {
 		$upgrade = new Upgrade($previousVersion, $currentVersion);
 		$upgrade->runUpgradeTasks();
-		$this->assertEquals($shouldRunFunction, self::$functionHasRun);
+		$this->assertEquals($shouldRunFunction, self::$functionAHasRun);
+		$this->assertEquals($shouldRunFunction, self::$functionBHasRun);
 	}
 
 	/**
@@ -73,9 +77,14 @@ class UpgradeTest extends CustomPostTypeTest
 		);
 	}
 
-	public static function fakeUpdateFunction()
+	public static function fakeUpdateFunctionA()
 	{
-		self::$functionHasRun = true;
+		self::$functionAHasRun = true;
+	}
+
+	public static function fakeUpdateFunctionB()
+	{
+		self::$functionBHasRun = true;
 	}
 
 	public function testRunTasksAfterUpdate() {
@@ -102,6 +111,15 @@ class UpgradeTest extends CustomPostTypeTest
 		//no version change
 		$upgrade = new Upgrade('2.5.0', '2.5.0');
 		$this->assertFalse($upgrade->run());
+
+		//AJAX tasks present -> should not be run
+		$this->setUpAJAX();
+		$upgrade = new Upgrade('2.5.1', '2.5.2');
+		$this->assertFalse($upgrade->run());
+
+		//AJAX tasks should be ignored on new installation
+		$upgrade = new Upgrade('', '2.5.2');
+		$this->assertTrue($upgrade->run());
 	}
 
 	public function testSetAdvanceBookingDaysDefault() {
@@ -125,7 +143,7 @@ class UpgradeTest extends CustomPostTypeTest
 			strtotime('+1 week', strtotime(self::CURRENT_DATE)),
 			strtotime('+2 weeks', strtotime(self::CURRENT_DATE)),
 		);
-		Upgrade::removeBreakingPostmeta();
+		$this->assertTrue( Upgrade::removeBreakingPostmeta() );
 		$this->assertEmpty(get_post_meta($holiday, 'advance_booking_days', true));
 	}
 
@@ -133,7 +151,7 @@ class UpgradeTest extends CustomPostTypeTest
 		$tf = $this->createBookableTimeFrameIncludingCurrentDay();
 		update_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, '');
 		update_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, '');
-		Upgrade::setMultiSelectTimeFrameDefault();
+		$this->assertTrue ( Upgrade::setMultiSelectTimeFrameDefault() );
 		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, true));
 		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, true));
 	}
@@ -143,22 +161,71 @@ class UpgradeTest extends CustomPostTypeTest
 		$this->assertEquals('on', get_post_meta($this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', true) );
 	}
 
-	protected function setUp(): void {
-		parent::setUp();
-		//This replaces the original update tasks with a internal test function that just sets a variable to true
-		$testTasks = new \ReflectionProperty('\CommonsBooking\Service\Upgrade', 'upgradeTasks');
-		$testTasks->setAccessible(true);
-		$testTasks->setValue(
+	public function testIsAJAXUpgrade() {
+		//2.5.0 -> COMMONSBOOKING_VERSION
+		update_option(Upgrade::VERSION_OPTION, '2.5.0');
+		$this->assertFalse(Upgrade::isAJAXUpgrade());
+
+		$this->setUpAJAX();
+
+		//2.5.0 -> COMMONSBOOKING_VERSION
+		$this->assertTrue(Upgrade::isAJAXUpgrade());
+
+		//2.6.0 -> COMMONSBOOKING_VERSION
+		update_option(Upgrade::VERSION_OPTION, '2.6.0');
+		$this->assertFalse(Upgrade::isAJAXUpgrade());
+
+		//fresh install
+		update_option(Upgrade::VERSION_OPTION, '');
+		$this->assertFalse(Upgrade::isAJAXUpgrade());
+	}
+
+	/**
+	 * Modifies the task so that task B is an AJAX task and the upgrade to 2.5.2 is therefore an AJAX upgrade
+	 * @return void
+	 */
+	protected function setUpAJAX(): void {
+		$this->testTasks->setValue(
 			[
 				'2.5.2' => [
-					[self::class, 'fakeUpdateFunction' ]
+					[self::class, 'fakeUpdateFunctionA' ],
+				]
+			]
+		);
+
+		$this->ajaxTasks->setValue(
+			[
+				'2.5.2' => [
+					[self::class, 'fakeUpdateFunctionB' ]
 				]
 			]
 		);
 	}
 
+	protected function setUp(): void {
+		parent::setUp();
+		//This replaces the original update tasks with a internal test function that just sets a variable to true
+		$this->testTasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'upgradeTasks' );
+		$this->testTasks->setAccessible(true);
+		$this->testTasks->setValue(
+			[
+				'2.5.2' => [
+					[self::class, 'fakeUpdateFunctionA' ],
+					[self::class, 'fakeUpdateFunctionB' ]
+				]
+			]
+		);
+
+		//empty AJAX tasks
+		$this->ajaxTasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'ajaxUpgradeTasks' );
+		$this->ajaxTasks->setAccessible(true);
+		$this->ajaxTasks->setValue([]);
+
+	}
+
 	protected function tearDown(): void {
-		self::$functionHasRun = false;
+		self::$functionAHasRun = false;
+		self::$functionBHasRun = false;
 		//resets version back to current version
 		update_option(\CommonsBooking\Service\Upgrade::VERSION_OPTION, COMMONSBOOKING_VERSION);
 		parent::tearDown();

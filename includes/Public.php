@@ -163,6 +163,7 @@ if ( is_admin() ) {
 	//migration AJAX
 	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'migrateAll' ) );
 	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
+	add_action( 'wp_ajax_cb_run_upgrade', array( \CommonsBooking\Service\Upgrade::class, 'runAJAXUpgradeTasks' ) );
 
 	//getting bookable Location for item AJAX
 	add_action( 'wp_ajax_cb_get_bookable_location', array( \CommonsBooking\View\Booking::class, 'getLocationForItem_AJAX' ) );
