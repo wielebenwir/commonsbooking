@@ -762,7 +762,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 					)
 
 				)
-			)
+			),
 			/* field group email templates end */
 			/* field group restriction settings start */
 			'restrictionsettings' => array(
