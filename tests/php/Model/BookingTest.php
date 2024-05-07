@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Model;
 
+use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
@@ -435,6 +436,111 @@ public function testCanCancelBaseCase() {
 		$this->assertTrue( commonsbooking_isCurrentUserAllowedToSee( $testBookingTomorrow ) );
 		$this->assertFalse( commonsbooking_isCurrentUserAllowedToEdit( $testBookingTomorrow ) );
 		$this->assertFalse( $testBookingTomorrow->canCancel() );
+	}
+
+	public function testIsValid() {
+		//create seperate items and locations for this test
+		$itemID = $this->createItem("Test Item", 'publish');
+		$locationID = $this->createLocation("Test Location", 'publish');
+		$timeframeID = $this->createTimeframe(
+			$locationID,
+			$itemID,
+			strtotime( '-1 day',  strtotime(self::CURRENT_DATE) ),
+			strtotime( '+20 days', strtotime(self::CURRENT_DATE) )
+		);
+
+		$validBooking = new Booking(
+			$this->createBooking(
+				$locationID,
+				$itemID,
+				strtotime( '+1 days',  strtotime(self::CURRENT_DATE) ),
+				strtotime( '+2 days', strtotime(self::CURRENT_DATE) ),
+			)
+		);
+		$this->assertTrue( $validBooking->isValid() );
+
+		$overlappingBooking = new Booking(
+			$this->createBooking(
+				$locationID,
+				$itemID,
+				strtotime(self::CURRENT_DATE ),
+				strtotime( '+2 days', strtotime(self::CURRENT_DATE) ),
+			)
+		);
+		try {
+			$overlappingBooking->isValid();
+			$this->fail( 'Expected exception not thrown' );
+		} catch ( TimeframeInvalidException $e ) {
+			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
+			$this->assertStringContainsString( 'There are one ore more overlapping bookings within the chosen timerange', $e->getMessage() );
+			//also test, that correct notice for Bookings is shown
+			$this->assertStringContainsString('Booking is saved as draft.', $e->getMessage());
+			$this->assertStringContainsString( $validBooking->getFormattedEditLink(), $e->getMessage() );
+		}
+
+		$startDateBeforeEnd = new Booking(
+			$this->createBooking(
+				$locationID,
+				$itemID,
+				strtotime( '+15 days',  strtotime(self::CURRENT_DATE) ),
+				strtotime( '-1 day', strtotime(self::CURRENT_DATE) )
+			)
+		);
+		try {
+			$startDateBeforeEnd->isValid();
+			$this->fail( 'Expected exception not thrown' );
+		} catch ( TimeframeInvalidException $e ) {
+			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
+			$this->assertStringContainsString( 'Start date is after end date', $e->getMessage() );
+		}
+
+		$invalidItem = new Booking(
+			$this->createBooking(
+				$locationID,
+				'999',
+				strtotime( '+10 days',  strtotime(self::CURRENT_DATE) ),
+				strtotime( '+12 days', strtotime(self::CURRENT_DATE) ),
+			)
+		);
+		try {
+			$invalidItem->isValid();
+			$this->fail( 'Expected exception not thrown' );
+		} catch ( TimeframeInvalidException $e ) {
+			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
+			$this->assertStringContainsString( 'Item not found', $e->getMessage() );
+		}
+
+		$invalidLocation = new Booking(
+			$this->createBooking(
+				'999',
+				$itemID,
+				strtotime( '+10 days',  strtotime(self::CURRENT_DATE) ),
+				strtotime( '+12 days', strtotime(self::CURRENT_DATE) ),
+			)
+		);
+		try {
+			$invalidLocation->isValid();
+			$this->fail( 'Expected exception not thrown' );
+		} catch ( TimeframeInvalidException $e ) {
+			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
+			$this->assertStringContainsString( 'Location not found', $e->getMessage() );
+		}
+
+		$bookingPastTimeframe = new Booking(
+			$this->createBooking(
+				$locationID,
+				$itemID,
+				strtotime( '+25 days',  strtotime(self::CURRENT_DATE) ),
+				strtotime( '+30 days', strtotime(self::CURRENT_DATE) ),
+			)
+		);
+		try {
+			$bookingPastTimeframe->isValid();
+			$this->fail( 'Expected exception not thrown' );
+		} catch ( TimeframeInvalidException $e ) {
+			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
+			$this->assertStringContainsString( 'There is no timeframe for this booking. Please create a timeframe first.', $e->getMessage() );
+		}
 	}
 
 	/**
