@@ -186,9 +186,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
-
-		// if meta-value not set we define a default value far in the future so that we count all possibly relevant timeframes
-		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
+		$advanceBookingDays = $this->getAdvanceBookingDays();
 
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;
@@ -197,6 +195,24 @@ class Timeframe extends CustomPost {
 
 		return $advanceBookingTime;
 
+	}
+
+	/**
+	 * Gets the maximum number of days that can be booked in advance.
+	 * @return void
+	 */
+	public function getAdvanceBookingDays() {
+		if ( $this->isUserPrivileged()) {
+			return 365;
+		}
+		else {
+			//the field is usually empty, when it does not apply to this type of timeframe.
+			//Timeframes that do not have this field need a big enough number to make sure that they are not filtered out
+			//See #1357
+			return intval(
+				empty( $this->getMeta( self::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ) ? 365 : $this->getMeta( self::META_TIMEFRAME_ADVANCE_BOOKING_DAYS )
+			);
+		}
 	}
 
 	/**
@@ -864,7 +880,7 @@ class Timeframe extends CustomPost {
 	 * Checks if timeframes are overlapping in time ranges or daily slots.
      *
 	 * Use {@see Timeframe::overlaps()} if you want to compute full-overlap between two timeframes.
-     * 
+     *
 	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool If start-time and end-time overlaps, regardless of overlapping start-date and end-date.

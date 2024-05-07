@@ -362,7 +362,7 @@ class Calendar {
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
-			$advanceBookingDays       = intval( $closestBookableTimeframe->getFieldValue( 'timeframe-advance-booking-days' ) );
+			$advanceBookingDays       = $closestBookableTimeframe->getAdvanceBookingDays();
             $firstBookableDay = $closestBookableTimeframe->getFirstBookableDay();
 
 			// Only if passed daterange must not be kept
@@ -544,7 +544,7 @@ class Calendar {
 			}
 
 			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature
-			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, 'midnight' );
+			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, true, 'midnight' );
 		}
 
 		return $jsonResponse;

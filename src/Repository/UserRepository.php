@@ -64,7 +64,35 @@ class UserRepository {
 	}
 
 	/**
-	 * Returns an array of all User Roles as roleID => translated role name
+	 * Why? Because we have different kinds of caches for a given role type.
+	 * The different caches right now only differentiate between privileged and unprivileged users and managers.
+	 * Depending on the items the manager have been assigned, they could be privileged to some items and unprivileged to others.
+	 * That's why we need to get the user ID for the managers.
+	 * @param \WP_User|null $user
+	 *
+	 * @return int 0 = unprivileged, 1 = privileged, other = manager
+	 */
+	public static function getRoleTypeID( \WP_User $user = null ): int {
+		if ( $user == null ) {
+			$user = wp_get_current_user();
+			if ( ! $user ) {
+				return 0;
+			}
+		}
+		if ( commonsbooking_isUserAdmin( $user ) ) {
+			return 1;
+		}
+		if ( commonsbooking_isUserCBManager( $user ) ) {
+			return $user->ID;
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Returns an associative array of all User Roles as
+	 * roleID => translated role name
+	 * so that it can be used in the CMB2 select field.
 	 *
 	 * @return array
 	 */

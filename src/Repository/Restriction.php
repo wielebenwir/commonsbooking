@@ -48,7 +48,7 @@ class Restriction extends PostRepository {
 			}
 
 			$posts = $posts ?: [];
-			Plugin::setCacheItem( $posts, Wordpress::getTags($posts, $items, $locations), $customCacheKey );
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts, $items, $locations ), $customCacheKey );
 
 			return $posts;
 		}
@@ -93,7 +93,7 @@ class Restriction extends PostRepository {
             ";
 
 			$posts = $wpdb->get_results( $query );
-			Plugin::setCacheItem( $posts, Wordpress::getTags($posts) );
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
 
 			return $posts;
 		}
