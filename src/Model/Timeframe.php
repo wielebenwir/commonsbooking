@@ -74,6 +74,17 @@ class Timeframe extends CustomPost {
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
 
 	/**
+	 * null means the data is not fetched yet
+	 * @var int|null
+	 */
+	private ?int $repetitionStart = null;
+	/**
+	 * null means the data is not fetched yet, 0 means there is no end date
+	 * @var int|null
+	 */
+	private ?int $repetitionEnd = null;
+
+	/**
 	 * Return the span of a timeframe in human-readable format
 	 *
 	 * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
@@ -92,37 +103,58 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return int
 	 */
-	public function getStartDate() : int {
+	public function getStartDate(): int {
+		if ( $this->repetitionStart !== null ) {
+			return $this->repetitionStart;
+		}
+
 		$startDate = $this->getMeta( self::REPETITION_START );
 
 		if ( (string) intval( $startDate ) !== $startDate ) {
 			$startDate = strtotime( $startDate );
+		} else {
+			$startDate = intval( $startDate );
 		}
-		else {
-			$startDate = intval ($startDate);
-		}
+
+		$this->repetitionStart = $startDate;
 
 		return $startDate;
 	}
 
-    /**
-     * Return defined end (repetition) date of timeframe.
-     *
-     * The timestamps are stored in local time (not in UTC).
-     * This means that we do not have to do timezone conversion in order to get the corresponding local time.
-     *
-     * @return false|int Timestamp of end date, false if no end date is set
-     */
-    public function getTimeframeEndDate() {
-        $endDate = $this->getMeta( self::REPETITION_END );
+	/**
+	 * Return defined end (repetition) date of timeframe.
+	 *
+	 * The timestamps are stored in local time (not in UTC).
+	 * This means that we do not have to do timezone conversion in order to get the corresponding local time.
+	 *
+	 * @return false|int Timestamp of end date, false if no end date is set
+	 */
+	public function getTimeframeEndDate() {
+		if ( $this->repetitionEnd !== null ) {
+			if ( $this->repetitionEnd === 0 ) {
+				return false;
+			}
+			return $this->repetitionEnd;
+		}
+
+		$endDate = $this->getMeta( self::REPETITION_END );
+
 		if ( (string) intval( $endDate ) != $endDate ) {
 			$endDate = strtotime( $endDate );
 		} else {
 			$endDate = intval( $endDate );
 		}
 
-        return $endDate;
-    }
+		if ( ! $endDate ) {
+			$this->repetitionEnd = 0;
+		}
+		else {
+			$this->repetitionEnd = $endDate;
+		}
+
+		return $endDate;
+	}
+
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
 	 * We need this function in order to display the correct end of the booking period for the user.
