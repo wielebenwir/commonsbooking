@@ -4,6 +4,7 @@ namespace CommonsBooking\Messages;
 
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -67,7 +68,7 @@ class RestrictionMessage extends Message {
 	 */
 	protected function sendHintMail() {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-body' );
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject' );
+		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject', 'sanitize_text_field' );
 
 		$this->prepareRestrictionMail(
 			$body,
@@ -82,7 +83,7 @@ class RestrictionMessage extends Message {
 	 */
 	protected function sendRepairMail() {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-body' );
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-subject' );
+		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-subject', 'sanitize_text_field' );
 
 		$this->prepareRestrictionMail(
 			$body,
@@ -97,7 +98,7 @@ class RestrictionMessage extends Message {
 	 */
 	protected function sendRestrictionCancelationMail() {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-body' );
-		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-subject' );
+		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-subject', 'sanitize_text_field' );
 
 		$this->prepareRestrictionMail(
 			$body,
@@ -116,7 +117,7 @@ class RestrictionMessage extends Message {
 	 * @throws \Exception
 	 */
 	protected function prepareRestrictionMail( $body, $subject ) {
-		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name' ) .
+		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name', 'sanitize_text_field' ) .
 		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
 		$restriction = $this->getRestriction();
 
@@ -127,7 +128,7 @@ class RestrictionMessage extends Message {
 		}
 
 		$this->prepareMail(
-			$this->getUser(),
+			MessageRecipient::fromUser( $this->getUser() ),
 			$body,
 			$subject,
 			$fromHeader,
@@ -147,20 +148,6 @@ class RestrictionMessage extends Message {
 	 */
 	public function getUser() {
 		return $this->user;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getAction() {
-		return $this->action;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getValidActions(): array {
-		return $this->validActions;
 	}
 
 	/**

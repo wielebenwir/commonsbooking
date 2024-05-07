@@ -113,6 +113,7 @@ class Booking extends View {
 			}
 
 			// Prepare Templatedata and remove invalid posts
+			/** @var \CommonsBooking\Model\Booking $booking */
 			foreach ( $posts as $booking ) {
 
 				// Get user infos
@@ -290,24 +291,35 @@ class Booking extends View {
 	}
 
 	/**
-	 * Renders error for frontend notice. We use transients to pass the error message.
+	 * Gets the error for frontend notice. We use transients to pass the error message.
 	 * It is ensured that only the user where the error occurred can see the error message.
+	 *
+	 * @since 2.9.0 returns string instead of using printf
+	 *
+	 * @return string
 	 */
-	public static function renderError() {
+	public static function getError(): string {
 		$errorTypes = [
 			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
 		];
+		$message = '';
 
 		foreach ( $errorTypes as $errorType ) {
 			if ( $error = get_transient( $errorType ) ) {
 				$class = 'cb-notice error';
-				printf(
+				$message = sprintf(
 					'<div class="%1$s"><p>%2$s</p></div>',
 					esc_attr( $class ),
 					nl2br( commonsbooking_sanitizeHTML( $error ) )
 				);
 				delete_transient( $errorType );
 			}
+		}
+		if ($message) {
+			return '<div class="cb-wrapper">' . $message . '</div>';
+		}
+		else {
+			return '';
 		}
 	}
 

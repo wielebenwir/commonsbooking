@@ -22,6 +22,10 @@ class CalendarTest extends CustomPostTypeTest {
 
 	protected $timeframeId;
 
+	protected $closestTimeframe;
+
+	protected $secondClosestTimeframe;
+
 	public function testKeepDateRangeParam() {
 		$startDate    = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
@@ -83,6 +87,39 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue($jsonresponse['minDate'] == date('Y-m-d'));
 	}
 
+	/*
+	 * Make sure, that the default values for overbooking are passed to the Litepicker correctly,
+	 * even when not all of them are set. (tests #1393)
+	 */
+	public function testOverbookingDefaultValues() {
+		//the default location has no overbooking values set, overbooking should be disabled
+		$jsonresponse = Calendar::getCalendarDataArray(
+			$this->itemId,
+			$this->locationId,
+			date( 'Y-m-d', strtotime( 'midnight', strtotime(self::CURRENT_DATE) ) ),
+			date( 'Y-m-d', strtotime( '+60 days midnight', strtotime(self::CURRENT_DATE) ) )
+		);
+		$this->assertTrue($jsonresponse['disallowLockDaysInRange']);
+		$this->assertFalse($jsonresponse['countLockDaysInRange']);
+		$this->assertEquals(0, $jsonresponse['countLockDaysMaxDays']);
+
+		//old locations which only have overbooking enabled should not have the countLockDaysInRange set and countLockDaysMaxDays should be 0
+		$differentItemId = $this->createItem("Different Item",'publish');
+		$oldLocationId = $this->createLocation("Old Location",'publish');
+		$otherTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($oldLocationId,$differentItemId);
+		update_post_meta( $oldLocationId, COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range', 'on' );
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ));
+		$jsonresponse = Calendar::getCalendarDataArray(
+			$differentItemId,
+			$oldLocationId,
+			date( 'Y-m-d', strtotime( '-1 days', strtotime(self::CURRENT_DATE) ) ),
+			date( 'Y-m-d', strtotime( '+60 days midnight', strtotime(self::CURRENT_DATE) ) )
+		);
+		$this->assertFalse($jsonresponse['disallowLockDaysInRange']);
+		$this->assertFalse($jsonresponse['countLockDaysInRange']);
+		$this->assertEquals(0, $jsonresponse['countLockDaysMaxDays']);
+	}
+
 	public function testBookingOffset() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ));
 		$startDate = date( 'Y-m-d', strtotime( '-1 day', strtotime(self::CURRENT_DATE) ) );
@@ -103,6 +140,7 @@ class CalendarTest extends CustomPostTypeTest {
 			'12:00 PM',
 			'publish',
 			[],
+			'',
 			self::USER_ID,
 			3,
 			30,
@@ -120,6 +158,22 @@ class CalendarTest extends CustomPostTypeTest {
 		//considering the offset, today and tomorrow should be locked
 		$this->assertTrue($days[$today]['locked']);
 		$this->assertTrue($days[date('Y-m-d', strtotime('+1 day', strtotime($today)))]['locked']);
+	}
+
+	public function testRenderTable() {
+		$calendar = Calendar::renderTable([]);
+		$item = new \CommonsBooking\Model\Item($this->itemId);
+		$location = new \CommonsBooking\Model\Location($this->locationId);
+		$this->assertStringContainsString('<table', $calendar);
+		$this->assertStringContainsString($item->post_title, $calendar);
+		$this->assertStringContainsString($location->post_title, $calendar);
+
+		//in a year, all timeframes will have expired -> calendar should be empty
+		$inAYear = new \DateTime();
+		$inAYear->modify('+1 year');
+		ClockMock::freeze($inAYear);
+		$calendar = Calendar::renderTable([]);
+		$this->assertStringContainsString('No items found', $calendar);
 	}
 
 	protected function setUp() : void {

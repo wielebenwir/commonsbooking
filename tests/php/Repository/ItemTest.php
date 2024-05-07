@@ -14,7 +14,7 @@ class ItemTest extends CustomPostTypeTest {
 		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( 'midnight'),
+			strtotime( 'midnight' ),
 			strtotime( '+90 days' )
 		);
 	}

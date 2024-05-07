@@ -58,6 +58,7 @@ class StationStatusTest extends CustomPostTypeTest
 			'12:00 PM',
 			'publish',
 			[],
+			"",
 			self::USER_ID,
 			3,
 			30,

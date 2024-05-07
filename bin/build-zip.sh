@@ -1,6 +1,12 @@
 #!/bin/sh
 # Borrows from https://github.com/woocommerce/woocommerce/blob/trunk/plugins/woocommerce/bin/build-zip.sh
 
+# stop execution if any command exits with non-zero status
+set -e
+# treat use of unset variables as error (use "${var:-}" to default to empty string)
+set -u
+
+
 PLUGIN_SLUG="commonsbooking"
 PROJECT_PATH=$(pwd)
 BUILD_PATH="${PROJECT_PATH}/build"
@@ -29,9 +35,9 @@ mkdir -p "$DEST_PATH"
 echo "Installing PHP and JS dependencies..."
 npm ci
 echo "Running JS Build..."
-grunt dist || exit "$?"
+npm run dist
 echo "Cleaning up PHP dependencies..."
-composer install --no-dev --ignore-platform-reqs || exit "$?"
+composer install --no-dev --ignore-platform-reqs
 echo "Syncing files..."
 rsync -rc --exclude-from="$PROJECT_PATH/.distignore" "$PROJECT_PATH/" "$DEST_PATH/" --delete --delete-excluded
 
@@ -41,10 +47,10 @@ if [ "$SKIP_ZIP" -eq 1 ]; then
 fi
 
 echo "Generating zip file..."
-cd "$BUILD_PATH" || exit
+cd "$BUILD_PATH"
 zip -q -r "${PLUGIN_SLUG}.zip" "$PLUGIN_SLUG/"
 
-cd "$PROJECT_PATH" || exit
+cd "$PROJECT_PATH"
 mv "$BUILD_PATH/${PLUGIN_SLUG}.zip" "$PROJECT_PATH"
 echo "${PLUGIN_SLUG}.zip file generated!"
 

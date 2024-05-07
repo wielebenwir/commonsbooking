@@ -114,14 +114,21 @@ abstract class BookablePost extends PostRepository {
 	}
 
 	/**
-	 * Gets all the defined terms for locations / items
+	 * Gets all the defined terms for locations / items.
+	 * Will return an empty array if there are no terms or an error occurred.
 	 * @return int[]|string|string[]|\WP_Error|\WP_Term[]
 	 */
 	public static function getTerms() {
-		return get_terms(array(
-			'taxonomy'	=> static::getPostType() . 's_category',
+		$terms = get_terms( array(
+			'taxonomy'   => static::getPostType() . 's_category',
 			'hide_empty' => false,
-		));
+		) );
+
+		if ( is_wp_error( $terms ) ) {
+			return [];
+		}
+
+		return $terms;
 	}
 	/**
 	 * @return string

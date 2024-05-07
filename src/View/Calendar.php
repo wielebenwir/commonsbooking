@@ -10,6 +10,7 @@ use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Week;
 use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -35,7 +36,11 @@ class Calendar {
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
-	 * @param $atts
+	 * @param $atts array Supports the following attributes:
+	 * 			          - locationcat: Filter by location category
+	 * 			          - itemcat: Filter by item category
+	 * 			          - days: Number of days to show in calendar table view
+	 * 			          - desc: Description text
 	 *
 	 * @return string
 	 * @throws Exception
@@ -96,13 +101,14 @@ class Calendar {
 		$print .=  '</tr></thead><tbody>';
 
 		$items = get_posts(
-            array(
+			array(
 				'post_type'      => 'cb_item',
 				'post_status'    => 'publish',
-				'order'          => 'ASC',
+				'order'          => $atts['order'] ?? 'ASC',
+				'orderby'        => $atts['orderby'] ?? 'post_title',
 				'posts_per_page' => - 1,
-            )
-        );
+			)
+		);
 
 		$itemRowsHTML = '';
 
@@ -130,7 +136,8 @@ class Calendar {
 				// Collect unique locations from timeframes
 				$locations = [];
 				foreach ( $timeframes as $timeframe ) {
-					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
+					// TODO #507
+					$locations[ $timeframe->getLocationID() ] = $timeframe->getLocation()->post_title;
 				}
 
 				// loop through location
@@ -486,17 +493,46 @@ class Calendar {
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
 				'disallowLockDaysInRange' => true,
+				'countLockDaysInRange' => true,
 				'advanceBookingDays'      => $advanceBookingDays,
 			];
 
 			if ( count( $locations ) === 1 ) {
 				// are overbooking allowed in location options?
-				$allowLockedDaysInRange                  = get_post_meta(
-					$locations[0],
-					COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
-					true
-				);
-				$jsonResponse['disallowLockDaysInRange'] = $allowLockedDaysInRange !== 'on';
+				$useGlobalSettings = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'use_global_settings', true ) === 'on';
+				if ( $useGlobalSettings ) {
+					$allowLockedDaysInRange = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range');
+				}
+				else {
+					$allowLockedDaysInRange                  = get_post_meta(
+						$locations[0],
+						COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
+						true
+					);
+				}
+				$jsonResponse['disallowLockDaysInRange'] = ! ( $allowLockedDaysInRange === 'on' );
+
+				// should overbooked non bookable days be counted into maxdays selection?
+				if ( $useGlobalSettings ) {
+					$countLockedDaysInRange = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range');
+				}
+				else {
+					$countLockedDaysInRange = get_post_meta(
+						$locations[0],
+						COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range',
+						true
+					);
+				}
+				$jsonResponse['countLockDaysInRange'] = $countLockedDaysInRange === 'on';
+
+				//if yes, what is the maximum amount of days they should count?
+				if ( $useGlobalSettings ) {
+					$countLockdaysMaximum = Settings::getOption('commonsbooking_options_general', COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum');
+				}
+				else {
+					$countLockdaysMaximum = get_post_meta( $locations[0], COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', true );
+				}
+				$jsonResponse['countLockDaysMaxDays'] = (int) $countLockdaysMaximum;
 			}
 
 			/** @var Week $week */

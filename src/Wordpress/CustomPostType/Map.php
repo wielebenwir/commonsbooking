@@ -35,7 +35,7 @@ class Map extends CustomPostType {
 		}
 
 		// Add shortcodes
-		add_shortcode( 'cb_map', array( MapShortcode::class, 'execute' ) );
+		add_shortcode( 'cb_map', array( new MapShortcode(), 'execute' ) );
 
 		// Add actions
 		add_action( 'save_post_' . self::$postType, array( MapAdmin::class, 'validate_options' ), 10, 3 );
@@ -91,6 +91,7 @@ class Map extends CustomPostType {
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
+			//TODO #507
 			$item     = $timeframe->getItem();
 			$location = $timeframe->getLocation();
 
@@ -99,7 +100,7 @@ class Map extends CustomPostType {
 				$thumbnail = get_the_post_thumbnail_url( $item, 'thumbnail' );
 
 				$result[] = [
-					'location_id' => $timeframe->getLocation()->ID,
+					'location_id' => $timeframe->getLocationID(),
 					'item'        => [
 						'id'         => $item->ID,
 						'name'       => $item->post_title,

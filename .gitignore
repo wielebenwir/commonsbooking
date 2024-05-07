@@ -9,6 +9,7 @@ node_modules
 .phpunit.*
 assets/packaged
 src/Wordpress/.DS_Store
+tests/cypress/screenshots
 /vendor
 /build
 src/.DS_Store

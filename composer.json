@@ -5,12 +5,12 @@
   "config": {
     "platform-check": false,
     "allow-plugins": {
-      "php-http/discovery": true
+      "php-http/discovery": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
     },
   "autoload": {
     "files": [
-      "includes/OptionsArray.php",
       "includes/Shortcodes.php",
       "includes/Template.php",
       "includes/TemplateParser.php",
@@ -33,26 +33,27 @@
   ],
   "require": {
     "php": ">=7.3",
-    "cmb2/cmb2": "^2.7",
+    "cmb2/cmb2": "^2.10.1",
     "mustardbees/cmb-field-select2": "3.0.4",
-    "geocoder-php/nominatim-provider": "^5.2",
-    "php-http/curl-client": "^2.1",
-    "nyholm/psr7": "^1.3",
-    "opis/json-schema": "^1.0",
-    "scssphp/scssphp": "^1.10.0",
+    "geocoder-php/nominatim-provider": "^5.7",
+    "php-http/curl-client": "^2.3",
+    "nyholm/psr7": "^1.8",
+    "opis/json-schema": "^2.3.0",
+    "scssphp/scssphp": "^1.11.1",
     "ext-json": "*",
-    "symfony/cache": "^5.4",
-    "symfony/service-contracts": "v1.1.11",
-    "eluceo/ical": "2.09.*",
-    "phpmailer/phpmailer": "^6.6",
+    "symfony/cache": "^5.4.30",
+    "symfony/service-contracts": "^v2.5.2",
+    "eluceo/ical": "~2.13.0",
+    "phpmailer/phpmailer": "^6.8.1",
     "ed-itsolutions/cmb2-field-ajax-search": "^2.0"
   },
   "require-dev": {
-    "mockery/mockery": "1.*",
-    "phpunit/phpunit": "7.*",
-    "yoast/phpunit-polyfills": "^1.0",
+    "mockery/mockery": "^1.6.6",
+    "phpunit/phpunit": "^8.5.34",
+    "yoast/phpunit-polyfills": "^2.0",
     "wp-coding-standards/wpcs": "^2.3",
-    "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "slope-it/clock-mock": "^0.3.8"
+    "phpcompatibility/phpcompatibility-wp": "^2.1.4",
+    "slope-it/clock-mock": "^0.4.0",
+    "phpunit/php-code-coverage": "^7.0.15"
   }
 }

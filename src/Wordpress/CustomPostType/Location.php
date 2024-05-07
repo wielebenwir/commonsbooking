@@ -37,6 +37,24 @@ class Location extends CustomPostType {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
+
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
+		}
+	}
+
+	/**
+	 * Handles the creation and editing of the terms in the taxonomy for the location post type
+	 * @param $term_id
+	 * @param $tt_id
+	 * @param $taxonomy
+	 *
+	 * @return void
+	 */
+	public static function termChange($term_id, $tt_id, $taxonomy) {
+		if ( $taxonomy == self::$postType . 's_category' ) {
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
 		}
 	}
 
@@ -307,12 +325,24 @@ class Location extends CustomPostType {
 		// location email
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Location email', 'commonsbooking' ),
-			'desc'       => esc_html__( 'Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas.',
+			'desc'       => esc_html__( 'Email addresses of the owner of the station. Can be reminded about bookings / cancellations and will receive the booking codes (when configured in the timeframe). You can enter multiple addresses separated by commas.',
 				'commonsbooking' ),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
 			'type'       => 'text',
+			'attributes' => array(
+				'class' => "regular-text cmb2-oembed",
+			),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 			// 'repeatable'      => true,
+		) );
+
+		// checkbox BCC bookings / cancellations to location email
+		$cmb->add_field( array(
+			'name'       => esc_html__( 'Send copy of bookings / cancellations to location email', 'commonsbooking' ),
+			'desc'       => esc_html__( 'If enabled, the location email will receive a copy of all booking and cancellation notifications.', 'commonsbooking' ),
+			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc',
+			'type'       => 'checkbox',
+			'default_cb' => 'cmb2_set_checkbox_default_for_new_post'
 		) );
 
 		// pickup description
@@ -357,10 +387,29 @@ class Location extends CustomPostType {
 			) );
 		}
 
+		$cmb->add_field( array (
+			'name' => esc_html__( 'Use global location settings', 'commonsbooking' ),
+			'desc' => esc_html__( 'If selected, the global location settings (under the "General" tab) will be used for this location. If not selected, the settings below will be used.', 'commonsbooking' ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'use_global_settings',
+			'type' => 'checkbox',
+			'default_cb' => 'cmb2_set_checkbox_default_for_new_post',
+		) );
+
+		foreach ( self::getOverbookingSettingsMetaboxes() as $metabox ) {
+			$cmb->add_field( $metabox );
+		}
+
 		$cmb->add_field( array(
-			'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),
-			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/?p=435">Create Locations</a> for more information.', 'commonsbooking' ) ),
-			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
+			'name' => esc_html__( 'Receive booking start reminder', 'commonsbooking' ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder',
+			'type' => 'checkbox',
+		) );
+
+		$cmb->add_field( array(
+			'name' => esc_html__( 'Receive booking end reminder', 'commonsbooking' ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder',
 			'type' => 'checkbox',
 		) );
 
@@ -390,6 +439,37 @@ class Location extends CustomPostType {
 			$metabox_fields[$metabox_field['id']] = $metabox_field['name'];
 		}
 		Settings::updateOption('commonsbooking_settings_metaboxfields', $this->getPostType(), $metabox_fields);
+	}
+
+	/**
+	 * Will get the metaboxes for the location settings that can also be overwritten by the global location settings.
+	 * We put them in a function here, so they can be retrieved by the OptionsArray.php as well.
+	 *
+	 * @return array[]
+	 */
+	public static function getOverbookingSettingsMetaboxes() {
+		return [
+			array(
+				'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/?p=435">Create Locations</a> for more information.', 'commonsbooking' ) ),
+				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
+				'type' => 'checkbox',
+			),
+			array(
+				'name' => esc_html__( 'Count locked days when overbooking', 'commonsbooking' ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe.', 'commonsbooking' ) ),
+				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range',
+				'type' => 'checkbox',
+			),
+			array(
+				'name' => esc_html__( 'Count connected locked days as one', 'commonsbooking' ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on.', 'commonsbooking' ) ),
+				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum',
+				'default' => '0',
+				'type' => 'text_small',
+			)
+		];
+
 	}
 
 }
