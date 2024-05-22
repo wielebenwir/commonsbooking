@@ -23,11 +23,6 @@ msgstr "Commons Booking"
 msgid "https://commonsbooking.org"
 msgstr "https://commonsbooking.org"
 
-#. Description of the plugin
-#: commonsbooking.php
-msgid "A wordpress plugin for management and booking of common goods."
-msgstr "Ein WordPress-Plugin für die Verwaltung und Buchung von Gemeingütern."
-
 #. Author of the plugin
 #: commonsbooking.php
 msgid "wielebenwir e.V."
@@ -4213,4 +4208,9 @@ msgstr "Zum Kalender hinzufügen"
 
 #: templates/shortcode-bookings.php:16
 msgid "Please <a href=\"%s\"> login </a> to see your bookings."
+msgstr ""
+
+#. Description of the plugin
+#: commonsbooking.php
+msgid "A WordPress plugin for the management and booking of common goods."
 msgstr ""
