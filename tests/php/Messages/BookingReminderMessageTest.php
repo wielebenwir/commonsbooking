@@ -13,7 +13,7 @@ class BookingReminderMessageTest extends Email_Test_Case
 	    $subject = '{{item:post_title}} | {{location:post_title}}';
 	    $body = '{{booking:post_title}} | {{user:user_login}}';
 	    $expectedSubject = self::ITEM_NAME . ' | ' . self::LOCATION_NAME;
-	    $expectedBody = self::BOOKING_NAME . ' | ' . self::RECIPIENT_USERNAME;
+	    $expectedBody = self::BOOKING_NAME . ' | ' . self::BOOKINGUSER_USERNAME;
 	    //set template settings
 	    Settings::updateOption('commonsbooking_options_reminder', 'pre-booking-reminder-subject', $subject);
 	    Settings::updateOption('commonsbooking_options_reminder', 'pre-booking-reminder-body', $body);

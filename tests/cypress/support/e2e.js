@@ -18,3 +18,11 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+Cypress.on('uncaught:exception', (err, runnable) => {
+  // WordPress is throwing this error in the latest trunk when trying to login with a changed date #61224 in Trac. This workaround is in place until the issue is resolved
+  if (err.message.includes('Cannot read properties of undefined (reading \'serialize\')')) {
+    return false
+  }
+  // we still want to ensure there are no other unexpected
+  // errors, so we let them fail the test
+})
