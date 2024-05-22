@@ -723,6 +723,9 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 
+		//Add custom hook to clear cache from cronjob
+		add_action( self::$clearCacheHook, array( $this, 'clearCache' ) );
+
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
@@ -804,7 +807,7 @@ class Plugin {
 		if ( ! in_array( $post->post_status, $ignoredStates ) || $update ) {
 			$tags   = Wordpress::getRelatedPostIds( $post_id );
 			$tags[] = 'misc';
-			new AsyncJob( array( self::class, 'clearCache' ), [ $tags ] );
+			self::scheduleClearCache( $tags );
 		}
 	}
 
