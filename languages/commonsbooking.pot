@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-22T17:34:03+00:00\n"
+"POT-Creation-Date: 2024-05-22T17:55:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: commonsbooking\n"
@@ -1581,12 +1581,12 @@ msgstr ""
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:451
+#: src/Plugin.php:452
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:653
-#: src/Plugin.php:668
+#: src/Plugin.php:655
+#: src/Plugin.php:670
 #: src/Wordpress/CustomPostType/Booking.php:1002
 msgid "CommonsBooking Bookings"
 msgstr ""

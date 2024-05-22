@@ -1410,7 +1410,7 @@ msgstr "Standort-Kategorien"
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:451
+#: src/Plugin.php:452
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -3437,8 +3437,8 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:653
-#: src/Plugin.php:668
+#: src/Plugin.php:655
+#: src/Plugin.php:670
 #: src/Wordpress/CustomPostType/Booking.php:1002
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
