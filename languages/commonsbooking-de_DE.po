@@ -1414,23 +1414,23 @@ msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht ge
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:286
+#: src/Service/Cache.php:308
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
-#: src/Service/Cache.php:293
+#: src/Service/Cache.php:315
 msgid "Successfully connected to REDIS database!"
 msgstr "Erfolgreich mit REDIS-Datenbank verbunden!"
 
-#: src/Service/Cache.php:304
+#: src/Service/Cache.php:326
 msgid "REDIS database not enabled"
 msgstr "REDIS-Datenbank nicht aktiviert"
 
-#: src/Service/Cache.php:330
+#: src/Service/Cache.php:352
 msgid "Directory %s is writeable."
 msgstr "Der Ordner %s ist beschreibbar."
 
-#: src/Service/Cache.php:335
+#: src/Service/Cache.php:357
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
 
@@ -3732,11 +3732,11 @@ msgid "(not planned)"
 msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1387
-#: src/Service/Cache.php:353
+#: src/Service/Cache.php:375
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:348
+#: src/Service/Cache.php:370
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
