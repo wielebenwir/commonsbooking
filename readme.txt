@@ -79,7 +79,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
-### 2.9.3 (26.05.2024)
+### 2.9.3 (31.05.2024)
 ADDED: Download ics file directly from booking details page
 ENHANCED: Taxonomies will now be shown in item / location overview in the backend
 ENHANCE: If iCalendar attachments are enabled: The cancellation email will now contain a calendar event that will cancel the booking in the user's calendar
