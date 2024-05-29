@@ -185,7 +185,7 @@ class CalendarTest extends CustomPostTypeTest {
 		$timeframes = [ $closestTimeframeModel, $secondClosestTimeframeModel ];
 		$this->assertEquals($closestTimeframeModel->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID );
 
-		//Case 2: Timeframes overlap
+		//Case 2: Timeframes overlap but repetition is different
 		$otherLocation = $this->createLocation("OtherLocation");
 		$otherItem = $this->createItem("OtherItem");
 		$continuedTimeframe = new Timeframe( $this->createTimeframe(
@@ -219,6 +219,76 @@ class CalendarTest extends CustomPostTypeTest {
 		$timeframes = [ $inBetweenTimeframe, $continuedTimeframe ];
 		$this->assertEquals($continuedTimeframe->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID);
 
+		//case 3: Timeframes only exist in the future
+		$timeframeModel = new Timeframe( $this->timeframeId );
+		$timeframes = [ $timeframeModel, $secondClosestTimeframeModel ];
+		$this->assertEquals($timeframeModel->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID);
+
+		//case 4: timeframes overlap on the day but have different times (for today)
+		$otherItem = $this->createItem("OtherItem");
+		$otherLocation = $this->createLocation("OtherLocation");
+		$noonTimeframe = new Timeframe( $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( '-1 days midnight', $this->now ),
+			strtotime( '+1 days midnight', $this->now ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			0,
+			'8:00 AM',
+			'11:00 AM',
+		) );
+		$afternoonTimeframe = new Timeframe( $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( '-1 days midnight', $this->now ),
+			strtotime( '+1 days midnight', $this->now ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'd',
+			0,
+			'12:00 PM',
+			'3:00 PM',
+		) );
+		$timeframes = [ $noonTimeframe, $afternoonTimeframe ];
+		$morning = new \DateTime();
+		$morning->setTime(9,0);
+		ClockMock::freeze($morning);
+		$this->assertEquals($noonTimeframe->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID);
+
+		$afternoon = new \DateTime();
+		$afternoon->setTime(13,0);
+		ClockMock::freeze($afternoon);
+		$this->assertEquals($afternoonTimeframe->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID);
+
+		//case 5 timeframes overlap on the day but have different times (for future)
+		$noonFutureTimeframe = new Timeframe( $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( '+5 days midnight', $this->now ),
+			strtotime( '+7 days midnight', $this->now ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			0,
+			'8:00 AM',
+			'11:00 AM',
+		) );
+		$afternoonFutureTimeframe = new Timeframe( $this->createTimeframe(
+			$otherLocation,
+			$otherItem,
+			strtotime( '+5 days midnight', $this->now ),
+			strtotime( '+7 days midnight', $this->now ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'd',
+			0,
+			'12:00 PM',
+			'3:00 PM',
+		) );
+		$timeframes = [ $noonFutureTimeframe, $afternoonFutureTimeframe ];
+		$this->assertEquals($noonFutureTimeframe->ID, Calendar::getClosestBookableTimeFrameForToday($timeframes)->ID);
 	}
 
 	protected function setUp() : void {
