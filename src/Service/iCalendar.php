@@ -11,7 +11,10 @@ use Eluceo\iCal\Domain\ValueObject\SingleDay;
 use Eluceo\iCal\Domain\ValueObject\TimeSpan;
 use Eluceo\iCal\Presentation\Factory\CalendarFactory;
 use Eluceo\iCal\Domain\ValueObject\DateTime;
+use Eluceo\iCal\Domain\ValueObject\Timestamp;
+use Eluceo\iCal\Domain\Enum\EventStatus;
 use Eluceo\iCal\Domain\ValueObject\Location;
+use Eluceo\iCal\Domain\ValueObject\UniqueIdentifier;
 use Eluceo\iCal\Domain\Entity\Event;
 use Eluceo\iCal\Domain\ValueObject\Date;
 use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
@@ -91,6 +94,34 @@ class iCalendar {
     }
 
 	/**
+	 * Get the ics file for an existing booking. Will be called, when the "Add to Calendar" button on the booking page is pressed
+	 *
+	 * @param $bookingID
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function downloadICS( $bookingID ): void {
+		$postID           = $bookingID;
+		$booking          = new Booking( $postID );
+		$template_objects = [
+			'booking'  => $booking,
+			'item'     => $booking->getItem(),
+			'location' => $booking->getLocation(),
+			'user'     => $booking->getUserData(),
+		];
+
+		$eventTitle       = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+		$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
+		$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+		$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
+		$calendar         = $booking->getiCal( $eventTitle, $eventDescription );
+		header( 'Content-Type: text/calendar; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename="booking.ics"' );
+		echo $calendar;
+	}
+
+	/**
 	 * Adds Model\Booking to Calendar.
 	 * This will take all the information like title, description, location, start and end date and add it to the calendar as an event.
 	 *
@@ -156,12 +187,22 @@ class iCalendar {
                 );
             }
 
+			$eventStatus = EventStatus::CONFIRMED();
+			if ($booking->isCancelled()) {
+				$eventStatus = EventStatus::CANCELLED();
+			}
+
+			// Create unique identifier
+
+			$uniqueIdentifier = new UniqueIdentifier($booking->post_name);
             // Create Event domain entity.
-            $event = new Event();
+            $event = new Event($uniqueIdentifier);
             $event
                 ->setSummary($eventTitle)
                 ->setDescription($eventDescription)
                 ->setOccurrence($occurrence)
+	            ->setStatus($eventStatus)
+	            ->touch(new Timestamp())
                 ;
 
 			//Add location to domain entity

@@ -22,7 +22,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	private $restriction2;
 
-	private $testBooking;
+	protected $testBooking;
 
 	/**
 	 * Test that we only get the booking, ending today.
@@ -32,6 +32,34 @@ class BookingTest extends CustomPostTypeTest {
 	public function testGetEndingBookingsByDate() {
 		$endingBookingsToday = Booking::getEndingBookingsByDate( strtotime( self::CURRENT_DATE ) );
 		$this->assertCount( 1, $endingBookingsToday );
+		$this->assertEquals( $this->confirmedBookingEndingToday, $endingBookingsToday[0]->ID);
+
+		$tomorrow = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+		$endingBookingsTomorrow = Booking::getEndingBookingsByDate( $tomorrow );
+		$this->assertCount( 0, $endingBookingsTomorrow );
+
+		$inTwoDays = strtotime( '+2 days', strtotime( self::CURRENT_DATE ) );
+		$endingBookingsInTwoDays = Booking::getEndingBookingsByDate( $inTwoDays );
+		$this->assertCount( 2, $endingBookingsInTwoDays );
+		$this->assertEqualsCanonicalizing(
+			[ $this->testBooking, $this->confirmedBookingStartingToday ],
+			array_map( fn($b) => $b->ID , $endingBookingsInTwoDays )
+		);
+
+		//create test booking that ended yesterday
+		$yesterday = strtotime( '-1 day', strtotime( self::CURRENT_DATE ) );
+		$booking = $this->createBooking(
+			$this->testLocation,
+			$this->testItem,
+			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
+			$yesterday,
+			'8:00 AM',
+			'12:00 PM',
+			'confirmed'
+		);
+		$endingBookingsYesterday = Booking::getEndingBookingsByDate( $yesterday );
+		$this->assertCount( 1, $endingBookingsYesterday );
+		$this->assertEquals( $booking, $endingBookingsYesterday[0]->ID);
 	}
 
 	/**
@@ -42,6 +70,12 @@ class BookingTest extends CustomPostTypeTest {
 	public function testGetBeginningBookingsByDate() {
 		$beginningBookingsToday = Booking::getBeginningBookingsByDate( strtotime( self::CURRENT_DATE ) );
 		$this->assertCount( 1, $beginningBookingsToday );
+		$this->assertEquals( $this->confirmedBookingStartingToday, $beginningBookingsToday[0]->ID);
+
+		$tomorrow = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+		$beginningBookingsTomorrow = Booking::getBeginningBookingsByDate( $tomorrow );
+		$this->assertCount( 1, $beginningBookingsTomorrow );
+		$this->assertEquals( $this->testBooking, $beginningBookingsTomorrow[0]->ID);
 	}
 
 	/**

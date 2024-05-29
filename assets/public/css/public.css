@@ -3616,6 +3616,12 @@
   box-shadow: none !important;
   font-size: 0.875rem;
 }
+.cb-wrapper input.cb-action-get_ics {
+  background-color: var(--commonsbooking-color-primary);
+  box-shadow: none !important;
+  font-size: 0.875rem;
+  float: left;
+}
 .cb-wrapper #booking-form-container,
 .cb-wrapper #booking-form-container div {
   border-bottom: 0;
@@ -4232,9 +4238,6 @@
   color: #444;
   background: linear-gradient(to top left, var(--commonsbooking-color-cancel) 0%, var(--commonsbooking-color-cancel) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
 }
-.cb-wrapper .leaflet-popup-content .cb-map-popup-item-desc {
-  display: none;
-}
 
 /* Filters */
 .cb-map-filters.cb-wrapper {
@@ -4569,6 +4572,7 @@
 }
 .cb-wrapper .cb-notice.error {
   background: var(--commonsbooking-color-error);
+  color: var(--commonsbooking-textcolor-light);
 }
 .cb-wrapper .cb-notice-small {
   display: block;

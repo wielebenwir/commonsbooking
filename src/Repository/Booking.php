@@ -281,14 +281,18 @@ class Booking extends PostRepository {
 	 * Returns all bookings, allowed to see for user.
 	 *
 	 * @param bool $asModel
-	 * @param null $startDate
+	 * @param null $minTimestamp
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getForUser( \WP_User $user, bool $asModel = false, $startDate = null ): array {
+	public static function getForUser(
+		\WP_User $user,
+		bool $asModel = false,
+		$minTimestamp = null,
+		array $postStatus = [ 'canceled', 'confirmed', 'unconfirmed']
+	): array {
 		$customId = $user->ID;
-
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -298,8 +302,8 @@ class Booking extends PostRepository {
 				[],
 				null,
 				$asModel,
-				$startDate,
-				[ 'canceled', 'confirmed', 'unconfirmed' ]
+				$minTimestamp,
+				$postStatus
 			);
 			if ( $posts ) {
 				// Check if it is the main query and one of our custom post types
@@ -330,14 +334,18 @@ class Booking extends PostRepository {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getForCurrentUser( bool $asModel = false, $startDate = null ): array {
+	public static function getForCurrentUser(
+		bool $asModel = false,
+		$startDate = null,
+		$postStatus = [ 'canceled', 'confirmed', 'unconfirmed' ]
+	): array {
 		if ( ! is_user_logged_in() ) {
 			return [];
 		}
 
 		$current_user = wp_get_current_user();
 
-		return self::getForUser( $current_user, $asModel, $startDate );
+		return self::getForUser( $current_user, $asModel, $startDate ,$postStatus );
 	}
 
 	/**
@@ -359,7 +367,7 @@ class Booking extends PostRepository {
 		array $items = [],
 		?string $date = null,
 		bool $returnAsModel = false,
-		$minTimestamp = null,
+		int $minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		return \CommonsBooking\Repository\Timeframe::get(

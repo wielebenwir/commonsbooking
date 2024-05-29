@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.availability.schema.json",
+    "title": "Commons Api Availability Schema",
+    "description": "A schema for availability slots of the Commons API",
+    "definitions": {
+        "availabilitySlot": {
+            "type": "object",
+            "description": "A time slot at which an item can be booked at a certain location.",
+            "properties": {
+                "start": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "locationId": {
+                    "type": "string"
+                },
+                "itemId": {
+                    "type": "string"
+                }
+            },
+            "required": ["start", "end", "locationId", "itemId"]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "availability": {
+            "type": "array",
+            "descriptions": "An array with the availability slots for bookable items.",
+            "items": { "$ref": "#/definitions/availabilitySlot" },
+            "uniqueItems": true
+        }
+    },
+    "required": ["availability"]
+}

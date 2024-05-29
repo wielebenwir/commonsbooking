@@ -48,6 +48,9 @@ class Upgrade {
 		],
 		'2.9.0' => [
 			[self::class, 'setMultiSelectTimeFrameDefault']
+		],
+		'2.9.2' => [ 
+			[self::class, 'enableLocationBookingNotification']
 		]
 	];
 
@@ -307,6 +310,21 @@ class Upgrade {
 			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE ) ) ) {
 				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
 			}
+		}
+	}
+
+	/**
+	 * Previously, if a location email was set that meant that they also receive a copy of each booking / cancellation email.
+	 * Now we have a separate checkbox to enable that which should be enabled for existing locations so that they will still receive emails after upgrade.
+	 *
+	 * @since 2.9.2
+	 * @return void
+	 */
+	public static function enableLocationBookingNotification() {
+		$locations = \CommonsBooking\Repository\Location::get();
+
+		foreach ($locations as $location) {
+			update_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on');
 		}
 	}
 }

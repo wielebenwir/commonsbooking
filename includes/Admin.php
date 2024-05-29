@@ -11,7 +11,23 @@ function commonsbooking_admin() {
 	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
 
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
-	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
+
+	// Scripts for the WordPress backend
+	if ( WP_DEBUG ) {
+		wp_enqueue_script(
+			'cb-scripts-admin',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js',
+			array(),
+			time()
+		);
+	} else {
+		wp_enqueue_script(
+			'cb-scripts-admin',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.min.js',
+			array(),
+			COMMONSBOOKING_VERSION
+		);
+	}
 
     // Map marker upload scripts
     // TODO needs to be evaluated. Maybe not working on all systems
@@ -39,6 +55,14 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_start_booking_migration' ),
 		)
 	);
+
+	// Additional info for CMB2 to handle booking rules
+	wp_add_inline_script(
+		'cb-scripts-admin',
+'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
+		. 'cb_applied_booking_rules=' . \CommonsBooking\Service\BookingRuleApplied::getRulesJSON() . ';',
+	);
+
 	/**
 	 * Ajax - cache warmup
 	 */

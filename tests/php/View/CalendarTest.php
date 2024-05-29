@@ -162,6 +162,22 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue($days[date('Y-m-d', strtotime('+1 day', strtotime($today)))]['locked']);
 	}
 
+	public function testRenderTable() {
+		$calendar = Calendar::renderTable([]);
+		$item = new \CommonsBooking\Model\Item($this->itemId);
+		$location = new \CommonsBooking\Model\Location($this->locationId);
+		$this->assertStringContainsString('<table', $calendar);
+		$this->assertStringContainsString($item->post_title, $calendar);
+		$this->assertStringContainsString($location->post_title, $calendar);
+
+		//in a year, all timeframes will have expired -> calendar should be empty
+		$inAYear = new \DateTime();
+		$inAYear->modify('+1 year');
+		ClockMock::freeze($inAYear);
+		$calendar = Calendar::renderTable([]);
+		$this->assertStringContainsString('No items found', $calendar);
+	}
+
 	public function testGetClosestBookableTimeFrameForToday() {
 		//Case 1: Timeframes do not overlap
 		$closestTimeframeModel = new Timeframe( $this->closestTimeframe );
