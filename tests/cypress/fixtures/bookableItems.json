@@ -47,6 +47,18 @@
       "post_title": "WeeklyRepetition Overbooking NoCount - NoAdmin",
       "post_name": "weeklyrepetition-overbooking-nocount-noadmin",
       "test_name": "WeeklyRepetition Overbooking NoCount"
+    },
+    {
+      "post_id": 118,
+      "post_title": "DailyRep Holiday NoOverbooking 1Day – NoAdmin",
+      "post_name": "dailyrep-holiday-nooverbooking-1day-noadmin",
+      "test_name": "DailyRep Holiday NoOverbooking 1Day"
+    },
+    {
+      "post_id": 112,
+      "post_title": "WeeklyRepetition NoOverbooking 1Day – NoAdmin",
+      "post_name": "weeklyrepetition-nooverbooking-1day-noadmin",
+      "test_name": "WeeklyRepetition NoOverbooking 1Day"
     }
   ]
 }

@@ -37,6 +37,24 @@ class Location extends CustomPostType {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
+
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
+		}
+	}
+
+	/**
+	 * Handles the creation and editing of the terms in the taxonomy for the location post type
+	 * @param $term_id
+	 * @param $tt_id
+	 * @param $taxonomy
+	 *
+	 * @return void
+	 */
+	public static function termChange($term_id, $tt_id, $taxonomy) {
+		if ( $taxonomy == self::$postType . 's_category' ) {
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
 		}
 	}
 
@@ -307,12 +325,24 @@ class Location extends CustomPostType {
 		// location email
 		$cmb->add_field( array(
 			'name'       => esc_html__( 'Location email', 'commonsbooking' ),
-			'desc'       => esc_html__( 'Email addresses to which a copy of the booking confirmation / cancellation should be sent. You can enter multiple addresses separated by commas.',
+			'desc'       => esc_html__( 'Email addresses of the owner of the station. Can be reminded about bookings / cancellations and will receive the booking codes (when configured in the timeframe). You can enter multiple addresses separated by commas.',
 				'commonsbooking' ),
 			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email',
 			'type'       => 'text',
+			'attributes' => array(
+				'class' => "regular-text cmb2-oembed",
+			),
 			'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 			// 'repeatable'      => true,
+		) );
+
+		// checkbox BCC bookings / cancellations to location email
+		$cmb->add_field( array(
+			'name'       => esc_html__( 'Send copy of bookings / cancellations to location email', 'commonsbooking' ),
+			'desc'       => esc_html__( 'If enabled, the location email will receive a copy of all booking and cancellation notifications.', 'commonsbooking' ),
+			'id'         => COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc',
+			'type'       => 'checkbox',
+			'default_cb' => 'cmb2_set_checkbox_default_for_new_post'
 		) );
 
 		// pickup description
@@ -368,6 +398,20 @@ class Location extends CustomPostType {
 		foreach ( self::getOverbookingSettingsMetaboxes() as $metabox ) {
 			$cmb->add_field( $metabox );
 		}
+
+		$cmb->add_field( array(
+			'name' => esc_html__( 'Receive booking start reminder', 'commonsbooking' ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder',
+			'type' => 'checkbox',
+		) );
+
+		$cmb->add_field( array(
+			'name' => esc_html__( 'Receive booking end reminder', 'commonsbooking' ),
+			'desc' => commonsbooking_sanitizeHTML( __( 'If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href="admin.php?page=commonsbooking_options_reminder"> general CommonsBooking settings</a>.', 'commonsbooking' ) ),
+			'id'   => COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder',
+			'type' => 'checkbox',
+		) );
 
 		// Check if custom meta fields are set in CB Options and generate MetaData-Box and fields
 		if ( is_array( self::getCMB2FieldsArrayFromCustomMetadata( 'location' ) ) ) {

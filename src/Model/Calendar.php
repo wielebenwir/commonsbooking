@@ -153,12 +153,12 @@ class Calendar {
 
 					$availabilitySlot->locationId = "";
 					if ( $timeframe->getLocation() ) {
-						$availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
+						$availabilitySlot->locationId = $timeframe->getLocationID() . "";
 					}
 
 					$availabilitySlot->itemId = "";
 					if ( $timeframe->getItem() ) {
-						$availabilitySlot->itemId = $timeframe->getItem()->ID . "";
+						$availabilitySlot->itemId = $timeframe->getItemID() . "";
 					}
 
 					$slotId = md5( serialize( $availabilitySlot ) );

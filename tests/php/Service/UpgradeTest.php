@@ -129,6 +129,20 @@ class UpgradeTest extends CustomPostTypeTest
 		$this->assertEmpty(get_post_meta($holiday, 'advance_booking_days', true));
 	}
 
+	public function testSetMultiSelectTimeFrameDefault() {
+		$tf = $this->createBookableTimeFrameIncludingCurrentDay();
+		update_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, '');
+		update_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, '');
+		Upgrade::setMultiSelectTimeFrameDefault();
+		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_ITEM_SELECTION_TYPE, true));
+		$this->assertEquals(Timeframe::SELECTION_MANUAL_ID, get_post_meta($tf, Timeframe::META_LOCATION_SELECTION_TYPE, true));
+	}
+
+	public function testEnableLocationBookingNotification() {
+		Upgrade::enableLocationBookingNotification();
+		$this->assertEquals('on', get_post_meta($this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', true) );
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		//This replaces the original update tasks with a internal test function that just sets a variable to true

@@ -4,10 +4,13 @@
 namespace CommonsBooking;
 
 use CommonsBooking\CB\CB1UserFields;
+use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Map\LocationMapAdmin;
+use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
@@ -84,6 +87,7 @@ class Plugin {
 		foreach ( $adminAllowedCPT as $customPostType ) {
 			self::addRoleCaps( $customPostType::$postType, 'administrator' );
 			//assign all capabilities of admin to CB-Manager (see comment above)
+			//We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
 			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
 		}
 		/*
@@ -101,6 +105,7 @@ class Plugin {
 	public static function getRoleCapMapping( $roleName = null) {
 		if ( $roleName === null ) {
 			return [
+				//We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
 				self::$CB_MANAGER_ID => [
 					'read'                                 => true,
 					'manage_' . COMMONSBOOKING_PLUGIN_SLUG => true,
@@ -246,6 +251,9 @@ class Plugin {
 			AdminOptions::SetOptionsDefaultValues();
 
 			flush_rewrite_rules();
+
+			//checks if all the booking rules are in the correct format, complain if not
+			BookingRuleApplied::validateRules();
 			set_transient( 'commonsbooking_options_saved', 0 );
 		}
 	}
@@ -313,6 +321,29 @@ class Plugin {
 	}
 
 	/**
+	 * Handles the validation of booking forms. We customize the transient so that only the user that is supposed to see the transient will
+	 * actually see it.
+	 * @return void
+	 */
+	public static function handleBookingForms(): void {
+		try {
+			\CommonsBooking\Wordpress\CustomPostType\Booking::handleFormRequest();
+		}
+		catch ( BookingDeniedException $e ) {
+			set_transient(
+				\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
+				$e->getMessage(),
+				30 //Expires very quickly, so that outdated messsages will not be shown to the user
+			);
+			$targetUrl = $e->getRedirectUrl();
+			if ( $targetUrl) {
+				header( 'Location: ' . $targetUrl );
+				exit();
+			}
+		}
+	}
+
+	/**
 	 * Filters the CSS classes for the body tag in the admin.
 	 *
 	 * @param string $classes
@@ -374,20 +405,24 @@ class Plugin {
     /**
 	 * Registers category taxonomy for Custom Post Type Item
      *
+     * TODO: This can probably be re-factored to the more generic CustomPostType
+     *
 	 * @return void
 	 */
 	public static function registerItemTaxonomy() {
 		$customPostType = Item::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
-				'label'        => esc_html__( 'Item Category', 'commonsbooking' ),
-				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical' => true,
-				'show_in_rest' => true,
-				'public' => true
+				'label'             => esc_html__( 'Item Category', 'commonsbooking' ),
+				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'public'            => true,
+				'show_admin_column' => true
 			)
 		);
 
@@ -395,6 +430,10 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -404,15 +443,17 @@ class Plugin {
 	 */
 	public static function registerLocationTaxonomy() {
 		$customPostType = Location::getPostType();
+		$taxonomy = $customPostType . 's_category';
 
-		$result = register_taxonomy(
-			$customPostType . 's_category',
+		$result   = register_taxonomy(
+			$taxonomy,
 			$customPostType,
 			array(
-				'label'        => esc_html__( 'Location Category', 'commonsbooking' ),
-				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical' => true,
-				'show_in_rest' => true,
+				'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
+				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true
 			)
 		);
 
@@ -420,6 +461,10 @@ class Plugin {
 		if ( is_wp_error( $result ) ) {
 			wp_die( $result->get_error_message() );
 		}
+
+		//hook the term updates to the location post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
 	}
 
 	/**
@@ -475,6 +520,129 @@ class Plugin {
 		}
 	}
 
+
+	public static function registerScriptsAndStyles() {
+		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
+
+		$version_file_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
+		$version_file_content = file_get_contents($version_file_path);
+		$versions = json_decode($version_file_content, true);
+		if (JSON_ERROR_NONE !== json_last_error()) {
+			trigger_error("Unable to parse commonsbooking asset version file in $version_file_path.");
+		}
+
+		// spin.js
+		wp_register_script('cb-spin', $base . 'spin-js/spin.min.js', [], $versions['spin.js']);
+
+		// leaflet
+		wp_register_script('cb-leaflet', $base . 'leaflet/leaflet.js',[], $versions['leaflet']);
+		wp_register_style('cb-leaflet', $base . 'leaflet/leaflet.css', [], $versions['leaflet']);
+
+		// leaflet markercluster
+		wp_register_script(
+			'cb-leaflet-markercluster',
+			$base . 'leaflet-markercluster/leaflet.markercluster.js',
+			['cb-leaflet'],
+			$versions['leaflet.markercluster']
+		);
+		wp_register_style(
+			'cb-leaflet-markercluster-base',
+			$base . 'leaflet-markercluster/MarkerCluster.css',
+			[],
+			$versions['leaflet.markercluster']
+		);
+		wp_register_style(
+			'cb-leaflet-markercluster',
+			$base . 'leaflet-markercluster/MarkerCluster.Default.css',
+			['cb-leaflet-markercluster-base'],
+			$versions['leaflet.markercluster']
+		);
+
+		// leaflet-easybutton
+		wp_register_script(
+			'cb-leaflet-easybutton',
+			$base . 'leaflet-easybutton/easy-button.js',
+			['cb-leaflet'],
+			$versions['leaflet-easybutton']
+		);
+		wp_register_style(
+			'cb-leaflet-easybutton',
+			$base . 'leaflet-easybutton/easy-button.css',
+			['cb-leaflet'],
+			$versions['leaflet-easybutton']
+		);
+
+		// leaflet-spin
+		wp_register_script(
+			'cb-leaflet-spin',
+			$base . 'leaflet-spin/leaflet.spin.min.js',
+			['cb-leaflet', 'cb-spin'],
+			$versions['leaflet-spin']
+		);
+
+		// leaflet-messagebox
+		wp_register_script(
+			'cb-leaflet-messagebox',
+			COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.js',
+			['cb-leaflet'],
+			'1.1',
+		);
+		wp_register_style(
+			'cb-leaflet-messagebox',
+			COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.css',
+			['cb-leaflet'],
+			'1.1'
+		);
+
+		// jquery overscroll
+		wp_register_script(
+			'cb-jquery-overscroll',
+			COMMONSBOOKING_MAP_ASSETS_URL . 'overscroll/jquery.overscroll.min.js',
+			['jquery'],
+			'1.7.7'
+		);
+
+		//cb_map shortcode
+		wp_register_script( 'cb-map-filters',
+			COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-filters.js',
+			['jquery'],
+			COMMONSBOOKING_MAP_PLUGIN_DATA['Version']
+		);
+		wp_register_script(
+			'cb-map-shortcode',
+			COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-shortcode.js',
+			['jquery', 'cb-jquery-overscroll', 'cb-leaflet', 'cb-leaflet-easybutton', 'cb-leaflet-markercluster', 'cb-leaflet-messagebox', 'cb-leaflet-spin', 'cb-map-filters'],
+			COMMONSBOOKING_MAP_PLUGIN_DATA['Version']
+		);
+		wp_register_style(
+			'cb-map-shortcode',
+			COMMONSBOOKING_MAP_ASSETS_URL . 'css/cb-map-shortcode.css',
+			['dashicons', 'cb-leaflet', 'cb-leaflet-easybutton', 'cb-leaflet-markercluster', 'cb-leaflet-messagebox'],
+			COMMONSBOOKING_MAP_PLUGIN_DATA['Version']
+		);
+
+		// vue
+		wp_register_script('cb-vue', $base . 'vue/vue.runtime.global.prod.js', [], $versions['vue']);
+
+		// commons-search
+		wp_register_script(
+			'cb-commons-search',
+			$base . 'commons-search/commons-search.umd.js',
+			['cb-leaflet', 'cb-leaflet-markercluster', 'cb-vue'],
+			$versions['@commonsbooking/frontend']
+		);
+		wp_register_style(
+			'cb-commons-search',
+			$base . 'commons-search/style.css',
+			['cb-leaflet', 'cb-leaflet-markercluster'],
+			$versions['@commonsbooking/frontend']
+		);
+	}
+
+	public function registerShortcodes() {
+		add_shortcode('cb_search', array(new SearchShortcode(), 'execute'));
+	}
+
 	/**
  	 * Registers all user data exporters ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-exporter-to-your-plugin/}).
  	 *
@@ -518,17 +686,20 @@ class Plugin {
 		add_action( 'init', array( self::class, 'registerCustomPostTypes' ), 0 );
 		add_action( 'init', array( self::class, 'registerPostStates' ), 0 );
 
-		// register admin options page
-		add_action( 'init', array( self::class, 'registerAdminOptions' ), 0 );
-
 		// Register custom post types taxonomy / categories
 		add_action( 'init', array( self::class, 'registerItemTaxonomy' ), 30 );
 
 		// Register custom post types taxonomy / categories
 		add_action( 'init', array( self::class, 'registerLocationTaxonomy' ), 30 );
 
-		// loads the Scheduler
-		add_action( 'init', array( Scheduler::class, 'initHooks' ) );
+		// register admin options page
+		add_action('init', array(self::class, 'registerAdminOptions'), 40);
+
+		//loads the Scheduler
+		add_action( 'init', array( Scheduler::class, 'initHooks' ) , 40);
+
+		//handle the booking forms, needs to happen after taxonomy registration so that we can access the taxonomy
+		add_action('init', array(self::class, 'handleBookingForms'), 50);
 
 		// admin init tasks
 		add_action( 'admin_init', array( self::class, 'admin_init' ), 30 );
@@ -542,10 +713,16 @@ class Plugin {
 		// Parent Menu Fix
 		add_filter( 'parent_file', array( $this, 'setParentFile' ) );
 
+		// register scripts
+		add_action('init', array($this, 'registerScriptsAndStyles'));
+
+		// register shortcodes
+		add_action('init', array($this, 'registerShortcodes'));
+
 		// Remove cache items on save.
 		add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );
-		add_action( 'wp_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
-		add_action( 'admin_enqueue_scripts', array( Cache::class, 'addWarmupAjaxToOutput' ) );
+		add_action( 'wp_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
+		add_action( 'admin_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
@@ -620,7 +797,7 @@ class Plugin {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public function savePostActions( $post_id, $post, $update ) {
-		if ( ! in_array( $post->post_type, self::getCustomPostTypesLabels() ) ) {
+		if ( ! self::isPostCustomPostType( $post ) ) {
 			return;
 		}
 
@@ -683,10 +860,17 @@ class Plugin {
 
 	/**
 	 * Adds bookingcode actions.
+	 * They:
+	 * 1. Delete booking codes when a booking is deleted.
+	 * 2. Hook appropriate function to button that downloads the booking codes in the backend.
+	 *    @see \CommonsBooking\View\BookingCodes::renderTable()
+	 * 3. Hook appropriate function to button that sends out emails with booking codes to the station.
+	 *   @see \CommonsBooking\View\BookingCodes::renderDirectEmailRow()
 	 */
 	public function initBookingcodes() {
 		add_action( 'before_delete_post', array( BookingCodes::class, 'deleteBookingCodes' ), 10 );
-		add_action( 'admin_action_csvexport', array( View\BookingCodes::class, 'renderCSV' ), 10, 0 );
+		add_action( 'admin_action_cb_download-bookingscodes-csv', array( View\BookingCodes::class, 'renderCSV' ), 10, 0 );
+        add_action( 'admin_action_cb_email-bookingcodes', array(View\BookingCodes::class, 'emailCodes'), 10, 0);
 	}
 
 	/**

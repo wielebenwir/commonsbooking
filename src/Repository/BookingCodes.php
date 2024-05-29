@@ -35,11 +35,10 @@ class BookingCodes {
 	/**
 	 * Returns booking codes for timeframe to display in backend Timeframe window.
 	 *
-	 *
-	 *
 	 * @param int $timeframeId - ID of timeframe to get codes for
 	 * @param int|null $startDate - Where to get booking codes from (timestamp)
 	 * @param int|null $endDate - Where to get booking codes to (timestamp)
+	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0, generate additional codes after today
 	 *
 	 * @return array
 	 * @throws BookingCodeException
@@ -67,7 +66,8 @@ class BookingCodes {
 			}
 			//when we still don't have an end-date, we will just get the coming ADVANCE_GENERATION_DAYS (should default to 365 days)
 			if (! $endDate ) {
-				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', $startDate );
+				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', null ); // null means date and time now
+				// a code will be generated for $endDate because time generally > 00:00:00 (due to initialitaion with current date and time)
 			}
 
 			$startDate = date( 'Y-m-d', $startDate );
@@ -76,12 +76,14 @@ class BookingCodes {
 			//check, if we have enough codes for the timeframe or if we need to generate more
 			//we only need to check, if we have an open-ended timeframe
 			//we check, if the end date of the last generated code is before the end date of the requested time period
-			if ( ! $timeframe->getRawEndDate() &&
-			     strtotime(self::getLastCode($timeframe)->getDate()) < strtotime($endDate)
+			if ( ! $timeframe->getRawEndDate() && self::getLastCode( $timeframe )
+				&& strtotime( self::getLastCode( $timeframe )->getDate() ) < strtotime( $endDate )
 			) {
 				$startGenerationPeriod = new \DateTime( self::getLastCode($timeframe)->getDate() );
 				$endGenerationPeriod = new \DateTime( $endDate );
-				$endGenerationPeriod->modify( '+' . $advanceGenerationDays . ' days' );
+				// set $endGenerationPeriod's time > 00:00:00 such that $endDate is included in DatePeriod iteration
+				// and code is generated for $endDate
+				$endGenerationPeriod->setTime(0, 0, 1);
 				static::generatePeriod( $timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
@@ -131,7 +133,7 @@ class BookingCodes {
 	 * @param int $itemId - ID of item attached to timeframe
 	 * @param int $locationId - ID of location attached to timeframe
 	 * @param string $date - Date in format Y-m-d
-	 * @param int $advanceGenerationDays
+	 * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generates code(s) until $date. If >0, generate additional codes after $date.
 	 *
 	 * @return BookingCode|null
 	 * @throws BookingCodeException
@@ -165,6 +167,9 @@ class BookingCodes {
 					$begin = $timeframe->getUTCStartDateDateTime();
 					$endDate = new \DateTime($date);
 					$endDate->modify('+' . $advanceGenerationDays . ' days');
+					// set $endDate's time > 00:00:00 so it will included in DatePeriod iteration and a code will be
+					// generated for $endDate
+					$endDate->setTime(0, 0, 1);
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period = new DatePeriod( $begin, $interval, $endDate );
 					static::generatePeriod($timeframe,$period);
@@ -253,6 +258,7 @@ class BookingCodes {
      * Generates booking codes for timeframe.
      *
      * @param Timeframe $timeframe
+     * @param int $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0, generate additional codes after today.
 	 *
      * @return bool
      * @return bool
@@ -268,11 +274,13 @@ class BookingCodes {
 		if ($timeframe->getRawEndDate()){
 			$end = Wordpress::getUTCDateTime();
 			$end->setTimestamp( $timeframe->getRawEndDate() );
-			$end->setTimestamp( $end->getTimestamp() + 1 );
+			// set $end's time > 00:00:00 such that DatePeriod-iteration will include $end:
+			$end->setTime(0, 0, 1);
 		}
 		else {
 			$end = new \DateTime();
 			$end->modify( '+' . $advanceGenerationDays . 'days');
+			// a code will be generated for the date in $end because its time generally > 00:00:00 (due to initialitaion with current date and time)
 		}
 
 		$interval = DateInterval::createFromDateString( '1 day' );
@@ -297,11 +305,13 @@ class BookingCodes {
 		}
 		// Before we add new codes, we remove old ones, that are not relevant anymore
 		try {
+			//TODO #507
 			$location = $timeframe->getLocation();
 		} catch ( \Exception $e ) {
 			throw new BookingCodeException( __( "No booking codes could be created because the location of the timeframe could not be found.", 'commonsbooking' )  );
 		}
 		try {
+			//TODO #507
 			$item = $timeframe->getItem();
 		} catch ( \Exception $e ) {
 			throw new BookingCodeException( __( "No booking codes could be created because the item of the timeframe could not be found.", 'commonsbooking' )  );

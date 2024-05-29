@@ -36,7 +36,11 @@ class Calendar {
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
-	 * @param $atts
+	 * @param $atts array Supports the following attributes:
+	 * 			          - locationcat: Filter by location category
+	 * 			          - itemcat: Filter by item category
+	 * 			          - days: Number of days to show in calendar table view
+	 * 			          - desc: Description text
 	 *
 	 * @return string
 	 * @throws Exception
@@ -97,13 +101,14 @@ class Calendar {
 		$print .=  '</tr></thead><tbody>';
 
 		$items = get_posts(
-            array(
+			array(
 				'post_type'      => 'cb_item',
 				'post_status'    => 'publish',
-				'order'          => 'ASC',
+				'order'          => $atts['order'] ?? 'ASC',
+				'orderby'        => $atts['orderby'] ?? 'post_title',
 				'posts_per_page' => - 1,
-            )
-        );
+			)
+		);
 
 		$itemRowsHTML = '';
 
@@ -131,7 +136,8 @@ class Calendar {
 				// Collect unique locations from timeframes
 				$locations = [];
 				foreach ( $timeframes as $timeframe ) {
-					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
+					// TODO #507
+					$locations[ $timeframe->getLocationID() ] = $timeframe->getLocation()->post_title;
 				}
 
 				// loop through location

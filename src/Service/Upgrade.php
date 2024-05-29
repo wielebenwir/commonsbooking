@@ -45,6 +45,12 @@ class Upgrade {
 		],
 		'2.8.5' => [
 			[self::class, 'removeBreakingPostmeta']
+		],
+		'2.9.0' => [
+			[self::class, 'setMultiSelectTimeFrameDefault']
+		],
+		'2.9.2' => [ 
+			[self::class, 'enableLocationBookingNotification']
 		]
 	];
 
@@ -92,7 +98,7 @@ class Upgrade {
 
 		// Clear cache
 		try {
-			Cache::clearCache();
+			Plugin::clearCache();
 		} catch ( InvalidArgumentException $e ) {
 			// Do nothing
 		}
@@ -282,6 +288,43 @@ class Upgrade {
 		if ( str_contains( $otherEventTitle, 'post_name' ) ) {
 			$updatedString = str_replace( 'post_name', 'post_title', $otherEventTitle );
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', $updatedString );
+		}
+	}
+
+
+	/**
+	 * sets the default value for multi selection to manual in all existing timeframes.
+	 * Multi selection for timeframes are available since 2.9 (estimated) - all timeframes created prior to this version need to have a value for selection
+	 *
+	 * @since 2.9
+	 * @return void
+	 * @throws InvalidArgumentException
+	 */
+	public static function setMultiSelectTimeFrameDefault() {
+		$timeframes = \CommonsBooking\Repository\Timeframe::get( [],[],[], null, true );
+
+		foreach ($timeframes as $timeframe) {
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
+			if ( empty($timeframe->getMeta(\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE ) ) ) {
+				update_post_meta($timeframe->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID);
+			}
+		}
+	}
+
+	/**
+	 * Previously, if a location email was set that meant that they also receive a copy of each booking / cancellation email.
+	 * Now we have a separate checkbox to enable that which should be enabled for existing locations so that they will still receive emails after upgrade.
+	 *
+	 * @since 2.9.2
+	 * @return void
+	 */
+	public static function enableLocationBookingNotification() {
+		$locations = \CommonsBooking\Repository\Location::get();
+
+		foreach ($locations as $location) {
+			update_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on');
 		}
 	}
 }

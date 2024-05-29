@@ -1,15 +1,10 @@
-/* line 1, ../../sass/themes/twentytwenty.scss */
 .cb-wrapper {
   /* Twenty Twenty Theme*/
 }
-/* line 3, ../../sass/themes/twentytwenty.scss */
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0 !important;
 }
 
-/* line 11, ../../sass/themes/twentytwenty.scss */
 .litepicker .container__days .day-item {
   font-size: 2.2rem;
 }
-
-/*# sourceMappingURL=twentytwenty.css.map */

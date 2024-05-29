@@ -15,6 +15,7 @@ class BookingTest extends CustomPostTypeTest {
 	private Booking $testBookingTomorrow;
 	private Booking $testBookingPast;
 	private Booking $testBookingSpanningOverTwoSlots;
+	private Booking $testBookingFixedDate;
 	private int $testBookingId;
 	private Item  $testItem;
 	private Location $testLocation;
@@ -26,6 +27,7 @@ class BookingTest extends CustomPostTypeTest {
 	private int $testBookingPastId;
 
 	public function testGetBookableTimeFrame() {
+		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$this->assertEquals($this->testTimeFrame,$this->testBookingTomorrow->getBookableTimeFrame());
 	}
 
@@ -36,9 +38,7 @@ class BookingTest extends CustomPostTypeTest {
 	public function testCancel() {
 		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 		$this->testBookingTomorrow->cancel();
-		$this->testBookingPast->cancel();
-		//flush cache to reflect updated post
-		wp_cache_flush();
+		$this->cancelBooking($this->testBookingPast);
 		$this->testBookingTomorrow = new Booking(get_post($this->testBookingId));
 		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
 		$this->assertTrue($this->testBookingTomorrow->isCancelled());
@@ -58,6 +58,117 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue($this->testBookingPast->isPast());
 	}
 
+	public function testTermsApply(){
+		\CommonsBooking\Plugin::registerItemTaxonomy();
+		//now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
+		$taxonomy  = \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() . 's_category';
+		$term      = wp_create_term( 'Test Category', $taxonomy );
+		$otherTerm = wp_create_term( 'Other Category', $taxonomy );
+		wp_set_post_terms( $this->itemId, [$term['term_id']], $taxonomy );
+		$this->assertTrue($this->testBookingTomorrow->termsApply($term['term_id']));
+		$this->assertFalse($this->testBookingTomorrow->termsApply($otherTerm['term_id']));
+	}
+
+	public function testFilterTermsApply() {
+		\CommonsBooking\Plugin::registerItemTaxonomy();
+		//now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
+		$taxonomy  = \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() . 's_category';
+		$term      = wp_create_term( 'Test Category', $taxonomy );
+		$otherItem = $this->createItem( "Other Item",'publish' );
+		$otherLocation = $this->createLocation( "Other Location",'publish' );
+		$otherTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($otherLocation,$otherItem);
+		$otherBooking = $this->createBooking(
+			$otherLocation,
+			$otherItem,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		wp_set_post_terms( $this->itemId, [ $term['term_id'] ], $taxonomy );
+		$bookingArr = array(
+			$this->testBookingTomorrow,
+			new Booking ($otherBooking)
+		);
+		$filteredBookings = Booking::filterTermsApply($bookingArr,$term['term_id']);
+		$this->assertEquals(1,count($filteredBookings));
+		$this->assertEquals($this->testBookingTomorrow,$filteredBookings[0]);
+	}
+
+	public function testGetDuration(){
+		$this->assertEquals(1,$this->testBookingTomorrow->getDuration());
+		$this->assertEquals(1,$this->testBookingPast->getDuration());
+
+		//we now create a booking and cancel it shortly after it ends
+		//this way we can test if all days are counted when it is cancelled shortly before end of the tf
+		$endTime       = strtotime( '+4 days', strtotime( self::CURRENT_DATE ) );
+		$cancelBookingId          = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$endTime,
+		);
+		$cancelBooking = new Booking(
+			$cancelBookingId
+		);
+		$this->assertEquals(3,$cancelBooking->getDuration());
+		$shortlyBeforeEnd = new \DateTime();
+		$shortlyBeforeEnd->setTimestamp($endTime)->modify('-10 minutes');
+		ClockMock::freeze($shortlyBeforeEnd);
+		$this->cancelBooking($cancelBooking);
+		$cancelBooking = new Booking( $cancelBookingId );
+
+		$this->assertEquals(3,$cancelBooking->getDuration());
+
+		//now we test what happens when a booking is cancelled in the middle of the tf
+		$endTime         = strtotime( '+5 days', strtotime( self::CURRENT_DATE ) );
+		$cancelBookingId            = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$endTime,
+		);
+		$cancelBooking = new Booking(
+			$cancelBookingId
+		);
+		$this->assertEquals(4,$cancelBooking->getDuration());
+		$halfBeforeEnd = new \DateTime();
+		$halfBeforeEnd->setTimestamp($endTime)->modify('-2 days');
+		ClockMock::freeze($halfBeforeEnd);
+		$this->cancelBooking($cancelBooking);
+		$cancelBooking = new Booking( $cancelBookingId );
+		$this->assertEquals(2,$cancelBooking->getDuration());
+
+		//now we test what happens when a booking is cancelled before it starts. It should have a length of 0
+		$cancelBookingId = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+15 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+17 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$cancelBooking = new Booking(
+			$cancelBookingId
+		);
+		$this->assertEquals(2,$cancelBooking->getDuration());
+		$shortlyBeforeStart = new \DateTime();
+		$shortlyBeforeStart->setTimestamp(strtotime( '+10 day', strtotime( self::CURRENT_DATE ) ));
+		ClockMock::freeze($shortlyBeforeStart);
+		$this->cancelBooking($cancelBooking);
+		$cancelBooking = new Booking( $cancelBookingId );
+		$this->assertEquals(0,$cancelBooking->getDuration());
+
+		// now test with overbooked days
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_in_range', 'on' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_maximum', '1' );
+		$overbookedBooking = new Booking( $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+		));
+		$overbookedBooking->setOverbookedDays(2);
+		$this->assertEquals(2,$overbookedBooking->getDuration());
+
+	}
+
 	public function testConfirm() {
 		$this->assertTrue( $this->testBookingTomorrow->isConfirmed() );
 	}
@@ -67,14 +178,13 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', time()),
-			strtotime( '+2 days', time()),
+			strtotime( '+1 day', strtotime(self::CURRENT_DATE)),
+			strtotime( '+2 days', strtotime(self::CURRENT_DATE)),
 			'8:00 AM',
 			'12:00 PM',
 			'unconfirmed',
 		);
-		$bookingObj = new Booking( get_post( $bookingId ) );
-
+		$bookingObj = new Booking( $bookingId );
 		$this->assertTrue( $bookingObj->isUnconfirmed() );
 	}
 
@@ -85,14 +195,13 @@ class BookingTest extends CustomPostTypeTest {
 		$commentValue = "Comment on this";
 		update_post_meta( $this->testBookingId, 'comment', $commentValue );
 		wp_cache_flush();
-		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
-
+		$this->testBookingTomorrow = new Booking( $this->testBookingId );
 		$this->assertEquals( $commentValue, $this->testBookingTomorrow->returnComment() );
 	}
 
 	public function testPickupDatetime() {
 		// TODO 12- 12 correct?
-		$this->assertEquals( 'July 2, 2021 12:00 am - 12:00 am', $this->testBookingFixedDate->pickupDatetime() );
+		$this->assertEquals( 'July 2, 2021 12:00 am - 12:00 am', $this->testBookingTomorrow->pickupDatetime() );
 
 		//Test Pickup for Slot Timeframes (#1342)
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 10:00 am - 3:00 pm', $this->testBookingSpanningOverTwoSlots->pickupDatetime() );
@@ -100,7 +209,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testReturnDatetime() {
 		// TODO 12:01? correct
-		$this->assertEquals( 'July 3, 2021 8:00 am - 12:01 am', $this->testBookingFixedDate->returnDatetime() );
+		$this->assertEquals( 'July 3, 2021 8:00 am - 12:01 am', $this->testBookingTomorrow->returnDatetime() );
 
 		//Test Return for Slot Timeframes (#1342)
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 3:00 pm - 6:00 pm', $this->testBookingSpanningOverTwoSlots->returnDatetime() );
@@ -112,8 +221,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Updates meta value
 		update_post_meta( $this->testBookingId, Timeframe::META_SHOW_BOOKING_CODES, 'on' );
 		wp_cache_flush();
-		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
-
+		$this->testBookingTomorrow = new Booking( $this->testBookingId );
 		$this->assertTrue( $this->testBookingTomorrow->showBookingCodes() );
 	}
 
@@ -161,10 +269,7 @@ class BookingTest extends CustomPostTypeTest {
 	public function testFormattedBookingCode() {
 		$this->assertEquals( '', $this->testBookingTomorrow->formattedBookingCode());
 	}
-
-
-
-	public function testCanCancelBaseCase() {
+public function testCanCancelBaseCase() {
 		ClockMock::freeze(new \DateTime(self::CURRENT_DATE));
 
 		// Case: Booking in the past, no one can cancel
@@ -367,32 +472,59 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( $testBookingTomorrow2->canCancel() );
 	}
 
-	protected function setUpTestBooking():void{
+
+	public function testSetOverbookedDays() {
+		//case 1: no overbooked days are counted towards the booking limit
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'off' );
+		$this->assertEquals(2,$this->testBookingTomorrow->setOverbookedDays(2));
+		$this->assertEquals(2, $this->testBookingTomorrow->getOverbookedDays());
+
+		//case 2: one overbooked day is counted towards the booking limit, the rest was overbooked
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'on' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '1' );
+		$this->assertEquals(6,$this->testBookingTomorrow->setOverbookedDays(7));
+		$this->assertEquals(6, $this->testBookingTomorrow->getOverbookedDays());
+
+		//case 3: two days are counted but only one is overbooked
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '2' );
+		$this->assertEquals(0,$this->testBookingTomorrow->setOverbookedDays(1));
+		$this->assertEquals(0, $this->testBookingTomorrow->getOverbookedDays());
+
+		//case 4: all overbooked days are counted towards the booking limit
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '0' );
+		$this->assertEquals(0,$this->testBookingTomorrow->setOverbookedDays(2));
+		$this->assertEquals(0, $this->testBookingTomorrow->getOverbookedDays());
+	}
+
+	protected function setUpTestBooking():void {
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day',  strtotime(self::CURRENT_DATE) ),
-			strtotime( '+2 days', strtotime(self::CURRENT_DATE) )
-		);
-		$this->testBookingTomorrow = new Booking(get_post($this->testBookingId));
-		$this->testBookingPastId       = $this->createBooking(
-			$this->locationId,
-			$this->itemId,
-			strtotime('-2 days', strtotime(self::CURRENT_DATE) ),
-			strtotime('-1 day',  strtotime(self::CURRENT_DATE) )
-		);
-		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
-
-		// Create fixed date booking
-		$this->testFixedDateBooking       = $this->createBooking(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+1 day',  strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 			'08:00 AM',
 			'12:00 PM'
 		);
-		$this->testBookingFixedDate = new Booking( get_post( $this->testFixedDateBooking ) );
+		$this->testBookingTomorrow = new Booking( $this->testBookingId );
+		$this->testBookingPastId   = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
+		);
+		$this->testBookingPast = new Booking(get_post($this->testBookingPastId));
+
+		// Create fixed date booking
+		$this->testBookingFixedDate       = new Booking (
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day',  strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+				'08:00 AM',
+				'12:00 PM'
+			)
+		);
 		$this->subscriberBookingInFuture = new Booking(
 			$this->createBooking(
 				$this->locationId,
@@ -446,14 +578,14 @@ class BookingTest extends CustomPostTypeTest {
 		parent::setUp();
 
 		$this->firstTimeframeId   = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '-5 days', strtotime(self::CURRENT_DATE) ),
-			strtotime( '+90 days', strtotime(self::CURRENT_DATE) )
+            $this->locationId,
+            $this->itemId,
+            strtotime('-5 days', strtotime(self::CURRENT_DATE)),
+            strtotime('+90 days', strtotime(self::CURRENT_DATE))
 		);
-		$this->testItem = new Item(get_post($this->itemId));
-		$this->testLocation = new Location(get_post($this->locationId));
-		$this->testTimeFrame = new Timeframe(get_post($this->firstTimeframeId));
+		$this->testItem = new Item($this->itemId);
+		$this->testLocation = new Location($this->locationId);
+		$this->testTimeFrame = new Timeframe($this->firstTimeframeId);
 		$this->createSubscriber();
 		$this->createAdministrator();
 		$this->createCBManager();

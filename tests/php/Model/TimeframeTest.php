@@ -19,6 +19,10 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected Timeframe $firstTimeframe;
 	protected Timeframe $secondTimeframe;
 	private Timeframe $validTF;
+	private Location $firstLocation;
+	private Location $otherLocation;
+	private Item $firstItem;
+	private Item $otherItem;
 
 	public function testHasTimeframeDateOverlap() {
 		//timeframe for only yesterday and today should not overlap with timeframe for next week
@@ -65,598 +69,357 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	/**
-	 * Only tests the very basic functionality of the overlaps function
-	 * @return void
+	 * This will provide all of the possible grid / slot combinations and if they would be considered as valid IF the timeframe overlaps on the same day
+	 * isValid determines if the timeframes should be considered as valid when the repetition is set to the same day
+	 * @return array[]
 	 */
-	public function testOverlaps() {
-		$tfBase = new Timeframe($this->createBookableTimeFrameIncludingCurrentDay());
-		$tfNextWeek = new Timeframe(
-			$this->createBookableTimeFrameStartingInAWeek()
-		);
-		$this->assertFalse( $tfBase->overlaps( $tfNextWeek ) );
+	public function getBookableTimeframeSameDayCombos(): array {
+		//two timeframes, that have slots on the same day, but they do not overlap
+		$nonOverlappingSlots = [
+			"isValid" => true,
+			"tf1" => [
+				"grid"    => "0",
+				"fullDay" => "off",
+				"start_time" => "08:00 AM",
+				"end_time" => "10:00 AM",
+			],
+			"tf2" => [
+				"grid"    => "0",
+				"fullDay" => "off",
+				"start_time" => "01:00 PM",
+				"end_time" => "11:59 PM",
+			],
+		];
 
-		$tfIdentical = new Timeframe($this->createBookableTimeFrameIncludingCurrentDay());
-		try {
-			$tfBase->overlaps( $tfIdentical );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "Overlapping bookable timeframes are not allowed to have the same weekdays.", $e->getMessage() );
-		}
+		//two timeframes, that have slots directly adjacent to each other, but they do not overlap
+		$nonOverlappingSlotsDirectlyAdjacent = [
+			"isValid" => true,
+			"tf1" => [
+				"grid"    => "0",
+				"fullDay" => "off",
+				"start_time" => "08:00 AM",
+				"end_time" => "10:00 AM",
+			],
+			"tf2" => [
+				"grid"    => "0",
+				"fullDay" => "off",
+				"start_time" => "10:00 AM",
+				"end_time" => "11:59 PM",
+			],
+		];
 
-		$tfOtherGrid = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( self::CURRENT_DATE ),
-				strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'd',
-				1,
-				'08:00 AM',
-				'10:00 AM',
-			)
-		);
-		try {
-			$tfBase->overlaps( $tfOtherGrid );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "Overlapping bookable timeframes are only allowed to have the same grid.", $e->getMessage() );
+
+		//two timeframes, that have hourly bookings on the same day, but do not overlap
+		$nonOverlappingHourly = [
+			"isValid" => true,
+			"tf1" => [
+				"grid"    => "1",
+				"fullDay" => "off",
+				"start_time" => "08:00 AM",
+				"end_time" => "10:00 AM",
+			],
+			"tf2" => [
+				"grid"  => "1",
+				"fullDay" => "off",
+				"start_time" => "10:00 AM",
+				"end_time" => "12:00 PM",
+			],
+		];
+
+		//two timeframes, that have hourly bookings directly adjacent to each other, but do not overlap
+		$nonOverlappingHourlyDirectlyAdjacent = [
+			"isValid" => true,
+			"tf1" => [
+				"grid"    => "1",
+				"fullDay" => "off",
+				"start_time" => "08:00 AM",
+				"end_time" => "10:00 AM",
+			],
+			"tf2" => [
+				"grid"  => "1",
+				"fullDay" => "off",
+				"start_time" => "10:00 AM",
+				"end_time" => "12:00 PM",
+			],
+		];
+
+		//two timeframes that are bookable for the full day, should overlap
+		$overlappingFullDay = [
+			"isValid" => false,
+			"tf1" => [
+				"grid"  => "0",
+				"fullDay" => "on",
+				"start_time" => "08:00 AM",
+				"end_time" => "08:00 PM",
+			],
+			"tf2" => [
+				"grid"  => "0",
+				"fullDay" => "on",
+				"start_time" => "10:00 AM",
+				"end_time" => "06:00 PM",
+			]
+		];
+
+		return [
+			"non overlapping slots" => $nonOverlappingSlots,
+			"non overlapping slots directly adjacent" => $nonOverlappingSlotsDirectlyAdjacent,
+			"non overlapping hourly" => $nonOverlappingHourly,
+			"non overlapping hourly directly adjacent" => $nonOverlappingHourlyDirectlyAdjacent,
+			"overlapping full day" => $overlappingFullDay,
+		];
+	}
+
+	public function provideOverlappingTest() {
+		$today = strtotime( self::CURRENT_DATE );
+		$todayFormatted = date( 'Y-m-d', $today );
+		$tomorrow = strtotime( '+1 day', $today );
+		$tomorrowFormatted = date( 'Y-m-d', $tomorrow );
+		$dayAfterTomorrow = strtotime( '+2 days', $today );
+		$inAWeek = strtotime( '+7 days', $today );
+		$inAWeekFormatted = date( 'Y-m-d', $inAWeek );
+
+		//in the following we have all possible combinations of repetitions amongst timeframes and if the days should collide with each other
+		$dailyDoesNotOverlap = [
+			"daysOverlap" => false,
+			"tf1" => [
+				"repetition" => "d",
+				"repetition_start" => $today,
+				"repetition_end" => $tomorrow,
+			],
+			"tf2" => [
+				"repetition" => "d",
+				"repetition_start" => $dayAfterTomorrow,
+				"repetition_end" => $inAWeek,
+			]
+		];
+
+		$dailyOverlaps = [
+			"daysOverlap" => true,
+			"tf1" => [
+				"repetition" => "d",
+				"repetition_start" => $today,
+				"repetition_end" => $tomorrow,
+			],
+			"tf2" => [
+				"repetition" => "d",
+				"repetition_start" => $tomorrow,
+				"repetition_end" => $inAWeek,
+			]
+		];
+
+		$weeklyDoesNotOverlapOtherWeekdays = [
+			"daysOverlap" => false,
+			"tf1" => [
+				"repetition" => "w",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_weekdays" => ["1","2","3","4","5"],
+			],
+			"tf2" => [
+				"repetition" => "w",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_weekdays" => ["6","7"],
+			]
+		];
+
+		$weeklyWeekdaysOverlap = [
+			"daysOverlap" => true,
+			"tf1" => [
+				"repetition" => "w",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_weekdays" => ["1","2","3","4","5"],
+			],
+			"tf2" => [
+				"repetition" => "w",
+				"repetition_start" => $tomorrow,
+				"repetition_end" => $inAWeek,
+				"repetition_weekdays" => ["3","4","5"],
+			]
+		];
+
+		$dailyWeeklyOverlap = [
+			"daysOverlap" => true,
+			"tf1" => [
+				"repetition" => "d",
+				"repetition_start" => $today,
+				"repetition_end" => $tomorrow,
+			],
+			"tf2" => [
+				"repetition" => "w",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_weekdays" => ["3","4","5"],
+			]
+		];
+
+		$dailyManualDoNotOverlap = [
+			"daysOverlap" => false,
+			"tf1" => [
+				"repetition" => "d",
+				"repetition_start" => $today,
+				"repetition_end" => $tomorrow,
+			],
+			"tf2" => [
+				"repetition" => "manual",
+				"repetition_start" => $dayAfterTomorrow,
+				"repetition_end" => $inAWeek,
+				"repetition_dates" => $inAWeekFormatted,
+			]
+		];
+
+		$dailyManualOverlap = [
+			"daysOverlap" => true,
+			"tf1" => [
+				"repetition" => "d",
+				"repetition_start" => $today,
+				"repetition_end" => $tomorrow,
+			],
+			"tf2" => [
+				"repetition" => "manual",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_dates" => $todayFormatted,
+			]
+		];
+
+		//CURRENT_DATE is a thursday, so they should not overlap
+		$weeklyManualDoNotOverlap = [
+			"daysOverlap" => false,
+			"tf1" => [
+				"repetition" => "w",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_weekdays" => ["1","2","3"],
+			],
+			"tf2" => [
+				"repetition" => "manual",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_dates" => $todayFormatted
+			]
+		];
+
+		//CURRENT_DATE is a thursday, so they should overlap
+		$weeklyManualOverlap = [
+			"daysOverlap" => true,
+			"tf1" => [
+				"repetition" => "w",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_weekdays" => ["3","4","5"],
+			],
+			"tf2" => [
+				"repetition" => "manual",
+				"repetition_start" => $today,
+				"repetition_end" => $inAWeek,
+				"repetition_dates" => $tomorrowFormatted,
+			]
+		];
+
+		$overlapTests = [
+			"daily does not overlap" => $dailyDoesNotOverlap,
+			"daily overlaps" => $dailyOverlaps,
+			"weekly does not overlap other weekdays" => $weeklyDoesNotOverlapOtherWeekdays,
+			"weekly weekdays overlap" => $weeklyWeekdaysOverlap,
+			"daily weekly overlap" => $dailyWeeklyOverlap,
+			"daily manual do not overlap" => $dailyManualDoNotOverlap,
+			"daily manual overlap" => $dailyManualOverlap,
+			"weekly manual do not overlap" => $weeklyManualDoNotOverlap,
+			"weekly manual overlap" => $weeklyManualOverlap,
+		];
+		//construct our tests from all possible combinations of timeframes
+		$configurationsSameDay = $this->getBookableTimeframeSameDayCombos();
+		foreach ($overlapTests as $overlapTestLabel => $overlapTest) {
+			foreach ($configurationsSameDay as $sameDayTestLabel => $configSameDay) {
+				//if the dates do not overlap, we need to make sure that a same day combination will still be valid
+				$comboIsValid = $overlapTest["daysOverlap"] ? $configSameDay["isValid"] : true;
+				$tf1 = array_merge($overlapTest["tf1"], $configSameDay["tf1"]);
+				$tf2 = array_merge($overlapTest["tf2"], $configSameDay["tf2"]);
+				yield $overlapTestLabel . " - " . $sameDayTestLabel => [ $comboIsValid, $tf1, $tf2 ];
+				yield $overlapTestLabel . " - " . $sameDayTestLabel . " - swapped" => [ $comboIsValid, $tf2, $tf1 ];
+			}
 		}
 	}
 
 	/**
-	 * Tests all possible combinations of daily repetitions with hourly grid
-	 * @return void
+	 * @dataProvider provideOverlappingTest
 	 */
-	public function testOverlaps_Hourly(){
-		//create completely separate locations and items for this test
-		$secondLocationID = $this->createLocation("Other Location", 'publish');
-		$secondItemID = $this->createItem("Other Item", 'publish');
-
-		//timeframe that does not overlap but is directly adjacent #1095
-		//we make this even further in the future to make sure it does not overlap with the other timeframe
-		$endFirstTf = new \DateTime(self::CURRENT_DATE);
-		$endFirstTf->modify('+1 year')->modify('+5 days')->setTime(23,59,59);
-		$startSecondTf = clone $endFirstTf;
-		$startSecondTf->modify('+1 second');
-		$endSecondTf = clone $startSecondTf;
-		$endSecondTf->modify('+5 days');
-		$adjacentTimeframe = new Timeframe($this->createTimeframe(
-			$secondLocationID,
-			$secondItemID,
-			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
-			$endFirstTf->getTimestamp(),
+	public function testOverlaps($valid, $tf1, $tf2){
+		$testItem = $this->createItem("Test Item", 'publish');
+		$testLocation = $this->createLocation("Test Location", 'publish');
+		$tf1 = new Timeframe($this->createTimeframe(
+			$testLocation,
+			$testItem,
+			$tf1["repetition_start"],
+			$tf1["repetition_end"],
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			$tf1["fullDay"],
+			$tf1["repetition"],
+			$tf1["grid"],
+			$tf1["start_time"],
+			$tf1["end_time"],
+			'publish',
+			$tf1["repetition_weekdays"] ?? [],
+			$tf1["repetition_dates"] ?? "",
 		));
-		$adjacentTimeframeTwo = new Timeframe($this->createTimeframe(
-			$secondLocationID,
-			$secondItemID,
-			$startSecondTf->getTimestamp(),
-			$endSecondTf->getTimestamp(),
+
+		$tf2 = new Timeframe($this->createTimeframe(
+			$testLocation,
+			$testItem,
+			$tf2["repetition_start"],
+			$tf2["repetition_end"],
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			$tf2["fullDay"],
+			$tf2["repetition"],
+			$tf2["grid"],
+			$tf2["start_time"],
+			$tf2["end_time"],
+			'publish',
+			$tf2["repetition_weekdays"] ?? [],
+			$tf2["repetition_dates"] ?? "",
 		));
-		$this->assertFalse( $adjacentTimeframe->hasTimeframeDateOverlap( $adjacentTimeframeTwo ) );
-		$this->assertFalse( $adjacentTimeframeTwo->hasTimeframeDateOverlap( $adjacentTimeframe ) );
-	}
-
-	/**
-	 * Tests all possible combinations of daily repetitions (full day)
-	 * @return void
-	 */
-	public function testOverlaps_Daily() {
-		$nextMonth = new \DateTime( self::CURRENT_DATE );
-		$nextMonth->modify( '+1 month' );
-		$dailyUntilNextMonth = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( self::CURRENT_DATE ),
-				$nextMonth->getTimestamp(),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'd',
-			)
-		);
-		$afterNextMonth = clone $nextMonth;
-		$afterNextMonth->modify( '+1 day' );
-		$dailyAfterNextMonth = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				$afterNextMonth->getTimestamp(),
-				strtotime( '+2 days', $afterNextMonth->getTimestamp() ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'd',
-			)
-		);
-		$this->assertFalse( $dailyUntilNextMonth->overlaps( $dailyAfterNextMonth ) );
-
-		//now let's create a timeframe, that overlaps with the first one
-		$overlappingDailyTimeframe = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( self::CURRENT_DATE ),
-				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'd',
-			)
-		);
-		try {
-			$dailyUntilNextMonth->overlaps( $overlappingDailyTimeframe );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "Full day periods are not allowed to overlap.", $e->getMessage() );
-		}
-	}
-	/**
-	 * Tests all possible combinations of weekly repetitions
-	 * @return void
-	 */
-	public function testOverlaps_Weekly() {
-		//create completely separate locations and items for this test
-		$secondLocationID = $this->createLocation("Other Location", 'publish');
-		$secondItemID = $this->createItem("Other Item", 'publish');
-
-		//create completely separate locations and items for this test
-		$otherLocation = $this->createLocation("Other Location", 'publish');
-		$otherItem = $this->createItem("Other Item", 'publish');
-
-		//these two should not overlap
-		$mondayFridayTimeframe = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["1","2","3","4","5"]
-			)
-		);
-		$saturdaySundayTimeframe = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["6","7"]
-			)
-		);
-		$this->assertFalse( $mondayFridayTimeframe->overlaps( $saturdaySundayTimeframe ) );
-
-		//now let's create a timeframe, that overlaps with the first one
-		$mondayWednesdayTimeframe = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["1","2","3"]
-			)
-		);
-		try {
-			$mondayFridayTimeframe->overlaps( $mondayWednesdayTimeframe );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "Overlapping bookable timeframes are not allowed to have the same weekdays.", $e->getMessage() );
-		}
-		//now let's do all the same tests, just with timeframes without end date
-		$mondayFridayTimeframeNoEnd = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				null,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["1","2","3","4","5"]
-			)
-		);
-		$saturdaySundayTimeframeNoEnd = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				null,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["6","7"]
-			)
-		);
-		$this->assertFalse( $mondayFridayTimeframeNoEnd->overlaps( $saturdaySundayTimeframeNoEnd ) );
-
-		$mondayWednesdayTimeframeNoEnd = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				null,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["1","2","3"]
-			)
-		);
-		try {
-			$mondayFridayTimeframeNoEnd->overlaps( $mondayWednesdayTimeframeNoEnd );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "Overlapping bookable timeframes are not allowed to have the same weekdays.", $e->getMessage() );
+		if ($valid) {
+			$this->assertFalse($tf1->overlaps($tf2));
+		} else {
+			$this->expectException(OverlappingException::class);
+			$tf1->overlaps($tf2);
 		}
 	}
 
-	/**
-	 * Test all possible combinations of manual repetitions
-	 * @return void
-	 */
-	public function testOverlap_manual() {
-		//create completely separate locations and items for this test
-		$otherLocation = $this->createLocation("Other Location", 'publish');
-		$otherItem = $this->createItem("Other Item", 'publish');
+	public function testOverlaps_differentGrid() {
+		$testItem     = $this->createItem( "Test Item", 'publish' );
+		$testLocation = $this->createLocation( "Test Location", 'publish' );
+		$tf1          = new Timeframe( $this->createTimeframe(
+			$testLocation,
+			$testItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			0,
+			'08:00 AM',
+			'10:00 AM',
+		) );
 
-		$monthDT = new \DateTime( self::CURRENT_DATE );
-		$monthDT->modify( 'first day of this month' );
-		$firstOfMonth = $monthDT->format( 'Y-m-d' );
-		$monthDT->modify( '+4 days' );
-		$fifthOfMonth = $monthDT->format( 'Y-m-d' );
-		$monthDT->modify( '+5 days' );
-		$tenthOfMonth = $monthDT->format( 'Y-m-d' );
-		$monthDT->modify( '+5 days' );
-		$fifteenthOfMonth = $monthDT->format( 'Y-m-d' );
-		$monthDT->modify( '+5 days' );
-		$twentiethOfMonth = $monthDT->format( 'Y-m-d' );
+		$tf2 = new Timeframe( $this->createTimeframe(
+			$testLocation,
+			$testItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			1,
+			'10:00 AM',
+			'12:00 PM',
+		) );
 
-		$firstAndFifthManualRep = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'manual',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				[],
-				"{$firstOfMonth},{$fifthOfMonth}"
-			)
-		);
-
-		$tenthAndFifteenthManualRep = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'manual',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				[],
-				"{$tenthOfMonth},{$fifteenthOfMonth}"
-			)
-		);
-
-		$this->assertFalse( $firstAndFifthManualRep->overlaps( $tenthAndFifteenthManualRep ) );
-
-		//now we create another timeframe that has one day overlapping and one that is not
-		$firstAndTwentiethManualRep = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'manual',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				[],
-				"{$firstOfMonth},{$twentiethOfMonth}"
-			)
-		);
-
-		try {
-			$firstAndFifthManualRep->overlaps( $firstAndTwentiethManualRep );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "Overlapping bookable timeframes are not allowed to have the same dates.", $e->getMessage() );
-		}
+		$this->expectException( OverlappingException::class );
+		$tf1->overlaps( $tf2 );
 	}
-
-	public function testOverlap_Slots() {
-		//create completely separate locations and items for this test
-		$secondLocationID = $this->createLocation("Other Location", 'publish');
-		$secondItemID = $this->createItem("Other Item", 'publish');
-
-		//test for hourly overlaps
-		$earlyTf = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				'w',
-				0,
-				'09:00 AM',
-				'05:00 PM'
-			)
-		);
-		$laterTf = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				'w',
-				0,
-				'7:00 PM',
-				'10:00 PM'
-			)
-		);
-		$this->assertFalse( $earlyTf->hasTimeframeTimeOverlap( $laterTf ) );
-		$middleTf = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				'w',
-				0,
-				'10:00 AM',
-				'04:00 PM'
-			)
-		);
-		$this->assertTrue( $earlyTf->hasTimeframeTimeOverlap( $middleTf ) );
-
-		//check for #1344
-		$slotTf = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				'w',
-				0,
-				'09:00 AM',
-				'05:00 PM'
-			)
-		);
-		//exactly the same settings as $slotTf
-		$slotTf2 = new Timeframe(
-			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				'w',
-				0,
-				'09:00 AM',
-				'05:00 PM'
-			)
-		);
-		$this->assertTrue( $slotTf->hasTimeframeTimeOverlap( $slotTf2 ) );
-		//these two should not overlap
-		$dailyMorningTimeframeHourly = new Timeframe(
-			$this->createTimeframe(
-				$secondLocationID,
-				$secondItemID,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				"d",
-				1,
-				'08:00 AM',
-				'10:00 AM',
-			)
-		);
-		$dailyAfternoonTimeframeHourly = new Timeframe(
-			$this->createTimeframe(
-				$secondLocationID,
-				$secondItemID,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				"d",
-				1,
-				'01:00 PM',
-				'05:00 PM',
-			)
-		);
-		$this->assertFalse( $dailyMorningTimeframeHourly->overlaps( $dailyAfternoonTimeframeHourly ) );
-
-		//this should overlap
-		$dailyMidDayTimeframeHourly = new Timeframe(
-			$this->createTimeframe(
-				$secondLocationID,
-				$secondItemID,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'',
-				"d",
-				1,
-				'09:00 AM',
-				'01:00 PM',
-			)
-		);
-		try {
-			$dailyMorningTimeframeHourly->overlaps( $dailyMidDayTimeframeHourly );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "Time periods are not allowed to overlap.", $e->getMessage() );
-		}
-	}
-
-	/**
-	 * Test all possible combinations of weekly and manual repetitions
-	 * @return void
-	 */
-	public function testOverlap_weeklyManual() {
-		//create completely separate locations and items for this test
-		$otherLocation = $this->createLocation("Other Location", 'publish');
-		$otherItem = $this->createItem("Other Item", 'publish');
-
-		$nextMondayDT = new \DateTime( self::CURRENT_DATE );
-		$nextMondayDT->modify( 'next monday' );
-		$nextMondayString = $nextMondayDT->format( 'Y-m-d' );
-		$nextTuesdayDT = new \DateTime( self::CURRENT_DATE );
-		$nextTuesdayDT->modify( 'next tuesday' );
-		$nextTuesdayString = $nextTuesdayDT->format( 'Y-m-d' );
-		$nextFridayDT = new \DateTime( self::CURRENT_DATE );
-		$nextFridayDT->modify( 'next friday' );
-		$nextFridayString = $nextFridayDT->format( 'Y-m-d' );
-
-		$tuesDayToThursdayWeeklyRep = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["2","3","4"]
-			)
-		);
-
-		$nextMondayAndNextFridayManualRep = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'manual',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				[],
-				"{$nextMondayString},{$nextFridayString}"
-			)
-		);
-		$this->assertFalse( $nextMondayAndNextFridayManualRep->overlaps( $tuesDayToThursdayWeeklyRep ) )                                                                             ;
-		$this->assertFalse( $tuesDayToThursdayWeeklyRep->overlaps( $nextMondayAndNextFridayManualRep ) );
-
-		//now, make the manual rep overlap with the weekly rep by adding a tuesday
-		$nextTuesdayAndNextFridayManualRep = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'manual',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				[],
-				"{$nextTuesdayString},{$nextFridayString}"
-			)
-		);
-		try {
-			$nextTuesdayAndNextFridayManualRep->overlaps( $tuesDayToThursdayWeeklyRep );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "The other timeframe is overlapping with your weekly configuration.", $e->getMessage() );
-		}
-
-		//and now the other way around, make the weekly rep overlap with the manual rep
-		$mondayToThursdayWeeklyRep = new Timeframe(
-			$this->createTimeframe(
-				$otherLocation,
-				$otherItem,
-				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				'on',
-				'w',
-				0,
-				'08:00 AM',
-				'12:00 PM',
-				'publish',
-				["1","2","3","4"]
-			)
-		);
-		try {
-			$mondayToThursdayWeeklyRep->overlaps( $nextMondayAndNextFridayManualRep );
-			$this->fail( "OverlappingException was not thrown" );
-		}
-		catch ( OverlappingException $e ) {
-			$this->assertStringContainsString( "The other timeframe is overlapping with your weekly configuration.", $e->getMessage() );
-		}
-	}
-
 	public function testIsValid() {
 
 		$newLoc = $this->createLocation("New Location", 'publish');
@@ -674,8 +437,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noItemTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			"",
-			strtotime( "+1 day", strtotime( self::CURRENT_DATE ) ),
-			strtotime( "+3 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+1 day", strtotime( self::CURRENT_DATE) ),
+			strtotime( "+3 days", strtotime( self::CURRENT_DATE) )
 		));
 		try {
 			$noItemTF->isValid();
@@ -688,8 +451,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noLocationTF = new Timeframe($this->createTimeframe(
 			"",
 			$this->itemId,
-			strtotime( "+20 day", strtotime( self::CURRENT_DATE ) ),
-			strtotime( "+25 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+20 day", strtotime( self::CURRENT_DATE) ),
+			strtotime( "+25 days", strtotime( self::CURRENT_DATE) )
 		));
 
 		try {
@@ -705,7 +468,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			"",
-			strtotime( "+10 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+10 days", strtotime( self::CURRENT_DATE) )
 		));
 		try {
 			$noStartDateTF->isValid();
@@ -731,49 +494,23 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertTrue($isOverlapping->isValid());
 	}
 
-	/**
-	 * The unit test for issue #1095.
-	 * Will check, that a timeframe is valid even if it is directly adjacent to another timeframe the same location.
-	 * If this works, it should also work for adjacent timeframes with the second timeframe for another location.
-	 * @return void
-	 */
-	public function testisValid_directAdjacent() {
-		//we create a new location and item just to make sure that the overlap does not come from elsewhere
-		$location = $this->createLocation("New Location", 'publish');
-		$item = $this->createItem("New Item", 'publish');
-		//we set the repetition start and end to only have one second between them, so that the timeframes are directly adjacent
-		$endFirstTf = new \DateTime(self::CURRENT_DATE);
-		$endFirstTf->modify('+1 day')->setTime(23,59,59);
-		$startSecondTf = clone $endFirstTf;
-		$startSecondTf->modify('+1 second');
-		$timeframe = $this->createTimeframe(
-			$location,
-			$item,
-			strtotime( self::CURRENT_DATE),
-			$endFirstTf->getTimestamp(),
-		);
-		$firstTimeframe = new Timeframe($timeframe);
-		$this->assertTrue($firstTimeframe->isValid());
-		$secondTimeframe = $this->createTimeframe(
-			$location,
-			$item,
-			$startSecondTf->getTimestamp(),
-			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
-		);
-		$secondTimeframe = new Timeframe($secondTimeframe);
-		$this->assertTrue($secondTimeframe->isValid());
+	public function testIsUserPrivileged() {
+		$this->createSubscriber();
+		$this->createCBManager();
+		$this->createAdministrator();
+		$managedItem = $this->createItem("Managed Item", 'publish',[$this->cbManagerUserID]);
+		$unmanagedLocation = $this->createLocation("Unmanaged Location", 'publish');
+		$timeframe = $this->createBookableTimeFrameIncludingCurrentDay($unmanagedLocation,$managedItem);
+		$timeframe = new Timeframe($timeframe);
 
-		//now test if the same is possible with second timeframe at another location
-		wp_delete_post($secondTimeframe->ID,true);
-		$secondLocation = $this->createLocation("Newest Location", 'publish');
-		$secondTimeframe = $this->createTimeframe(
-			$secondLocation,
-			$item,
-			$startSecondTf->getTimestamp(),
-			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
-		);
-		$secondTimeframe = new Timeframe($secondTimeframe);
-		$this->assertTrue($secondTimeframe->isValid());
+		wp_set_current_user($this->subscriberId);
+		$this->assertFalse($timeframe->isUserPrivileged());
+
+		wp_set_current_user($this->cbManagerUserID);
+		$this->assertTrue($timeframe->isUserPrivileged());
+
+		wp_set_current_user($this->adminUserID);
+		$this->assertTrue($timeframe->isUserPrivileged());
 	}
 
 	public function testisValid_throwsException() {
@@ -927,7 +664,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		//case 4: timeframe is infinite and advance booking days are set
 		update_post_meta($noEndDate->ID, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays);
 		$this->assertEquals(
-			strtotime( '+' . $advanceBookingDays - 1 . ' days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+' . ($advanceBookingDays - 1) . ' days', strtotime( self::CURRENT_DATE ) ),
 			$noEndDate->getLatestPossibleBookingDateTimestamp()
 		);
 
@@ -961,77 +698,6 @@ class TimeframeTest extends CustomPostTypeTest {
 		));
 		$this->assertFalse($passedTimeframe->isBookable());*/
 		//This test does not work, function maybe broken?
-	}
-
-	/**
-	 * Will check if the overlap of two timeframes with the same location and item is detected correctly.
-	 * It should be detected, if a weekly repetition is set and the timeframes overlap on at least one day.
-	 *  (i.e. first TF is from Monday to Wednesday and second TF is from Tuesday to Thursday)
-	 * It should not be detected, if there is no overlap on any day.
-	 * (i.e. first TF is from Monday to Wednesday and second TF is from Thursday to Saturday)
-	 *
-	 * TODO: This test might be redundant, as it is already tested in @see static::testOverlaps_Weekly()
-	 * @return void
-	 */
-	public function testIsValid_WeekDays(){
-		$location = $this->createLocation("New Location", 'publish');
-		$item = $this->createItem("New Item", 'publish');
-		$mondayToWednesdayWeekly = $this->createTimeframe(
-			$location,
-			$item,
-			strtotime( self::CURRENT_DATE),
-			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			"on",
-			'w',
-			0,
-			'08:00 AM',
-			'12:00 PM',
-			'publish',
-			[ "1", "2", "3" ]
-		);
-		$mondayToWednesdayWeekly = new Timeframe($mondayToWednesdayWeekly);
-		$this->assertTrue($mondayToWednesdayWeekly->isValid());
-		$thursdayToSaturday = $this->createTimeframe(
-			$location,
-			$item,
-			strtotime( self::CURRENT_DATE),
-			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			"on",
-			'w',
-			0,
-			'08:00 AM',
-			'12:00 PM',
-			'publish',
-			[ "4", "5", "6" ]
-		);
-		$thursdayToSaturday = new Timeframe($thursdayToSaturday);
-		$this->assertTrue($thursdayToSaturday->isValid());
-
-		$tuesdayToThursday = $this->createTimeframe(
-			$location,
-			$item,
-			strtotime( self::CURRENT_DATE),
-			strtotime( '+1 year', strtotime( self::CURRENT_DATE ) ),
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			"on",
-			'w',
-			0,
-			'08:00 AM',
-			'12:00 PM',
-			'publish',
-			[ "2", "3", "4" ]
-		);
-		$tuesdayToThursday = new Timeframe($tuesdayToThursday);
-		$exceptionCaught = false;
-		try {
-			$tuesdayToThursday->isValid();
-		} catch (TimeframeInvalidException $e ) {
-			$this->assertStringContainsString( "Overlapping bookable timeframes are not allowed to have the same weekdays", $e->getMessage() );
-			$exceptionCaught = true;
-		}
-		$this->assertTrue($exceptionCaught);
 	}
 
 	/**
@@ -1103,11 +769,103 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetLocation() {
 		$location = New Location($this->locationId);
 		$this->assertEquals($location,$this->firstTimeframe->getLocation());
+
+		//when location has been deleted
+		wp_delete_post($this->locationId);
+		$this->assertNull($this->firstTimeframe->getLocation());
+	}
+
+	public function testGetLocationID() {
+		$this->assertEquals($this->locationId,$this->firstTimeframe->getLocationID());
+	}
+
+	public function testGetLocations() {
+		//for just one location
+		$oneLocation = $this->firstTimeframe->getLocations();
+		$this->assertCount(1, $oneLocation );
+		$this->assertEquals($this->locationId, $oneLocation[0]->ID);
+
+		//for multiple defined locations
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$retrievedLocations = $holiday->getLocations();
+		$this->assertIsArray($retrievedLocations);
+		$locationIds = array_map(function($location) {
+			return $location->ID;
+		}, $retrievedLocations);
+		$this->assertCount(2,$retrievedLocations);
+		$this->assertEqualsCanonicalizing($locationIds,[$this->firstLocation->ID,$this->otherLocation->ID]);
+
+		//when location has been deleted
+		wp_delete_post($this->locationId);
+		$locations = $this->firstTimeframe->getLocations();
+		$this->assertIsArray($locations);
+		$this->assertCount(0,$locations);
+	}
+
+	public function testGetLocationIDs() {
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$retrievedLocations = $holiday->getLocationIDs();
+		$this->assertIsArray($retrievedLocations);
+		$this->assertCount(2,$retrievedLocations);
+		$this->assertEqualsCanonicalizing($retrievedLocations,[$this->firstLocation->ID,$this->otherLocation->ID]);
+
+		$this->assertEquals([$this->locationId],$this->firstTimeframe->getLocationIDs());
 	}
 
 	public function testGetItem() {
 		$item = New Item($this->itemId);
 		$this->assertEquals($item,$this->firstTimeframe->getItem());
+
+		//when item has been deleted
+		wp_delete_post($this->itemId);
+		$this->assertNull($this->firstTimeframe->getItem());
+	}
+
+	public function testGetItemID() {
+		$this->assertEquals($this->itemId,$this->firstTimeframe->getItemID());
+	}
+
+	public function testGetItems() {
+		//for just one item
+		$singleItem = $this->validTF->getItems();
+		$this->assertIsArray($singleItem);
+		$itemIds = array_map(function($item) {
+			return $item->ID;
+		}, $singleItem);
+		$this->assertEquals([$this->otherItem->ID],$itemIds);
+
+		//for multiple defined items
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$items = $holiday->getItems();
+		$this->assertIsArray($items);
+		$itemIds = array_map(function($item) {
+			return $item->ID;
+		}, $items);
+		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$itemIds);
+
+
+		//when item has been deleted
+		wp_delete_post($this->itemId);
+		$items = $this->firstTimeframe->getItems();
+		$this->assertIsArray($items);
+		$this->assertCount(0,$items);
+	}
+
+	public function testGetItemIDs() {
+		//for just one item
+		$singleItem = $this->validTF->getItemIDs();
+		$this->assertIsArray($singleItem);
+		$this->assertEquals([$this->otherItem->ID],$singleItem);
+
+		//for multiple defined items
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$items = $holiday->getItemIDs();
+		$this->assertIsArray($items);
+		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$items);
 	}
 
 	/**
@@ -1242,6 +1000,31 @@ $this->locationId,
 		$this->assertEquals( 1, $hourlyBookable->getGridSize() );
 	}
 
+	public function testGetAdmins() {
+		//Case 1: no admins set
+		//$this->assertEquals( [], $this->firstTimeframe->getAdmins() ); - The author is currently always included as admin
+		$this->assertEquals( [self::USER_ID], $this->firstTimeframe->getAdmins() );
+
+		//Case 2: Item admin set
+		$this->createCBManager();
+		$managedItem = $this->createItem("Managed Item", 'publish', [$this->cbManagerUserID]);
+		$unmanagedLocation = $this->createLocation("Unmanaged Location", 'publish');
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($unmanagedLocation, $managedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+
+		//Case 3: Location admin set
+		$managedLocation = $this->createLocation("Managed Location", 'publish', [$this->cbManagerUserID]);
+		$unmanagedItem = $this->createItem("Unmanaged Item", 'publish');
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($managedLocation, $unmanagedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+
+		//Case 4: Both admins set
+		$otherManagedLocation = $this->createLocation("Other Managed Location", 'publish', [$this->cbManagerUserID]);
+		$otherManagedItem = $this->createItem("Other Managed Item", 'publish', [$this->cbManagerUserID]);
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($otherManagedLocation, $otherManagedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+	}
+
   protected function setUp() : void {
 
 		parent::setUp();
@@ -1249,13 +1032,17 @@ $this->locationId,
 		$this->secondTimeframeId = $this->createBookableTimeFrameStartingInAWeek();
 		$this->firstTimeframe = new Timeframe( $this->firstTimeframeId );
 		$this->secondTimeframe = new Timeframe( $this->secondTimeframeId );
+		$this->firstItem = new Item($this->itemId);
+		$this->firstLocation = new Location($this->locationId);
 		$otherItem = $this->createItem("Other Item", 'publish');
+		$this->otherItem = new Item($otherItem);
 		$otherLocation = $this->createLocation("Other Location", 'publish');
+		$this->otherLocation = new Location($otherLocation);
 		$this->validTF = new Timeframe($this->createTimeframe(
 			$otherLocation,
 			$otherItem,
 			strtotime( "+1 day", strtotime(self::CURRENT_DATE) ),
-			strtotime( "+3 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+3 days", strtotime( self::CURRENT_DATE) )
 		));
 	}
 
