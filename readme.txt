@@ -84,6 +84,7 @@ ADDED: Download ics file directly from booking details page
 ENHANCED: Taxonomies will now be shown in item / location overview in the backend
 ENHANCE: If iCalendar attachments are enabled: The cancellation email will now contain a calendar event that will cancel the booking in the user's calendar
 FIXED: Restriction emails button not working in some instances
+FIXED: Unexpected behavior when booking expires before confirmation
 FIXED: German translation and typos
 
 ### 2.9.2 (26.04.2024)
