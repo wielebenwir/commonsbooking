@@ -94,6 +94,34 @@ class iCalendar {
     }
 
 	/**
+	 * Get the ics file for an existing booking. Will be called, when the "Add to Calendar" button on the booking page is pressed
+	 *
+	 * @param $bookingID
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function downloadICS( $bookingID ): void {
+		$postID           = $bookingID;
+		$booking          = new Booking( $postID );
+		$template_objects = [
+			'booking'  => $booking,
+			'item'     => $booking->getItem(),
+			'location' => $booking->getLocation(),
+			'user'     => $booking->getUserData(),
+		];
+
+		$eventTitle       = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+		$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
+		$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+		$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
+		$calendar         = $booking->getiCal( $eventTitle, $eventDescription );
+		header( 'Content-Type: text/calendar; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename="booking.ics"' );
+		echo $calendar;
+	}
+
+	/**
 	 * Adds Model\Booking to Calendar.
 	 * This will take all the information like title, description, location, start and end date and add it to the calendar as an event.
 	 *

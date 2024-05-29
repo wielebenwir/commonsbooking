@@ -307,6 +307,47 @@ class BookingTest extends CustomPostTypeTest
 	}
 
 	/**
+	 * This test is meant to test a bunch of behaviour that can occur
+	 * when a booking is created as unconfirmed first, then deleted by the cronjob and then either confirmed or canceled.
+	 * Issue: #1584
+	 *
+	 * @return void
+	 */
+	public function testHandleBookingRequest_deleted_confirm() {
+		$bookingId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			"6"
+		);
+		$postName = get_post( $bookingId )->post_name;
+
+		//delete the post just like the cronjob would
+		wp_delete_post( $bookingId, true );
+
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage( 'Your reservation has expired, please try to book again' );
+
+		//now we try to confirm the booking
+		$confirmedId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'confirmed',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$postName,
+			"6"
+		);
+	}
+
+	/**
 	 * This will check if the bookings can be exported through the WordPress personal data export tool
 	 * @return void
 	 */

@@ -417,11 +417,12 @@ class Plugin {
 			$taxonomy,
 			$customPostType,
 			array(
-				'label'        => esc_html__( 'Item Category', 'commonsbooking' ),
-				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical' => true,
-				'show_in_rest' => true,
-				'public' => true
+				'label'             => esc_html__( 'Item Category', 'commonsbooking' ),
+				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'public'            => true,
+				'show_admin_column' => true
 			)
 		);
 
@@ -448,10 +449,11 @@ class Plugin {
 			$taxonomy,
 			$customPostType,
 			array(
-				'label'        => esc_html__( 'Location Category', 'commonsbooking' ),
-				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical' => true,
-				'show_in_rest' => true,
+				'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
+				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true
 			)
 		);
 
