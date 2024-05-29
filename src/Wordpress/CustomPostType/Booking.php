@@ -241,6 +241,13 @@ class Booking extends Timeframe {
 			throw new BookingDeniedException( __( 'Start- and/or end-date is missing.', 'commonsbooking' ) );
 		}
 
+		if ( $post_ID != null && ! get_post( $post_ID ) ) {
+			throw new BookingDeniedException(
+				__( 'Your reservation has expired, please try to book again', 'commonsbooking' ),
+				add_query_arg( 'cb-location', $locationId, get_permalink( get_post( $itemId ) ) )
+			);
+		}
+
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = \CommonsBooking\Repository\Booking::getByDate(
 			$repetitionStart,
