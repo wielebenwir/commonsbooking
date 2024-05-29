@@ -20,9 +20,10 @@ class StationInformation extends BaseRoute {
 
 	/**
 	 * Commons-API schema definition.
+	 *
 	 * @var string
 	 */
-    protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_information.json';
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_information.json';
 
 	/**
 	 * @param $item Location
@@ -53,7 +54,7 @@ class StationInformation extends BaseRoute {
 //        $preparedItem->is_valet_station = "";
 //        $preparedItem->vehicle_type_capacity = "";
 
-		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true );
+		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true ); // TODO this can be part of model $item Location
 		$longitude = get_post_meta( $item->ID, 'geo_longitude', true );
 
 		// If we have latitude and longitude defined, we use them.

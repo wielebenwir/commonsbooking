@@ -10,6 +10,15 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Endpoint for item/location owners data
+ *
+ * Unused at the moment.
+ *
+ * TODO Think about a dto/model abstraction, application layer in OwnersRoute type shouldn't contain the code to retrieve data from database/wp-post layer
+ *
+ * TODO Personal identifieable information is potentially exposed via firstname and lastname, this should be disclosed or configurable
+ */
 class OwnersRoute extends BaseRoute {
 
 	/**
@@ -21,9 +30,10 @@ class OwnersRoute extends BaseRoute {
 
 	/**
 	 * Commons-API schema definition.
+	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.owners.schema.json";
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.owners.schema.json';
 
 	/**
 	 * Returns raw data collection.

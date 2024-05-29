@@ -9,10 +9,18 @@ use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\ValueConverter;
 use Exception;
 
+/**
+ * Serves as abstraction for view rendering of different models and custom post types.
+ *
+ * Important design decision/assumption: Because there can be multiple timeframes with different configurations,
+ * which make rendering the presentation of them (e.g. in calendar view) more complicated. We just stick to the first
+ * timeframe when rendering a view.
+ */
 abstract class View {
 
 	/**
 	 * List of allowed query params for shortcodes.
+	 * All other query params will be ignored.
 	 * @var string[]
 	 */
 	protected static $allowedShortCodeArgs = array(
@@ -39,11 +47,11 @@ abstract class View {
 	);
 
 	/**
-	 * Generates data needed for shortcode listing.
+	 * Will generate the shortcode view for only one given item or location.
+	 * This includes the availability timeframe, see assumptions in class docstring for more details.
 	 *
-	 * @param \CommonsBooking\Model\Item|\CommonsBooking\Model\Location $cpt
-	 * @param string $type
-	 *
+	 * @param \CommonsBooking\Model\Item|\CommonsBooking\Model\Location $cpt location or item model object to retrieve timeframe data from.
+		 * @param string $type 'Item' or 'Location'.
 	 * @return array
 	 * @throws Exception
 	 */
@@ -51,7 +59,7 @@ abstract class View {
 		$cptData    = [];
 		$timeframes = $cpt->getBookableTimeframes( true );
 
-		// sort by start date, to get latest possbible booking date by first timeframe
+		// sort by start date, to get latest possible booking date by first timeframe
 		usort( $timeframes, function ( $a, $b ) {
 			return $a->getStartDate() <=> $b->getStartDate();
 		} );
@@ -63,6 +71,8 @@ abstract class View {
 				continue;
 			}
 
+			// We only fetch the latest possible booking date from the first timeframe.
+			// This is ok, because the timeframes are sorted by their start date.
 			if(!$latestPossibleBookingDate) {
 				$latestPossibleBookingDate = $timeframe->getLatestPossibleBookingDateTimestamp();
 			}

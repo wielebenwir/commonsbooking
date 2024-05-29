@@ -38,6 +38,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
             <input type="hidden" name="type" value="<?php echo esc_attr( $templateData['type'] ); ?>"/>
             <input type="hidden" name="post_type" value="cb_booking"/>
             <input type="hidden" name="post_status" value="unconfirmed"/>
+	        <input type="hidden" name="days-overbooked" value="0"/>
 
             <div class="time-selection-container">
                 <a id="resetPicker">
@@ -115,26 +116,26 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			<?php
 			if ( is_user_logged_in() ) {
                 ?>
-                <input type="submit" disabled="disabled"
+                <input type="submit" name="booking-update" disabled="disabled"
                        value="<?php echo esc_html__( 'Continue to booking confirmation', 'commonsbooking' ); ?>"/>
 			<?php } ?>
         </form>
     </div>
-	<div id="calendar-footnote">
-			<?php
-			// get Calendar Data
-			$calendarData = json_decode( $templateData['calendar_data'] );
-            commonsbooking_get_template_part( 'calendar', 'key' ); // file: calendar-key.php
-            // translators: %1$s is a number of days
-            echo sprintf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
-            ?>
-                
-            <?php
-            // translators: %1$s is a number of days
-            echo sprintf( commonsbooking_sanitizeHTML( __( 'Bookings are limited to a maximum of %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays ) );
-            ?>
-            <div style="display:none"><?php echo commonsbooking_sanitizeHTML( 'CommonsBooking ' . COMMONSBOOKING_VERSION ); ?></div>
-	</div>
+        <div id="calendar-footnote">
+                <?php
+                // get Calendar Data
+                $calendarData = json_decode( $templateData['calendar_data'] );
+                commonsbooking_get_template_part( 'calendar', 'key' ); // file: calendar-key.php
+                // translators: %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
+                ?>
+                    
+                <?php
+                // translators: %1$s is a number of days
+                echo sprintf( commonsbooking_sanitizeHTML( __( 'Bookings are limited to a maximum of %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays ) );
+                ?>
+                <div style="display:none"><?php echo commonsbooking_sanitizeHTML( 'CommonsBooking ' . COMMONSBOOKING_VERSION ); ?></div>
+        </div> <!-- end calendar-footnote -->
     <?php
 
     // if template is used in backend

@@ -10,6 +10,10 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Service\iCalendar;
 
+/**
+ * Static functionality to deal with legacy wp actions in includes.
+ * Also creates ical feed data.
+ */
 class Booking extends View {
 
 	/**
@@ -25,10 +29,13 @@ class Booking extends View {
 	}
 
 	/**
+	 * @param int $postsPerPage
+	 * @param \WP_User|null $user
+	 *
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData($postsPerPage = 6, $user = null) {
+	public static function getBookingListData( int $postsPerPage = 6, \WP_User $user = null) {
 
 		//sets selected user to current user when no specific user is passed
 		if ($user == null) {
@@ -81,8 +88,9 @@ class Booking extends View {
 			serialize( $user->ID )
 		);
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$bookingDataArray             = [];
 			$bookingDataArray['page']     = $page;
@@ -105,6 +113,7 @@ class Booking extends View {
 			}
 
 			// Prepare Templatedata and remove invalid posts
+			/** @var \CommonsBooking\Model\Booking $booking */
 			foreach ( $posts as $booking ) {
 
 				// Get user infos
@@ -120,7 +129,7 @@ class Booking extends View {
 				$menuitems = '';
 
 				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar.')) .'">' .
+					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file.','commonsbooking')) .'">' .
 										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) .
 									'</div>' .
 									'<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>'
@@ -281,11 +290,60 @@ class Booking extends View {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Gets the error for frontend notice. We use transients to pass the error message.
+	 * It is ensured that only the user where the error occurred can see the error message.
+	 *
+	 * @since 2.9.0 returns string instead of using printf
+	 *
+	 * @return string
+	 */
+	public static function getError(): string {
+		$errorTypes = [
+			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
+		];
+		$message = '';
+
+		foreach ( $errorTypes as $errorType ) {
+			if ( $error = get_transient( $errorType ) ) {
+				$class = 'cb-notice error';
+				$message = sprintf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					nl2br( commonsbooking_sanitizeHTML( $error ) )
+				);
+				delete_transient( $errorType );
+			}
+		}
+		if ($message) {
+			return '<div class="cb-wrapper">' . $message . '</div>';
+		}
+		else {
+			return '';
+		}
+	}
+
+  /**
+   * Will get the booking list as an iCalendar string for the specified user.
+	 * This means, that this will include all the bookings the user has access to (e.g. bookings of his own items) and
+	 * bookings for items/locations that CB-Managers have access to.
+	 *
+	 * This only includes confirmed bookings in the future.
+	 *
+	 * @param $user
+	 *
+	 * @return String
+	 * @throws Exception
+	 */
 	public static function getBookingListiCal($user = null):String{
 		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
 		$user = get_user_by('id', $user);
+
+		if (!$user){
+			return false;
+		}
 
 		$bookingList = self::getBookingListData(999,$user);
 
@@ -300,6 +358,9 @@ class Booking extends View {
 		foreach ($bookingList["data"] as $booking)
 		{
 			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
+			if (! $booking_model->isConfirmed() ) {
+				continue;
+			}
 			$template_objects = [
 				'booking'  => $booking_model,
 				'item'     => $booking_model->getItem(),

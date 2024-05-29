@@ -2,6 +2,9 @@
 
 namespace CommonsBooking\View;
 
+/**
+ * The dashboard that can be seen in the WordPress Backend under CommonsBooking
+ */
 class Dashboard extends View {
 
 	public static function index() {

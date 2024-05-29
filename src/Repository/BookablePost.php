@@ -16,7 +16,7 @@ use WP_Query;
 abstract class BookablePost extends PostRepository {
 
 	/**
-	 * Types which are able to be found each other by a timeframe.
+	 * Types which can be connected to each other via a Timeframe
 	 * @var string[]
 	 */
 	private static $relationalTypes = [
@@ -39,8 +39,9 @@ abstract class BookablePost extends PostRepository {
 
 		$customId = md5( $current_user->ID . static::getPostType() );
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			// Get all Locations where current user is author
 			$args = array(
@@ -113,6 +114,23 @@ abstract class BookablePost extends PostRepository {
 	}
 
 	/**
+	 * Gets all the defined terms for locations / items.
+	 * Will return an empty array if there are no terms or an error occurred.
+	 * @return int[]|string|string[]|\WP_Error|\WP_Term[]
+	 */
+	public static function getTerms() {
+		$terms = get_terms( array(
+			'taxonomy'   => static::getPostType() . 's_category',
+			'hide_empty' => false,
+		) );
+
+		if ( is_wp_error( $terms ) ) {
+			return [];
+		}
+
+		return $terms;
+	}
+	/**
 	 * @return string
 	 */
 	abstract protected static function getPostType();
@@ -120,16 +138,19 @@ abstract class BookablePost extends PostRepository {
 	/**
 	 * Returns cb-posts for a user (respects author and assigned admins).
 	 *
+	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
+	 *
 	 * @param $userId
-	 * @param false $asModel
+	 * @param false $asModel - Wether the posts should be returned as their respective model class or as WP_Post
 	 *
 	 * @return array
 	 */
 	public static function getByUserId( $userId, bool $asModel = false ): array {
 		$cbPosts = [];
 
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$userId = intval( $userId );
 			// Get all Locations where current user is author
@@ -174,6 +195,7 @@ abstract class BookablePost extends PostRepository {
 	}
 
 	/**
+	 * Will get the class name of the model class that belongs to this post type.
 	 * @return mixed
 	 */
 	abstract protected static function getModelClass();
@@ -201,8 +223,9 @@ abstract class BookablePost extends PostRepository {
 
 		$customCacheKey = md5( serialize( $args ) );
 
-		if ( Plugin::getCacheItem( $customCacheKey ) ) {
-			return Plugin::getCacheItem( $customCacheKey );
+		$cacheItem = Plugin::getCacheItem( $customCacheKey );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$defaults = array(
 				'post_status' => array( 'publish', 'inherit' ),
@@ -240,7 +263,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $relatedType
 	 * @param bool $bookable
 	 *
-	 * @return array
+	 * @return int[] Array of post ids
 	 * @throws Exception
 	 */
 	protected static function getByRelatedPost( $postId, $originType, $relatedType, bool $bookable = false ): array {
@@ -253,8 +276,9 @@ abstract class BookablePost extends PostRepository {
 			$postId = $postId->ID;
 		}
 
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$posts = self::getRelatedPosts( $postId, $originType, $relatedType );
 			foreach ( $posts as $key => &$relatedPost ) {
@@ -293,8 +317,9 @@ abstract class BookablePost extends PostRepository {
 			$postId = $postId->ID;
 		}
 
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$relatedPosts   = [];
 			$relatedPostIds = [];

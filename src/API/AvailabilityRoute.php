@@ -16,6 +16,11 @@ use stdClass;
 use WP_Error;
 use WP_REST_Response;
 
+/**
+ * Endpoint exposes item availability
+ *
+ * @See Calendar for computing item availability
+ */
 class AvailabilityRoute extends BaseRoute {
 
 	/**
@@ -27,66 +32,30 @@ class AvailabilityRoute extends BaseRoute {
 
 	/**
 	 * Commons-API schema definition.
+	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.availability.schema.json";
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.availability.schema.json';
 
 	/**
+	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
+	 *
+	 * @param bool $id The id of a \CommonsBooking\Wordpress\CustomPostType\Item::post_type post to search for
+	 * @param null $startTime The start date of the calendar to get the data for
+	 * @param null $endTime The end date of the calendar to get the data for
+	 *
+	 * @return array
 	 * @throws Exception
 	 */
 	public function getItemData( $id = false ): array {
-		$slots    = [];
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
-			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ),
+			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
 			[],
 			$id ? [ $id ] : []
 		);
 
-		$doneSlots = [];
-		/** @var Week $week */
-		foreach ( $calendar->getWeeks() as $week ) {
-			/** @var Day $day */
-			foreach ( $week->getDays() as $day ) {
-				foreach ( $day->getGrid() as $slot ) {
-					$timeframe     = new Timeframe( $slot['timeframe'] );
-					$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
-
-					if ( $timeFrameType != \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ) {
-						continue;
-					}
-					$availabilitySlot = new stdClass();
-
-					// Init DateTime object for start
-					$dateTimeStart = Wordpress::getUTCDateTime('now');
-					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
-					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
-
-					// Init DateTime object for end
-					$dateTimeend = Wordpress::getUTCDateTime('now');
-					$dateTimeend->setTimestamp( $slot['timestampend'] );
-					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
-
-					$availabilitySlot->locationId = "";
-					if ( $timeframe->getLocation() ) {
-						$availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
-					}
-
-					$availabilitySlot->itemId = "";
-					if ( $timeframe->getLocation() ) {
-						$availabilitySlot->itemId = $timeframe->getItem()->ID . "";
-					}
-
-					$slotId = md5( serialize( $availabilitySlot ) );
-					if ( ! in_array( $slotId, $doneSlots ) ) {
-						$doneSlots[] = $slotId;
-						$slots[]     = $availabilitySlot;
-					}
-				}
-			}
-		}
-
-		return $slots;
+		return $calendar->getAvailabilitySlots();
 	}
 
 	/**

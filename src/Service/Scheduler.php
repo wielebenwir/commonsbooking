@@ -5,6 +5,14 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\TimeframeExport;
 
+/**
+ * This class is used to schedule jobs that are executed in the background.
+ * The jobs are scheduled using the WordPress cron system.
+ * We enhance this system by adding
+ * custom intervals,
+ * hooks that allow us to unschedule jobs and re-schedule them when the execution time in the settings is changed
+ * and the check for an option that determines weather the job should be run.
+ */
 class Scheduler {
 
 	protected string $jobhook; 
@@ -13,14 +21,26 @@ class Scheduler {
 
 	const UNSCHEDULER_HOOK = COMMONSBOOKING_PLUGIN_SLUG . '_unschedule';
 
-	//constructs the class, if job does not exist yet it is created
+
+	/**
+	 * Every job will be constructed again when the page is loaded.
+	 * The constructor determines if the job is scheduled and if it should be scheduled.
+	 * It also hooks the appropriate actions that will un-schedule the job upon certain changes.
+	 * We can safely un-schedule the job upon changes, because the job will be re-scheduled with the correct settings when the page is loaded again.
+	 * @param string $jobhook the action hook to run when the event is executed
+	 * @param callable $callback the callback function of that hook
+	 * @param string $reccurence how often the event should subsequently recur
+	 * @param string $executionTime takes time of day the job should be executed, only for daily reccurence
+	 * @param array $option first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
+	 * @param string $updateHook The wordpress hook that should update the option
+	 */
 	function __construct(
-		string $jobhook, //the action hook to run when the event is executed
-		callable $callback, //the callback function of that hook
-		string $reccurence, //how often the event should subsequently recur
-		string $executionTime = '', //takes time of day the job should be executed, only for daily reccurence
-		array $option = array(), //first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
-		string $updateHook= ''  //The wordpress hook that should update the option
+		string $jobhook,
+		callable $callback,
+		string $reccurence,
+		string $executionTime = '',
+		array $option = array(),
+		string $updateHook= ''
 	)
 	{
 		// Add custom cron intervals
@@ -109,6 +129,10 @@ class Scheduler {
 
 	/**
 	 * Inits scheduler hooks.
+	 * If you want to add a new job, add it here.
+	 * These hooks will be executed when the page is loaded.
+	 *
+	 * @return void
 	 */
 	public static function initHooks() {
 		// Init booking cleanup job
@@ -128,6 +152,26 @@ class Scheduler {
 			'update_option_commonsbooking_options_reminder'
 		);
 
+		// Init booking start reminder job for locations
+		New Scheduler(
+			'location-reminder-booking-start',
+			array( \CommonsBooking\Service\Booking::class, 'sendBookingStartLocationReminderMessage' ),
+			'daily',
+			'today ' . Settings::getOption( 'commonsbooking_options_reminder', 'booking-start-location-reminder-time' ) . ':00',
+			array( 'commonsbooking_options_reminder', 'booking-start-location-reminder-activate'),
+			'update_option_commonsbooking_options_reminder'
+		);
+
+		// Init booking end reminder job for locations
+		New Scheduler(
+			'location-reminder-booking-end',
+			array( \CommonsBooking\Service\Booking::class, 'sendBookingEndLocationReminderMessage' ),
+			'daily',
+			'today ' . Settings::getOption( 'commonsbooking_options_reminder', 'booking-end-location-reminder-time' ) . ':00',
+			array( 'commonsbooking_options_reminder', 'booking-end-location-reminder-activate'),
+			'update_option_commonsbooking_options_reminder'
+		);
+
 		// Init booking feedback job
 		New Scheduler(
 			'feedback',
@@ -136,6 +180,14 @@ class Scheduler {
 			'tomorrow midnight',
 			array( 'commonsbooking_options_reminder', 'post-booking-notice-activate'),
 			'update_option_commonsbooking_options_reminder'
+		);
+
+		// Init email booking codes job
+		New Scheduler(
+			'email_bookingcodes',
+			array( \CommonsBooking\Service\BookingCodes::class, 'sendBookingCodesMessage' ),
+			'daily',
+			'today midnight +3 hour'
 		);
 
 		// Init timeframe export job
@@ -154,33 +206,44 @@ class Scheduler {
 	}
 
 	/**
-	 * Unschedules the current job
-	 * 
-	 * @return boolean
+	 * Returns the jobhook of the current job
+	 *
+	 * @return string
 	 */
-	private function unscheduleJob() {
-		$timestamp = wp_next_scheduled($this->jobhook);
-		if ($timestamp){
-			wp_unschedule_event($timestamp,$this->jobhook);
-			return true;
-		}
-		return false;
+	public function getJobhook(): string {
+		return $this->jobhook;
 	}
 
 	/**
-	 * Unschedules legacy jobs
+	 * Unschedules the current job.
+	 * This can have multiple reasons:
+	 * - The job is no longer needed
+	 * - The job has been updated and needs to be rescheduled
+	 * - The plugin has been deactivated
+	 * @return boolean
+	 */
+	private function unscheduleJob() {
+		return wp_clear_scheduled_hook($this->jobhook);
+	}
+
+	/**
+	 * Unschedules legacy jobs.
+	 * These jobs come from earlier versions of CommonsBooking 2.x and are no longer needed.
+	 * There are also jobs still from CommonsBooking 0.X listed here.
+	 * It is important to remove the jobs, because WordPress does not delete them on it's own, not even on plugin deactivation.
 	 */
 	public static function unscheduleOldEvents() {
 		$cbCronHooks = [
 			'cb_cron_hook',
 			'cb_reminder_cron_hook',
 			'cb_feedback_cron_hook',
-			'cb_cron_export'
+			'cb_cron_export',
+			'cb_map_import',
+			'cb_cron_delete_pending'
 		];
 
 		foreach ( $cbCronHooks as $cbCronHook ) {
-			$timestamp = wp_next_scheduled( $cbCronHook );
-			wp_unschedule_event( $timestamp, $cbCronHook );
+			wp_clear_scheduled_hook($cbCronHook);
 		}
 	}
 }

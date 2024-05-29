@@ -32,9 +32,12 @@ $permalink    = add_query_arg ( 'cb-location', $location->ID, get_the_permalink(
                 count($data['ranges'])
             ) {
 
-                foreach ($data['ranges'] as $range) {
-                    echo commonsbooking_sanitizeHTML( \CommonsBooking\Model\Timeframe::formatBookableDate($range['start_date'], $range['end_date']) ) . '<br>';
-                }
+                // Merge overlapping timeframes
+				$ranges = \CommonsBooking\Helper\Helper::mergeRangesToBookableDates($data['ranges']);
+
+	            foreach ($ranges as $range) {
+		            echo commonsbooking_sanitizeHTML( \CommonsBooking\Model\Timeframe::formatBookableDate($range['start_date'], $range['end_date']) ) . '<br>';
+	            }
             }
         ?>
     </div>

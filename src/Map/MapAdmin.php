@@ -7,7 +7,10 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 
 
 /**
+ * This defines the map settings page in the admin area.
+ * This has been imported from flotte-berlin, therefore it does not use CMB2 fields that are used in other parts of the plugin.
  *
+ * TODO: Refactor this to use CMB2 fields.
  **/
 class MapAdmin {
 
@@ -377,19 +380,13 @@ class MapAdmin {
 			}
 
 		//cb_items_available_categories
-		$category_terms = get_terms( [
-			'taxonomy'   => Item::$postType . 's_category',
-			'hide_empty' => false,
-		] );
+		$category_terms = \CommonsBooking\Repository\Item::getTerms();
 		$valid_term_ids = [];
 		foreach ( $category_terms as $category_term ) {
 			$valid_term_ids[] = $category_term->term_id;
 		}
 
-		$loc_category_terms = get_terms( [
-			'taxonomy'   => Location::$postType . 's_category',
-			'hide_empty' => false,
-		] );
+		$loc_category_terms = \CommonsBooking\Repository\Item::getTerms();
 
 		$valid_loc_term_ids = [];
 		foreach ( $loc_category_terms as $loc_category_term ) {

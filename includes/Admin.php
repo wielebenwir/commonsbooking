@@ -11,13 +11,29 @@ function commonsbooking_admin() {
 	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
 
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
-	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
+
+	// Scripts for the WordPress backend
+	if ( WP_DEBUG ) {
+		wp_enqueue_script(
+			'cb-scripts-admin',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js',
+			array(),
+			time()
+		);
+	} else {
+		wp_enqueue_script(
+			'cb-scripts-admin',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.min.js',
+			array(),
+			COMMONSBOOKING_VERSION
+		);
+	}
 
     // Map marker upload scripts
     // TODO needs to be evaluated. Maybe not working on all systems
-    if (get_current_screen()->id == 'cb_map') {
+    if ( get_current_screen()->id == 'cb_map' ) {
         $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-        wp_enqueue_script('cb-map-marker-upload_js', $script_path);
+        wp_enqueue_script( 'cb-map-marker-upload_js', $script_path );
     }
 
 	// CB 0.X migration
@@ -39,6 +55,14 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_start_booking_migration' ),
 		)
 	);
+
+	// Additional info for CMB2 to handle booking rules
+	wp_add_inline_script(
+		'cb-scripts-admin',
+'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
+		. 'cb_applied_booking_rules=' . \CommonsBooking\Service\BookingRuleApplied::getRulesJSON() . ';',
+	);
+
 	/**
 	 * Ajax - cache warmup
 	 */
@@ -65,9 +89,12 @@ add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 function commonsbooking_sanitizeHTML( $string ): string {
 	global $allowedposttags;
 
+	if ( empty ( $string ) ) {
+		return '';
+	}
 	$allowed_atts = array(
 		'align'      => array(),
-		'checked'	 => array(),
+		'checked'    => array(),
 		'class'      => array(),
 		'type'       => array(),
 		'id'         => array(),
@@ -92,6 +119,9 @@ function commonsbooking_sanitizeHTML( $string ): string {
 		'height'     => array(),
 		'data'       => array(),
 		'title'      => array(),
+		'cellspacing'      => array(),
+		'cellpadding'      => array(),
+		'border'      => array(),
 	);
 
 	$allowedposttags['form']     = $allowed_atts;
@@ -128,8 +158,8 @@ function commonsbooking_sanitizeHTML( $string ): string {
 	$allowedposttags['a']        = $allowed_atts;
 	$allowedposttags['b']        = $allowed_atts;
 	$allowedposttags['i']        = $allowed_atts;
-	$allowedposttags['select']        = $allowed_atts;
-	$allowedposttags['option']        = $allowed_atts;
+	$allowedposttags['select']   = $allowed_atts;
+	$allowedposttags['option']   = $allowed_atts;
 
 	return wp_kses( $string, $allowedposttags );
 }
@@ -138,49 +168,91 @@ function commonsbooking_sanitizeHTML( $string ): string {
  * Create filter hooks for cmb2 fields
  *
  * @param array $field_args  Array of field args.
- * 
- * 
+ *
+ *
  * : https://cmb2.io/docs/field-parameters#-default_cb
- * 
  *
  * @return mixed
  */
-function commonsbooking_filter_from_cmb2($field_args) {
-	//Only return default value if we don't have a post ID (in the 'post' query variable)
-	if (isset( $_GET['post'])){
+function commonsbooking_filter_from_cmb2( $field_args ) {
+	// Only return default value if we don't have a post ID (in the 'post' query variable)
+	if ( isset( $_GET['post'] ) ) {
 		// No default value.
 		return '';
+	} else {
+		$filterName    = sprintf( 'commonsbooking_defaults_%s', $field_args['id'] );
+		$default_value = array_key_exists( 'default_value', $field_args ) ? $field_args['default_value'] : '';
+		return apply_filters( $filterName, $default_value );
 	}
-	else {
-		$filterName = sprintf( 'commonsbooking_defaults_%s', $field_args['id']);
-		$default_value = array_key_exists('default_value',$field_args) ? $field_args['default_value'] : '';
-		return apply_filters($filterName,$default_value);
-	}
+}
+
+/**
+ * Only return default value if we don't have a post ID (in the 'post' query variable)
+ *
+ * @param  bool  $default On/Off (true/false)
+ * @return mixed          Returns true or '', the blank default
+ */
+function cmb2_set_checkbox_default_for_new_post() {
+	return isset( $_GET['post'] )
+		// No default value.
+		? ''
+		// Default to true.
+		: true;
 }
 
 /**
  * Recursive sanitation for text or array
  *
- * @param mixed array_or_string (array|string)
+ * @param mixed  array_or_string (array|string)
  * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
- * 
- * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
- * 
  *
- * @return array|string 
+ * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ *
+ * @return array|string
  */
-function commonsbooking_sanitizeArrayorString( $array_or_string, $sanitize_function = 'sanitize_text_field' ) {
-	if ( is_string( $array_or_string ) ) {
-		$array_or_string = $sanitize_function( $array_or_string );
-	} elseif ( is_array( $array_or_string ) ) {
-		foreach ( $array_or_string as $key => &$value ) {
-			if ( is_array( $value ) ) {
-				$value = commonsbooking_sanitizeArrayorString( $value, $sanitize_function );
-			} else {
-				$value = commonsbooking_sanitizeArrayorString( $value, $sanitize_function );
-			}
-		}
+
+function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanitize_text_field'  ) {
+    if ( is_array( $data ) ) {
+        foreach ( $data as $key => $value ) {
+            $data[ $key ] = commonsbooking_sanitizeArrayorString( $value, $sanitizeFunction );
+        }
+    } else {
+        $data = call_user_func( $sanitizeFunction, $data );
+    }   
+    
+    return $data;
+
+}
+
+
+/**
+ * writes messages to error_log file
+ * only active if DEBUG_LOG is on
+ *
+ * @param mixed $log can be a string, array or object
+ * @param bool $backtrace if set true the file-path and line of the calling file will be added to the error message
+ *
+ * @return string logmessage 
+ */
+function commonsbooking_write_log( $log, $backtrace = true ) {
+
+    if ( ! WP_DEBUG_LOG ) {
+        return;
+    }
+
+    if ( is_array( $log ) || is_object( $log ) ) {
+		$logmessage = ( print_r( $log, true ) );
+	} else {
+		$logmessage =  $log ;
 	}
 
-	return $array_or_string;
+	if ( $backtrace ) {
+		$bt   = debug_backtrace();
+		$file = $bt[0]['file'];
+		$line = $bt[0]['line'];
+		$logmessage  = $file . ':' . $line . ' ' . $logmessage;
+	}
+
+    error_log( $logmessage ) ;
+
 }

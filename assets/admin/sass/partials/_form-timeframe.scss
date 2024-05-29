@@ -24,3 +24,41 @@ select[readonly] {
     pointer-events: none !important;
     touch-action: none !important;
 }
+
+a.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+
+
+.cmb2-id-booking-codes-list {
+    .cmb-td {
+        > table.cmb2-codes-outer-table {
+            width: 100%;
+            > tbody > tr {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: 1rem;
+                > td {
+                    margin-bottom: unset;
+                    padding-bottom: unset;
+                    padding-top: unset;                    
+                }
+            }
+            table.cmb2-codes-column {
+                border: none;
+                td {
+                    border: none;
+                    display: table-cell;
+                    padding-top: 0.5rem;
+                    padding-bottom: 0.5rem;
+                }
+                tr:nth-child(odd) {
+                    background-color: #f2f2f2;
+                }                
+            }
+        }
+    }
+}

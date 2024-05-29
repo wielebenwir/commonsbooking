@@ -1,0 +1,44 @@
+name: Deploy to WordPress.org
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: New Release
+    runs-on: ubuntu-20.04
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: ./.github/actions/build-plugin
+
+    - name: Check i18n coverage before release
+      uses: alexkiro/i18n-coverage@v1.0.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        translations-path: 'languages/*.po'
+        ignore-languages: 'en'
+        min-coverage: 100
+        
+    - name: WordPress Plugin Deploy
+      uses: 10up/action-wordpress-plugin-deploy@stable
+      with:
+        dry-run: false
+        generate-zip: true
+      env:
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        BUILD_DIR: build/commonsbooking
+        SLUG: commonsbooking # optional, remove if GitHub repo name matches SVN slug, including capitalization
+
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ steps.deploy.outputs.zip-path }}
+        asset_name: ${{ github.event.repository.name }}.zip
+        asset_content_type: application/zip

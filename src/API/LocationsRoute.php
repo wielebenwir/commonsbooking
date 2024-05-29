@@ -14,6 +14,11 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Endpoint for places, where items are located.
+ *
+ * @see Location for exposed api data
+ */
 class LocationsRoute extends BaseRoute {
 
 	/**
@@ -25,9 +30,10 @@ class LocationsRoute extends BaseRoute {
 
 	/**
 	 * Commons-API schema definition.
+	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.locations.schema.json";
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.locations.schema.json';
 
 	/**
 	 * @var Provider

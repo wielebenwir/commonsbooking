@@ -75,13 +75,12 @@ class MapItemAvailable {
 					];
 				}
 
-				// get calendardata based on availability range
-				$calendarData = Calendar::prepareJsonResponse(
-					$startDay,
-					$endDay,
-					[ $location_id ],
-					[ $item['id'] ]
-				);
+                $calendarData = Calendar::getCalendarDataArray(
+                    $item['id'],
+                    $location_id,
+                    $startDay->getFormattedDate( 'Y-m-d' ),
+                    $endDay->getFormattedDate( 'Y-m-d' ),
+                );
 
 				//mark days in timeframe
 				$availability = self::markDaysInTimeframe( $calendarData, $availability );
@@ -94,6 +93,18 @@ class MapItemAvailable {
 	}
 
 	/**
+	 * This determines the status of the item based on the calendar data.
+	 * For each day, the status is determined based on the following rules:
+	 * - if there are no slots, the status is set to "locked"
+	 * - if the day is a holiday, the status is set to "location-holiday"
+	 * - if the day is locked and there are no slots, the status is set to "locked"
+	 * - if the day is locked and the first and last slot are booked, the status is set to "booked"
+	 * - if the day is locked and partially booked, the status is set to "partially-booked"
+	 * - if neither of the above is true, the status is set to "available"
+	 *
+	 *  This logic should resemble the logic in the @see \CommonsBooking\View\Calendar::processSlot() method because
+	 *  otherwise days would be mapped differently throughout the plugin.
+	 *
 	 * @param $calendarData
 	 * @param $availabilities
 	 *
@@ -112,7 +123,9 @@ class MapItemAvailable {
 					$availability['status'] = self::ITEM_BOOKED;
 				} elseif ( $day['locked'] && $day['partiallyBookedDay']) {
 					$availability['status'] = self::ITEM_PARTIALLY_BOOKED;
-				}  else {
+                } elseif ( $day['locked'] ) {
+                    $availability['status'] = self::ITEM_LOCKED;
+                }  else {
 					$availability['status'] = self::ITEM_AVAILABLE;
 				}
 			}

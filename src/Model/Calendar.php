@@ -2,19 +2,26 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
+use stdClass;
 
+/**
+ * Represents a span of weeks, which is used to display a calendar.
+ *
+ * @uses Week
+ */
 class Calendar {
 
 	/**
 	 * @var Day
 	 */
-	protected $startDate;
+	protected Day $startDate;
 
 	/**
 	 * @var Day
 	 */
-	protected $endDate;
+	protected Day $endDate;
 
 	/**
 	 * @var array
@@ -46,6 +53,11 @@ class Calendar {
 	 * @param array $types
 	 */
 	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
+		//check, that it spans at least two days
+		if ( $startDate->getDate() == $endDate->getDate() ) {
+			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
+		}
+
 		$this->startDate = $startDate;
 		$this->endDate   = $endDate;
 		$this->items     = $items;
@@ -55,6 +67,7 @@ class Calendar {
 
 	/**
 	 * Returns weeks for calendar time range.
+	 *
 	 * @return array
 	 */
 	public function getWeeks(): array {
@@ -70,13 +83,14 @@ class Calendar {
 		);
 
 
-		if ( Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
-			$weeks = [];
+			$weeks = array();
 			while ( $startDate <= $endDate ) {
 				$dayOfYear = date( 'z', $startDate );
-				$year = date( 'Y', $startDate );
+				$year      = date( 'Y', $startDate );
 				$weeks[]   = new Week(
 					$year,
 					$dayOfYear,
@@ -84,15 +98,78 @@ class Calendar {
 					$this->items,
 					$this->types
 				);
-				$startDate = strtotime( "next monday", $startDate );
+				$startDate = strtotime( 'next monday', $startDate );
 			}
 
 			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $weeks, ['misc'], $customId, 'midnight' );
+			Plugin::setCacheItem( $weeks, array( 'misc' ), $customId, 'midnight' );
 
 			return $weeks;
 		}
 	}
 
+	/**
+	 * Will retrieve the respective availability slots for a given calendar.
+	 * This is used to display availabilities for the API routes.
+	 *
+	 * Because we process the calendar by weeks, at least two days are needed to get a valid calendar.
+	 * The calendar does not consider the individual boundaries set by $startDate and $endDate but will always return a full week.
+	 *
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function getAvailabilitySlots(): array {
+		$slots    = [];
+		$doneSlots = [];
+		/** @var Week $week */
+		foreach ( $this->getWeeks() as $week ) {
+			/** @var Day $day */
+			foreach ( $week->getDays() as $day ) {
+				foreach ( $day->getGrid() as $slot ) {
+					$timeframe     = new Timeframe( $slot['timeframe'] );
+					$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
 
+					//Skip everything where the most important slot is not bookable. We are only interested in direct availability.
+					if ( $timeFrameType != \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ) {
+						continue;
+					}
+
+					//Skip timeframes that are not bookable today
+					if ( $timeframe->getFirstBookableDay() > $day->getDate() ) {
+						continue;
+					}
+
+					$availabilitySlot = new stdClass();
+
+					// Init DateTime object for start
+					$dateTimeStart = Wordpress::getUTCDateTime('now');
+					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
+					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
+
+					// Init DateTime object for end
+					$dateTimeend = Wordpress::getUTCDateTime('now');
+					$dateTimeend->setTimestamp( $slot['timestampend'] );
+					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
+
+					$availabilitySlot->locationId = "";
+					if ( $timeframe->getLocation() ) {
+						$availabilitySlot->locationId = $timeframe->getLocationID() . "";
+					}
+
+					$availabilitySlot->itemId = "";
+					if ( $timeframe->getItem() ) {
+						$availabilitySlot->itemId = $timeframe->getItemID() . "";
+					}
+
+					$slotId = md5( serialize( $availabilitySlot ) );
+					if ( ! in_array( $slotId, $doneSlots ) ) {
+						$doneSlots[] = $slotId;
+						$slots[]     = $availabilitySlot;
+					}
+				}
+			}
+		}
+		return $slots;
+	}
+    
 }

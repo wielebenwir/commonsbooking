@@ -27,6 +27,34 @@ class Item extends CustomPostType {
 
 		// Filter only for current user allowed posts
 		add_action( 'pre_get_posts', array( $this, 'filterAdminList' ) );
+
+		// Save-handling
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
+	}
+
+	/**
+	 * Handles the creation and editing of the terms in the taxonomy for the location post type
+	 * @param $term_id
+	 * @param $tt_id
+	 * @param $taxonomy
+	 *
+	 * @return void
+	 */
+	public static function termChange($term_id, $tt_id, $taxonomy) {
+		if ( $taxonomy == self::$postType . 's_category' ) {
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
+		}
+	}
+
+	/**
+	 * Handles save-Request for items.
+	 */
+	public function savePost($post_id, \WP_Post $post) {
+		if ( $post->post_type == self::$postType && $post_id ) {
+			//update all dynamic timeframes
+			Timeframe::updateAllTimeframes();
+		}
 	}
 
 
@@ -142,7 +170,7 @@ class Item extends CustomPostType {
 			'publicly_queryable'  => true,
 
 			// Soll der Post Type aus der Suchfunktion ausgeschlossen werden?
-			'exclude_from_search' => true,
+			'exclude_from_search' => false,
 
 			// Welche Elemente sollen in der Backend-Detailansicht vorhanden sein?
 			'supports'            => array(
@@ -175,17 +203,19 @@ class Item extends CustomPostType {
 
 	public function getTemplate( $content ) {
 		$cb_content = '';
+		$errormessage = '';
 		if ( is_singular( self::getPostType() ) && is_main_query() && get_post_type() == self::getPostType() ) {
 			ob_start();
 			global $post;
 
 			$item = new \CommonsBooking\Model\Item( $post );
+			$errormessage = \CommonsBooking\View\Booking::getError();
 			set_query_var( 'item', $item );
 			commonsbooking_get_template_part( 'item', 'single' );
 			$cb_content   = ob_get_clean();
 		}
 
-		return $content . $cb_content;
+		return $errormessage . $content . $cb_content;
 	}
 
 	/**
@@ -208,7 +238,7 @@ class Item extends CustomPostType {
 
 		// Show selection only to admins
 		if ( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() ) {
-			$users       = UserRepository::getCBManagers();
+			$users       = UserRepository::getSelectableCBManagers();
 			$userOptions = [];
 			foreach ( $users as $user ) {
 				$userOptions[ $user->ID ] = $user->get( 'user_nicename' ) . " (" . $user->first_name . " " . $user->last_name . ")";

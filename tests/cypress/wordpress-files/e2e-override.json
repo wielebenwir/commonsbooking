@@ -1,0 +1,19 @@
+{
+  "phpVersion": "VERSION_PLACEHOLDER",
+  "plugins": [
+    "./build/commonsbooking",
+    "https://downloads.wordpress.org/plugin/wordpress-importer.zip",
+    "https://downloads.wordpress.org/plugin/disable-welcome-messages-and-tips.zip"
+  ],
+  "themes": [
+    "flegfleg/kasimir-theme"
+  ],
+  "env": {
+    "tests": {
+      "mappings": {
+        "wp-content/plugins/commonsbooking": "./build/commonsbooking",
+        "wp-content/plugins/commonsbooking/tests/cypress/wordpress-files": "./tests/cypress/wordpress-files"
+      }
+    }
+  }
+}

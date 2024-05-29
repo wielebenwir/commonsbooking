@@ -9,6 +9,13 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Geocoder\Exception\Exception;
 
+/**
+ * This is the logical wrapper for the location custom post type.
+ *
+ * You can get the locations from the database using the @see \CommonsBooking\Repository\Location class.
+ *
+ * Additionally, all the public functions in this class can be called using Template Tags.
+ */
 class Location extends BookablePost {
 	/**
 	 * getBookableTimeframesByItem
@@ -34,7 +41,6 @@ class Location extends BookablePost {
 
 	/**
 	 *
-	 *
 	 * Returns the location address including location name in multiple lanes with <br> line breaks
 	 *
 	 * @TODO: - turn this into a user-configurable template.
@@ -43,6 +49,7 @@ class Location extends BookablePost {
 	 *
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function formattedAddress() {
 		$html_after    = '<br>';
@@ -54,7 +61,7 @@ class Location extends BookablePost {
 		}
 		$location_postcode = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post );
 		if (!empty($location_postcode)){
-			$html_output[] = $location_postcode . ' ';
+			$html_output[] = $location_postcode;
 		}
 		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
 			$this->post );
@@ -66,10 +73,12 @@ class Location extends BookablePost {
 	}
 
 	/**
-	 * formattedAddressOneLine
+	 * Returns the formatted Location address in one line, separated by comma.
+	 * This function is usually called using template tags in the e-mail templates.
 	 *
-	 * Returns the formatted Location address in one line, separated by comma
+	 * TODO: Fix the uncaught exception.
 	 * @return string html
+	 * @throws \Exception
 	 */
 	public function formattedAddressOneLine(): string {
 		$location_street = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street', $this->post );
@@ -99,15 +108,18 @@ class Location extends BookablePost {
 	/**
 	 * formattedContactInfo
 	 *
-	 * Returns formatted location contact info with info text
+	 * Returns formatted location contact info with info text.
+	 * This function is usually called using template tags in the e-mail templates.
 	 *
 	 * @TODO: do not add any text in here, any text should be in the backend email text field!
+	 * @TODO: This function may throw an uncaught exception.
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function formattedContactInfo() {
 		$contact = array();
-		if ( ! empty( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ) ) ) {
+		if ( ! empty( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) ) ) {
 			$contact[] = "<br>"; // needed for email template
 			$contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
 				'commonsbooking' );
@@ -121,9 +133,14 @@ class Location extends BookablePost {
 	/**
 	 * formattedContactInfoOneLine
 	 *
-	 * Returns formatted location contact info
+	 * Returns formatted location contact info.
+	 * This function is usually called using template tags in the e-mail templates.
+	 * It is a shorter version of formattedContactInfo().
+	 *
+	 * TODO: This function may throw an uncaught exception.
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function formattedContactInfoOneLine() {
 		return commonsbooking_sanitizeHTML(CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post)) . '<br>';
@@ -131,6 +148,7 @@ class Location extends BookablePost {
 
 	/**
 	 * Return Location pickup instructions
+	 * This function is usually called using template tags in the e-mail templates.
 	 *
 	 * @return string html
 	 * @throws \Exception
@@ -143,16 +161,22 @@ class Location extends BookablePost {
 	}
 
 	/**
-	 * Return Location pickup instructions
+	 * Return Location pickup instructions.
+	 * This function is usually called using template tags in the e-mail templates.
+	 *
+	 * TODO: This function may throw an uncaught exception.
 	 *
 	 * @return string html
+	 * @throws \Exception
 	 */
 	public function formattedPickupInstructionsOneLine() {
 		return CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post );
 	}
 
 	/**
-	 * @throws Exception
+	 * Calls the geocoder to update the geo coordinates of the location.
+	 * Caution: Do not call this function without a one-second delay between calls. Do not overload the geocoder.
+	 *
 	 */
 	public function updateGeoLocation() {
 		$street        = $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_street' );
@@ -168,7 +192,11 @@ class Location extends BookablePost {
 		}
 
 		$addressString = $street . ", " . $postCode . " " . $city . ", " . $country;
-		$addressData   = GeoHelper::getAddressData( $addressString );
+		try {
+			$addressData = GeoHelper::getAddressData( $addressString );
+		} catch ( Exception $e ) {
+			$addressData = null;
+		}
 
 		if ( $addressData ) {
 			$coordinates = $addressData->getCoordinates()->toArray();
@@ -187,6 +215,13 @@ class Location extends BookablePost {
 	}
 
 	/**
+	 * Will get all the admins of the location.
+	 * The admins can be set in the backend.
+	 * This will not get the admins of the items in the location. To get both, use the function from the Model/Timeframe class.
+	 *
+	 *  TODO: This currently includes the author of the location as an admin.
+	 *        This does not make sense in all contexts and should be changed.
+	 *
 	 * @return array|mixed|string[]
 	 */
 	public function getAdmins() {
@@ -202,10 +237,16 @@ class Location extends BookablePost {
 		}
 		$locationAdminIds[] = get_post_field( 'post_author', $locationId );
 
-		return $locationAdminIds;
+		return array_unique(
+			array_map('intval',
+				array_values($locationAdminIds)
+			)
+		);
 	}
 
 	/**
+	 * Will get the currently applicable restrictions for the location.
+	 *
 	 * @return Restriction[]
 	 * @throws \Exception
 	 */
@@ -219,7 +260,10 @@ class Location extends BookablePost {
 	}
 
 	/**
-	 * Returns true if the map shall be shown.
+	 * Returns true if the little map for the location should be shown.
+	 * This can usually be seen in the frontend item detail page.
+	 * This is set in the backend.
+	 *
 	 * @return mixed
 	 */
 	public function hasMap() {

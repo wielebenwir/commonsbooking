@@ -1,0 +1,35 @@
+name: 'Build Plugin'
+description: 'Builds plugin into ./build/commonsbooking'
+
+runs:
+  using: "composite"
+  steps:
+  
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: |
+        composer install --no-dev --prefer-dist --no-progress
+      shell: bash
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'npm'
+    - run: npm ci --legacy-peer-deps --include=dev
+      shell: bash
+
+    - name: Run build script
+      run: bin/build-zip.sh --skip-zip
+      shell: bash

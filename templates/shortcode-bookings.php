@@ -3,17 +3,17 @@
  * Shortcode [cb_bookings]
  * Model: Booking
  * View: Booking::shortcode
- * $templateData is set in Model/View/getBookingListData()
+ * $templateData is set in
+ * @see \CommonsBooking\View\Booking::getBookingListData()
  *
  * List all allowed bookings with filter
- * 
  *
  */
 
 global $templateData;
 if ( !is_user_logged_in() )  {
 	$current_url = $_SERVER['REQUEST_URI'];
-    $noResultText = sprintf( commonsbooking_sanitizeHTML(  __('Please <a href="%s"> login in </a> to see your bookings.', 'commonsbooking') ), wp_login_url( $current_url ) );
+    $noResultText = sprintf( commonsbooking_sanitizeHTML(  __('Please <a href="%s"> login </a> to see your bookings.', 'commonsbooking') ), wp_login_url( $current_url ) );
 } else { 
     $noResultText = commonsbooking_sanitizeHTML(  __("No bookings available.", "commonsbooking") );
 }
@@ -26,7 +26,7 @@ if ($templateData && $templateData['total'] > 0) {
     $response .= '
 	<div class="booking-list">';
 
-	$response .= $templateData['menu'];
+	$response .= $templateData['menu'] ?? '';
 
     $response .= '
         <div class="booking-list--filters cb-filter' . ($showFilters ?: ' hide') . '">

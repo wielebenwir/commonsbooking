@@ -44,7 +44,7 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
-     * 
+     *
      * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
@@ -91,6 +91,10 @@ trait Cache {
 	}
 
 	/**
+	 * Creates cache based on user settings or defaults.
+	 * 
+	 * At the moment filesystem and redis cache are supported.
+	 *
 	 * @param string $namespace
 	 * @param int $defaultLifetime
 	 * @param string|null $directory
@@ -98,18 +102,29 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 */
 	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
-		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
+		if ( $directory === null ){
+			$customCachePath = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' ) );
+			if ( $customCachePath ){
+				$directory = $customCachePath;
+			}
+			//Since this is the default cache path by Symfony we'd rather set it to null so that Symfony can take over with it's own default value.
+			else if ( $customCachePath == '/tmp/symfony-cache/' ) {
+				$directory = null;
+			}
+		}
+
+		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on'){
 			try {
 				$adapter = new RedisTagAwareAdapter(
-					RedisAdapter::createConnection(Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn')),
+					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
 					$namespace,
 					$defaultLifetime
 				);
 				return $adapter;
 			}
 			catch (Exception $e) {
-				commonsbooking_write_log($e . 'Falling back to Filesystem adapter');
-				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error',$e->getMessage());
+				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
+				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
 			}
 		}
 		$adapter = new TagAwareAdapter(
@@ -174,7 +189,7 @@ trait Cache {
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
-		if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\TagAwareAdapter')) {
+		if (is_a(self::getCache(),'Symfony\Component\Cache\PruneableInterface')) {
 			self::getCache()->prune();
 		}
 
@@ -213,8 +228,10 @@ trait Cache {
 			// First get all pages with cb shortcodes
 			$sql = "SELECT post_content FROM $table_posts WHERE 
 		      post_content LIKE '%cb_items%' OR
-			  post_content LIKE '%cb_location%' OR
-		      post_content LIKE '%cb_map%'";
+			  post_content LIKE '%cb_locations%' OR
+		      post_content LIKE '%cb_map%' OR
+			  post_content LIKE '%cb_items_table%' OR
+			  post_content LIKE '%cb_bookings%'";
 			$pages = $wpdb->get_results( $sql );
 
 			// Now extract shortcode calles incl. attributes
@@ -258,8 +275,8 @@ trait Cache {
 		?>
 		<div class="cmb-row cmb-type-text table-layout">
 			<div class="cmb-th">
-				Connection status:
-			</div>
+                <?php  echo __('Connection status:', 'commonsbooking'); ?>
+            </div>
 			<div class="cmb-th">
 				<?php
 				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
@@ -283,6 +300,53 @@ trait Cache {
 			</div>
 		</div>
 		<?php
+	}
+
+	public static function renderFilesystemStatus( array $field_ars, CMB2_Field $field){
+		?>
+		<div class="cmb-row cmb-type-text table-layout">
+			<div class="cmb-th">
+				Directory status:
+			</div>
+			<div class="cmb-th">
+				<?php
+				$cachePath = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' );
+				if (empty($cachePath)){
+					$cachePath = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'symfony-cache';
+				}
+				else {
+					$cachePath = realpath($cachePath) ?: $cachePath;
+				}
+				if (is_writable($cachePath)){
+					echo '<div style="color:green">';
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s is writeable.', 'commonsbooking') ), $cachePath);
+					echo '</div>';
+				}
+				else {
+					echo '<div style="color:red">';
+					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s could not be written to.', 'commonsbooking') ), $cachePath);
+					echo '</div>';
+				}
+				?>
+			</div>
+		</div>
+		<?php
+	}
+
+	public static function renderClearCacheButton( $field_args, $field ) {
+		?>
+		<div class="cmb-row cmb-type-text ">
+			<div class="cmb-th">
+				<label for="clear-cache-button"><?php echo esc_html__( 'Clear all cache items', 'commonsbooking' ); ?></label>
+			</div>
+			<div class="cmb-td">
+				<button type="submit" id="clear-cache-button" class="button button-secondary" name="submit-cmb"
+				        value="clear-cache">
+					<?php echo esc_html__( 'Clear Cache', 'commonsbooking' ); ?>
+				</button>
+			</div>
+		</div>
+	<?php
 	}
 
 	/**

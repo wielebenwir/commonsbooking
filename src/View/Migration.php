@@ -6,6 +6,9 @@ namespace CommonsBooking\View;
 use CMB2_Field;
 use CommonsBooking\Repository\CB1;
 
+/**
+ * The class that renders the migration form to migrate from CB1 to CB2.
+ */
 class Migration {
 
 	/**

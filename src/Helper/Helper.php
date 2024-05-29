@@ -65,14 +65,12 @@ class Helper {
 	 */
 	public static function FormattedDateTime( $timestamp ) {
 
-		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
-		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
-
-		return date_i18n( $date_format, $timestamp ) . ' ' . date_i18n( $time_format, $timestamp );
+		return Helper::FormattedDate( $timestamp ) . ' ' . Helper::FormattedTime( $timestamp );
 	}
 
 	/**
 	 * Returns timestamp of last full hour, needed to get more cache hits.
+	 * Also used to determine if a post is still bookable because it is in the past or not.
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
@@ -105,7 +103,6 @@ class Helper {
 			$post = new Booking( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType) {
-
 			$post = new Item( $post->ID );
 		}
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType) {
@@ -114,5 +111,71 @@ class Helper {
 
 		return $post;
 	}
+
+	/**
+	 * Returns one or more overlapping timeframes, given an array of timeframes
+	 *
+	 * NOTE: When performance issues arise, this operation can be implemented
+	 * faster with an interval tree data structure
+	 *
+	 * @param array $array_of_ranges Array of one or more ranges.
+	 *
+	 * @return array - Array of overlapping ranges.
+	 */
+	public static function mergeRangesToBookableDates( array $array_of_ranges ): array {
+		$interval_open = function ( $interval_value ): bool {
+			return false === $interval_value;
+		};
+
+		if ( count( $array_of_ranges ) === 1 ) {
+			return $array_of_ranges;
+		}
+
+		$result = array();
+
+		// Sort by start date.
+		usort(
+			$array_of_ranges,
+			function( $a, $b ) {
+				return $a['start_date'] <=> $b['start_date'];
+			}
+		);
+
+		$result[] = $array_of_ranges[0];
+		$last     = 0;
+
+		// For each range, compare with last (or first) merged range.
+		for ( $i = 1; $i < count( $array_of_ranges ); $i++ ) {
+			$last_interval = &$result[ $last ];
+			$next_interval = &$array_of_ranges[ $i ];
+
+			// Either
+			// If first/last interval is open => overlaps next
+			// Or first/last interval end is greater than next interval begin.
+			if (
+				$interval_open( $last_interval['end_date'] )
+				|| $last_interval['end_date'] >= $next_interval['start_date'] ) {
+				// TimeFrame overlap?
+				// => Overlap, merge interval start and end.
+				$last_interval['start_date'] = min( $last_interval['start_date'], $next_interval['start_date'] );
+
+				if ( $interval_open( $last_interval['end_date'] ) ) {
+					// Do nothing.
+				} elseif ( $interval_open( $next_interval['end_date'] ) ) {
+					$last_interval['end_date'] = false;
+				} else {
+					// Both intervals are closed.
+					$last_interval['end_date'] = max( $last_interval['end_date'], $next_interval['end_date'] );
+				}
+			} else {
+				// => No overlap, add new interval to result. Use as new last interval
+				$result[] = $next_interval;
+				$last ++;
+			}
+		}
+
+		return $result;
+	}
+
 
 }

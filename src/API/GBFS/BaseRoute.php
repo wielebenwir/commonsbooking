@@ -10,6 +10,13 @@ use stdClass;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Base class which implements retrieval of basic data attributes of
+ * GBFS spec.
+ *
+ * Note: When deriving from this class, implement \WP_REST_Controller::prepare_item_for_response,
+ *       which is called in \BaseRoute::getItemData
+ */
 class BaseRoute extends \CommonsBooking\API\BaseRoute {
 
 	/**
@@ -23,9 +30,9 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		$data                 = new stdClass();
 		$data->data           = new stdClass();
 		$data->data->stations = $this->getItemData( $request );
-		$data->last_updated   = current_time('timestamp');
+		$data->last_updated   = current_time('timestamp', true);
 		$data->ttl            = 60;
-		$data->version        = "2.2";
+		$data->version        = "2.3";
 
 		if ( WP_DEBUG ) {
 			$this->validateData( $data );

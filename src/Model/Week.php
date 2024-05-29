@@ -4,9 +4,14 @@ namespace CommonsBooking\Model;
 
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
-use DateTime;
 use Exception;
 
+/**
+ * Represents up to 7 days of the (rest of the) week, starting from any day of the year,
+ * till the end of the week.
+ *
+ * @uses Day
+ */
 class Week {
 
 	/**
@@ -68,21 +73,21 @@ class Week {
 			serialize( $this->types )
 		);
 
-		if (Plugin::getCacheItem( $customId ) ) {
-			return Plugin::getCacheItem( $customId );
+		$cacheItem = Plugin::getCacheItem( $customId );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
+			$yearTimestamp = mktime( 0, 0, 0, 1, 1, $this->year );
+			$dayOfYear     = $this->dayOfYear;
+			$timestamp     = strtotime( "+ $dayOfYear days", $yearTimestamp );
+			$dto           = Wordpress::getUTCDateTimeByTimestamp( $timestamp );
 
-			$yearTimestamp = mktime(0,0,0, 1, 1, $this->year);
-			$dayOfYear = $this->dayOfYear;
-			$timestamp = strtotime("+ $dayOfYear days" , $yearTimestamp);
-			$dto = Wordpress::getUTCDateTimeByTimestamp($timestamp);
-
-			$days = [];
+			$days = array();
 			for ( $i = 0; $i < 7; $i ++ ) {
-				$dayDate = $dto->format( 'Y-m-d' );
-				$days[] = new Day( $dayDate, $this->locations, $this->items, $this->types );
+				$dayDate   = $dto->format( 'Y-m-d' );
+				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types );
 				$dayOfWeek = $dto->format( 'w' );
-				if($dayOfWeek == "0") {
+				if ( $dayOfWeek === '0' ) {
 					break;
 				}
 
@@ -90,7 +95,7 @@ class Week {
 			}
 
 			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $days, ['misc'], $customId, 'midnight');
+			Plugin::setCacheItem( $days, array( 'misc' ), $customId, 'midnight' );
 
 			return $days;
 		}

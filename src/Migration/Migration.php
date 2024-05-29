@@ -15,6 +15,11 @@ use Exception;
 use WP_Post;
 use WP_Query;
 
+/**
+ * The logic for handling the migration from CB1 to CB2.
+ * The CB1 fields are fetched from the @see \CommonsBooking\Repository\CB1 repository and migrated using the
+ * respective migration functions in this class.
+ */
 class Migration {
 
 	/**
@@ -509,9 +514,9 @@ class Migration {
 		$postMeta['full-day']                                           = 'on';
 		$postMeta['grid']                                               = '0';
 		$postMeta['weekdays']                                           = $weekdays;
-		$postMeta['show-booking-codes']                                 = 'on';
-		$postMeta['timeframe-advance-booking-days']                     = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
-		$postMeta['timeframe-max-days']                                 = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES]                = 'on';
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS]    = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]                         = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
 
 		$existingPost = self::getExistingPost( $timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID );
 

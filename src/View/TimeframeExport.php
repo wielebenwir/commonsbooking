@@ -11,7 +11,14 @@ use DatePeriod;
 use DateInterval;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\Timeframe;
+use const CommonsBooking\Model\Timeframe\META_REPETITION;
 
+/**
+ * The TimeframeExport class handles the download of timeframe data as CSV.
+ * This also includes booking data (bookings used to be a type of timeframe).
+ * This is used by users to export all their data or a time range of their data for statistical analysis.
+ * This can not be used for backups, as it does not include all data and there is no way to import it again.
+ */
 class TimeframeExport {
 
 	/**
@@ -64,13 +71,13 @@ class TimeframeExport {
 
 		$headline = false;
 
-		/** @var \CommonsBooking\Model\Timeframe $timeframePost */
-		foreach ( $timeframes as $timeframePost ) {
-			$timeframeData = self::getTimeframeData( $timeframePost );
+		$timeframeDataRows = self::getTimeframeData( $timeframes );
+
+		foreach ( $timeframeDataRows as $timeframeDataRow ) {
 
 			if ( ! $headline ) {
 				$headline    = true;
-				$headColumns = array_keys( $timeframeData );
+				$headColumns = array_keys( $timeframeDataRow );
 
 				// Iterate through in put fields
 				foreach ( $inputFields as $type => $fields ) {
@@ -86,13 +93,17 @@ class TimeframeExport {
 			}
 
 			// output the column values
-			$valueColumns = array_values( $timeframeData );
+			$valueColumns = array_values( $timeframeDataRow );
+
+			//TODO #507
+			/** @var \CommonsBooking\Model\Timeframe $timeframeDataPost */
+			$timeframeDataPost = new \CommonsBooking\Model\Timeframe( $timeframeDataRow['ID'] );
 
 			// Get values for user defined input fields.
 			foreach ( $inputFields as $type => $fields ) {
 				// Location fields
 				if ( $type == 'location' ) {
-					$location = $timeframePost->getLocation();
+					$location = $timeframeDataPost->getLocation();
 					foreach ( $fields as $field ) {
 						$valueColumns[] = $location->getFieldValue( $field );
 					}
@@ -100,7 +111,7 @@ class TimeframeExport {
 
 				// Item fields
 				if ( $type == 'item' ) {
-					$item = $timeframePost->getItem();
+					$item = $timeframeDataPost->getItem();
 					foreach ( $fields as $field ) {
 						$valueColumns[] = $item->getFieldValue( $field );
 					}
@@ -108,7 +119,7 @@ class TimeframeExport {
 
 				// User fields
 				if ( $type == 'user' ) {
-					$user = $timeframePost->getUserData();
+					$user = $timeframeDataPost->getUserData();
 					foreach ( $fields as $field ) {
 						$valueColumns[] = $user->get( $field );
 					}
@@ -212,77 +223,89 @@ class TimeframeExport {
 	}
 
 	/**
-	 * Prepares timeframe data array.
+	 * Takes an array of timeframe posts and returns an array of timeframe assoc array data for the table export
 	 *
-	 * @param \CommonsBooking\Model\Timeframe $timeframePost
+	 * @param \CommonsBooking\Model\Timeframe[] $timeframePosts
 	 *
 	 * @return array
 	 */
-	protected static function getTimeframeData( \CommonsBooking\Model\Timeframe $timeframePost ): array {
-		$timeframeData = self::getRelevantTimeframeFields( $timeframePost );
+	public static function getTimeframeData( array $timeframePosts ): array {
 
-		// Timeframe typ
-		$timeframeTypeId       = $timeframePost->getFieldValue( 'type' );
-		$timeframetypes        = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes();
-		$timeframeData['type'] = array_key_exists( $timeframeTypeId, $timeframetypes ) ?
-			$timeframetypes[ $timeframeTypeId ] : __( 'Unknown', 'commonsbooking' );
+		$timeframeDataRows = [];
+		foreach ( $timeframePosts as $timeframePost ) {
+			$timeframeData = self::getRelevantTimeframeFields( $timeframePost );
+			// Timeframe typ
+			$timeframeTypeId       = $timeframePost->getFieldValue( 'type' );
+			$timeframeTypes        = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes();
+			$timeframeData['type'] = array_key_exists( $timeframeTypeId, $timeframeTypes ) ?
+				$timeframeTypes[ $timeframeTypeId ] : __( 'Unknown', 'commonsbooking' );
 
-		if ( $timeframeTypeId == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ) {
-			$booking = new \CommonsBooking\Model\Booking( $timeframePost->ID );
+			if ( $timeframeTypeId == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ) {
+				$booking = new \CommonsBooking\Model\Booking( $timeframePost->ID );
+			}
+
+			// Repetition option
+			$repetitions                      = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions();
+			$repetitionId                     = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_REPETITION );
+			$timeframeData[ \CommonsBooking\Model\Timeframe::META_REPETITION ] = array_key_exists( $repetitionId, $repetitions ) ?
+				$repetitions[ $repetitionId ] : __( 'Unknown', 'commonsbooking' );
+
+			// Grid option
+			$gridOptions           = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getGridOptions();
+			$gridOptionId          = $timeframePost->getGrid();
+			$timeframeData["grid"] = array_key_exists( $gridOptionId, $gridOptions ) ?
+				$gridOptions[ $gridOptionId ] : __( 'Unknown', 'commonsbooking' );
+
+
+			// get corresponding item title(s)
+			$items = $timeframePost->getItems();
+			if ( $items != null ) {
+				$items_title = array_map( function ( $item ) {
+					return $item->post_title;
+				}, $items );
+			} else {
+				$items_title = __( 'Unknown', 'commonsbooking' );
+			}
+
+			// get corresponding location title(s)
+			$locations = $timeframePost->getLocations();
+			if ( $locations != null ) {
+				$locations_title = array_map( function ( $location ) {
+					return $location->post_title;
+				}, $locations );
+			} else {
+				$locations_title = __( 'Unknown', 'commonsbooking' );
+			}
+
+			// populate simple meta fields
+			$timeframeData[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]    = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_MAX_DAYS );
+			$timeframeData["full-day"]                                          = $timeframePost->getFieldValue( "full-day" );
+			$timeframeData[ \CommonsBooking\Model\Timeframe::REPETITION_START ] =
+				$timeframePost->getStartDate() ?
+					date( 'c', $timeframePost->getStartDate() ) : '';
+			$timeframeData[ \CommonsBooking\Model\Timeframe::REPETITION_END ]   =
+				$timeframePost->getEndDate() ?
+					date( 'c', $timeframePost->getEndDate() ) : '';
+			$timeframeData["start-time"]                                        = $timeframePost->getStartTime();
+			$timeframeData["end-time"]                                          = $timeframePost->getEndTime();
+			$timeframeData["pickup"]                                            = isset( $booking ) ? $booking->pickupDatetime() : "";
+			$timeframeData["return"]                                            = isset( $booking ) ? $booking->returnDatetime() : "";
+			$timeframeData["booking-code"]                                      = $timeframePost->getFieldValue( "_cb_bookingcode" );
+			$timeframeData["user-firstname"]                                    = $timeframePost->getUserData()->first_name;
+			$timeframeData["user-lastname"]                                     = $timeframePost->getUserData()->last_name;
+			$timeframeData["user-login"]                                        = $timeframePost->getUserData()->user_login;
+			$timeframeData["comment"]                                           = $timeframePost->getFieldValue( 'comment' );
+
+			foreach ( $locations_title as $location_title ) {
+				foreach ( $items_title as $item_title ) {
+					$timeframeData["location-post_title"] = $location_title;
+					$timeframeData["item-post_title"]     = $item_title;
+					//every item / location combination is a new row
+					$timeframeDataRows[] 				= $timeframeData;
+				}
+			}
 		}
-
-		// Repetition option
-		$repetitions                           = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions();
-		$repetitionId                          = $timeframePost->getFieldValue( "timeframe-repetition" );
-		$timeframeData["timeframe-repetition"] = array_key_exists( $repetitionId, $repetitions ) ?
-			$repetitions[ $repetitionId ] : __( 'Unknown', 'commonsbooking' );
-
-		// Grid option
-		$gridOptions           = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getGridOptions();
-		$gridOptionId          = $timeframePost->getGrid();
-		$timeframeData["grid"] = array_key_exists( $gridOptionId, $gridOptions ) ?
-			$gridOptions[ $gridOptionId ] : __( 'Unknown', 'commonsbooking' );
-
-		// get corresponding item title
-		$item = $timeframePost->getItem();
-		if ($item != null){
-			$item_title = $item->post_title;
-		}
-		else {
-			$item_title = __( 'Unknown', 'commonsbooking' );
-		}
-
-		// get corresponding location title
-		$location = $timeframePost->getLocation();
-		if ($location != null){
-			$location_title = $location->post_title;
-		}
-		else {
-			$location_title = __( 'Unknown', 'commonsbooking' );
-		}
-
-		// populate simple meta fields
-		$timeframeData["timeframe-max-days"]  = $timeframePost->getFieldValue( "timeframe-max-days" );
-		$timeframeData["full-day"]            = $timeframePost->getFieldValue( "full-day" );
-		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_START] =
-			$timeframePost->getStartDate() ?
-				date( 'c', $timeframePost->getStartDate() ) : '';
-		$timeframeData[\CommonsBooking\Model\Timeframe::REPETITION_END] =
-			$timeframePost->getEndDate() ?
-				date( 'c', $timeframePost->getEndDate() ) : '';
-		$timeframeData["start-time"]          = $timeframePost->getStartTime();
-		$timeframeData["end-time"]            = $timeframePost->getEndTime();
-		$timeframeData["pickup"]              = isset( $booking ) ? $booking->pickupDatetime() : "";
-		$timeframeData["return"]              = isset( $booking ) ? $booking->returnDatetime() : "";
-		$timeframeData["booking-code"]        = $timeframePost->getFieldValue( "_cb_bookingcode" );
-		$timeframeData["location-post_title"] = $location_title;
-		$timeframeData["item-post_title"]     = $item_title;
-		$timeframeData["user-firstname"]      = $timeframePost->getUserData()->first_name;
-		$timeframeData["user-lastname"]       = $timeframePost->getUserData()->last_name;
-		$timeframeData["user-login"]          = $timeframePost->getUserData()->user_login;
-		$timeframeData["comment"]             = $timeframePost->getFieldValue('comment');
-
-		return $timeframeData;
+		return $timeframeDataRows;
 	}
 
 	/**

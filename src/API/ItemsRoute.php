@@ -10,6 +10,11 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Endpoint for published items, that are bookable.
+ *
+ * @see Item for exposed api data
+ */
 class ItemsRoute extends BaseRoute {
 
 	/**
@@ -23,7 +28,7 @@ class ItemsRoute extends BaseRoute {
 	 * Commons-API schema definition.
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.items.schema.json";
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "includes/commons-api-json-schema/commons-api.items.schema.json";
 
 	/**
 	 * Returns raw data collection.
@@ -56,7 +61,7 @@ class ItemsRoute extends BaseRoute {
 	/**
 	 * Get a collection of items
 	 *
-	 * @param $request Full data about the request.
+	 * @param $request - Full data about the request.
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -94,6 +99,10 @@ class ItemsRoute extends BaseRoute {
 
 		}
 
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+		}
+
 		return new WP_REST_Response( $data, 200 );
 	}
 
@@ -123,8 +132,15 @@ class ItemsRoute extends BaseRoute {
 		$preparedItem->description = $this->escapeJsonString( $item->post_content );
 		$preparedItem->projectId = "1";
 
-		if ( get_the_post_thumbnail_url( $item->ID, 'full' ) ) {
-			$preparedItem->image = get_the_post_thumbnail_url( $item->ID, 'full' );
+		$thumbnailId = get_post_thumbnail_id( $item->ID );
+		if ( $thumbnailId ) {
+			$preparedItem->image = wp_get_attachment_image_url( $thumbnailId, 'full' );
+			$preparedItem->	images = [
+				'thumbnail' => wp_get_attachment_image_src( $thumbnailId, 'thumbnail' ),
+				'medium'    => wp_get_attachment_image_src( $thumbnailId, 'medium' ),
+				'large'     => wp_get_attachment_image_src( $thumbnailId, 'large' ),
+				'full'      => wp_get_attachment_image_src( $thumbnailId, 'full' ),
+			];
 		}
 
 		return $preparedItem;

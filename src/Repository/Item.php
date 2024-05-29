@@ -28,6 +28,8 @@ class Item extends BookablePost {
 	}
 
 	/**
+	 * This is the model class that belongs to the post type.
+	 * With the model class, you are able to perform additional functions on the post type.
 	 * @return string
 	 */
 	protected static function getModelClass(): string {

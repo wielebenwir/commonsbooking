@@ -6,6 +6,11 @@ namespace CommonsBooking\Repository;
 
 use WP_Query;
 
+/**
+ * This class contains methods to query the database for old CB1 data.
+ * CB1 is CommonsBooking up to version 0.9.4.18 (https://wordpress.org/plugins/commons-booking/)
+ * This class is mainly used to migrate over the old data to CB2.
+ */
 class CB1 {
 
 	/**
@@ -34,6 +39,8 @@ class CB1 {
 	public static $TIMEFRAMES_TABLE = 'cb_timeframes';
 
 	/**
+	 * This function is able to check if the old CB1 plugin is installed.
+	 *
 	 * @return bool
 	 */
 	public static function isInstalled() {
@@ -48,6 +55,7 @@ class CB1 {
 	}
 
 	/**
+	 * Get the old CB1 location post type posts
 	 * @return array
 	 */
 	public static function getLocations() {
@@ -75,6 +83,7 @@ class CB1 {
 	}
 
 	/**
+	 * Get the old CB1 item post type posts
 	 * @return array
 	 */
 	public static function getItems() {
@@ -82,6 +91,7 @@ class CB1 {
 	}
 
 	/**
+	 * Get the old CB1 bookings
 	 * @return mixed
 	 */
 	public static function getBookings() {
@@ -92,6 +102,7 @@ class CB1 {
 	}
 
 	/**
+	 * Get the old CB1 timeframes
 	 * @return mixed
 	 */
 	public static function getTimeframes() {
@@ -102,6 +113,7 @@ class CB1 {
 	}
 
 	/**
+	 * Get the old CB1 bookingcodes
 	 * @return mixed
 	 */
 	public static function getBookingCodes() {
@@ -127,6 +139,7 @@ class CB1 {
 	}
 
 	/**
+	 *
 	 * @param $id
 	 *
 	 * @return ?string

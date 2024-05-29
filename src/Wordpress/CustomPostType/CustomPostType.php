@@ -3,10 +3,18 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\PostException;
+use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\View\Admin\Filter;
 use WP_Post;
+use WP_Term;
 
+/**
+ * Abstract wp custom post type for the CommonsBooking domain, implements a base of post functionality.
+ *
+ *  TODO: Refactor this class to incorporate the initHooks() method. Many of the child classes have the same code there.
+ */
 abstract class CustomPostType {
 
 	/**
@@ -18,6 +26,16 @@ abstract class CustomPostType {
 	 * @var
 	 */
 	protected $menuPosition;
+
+	/**
+	 * @var array
+	 */
+	protected $listColumns = null;
+
+	/**
+	 * @var array
+	 */
+	protected $types = null;
 
 	/**
 	 * @return string
@@ -49,7 +67,7 @@ abstract class CustomPostType {
 	 */
 	public static function sanitizeOptions( $data ) {
 		$options = [];
-		if ( $data ) {
+		if ( $data && is_array( $data ) ) {
 			foreach ( $data as $key => $item ) {
 				if ( $item instanceof WP_Post ) {
 
@@ -61,7 +79,12 @@ abstract class CustomPostType {
 
 					$key   = $item->ID;
 					$label = $item->post_title . $statusLabel;
-				} else {
+				}
+				elseif ( $item instanceof \WP_Term){
+					$key = $item->term_id;
+					$label = $item->name . ' (' . $item->slug . ')';
+				}
+				else {
 					$label = $item;
 				}
 				$options[ $key ] = $label;
@@ -99,6 +122,9 @@ abstract class CustomPostType {
 				);
 			}
 		}
+
+		//allows to programmatically add custom metaboxes
+		$metaDataFields = apply_filters('commonsbooking_custom_metadata', $metaDataFields);
 
 		if ( array_key_exists( $type, $metaDataFields ) ) {
 			return $metaDataFields[ $type ];
@@ -236,22 +262,23 @@ abstract class CustomPostType {
 			$this,
 			'setSortableColumns'
 		) );
-		if ( isset( $this->listColumns ) ) {
-			add_action( 'pre_get_posts', function ( $query ) {
-				if ( ! is_admin() ) {
-					return;
-				}
 
-				$orderby = $query->get( 'orderby' );
-				if (
-					strpos( $orderby, 'post_' ) === false &&
-					in_array( $orderby, array_keys( $this->listColumns ) )
-				) {
-					$query->set( 'meta_key', $orderby );
-					$query->set( 'orderby', 'meta_value' );
-				}
-			} );
+		if ( isset( $this->listColumns ) ) {
+			add_action( 'pre_get_posts', array( $this, 'setCustomColumnSortOrder' ) );
 		}
+
+		// add ability to use WP_QUERY orderby for post_status
+		add_filter('posts_orderby', function ($args, $wp_query) {
+			if(isset ($wp_query->query_vars['orderby']) && $wp_query->query_vars['orderby'] == 'post_status') {
+				if($wp_query->query_vars['order']) {
+					return 'post_status '.$wp_query->query_vars['order'];
+				}
+				else {
+					return 'post_status ASC';
+				}
+			}
+			return $args;
+		}, 10,2);
 	}
 
 	/**
@@ -310,12 +337,21 @@ abstract class CustomPostType {
 	/**
 	 * Returns Model for CPT.
 	 *
-	 * @param WP_Post $post
+	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
-	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe
-	 * @throws \Exception
+	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe|\CommonsBooking\Model\Map
+	 * @throws PostException
 	 */
-	public static function getModel(WP_Post $post) {
+	public static function getModel( $post ) {
+		if ( $post instanceof CustomPost ) {
+			return $post;
+		}
+		if (is_int($post)) {
+			$post = get_post($post);
+		}
+		if (! $post instanceof WP_Post) {
+			throw new PostException('No suitable post object.');
+		}
 		switch($post->post_type) {
 			case Booking::$postType:
 				return new \CommonsBooking\Model\Booking($post);
@@ -327,8 +363,24 @@ abstract class CustomPostType {
 				return new \CommonsBooking\Model\Restriction($post);
 			case Timeframe::$postType:
 				return new \CommonsBooking\Model\Timeframe($post);
+			case Map::$postType:
+				return new \CommonsBooking\Model\Map($post);
 		}
-		throw new \Exception('No suitable model found.');
+		throw new PostException('No suitable model found for ' . $post->post_type);
+	}
+
+	/**
+	 * This is called by the inheritances of the customPosts, it will just check if we
+	 * are processing one of our CPTs.
+	 * @param \WP_Query $query
+	 *
+	 * @return void
+	 */
+	public function setCustomColumnSortOrder(\WP_Query $query) {
+		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -1,25 +1,25 @@
 === CommonsBooking ===
-Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
+Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-Tags: booking, commons, sharing, calendar,  
-Requires at least: 5.2  
-Tested up to: 6.2  
-Stable Tag: 2.7.3
-Requires PHP: 7.4 or higher  
+Tags: booking, calendar, sharing, commoning, open-source
+Requires at least: 5.9  
+Tested up to: 6.5
+Stable Tag: 2.9.2
+Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-Commons Booking is a plugin for management and booking of common goods. 
+CommonsBooking is a plugin for management and booking of common goods. 
 
 ## Description
 
-This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of Commons and sharing resources for the benefit of the community. 
+This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of the commons and sharing resources for the benefit of the community.
 
 CommonsBooking was developed for the ["Commons Cargobike" movement](http://commons-cargobikes.org/), but it can be used for any kind items.
 
 **Unique features:**
 
-* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information.  
+* Items can be assigned to different locations for the duration of a timeframe, each with their own contact information. You can display all locations via shortcode as an interactive map.
 * Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
 * Auto-accept bookings: A registered user can book items without the need for administration. 
 * Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
@@ -77,9 +77,102 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 3. Booking confirmation
 4. User bookings list
 
-## Changelog 
+## Changelog
 
-### 2.7.3 (xx.10.2022)
+### 2.9.2 (26.04.2024)
+ADDED: You can now configure reminder emails that are sent to the location before the start and before the end of a booking. (thanks @poilu)
+ENHANCED: You can now disable sending a copy of the booking confirmation email to the location.
+ENHANCED: New filter hooks for metaboxes
+FIXED: Excerpt of item now shown in map popup
+FIXED: Issue with special characters in booking email (Thanks @nelarsen)
+FIXED: Admin Booking was not sending emails for CB_Manager
+FIXED: API will even return response if the schema is not met and WP_DEBUG is enabled
+FIXED: Incompatibility with "Futurio Extra" plugin
+
+### 2.9.1 (17.03.2024)
+FIXED: Timeframe export was not working
+FIXED: GBFS Schema was inaccesible
+FIXED: API Routes not working when WP_DEBUG is enabled
+FIXED: cb_search map not working on some servers
+ENHANCED: Minor string changes
+
+### 2.9 (23.02.2024)
+NEW: You can now schedule automated emails with booking codes to be sent to stations in custom intervals. (Thanks @printpagestopdf)
+NEW: You can now apply custom rules to restrict bookings to a certain limit (e.g. max. 3 bookings per user per month).
+NEW: An experimental new frontend shortcode as a drop-in replacement for the [cb_map] shortcode called [cb_search]. Read the documentation for more information. (Thanks @kmohrf)
+NEW: You can now create holiday timeframes with manually defined dates and import holidays for German states.
+NEW: You can now make items bookable for pre-defined dates (e.g. events) without just one timeframe.
+ENHANCED: Added button to clear cache from the advanced options tab.
+FIXED: Sender and subject of emails can now contain special characters. (Thanks @nelarsen)
+FIXED: Fixed issues with booking code generation (Thanks @nelarsen)
+FIXED: Commons API crashing when WP_DEBUG is enabled.
+FIXED: Deprecation warnings for PHP 8.X
+FIXED: Updated some packages
+
+### 2.8.6 (02.12.2023)
+FIXED: Holidays sometimes bookable when they should not be bookable
+
+### 2.8.5 (03.11.2023)
+ADDED: Support for WordPress Personal Data Exporter & Personal Data Eraser
+ENHANCED: The amount of days that will be counted when creating a booking over closed days / holidays is now configurable.
+FIXED: Sorting the table of bookings / locations / timeframes in backend
+FIXED: Wrong error messages when creating a new timeframe
+FIXED: Availabilities of items in GBFS API
+FIXED: Rendering error in item table
+FIXED: Holidays not working when they are more than 30 days in the future
+FIXED: Map sometimes not loading
+
+### 2.8.4 (20.09.2023)
+FIXED: Incorrect time in booking confirmation
+FIXED: Can now trash bookings again (thanks @danielappelt)
+FIXED: URL prefix for GBFS root (thanks @futuretap)
+FIXED: Shortcode Parameter causing fatal error
+ENHANCED: Made items, locations & taxonomies searchable (thanks @flegfleg)
+
+### 2.8.3 (25.08.2023)
+ENHANCED: Booking codes are now available for timeframes without a configured end-date
+ENHANCED: Added option to change directory of filesystem cache
+ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/docs/grundlagen/rechte-des-commonsbooking-manager/ )
+ENHANCED: Added filter to allow selecting other roles to be assigned to items / locations
+FIXED: Location map view not working since 2.8.1
+FIXED: Booking offset should work again
+
+### 2.8.2 (09.08.2023)
+FIXED: fatal error om admin backend after upgrading to wordpress 6.3
+FIXED: Wrong field value for iCal events (the field value is reset, you have to re-set your values after updating)
+FIXED: Bug sending cancellation mail to admin on admin cancellation
+FIXED: Availability text for items in item shortcode (Merged display of overlapping timeframes)
+FIXED: Location without addresses not displayed correctly
+FIXED: Incorrect error messages displayed to user during booking process
+FIXED: Not all routes of GBFS API were initialized (thanks @futuretap)
+FIXED: User data loading in backend caused timeout on large instances
+ENHANCED: Improved booking validation
+ENHANCED: Default value for days that are bookable in advance set to 31
+
+### 2.8 (27.04.2023)
+NEW: Added option to set a minimum offset for bookings. This allows to set a minimum time between booking and pickup.
+NEW: Added ability to create bookings from the backend.
+NEW: Can now add a signature that will be added to each email sent from the instance.
+NEW: Additional user fields can be shown on booking details page.
+NEW: iCalendar files can be attached to booking confirmation emails.
+NEW: Experimental support of iCalendar feed to subscribe to all bookings that can be seen by the user.
+ENHANCED: Added ability for item admins to also receive copy of restriction emails.
+ENHANCED: Added ability to use REDIS as cache backend.
+ENHANCED: Export of booking data now conforms to ISO 8601 standard. Thanks to @splines
+ENHANCED: Can now filter items / locations by category in admin.
+ENHANCED: ORDER and ORDER BY can be used in shortcodes to define the order of items / locations.
+ENHANCED: Added filter hooks for timeframe defaults. Advanced users can now define their own default settings for timeframes through a filter hook.
+ENHANCED: Added filter hooks for mail attachment. Advanced users can now define their own mail attachments through a filter hook. ( Frontend settings are not yet available )
+ENHANCED: Added a key for the item availability table.
+FIXED: Cronjobs were not re-scheduled when the execution time was changed. All cronjobs are re-scheduled on plugin update.
+FIXED: Removed deprecated cronjobs.
+FIXED: Dark and light text color options now work properly.
+FIXED: No clustering with max_cluster_radius set to 0. You should now be able to disable map clustering.
+FIXED: Missing translations.
+FIXED: Vulnerability in dependency.
+FIXED: Wrong month shown in calendar due to timezone issues.
+
+### 2.7.3 (20.10.2022)
 FIXED: Fatal error when trying to export timeframes with deleted items
 FIXED: Fatal error when trying to access invalid data
 FIXED: Restriction e-mails now contain correct booking links again
@@ -100,7 +193,6 @@ FIXED: Migration did not work properly
 ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
 ENHANCED: Unified filter hooks. New hook prefix is commonsbooking_xxx . Please check your custom filters.
 
-
 ### 2.7 (26.04.2022)
 NEW: You can now choose your individual colors to customize Commonsbooking to your liking. Try it via Options -> CommonsBooking -> Templates (scroll down to color section)
 NEW: Added action hooks to templates
@@ -114,7 +206,6 @@ FIXED: Set default advance booking days for existing timeframes to 365 days.
 FIXED: Some rendering issues with the calendar have been fixed.
 FIXED: Issues with already past bookings where cancellation was still possible
 FIXED: Wrong time displayed in cancellation messages
-
 
 ### 2.6.12 (27.02.2022)
 FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 

@@ -35,7 +35,7 @@ class Map extends CustomPostType {
 		}
 
 		// Add shortcodes
-		add_shortcode( 'cb_map', array( MapShortcode::class, 'execute' ) );
+		add_shortcode( 'cb_map', array( new MapShortcode(), 'execute' ) );
 
 		// Add actions
 		add_action( 'save_post_' . self::$postType, array( MapAdmin::class, 'validate_options' ), 10, 3 );
@@ -91,6 +91,7 @@ class Map extends CustomPostType {
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
+			//TODO #507
 			$item     = $timeframe->getItem();
 			$location = $timeframe->getLocation();
 
@@ -99,7 +100,7 @@ class Map extends CustomPostType {
 				$thumbnail = get_the_post_thumbnail_url( $item, 'thumbnail' );
 
 				$result[] = [
-					'location_id' => $timeframe->getLocation()->ID,
+					'location_id' => $timeframe->getLocationID(),
 					'item'        => [
 						'id'         => $item->ID,
 						'name'       => $item->post_title,
@@ -128,6 +129,7 @@ class Map extends CustomPostType {
 		if ( $item_draft_appearance == 3 ) {
 			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -237,7 +239,15 @@ class Map extends CustomPostType {
 					];
 				}
 
-				$thumbnail = get_the_post_thumbnail_url( $item->ID, 'thumbnail' );
+				$thumbnailID = get_post_thumbnail_id( $item->ID );
+				//this thumbnail is kept for backwards compatibility
+				$thumbnail = wp_get_attachment_image_url( $thumbnailID, 'thumbnail' );
+				$images = [
+					'thumbnail' => wp_get_attachment_image_src( $thumbnailID, 'thumbnail' ),
+					'medium'    => wp_get_attachment_image_src( $thumbnailID, 'medium' ),
+					'large'     => wp_get_attachment_image_src( $thumbnailID, 'large' ),
+					'full'      => wp_get_attachment_image_src( $thumbnailID, 'full' ),
+				];
 				$items[]   = [
 					'id'         => $item->ID,
 					'name'       => $item->post_title,
@@ -246,6 +256,7 @@ class Map extends CustomPostType {
 					'terms'      => $item_terms,
 					'link'       => add_query_arg( 'cb-location', $post->ID, get_permalink( $item->ID ) ),
 					'thumbnail'  => $thumbnail ?: null,
+					'images'     => $images,
 					'timeframes' => $timeframesData
 				];
 			}
@@ -281,10 +292,7 @@ class Map extends CustomPostType {
 
 	public static function get_cb_items_category_groups( $preset_categories ) {
 		$groups         = [];
-		$category_terms = get_terms( [
-			'taxonomy'   => 'cb_items_category',
-			'hide_empty' => false,
-		] );
+		$category_terms = Item::getTerms();
 
 		foreach ( $category_terms as $term ) {
 			if ( in_array( $term->term_id, $preset_categories ) ) {

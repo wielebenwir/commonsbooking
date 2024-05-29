@@ -1,55 +1,62 @@
 module.exports = function (grunt) {
+	const pkg = grunt.file.readJSON('package.json')
+	const nodePackagesDestDir = 'assets/packaged/'
 	grunt.util.linefeed = '\n';
 	grunt.initConfig(
 		{
-		pkg: grunt.file.readJSON('package.json'),
-		compass: {
+		pkg: pkg,
+		'dart-sass': {
 			admin: {
-				options: {
-					sassDir: 'assets/admin/sass',
-					cssDir: 'assets/admin/css',
-					environment: 'production',
-					relativeAssets: true
-				}
+				files: [{
+					expand: true,
+					src: ['*.scss'],
+					ext: '.css',
+					cwd: 'assets/admin/sass',
+					dest: 'assets/admin/css',
+				}],
 			},
 			themes: {
-				options: {
-					sassDir: 'assets/public/sass/themes',
-					cssDir: 'assets/public/css/themes',
-					environment: 'production',
-					relativeAssets: true
-				}
+				files: [{
+					expand: true,
+					src: ['*.scss'],
+					ext: '.css',
+					cwd: 'assets/public/sass/themes',
+					dest: 'assets/public/css/themes',
+				}],
 			},
 			public: {
-				options: {
-					sassDir: 'assets/public/sass',
-					cssDir: 'assets/public/css',
-					environment: 'production',
-					relativeAssets: true
-				}
+				files: [{
+					expand: true,
+					src: ['*.scss'],
+					ext: '.css',
+					cwd: 'assets/public/sass',
+					dest: 'assets/public/css',
+				}],
 			},
 			adminDev: {
 				options: {
-					environment: 'development',
-					noLineComments: false,
-					sassDir: 'assets/admin/sass',
-					cssDir: 'assets/admin/css',
 					outputStyle: 'expanded',
-					relativeAssets: true,
-					sourcemap: true
-				}
+				},
+				files: [{
+					expand: true,
+					src: ['*.scss'],
+					ext: '.css',
+					cwd: 'assets/admin/sass',
+					dest: 'assets/admin/css',
+				}],
 			},
 			publicDev: {
 				options: {
-					environment: 'development',
-					noLineComments: false,
-					sassDir: 'assets/public/sass',
-					cssDir: 'assets/public/css',
 					outputStyle: 'expanded',
-					relativeAssets: true,
-					sourcemap: true
-				}
-			}
+				},
+				files: [{
+					expand: true,
+					src: ['*.scss'],
+					ext: '.css',
+					cwd: 'assets/public/sass',
+					dest: 'assets/public/css',
+				}],
+			},
 		},
 		// concat and minify our JS
 		uglify: {
@@ -66,7 +73,8 @@ module.exports = function (grunt) {
 					],
 					'assets/admin/js/admin.js': [
 						/* add path to js dependencies (ie in node_modules) here */
-						'assets/admin/js/src/*.js'
+						'assets/admin/js/src/*.js',
+						'node_modules/feiertagejs/build/feiertage.umd.js'
 					]
 				}
 			},
@@ -88,6 +96,60 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+		copy: {
+			main: {
+				files: [
+					{
+						dest: nodePackagesDestDir + 'leaflet/',
+						expand: true,
+						cwd: 'node_modules/leaflet/dist/',
+						src: '**',
+					},
+					{
+						dest: nodePackagesDestDir + 'leaflet-markercluster/',
+						expand: true,
+						cwd: 'node_modules/leaflet.markercluster/dist/',
+						src: '**',
+					},
+					{
+						dest: nodePackagesDestDir + 'leaflet-easybutton/',
+						expand: true,
+						cwd: 'node_modules/leaflet-easybutton/src/',
+						src: '**',
+					},
+					{
+						dest: nodePackagesDestDir + 'leaflet-spin/',
+						expand: true,
+						cwd: 'node_modules/leaflet-spin/',
+						src: '**'
+					},
+					{
+						dest: nodePackagesDestDir + 'spin-js/',
+						expand: true,
+						cwd: 'node_modules/spin.js/',
+						src: 'spin.min.js'
+					},
+					{
+						dest: nodePackagesDestDir + 'commons-search/',
+						expand: true,
+						cwd: 'node_modules/@commonsbooking/frontend/dist/lib/commons-search/',
+						src: ['commons-search.umd.js', 'style.css'],
+					},
+					{
+						dest: nodePackagesDestDir + 'vue/',
+						expand: true,
+						cwd: 'node_modules/vue/dist/',
+						src: 'vue.runtime.global.prod.js',
+					},
+                    {
+                        dest: 'includes/commons-api-json-schema/',
+                        expand: true,
+                        cwd: 'node_modules/commons-api/',
+                        src: '**schema.json',
+                    }
+				],
+			},
+		},
 		babel: {
 			options: {
 				sourceMap: true,
@@ -100,14 +162,14 @@ module.exports = function (grunt) {
 			}
 		},
 		watch: {
-			compass: {
+			'dart-sass': {
 				files: [
 					'assets/admin/sass/**/*.scss',
 					'assets/global/sass/**/*.scss',
 					'assets/public/sass/**/*.scss'
 				],
 				tasks: [
-					'compass:adminDev', 'compass:publicDev'
+					'dart-sass:adminDev', 'dart-sass:publicDev'
 				]
 			},
 			js: {
@@ -118,40 +180,59 @@ module.exports = function (grunt) {
 				],
 				tasks: [
 					'uglify:dev', 'babel'
-				]
+				],
+                options: {
+                    livereload: true
+                }
 			}
 		}
 	});
 
 	// Load tasks
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-compass');
+	grunt.loadNpmTasks('grunt-dart-sass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-babel');
+	grunt.registerTask('node_versions', 'Generates a version map for dependencies', function() {
+		const deps = pkg.dependencies;
+		const versionMap = Object.fromEntries(
+			Object
+				.entries(deps)
+				.map(([name, version]) => [name, version.replace(/^\D/, '')])
+		)
+		grunt.file.write(nodePackagesDestDir + 'dist.json', JSON.stringify(versionMap))
+	})
 
 	// Register tasks
 	grunt.registerTask('default', [
-		'compass:adminDev',
-		'compass:publicDev',
-		'compass:themes',
+		'dart-sass:adminDev',
+		'dart-sass:publicDev',
+		'dart-sass:themes',
 		'uglify:dev',
 		'uglify:dist',
 		'babel',
+		'copy',
+		'node_versions',
 	]);
 	grunt.registerTask('dev', [
-		'compass:adminDev',
-		'compass:publicDev',
-		'compass:themes',
+		'dart-sass:adminDev',
+		'dart-sass:publicDev',
+		'dart-sass:themes',
 		'uglify:dev',
 		'babel',
-		'watch'
+		'copy',
+		'node_versions',
+		'watch',
 	]);
 	grunt.registerTask('dist', [
-		'compass:admin',
-		'compass:public',
-		'compass:themes',
+		'dart-sass:admin',
+		'dart-sass:public',
+		'dart-sass:themes',
 		'uglify:dist',
-		'babel'
+		'babel',
+		'copy',
+		'node_versions',
 	]);
 };

@@ -1,0 +1,62 @@
+name: E2E Tests
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+    branches:
+      - 'master'
+
+
+env:
+  DB_DATABASE: wordpress_test
+  DB_USER: root
+  DB_PASSWORD: ''
+
+jobs:
+  e2e:
+    name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        php:
+          - '7.4'
+          - '8.2'
+        core:
+          - {name: 'tested', version: 'null'}
+          - {name: 'minimum', version: 'WordPress/WordPress#5.9'}
+          - {name: 'trunk', version: 'WordPress/WordPress#master'}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/build-plugin
+
+      - name: Overwrite PHP versions & core for wp-env 
+        if: matrix.core.version != 'null'
+        run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
+
+      - name: setup wp env
+        run: npm run env:start
+        
+      - name: install test data for e2e test
+        run: npm run cypress:setup
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          config-file: tests/cypress/cypress.config.js
+
+      - name: Upload Cypress screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots-${{ matrix.php }}_${{ matrix.core.name }}
+          path: ${{ github.workspace }}/tests/cypress/screenshots/

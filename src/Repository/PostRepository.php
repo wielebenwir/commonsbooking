@@ -12,6 +12,7 @@ abstract class PostRepository {
 
 	/**
 	 * Returns post by id as CB-CPT if possible.
+	 * Will try to return a model class if possible.
 	 *
 	 * @param $postId
 	 *
@@ -20,8 +21,9 @@ abstract class PostRepository {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostById( $postId ) {
-		if ( Plugin::getCacheItem() ) {
-			return Plugin::getCacheItem();
+		$cacheItem = Plugin::getCacheItem();
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$post = get_post( $postId );
 

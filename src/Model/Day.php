@@ -9,6 +9,12 @@ use DateTime;
 use Exception;
 use WP_Post;
 
+/**
+ * Serves as abstraction for days of a week in the Week object of the Calendar.
+ * Computes booking slots according to the timeframes available.
+ *
+ * @see Week
+ */
 class Day {
 
 	/**
@@ -98,8 +104,10 @@ class Day {
 	}
 
 	/**
-	 * Returns array with timeframes.
-	 * @return array
+	 * Returns array with timeframes relevant for the Day.
+	 * This function will only be able to run once.
+	 * When on the first try, no Timeframes are found, it will set it to an empty array
+	 * @return \CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
 	public function getTimeframes(): array {
@@ -147,6 +155,8 @@ class Day {
 
 	/**
 	 * Returns grid for the day defined by the timeframes.
+	 *
+	 * @see Day::getTimeframeSlots()
 	 * @return array
 	 * @throws Exception
 	 */
@@ -158,11 +168,11 @@ class Day {
 	 * Returns the slot number for specific timeframe and time.
 	 *
 	 * @param DateTime $date
-	 * @param $grid
+	 * @param int $grid
 	 *
 	 * @return float|int
 	 */
-	protected function getSlotByTime( DateTime $date, $grid ) {
+	protected function getSlotByTime( DateTime $date, int $grid ) {
 		$hourSlots   = $date->format( 'H' ) / $grid;
 		$minuteSlots = $date->format( 'i' ) / 60 / $grid;
 
@@ -172,23 +182,23 @@ class Day {
 	/**
 	 * Returns start-slot id.
 	 *
-	 * @param $grid
+	 * @param int $grid
 	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getStartSlot( $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
+	protected function getStartSlot( int $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe
 		$fullDay   = $timeframe->isFullDay();
 		$startTime = $timeframe->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
 
-		// If we have a overbooked day, we need to mark all slots as booked
-		if ( $timeframe->getType() == Timeframe::BOOKING_ID ) {
+		// If we have an overbooked day, we need to mark all slots as booked
+		if ( $timeframe->getType() === Timeframe::BOOKING_ID ) {
 
 			$booking          = new Booking( $timeframe->getPost() );
-			$startDateBooking = intval( $booking->getStartDate() );
+			$startDateBooking = $booking->getStartDate();
 			$startDateDay     = strtotime( $this->getDate() );
 
 			// if booking starts on day before, we set startslot to 0
@@ -208,12 +218,12 @@ class Day {
 	/**
 	 * Returns start slot for restriction.
 	 *
-	 * @param $grid
+	 * @param int $grid
 	 * @param Restriction $restriction
-	 *
+	 
 	 * @return float|int
 	 */
-	protected function getRestrictionStartSlot( $grid, \CommonsBooking\Model\Restriction $restriction ) {
+	protected function getRestrictionStartSlot( int $grid, \CommonsBooking\Model\Restriction $restriction ) {
 
 		$startTime = $restriction->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
@@ -232,14 +242,14 @@ class Day {
 	/**
 	 * Returns end-slot id.
 	 *
-	 * @param $slots
-	 * @param $grid
+	 * @param array $slots
+	 * @param int $grid
 	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getEndSlot( $slots, $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
+	protected function getEndSlot( array $slots, int $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe
 		$fullDay = get_post_meta( $timeframe->ID, 'full-day', true );
 		$endTime = $timeframe->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
@@ -254,7 +264,7 @@ class Day {
 		}
 
 		// If we have a overbooked day, we need to mark all slots as booked
-		if ( ! $timeframe->isOverBookable() ) {
+		if ( ! $timeframe->isOverBookable() && !empty( $endDate ) ) {
 			// Check if timeframe ends after the current day
 			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
 				$endSlot = count( $slots );
@@ -267,14 +277,14 @@ class Day {
 	/**
 	 * Returns end slot for restriction.
 	 *
-	 * @param $slots
-	 * @param $grid
+	 * @param array $slots
+	 * @param int $grid
 	 * @param Restriction $restriction
 	 *
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getRestrictionEndSlot( $slots, $grid, \CommonsBooking\Model\Restriction $restriction ) {
+	protected function getRestrictionEndSlot( array $slots, int $grid, \CommonsBooking\Model\Restriction $restriction ) {
 		$endTime = $restriction->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
 		$endDate = $restriction->getEndDateDateTime();
 
@@ -298,10 +308,9 @@ class Day {
 	 * @throws Exception
 	 */
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-		$repetitionType = get_post_meta( $timeframe->ID, 'timeframe-repetition', true );
 
-		if ($repetitionType) {
-			switch ( $repetitionType ) {
+		if ( $timeframe->getRepetition() ) {
+			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
 				case "w":
 					$dayOfWeek         = intval( $this->getDateObject()->format( 'w' ) );
@@ -338,6 +347,12 @@ class Day {
 					} else {
 						return false;
 					}
+
+				// Manual Rep
+				case "manual":
+					return in_array( $this->getDate(), $timeframe->getManualSelectionDates() );
+
+				// No Repetition
 				case "norep":
 					$timeframeStartTimestamp = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ));
 					$timeframeEndTimestamp   = intval( $timeframe->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
@@ -362,12 +377,11 @@ class Day {
 	/**
 	 * Maps timeframes to timeslots.
 	 *
-	 * @param $slots
-	 * @param $timeframes
+	 * @param array $slots
 	 *
 	 * @throws Exception
 	 */
-	protected function mapTimeFrames( &$slots ) {
+	protected function mapTimeFrames( array &$slots ) {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
@@ -397,11 +411,11 @@ class Day {
 	/**
 	 * Overwrites restricted slots
 	 *
-	 * @param $slots
+	 * @param array $slots
 	 *
 	 * @throws Exception
 	 */
-	protected function mapRestrictions( &$slots ) {
+	protected function mapRestrictions( array &$slots ) {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
@@ -429,9 +443,9 @@ class Day {
 	/**
 	 * Remove empty and merge connected slots.
 	 *
-	 * @param $slots
+	 * @param array $slots Given an array of assocs in hourly slot resolution.
 	 */
-	protected function sanitizeSlots( &$slots ) {
+	protected function sanitizeSlots( array &$slots ) {
 		$this->removeEmptySlots( $slots );
 
 		// merge multiple slots if they are of same type
@@ -477,7 +491,11 @@ class Day {
 	}
 
 	/**
-	 * Returns array of timeslots filled with timeframes.
+	 * Returns an array of timeslots, which is build according the relevant timeframes and their configuration.
+	 * So this takes the hourly-, daily or custom-sized-slot configuration of timeframes into account.
+	 *
+	 * Implementation note: An hourly resolution is used, but as a last step, the hourly slots are merged into
+	 * the representation that is configured in the timeframes.
 	 *
 	 * @return array
 	 * @throws Exception
@@ -485,8 +503,9 @@ class Day {
 	protected function getTimeframeSlots(): array {
 		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations );
 		$customCacheKey = md5( $customCacheKey );
-		if ( Plugin::getCacheItem( $customCacheKey ) ) {
-			return Plugin::getCacheItem( $customCacheKey );
+		$cacheItem     = Plugin::getCacheItem( $customCacheKey );
+		if ( $cacheItem ) {
+			return $cacheItem;
 		} else {
 			$slots       = [];
 			$slotsPerDay = 24;
