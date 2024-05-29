@@ -216,6 +216,17 @@ class Booking extends Timeframe {
 		?string $postType,
 		int $overbookedDays = 0
 	): int {
+
+		if ( isset ( $_POST['calendar-download'] ) ) {
+			try {
+				iCalendar::downloadICS( $post_ID );
+			} catch ( Exception $e ) {
+				//redirect to booking page and do nothing
+				return $post_ID;
+			}
+			exit;
+		}
+
 		if ( $itemId === null || ! get_post( $itemId ) ) {
 			// translators: $s = id of the item
 			throw new BookingDeniedException( sprintf( __( 'Item does not exist. (%s)', 'commonsbooking' ), $itemId ) );
@@ -346,30 +357,7 @@ class Booking extends Timeframe {
 											  PHP_EOL . $postId->get_error_messages()
 			);
 		}
-		elseif (
-			function_exists( 'wp_verify_nonce' ) &&
-			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
-			wp_verify_nonce( $_REQUEST[ static::getWPNonceId() ], static::getWPAction() ) &&
-			isset ( $_POST['calendar-download'] )
-		){
-			$postID     = intval($_POST['post_ID']);
-			$booking  = New \CommonsBooking\Model\Booking( $postID );
-			$template_objects = [
-				'booking'  => $booking,
-				'item'     => $booking->getItem(),
-				'location' => $booking->getLocation(),
-				'user'     => $booking->getUserData(),
-			];
-			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
-			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle, $template_objects ) );
-			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
-			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription, $template_objects ) ) );
-			$calendar = $booking->getiCal($eventTitle,$eventDescription);
-			header('Content-Type: text/calendar; charset=utf-8');
-			header('Content-Disposition: attachment; filename="booking.ics"');
-			echo $calendar;
-			exit;
-		}
+
 		return $postId;
 	}
 
