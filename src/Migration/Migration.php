@@ -580,13 +580,17 @@ class Migration {
 	 * @return mixed
 	 */
 	public static function migrateBookingCode( $bookingCode ) {
+		$cb2LocationId  = CB1::getCB2LocationId( $bookingCode['location_id'] );
 		$cb2ItemId      = CB1::getCB2ItemId( $bookingCode['item_id'] );
+		$cb2TimeframeId = CB1::getCB2TimeframeId( $bookingCode['timeframe_id'] );
 		$date           = $bookingCode['booking_date'];
 		$code           = $bookingCode['bookingcode'];
 
 		$bookingCode = new BookingCode(
 			$date,
 			$cb2ItemId,
+			$cb2LocationId,
+			$cb2TimeframeId,
 			$code
 		);
 

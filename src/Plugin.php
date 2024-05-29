@@ -861,12 +861,14 @@ class Plugin {
 	/**
 	 * Adds bookingcode actions.
 	 * They:
-	 * - Hook appropriate function to button that downloads the booking codes in the backend.
+	 * 1. Delete booking codes when a booking is deleted.
+	 * 2. Hook appropriate function to button that downloads the booking codes in the backend.
 	 *    @see \CommonsBooking\View\BookingCodes::renderTable()
-	 * - Hook appropriate function to button that sends out emails with booking codes to the station.
+	 * 3. Hook appropriate function to button that sends out emails with booking codes to the station.
 	 *   @see \CommonsBooking\View\BookingCodes::renderDirectEmailRow()
 	 */
 	public function initBookingcodes() {
+		add_action( 'before_delete_post', array( BookingCodes::class, 'deleteBookingCodes' ), 10 );
 		add_action( 'admin_action_cb_download-bookingscodes-csv', array( View\BookingCodes::class, 'renderCSV' ), 10, 0 );
         add_action( 'admin_action_cb_email-bookingcodes', array(View\BookingCodes::class, 'emailCodes'), 10, 0);
 	}
