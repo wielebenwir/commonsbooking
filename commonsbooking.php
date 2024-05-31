@@ -19,7 +19,7 @@ use CommonsBooking\Plugin;
 
 defined('ABSPATH') or die("Thanks for visiting");
 define('COMMONSBOOKING_VERSION', '2.9.3');
-define('COMMONSBOOKING_VERSION_COMMENT', ''); // Empty for release - Used to mark development versions
+define('COMMONSBOOKING_VERSION_COMMENT', 'master'); // Empty for release - Used to mark development versions
 define('COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking');
 define('COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu');
 define('COMMONSBOOKING_PLUGIN_DIR', wp_normalize_path( plugin_dir_path(__FILE__)));
