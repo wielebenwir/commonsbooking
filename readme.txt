@@ -4,12 +4,12 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.5
-Stable Tag: 2.9.2
+Stable Tag: 2.9.3
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-CommonsBooking is a plugin for management and booking of common goods. 
+CommonsBooking is a plugin for the management and booking of common goods.
 
 ## Description
 
@@ -78,6 +78,14 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.9.3 (31.05.2024)
+ADDED: Download ics file directly from booking details page
+ENHANCED: Taxonomies will now be shown in item / location overview in the backend
+ENHANCE: If iCalendar attachments are enabled: The cancellation email will now contain a calendar event that will cancel the booking in the user's calendar
+FIXED: Restriction emails button not working in some instances
+FIXED: Unexpected behavior when booking expires before confirmation
+FIXED: German translation and typos
 
 ### 2.9.2 (26.04.2024)
 ADDED: You can now configure reminder emails that are sent to the location before the start and before the end of a booking. (thanks @poilu)
