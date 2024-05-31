@@ -1056,6 +1056,20 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 		'title'        => __( 'Migration', 'commonsbooking' ),
 		'id'           => 'migration',
 		'field_groups' => array(
+			'upgrade'           => array(
+				'title'  => esc_html__( 'Finish upgrade to latest version', 'commonsbooking' ),
+				'id'     => 'upgrade',
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Click here to finish the upgrade to the latest version. <br> This needs to be done after updating the plugin to a new version. <br> If you do not do this, the plugin may not work correctly.', 'commonsbooking' ) ),
+				'fields' => [
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Finish upgrade', 'commonsbooking' ) ),
+						'id'            => 'upgrade-custom-field',
+						'type'          => 'text',
+						'render_row_cb' => array( Migration::class, 'renderUpgradeForm' ),
+					)
+				],
+			),
+			// migration cb1 -> cb2
 			'migration'         => array(
 				'title'  => esc_html__( 'Migrate from Commons Booking Version 0.X', 'commonsbooking' ),
 				'id'     => 'migration',
