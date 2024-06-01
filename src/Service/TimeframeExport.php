@@ -546,6 +546,8 @@ class TimeframeExport {
 			} else {
 				$locations_title = __( 'Unknown', 'commonsbooking' );
 			}
+			$timeframeOwner = $timeframePost->getUserData();
+
 
 			// populate simple meta fields
 			$timeframeData[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]    = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_MAX_DAYS );
@@ -561,9 +563,9 @@ class TimeframeExport {
 			$timeframeData["pickup"]                                            = isset( $booking ) ? $booking->pickupDatetime() : "";
 			$timeframeData["return"]                                            = isset( $booking ) ? $booking->returnDatetime() : "";
 			$timeframeData["booking-code"]                                      = $timeframePost->getFieldValue( "_cb_bookingcode" );
-			$timeframeData["user-firstname"]                                    = $timeframePost->getUserData()->first_name;
-			$timeframeData["user-lastname"]                                     = $timeframePost->getUserData()->last_name;
-			$timeframeData["user-login"]                                        = $timeframePost->getUserData()->user_login;
+			$timeframeData["user-firstname"]                                    = $timeframeOwner ? $timeframeOwner->first_name : "";
+			$timeframeData["user-lastname"]                                     = $timeframeOwner ? $timeframeOwner->last_name : "";
+			$timeframeData["user-login"]                                        = $timeframeOwner ? $timeframeOwner->user_login : "";
 			$timeframeData["comment"]                                           = $timeframePost->getFieldValue( 'comment' );
 
 			foreach ( $locations_title as $location_title ) {
