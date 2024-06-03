@@ -2,6 +2,8 @@
 
 Sofern nicht anders beschrieben gilt dieser Teil für das CommonsBooking Plugin in der Version 2.8.5.
 
-Die [Benutzer-Dokumentation](/dokumentation/user) beschreibt jede die einzelnen Komponenten und ihre Nutzung im Detail. Der Fokus liegt dabei darauf, welche Funktionen sie haben. Die [Entwickler-Doku](/dokumentation/dev) beschreibt dabei eine Perspektive auf die technischen Komponenten.
+Die [Benutzer-Dokumentation](/dokumentation/user) beschreibt jede der einzelnen Komponenten und ihre Nutzung im Detail. 
+Der Fokus liegt dabei darauf, welche Funktionen sie haben. 
+Die [Entwickler-Dokumentation](/dokumentation/dev) beschreibt die technische Perspektive auf die Komponenten.
 
-In der [Anleitung](/anleitung/) findest du Schritt-für-Schritt Beschreibung für einzelnen Anwendungsfälle.
+In der [Anleitung](/anleitung/) findest du eine Schritt-für-Schritt Beschreibung für die einzelen Funktionalitäten.

@@ -108,7 +108,7 @@ function sidebarDokumentation(): DefaultTheme.SidebarItem[] {
         , { text: 'Standorte',   link: 'standorte' }
         , { text: 'Zeitrahmen', link: 'zeitrahmen' }
         , { text: 'Einschränkungen', link: 'einschränkungen' }
-        , { text: 'Karten', link: 'karten' }
+        , { text: 'Karte', link: 'karte' }
         , { text: 'Erweitert', link: 'erweitert',
             items: [
               { text: 'Shortcodes', link: 'shortcodes' }

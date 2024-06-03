@@ -1,9 +1,9 @@
 # Artikel
 
-Ein Artikel ist etwas das verliehen werden kann.
-Der [Standort]() bestimmt wo er verliehen wird.
-Der [Zeitrahmen]() bestimmt, wann er verliehen werden kann.
-Sobald eine Zuordnung zu Standort und Zeitrahmen besteht, ist die Ausleihe möglich.
+Ein Artikel ist eine Ressource, die zum Verleihen zur Verfügung steht. Also z.B. ein Fahrrad oder eine Bohrmaschine.
+Der [Standort](/dokumentation/standorte) eines Artikels bestimmt wo er verliehen wird oder abgeholt werden kann.
+Der [Zeitrahmen](/dokumentation/zeitrahmen) bestimmt, wann bzw. wie lange er verliehen wird.
+Erst wenn eine Zuordnung von einem Artikel zu einem Standort und einem Zeitrahmen besteht, ist die Ausleihe möglich.
 
 ## Eingabemaske
 

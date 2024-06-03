@@ -5,7 +5,9 @@ werden Wordpress [Action-Hooks und Filter-Hooks](https://developer.wordpress.org
 Diese erlauben es deine eigenen Code-Schnipsel an bestimmten Stellen im Plugin einzubinden und das Verhalten auf deine
 Bedürfnisse anzupassen.
 
+::: info
 Code Schnipsel sind meist sehr kurzer Code in PHP und kann über ein Child Theme eingebunden werden oder über spezielle Plugins für Code Schnipsel (z.B. Code Snippets). Dafür musst du nicht sonderlich viel PHP können, es ist aber auch möglich mit diesen Snippets etwas fundamentales an der Funktion der Webseite zu ändern oder auch Fehler zu erzeugen, die das Buchungssystem nicht mehr nutzbar machen. Wenn du in der Dokumentation Beispiele siehst, dann sind diese einigermaßen sicher und getestet. Ein gewisses Restrisiko bleibt aber. Falls du Probleme haben solltest, dann kannst du dich gerne an uns wenden. Bitte gib aber auch sämtliche Codeschnipsel mit an, die ihr verwendet. Dadurch können wir das Problem besser nachvollziehen.
+:::
 
 [[toc]]
 
