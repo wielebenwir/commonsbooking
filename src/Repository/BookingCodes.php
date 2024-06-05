@@ -309,7 +309,11 @@ class BookingCodes {
 					$item->ID,
 					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
 				);
-				self::persist( $bookingCode );
+				self::persist(
+					$bookingCode,
+					$timeframe->ID, // deprecated, only for backward compatibility
+					$location->ID, // deprecated, only for backward compatibility
+				);
 			}
 		}
 
@@ -317,26 +321,27 @@ class BookingCodes {
 	}
 
 	/**
+	 * Stores a booking code in database without checking if code already exists (please check before)
 	 * @param BookingCode $bookingCode
+	 * @param timeframeId deprecated (only necessary to make database compatible to former versions of cb)
+	 * @param locationId deprecated (only necessary to make database compatible to former versions of cb)
 	 *
 	 * @return mixed
 	 */
-	public static function persist( BookingCode $bookingCode ) {
+	public static function persist( BookingCode $bookingCode, $timeframeId = 0, $locationId = 0 ) {
 		global $wpdb;
-		$wpdb->show_errors( 0 );
 		$table_name = $wpdb->prefix . self::$tablename;
 
-		$result = $wpdb->replace(
+		$result = $wpdb->insert(
 			$table_name,
 			array(
-				'timeframe' => 0,
+				'timeframe' => $timeframeId, // deprecated field, only for backward compatibility
 				'date'      => $bookingCode->getDate(),
-				'location'  => 0,
+				'location' => $locationId,   // deprecated field, only for backward compatibility
 				'item'      => $bookingCode->getItem(),
 				'code'      => $bookingCode->getCode()
 			)
 		);
-		$wpdb->show_errors( 1 );
 
 		return $result;
 	}
