@@ -24,16 +24,6 @@ class Map extends CustomPostType {
 	 * Initiates needed hooks.
 	 */
 	public function initHooks() {
-		$cb_map_settings = new MapSettings();
-
-		// deactivated individual map settings because we don't need them righ now
-		// map setting should be integrated in CB settings in the future
-		//$cb_map_settings->prepare_settings();
-		
-		if ( $cb_map_settings->get_option( 'booking_page_link_replacement' ) ) {
-			add_action( 'wp_enqueue_scripts', array( Map::class, 'replace_map_link_target' ), 11 );
-		}
-
 		// Add shortcodes
 		add_shortcode( 'cb_map', array( new MapShortcode(), 'execute' ) );
 
@@ -44,37 +34,6 @@ class Map extends CustomPostType {
 
 	public static function getView() {
 		return new \CommonsBooking\View\Map();
-	}
-
-	/**
-	 * enforce the replacement of the original (google maps) link target on cb_item booking pages
-	 **/
-	public static function replace_map_link_target() {
-		global $post;
-		$cb_item = 'cb_items';
-		if ( is_object( $post ) && $post->post_type == $cb_item ) {
-			//get timeframes of item
-			$cb_data    = new CB_Data();
-			$date_start = date( 'Y-m-d' ); // current date
-			$timeframes = $cb_data->get_timeframes( $post->ID, $date_start );
-
-			$geo_coordinates = [];
-			if ( $timeframes ) {
-				foreach ( $timeframes as $timeframe ) {
-					$geo_coordinates[ $timeframe['id'] ] = [
-						'lat' => get_post_meta( $timeframe['location_id'], 'cb-map_latitude', true ),
-						'lon' => get_post_meta( $timeframe['location_id'], 'cb-map_longitude', true ),
-					];
-				}
-			}
-
-			wp_register_script( 'cb_map_replace_map_link_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-replace-link.js' );
-
-			wp_add_inline_script( 'cb_map_replace_map_link_js',
-				"cb_map_timeframes_geo = " . wp_json_encode( $geo_coordinates ) . ";" );
-
-			wp_enqueue_script( 'cb_map_replace_map_link_js' );
-		}
 	}
 
 	/**
@@ -116,20 +75,6 @@ class Map extends CustomPostType {
 		}
 
 		return $result;
-	}
-
-	public static function has_item_valid_status( $item, $item_draft_appearance ): bool {
-
-		if ( $item_draft_appearance == 1 ) {
-			return $item->post_status == 'publish';
-		}
-		if ( $item_draft_appearance == 2 ) {
-			return $item->post_status != 'publish';
-		}
-		if ( $item_draft_appearance == 3 ) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -288,23 +233,6 @@ class Map extends CustomPostType {
 		}
 
 		return $locations;
-	}
-
-	public static function get_cb_items_category_groups( $preset_categories ) {
-		$groups         = [];
-		$category_terms = Item::getTerms();
-
-		foreach ( $category_terms as $term ) {
-			if ( in_array( $term->term_id, $preset_categories ) ) {
-				if ( ! isset( $groups[ $term->parent ] ) ) {
-					$groups[ $term->parent ] = [];
-				}
-				$groups[ $term->parent ][] = $term->term_id;
-
-			}
-		}
-
-		return $groups;
 	}
 
 	/**
