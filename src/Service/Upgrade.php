@@ -532,6 +532,12 @@ class Upgrade {
 				$image = wp_get_attachment_image_src( intval( $options['marker_item_draft_media'] ) );
 				update_post_meta( $map->ID, 'marker_item_draft', reset( $image ) );
 			}
+			if (! empty($options['filter_cb_item_categories'] ) ){
+				$oldCategories = $options['filter_cb_item_categories'];
+				foreach ($oldCategories as $groupID => $group) {
+					//TODO: Write migration function for filters
+				}
+			}
 		}
 	}
 }

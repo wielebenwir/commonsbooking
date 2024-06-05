@@ -5,6 +5,7 @@ namespace CommonsBooking\Tests\Service;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use SlopeIt\ClockMock\ClockMock;
 
 class UpgradeTest extends CustomPostTypeTest
