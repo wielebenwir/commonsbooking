@@ -3,11 +3,14 @@
 namespace CommonsBooking\Map;
 
 use CommonsBooking\Helper\Wordpress;
-use CommonsBooking\Wordpress\CustomPostType\Map;
+use CommonsBooking\Model\Map;
 
 class MapData {
 	public static function geo_search() {
 		if ( isset( $_POST['query'] ) && $_POST['cb_map_id'] ) {
+
+			$map = new Map( $_POST['cb_map_id'] );
+
 
 			$check_capacity = true;
 			$attempts       = 0;
@@ -41,12 +44,11 @@ class MapData {
 				'limit'  => 1,
 			];
 
-			$options = MapAdmin::get_options( sanitize_text_field( $_POST['cb_map_id'] ), true );
+			if ( $map->getMeta( 'address_search_bounds_left_bottom_lat' ) && $map->getMeta( 'address_search_bounds_left_bottom_lon' ) && $map->getMeta( 'address_search_bounds_right_top_lat' ) && $map->getMeta( 'address_search_bounds_right_top_lon' ) ) {
 
-			if ( $options['address_search_bounds_left_bottom_lat'] && $options['address_search_bounds_left_bottom_lon'] && $options['address_search_bounds_right_top_lat'] && $options['address_search_bounds_right_top_lon'] ) {
 				$params['bounded'] = 1;
 				//viewbox - lon1, lat1, lon2, lat2: 12.856779316446545, 52.379790828551016, 13.948545673868422, 52.79694936237738
-				$params['viewbox'] = $options['address_search_bounds_left_bottom_lon'] . ',' . $options['address_search_bounds_left_bottom_lat'] . ',' . $options['address_search_bounds_right_top_lon'] . ',' . $options['address_search_bounds_right_top_lat'];
+				$params['viewbox'] = $map->getMeta( 'address_search_bounds_left_bottom_lon' ) . ',' . $map->getMeta( 'address_search_bounds_left_bottom_lat' ) . ',' . $map->getMeta( 'address_search_bounds_right_top_lon' ) . ',' . $map->getMeta( 'address_search_bounds_right_top_lat' );
 			}
 
 			$url  = 'https://nominatim.openstreetmap.org/search?' . http_build_query( $params );
@@ -90,6 +92,7 @@ class MapData {
 
 			if ( $post && $post->post_type == 'cb_map' ) {
 				$cb_map_id = $post->ID;
+				$map       = new Map( $cb_map_id );
 			} else {
 				wp_send_json_error( [ 'error' => 2 ], 400 );
 
@@ -103,15 +106,16 @@ class MapData {
 
 
 		if ( $post->post_status == 'publish' ) {
+			$map                = new Map( $cb_map_id );
 			$settings           = self::get_settings( $cb_map_id );
 			$default_date_start = $settings['filter_availability']['date_min'];
 			$default_date_end   = $settings['filter_availability']['date_max'];
 			$itemTerms          = self::getItemCategoryTerms( $settings );
-			$locations          = Map::get_locations( $cb_map_id, $itemTerms );
+			$locations          = $map->get_locations( $itemTerms );
 
 			//create availabilities
-			$show_item_availability        = MapAdmin::get_option( $cb_map_id, 'show_item_availability' );
-			$show_item_availability_filter = MapAdmin::get_option( $cb_map_id, 'show_item_availability_filter' );
+			$show_item_availability        = $map->getMeta( 'show_item_availability' );
+			$show_item_availability_filter = $map->getMeta( 'show_item_availability_filter' );
 
 			if ( $show_item_availability || $show_item_availability_filter ) {
 				$locations = MapItemAvailable::create_items_availabilities(
@@ -154,12 +158,13 @@ class MapData {
 	 * get the settings for the frontend of the map with given id
 	 **/
 	public static function get_settings( $cb_map_id ): array {
+		$map                = new Map( $cb_map_id );
 		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );
-		$max_days_in_future = MapAdmin::get_option( $cb_map_id, 'availability_max_days_to_show' );
+		$max_days_in_future = $map->getMeta( 'availability_max_days_to_show' );
 		$date_max           = Wordpress::getUTCDateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
 		$date_max           = $date_max->format( 'Y-m-d' );
-		$maxdays            = MapAdmin::get_option( $cb_map_id, 'availability_max_day_count' );
+		$maxdays            = $map->getMeta( 'availability_max_day_count' );
 
 		$settings = [
 			'data_url'                     => get_site_url( null, '', null ) . '/wp-admin/admin-ajax.php',
@@ -203,61 +208,54 @@ class MapData {
 			'label_item_category_filter',
 		];
 
-		foreach ( $options as $key => $value ) {
-			if ( in_array( $key, $pass_through ) ) {
-				$settings[ $key ] = $value;
-			} elseif ( $key == 'custom_marker_media_id' ) {
-				if ( $value != null ) {
-					$settings['custom_marker_icon'] = [
-						'iconUrl'    => wp_get_attachment_url( $options['custom_marker_media_id'] ),
-						'iconSize'   => [ $options['marker_icon_width'], $options['marker_icon_height'] ],
-						'iconAnchor' => [ $options['marker_icon_anchor_x'], $options['marker_icon_anchor_y'] ],
+		foreach ($pass_through as $key) {
+			$settings[$key] = $map->getMeta($key);
+		}
+
+		if ($map->getMeta('custom_marker_media_id')) {
+			$settings['custom_marker_icon'] = [
+				'iconUrl'    => wp_get_attachment_url($map->getMeta('custom_marker_media_id')),
+				'iconSize'   => [$map->getMeta('marker_icon_width'), $map->getMeta('marker_icon_height')],
+				'iconAnchor' => [$map->getMeta('marker_icon_anchor_x'), $map->getMeta('marker_icon_anchor_y')],
+			];
+		}
+
+		if ($map->getMeta('marker_item_draft_media_id')) {
+			$settings['item_draft_marker_icon'] = [
+				'iconUrl'    => wp_get_attachment_url($map->getMeta('marker_item_draft_media_id')),
+				'iconSize'   => [$map->getMeta('marker_item_draft_icon_width'), $map->getMeta('marker_item_draft_icon_height')],
+				'iconAnchor' => [$map->getMeta('marker_item_draft_icon_anchor_x'), $map->getMeta('marker_item_draft_icon_anchor_y')],
+			];
+		}
+
+		if ($map->getMeta('custom_marker_cluster_media_id')) {
+			$settings['marker_cluster_icon'] = [
+				'url'  => wp_get_attachment_url($map->getMeta('custom_marker_cluster_media_id')),
+				'size' => [
+					'width'  => $map->getMeta('marker_cluster_icon_width'),
+					'height' => $map->getMeta('marker_cluster_icon_height'),
+				],
+			];
+		}
+
+		//categories are only meant to be shown on local maps
+		if ($map->getMeta('cb_items_available_categories')) {
+			$settings['filter_cb_item_categories'] = [];
+			$current_group_id                      = null;
+			foreach ( $map->getMeta('cb_items_available_categories') as $categoryKey => $content ) {
+				if ( substr( $categoryKey, 0, 1 ) == 'g' ) {
+					$current_group_id                                      = $categoryKey;
+					$settings['filter_cb_item_categories'][ $categoryKey ] = [
+						'name'     => $content,
+						'elements' => [],
 					];
-				}
-			} elseif ( $key == 'marker_item_draft_media_id' ) {
-				if ( $value != null ) {
-					$settings['item_draft_marker_icon'] = [
-						'iconUrl'    => wp_get_attachment_url( $options['marker_item_draft_media_id'] ),
-						'iconSize'   => [
-							$options['marker_item_draft_icon_width'],
-							$options['marker_item_draft_icon_height'],
-						], //[27, 35], // size of the icon
-						'iconAnchor' => [
-							$options['marker_item_draft_icon_anchor_x'],
-							$options['marker_item_draft_icon_anchor_y'],
-						], //[13.5, 0], // point of the icon which will correspond to marker's location
+				} else {
+					$settings['filter_cb_item_categories'][ $current_group_id ]['elements'][] = [
+						'cat_id' => $categoryKey,
+						'markup' => $content,
 					];
-				}
-			} elseif ( $key == 'custom_marker_cluster_media_id' ) {
-				if ( $value != null ) {
-					$settings['marker_cluster_icon'] = [
-						'url'  => wp_get_attachment_url( $options['custom_marker_cluster_media_id'] ),
-						'size' => [
-							'width'  => $options['marker_cluster_icon_width'],
-							'height' => $options['marker_cluster_icon_height'],
-						],
-					];
-				}
-			} //categories are only meant to be shown on local maps
-			elseif ( $key == 'cb_items_available_categories' ) {
-				$settings['filter_cb_item_categories'] = [];
-				$current_group_id                      = null;
-				foreach ( $options['cb_items_available_categories'] as $categoryKey => $content ) {
-					if ( substr( $categoryKey, 0, 1 ) == 'g' ) {
-						$current_group_id                                      = $categoryKey;
-						$settings['filter_cb_item_categories'][ $categoryKey ] = [
-							'name'     => $content,
-							'elements' => [],
-						];
-					} else {
-						$settings['filter_cb_item_categories'][ $current_group_id ]['elements'][] = [
-							'cat_id' => $categoryKey,
-							'markup' => $content,
-						];
-					}
 				}
 			}
-
 		}
 
 		return $settings;
