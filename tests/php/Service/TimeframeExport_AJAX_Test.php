@@ -19,15 +19,15 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-		$response = json_decode( $this->_last_response );
+		$response = $this->cleanResponse( $this->_last_response );
 		$this->assertFalse( $response->success );
-		$this->assertTrue ( $response->error );
+		$this->assertTrue( $response->error );
 		$this->assertEquals( 'No data was found for the selected time period', $response->message );
 	}
 
 	public function testAjaxExport_twoBookings() {
 		//create two bookings
-		$firstBooking = $this->createBooking(
+		$firstBooking  = $this->createBooking(
 			strtotime( CustomPostTypeTest::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( CustomPostTypeTest::CURRENT_DATE ) )
 		);
@@ -40,13 +40,13 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-		$response = json_decode( $this->_last_response );
+		$response = $this->cleanResponse( $this->_last_response );
 		$this->assertTrue( $response->success );
-		$this->assertFalse ( $response->error );
+		$this->assertFalse( $response->error );
 		$this->assertEquals( 'Export finished', $response->message );
 		$stdObjects = TimeframeExportTest::csvStringToStdObjects( $response->csv );
 		$this->assertEquals( 2, count( $stdObjects ) );
-		$this->assertEqualsCanonicalizing( [ $firstBooking, $secondBooking ], array_map ( function ( $stdObject ) {
+		$this->assertEqualsCanonicalizing( [ $firstBooking, $secondBooking ], array_map( function ( $stdObject ) {
 			return $stdObject->ID;
 		}, $stdObjects ) );
 	}
@@ -54,7 +54,7 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 	public function testAjaxExport_Paginated() {
 		//create ITERATION_COUNT + 1 bookings so that we have to paginate
 		$totalBookings = TimeframeExport::ITERATION_COUNTS + 1;
-		for ( $i = 0; $i < $totalBookings; $i++ ) {
+		for ( $i = 0; $i < $totalBookings; $i ++ ) {
 			$this->createBooking(
 				strtotime( '+ ' . $i . ' days', strtotime( CustomPostTypeTest::CURRENT_DATE ) ),
 				strtotime( '+ ' . ( $i + 1 ) . ' days', strtotime( CustomPostTypeTest::CURRENT_DATE ) )
@@ -65,61 +65,62 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-		$rawFirstPageResponse     = $this->_last_response;
-		$firstPageResponse = json_decode( $rawFirstPageResponse );
+		$rawFirstPageResponse = $this->_last_response;
+		$firstPageResponse    = $this->cleanResponse( $rawFirstPageResponse );
 		$this->assertFalse( $firstPageResponse->success );
-		$this->assertFalse ( $firstPageResponse->error );
-		$this->assertEquals( 'Processed '. TimeframeExport::ITERATION_COUNTS .' of '. $totalBookings .' bookings', $firstPageResponse->progress );
+		$this->assertFalse( $firstPageResponse->error );
+		$this->assertEquals( 'Processed ' . TimeframeExport::ITERATION_COUNTS . ' of ' . $totalBookings . ' bookings', $firstPageResponse->progress );
 		$tfs = $firstPageResponse->settings->relevantTimeframes;
-		$this->assertEquals( TimeframeExport::ITERATION_COUNTS, count( $tfs) );
+		$this->assertEquals( TimeframeExport::ITERATION_COUNTS, count( $tfs ) );
 
 		//let's set the $_POST data anew so that we can get the second page
 		//we do the decoding and encoding to get an associative array from an object
-		$_POST[ 'data' ] = json_decode(json_encode($firstPageResponse),true);
+		$_POST['data'] = json_decode( json_encode( $firstPageResponse ), true );
 		//not sure if this is necessary, but let's set the nonce anew
-		$_POST[ '_wpnonce' ] = wp_create_nonce( 'cb_export_timeframes' );
+		$_POST['_wpnonce'] = wp_create_nonce( 'cb_export_timeframes' );
 		try {
 			$this->_handleAjax( 'cb_export_timeframes' );
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-		$allResponses      = $this->_last_response;
-		//trim the first response away, for some reason, the responses are just appended to each other
-		$secondPageResponse = substr( $allResponses, strlen( $rawFirstPageResponse ) );
-		$secondPageResponse = json_decode( $secondPageResponse );
+		$allResponses = $this->_last_response;
+		$secondPageResponse = $this->cleanResponse( $this->_last_response, $rawFirstPageResponse );
 		$this->assertTrue( $secondPageResponse->success );
-		$this->assertFalse ( $secondPageResponse->error );
+		$this->assertFalse( $secondPageResponse->error );
 		$this->assertEquals( 'Export finished', $secondPageResponse->message );
 		$stdObjects = TimeframeExportTest::csvStringToStdObjects( $secondPageResponse->csv );
 		$this->assertEquals( $totalBookings, count( $stdObjects ) );
-		$this->assertEqualsCanonicalizing( $this->bookingIDs, array_map ( function ( $stdObject ) {
+		$this->assertEqualsCanonicalizing( $this->bookingIDs, array_map( function ( $stdObject ) {
 			return $stdObject->ID;
 		}, $stdObjects ) );
 	}
 
 	public function set_up() {
 		parent::set_up();
-		add_action( 'wp_ajax_cb_export_timeframes', array( \CommonsBooking\Service\TimeframeExport::class, 'ajaxExportCsv' ) );
+		add_action( 'wp_ajax_cb_export_timeframes', array(
+			\CommonsBooking\Service\TimeframeExport::class,
+			'ajaxExportCsv'
+		) );
 		$currentDateNextMonth = new \DateTime( CustomPostTypeTest::CURRENT_DATE );
 		$currentDateNextMonth->modify( '+2 years' );
 		$currentDateNextMonth = $currentDateNextMonth->format( 'd.m.Y' );
-		$_POST['_wpnonce'] = wp_create_nonce( 'cb_export_timeframes' );
-		$exportSettings = array(
-			'exportType' => 'all',
+		$_POST['_wpnonce']    = wp_create_nonce( 'cb_export_timeframes' );
+		$exportSettings       = array(
+			'exportType'      => 'all',
 			'exportStartDate' => CustomPostTypeTest::CURRENT_DATE,
-			'exportEndDate' => $currentDateNextMonth,
-			'locationFields' => '',
-			'itemFields' => '',
-			'userFields' => ''
+			'exportEndDate'   => $currentDateNextMonth,
+			'locationFields'  => '',
+			'itemFields'      => '',
+			'userFields'      => ''
 		);
-		$progressText = '0/0 bookings exported';
-		$_POST[ 'data' ] = [
+		$progressText         = '0/0 bookings exported';
+		$_POST['data']        = [
 			'settings' => $exportSettings,
 			'progress' => $progressText
 		];
 
 		//create items and locations. We can't use the functions from the CustomPostTypeTest class because this class extends WP_Ajax_UnitTestCase
-		$this->itemID = wp_insert_post( [
+		$this->itemID     = wp_insert_post( [
 			'post_title'  => "AJAX Test Item",
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Item::$postType,
 			'post_status' => 'publish'
@@ -162,11 +163,33 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 
 	public function tear_down() {
 		parent::tear_down();
-		remove_action( 'wp_ajax_cb_export_timeframes', array( \CommonsBooking\Service\TimeframeExport::class, 'ajaxExportCsv' ) );
+		remove_action( 'wp_ajax_cb_export_timeframes', array(
+			\CommonsBooking\Service\TimeframeExport::class,
+			'ajaxExportCsv'
+		) );
 		wp_delete_post( $this->itemID, true );
 		wp_delete_post( $this->locationID, true );
 		foreach ( $this->bookingIDs as $bookingID ) {
 			wp_delete_post( $bookingID, true );
 		}
+	}
+
+	/**
+	 * Remove deprecation warnings and whitespaces. Returns JSON decoded object.
+	 *
+	 * @param string $input
+	 * @param string $previousResponses
+	 *
+	 * @return mixed
+	 */
+	public function cleanResponse( string $input, string $previousResponses = '' ) {
+		//trim away previous responses because they are just appended to the current response
+		if ( $previousResponses ) {
+			$input = substr( $input, strlen( $previousResponses ) );
+		}
+		$cleanedInput = preg_replace( '/^Deprecated:.*$/m', '', $input );
+		$cleanedInput = trim( $cleanedInput );
+
+		return json_decode( $cleanedInput );
 	}
 }
