@@ -7,7 +7,7 @@ use CommonsBooking\Service\Upgrade;
 /**
  * We need this as a separate testing class because we need to inherit the WP_Ajax_UnitTestCase
  */
-class Upgrade_AJAXTest extends \WP_Ajax_UnitTestCase {
+class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 
 	const ACTION = 'cb_run_upgrade';
 	private static int $functionCounter = 1;
