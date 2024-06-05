@@ -4,9 +4,9 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
-use CommonsBooking\Map\MapAdmin;
-use CommonsBooking\Map\MapSettings;
 use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\Repository\Item;
+use CommonsBooking\Repository\Location;
 
 use function __;
 
@@ -520,6 +520,57 @@ class Map extends CustomPostType {
 				'attributes' => array(
 					'placeholder' => esc_html__( 'filter', 'commonsbooking' ),
 				)
+			),
+			array(
+				'name'       => commonsbooking_sanitizeHTML( __( 'Filter groups', 'commonsbooking' ) ),
+				'desc'       => commonsbooking_sanitizeHTML( __( 'Filter groups can group item or location categories together to allow for filtering in the map.', 'commonsbooking' ) ),
+				'id'         => 'filtergroups',
+				'type'       => 'group',
+				'repeatable' => true,
+				'options'    => array(
+					'group_title'   => commonsbooking_sanitizeHTML( __( 'Filter group {#}', 'commonsbooking' ) ),
+					'add_button'    => commonsbooking_sanitizeHTML( __( 'Add another filter group', 'commonsbooking' ) ),
+					'remove_button' => commonsbooking_sanitizeHTML( __( 'Remove filter group', 'commonsbooking' ) ),
+					'sortable'      => false,
+				),
+				'fields'     => array(
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Name', 'commonsbooking' ) ),
+						'id'      => 'name',
+						'type'    => 'text',
+						'desc'    => commonsbooking_sanitizeHTML( __( 'The name of the filter group', 'commonsbooking' ) ),
+						'default' => '',
+					),
+					array(
+						'name'       => commonsbooking_sanitizeHTML( __( 'Type', 'commonsbooking' ) ),
+						'id'         => 'type',
+						'type'       => 'select',
+						'desc'       => commonsbooking_sanitizeHTML( __( 'This is not available yet. Which data source should be used for the filter group. Taxonomy stands for the assigned categories, post-meta can be individually configured custom fields for item posts. When this item field contains data, it will be included. If it does not contain data or does not exist, the item will be excluded.', 'commonsbooking' ) ),
+						'options'    => array(
+							'taxonomy' => commonsbooking_sanitizeHTML( __( 'Taxonomy', 'commonsbooking' ) ),
+							'postmeta' => commonsbooking_sanitizeHTML( __( 'Post-meta', 'commonsbooking' ) ),
+						),
+						'default'    => 'taxonomy',
+						//TODO: disabled until postmeta is implemented
+						'attributes' => array(
+							'disabled' => true
+						),
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Exclusive selection', 'commonsbooking' ) ),
+						'id'   => 'isExclusive',
+						'type' => 'checkbox',
+						'desc' => commonsbooking_sanitizeHTML( __( 'WARNING: This feature is only available for the cb_search shortcode, not for cb_map. If checked, only one category can be selected in this filter group. If unchecked, multiple categories can be selected.', 'commonsbooking' ) ),
+					),
+					array(
+						'name'              => commonsbooking_sanitizeHTML( __( 'Categories', 'commonsbooking' ) ),
+						'id'                => 'categories',
+						'type'              => 'multicheck',
+						'desc'              => commonsbooking_sanitizeHTML( __( 'The categories to be included in the filter group', 'commonsbooking' ) ),
+						'options'           => \CommonsBooking\Wordpress\CustomPostType\CustomPostType::sanitizeOptions ( Item::getTerms() ),
+						'select_all_button' => false,
+					),
+				),
 			),
 			//TODO: Add available categories & filtergroups
 			//End group Filters

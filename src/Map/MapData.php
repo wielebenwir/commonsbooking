@@ -239,22 +239,27 @@ class MapData {
 		}
 
 		//categories are only meant to be shown on local maps
+		//TODO: Evaluate if it makes sense to only show them when categories are imported
 		if ($map->getMeta('cb_items_available_categories')) {
 			$settings['filter_cb_item_categories'] = [];
-			$current_group_id                      = null;
-			foreach ( $map->getMeta('cb_items_available_categories') as $categoryKey => $content ) {
-				if ( substr( $categoryKey, 0, 1 ) == 'g' ) {
-					$current_group_id                                      = $categoryKey;
-					$settings['filter_cb_item_categories'][ $categoryKey ] = [
-						'name'     => $content,
-						'elements' => [],
-					];
-				} else {
-					$settings['filter_cb_item_categories'][ $current_group_id ]['elements'][] = [
-						'cat_id' => $categoryKey,
-						'markup' => $content,
+
+			foreach ($map->getMeta('filtergroups') as $groupID => $group) {
+				$elements = [];
+				foreach ($group['categories'] as $termID) {
+					$term = get_term( $termID );
+					$customMarkup = get_term_meta( $termID, COMMONSBOOKING_METABOX_PREFIX . 'markup', true );
+					$termName = empty($customMarkup) ? $term->name : $customMarkup;
+
+					$elements[] = [
+						'cat_id' => intval( $termID ),
+						'markup' => $termName,
 					];
 				}
+				$settings['filter_cb_item_categories'][ $groupID ] = [
+					'name'     => $group['name'],
+					'elements' => $elements,
+					'isExclusive' => $group['isExclusive'] == 'on',
+				];
 			}
 		}
 
