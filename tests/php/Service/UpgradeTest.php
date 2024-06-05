@@ -202,6 +202,79 @@ class UpgradeTest extends CustomPostTypeTest
 		);
 	}
 
+	public function testMigrateMapSettings() {
+		$mapOptions = array (
+			'base_map' => 1,
+			'show_scale' => true,
+			'map_height' => 400,
+			'custom_no_locations_message' => 'No locations found',
+			'custom_filterbutton_label' => '',
+			'zoom_min' => 9,
+			'zoom_max' => 19,
+			'scrollWheelZoom' => true,
+			'zoom_start' => 9,
+			'lat_start' => 50.937531,
+			'lon_start' => 6.960279,
+			'marker_map_bounds_initial' => true,
+			'marker_map_bounds_filter' => true,
+			'max_cluster_radius' => 80,
+			'marker_tooltip_permanent' => false,
+			'custom_marker_media_id' => 0,
+			'marker_icon_width' => 0.0,
+			'marker_icon_height' => 0.0,
+			'marker_icon_anchor_x' => 0.0,
+			'marker_icon_anchor_y' => 0.0,
+			'show_location_contact' => false,
+			'label_location_contact' => '',
+			'show_location_opening_hours' => false,
+			'label_location_opening_hours' => '',
+			'show_item_availability' => false,
+			'custom_marker_cluster_media_id' => 0,
+			'marker_cluster_icon_width' => 0.0,
+			'marker_cluster_icon_height' => 0.0,
+			'address_search_bounds_left_bottom_lon' => NULL,
+			'address_search_bounds_left_bottom_lat' => NULL,
+			'address_search_bounds_right_top_lon' => NULL,
+			'address_search_bounds_right_top_lat' => NULL,
+			'show_location_distance_filter' => false,
+			'label_location_distance_filter' => '',
+			'show_item_availability_filter' => false,
+			'label_item_availability_filter' => '',
+			'label_item_category_filter' => '',
+			'item_draft_appearance' => '1',
+			'marker_item_draft_media_id' => 0,
+			'marker_item_draft_icon_width' => 0.0,
+			'marker_item_draft_icon_height' => 0.0,
+			'marker_item_draft_icon_anchor_x' => 0.0,
+			'marker_item_draft_icon_anchor_y' => 0.0,
+			'cb_items_available_categories' =>
+				array (
+				),
+			'cb_items_preset_categories' =>
+				array (
+				),
+			'cb_locations_preset_categories' =>
+				array (
+				),
+			'availability_max_days_to_show' => 11,
+			'availability_max_day_count' => 14,
+		);
+		$oldMapId = wp_insert_post( [
+			'post_title'  => 'Map',
+			'post_type'   => Map::$postType,
+			'post_status' => 'publish'
+		] );
+
+		update_post_meta( $oldMapId, 'cb_map_options', $mapOptions );
+
+		Upgrade::migrateMapSettings();
+		//each option should now have it's own meta entry
+		foreach ($mapOptions as $key => $value) {
+			$this->assertEquals($value, get_post_meta($oldMapId, $key, true));
+		}
+		wp_delete_post($oldMapId, true);
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		//This replaces the original update tasks with a internal test function that just sets a variable to true
