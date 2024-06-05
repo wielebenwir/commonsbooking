@@ -6,6 +6,7 @@ use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use Psr\Cache\InvalidArgumentException;
 
@@ -49,7 +50,10 @@ class Upgrade {
 			[ self::class, 'fixBrokenICalTitle' ]
 		],
 		'2.9.2' => [
-			[self::class, 'enableLocationBookingNotification']
+			[ self::class, 'enableLocationBookingNotification' ]
+		],
+		'2.10'  => [
+			[ self::class, 'migrateMapSettings' ]
 		]
 	];
 
@@ -93,6 +97,11 @@ class Upgrade {
 
 		// update version number in options
 		update_option( self::VERSION_OPTION, $this->currentVersion );
+
+		//TODO: REMOVE THIS BEFORE MERGING, WE JUST USE THIS SO WE CAN TEST THE MIGRATION FUNCTION
+		//      BEFORE MERGING AND WE DO NOT HAVE TO TOUCH THE content-example.xml file!
+		self::migrateMapSettings();
+		//TODO: REMOVE THIS BEFORE MERGING!!!
 
 		// Clear cache
 		try {
@@ -461,14 +470,68 @@ class Upgrade {
 	 * Previously, if a location email was set that meant that they also receive a copy of each booking / cancellation email.
 	 * Now we have a separate checkbox to enable that which should be enabled for existing locations so that they will still receive emails after upgrade.
 	 *
-	 * @since 2.9.2
 	 * @return void
+	 * @since 2.9.2
 	 */
 	public static function enableLocationBookingNotification() {
 		$locations = \CommonsBooking\Repository\Location::get();
 
-		foreach ($locations as $location) {
-			update_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on');
+		foreach ( $locations as $location ) {
+			update_post_meta( $location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on' );
+		}
+	}
+
+
+
+	/**
+	 * Migrate Map Settings from old options to new CMB2 options
+	 *
+	 * @since 2.10
+	 * @return void
+	 */
+	public static function migrateMapSettings() : void {
+		$maps = get_posts( [
+			'post_type' => \CommonsBooking\Wordpress\CustomPostType\Map::$postType,
+			'numberposts' => -1
+		] );
+		foreach ($maps as $map) {
+			$options = get_post_meta( $map->ID, 'cb_map_options', true );
+			if ( empty($options) ) {
+				continue;
+			}
+			//will map to an associative array with key being the option name and the value the default value
+			$defaultValues = array_reduce(
+				Map::getCustomFields(),
+				function ( $result, $option ) {
+					if ( isset( $option['default'] ) ) {
+						$result[$option['id']] = $option['default'];
+					}
+					return $result;
+				},
+				array()
+			);
+			foreach ($options as $key => $value) {
+				if ( empty($value) && isset($defaultValues[$key]) ) {
+					//fetch from default values when key happens to be empty
+					$value = $defaultValues[$key];
+				}
+				update_post_meta( $map->ID, $key, $value );
+			}
+			if ( ! empty($options['custom_marker_media_id'] ) ){
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['custom_marker_media_id'] ) );
+				update_post_meta( $map->ID, 'custom_marker_media', reset( $image ) );
+			}
+			if (! empty($options['custom_marker_cluster_id'] ) ){
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['custom_marker_cluster_id'] ) );
+				update_post_meta( $map->ID, 'custom_marker_cluster', reset( $image ) );
+			}
+			if (! empty($options['marker_item_draft_media'] ) ){
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['marker_item_draft_media'] ) );
+				update_post_meta( $map->ID, 'marker_item_draft', reset( $image ) );
+			}
 		}
 	}
 }
