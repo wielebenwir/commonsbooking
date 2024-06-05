@@ -944,6 +944,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Will update the dynamic item / location assignment for all timeframes.
+	 * Only valid for timeframes which can have a dynamic selection type (so far only holidays and repair timeframes)
 	 *
 	 * @return void
 	 */
@@ -953,7 +954,6 @@ class Timeframe extends CustomPostType {
 			[],
 			[
 				Timeframe::HOLIDAYS_ID,
-				Timeframe::BOOKABLE_ID,
 				Timeframe::REPAIR_ID
 			]
 		);
