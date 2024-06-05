@@ -4,13 +4,10 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 
-use CommonsBooking\Helper\Helper;
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
 use CommonsBooking\Map\MapShortcode;
-use CommonsBooking\Repository\Item;
-use CommonsBooking\Repository\Timeframe;
-use Exception;
+
 use function __;
 
 class Map extends CustomPostType {
@@ -19,6 +16,14 @@ class Map extends CustomPostType {
 	 * @var string
 	 */
 	public static $postType = 'cb_map';
+
+	/**
+	 * The default coordinates of the map center.
+	 * Is used when no other coordinates are set.
+	 * These are currently the coordinates of Cologne, Germany.
+	 */
+	const LATITUDE_DEFAULT = 50.937531;
+	const LONGITUDE_DEFAULT = 6.960279;
 
 	/**
 	 * Initiates needed hooks.
@@ -36,267 +41,19 @@ class Map extends CustomPostType {
 		return new \CommonsBooking\View\Map();
 	}
 
-	/**
-	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
-	 **/
-	public static function get_timeframes() {
-		$timeframes = Timeframe::getBookableForCurrentUser(
-			[],
-			[],
-			false,
-			true,
-			Helper::getLastFullHourTimestamp()
-		);
-
-		/** @var \CommonsBooking\Model\Timeframe $timeframe */
-		foreach ( $timeframes as $timeframe ) {
-			//TODO #507
-			$item     = $timeframe->getItem();
-			$location = $timeframe->getLocation();
-
-			if ( $item && $location ) {
-				$item_desc = $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_info' );
-				$thumbnail = get_the_post_thumbnail_url( $item, 'thumbnail' );
-
-				$result[] = [
-					'location_id' => $timeframe->getLocationID(),
-					'item'        => [
-						'id'         => $item->ID,
-						'name'       => $item->post_title,
-						'short_desc' => $item_desc,
-						'link'       => get_permalink( $item ),
-						'thumbnail'  => $thumbnail ?: null,
-						'status'     => $item->post_status,
-					],
-					'date_start'  => $timeframe->getStartDate(),
-					'date_end'    => $timeframe->getEndDate(),
-				];
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * get geo data from location metadata
-	 *
-	 * @param $cb_map_id
-	 * @param $mapItemTerms
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public static function get_locations( $cb_map_id, $mapItemTerms ): array {
-		$locations = [];
-
-		$show_location_contact       = MapAdmin::get_option( $cb_map_id, 'show_location_contact' );
-		$show_location_opening_hours = MapAdmin::get_option( $cb_map_id, 'show_location_opening_hours' );
-
-		$preset_categories = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
-		$preset_location_categories = MapAdmin::get_option( $cb_map_id, 'cb_locations_preset_categories' );
-
-
-		$args = [
-			'post_type'      => Location::$postType,
-			'posts_per_page' => - 1,
-			'post_status'    => 'publish',
-			'meta_query'     => [
-				[
-					'key'          => 'geo_longitude',
-					'meta_compare' => 'EXISTS',
-				],
-			],
-		];
-
-		$locationObjects = \CommonsBooking\Repository\Location::get(
-			$args,
-			true
-		);
-
-		/** @var \CommonsBooking\Model\Location $post */
-		foreach ( $locationObjects as $post ) {
-			$location_meta = get_post_meta( $post->ID, null, true );
-
-			//set serialized empty array if not set
-			$closed_days = isset( $location_meta['commons-booking_location_closeddays'] ) ? $location_meta['commons-booking_location_closeddays'][0] : 'a:0:{}';
-
-			$items = [];
-
-			/**
-			 * filters out not preset location categories, if location categories are set
-			 */
-
-			 if ($preset_location_categories) {
-				if ( !has_term( $preset_location_categories , 'cb_locations_category' , $post->ID) ) {
-					continue; //skip to next location in loop
-				}
-			 }
-
-			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
-
-				$item_terms = wp_get_post_terms(
-					$item->ID,
-					\CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category'
-				);
-				if ( is_array( $item_terms ) && count( $item_terms ) ) {
-					$item_terms = array_map(
-						function ( $item ) {
-							return $item->term_id;
-						},
-						$item_terms
-					);
-				}
-
-				/**
-				 * If current item has a category, that isn't in map config, we'll skip it.
-				 */
-				if ( count( $mapItemTerms ) && count( $item_terms ) && ! count( array_intersect( $item_terms, $mapItemTerms ) ) ) {
-					continue;
-				}
-
-				/**
-				 * Filter items by preset item categories
-				 */
-
-				 if ($preset_categories) {
-						 //check if preset category is in items
-						if ( !has_term( $preset_categories , 'cb_items_category' , $item->ID) ) {
-							continue; //skip to next item in loop
-						}
-				 }
-
-
-				$timeframesData = [];
-				$timeframes     = Timeframe::getBookableForCurrentUser(
-					[ $post->ID ],
-					[ $item->ID ],
-					null,
-					true
-				);
-
-				/** @var \CommonsBooking\Model\Timeframe $timeframe */
-				foreach ( $timeframes as $timeframe ) {
-					$startDate        = date( 'Y-m-d', $timeframe->getStartDate() );
-					$endDate          = $timeframe->getEndDate() ?: date( 'Y-m-d', strtotime( '2999-01-01' ) );
-					$timeframesData[] = [
-						'date_start' => $startDate,
-						'date_end'   => $endDate
-					];
-				}
-
-				$thumbnailID = get_post_thumbnail_id( $item->ID );
-				//this thumbnail is kept for backwards compatibility
-				$thumbnail = wp_get_attachment_image_url( $thumbnailID, 'thumbnail' );
-				$images = [
-					'thumbnail' => wp_get_attachment_image_src( $thumbnailID, 'thumbnail' ),
-					'medium'    => wp_get_attachment_image_src( $thumbnailID, 'medium' ),
-					'large'     => wp_get_attachment_image_src( $thumbnailID, 'large' ),
-					'full'      => wp_get_attachment_image_src( $thumbnailID, 'full' ),
-				];
-				$items[]   = [
-					'id'         => $item->ID,
-					'name'       => $item->post_title,
-					'short_desc' => has_excerpt( $item->ID ) ? wp_strip_all_tags( get_the_excerpt( $item->ID ) ) : "",
-					'status'     => $item->post_status,
-					'terms'      => $item_terms,
-					'link'       => add_query_arg( 'cb-location', $post->ID, get_permalink( $item->ID ) ),
-					'thumbnail'  => $thumbnail ?: null,
-					'images'     => $images,
-					'timeframes' => $timeframesData
-				];
-			}
-
-			if ( count( $items ) ) {
-				$locations[ $post->ID ] = [
-					'lat'           => (float) $location_meta['geo_latitude'][0],
-					'lon'           => (float) $location_meta['geo_longitude'][0],
-					'location_name' => $post->post_title,
-					'location_link' => get_permalink($post->ID),
-					'closed_days'   => unserialize( $closed_days ),
-					'address'       => [
-						'street' => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_street' ][0],
-						'city'   => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_city' ][0],
-						'zip'    => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_postcode' ][0],
-					],
-					'items'         => $items,
-				];
-
-				if ( $show_location_contact ) {
-					$locations[ $post->ID ]['contact'] = $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ][0];
-				}
-			}
-
-			//@TODO: Check field -> we don't have such a field at the moment.
-//            if ($show_location_opening_hours) {
-//                $locations[$post->ID]['opening_hours'] = $location_meta['commons-booking_location_openinghours'][0];
-//            }
-		}
-
-		return $locations;
-	}
-
-	/**
-	 * basic check if the given string is valid JSON
-	 **/
-	public static function is_json( $string ) {
-		json_decode( $string );
-
-		return ( json_last_error() == JSON_ERROR_NONE );
-	}
-
-	/**
-	 * clean up the location data
-	 *
-	 * @param $locations
-	 * @param $linebreak_replacement
-	 *
-	 * @return mixed
-	 */
-	public static function cleanup_location_data( $locations, $linebreak_replacement ) {
-		foreach ( $locations as &$location ) {
-			$location = self::cleanup_location_data_entry( $location, $linebreak_replacement );
-		}
-
-		return $locations;
-	}
-
-	/**
-	 * recursive clean up of location data entries
-	 *
-	 * @param $value
-	 * @param $linebreak_replacement
-	 *
-	 * @return mixed|string|string[]|null
-	 */
-	public static function cleanup_location_data_entry( $value, $linebreak_replacement ) {
-
-		if ( is_string( $value ) ) {
-			$value = preg_replace( '/(\r\n)|\n|\r/', $linebreak_replacement, $value ); //replace linebreaks
-			$value = preg_replace( '/<.*(.*?)/', '', $value ); //strip off everything that smell's like HTML
-		}
-
-		if ( is_array( $value ) ) {
-			foreach ( $value as &$child_value ) {
-				$child_value = self::cleanup_location_data_entry( $child_value, $linebreak_replacement );
-			}
-		}
-
-		return $value;
-	}
-
 	public function getArgs() {
 		$labels = array(
-			'name'               => self::__( 'Maps', 'commonsbooking' ),
-			'singular_name'      => self::__( 'Map', 'commonsbooking' ),
-			'add_new'            => self::__( 'create CB map', 'commonsbooking' ),
-			'add_new_item'       => self::__( 'create Commons Booking map', 'commonsbooking' ),
-			'edit_item'          => self::__( 'edit Commons Booking map', 'commonsbooking' ),
-			'new_item'           => self::__( 'create CB map', 'commonsbooking' ),
-			'view_item'          => self::__( 'view CB map', 'commonsbooking' ),
-			'search_items'       => self::__( 'search CB maps', 'commonsbooking' ),
-			'not_found'          => self::__( 'no Commons Booking map found', 'commonsbooking' ),
-			'not_found_in_trash' => self::__( 'no Commons Booking map found in the trash', 'commonsbooking' ),
-			'parent_item_colon'  => self::__( 'parent CB maps', 'commonsbooking' ),
+			'name'               => esc_html__( 'Maps', 'commonsbooking' ),
+			'singular_name'      => esc_html__( 'Map', 'commonsbooking' ),
+			'add_new'            => esc_html__( 'create CB map', 'commonsbooking' ),
+			'add_new_item'       => esc_html__( 'create Commons Booking map', 'commonsbooking' ),
+			'edit_item'          => esc_html__( 'edit Commons Booking map', 'commonsbooking' ),
+			'new_item'           => esc_html__( 'create CB map', 'commonsbooking' ),
+			'view_item'          => esc_html__( 'view CB map', 'commonsbooking' ),
+			'search_items'       => esc_html__( 'search CB maps', 'commonsbooking' ),
+			'not_found'          => esc_html__( 'no Commons Booking map found', 'commonsbooking' ),
+			'not_found_in_trash' => esc_html__( 'no Commons Booking map found in the trash', 'commonsbooking' ),
+			'parent_item_colon'  => esc_html__( 'parent CB maps', 'commonsbooking' ),
 		);
 
 		$supports = array(
@@ -310,7 +67,7 @@ class Map extends CustomPostType {
 			// Sichtbarkeit des Post Types
 			'public'              => true,
 
-			// Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
+			// Standard Ansicht im Backend aktivieren (Wie Artikel / Seiten)
 			'show_ui'             => true,
 
 			// Soll es im Backend Menu sichtbar sein?
@@ -325,7 +82,7 @@ class Map extends CustomPostType {
 			// in den Navigations Menüs sichtbar machen?
 			'show_in_nav_menus'   => true,
 			'hierarchical'        => false,
-			'description'         => self::__( 'Maps to show Commons Booking Locations and their Items', 'commonsbooking' ),
+			'description'         => esc_html__( 'Maps to show Commons Booking Locations and their Items', 'commonsbooking' ),
 			'supports'            => $supports,
 			'menu_icon'           => 'dashicons-location',
 			'publicly_queryable'  => false,
@@ -338,21 +95,4 @@ class Map extends CustomPostType {
 		);
 	}
 
-	/**
-	 * @param $text
-	 * @param string $domain
-	 * @param null $default
-	 *
-	 * @return mixed
-	 */
-	public static function __( $text, string $domain = 'default', $default = null ) {
-
-		$translation = __( $text, $domain );
-
-		if ( $translation == $text && isset( $default ) ) {
-			$translation = $default;
-		}
-
-		return $translation;
-	}
 }
