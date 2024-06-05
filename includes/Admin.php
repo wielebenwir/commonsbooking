@@ -29,13 +29,6 @@ function commonsbooking_admin() {
 		);
 	}
 
-    // Map marker upload scripts
-    // TODO needs to be evaluated. Maybe not working on all systems
-    if ( get_current_screen()->id == 'cb_map' ) {
-        $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-        wp_enqueue_script( 'cb-map-marker-upload_js', $script_path );
-    }
-
 	// CB 0.X migration
 	wp_localize_script(
 		'cb-scripts-admin',
