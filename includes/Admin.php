@@ -56,6 +56,16 @@ function commonsbooking_admin() {
 		)
 	);
 
+	// AJAX action for exporting timeframes to CSV
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_export_timeframes',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_export_timeframes' ),
+		)
+	);
+
 	// \CommonsBooking\Service\Upgrade Ajax tasks
 	wp_localize_script(
 		'cb-scripts-admin',
