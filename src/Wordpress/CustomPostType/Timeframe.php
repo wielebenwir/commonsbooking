@@ -111,20 +111,31 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns timeframe types.
+	 * Returns timeframe types as associative array. This can be used for timeframe selection in CMB2
+	 *
+	 * @param bool $includeAll - When toggled, will include the "All" Option as a selection option
+	 *
 	 * @return array
 	 */
-	public static function getTypes() {
-		return [
+	public static function getTypes( bool $includeAll = false ): array {
+		$typeOptions = [];
+		if ( $includeAll ) {
+			$typeOptions += [
+				'all' => esc_html__( 'All timeframe types', 'commonsbooking' )
+			];
+		}
+		$typeOptions += [
 			// Opening Hours disabled as its not implemented yet
 			//self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
-			self::BOOKABLE_ID         => esc_html__( "Bookable", 'commonsbooking' ),
-			self::HOLIDAYS_ID         => esc_html__( "Holidays or location closed", 'commonsbooking' ),
+			self::BOOKABLE_ID => esc_html__( "Bookable", 'commonsbooking' ),
+			self::HOLIDAYS_ID => esc_html__( "Holidays or location closed", 'commonsbooking' ),
 			// Off Holidays disabled as its not implemented yet
 			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
-			self::REPAIR_ID           => esc_html__( "Blocked (not overbookable)", 'commonsbooking' ),
-			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
+			self::REPAIR_ID   => esc_html__( "Blocked (not overbookable)", 'commonsbooking' ),
+			self::BOOKING_ID  => esc_html__( "Booking", 'commonsbooking' ),
 		];
+
+		return $typeOptions;
 	}
 
 	public static function getSimilarPostTypes() {
@@ -944,6 +955,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Will update the dynamic item / location assignment for all timeframes.
+	 * Only valid for timeframes which can have a dynamic selection type (so far only holidays and repair timeframes)
 	 *
 	 * @return void
 	 */
@@ -953,7 +965,6 @@ class Timeframe extends CustomPostType {
 			[],
 			[
 				Timeframe::HOLIDAYS_ID,
-				Timeframe::BOOKABLE_ID,
 				Timeframe::REPAIR_ID
 			]
 		);

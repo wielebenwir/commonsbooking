@@ -23,10 +23,6 @@ if ( strpos( get_locale(), 'en_' ) !== false ) {
 	$dateFormat = "m/d/Y";
 }
 
-$typeOptions = [
-	'all' => esc_html__( 'All timeframe types', 'commonsbooking' )
-];
-$typeOptions += Timeframe::getTypes();
 
 /**
  * Plugin Options
@@ -1056,6 +1052,20 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 		'title'        => __( 'Migration', 'commonsbooking' ),
 		'id'           => 'migration',
 		'field_groups' => array(
+			'upgrade'           => array(
+				'title'  => esc_html__( 'Finish upgrade to latest version', 'commonsbooking' ),
+				'id'     => 'upgrade',
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Click here to finish the upgrade to the latest version. <br> This needs to be done after updating the plugin to a new version. <br> If you do not do this, the plugin may not work correctly.', 'commonsbooking' ) ),
+				'fields' => [
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Finish upgrade', 'commonsbooking' ) ),
+						'id'            => 'upgrade-custom-field',
+						'type'          => 'text',
+						'render_row_cb' => array( Migration::class, 'renderUpgradeForm' ),
+					)
+				],
+			),
+			// migration cb1 -> cb2
 			'migration'         => array(
 				'title'  => esc_html__( 'Migrate from Commons Booking Version 0.X', 'commonsbooking' ),
 				'id'     => 'migration',
@@ -1122,26 +1132,26 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 						'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
 						'id'      => "export-type",
 						'type'    => 'select',
-						'options' => $typeOptions,
+						'options' => Timeframe::getTypes( true ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_location') ) ),
-						'id'   => 'location-fields',
+						'id'   => TimeframeExport::LOCATION_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_item') ) ),
-						'id'   => 'item-fields',
+						'id'   => TimeframeExport::ITEM_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ), 
-						'id'   => 'user-fields',
+						'id'   => TimeframeExport::USER_FIELD,
 						'type' => 'text'
 					),
 					array(
@@ -1167,7 +1177,7 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 						'name'          => commonsbooking_sanitizeHTML( __( 'Export', 'commonsbooking' ) ),
 						'id'            => 'export-custom-field',
 						'type'          => 'text',
-						'render_row_cb' => array( TimeframeExport::class, 'renderExportForm' ),
+						'render_row_cb' => array( TimeframeExport::class, 'renderExportButton' ),
 					)
 				]
 			),

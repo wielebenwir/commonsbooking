@@ -165,6 +165,162 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Will get all timeframes in the database to perform mass operations on (like migrations).
+	 *
+	 * @param int $page
+	 * @param int $perPage
+	 * @param array $customArgs
+	 *
+	 * @return \stdClass Properties: array posts, int totalPosts, int totalPages, bool done
+	 * @throws Exception
+	 */
+	public static function getAllPaginated(
+		int $page = 1,
+		int $perPage = 10,
+		array $customArgs = []
+	): \stdClass {
+		$args  = [
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
+			'paged'          => $page,
+			'posts_per_page' => $perPage,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+		];
+		$args  = array_merge( $args, $customArgs );
+		$query = new \WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+			self::castPostsToModels( $posts );
+
+			return (object) (
+			[
+				'posts'      => $posts,
+				'totalPosts' => $query->found_posts,
+				'totalPages' => $query->max_num_pages,
+				'done'       => $page >= $query->max_num_pages
+			]
+			);
+		}
+
+		return (object) (
+		[
+			'posts'      => [],
+			'totalPosts' => 0,
+			'totalPages' => 0,
+			'done'       => true
+		]
+		);
+	}
+
+
+	/**
+	 * Will get the timeframes in a specific range and return them as paginated result.
+	 * This will not consider the weekday configuration of the timeframes.j
+	 * We need this for the Timeframe Export, so that it does not time out on large datasets.
+	 * This function is in general slower than the getInRange function. But it can be used in AJAX requests.
+	 *
+	 * @param int $minTimestamp
+	 * @param int|null $maxTimestamp
+	 * @param int $page
+	 * @param int $perPage
+	 * @param array $types
+	 * @param bool $asModel
+	 * @param array $customArgs
+	 *
+	 * @return array An array with the keys 'posts', 'totalPages' and 'done' (bool) to indicate if there are more posts to fetch
+	 */
+	public static function getInRangePaginated (
+		int $minTimestamp,
+		int $maxTimestamp = null,
+		int $page = 1,
+		int $perPage = 10,
+		array $types = [
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+		],
+		$postStatus = [ 'confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit' ],
+		bool $asModel = false,
+		array $customArgs = []
+	): array {
+		$args = array(
+			'post_type'   => [
+				\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType
+			],
+			//get posts within the range and also posts that do not have a repetition end
+			'meta_query'  => array(
+				'relation' => 'AND',
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
+					'value'   => $maxTimestamp,
+					'compare' => '<=',
+					'type'    => 'numeric'
+				),
+				array(
+					'relation' => 'OR',
+					array(
+						'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+						'value'   => $minTimestamp,
+						'compare' => '>=',
+						'type'    => 'numeric'
+					),
+					array(
+						'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+						'compare' => 'NOT EXISTS',
+					),
+				),
+				array(
+					'key'     => 'type',
+					'value'   => $types,
+					'compare' => 'IN',
+				),
+			),
+			'post_status'    => $postStatus,
+			'paged'          => $page,
+			'posts_per_page' => $perPage,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+		);
+
+		// Overwrite args with passed custom args
+		$args = array_merge( $args, $customArgs );
+
+		$query = new \WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+			if (! isset($args['fields']) || $args['fields'] !== 'ids') {
+				$posts = array_filter(
+					$posts,
+					function ( $post ) use ( $args ) {
+						return in_array( $post->post_status, $args['post_status'] );
+					}
+				);
+			}
+
+			if ( $asModel ) {
+				self::castPostsToModels( $posts );
+			}
+			return [
+				'posts'      => $posts,
+				'totalPages' => $query->max_num_pages,
+				'totalPosts' => $query->found_posts,
+				'done'       => $page >= $query->max_num_pages
+			];
+		}
+		return [
+			'posts'      => [],
+			'totalPages' => 0,
+			'totalPosts' => 0,
+			'done'       => true
+		];
+	}
+
+	/**
 	 * Returns Post-IDs of timeframes by type(s), item(s), location(s)
 	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.
