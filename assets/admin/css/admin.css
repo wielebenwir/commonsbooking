@@ -5063,6 +5063,12 @@ a.disabled {
 }
 
 /** Migration Settings */
+#upgrade-in-progress,
+#upgrade-done {
+  margin-top: 1rem;
+  display: none;
+}
+
 #migration-in-progress,
 #migration-state,
 #migration-done {
@@ -5089,6 +5095,26 @@ a.disabled {
     opacity: 1;
   }
 }
+/** Export Settings */
+#timeframe-export-done,
+#timeframe-export-failed,
+#timeframe-export-in-progress {
+  margin-bottom: 1rem;
+  display: none;
+}
+
+@keyframes blinkText {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+#timeframe-export-in-progress .blinking {
+  animation: blinkText 1s infinite alternate;
+}
+
 /* Booking form  */
 .post-type-cb_booking #publish {
   display: none;

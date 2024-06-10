@@ -222,8 +222,8 @@ class Booking extends PostRepository {
 	public static function getByTimerange(
 		int $startDate,
 		int $endDate,
-		$locationId,
-		$itemId,
+		$locationId = null,
+		$itemId = null,
 		array $customArgs = [],
 		array $postStatus = [ 'confirmed', 'unconfirmed' ]
 	): ?array {

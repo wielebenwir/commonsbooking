@@ -83,7 +83,7 @@ class BookingTest extends CustomPostTypeTest {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function testGetByTimerange() {
+	public function testGetByDate() {
 		$booking = Booking::getByDate(
 			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_START, true ),
 			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_END, true ),
@@ -102,7 +102,164 @@ class BookingTest extends CustomPostTypeTest {
 		);
 		$this->assertNull( $booking );
 	}
-	
+
+	public function testGetByTimerange() {
+		$bookings = Booking::getByTimerange(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+			$this->locationId,
+			$this->itemId
+		);
+		$this->assertCount(1, $bookings);
+		$this->assertEquals($this->confirmedBookingStartingToday, $bookings[0]->ID);
+
+		//test with empty location / item value
+
+		// Test for all items / locations
+		$otherItem = parent::createItem( 'otheritem', 'publish' );
+		$otherLocation = parent::createLocation( 'otherlocation', 'publish' );
+		$booking = parent::createBooking(
+			$otherLocation,
+			$otherItem,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+		);
+		$result = Booking::getByTimerange(
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+		);
+		$this->assertCount(3, $result);
+		$this->assertEqualsCanonicalizing(
+			[ $this->confirmedBookingStartingToday, $this->testBooking, $booking ],
+			array_map( fn($b) => $b->ID, $result )
+		);
+
+		$bookingIDs = Booking::getByTimerange(
+			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_START, true ),
+			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_END, true ),
+			$this->locationId,
+			$this->itemId
+		);
+
+		$this->assertCount( 2, $bookingIDs );
+		$this->assertEqualsCanonicalizing(
+			array_map( function ( $booking ) {
+				return $booking->ID;
+			}, $bookingIDs ),
+			[
+				$this->confirmedBookingEndingToday,
+				$this->confirmedBookingStartingToday
+			]
+		);
+
+		$bookingIDs = Booking::getByTimerange(
+			strtotime( 'midnight' ),
+			time(),
+			$this->locationId,
+			$this->itemId
+		);
+		$this->assertEmpty( $bookingIDs );
+
+		//make sure, that it works for a timeframe in between
+		$nextMonthBooking = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+29 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+32 days', strtotime( self::CURRENT_DATE ) )
+		);
+		$bookingIDs = Booking::getByTimerange(
+			strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+31 days', strtotime( self::CURRENT_DATE ) ),
+			$this->locationId,
+			$this->itemId
+		);
+		$this->assertCount( 1, $bookingIDs );
+		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
+
+		//outside of the timeframe beginning
+		$bookingIDs = Booking::getByTimerange(
+			strtotime( '+28 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
+			$this->locationId,
+			$this->itemId
+		);
+		$this->assertCount( 1, $bookingIDs );
+		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
+
+		//and outside of the timeframe end
+		$bookingIDs = Booking::getByTimerange(
+			strtotime( '+31 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+32 days', strtotime( self::CURRENT_DATE ) ),
+			$this->locationId,
+			$this->itemId
+		);
+		$this->assertCount( 1, $bookingIDs );
+		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
+
+		//but not after
+		$bookingIDs = Booking::getByTimerange(
+			strtotime( '+33 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+34 days', strtotime( self::CURRENT_DATE ) ),
+			$this->locationId,
+			$this->itemId
+		);
+		$this->assertCount( 0, $bookingIDs );
+
+		//let's create a bunch of bookings and see if they show up
+		$bookingIDs = [];
+		for($i = 0; $i < 10; $i++) {
+			$bookingIDs[] = $this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+' . ($i + 60) . ' days', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+' . ($i + 61) . ' days', strtotime( self::CURRENT_DATE ) )
+			);
+		}
+		$bookings = Booking::getByTimerange(
+			strtotime( '+60 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+70 days', strtotime( self::CURRENT_DATE ) ),
+			$this->locationId,
+			$this->itemId
+		);
+		$this->assertCount( 10, $bookings );
+		$this->assertEqualsCanonicalizing(
+			array_map( function ( $booking ) {
+				return $booking->ID;
+			}, $bookings ),
+			$bookingIDs
+		);
+
+		//make sure, that we get the same bookings when we leave out info about the location and item
+		$bookings = Booking::getByTimerange(
+			strtotime( '+60 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+70 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$this->assertCount( 10, $bookings );
+		$this->assertEqualsCanonicalizing(
+			array_map( function ( $booking ) {
+				return $booking->ID;
+			}, $bookings ),
+			$bookingIDs
+		);
+
+		//THIS DOES NOT BELONG HERE, REMOVE LATER: TODO
+		$bookings = \CommonsBooking\Repository\Timeframe::getInRangePaginated(
+			strtotime( '+60 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+70 days', strtotime( self::CURRENT_DATE ) ),
+			1,
+			10,
+			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
+		);
+		$this->assertCount( 10, $bookings['posts'] );
+		$this->assertEqualsCanonicalizing(
+			array_map( function ( $booking ) {
+				return $booking->ID;
+			}, $bookings['posts'] ),
+			$bookingIDs
+		);
+
+	}
+
 	public function testGetForUsersPaginated() {
 		//let's use the subscriber here to not get confused with the other tests
 		$this->createSubscriber();

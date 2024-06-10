@@ -80,9 +80,9 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( count( $this->allTimeframes ), count( $inLocationTimeframes ) );
 		$postIds = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
-		}, $inLocationTimeframes);
-		asort($postIds);
-		$this->assertEquals($this->allTimeframes, $postIds);
+		}, $inLocationTimeframes );
+		asort( $postIds );
+		$this->assertEquals( $this->allTimeframes, $postIds );
 	}
 
 	public function testGetForLocationAndItem() {
@@ -93,9 +93,9 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( count( $this->allTimeframes ), count( $inLocationAndItemTimeframes ) );
 		$postIds = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
-		}, $inLocationAndItemTimeframes);
-		asort($postIds);
-		$this->assertEquals($this->allTimeframes, $postIds);
+		}, $inLocationAndItemTimeframes );
+		asort( $postIds );
+		$this->assertEquals( $this->allTimeframes, $postIds );
 	}
 
 	/**
@@ -306,12 +306,124 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( count( $this->allTimeframes ) - 1, count( $tomorrow ) );
 		$postIds = array_map( function ( $timeframe ) {
 			return $timeframe->ID;
-		}, $tomorrow);
-		asort($postIds);
-		$this->assertEquals(array_diff($this->allTimeframes, [$this->timeframeManualRepetition]), $postIds);
+		}, $tomorrow );
+		asort( $postIds );
+		$this->assertEquals( array_diff( $this->allTimeframes, [ $this->timeframeManualRepetition ] ), $postIds );
 	}
 
-	public function testGetPostIdsByType_oneLocationMultiItem() {
+	public function testGetAllPaginated() {
+		$response = Timeframe::getAllPaginated( 1, 10 );
+		$allTimeframes = $response->posts;
+		$this->assertEquals( count( $this->allTimeframes ), $response->totalPosts );
+		$this->assertEquals( 1, $response->totalPages );
+		$this->assertTrue( $response->done );
+		$this->assertEquals( count( $this->allTimeframes ), count( $allTimeframes ) );
+		$postIds = array_map( function ( $timeframe ) {
+			return $timeframe->ID;
+		}, $allTimeframes );
+		$this->assertEqualsCanonicalizing( $this->allTimeframes, $postIds );
+
+		//test pagination
+		$response = Timeframe::getAllPaginated( 1, 2 );
+		$timeframes = $response->posts;
+		$this->assertEquals( 2, count( $timeframes ) );
+		$this->assertEquals( count( $this->allTimeframes ), $response->totalPosts );
+		$this->assertEquals( 3, $response->totalPages );
+		$this->assertFalse( $response->done );
+		$allTimeframes = $timeframes;
+
+		$response = Timeframe::getAllPaginated( 2, 2 );
+		$timeframes = $response->posts;
+		$this->assertEquals( 2, count( $timeframes ) );
+		$this->assertFalse( $response->done );
+		$allTimeframes = array_merge( $allTimeframes, $timeframes );
+
+		//last page
+		$response = Timeframe::getAllPaginated( 3, 2 );
+		$timeframes = $response->posts;
+		$this->assertEquals( 1, count( $timeframes ) );
+		$this->assertTrue( $response->done );
+		$allTimeframes = array_merge( $allTimeframes, $timeframes );
+		$postIds = array_map( function ( $timeframe ) {
+			return $timeframe->ID;
+		}, $allTimeframes );
+		$this->assertEqualsCanonicalizing( $this->allTimeframes, $postIds );
+	}
+
+	public function testGetInRangePaginated() {
+		$originalTimeframes = Timeframe::getInRangePaginated(
+			$this->repetition_start,
+			$this->repetition_end
+		);
+		$this->assertTrue($originalTimeframes['done']);
+		$this->assertEquals(1, $originalTimeframes['totalPages']);
+		$this->assertEquals(count($this->allTimeframes), count($originalTimeframes['posts']));
+		$postIds = array_map(function($timeframe) {
+			return $timeframe->ID;
+		}, $originalTimeframes['posts']);
+		$this->assertEqualsCanonicalizing($this->allTimeframes, $postIds);
+		//create a bunch of bookings to test pagination properly
+		$bookingIds = [];
+		for($i = 0; $i < 21; $i++) {
+			$bookingIds[] = $this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime("+ " . ($i + 10) . " days", strtotime(self::CURRENT_DATE)),
+				strtotime("+ ".($i + 11)." days", strtotime(self::CURRENT_DATE)),
+			);
+		}
+		$firstPage = Timeframe::getInRangePaginated(
+			strtotime("+ 10 days", strtotime(self::CURRENT_DATE)),
+			strtotime("+ 32 days", strtotime(self::CURRENT_DATE)),
+			1,
+			10,
+			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
+		);
+		$this->assertEquals(10, count($firstPage['posts']));
+		$this->assertEquals(3, $firstPage['totalPages']);
+		$this->assertFalse($firstPage['done']);
+
+		$secondPage = Timeframe::getInRangePaginated(
+			strtotime("+ 10 days", strtotime(self::CURRENT_DATE)),
+			strtotime("+ 32 days", strtotime(self::CURRENT_DATE)),
+			2,
+			10,
+			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
+		);
+		$this->assertFalse($secondPage['done']);
+		$this->assertEquals(3, $secondPage['totalPages']);
+		$this->assertEquals(10, count($secondPage['posts']));
+
+		$thirdPage = Timeframe::getInRangePaginated(
+			strtotime("+ 10 days", strtotime(self::CURRENT_DATE)),
+			strtotime("+ 32 days", strtotime(self::CURRENT_DATE)),
+			3,
+			10,
+			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
+		);
+		$this->assertTrue($thirdPage['done']);
+		$this->assertEquals(3, $thirdPage['totalPages']);
+		$this->assertEquals(1, count($thirdPage['posts']));
+
+		//make sure, that no booking is in more than one page
+		$firstPageIDS = array_map(function($booking) {
+			return $booking->ID;
+		}, $firstPage['posts']);
+		$secondPageIDS = array_map(function($booking) {
+			return $booking->ID;
+		}, $secondPage['posts']);
+		$thirdPageIDS = array_map(function($booking) {
+			return $booking->ID;
+		}, $thirdPage['posts']);
+
+		//make sure, that there are no duplicates among the pages
+		$this->assertEmpty(array_intersect($firstPageIDS, $secondPageIDS,$thirdPageIDS));
+
+		//make sure, that all bookings are in one of the pages
+		$merged = array_merge($firstPageIDS, $secondPageIDS, $thirdPageIDS);
+		$this->assertEquals(21, count($merged));
+		$this->assertEqualsCanonicalizing($bookingIds, $merged);
+	}public function testGetPostIdsByType_oneLocationMultiItem() {
 		$otherItemId = $this->createItem( "Other Item" );
 		// Timeframe with enddate and two items
 		$multiItemTF   = $this->createTimeframe(

@@ -7,6 +7,7 @@ use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
+use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use function wp_verify_nonce;
@@ -238,6 +239,13 @@ class Booking extends Timeframe {
 
 		if ( $repetitionStart === null || $repetitionEnd === null ) {
 			throw new BookingDeniedException( __( 'Start- and/or end-date is missing.', 'commonsbooking' ) );
+		}
+
+		if ( $post_ID != null && ! get_post( $post_ID ) ) {
+			throw new BookingDeniedException(
+				__( 'Your reservation has expired, please try to book again', 'commonsbooking' ),
+				add_query_arg( 'cb-location', $locationId, get_permalink( get_post( $itemId ) ) )
+			);
 		}
 
 		/** @var \CommonsBooking\Model\Booking $booking */
