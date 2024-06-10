@@ -64,7 +64,7 @@ class Day {
 
 		if ( ! empty ( $possibleTimeframes ) ) {
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
-			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->isInTimeframe( $timeframe ) );
+			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
 		}
 	}
 
@@ -144,12 +144,7 @@ class Day {
 
 			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
 			// OR: Check for repetition timeframe selected days
-			foreach ( $timeFrames as $key => $timeframe ) {
-				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ||
-				     ! $this->isInTimeframe( $timeframe )) {
-					unset( $timeFrames[ $key ] );
-				}
-			}
+			$timeFrames = array_filter( $timeFrames, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
 
 			$this->timeframes = $timeFrames;
 		}
@@ -403,7 +398,7 @@ class Day {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function filterTimeframe( Timeframe $timeframe ): bool {
+	public function filterTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 		if ( ! $this->isInTimeframe( $timeframe ) ) {
 			return false;
 		}
