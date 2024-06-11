@@ -160,6 +160,56 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue($days[date('Y-m-d', strtotime('+1 day', strtotime($today)))]['locked']);
 	}
 
+	/**
+	 * Check if calendar properly respects timeframe repetitions
+	 * @return void
+	 */
+	public function testRepetition() {
+		//whole week from monday to sunday is queried, timeframe only spans monday to friday
+		$startDateDT = new \DateTime( self::CURRENT_DATE );
+		$startDateDT->modify( 'last monday' );
+		$startDate = date( 'Y-m-d', $startDateDT->getTimestamp() );
+		$endDateDT = new \DateTime( self::CURRENT_DATE );
+		$endDateDT->modify( 'sunday next week' );
+		$endDate = date( 'Y-m-d', $endDateDT->getTimestamp() );
+
+		ClockMock::freeze( new \DateTime( $startDate ) );
+		$otherItemId     = $this->createItem( "Other Item", 'publish' );
+		$otherLocationId = $this->createLocation( "Other Location", 'publish' );
+		$moFrTimeframe   = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime( $startDate ),
+			strtotime( $endDate ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"on",
+			'w',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[ "1", "2", "3", "4", "5" ]
+		);
+
+		$jsonresponse = Calendar::getCalendarDataArray(
+			$otherItemId,
+			$otherLocationId,
+			$startDate,
+			$endDate
+		);
+		$days         = $jsonresponse['days'];
+		//only monday to friday should be bookable
+		$this->assertFalse( $days[ $startDate ]['locked'] );
+		$this->assertTrue( $days[ $endDate ]['locked'] );
+		//next week monday should be bookable again
+		$startDateDT->modify( '+1 week' );
+		$this->assertFalse( $days[ date( 'Y-m-d', $startDateDT->getTimestamp() ) ]['locked'] );
+		//everything after the timeframe should be locked
+		$endDateDT->modify( '+1 day' );
+		$this->assertTrue( $days[ date( 'Y-m-d', $endDateDT->getTimestamp() ) ]['locked'] );
+
+	}
+
 	public function testRenderTable() {
 		$calendar = Calendar::renderTable([]);
 		$item = new \CommonsBooking\Model\Item($this->itemId);
