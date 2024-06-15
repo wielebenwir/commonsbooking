@@ -18,7 +18,7 @@ describe('test overbooking process', () => {
     }
 
     function updatePostMetaAndReload(postID, metaKey, metaValue){
-        cy.exec('bin/wp-env-cli tests-wordpress "wp --allow-root post meta update "' + postID + '" ' + metaKey + ' ' + metaValue + '"')
+        cy.exec('wp-env run tests-cli tests-wordpress wp post meta update ' + postID + ' ' + metaKey + ' ' + metaValue)
         cy.reload()
     }
 
