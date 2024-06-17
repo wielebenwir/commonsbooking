@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.23.2",
-		"@wordpress/env": "^5.0.0",
+		"@wordpress/env": "^10.0.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"cypress": "^13.9.0",
 		"editorconfig": "^2.0.0",
@@ -30,8 +30,7 @@
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
 		"env": "wp-env",
-		"env:install-tests-cli": "./bin/install-wp-cli.sh tests-wordpress",
-		"env:start": "wp-env start && npm run env:install-tests-cli",
+		"env:start": "wp-env start",
 		"env:stop": "wp-env stop",
 		"cypress:setup": "./bin/setup-cypress-env.sh",
 		"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
