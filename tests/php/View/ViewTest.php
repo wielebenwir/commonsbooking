@@ -93,6 +93,10 @@ class ViewTest extends CustomPostTypeTest {
 		$now = time();
 		$this->now = $now;
 
+		//set our user to the subscriber so that it is not showing the views for admins ( which don't have to oblige to some booking restrictions )
+		$this->createSubscriber();
+		wp_set_current_user( $this->subscriberId );
+
 		$this->item = new Item( $this->itemId );
 		$this->location = new Location( $this->locationId );
 
@@ -152,6 +156,7 @@ class ViewTest extends CustomPostTypeTest {
 	}
 
 	protected function tearDown() : void {
+		wp_logout();
 		parent::tearDown();
 	}
 
