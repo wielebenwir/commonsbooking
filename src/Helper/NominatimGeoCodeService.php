@@ -28,7 +28,7 @@ class NominatimGeoCodeService implements GeoCodeService {
 			throw new \Exception("Could not get address data because of missing curl extension.");
 		}
 
-		$defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0';
+		$defaultUserAgent = 'CommonsBooking v.' . COMMONSBOOKING_VERSION . " Contact: mail@commonsbooking.org";
 
 		$client = new Client(
 			null,
