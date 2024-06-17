@@ -1202,6 +1202,7 @@ class Timeframe extends CustomPostType {
 		}
 
 
+		$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
 			switch ( $column ) {
 				case 'location-id':
@@ -1239,6 +1240,15 @@ class Timeframe extends CustomPostType {
 					break;
 			}
 		} else {
+			switch ( $column ) {
+				case 'location-id':
+					echo $timeframe->getLocationString();
+					break;
+				case 'item-id':
+					echo $timeframe->getItemString();
+					break;
+			}
+
 			$bookingColumns = [
 				'post_date',
 				'post_status',
