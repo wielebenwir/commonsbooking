@@ -23,46 +23,30 @@ class BookingCode {
 	 * Datestring in the format Y-m-d
 	 * @var string
 	 */
-	protected $date;
+	private $date;
 
 	/**
 	 * Item ID
 	 * @var int
 	 */
-	protected $item;
-
-	/**
-	 * Location ID
-	 * @var int
-	 */
-	protected $location;
-
-	/**
-	 * Timeframe ID
-	 * @var int
-	 */
-	protected $timeframe;
+	private $item;
 
 	/**
 	 * Code string
 	 * @var string
 	 */
-	protected $code;
+	private $code;
 
 	/**
 	 * BookingCode constructor.
 	 *
 	 * @param $date
 	 * @param $item
-	 * @param $location
-	 * @param $timeframe
 	 * @param $code
 	 */
-	public function __construct( $date, $item, $location, $timeframe, $code ) {
+	public function __construct( $date, $item, $code ) {
 		$this->date      = $date;
 		$this->item      = $item;
-		$this->location  = $location;
-		$this->timeframe = $timeframe;
 		$this->code      = $code;
 	}
 
@@ -111,44 +95,6 @@ class BookingCode {
 	}
 
 	/**
-	 * @return int
-	 */
-	public function getLocation(): int {
-		return $this->location;
-	}
-
-	/**
-	 * @deprecated will be deleted in the next version. This Type should be immutable, use constructor to create a new instance
-	 * @param mixed $location
-	 *
-	 * @return BookingCode
-	 */
-	public function setLocation( $location ): BookingCode {
-		$this->location = $location;
-
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTimeframe(): int {
-		return $this->timeframe;
-	}
-
-	/**
-	 * @deprecated will be deleted in the next version. This Type should be immutable, use constructor to create a new instance
-	 * @param mixed $timeframe
-	 *
-	 * @return BookingCode
-	 */
-	public function setTimeframe( $timeframe ): BookingCode {
-		$this->timeframe = $timeframe;
-
-		return $this;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getCode(): string {
@@ -165,6 +111,5 @@ class BookingCode {
 		$this->code = $code;
 
 		return $this;
-	}
-
+    }
 }
