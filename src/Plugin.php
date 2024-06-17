@@ -27,10 +27,13 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 
 class Plugin {
 
 	use Cache;
+
+	private static ?TagAwareAdapterInterface $pdoAdapter = null;
 
 	/**
 	 * CB-Manager id.
