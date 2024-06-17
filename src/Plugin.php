@@ -18,6 +18,7 @@ use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
+use CommonsBooking\View\Statistics;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -641,6 +642,7 @@ class Plugin {
 
 	public function registerShortcodes() {
 		add_shortcode('cb_search', array(new SearchShortcode(), 'execute'));
+		add_shortcode( 'cb_statistics', array( Statistics::class, 'shortcode' ) );
 	}
 
 	/**
