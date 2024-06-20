@@ -428,7 +428,7 @@ class Calendar {
 						return $bStartTimeDT <=> $aStartTimeDT;
 					}
 
-					return $aStartDate <=> $bStartDate;
+					return $bStartDate <=> $aStartDate;
 				} );
 				break;
 			default: //More than one timeframe for current day
