@@ -230,6 +230,19 @@ class CalendarTest extends CustomPostTypeTest {
 					"repetition_end"   => strtotime( "+21 days", $currentTimestamp ),
 				]
 			],
+			"weekly and daily"                             => [
+				"closest" => [
+					"repetition"       => "w",
+					"repetition_start" => strtotime( "-64 days", $currentTimestamp ),
+					"repetition_end"   => strtotime( "+199 days", $currentTimestamp ),
+					"weekdays"         => [ "1", "2", "3", "4", "5" ]
+				],
+				"other"   => [
+					"repetition"       => "d",
+					"repetition_start" => strtotime( "+21 days", $currentTimestamp ),
+					"repetition_end"   => strtotime( "+21 days", $currentTimestamp )
+				]
+			],
 			"daily overlap with different times (present)" => [
 				"closest" => [
 					"repetition"       => "d",
