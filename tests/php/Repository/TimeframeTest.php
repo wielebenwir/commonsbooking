@@ -178,6 +178,22 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 	}
 
+	public function testFilterTimeframesForTimerange() {
+		$allTimeframeModels = array_map( function ( $timeframeId ) {
+			return new \CommonsBooking\Model\Timeframe( $timeframeId );
+		}, $this->allTimeframes );
+		//should return everything in the repetition
+		$filteredTimeframes = Timeframe::filterTimeframesForTimerange(
+			$allTimeframeModels,
+			$this->repetition_start,
+			$this->repetition_end
+		);
+		$this->assertEqualsCanonicalizing( $this->allTimeframes, array_map( function ( $timeframe ) {
+			return $timeframe->ID;
+		}, $filteredTimeframes ) );
+
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->repetition_start = strtotime( self::CURRENT_DATE );

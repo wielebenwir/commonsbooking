@@ -406,22 +406,45 @@ class Calendar {
 	 *
 	 * @return \CommonsBooking\Model\Timeframe|null
 	 */
-	private static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
-		// Sort timeframes by startdate
-		usort(
-            $bookableTimeframes,
-            function ( \CommonsBooking\Model\Timeframe $item1, \CommonsBooking\Model\Timeframe $item2 ) {
-                $item1StartDateDistance = abs( time() - $item1->getStartDate() );
-                $item1EndDateDistance   = abs( time() - $item1->getEndDate() );
-                $item1SmallestDistance  = min( $item1StartDateDistance, $item1EndDateDistance );
+	public static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
+		$today           = new Day( date( 'Y-m-d' ) );
+		$todayTimeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $bookableTimeframes, $today->getStartTimestamp(), $today->getEndTimestamp() );
+		$todayTimeframes = array_filter( $todayTimeframes, function ( $timeframe ) use ( $today ) { //also consider repetition
+			return $today->isInTimeframe( $timeframe );
+		} );
+		switch ( count( $todayTimeframes ) ) {
+			case 1:
+				$bookableTimeframes = $todayTimeframes;
+				break;
+			case 0:
+				usort( $bookableTimeframes, function ( $a, $b ) {
+					$aStartDate = $a->getStartDate();
+					$bStartDate = $b->getStartDate();
 
-                $item2StartDateDistance = abs( time() - $item2->getStartDate() );
-                $item2EndDateDistance   = abs( time() - $item2->getEndDate() );
-                $item2SmallestDistance  = min( $item2StartDateDistance, $item2EndDateDistance );
+					if ( $aStartDate == $bStartDate ) {
+						$aStartTimeDT = $a->getStartTimeDateTime();
+						$bStartTimeDT = $b->getStartTimeDateTime();
 
-                return $item2SmallestDistance <=> $item1SmallestDistance;
-            }
-        );
+						return $bStartTimeDT <=> $aStartTimeDT;
+					}
+
+					return $bStartDate <=> $aStartDate;
+				} );
+				break;
+			default: //More than one timeframe for current day
+				// consider starttime and endtime
+				$now = new DateTime();
+				/** @var \CommonsBooking\Model\Timeframe $todayTimeframes */
+				$bookableTimeframes = array_filter( $todayTimeframes, function ( $timeframe ) use ( $now ) {
+					$startTime   = $timeframe->getStartTime();
+					$startTimeDT = new DateTime( $startTime );
+					$endTime     = $timeframe->getEndTime();
+					$endTimeDT   = new DateTime( $endTime );
+
+					return $startTimeDT <= $now && $now <= $endTimeDT;
+				} );
+				break;
+		}
 
 		return array_pop( $bookableTimeframes );
 	}
