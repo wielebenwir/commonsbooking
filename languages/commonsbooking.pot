@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-17T20:26:25+00:00\n"
+"POT-Creation-Date: 2024-06-22T11:19:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: commonsbooking\n"
@@ -1485,93 +1485,93 @@ msgstr ""
 msgid "Not set"
 msgstr ""
 
-#: src/Model/Timeframe.php:219
+#: src/Model/Timeframe.php:251
 msgid "Available here"
 msgstr ""
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Timeframe.php:224
+#: src/Model/Timeframe.php:256
 msgid "on %s"
 msgstr ""
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Timeframe.php:229
+#: src/Model/Timeframe.php:261
 msgid "from %s"
 msgstr ""
 
-#: src/Model/Timeframe.php:233
+#: src/Model/Timeframe.php:265
 msgid "permanently"
 msgstr ""
 
 #. translators: %1$s = startdate, second %2$s = enddate in WordPress defined format
-#: src/Model/Timeframe.php:239
+#: src/Model/Timeframe.php:271
 msgid "from %1$s until %2$s"
 msgstr ""
 
 #. translators: %s = enddate in WordPress defined format
-#: src/Model/Timeframe.php:246
+#: src/Model/Timeframe.php:278
 msgid "until %s"
 msgstr ""
 
-#: src/Model/Timeframe.php:522
+#: src/Model/Timeframe.php:554
 msgid "Could not get item or location. Please set a valid item and location. Timeframe is saved as draft"
 msgstr ""
 
-#: src/Model/Timeframe.php:529
+#: src/Model/Timeframe.php:561
 msgid "Item or location is missing. Please set item and location. Timeframe is saved as draft"
 msgstr ""
 
-#: src/Model/Timeframe.php:540
+#: src/Model/Timeframe.php:572
 msgid "No dates selected. Please select at least one date. Timeframe is saved as draft."
 msgstr ""
 
-#: src/Model/Timeframe.php:548
+#: src/Model/Timeframe.php:580
 msgid "The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft."
 msgstr ""
 
-#: src/Model/Timeframe.php:557
+#: src/Model/Timeframe.php:589
 msgid "Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe."
 msgstr ""
 
-#: src/Model/Timeframe.php:570
+#: src/Model/Timeframe.php:602
 msgid "A pickup time but no return time has been set. Please set the return time."
 msgstr ""
 
-#: src/Model/Timeframe.php:578
+#: src/Model/Timeframe.php:610
 msgid "End date is before start date. Please set a valid end date."
 msgstr ""
 
-#: src/Model/Timeframe.php:586
+#: src/Model/Timeframe.php:618
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr ""
 
-#: src/Model/Timeframe.php:611
+#: src/Model/Timeframe.php:643
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr ""
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:647
+#: src/Model/Timeframe.php:679
 msgid "See overlapping timeframe ID: %1$s %2$s"
 msgstr ""
 
-#: src/Model/Timeframe.php:744
+#: src/Model/Timeframe.php:776
 msgid "Overlapping bookable timeframes are only allowed to have the same grid."
 msgstr ""
 
-#: src/Model/Timeframe.php:760
+#: src/Model/Timeframe.php:792
 msgid "Daily repeated time periods are not allowed to overlap."
 msgstr ""
 
-#: src/Model/Timeframe.php:774
+#: src/Model/Timeframe.php:806
 msgid "Overlapping bookable timeframes are not allowed to have the same weekdays."
 msgstr ""
 
-#: src/Model/Timeframe.php:786
+#: src/Model/Timeframe.php:818
 msgid "Overlapping bookable timeframes are not allowed to have the same dates."
 msgstr ""
 
-#: src/Model/Timeframe.php:793
-#: src/Model/Timeframe.php:800
+#: src/Model/Timeframe.php:825
+#: src/Model/Timeframe.php:832
 msgid "The other timeframe is overlapping with your weekly configuration."
 msgstr ""
 
