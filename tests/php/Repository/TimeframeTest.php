@@ -423,7 +423,9 @@ class TimeframeTest extends CustomPostTypeTest {
 		$merged = array_merge($firstPageIDS, $secondPageIDS, $thirdPageIDS);
 		$this->assertEquals(21, count($merged));
 		$this->assertEqualsCanonicalizing($bookingIds, $merged);
-	}public function testGetPostIdsByType_oneLocationMultiItem() {
+	}
+
+	public function testGetPostIdsByType_oneLocationMultiItem() {
 		$otherItemId = $this->createItem( "Other Item" );
 		// Timeframe with enddate and two items
 		$multiItemTF   = $this->createTimeframe(
