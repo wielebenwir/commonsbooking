@@ -552,14 +552,14 @@ class Timeframe extends CustomPost {
 			}
 			catch ( \Exception $e ) {
 				throw new TimeframeInvalidException(__(
-						'Could not get item or location. Please set a valid item and location. Timeframe is saved as draft',
+						'Could not get item or location. Please set a valid item and location.',
 						'commonsbooking')
 				);
 			}
 			if ( ! $item || ! $location ) {
 				// if location or item is missing
 				throw new TimeframeInvalidException(__(
-						'Item or location is missing. Please set item and location. Timeframe is saved as draft',
+						'Item or location is missing. Please set item and location.',
 						'commonsbooking'   )
 				);
 			}
@@ -570,7 +570,7 @@ class Timeframe extends CustomPost {
 				$manual_selection_dates = $this->getManualSelectionDates();
 				if ( empty( $manual_selection_dates ) ){
 					throw new TimeframeInvalidException(__(
-							'No dates selected. Please select at least one date. Timeframe is saved as draft.',
+							'No dates selected. Please select at least one date.',
 							'commonsbooking'   )
 					);
 				}
@@ -578,7 +578,7 @@ class Timeframe extends CustomPost {
 				$unique_dates = array_unique($manual_selection_dates);
 				if ( count($unique_dates) != count($manual_selection_dates) ){
 					throw new TimeframeInvalidException(__(
-							'The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft.',
+							'The same date was selected multiple times. Please select each date only once.',
 							'commonsbooking'   )
 					);
 				}
@@ -587,7 +587,7 @@ class Timeframe extends CustomPost {
 				if ( ! $this->getStartDate() ) {
 					// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
 					throw new TimeframeInvalidException( __(
-							'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+							'Startdate is missing. Please enter a start date to publish this timeframe.',
 							'commonsbooking' )
 					);
 				}

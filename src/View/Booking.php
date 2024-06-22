@@ -3,6 +3,8 @@
 namespace CommonsBooking\View;
 
 
+use CommonsBooking\CB\CB;
+use CommonsBooking\Repository\Timeframe;
 use Exception;
 
 use CommonsBooking\Helper\Wordpress;
@@ -270,6 +272,108 @@ class Booking extends View {
 	}
 
 	/**
+	 * The function that processes the AJAX request to get a corresponding location for an item.
+	 *
+	 * Test @see \CommonsBooking\Tests\View\BookingTest_AJAX_TEST::testGetLocationForItem_AJAX()
+	 * @return void
+	 */
+	public static function getLocationForItem_AJAX() {
+		//verify nonce
+		check_ajax_referer( 'cb_get_bookable_location', 'nonce' );
+
+		$postData = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$postData = commonsbooking_sanitizeArrayorString( $postData );
+		$itemID = intval ($postData['itemID']);
+
+		try {
+			$itemModel = new \CommonsBooking\Model\Item($itemID);
+			$location = \CommonsBooking\Repository\Location::getByItem($itemID, true);
+			//pick the first location, no matter what
+			$location = reset($location);
+			$timeframe = Timeframe::getBookable(
+				[ $location->ID ],
+				[ $itemID ],
+				null,
+				true
+			);
+			/** @var \CommonsBooking\Model\Timeframe $timeframe */
+			$timeframe = reset($timeframe);
+		}
+		catch (Exception $e) {
+			//This won't be displayed anywhere
+			wp_send_json_error( array(
+				'message' => $e->getMessage()
+			) );
+		}
+		if ($location) {
+			wp_send_json( array(
+				'success'     => true,
+				'locationID'  => $location->ID,
+				'fullDay'     => $timeframe->isFullDay()
+				)
+			);
+		}
+		else {
+			//This won't be displayed anywhere
+			wp_send_json_error( array(
+				'message' => 'No location found for this item.'
+			) );
+		}
+	}
+
+	/**
+	 * The function that processes the AJAX request to get a valid booking code for
+	 *
+	 * Test @see \CommonsBooking\Tests\View\BookingTest_AJAX_TEST::testGetBookingCode_AJAX()
+	 * @return void
+	 */
+	public static function getBookingCode_AJAX() {
+		//verify nonce
+		check_ajax_referer( 'cb_get_booking_code', 'nonce' );
+
+		$postData = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$postData = commonsbooking_sanitizeArrayorString( $postData );
+		$itemID = intval ($postData['itemID']);
+		$locationID = intval ($postData['locationID']);
+		$startDate = $postData['startDate'];
+
+		$bookingCode = '';
+
+		//get the corresponding bookable timeframe if this booking was made
+		try {
+			$timeframe = Timeframe::getBookable(
+				[ $locationID ],
+				[ $itemID ],
+				date( CB::getInternalDateFormat(), strtotime( $startDate ) ),
+				true
+			);
+			if ( ! $timeframe || count($timeframe) != 1 ) {
+				//this is immediately caught again
+				throw new Exception( 'No bookable timeframe found for this booking.' );
+			}
+			$timeframe = reset($timeframe);
+
+			//get the booking code
+			$bookingCode = \CommonsBooking\Repository\BookingCodes::getCode($timeframe, $itemID, $locationID, date('Y-m-d', strtotime($startDate)));
+			if ( ! $bookingCode ) {
+				//this is immediately caught again
+				throw new Exception( 'No booking code found for this booking.' );
+			}
+			$bookingCode = $bookingCode->getCode();
+		} catch ( Exception $e ) {
+			//This won't be displayed anywhere
+			wp_send_json_error( array(
+				'message' => $e->getMessage()
+			) );
+		}
+		wp_send_json( array(
+			'success' => true,
+			'bookingCode'                 => $bookingCode
+			)
+		);
+	}
+
+	/**
 	 * Bookings shortcode
 	 *
 	 * A list of items with timeframes.
@@ -376,6 +480,42 @@ class Booking extends View {
 
 		return $calendar->getCalendarData();
 
+	}
+
+	/**
+	 * Callback function to render the button that submits the backend booking.
+	 *
+	 * @param $field_args
+	 * @param $field
+	 */
+	public static function renderSubmitButton( $field_args, $field ) {
+		$id     = $field->args( 'id' );
+		$label  = $field->args( 'name' );
+		$desc   = $field->args( 'desc' );
+		$postId = $field->object_id();
+
+		//don't render button if we are editing an existing booking
+		$postStatus = get_post( $postId )->post_status;
+		if ( $postId && ! ( $postStatus == 'auto-draft' || $postStatus == 'draft')) {
+			return;
+		}
+
+		?>
+		<div class="cmb-row cmb-type-text">
+			<div class="cmb-th">
+				<label for="<?php echo esc_attr($id); ?>"><?php echo commonsbooking_sanitizeHTML($label); ?></label>
+			</div>
+			<div class="cmb-td">
+				<input type="submit" name="<?php echo esc_attr($id); ?>" id="cb-submit-booking"
+				       value="<?php echo esc_html__( 'Submit booking', 'commonsbooking' ); ?>"/>
+				<?php if ( $desc ) { ?>
+					<p class="cmb2-metabox-description">
+						<?php echo commonsbooking_sanitizeHTML($desc); ?>
+					</p>
+				<?php } ?>
+			</div>
+		</div>
+		<?php
 	}
 
 }
