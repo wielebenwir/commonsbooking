@@ -44,7 +44,6 @@ class Scheduler {
 	{
 		// Add custom cron intervals
 		add_filter( 'cron_schedules', array( self::class, 'initIntervals' ) );
-
 		$this->jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' .$jobhook; //Prepends plugin slug so that hooks can be found easily afterwards 
 
 		if ((count($option) == 2)  && Settings::getOption($option[0],$option[1]) != 'on' ) { //removes job if option unset
@@ -137,7 +136,7 @@ class Scheduler {
 		// Init booking cleanup job
 		New Scheduler(
 			'cleanup',
-			array( \CommonsBooking\Service\Booking::class, 'cleanupBookings' ),
+			array( \CommonsBooking\Service\Booking::class, 'cleanupJobs' ),
 			'ten_minutes'
 		);
 
