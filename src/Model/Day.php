@@ -475,6 +475,21 @@ class Day {
 		}
 	}
 
+	public function getStartTimestamp(): int {
+		$dt = new DateTime( $this->getDate() );
+		$dt->modify( 'midnight' );
+
+		return $dt->getTimestamp();
+	}
+
+	public function getEndTimestamp(): int {
+		$dt = new DateTime( $this->getDate() );
+		$dt->modify( '23:59:59' );
+
+		return $dt->getTimestamp();
+	}
+
+
 	/**
 	 * Remove empty and merge connected slots.
 	 *

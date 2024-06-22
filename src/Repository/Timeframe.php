@@ -721,6 +721,8 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Will filter out all timeframes that are not in the given timerange.
+	 *
 	 * @param \CommonsBooking\Model\Timeframe[] $timeframes
 	 * @param int $startTimestamp
 	 * @param int $endTimestamp
@@ -728,8 +730,8 @@ class Timeframe extends PostRepository {
 	 * @return \CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
-	public static function filterTimeframesForTimerange ( array $timeframes, int $startTimestamp, int $endTimestamp ): array {
-		return array_filter( $timeframes, function ( $timeframe ) use ($startTimestamp, $endTimestamp) {
+	public static function filterTimeframesForTimerange( array $timeframes, int $startTimestamp, int $endTimestamp ): array {
+		return array_filter( $timeframes, function ( $timeframe ) use ( $startTimestamp, $endTimestamp ) {
 			//filter out anything in the future
 			if ( $timeframe->getStartDate() > $endTimestamp ) {
 				return false;
@@ -742,8 +744,9 @@ class Timeframe extends PostRepository {
 			if ( $timeframe->getEndDate() < $startTimestamp ) {
 				return false;
 			}
+
 			return true;
-		});
+		} );
 	}
 
 	/**
