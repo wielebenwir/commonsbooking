@@ -7,6 +7,7 @@ use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
+use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use function wp_verify_nonce;

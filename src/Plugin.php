@@ -724,6 +724,9 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 
+		//Add custom hook to clear cache from cronjob
+		add_action( self::$clearCacheHook, array( $this, 'clearCache' ) );
+
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
@@ -805,7 +808,7 @@ class Plugin {
 		if ( ! in_array( $post->post_status, $ignoredStates ) || $update ) {
 			$tags   = Wordpress::getRelatedPostIds( $post_id );
 			$tags[] = 'misc';
-			self::clearCache( $tags );
+			self::scheduleClearCache( $tags );
 		}
 	}
 
@@ -861,14 +864,12 @@ class Plugin {
 	/**
 	 * Adds bookingcode actions.
 	 * They:
-	 * 1. Delete booking codes when a booking is deleted.
-	 * 2. Hook appropriate function to button that downloads the booking codes in the backend.
+	 * - Hook appropriate function to button that downloads the booking codes in the backend.
 	 *    @see \CommonsBooking\View\BookingCodes::renderTable()
-	 * 3. Hook appropriate function to button that sends out emails with booking codes to the station.
+	 * - Hook appropriate function to button that sends out emails with booking codes to the station.
 	 *   @see \CommonsBooking\View\BookingCodes::renderDirectEmailRow()
 	 */
 	public function initBookingcodes() {
-		add_action( 'before_delete_post', array( BookingCodes::class, 'deleteBookingCodes' ), 10 );
 		add_action( 'admin_action_cb_download-bookingscodes-csv', array( View\BookingCodes::class, 'renderCSV' ), 10, 0 );
         add_action( 'admin_action_cb_email-bookingcodes', array(View\BookingCodes::class, 'emailCodes'), 10, 0);
 	}

@@ -3,7 +3,6 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\View\TimeframeExport;
 
 /**
  * This class is used to schedule jobs that are executed in the background.
@@ -195,7 +194,7 @@ class Scheduler {
 		New Scheduler(
 			'export',
 			function() use ( $exportPath ) {
-				TimeframeExport::exportCsv( $exportPath );
+				TimeframeExport::cronExport( $exportPath );
 			},
 			$exportInterval,
 			'',
