@@ -128,5 +128,14 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		wp_delete_post( $this->itemID, true );
 		wp_delete_post( $this->locationID, true );
 		wp_delete_post( $this->timeframeID, true );
+		$this->tearDownBookingCodesTable(); // counterpart of BookingCodes::initBookingCodesTable() in setUp()
+	}
+
+	protected function tearDownBookingCodesTable() {
+		global $wpdb;
+		$table_name = $wpdb->prefix . \CommonsBooking\Repository\BookingCodes::$tablename;
+		$sql = "DROP TABLE $table_name";
+
+		$result = $wpdb->query($sql);
 	}
 }
