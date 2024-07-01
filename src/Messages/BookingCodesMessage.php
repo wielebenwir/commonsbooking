@@ -95,7 +95,7 @@ class BookingCodesMessage extends Message {
                 'item' => $timeframe->getItem(),
                 'location' => $timeframe->getLocation(),
             ],
-            [ $attachment]
+			$attachment
 		);
         
         add_action( 'commonsbooking_mail_sent',array($this,'updateEmailSent'), 5, 2 );

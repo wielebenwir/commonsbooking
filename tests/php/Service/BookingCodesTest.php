@@ -43,6 +43,15 @@ class BookingCodesTest extends CustomPostTypeTest {
 		$this->assertMatchesRegularExpression('/' . implode('|',self::bookingCodes) . '/',$email->get_sent()->body);
 	}
 
+	/* As testSendBookingCodesMessage but cover the case when Ical is attached */
+	public function testSendBookingCodesMessageWithICal() {
+
+		// enable sending of Ical attachment
+		Settings::updateOption( 'commonsbooking_options_bookingcodes', 'mail-booking-codes-attach-ical', 'on');
+
+		$this->testSendBookingCodesMessage();
+	}
+
 	/* Tests some exceptional calculations for emailing booking codes (range and next event) */
 	public function testGetCronParams() {
 		$this->setCronParams(strtotime("2020-02-29"),strtotime("2023-01-15"));
