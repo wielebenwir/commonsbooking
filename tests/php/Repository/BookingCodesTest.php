@@ -10,7 +10,7 @@ use SlopeIt\ClockMock\ClockMock;
 
 class BookingCodesTest extends CustomPostTypeTest
 {
-	private Timeframe $timeframeWithEndDate;
+	protected Timeframe $timeframeWithEndDate;
 	private Timeframe $timeframeWithoutEndDate;
 	private Timeframe $timeframeWithDisabledBookingCodesAndEndDate;
 	private Timeframe $timeframeWithDisabledBookingCodesWithoutEndDate;
