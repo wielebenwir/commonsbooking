@@ -22,10 +22,9 @@ class Map extends View {
         wp_enqueue_script( 'cb-map-positioning_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-positioning.js' );
 
 		//map defaults
-		$options  = MapAdmin::get_options();
 		$defaults = [
-			'latitude'  => $options['lat_start'],
-			'longitude' => $options['lon_start'],
+			'latitude'  => \CommonsBooking\Wordpress\CustomPostType\Map::LATITUDE_DEFAULT,
+			'longitude' => \CommonsBooking\Wordpress\CustomPostType\Map::LONGITUDE_DEFAULT,
 		];
         wp_add_inline_script('cb-map-positioning_js','cb_map_positioning.defaults =' . wp_json_encode($defaults) );
 	}
