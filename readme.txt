@@ -3,8 +3,8 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
-Tested up to: 6.5
-Stable Tag: 2.9.3
+Tested up to: 6.6
+Stable Tag: 2.9.4
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -78,6 +78,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.9.4 (17.07.2024)
+FIXED: Plugin not usable in multisite mode
 
 ### 2.9.3 (31.05.2024)
 ADDED: Download ics file directly from booking details page
