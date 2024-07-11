@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-22T11:29:15+00:00\n"
+"POT-Creation-Date: 2024-07-11T15:39:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: commonsbooking\n"
@@ -1217,7 +1217,7 @@ msgid "Allows you to change options regarding the caching system"
 msgstr ""
 
 #: includes/OptionsArray.php:1368
-#: src/Service/Cache.php:367
+#: src/Service/Cache.php:369
 msgid "Clear Cache"
 msgstr ""
 
@@ -1809,27 +1809,27 @@ msgstr ""
 msgid "Booking rules: No rule type specified."
 msgstr ""
 
-#: src/Service/Cache.php:300
+#: src/Service/Cache.php:302
 msgid "Connection status:"
 msgstr ""
 
-#: src/Service/Cache.php:307
+#: src/Service/Cache.php:309
 msgid "Successfully connected to REDIS database!"
 msgstr ""
 
-#: src/Service/Cache.php:318
+#: src/Service/Cache.php:320
 msgid "REDIS database not enabled"
 msgstr ""
 
-#: src/Service/Cache.php:344
+#: src/Service/Cache.php:346
 msgid "Directory %s is writeable."
 msgstr ""
 
-#: src/Service/Cache.php:349
+#: src/Service/Cache.php:351
 msgid "Directory %s could not be written to."
 msgstr ""
 
-#: src/Service/Cache.php:362
+#: src/Service/Cache.php:364
 msgid "Clear all cache items"
 msgstr ""
 
