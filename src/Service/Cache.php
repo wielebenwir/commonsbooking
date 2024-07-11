@@ -55,7 +55,7 @@ trait Cache {
 	 *
 	 * @return string
 	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
-	 * @since 2.10 added support for multisite caches
+	 * @since 2.9.4 added support for multisite caches
 	 *
 	 */
 	public static function getCacheId( $custom_id = null ): string {
