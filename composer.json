@@ -54,6 +54,7 @@
     "wp-coding-standards/wpcs": "^2.3",
     "phpcompatibility/phpcompatibility-wp": "^2.1.4",
     "slope-it/clock-mock": "^0.4.0",
-    "phpunit/php-code-coverage": "^7.0.15"
+    "phpunit/php-code-coverage": "^7.0.15",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
   }
 }
