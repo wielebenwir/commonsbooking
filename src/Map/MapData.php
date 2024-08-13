@@ -183,8 +183,6 @@ class MapData {
 			'asset_path'                   => COMMONSBOOKING_MAP_ASSETS_URL,
 		];
 
-		$options = MapAdmin::get_options( $cb_map_id, true );
-
 		$pass_through = [
 			'base_map',
 			'show_scale',

@@ -121,6 +121,7 @@ class Upgrade {
 	public function __construct( string $previousVersion, string $currentVersion ) {
 		$this->previousVersion = $previousVersion;
 		$this->currentVersion  = $currentVersion;
+		self::migrateMapSettings();
 	}
 
 	/**
@@ -545,14 +546,14 @@ class Upgrade {
 							'categories'  => []
 						];
 					} else {
-						$newCategoryArray[ $currentCategoryIndex ]['categories'][] = $key;
+						$newCategoryArray[ $currentCategoryIndex ]['categories'][] = (string) $key;
 						//see if specified name is different from taxonomy name, save differing name in taxonomy meta
 						if ( get_term( $key )->name != $value ) {
 							update_term_meta( $key, COMMONSBOOKING_METABOX_PREFIX . 'markup', $value );
 						}
 					}
 				}
-				update_post_meta( $map->ID, 'cb_items_available_categories', $newCategoryArray );
+				update_post_meta( $map->ID, 'filtergroups', $newCategoryArray );
 			}
 		}
 	}

@@ -303,9 +303,9 @@ class UpgradeTest extends CustomPostTypeTest {
 						'isExclusive' => false,
 						'categories'  =>
 							array(
-								0 => $twowheelsCat,
-								1 => $threewheelsCat,
-								2 => $comboCat
+								0 => (string) $twowheelsCat,
+								1 => (string) $threewheelsCat,
+								2 => (string) $comboCat
 							),
 					),
 				1 =>
@@ -315,9 +315,9 @@ class UpgradeTest extends CustomPostTypeTest {
 						'isExclusive' => false,
 						'categories'  =>
 							array(
-								0 => $childTransportCat,
-								1 => $chestCat,
-								2 => $rainCoverCat
+								0 => (string) $childTransportCat,
+								1 => (string) $chestCat,
+								2 => (string) $rainCoverCat
 							),
 					),
 				2 =>
@@ -327,8 +327,8 @@ class UpgradeTest extends CustomPostTypeTest {
 						'isExclusive' => false,
 						'categories'  =>
 							array(
-								0 => $withMotorCat,
-								1 => $manualPowerCat
+								0 => (string) $withMotorCat,
+								1 => (string) $manualPowerCat
 							),
 					),
 			);
