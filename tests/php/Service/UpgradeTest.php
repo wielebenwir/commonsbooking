@@ -298,47 +298,44 @@ class UpgradeTest extends CustomPostTypeTest {
 			array(
 				0 =>
 					array(
-						0 =>
+						'name'        => 'Radzahl',
+						'type'        => '',
+						'isExclusive' => false,
+						'categories'  =>
 							array(
-								'name'        => 'Radzahl',
-								'type'        => '',
-								'isExclusive' => false,
-								'categories'  =>
-									array(
-										0 => $twowheelsCat,
-										1 => $threewheelsCat,
-										2 => $comboCat
-									),
+								0 => $twowheelsCat,
+								1 => $threewheelsCat,
+								2 => $comboCat
 							),
-						1 =>
+					),
+				1 =>
+					array(
+						'name'        => '',
+						'type'        => '',
+						'isExclusive' => false,
+						'categories'  =>
 							array(
-								'name'       => '',
-								'type'       => '',
-								'isExclusive' => false,
-								'categories' =>
-									array(
-										0 => $childTransportCat,
-										1 => $chestCat,
-										2 => $rainCoverCat
-									),
+								0 => $childTransportCat,
+								1 => $chestCat,
+								2 => $rainCoverCat
 							),
-						2 =>
+					),
+				2 =>
+					array(
+						'name'        => '',
+						'type'        => '',
+						'isExclusive' => false,
+						'categories'  =>
 							array(
-								'name'        => '',
-								'type'        => '',
-								'isExclusive' => false,
-								'categories'  =>
-									array(
-										0 => $withMotorCat,
-										1 => $manualPowerCat
-									),
+								0 => $withMotorCat,
+								1 => $manualPowerCat
 							),
 					),
 			);
 
 		$this->assertEquals( $expectedFilterCategories, get_post_meta( $oldMapId, 'cb_items_available_categories', true ) );
 		//assert, that custom markup has been moved
-		$expectedMarkup = [ 'Zum Strampeln' ];
+		$expectedMarkup = 'Zum Strampeln';
 		$this->assertEquals( $expectedMarkup, get_term_meta( $manualPowerCat, COMMONSBOOKING_METABOX_PREFIX . 'markup', true ) );
 
 		wp_delete_post( $oldMapId, true );
