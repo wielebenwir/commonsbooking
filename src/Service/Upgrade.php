@@ -121,7 +121,7 @@ class Upgrade {
 	public function __construct( string $previousVersion, string $currentVersion ) {
 		$this->previousVersion = $previousVersion;
 		$this->currentVersion  = $currentVersion;
-		self::migrateMapSettings();
+		self::migrateMapSettings(); //TODO: REMOVE BEFORE PUSHING TO MASTER
 	}
 
 	/**
