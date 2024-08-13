@@ -482,21 +482,20 @@ class Upgrade {
 	}
 
 
-
 	/**
 	 * Migrate Map Settings from old options to new CMB2 options
 	 *
-	 * @since 2.10
 	 * @return void
+	 * @since 2.10
 	 */
-	public static function migrateMapSettings() : void {
+	public static function migrateMapSettings(): void {
 		$maps = get_posts( [
-			'post_type' => \CommonsBooking\Wordpress\CustomPostType\Map::$postType,
-			'numberposts' => -1
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Map::$postType,
+			'numberposts' => - 1
 		] );
-		foreach ($maps as $map) {
+		foreach ( $maps as $map ) {
 			$options = get_post_meta( $map->ID, 'cb_map_options', true );
-			if ( empty($options) ) {
+			if ( empty( $options ) ) {
 				continue;
 			}
 			//will map to an associative array with key being the option name and the value the default value
@@ -504,39 +503,56 @@ class Upgrade {
 				Map::getCustomFields(),
 				function ( $result, $option ) {
 					if ( isset( $option['default'] ) ) {
-						$result[$option['id']] = $option['default'];
+						$result[ $option['id'] ] = $option['default'];
 					}
+
 					return $result;
 				},
 				array()
 			);
-			foreach ($options as $key => $value) {
-				if ( empty($value) && isset($defaultValues[$key]) ) {
+			foreach ( $options as $key => $value ) {
+				if ( empty( $value ) && isset( $defaultValues[ $key ] ) ) {
 					//fetch from default values when key happens to be empty
-					$value = $defaultValues[$key];
+					$value = $defaultValues[ $key ];
 				}
 				update_post_meta( $map->ID, $key, $value );
 			}
-			if ( ! empty($options['custom_marker_media_id'] ) ){
+			if ( ! empty( $options['custom_marker_media_id'] ) ) {
 				// write the image url to the metabox, this way CMB2 can properly display it
 				$image = wp_get_attachment_image_src( intval( $options['custom_marker_media_id'] ) );
 				update_post_meta( $map->ID, 'custom_marker_media', reset( $image ) );
 			}
-			if (! empty($options['custom_marker_cluster_id'] ) ){
+			if ( ! empty( $options['custom_marker_cluster_id'] ) ) {
 				// write the image url to the metabox, this way CMB2 can properly display it
 				$image = wp_get_attachment_image_src( intval( $options['custom_marker_cluster_id'] ) );
 				update_post_meta( $map->ID, 'custom_marker_cluster', reset( $image ) );
 			}
-			if (! empty($options['marker_item_draft_media'] ) ){
+			if ( ! empty( $options['marker_item_draft_media'] ) ) {
 				// write the image url to the metabox, this way CMB2 can properly display it
 				$image = wp_get_attachment_image_src( intval( $options['marker_item_draft_media'] ) );
 				update_post_meta( $map->ID, 'marker_item_draft', reset( $image ) );
 			}
-			if (! empty($options['filter_cb_item_categories'] ) ){
-				$oldCategories = $options['filter_cb_item_categories'];
-				foreach ($oldCategories as $groupID => $group) {
-					//TODO: Write migration function for filters
+			if ( ! empty( $options['cb_items_available_categories'] ) ) {
+				$newCategoryArray     = [];
+				$currentCategoryIndex = -1; //start with -1 so we can increment to 0
+				foreach ( $options['cb_items_available_categories'] as $key => $value ) {
+					if ( substr( $key, 0, 1 ) == 'g' ) {
+						$currentCategoryIndex ++;
+						$newCategoryArray[ $currentCategoryIndex ] = [
+							'name'        => $value,
+							'type'        => '',
+							'isExclusive' => false,
+							'categories'  => []
+						];
+					} else {
+						$newCategoryArray[ $currentCategoryIndex ]['categories'][] = $key;
+						//see if specified name is different from taxonomy name, save differing name in taxonomy meta
+						if ( get_term( $key )->name != $value ) {
+							update_term_meta( $key, COMMONSBOOKING_METABOX_PREFIX . 'markup', [ $value ] );
+						}
+					}
 				}
+				update_post_meta( $map->ID, 'cb_items_available_categories', [ $newCategoryArray ] );
 			}
 		}
 	}
