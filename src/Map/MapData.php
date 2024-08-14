@@ -185,68 +185,96 @@ class MapData {
 
 		$pass_through = [
 			'base_map',
-			'show_scale',
 			'zoom_min',
 			'zoom_max',
-			'scrollWheelZoom',
 			'zoom_start',
 			'lat_start',
 			'lon_start',
+			'max_cluster_radius',
+			'label_location_distance_filter',
+			'label_item_availability_filter',
+			'label_item_category_filter',
+		];
+
+		$pass_through_conditional = [
+			'show_scale',
+			'scrollWheelZoom',
 			'marker_map_bounds_initial',
 			'marker_map_bounds_filter',
-			'max_cluster_radius',
 			'marker_tooltip_permanent',
 			'show_location_contact',
 			'show_location_opening_hours',
 			'show_item_availability',
 			'show_location_distance_filter',
-			'label_location_distance_filter',
 			'show_item_availability_filter',
-			'label_item_availability_filter',
-			'label_item_category_filter',
 		];
 
-		foreach ($pass_through as $key) {
-			$settings[$key] = $map->getMeta($key);
+		foreach ( $pass_through as $key ) {
+			$meta = $map->getMeta( $key );
+			if ( is_numeric( $meta ) ) {
+				$meta = floatval( $meta );
+			}
+			$settings[ $key ] = $meta;
 		}
 
-		if ($map->getMeta('custom_marker_media_id')) {
+		foreach ( $pass_through_conditional as $key ) {
+			$meta = $map->getMeta( $key );
+			if ( $meta == 'off' ) {
+				$settings[ $key ] = false;
+			} else {
+				$settings[ $key ] = boolval( $meta );
+			}
+		}
+
+		if ( $map->getMeta( 'custom_marker_media_id' ) ) {
 			$settings['custom_marker_icon'] = [
-				'iconUrl'    => wp_get_attachment_url($map->getMeta('custom_marker_media_id')),
-				'iconSize'   => [$map->getMeta('marker_icon_width'), $map->getMeta('marker_icon_height')],
-				'iconAnchor' => [$map->getMeta('marker_icon_anchor_x'), $map->getMeta('marker_icon_anchor_y')],
+				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'custom_marker_media_id' ) ),
+				'iconSize'   => [
+					intval( $map->getMeta( 'marker_icon_width' ) ),
+					intval( $map->getMeta( 'marker_icon_height' ) )
+				],
+				'iconAnchor' => [
+					intval( $map->getMeta( 'marker_icon_anchor_x' ) ),
+					intval( $map->getMeta( 'marker_icon_anchor_y' ) )
+				],
 			];
 		}
 
-		if ($map->getMeta('marker_item_draft_media_id')) {
+		if ( $map->getMeta( 'marker_item_draft_media_id' ) ) {
 			$settings['item_draft_marker_icon'] = [
-				'iconUrl'    => wp_get_attachment_url($map->getMeta('marker_item_draft_media_id')),
-				'iconSize'   => [$map->getMeta('marker_item_draft_icon_width'), $map->getMeta('marker_item_draft_icon_height')],
-				'iconAnchor' => [$map->getMeta('marker_item_draft_icon_anchor_x'), $map->getMeta('marker_item_draft_icon_anchor_y')],
+				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'marker_item_draft_media_id' ) ),
+				'iconSize'   => [
+					intval( $map->getMeta( 'marker_item_draft_icon_width' ) ),
+					intval( $map->getMeta( 'marker_item_draft_icon_height' ) )
+				],
+				'iconAnchor' => [
+					intval( $map->getMeta( 'marker_item_draft_icon_anchor_x' ) ),
+					intval( $map->getMeta( 'marker_item_draft_icon_anchor_y' ) )
+				],
 			];
 		}
 
-		if ($map->getMeta('custom_marker_cluster_media_id')) {
+		if ( $map->getMeta( 'custom_marker_cluster_media_id' ) ) {
 			$settings['marker_cluster_icon'] = [
-				'url'  => wp_get_attachment_url($map->getMeta('custom_marker_cluster_media_id')),
+				'url'  => wp_get_attachment_url( $map->getMeta( 'custom_marker_cluster_media_id' ) ),
 				'size' => [
-					'width'  => $map->getMeta('marker_cluster_icon_width'),
-					'height' => $map->getMeta('marker_cluster_icon_height'),
+					'width'  => intval( $map->getMeta( 'marker_cluster_icon_width' ) ),
+					'height' => intval( $map->getMeta( 'marker_cluster_icon_height' ) ),
 				],
 			];
 		}
 
 		//categories are only meant to be shown on local maps
 		//TODO: Evaluate if it makes sense to only show them when categories are imported
-		if ($map->getMeta('cb_items_available_categories')) {
+		if ( $map->getMeta( 'cb_items_available_categories' ) ) {
 			$settings['filter_cb_item_categories'] = [];
 
-			foreach ($map->getMeta('filtergroups') as $groupID => $group) {
+			foreach ( $map->getMeta( 'filtergroups' ) as $groupID => $group ) {
 				$elements = [];
-				foreach ($group['categories'] as $termID) {
-					$term = get_term( $termID );
+				foreach ( $group['categories'] as $termID ) {
+					$term         = get_term( $termID );
 					$customMarkup = get_term_meta( $termID, COMMONSBOOKING_METABOX_PREFIX . 'markup', true );
-					$termName = empty($customMarkup) ? $term->name : $customMarkup;
+					$termName     = empty( $customMarkup ) ? $term->name : $customMarkup;
 
 					$elements[] = [
 						'cat_id' => intval( $termID ),
@@ -254,8 +282,8 @@ class MapData {
 					];
 				}
 				$settings['filter_cb_item_categories'][ $groupID ] = [
-					'name'     => $group['name'],
-					'elements' => $elements,
+					'name'        => $group['name'],
+					'elements'    => $elements,
 					'isExclusive' => $group['isExclusive'] == 'on',
 				];
 			}
