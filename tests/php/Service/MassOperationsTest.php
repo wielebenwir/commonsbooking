@@ -25,6 +25,11 @@ class MassOperationsTest extends CustomPostTypeTest
 		$this->assertCount(1,$orphans);
 		MassOperations::migrateOrphaned([$toOrphan->ID]);
 		$this->assertFalse($toOrphan->isOrphaned());
+		$this->assertEquals($newLocation,get_post_meta($toOrphan->ID,'location-id',true));
+
+		//empty array given
+        $result = MassOperations::migrateOrphaned([]);
+		$this->assertFalse($result['success']);
     }
 
 	protected function setUp(): void {
