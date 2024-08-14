@@ -673,7 +673,7 @@ class Map extends CustomPostType {
 		<b> Shortcode: </b>
 		<div class="cmb-row cmb-type-text" id="shortcode-field">
 			<code>[cb_map id=<?php echo $id ?>]</code>
-			<button class="button"><?php echo esc_html__( "Copy to clipboard", 'commonsbooking' ) ?></button>
+			<button type="button" class="button"><?php echo esc_html__( "Copy to clipboard", 'commonsbooking' ) ?></button>
 		</div>
 		<?php
 	}
