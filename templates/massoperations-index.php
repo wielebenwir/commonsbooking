@@ -9,10 +9,12 @@
 					<?php \CommonsBooking\View\MassOperations::renderBookingViewTable($templateData["orphanedBookings"]); ?>
 				</div>
 		</div> <!-- .cb_welcome-panel-content -->
-		<br>
-		<div class="cb_orphan_migration">
-			<?php \CommonsBooking\View\MassOperations::renderOrphanedMigrationButton() ?>
-		</div>
-		<br>
+		<?php if ( !empty($templateData["orphanedBookings"]) ) : ?>
+			<br>
+			<div class="cb_orphan_migration">
+				<?php \CommonsBooking\View\MassOperations::renderOrphanedMigrationButton() ?>
+			</div>
+			<br>
+		<?php endif; ?>
 	</div> <!-- .cb_welcome-panel -->
 </div>
