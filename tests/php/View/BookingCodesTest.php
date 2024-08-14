@@ -51,6 +51,13 @@ class BookingCodesTest extends CustomPostTypeTest {
 		$this->assertMatchesRegularExpression('/' . implode('|',self::bookingCodes) . '/',$email->get_sent()->body);
 	}
 
+	/* As above but cover the case when ical is attached */
+	public function testEmailCodesWithIcal() {
+
+		Settings::updateOption( 'commonsbooking_options_bookingcodes', 'mail-booking-codes-attach-ical', 'on');
+
+		$this->testEmailCodes();
+	}
 
 	public function testInitialCronEmailEvent() {
 		$todayDate = new \DateTime(self::CURRENT_DATE);

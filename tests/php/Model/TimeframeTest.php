@@ -19,6 +19,10 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected Timeframe $firstTimeframe;
 	protected Timeframe $secondTimeframe;
 	private Timeframe $validTF;
+	private Location $firstLocation;
+	private Location $otherLocation;
+	private Item $firstItem;
+	private Item $otherItem;
 
 	public function testHasTimeframeDateOverlap() {
 		//timeframe for only yesterday and today should not overlap with timeframe for next week
@@ -383,6 +387,39 @@ class TimeframeTest extends CustomPostTypeTest {
 			$tf1->overlaps($tf2);
 		}
 	}
+
+	public function testOverlaps_differentGrid() {
+		$testItem     = $this->createItem( "Test Item", 'publish' );
+		$testLocation = $this->createLocation( "Test Location", 'publish' );
+		$tf1          = new Timeframe( $this->createTimeframe(
+			$testLocation,
+			$testItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			0,
+			'08:00 AM',
+			'10:00 AM',
+		) );
+
+		$tf2 = new Timeframe( $this->createTimeframe(
+			$testLocation,
+			$testItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			"off",
+			'd',
+			1,
+			'10:00 AM',
+			'12:00 PM',
+		) );
+
+		$this->expectException( OverlappingException::class );
+		$tf1->overlaps( $tf2 );
+	}
 	public function testIsValid() {
 
 		$newLoc = $this->createLocation("New Location", 'publish');
@@ -400,22 +437,24 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noItemTF = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			"",
-			strtotime( "+1 day", strtotime( self::CURRENT_DATE ) ),
-			strtotime( "+3 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+1 day", strtotime( self::CURRENT_DATE) ),
+			strtotime( "+3 days", strtotime( self::CURRENT_DATE) )
 		));
 		try {
 			$noItemTF->isValid();
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$this->assertStringContainsString("Item or location is missing. Please set item and location.",$e->getMessage());
+			//also test, that correct notice for Timeframes is shown
+			$this->assertStringContainsString('Timeframe is saved as draft.', $e->getMessage());
 		}
 
 		$noLocationTF = new Timeframe($this->createTimeframe(
 			"",
 			$this->itemId,
-			strtotime( "+20 day", strtotime( self::CURRENT_DATE ) ),
-			strtotime( "+25 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+20 day", strtotime( self::CURRENT_DATE) ),
+			strtotime( "+25 days", strtotime( self::CURRENT_DATE) )
 		));
 
 		try {
@@ -423,7 +462,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$this->assertStringContainsString("Item or location is missing. Please set item and location.",$e->getMessage());
 		}
 
 		$exceptionCaught = false;
@@ -431,14 +470,14 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			"",
-			strtotime( "+10 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+10 days", strtotime( self::CURRENT_DATE) )
 		));
 		try {
 			$noStartDateTF->isValid();
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch (TimeframeInvalidException $e ){
-			$this->assertEquals("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",$e->getMessage());
+			$this->assertStringContainsString("Startdate is missing.",$e->getMessage());
 		}
 
 		$isOverlapping = new Timeframe($this->createTimeframe(
@@ -455,6 +494,25 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->expectException( TimeframeInvalidException::class );
 		//overlaps exactly with $this->validTF
 		$this->assertTrue($isOverlapping->isValid());
+	}
+
+	public function testIsUserPrivileged() {
+		$this->createSubscriber();
+		$this->createCBManager();
+		$this->createAdministrator();
+		$managedItem = $this->createItem("Managed Item", 'publish',[$this->cbManagerUserID]);
+		$unmanagedLocation = $this->createLocation("Unmanaged Location", 'publish');
+		$timeframe = $this->createBookableTimeFrameIncludingCurrentDay($unmanagedLocation,$managedItem);
+		$timeframe = new Timeframe($timeframe);
+
+		wp_set_current_user($this->subscriberId);
+		$this->assertFalse($timeframe->isUserPrivileged());
+
+		wp_set_current_user($this->cbManagerUserID);
+		$this->assertTrue($timeframe->isUserPrivileged());
+
+		wp_set_current_user($this->adminUserID);
+		$this->assertTrue($timeframe->isUserPrivileged());
 	}
 
 	public function testisValid_throwsException() {
@@ -536,7 +594,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
+			$this->assertStringContainsString( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 		}
 	}
 
@@ -713,11 +771,103 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetLocation() {
 		$location = New Location($this->locationId);
 		$this->assertEquals($location,$this->firstTimeframe->getLocation());
+
+		//when location has been deleted
+		wp_delete_post($this->locationId);
+		$this->assertNull($this->firstTimeframe->getLocation());
+	}
+
+	public function testGetLocationID() {
+		$this->assertEquals($this->locationId,$this->firstTimeframe->getLocationID());
+	}
+
+	public function testGetLocations() {
+		//for just one location
+		$oneLocation = $this->firstTimeframe->getLocations();
+		$this->assertCount(1, $oneLocation );
+		$this->assertEquals($this->locationId, $oneLocation[0]->ID);
+
+		//for multiple defined locations
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$retrievedLocations = $holiday->getLocations();
+		$this->assertIsArray($retrievedLocations);
+		$locationIds = array_map(function($location) {
+			return $location->ID;
+		}, $retrievedLocations);
+		$this->assertCount(2,$retrievedLocations);
+		$this->assertEqualsCanonicalizing($locationIds,[$this->firstLocation->ID,$this->otherLocation->ID]);
+
+		//when location has been deleted
+		wp_delete_post($this->locationId);
+		$locations = $this->firstTimeframe->getLocations();
+		$this->assertIsArray($locations);
+		$this->assertCount(0,$locations);
+	}
+
+	public function testGetLocationIDs() {
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$retrievedLocations = $holiday->getLocationIDs();
+		$this->assertIsArray($retrievedLocations);
+		$this->assertCount(2,$retrievedLocations);
+		$this->assertEqualsCanonicalizing($retrievedLocations,[$this->firstLocation->ID,$this->otherLocation->ID]);
+
+		$this->assertEquals([$this->locationId],$this->firstTimeframe->getLocationIDs());
 	}
 
 	public function testGetItem() {
 		$item = New Item($this->itemId);
 		$this->assertEquals($item,$this->firstTimeframe->getItem());
+
+		//when item has been deleted
+		wp_delete_post($this->itemId);
+		$this->assertNull($this->firstTimeframe->getItem());
+	}
+
+	public function testGetItemID() {
+		$this->assertEquals($this->itemId,$this->firstTimeframe->getItemID());
+	}
+
+	public function testGetItems() {
+		//for just one item
+		$singleItem = $this->validTF->getItems();
+		$this->assertIsArray($singleItem);
+		$itemIds = array_map(function($item) {
+			return $item->ID;
+		}, $singleItem);
+		$this->assertEquals([$this->otherItem->ID],$itemIds);
+
+		//for multiple defined items
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$items = $holiday->getItems();
+		$this->assertIsArray($items);
+		$itemIds = array_map(function($item) {
+			return $item->ID;
+		}, $items);
+		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$itemIds);
+
+
+		//when item has been deleted
+		wp_delete_post($this->itemId);
+		$items = $this->firstTimeframe->getItems();
+		$this->assertIsArray($items);
+		$this->assertCount(0,$items);
+	}
+
+	public function testGetItemIDs() {
+		//for just one item
+		$singleItem = $this->validTF->getItemIDs();
+		$this->assertIsArray($singleItem);
+		$this->assertEquals([$this->otherItem->ID],$singleItem);
+
+		//for multiple defined items
+		$holiday4all = $this->createHolidayTimeframeForAllItemsAndLocations();
+		$holiday = new Timeframe($holiday4all);
+		$items = $holiday->getItemIDs();
+		$this->assertIsArray($items);
+		$this->assertEqualsCanonicalizing([$this->firstItem->ID,$this->otherItem->ID],$items);
 	}
 
 	/**
@@ -852,6 +1002,31 @@ $this->locationId,
 		$this->assertEquals( 1, $hourlyBookable->getGridSize() );
 	}
 
+	public function testGetAdmins() {
+		//Case 1: no admins set
+		//$this->assertEquals( [], $this->firstTimeframe->getAdmins() ); - The author is currently always included as admin
+		$this->assertEquals( [self::USER_ID], $this->firstTimeframe->getAdmins() );
+
+		//Case 2: Item admin set
+		$this->createCBManager();
+		$managedItem = $this->createItem("Managed Item", 'publish', [$this->cbManagerUserID]);
+		$unmanagedLocation = $this->createLocation("Unmanaged Location", 'publish');
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($unmanagedLocation, $managedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+
+		//Case 3: Location admin set
+		$managedLocation = $this->createLocation("Managed Location", 'publish', [$this->cbManagerUserID]);
+		$unmanagedItem = $this->createItem("Unmanaged Item", 'publish');
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($managedLocation, $unmanagedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+
+		//Case 4: Both admins set
+		$otherManagedLocation = $this->createLocation("Other Managed Location", 'publish', [$this->cbManagerUserID]);
+		$otherManagedItem = $this->createItem("Other Managed Item", 'publish', [$this->cbManagerUserID]);
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay($otherManagedLocation, $otherManagedItem) );
+		$this->assertEqualsCanonicalizing( [$this->cbManagerUserID, self::USER_ID], $timeframe->getAdmins() );
+	}
+
   protected function setUp() : void {
 
 		parent::setUp();
@@ -859,13 +1034,17 @@ $this->locationId,
 		$this->secondTimeframeId = $this->createBookableTimeFrameStartingInAWeek();
 		$this->firstTimeframe = new Timeframe( $this->firstTimeframeId );
 		$this->secondTimeframe = new Timeframe( $this->secondTimeframeId );
+		$this->firstItem = new Item($this->itemId);
+		$this->firstLocation = new Location($this->locationId);
 		$otherItem = $this->createItem("Other Item", 'publish');
+		$this->otherItem = new Item($otherItem);
 		$otherLocation = $this->createLocation("Other Location", 'publish');
+		$this->otherLocation = new Location($otherLocation);
 		$this->validTF = new Timeframe($this->createTimeframe(
 			$otherLocation,
 			$otherItem,
 			strtotime( "+1 day", strtotime(self::CURRENT_DATE) ),
-			strtotime( "+3 days", strtotime( self::CURRENT_DATE ) )
+			strtotime( "+3 days", strtotime( self::CURRENT_DATE) )
 		));
 	}
 

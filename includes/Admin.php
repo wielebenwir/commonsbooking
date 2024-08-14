@@ -11,7 +11,23 @@ function commonsbooking_admin() {
 	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
 
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
-	wp_enqueue_script( 'cb-scripts-admin', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js', array() );
+
+	// Scripts for the WordPress backend
+	if ( WP_DEBUG ) {
+		wp_enqueue_script(
+			'cb-scripts-admin',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js',
+			array(),
+			time()
+		);
+	} else {
+		wp_enqueue_script(
+			'cb-scripts-admin',
+			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.min.js',
+			array(),
+			COMMONSBOOKING_VERSION
+		);
+	}
 
     // Map marker upload scripts
     // TODO needs to be evaluated. Maybe not working on all systems
@@ -40,6 +56,34 @@ function commonsbooking_admin() {
 		)
 	);
 
+	// AJAX action for exporting timeframes to CSV
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_export_timeframes',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_export_timeframes' ),
+		)
+	);
+
+	// \CommonsBooking\Service\Upgrade Ajax tasks
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_run_upgrade',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_run_upgrade' ),
+		)
+	);
+
+	// Additional info for CMB2 to handle booking rules
+	wp_add_inline_script(
+		'cb-scripts-admin',
+'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
+		. 'cb_applied_booking_rules=' . \CommonsBooking\Service\BookingRuleApplied::getRulesJSON() . ';',
+	);
+
+
 	//orphaned bookings migration - re-assign booking when timeframe has changed
 	wp_localize_script(
 		'cb-scripts-admin',
@@ -58,6 +102,31 @@ function commonsbooking_admin() {
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
+		)
+	);
+
+
+	/**
+	 * Ajax - get location for item
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_get_bookable_location',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_get_bookable_location' ),
+		)
+	);
+
+	/**
+	 * Ajax - get booking code for backend booking
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_get_booking_code',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_get_booking_code' ),
 		)
 	);
 }

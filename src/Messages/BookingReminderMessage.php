@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Settings\Settings;
@@ -41,7 +42,7 @@ class BookingReminderMessage extends Message {
 		);
 
 		$this->prepareMail(
-			$booking_user,
+			MessageRecipient::fromUser( $booking_user ),
 			$template_body,
 			$template_subject,
 			$fromHeaders,

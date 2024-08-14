@@ -24,14 +24,14 @@ class Calendar {
 	protected Day $endDate;
 
 	/**
-	 * @var array
+	 * @var int[]
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
-	 * @var array
+	 * @var int[]
 	 */
-	protected $locations;
+	protected array $locations;
 
 	/**
 	 * @var array
@@ -44,12 +44,18 @@ class Calendar {
 	protected $weeks;
 
 	/**
+	 * The timeframes that are relevant for this calendar.
+	 * @var Timeframe[]
+	 */
+	protected array $timeframes;
+
+	/**
 	 * Calendar constructor.
 	 *
 	 * @param Day $startDate
 	 * @param Day $endDate
-	 * @param array $locations
-	 * @param array $items
+	 * @param int[] $locations
+	 * @param int[] $items
 	 * @param array $types
 	 */
 	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
@@ -63,6 +69,8 @@ class Calendar {
 		$this->items     = $items;
 		$this->locations = $locations;
 		$this->types     = $types;
+
+		$this->timeframes = $this->getTimeframes();
 	}
 
 	/**
@@ -96,7 +104,8 @@ class Calendar {
 					$dayOfYear,
 					$this->locations,
 					$this->items,
-					$this->types
+					$this->types,
+					$this->timeframes
 				);
 				$startDate = strtotime( 'next monday', $startDate );
 			}
@@ -153,12 +162,12 @@ class Calendar {
 
 					$availabilitySlot->locationId = "";
 					if ( $timeframe->getLocation() ) {
-						$availabilitySlot->locationId = $timeframe->getLocation()->ID . "";
+						$availabilitySlot->locationId = $timeframe->getLocationID() . "";
 					}
 
 					$availabilitySlot->itemId = "";
 					if ( $timeframe->getItem() ) {
-						$availabilitySlot->itemId = $timeframe->getItem()->ID . "";
+						$availabilitySlot->itemId = $timeframe->getItemID() . "";
 					}
 
 					$slotId = md5( serialize( $availabilitySlot ) );
@@ -170,6 +179,24 @@ class Calendar {
 			}
 		}
 		return $slots;
+	}
+
+	private function getTimeframes(): array {
+		if ( ! isset( $this->timeframes ) ) {
+			$this->timeframes = [];
+			$timeframes       = \CommonsBooking\Repository\Timeframe::getInRange(
+				$this->startDate->getStartTimestamp(),
+				$this->endDate->getEndTimestamp(),
+				$this->locations,
+				$this->items,
+				$this->types,
+				true,
+				[ 'confirmed', 'publish' ]
+			);
+			$this->timeframes = $timeframes;
+		}
+
+		return $this->timeframes;
 	}
     
 }

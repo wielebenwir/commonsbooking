@@ -10,7 +10,7 @@ use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\Validator;
-use WP_Error;
+use Opis\JsonSchema\Errors\ErrorFormatter;
 use WP_REST_Controller;
 use WP_REST_Server;
 
@@ -86,31 +86,47 @@ class BaseRoute extends WP_REST_Controller {
 	/**
 	 * Validates data against defined schema.
 	 *
-	 * @param $data
+	 * If WP_DEBUG is enabled, prints schema errors or any exceptions that may occur to error_log.
+	 *
+	 * @param object $data instance of stdclass or object to validate.
 	 */
 	public function validateData( $data ) {
 		$validator = new Validator();
-		//the validation routes are not shipped with the built plugin
-		$isDevEnvironment = file_exists( COMMONSBOOKING_PLUGIN_DIR . 'node_modules' );
-
-		if ( ! $isDevEnvironment ) {
-			return;
-		}
 
 		try {
-			$result = $validator->schemaValidation( $data, $this->getSchemaObject() );
-			if ( $result->hasErrors() ) {
+			$result = $validator->validate( $data, $this->getSchemaObject() );
+			if ( $result->hasError() ) {
 				if ( WP_DEBUG ) {
-					var_dump( $result->getErrors() );
+
+					// Get the error
+					$error = $result->error();
+
+					// Create an error formatter
+					$formatter = new ErrorFormatter();
+
+					// Print helper
+					$print = function ( $value ) {
+						echo wp_json_encode( $value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+					};
+
+					$print(
+						array(
+							'errors'    => $formatter->formatOutput( $error, 'basic' ),
+							'response'  => $data,
+						)
+					);
+
 					die;
 				}
 			}
 		} catch ( Exception $e ) {
+			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			if ( WP_DEBUG ) {
 				error_log( 'Problem while trying to access wp rest endpoint url for schema ' . $this->schemaUrl );
 				error_log( $e );
 				die;
 			}
+			// phpcs:enable
 		}
 	}
 
@@ -119,37 +135,37 @@ class BaseRoute extends WP_REST_Controller {
 	 *
 	 * @return Schema
 	 */
-	protected function getSchemaObject(): Schema {
+	protected function getSchemaObject(): object {
 		$schemaObject = json_decode( $this->getSchemaJson() );
 		unset( $schemaObject->{'$schema'} );
 		unset( $schemaObject->{'$id'} );
 
-		return Schema::fromJsonString( wp_json_encode( $schemaObject ) );
+		return $schemaObject;
 	}
 
 	/**
 	 * Returns schema json for current route.
 	 *
-	 * @return array|WP_Error
+	 * @throws RuntimeException On missing schema files.
+	 * @return string
 	 */
-	protected function getSchemaJson() {
-		$schemaArray = wp_remote_get( $this->schemaUrl );
-		if ( is_array( $schemaArray ) && ! is_wp_error( $schemaArray )) {
+	protected function getSchemaJson(): string {
+		$schemaArray = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $schemaArray ) {
 			return $schemaArray;
 		} else {
-			throw new RuntimeException("Could not retrieve schema json from " . $this->schemaUrl );
+			throw new RuntimeException( 'Could not retrieve schema json from ' . esc_url( $this->schemaUrl ) );
 		}
 	}
 
 	/**
 	 * Adds schema-fields for output to current route.
 	 *
-	 * @param array $schema
-	 *
+	 * @param array $schema Assoc array of schema json object.
 	 * @return array
 	 */
 	public function add_additional_fields_schema( $schema ): array {
-		$schemaArray = json_decode( $this->getSchemaJson(), true ); // TODO verify that this works and doesn't expects ['body'] from wp_remote_get?
+		$schemaArray = json_decode( $this->getSchemaJson(), true );
 
 		return array_merge( $schema, $schemaArray );
 	}
