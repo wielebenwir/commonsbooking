@@ -155,13 +155,16 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Returns the corresponding Timeframe object for booking.
 	 * If no timeframe is found, it returns null.
+	 *
+	 * TODO: Multiple timeframes could be relevant for a booking.
+	 *       We should either be more specific about what we want or return an array of timeframes.
      *
 	 * @return null|\CommonsBooking\Model\Timeframe
 	 * @throws Exception
 	 */
 	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
-		$locationId = $this->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_ID );
-		$itemId     = $this->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_ID );
+		$locationId = $this->getLocationID();
+		$itemId     = $this->getItemID();
 
 		$response = Timeframe::getBookable(
 			[ $locationId ],
@@ -175,6 +178,74 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Gets the timeframe that is relevant for the start of the booking.
+	 *
+	 * @return Timeframe|null
+	 * @throws Exception
+	 */
+	public function getStartTimeframe(): ?\CommonsBooking\Model\Timeframe {
+		$locationId = $this->getLocationID();
+		$itemId     = $this->getItemID();
+		$startTime = $this->getStartTime();
+
+		$response = Timeframe::getBookable(
+			[ $locationId ],
+			[ $itemId ],
+			date( CB::getInternalDateFormat(), intval( $this->getStartDate() ) ),
+			true
+		);
+
+		if (empty($response)) {
+			return null;
+		}
+
+		foreach ($response as $timeframe) {
+			if ($timeframe->getStartTime() === $startTime) {
+				return $timeframe;
+			}
+		}
+
+		return count($response) === 1 ? array_shift($response) : null;
+	}
+
+	/**
+	 * Gets the timeframe that is relevant for the end of the booking.
+	 *
+	 * @return Timeframe|null
+	 * @throws Exception
+	 */
+	public function getEndTimeframe(): ?\CommonsBooking\Model\Timeframe {
+		$locationId = $this->getLocationID();
+		$itemId     = $this->getItemID();
+		$endTime = $this->getEndTime();
+		//add 1 minute to normalize the end time
+		if ($endTime != "23:59") {
+			$endTime = date('H:i', strtotime($endTime . '+1 minute'));
+		}
+
+		$response = Timeframe::getBookable(
+			[ $locationId ],
+			[ $itemId ],
+			date( CB::getInternalDateFormat(), intval( $this->getEndDate() ) ),
+			true
+		);
+
+		if (empty($response)) {
+			return null;
+		}
+
+		/** @var \CommonsBooking\Model\Timeframe $timeframe */
+		foreach ($response as $timeframe) {
+			$end_time = $timeframe->getEndTime();
+			if ( $end_time === $endTime) {
+				return $timeframe;
+			}
+		}
+
+		return count($response) === 1 ? array_shift($response) : null;
 	}
 
 	/**
@@ -444,29 +515,25 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		$repetitionStart = $this->getStartDate();
-		$repetitionEnd = $this->getEndDate();
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
-		$time_start = date_i18n( $time_format, $repetitionStart );
-		$time_end   = date_i18n( $time_format, $repetitionEnd );
 
 		if ( $this->isFullDay() ) {
 			return $date_start;
 		}
 
-		$grid = $this->getGrid();
+		$startTimeframe = $this->getStartTimeframe();
 
-		if ( $grid === 0 ) { // if grid is set to slot duration
-			// If we have the grid size, we use it to calculate right time end
-			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
-			if ( $timeframeGridSize ) {
-				$grid = $timeframeGridSize;
-			}
+		//check, if start timeframe is full-day. If yes, we don't need a pickup time
+		if ( $startTimeframe && $startTimeframe->isFullDay() ) {
+			return $date_start;
 		}
 
-		if ( $grid > 0 ) { // if grid is set to hourly (grid = 1) or a multiple of an hour
-			$time_end = date_i18n( $time_format, $repetitionStart + ( 60 * 60 * $grid ) );
-		}
+		//if not, get the slot duration from timeframe
+		$start_time = $startTimeframe->getStartTime();
+		$time_start = date_i18n( $time_format, $start_time );
+		$end_time   = $startTimeframe->getEndTime();
+		$time_end   = date_i18n( $time_format, $end_time );
 
 		return $date_start . ' ' . $time_start . ' - ' . $time_end;
 	}
@@ -483,27 +550,24 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
-		$date_end   = date_i18n( $date_format, $this->getRawEndDate() );
-		$time_end   = date_i18n( $time_format, $this->getRawEndDate() + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
-		$time_start = date_i18n( $time_format, strtotime( $this->getStartTime() ) );
+		$date_end     = date_i18n( $date_format, $this->getRawEndDate() );
 
 		if ( $this->isFullDay() ) {
 			return $date_end;
 		}
 
-		$grid = $this->getGrid();
+		$endTimeframe = $this->getEndTimeframe();
 
-		if ( $grid === 0 ) { // if grid is set to slot duration
-			// If we have the grid size, we use it to calculate right time start
-			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
-			if ( $timeframeGridSize ) {
-				$grid = $timeframeGridSize;
-			}
+		//check, if end timeframe is full-day. If yes, we don't need a return time
+		if ( $endTimeframe && $endTimeframe->isFullDay() ) {
+			return $date_end;
 		}
 
-		if ( $grid > 0 ) { // if grid is set to hourly (grid = 1) or a multiple of an hour
-			$time_start = date_i18n( $time_format, $this->getRawEndDate() + 1 - ( 60 * 60 * $grid ) );
-		}
+
+		//if not, get the slot duration from timeframe
+		$time_start = date_i18n( $time_format, strtotime('+1 minute',$endTimeframe->getStartTime() ));
+		$time_end   = date_i18n( $time_format, $endTimeframe->getEndTime() );
+
 
 		return $date_end . ' ' . $time_start . ' - ' . $time_end;
 	}
