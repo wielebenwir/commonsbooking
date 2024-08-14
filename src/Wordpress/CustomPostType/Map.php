@@ -666,7 +666,6 @@ class Map extends CustomPostType {
 	/**
 	 * Renders the shortcode for the map
 	 *
-	 * TODO: Copy to clipboard button
 	 */
 	public static function getShortcode( array $field_args, CMB2_Field $field ) {
 		$id = get_the_ID();

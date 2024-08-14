@@ -288,7 +288,7 @@ class UpgradeTest extends CustomPostTypeTest {
 		Upgrade::migrateMapSettings();
 		//each option should now have it's own meta entry
 		foreach ( $mapOptions as $key => $value ) {
-			if ( $key === 'cb_items_available_categories' ) {
+			if ( $key === 'cb_items_available_categories' || empty($value)) {
 				continue;
 			}
 			$this->assertEquals( $value, get_post_meta( $oldMapId, $key, true ) );
@@ -333,7 +333,7 @@ class UpgradeTest extends CustomPostTypeTest {
 					),
 			);
 
-		$this->assertEquals( $expectedFilterCategories, get_post_meta( $oldMapId, 'cb_items_available_categories', true ) );
+		$this->assertEquals( $expectedFilterCategories, get_post_meta( $oldMapId, 'filtergroups', true ) );
 		//assert, that custom markup has been moved
 		$expectedMarkup = 'Zum Strampeln';
 		$this->assertEquals( $expectedMarkup, get_term_meta( $manualPowerCat, COMMONSBOOKING_METABOX_PREFIX . 'markup', true ) );

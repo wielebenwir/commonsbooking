@@ -512,11 +512,13 @@ class Upgrade {
 				array()
 			);
 			foreach ( $options as $key => $value ) {
-				if ( empty( $value ) && isset( $defaultValues[ $key ] ) ) {
+				if ( empty( $value ) && ! empty( $defaultValues[ $key ] ) ) {
 					//fetch from default values when key happens to be empty
 					$value = $defaultValues[ $key ];
 				}
-				update_post_meta( $map->ID, $key, $value );
+				if ( ! empty( $value ) ) {
+					update_post_meta( $map->ID, $key, $value );
+				}
 			}
 			if ( ! empty( $options['custom_marker_media_id'] ) ) {
 				// write the image url to the metabox, this way CMB2 can properly display it
