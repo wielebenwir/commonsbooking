@@ -2,36 +2,30 @@
 
 namespace CommonsBooking\Model;
 
-use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Item;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use Exception;
 
 /**
- * This class currently does not have any functionality.
- * It's just a placeholder for the Map post type.
- * Because the map feature was taken from another plugin, it is not yet adapted to the structure of this plugin.
- * This class will be used to adapt the map feature to the structure of this plugin.
+ * This class does the heavy lifting for the map shortcode
+ * Code style differs because it has been taken from the fLotte Map shortcode plugin
  *
- * Currently, it's only referenced by the @see \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel() method to use the methods from the CustomPost class.
  */
 class Map extends CustomPost {
 
 	/**
 	 * get geo data from location metadata
 	 *
-	 * @param $cb_map_id
-	 * @param $mapItemTerms
+	 * @param $mapItemTerms array of term ids
 	 *
-	 * @return array
+	 * @return array with postIDs as keys for an array with location data relevant for the map
 	 * @throws Exception
 	 */
-	public function get_locations( $mapItemTerms ): array {
+	public function get_locations( array $mapItemTerms ): array {
 		$locations = [];
 
-		$show_location_contact       = $this->getMeta( 'show_location_contact' );
-		$show_location_opening_hours = $this->getMeta( 'show_location_opening_hours' );
+		$show_location_contact = $this->getMeta( 'show_location_contact' );
 
 		$preset_categories          = $this->getMeta( 'cb_items_preset_categories' );
 		$preset_location_categories = $this->getMeta( 'cb_locations_preset_categories' );
@@ -166,11 +160,6 @@ class Map extends CustomPost {
 					$locations[ $post->ID ]['contact'] = $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ][0];
 				}
 			}
-
-			//@TODO: Check field -> we don't have such a field at the moment.
-//            if ($show_location_opening_hours) {
-//                $locations[$post->ID]['opening_hours'] = $location_meta['commons-booking_location_openinghours'][0];
-//            }
 		}
 
 		return $locations;
@@ -187,8 +176,8 @@ class Map extends CustomPost {
 	public static function cleanup_location_data_entry( $value, $linebreak_replacement ) {
 
 		if ( is_string( $value ) ) {
+			$value = wp_strip_all_tags( $value ); //strip all tags
 			$value = preg_replace( '/(\r\n)|\n|\r/', $linebreak_replacement, $value ); //replace linebreaks
-			$value = preg_replace( '/<.*(.*?)/', '', $value ); //strip off everything that smell's like HTML
 		}
 
 		if ( is_array( $value ) ) {
@@ -220,50 +209,9 @@ class Map extends CustomPost {
 	/**
 	 * basic check if the given string is valid JSON
 	 **/
-	public static function is_json( $string ) {
+	public static function is_json( $string ): bool {
 		json_decode( $string );
 
 		return ( json_last_error() == JSON_ERROR_NONE );
-	}
-
-	/**
-	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
-	 **/
-	public function get_timeframes() {
-		$timeframes = Timeframe::getBookableForCurrentUser(
-			[],
-			[],
-			false,
-			true,
-			Helper::getLastFullHourTimestamp()
-		);
-
-		/** @var \CommonsBooking\Model\Timeframe $timeframe */
-		foreach ( $timeframes as $timeframe ) {
-			//TODO #507
-			$item     = $timeframe->getItem();
-			$location = $timeframe->getLocation();
-
-			if ( $item && $location ) {
-				$item_desc = $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_info' );
-				$thumbnail = get_the_post_thumbnail_url( $item, 'thumbnail' );
-
-				$result[] = [
-					'location_id' => $timeframe->getLocationID(),
-					'item'        => [
-						'id'         => $item->ID,
-						'name'       => $item->post_title,
-						'short_desc' => $item_desc,
-						'link'       => get_permalink( $item ),
-						'thumbnail'  => $thumbnail ?: null,
-						'status'     => $item->post_status,
-					],
-					'date_start'  => $timeframe->getStartDate(),
-					'date_end'    => $timeframe->getEndDate(),
-				];
-			}
-		}
-
-		return $result;
 	}
 }
