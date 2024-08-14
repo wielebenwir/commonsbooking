@@ -326,8 +326,7 @@ class Plugin {
 				esc_html__( 'Mass Operations', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
 				'cb-mass-operations',
-				array( MassOperations::class, 'index' ),
-				''
+				array( MassOperations::class, 'index' )
 			);
 		}
 	}
