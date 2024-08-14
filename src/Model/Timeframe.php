@@ -27,6 +27,8 @@ class Timeframe extends CustomPost {
 	 */
 	public const ERROR_TYPE = 'timeframeValidationFailed';
 
+	public const ORPHANED_TYPE = 'timeframehasOrphanedBookings';
+
 	public const REPETITION_START = 'repetition-start';
 
 	public const REPETITION_END = 'repetition-end';
