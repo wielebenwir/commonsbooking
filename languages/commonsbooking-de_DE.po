@@ -1444,24 +1444,24 @@ msgstr "Startdatum"
 msgid "End date"
 msgstr "Enddatum"
 
-#: src/View/Booking.php:128
+#: src/View/Booking.php:156
 msgid "Details"
 msgstr "Details"
 
-#: src/View/Booking.php:134
+#: src/View/Booking.php:162
 msgid "Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file."
 msgstr "Benutze diesen Link um die Buchungsdaten automatisch in deinem Kalender zu abonnieren. Bitte gib die URL in deinem Kalenderprogramm an und versuche nicht die Datei herunterzuladen."
 
-#: src/View/Booking.php:135
+#: src/View/Booking.php:163
 msgid "iCalendar Link:"
 msgstr "iCalendar Link:"
 
-#: src/View/Booking.php:142
-#: src/View/Booking.php:144
+#: src/View/Booking.php:170
+#: src/View/Booking.php:172
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: src/View/Booking.php:165
+#: src/View/Booking.php:193
 #: src/View/MassOperations.php:39
 #: src/Wordpress/CustomPostType/Booking.php:441
 #: src/Wordpress/CustomPostType/Timeframe.php:99
@@ -1469,14 +1469,14 @@ msgstr "Nicht verfügbar"
 msgid "User"
 msgstr "Nutzende*r"
 
-#: src/View/Booking.php:169
+#: src/View/Booking.php:197
 #: src/View/MassOperations.php:43
 #: src/Wordpress/CustomPostType/Booking.php:954
 #: src/Wordpress/CustomPostType/Restriction.php:474
 msgid "Status"
 msgstr "Status"
 
-#: src/View/Booking.php:178
+#: src/View/Booking.php:206
 msgid "Code"
 msgstr "Code"
 
@@ -4274,7 +4274,7 @@ msgstr ""
 msgid "Startdate is missing. Please enter a start date to publish this timeframe."
 msgstr ""
 
-#: src/View/Booking.php:510
+#: src/View/Booking.php:538
 #: src/Wordpress/CustomPostType/Booking.php:849
 msgid "Submit booking"
 msgstr ""
