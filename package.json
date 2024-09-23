@@ -46,6 +46,6 @@
 		"leaflet.markercluster": "^1.5.0",
 		"shufflejs": "^6.1.1",
 		"spin.js": "^2.3.2",
-		"vue": "^3.4.29"
+		"vue": "^3.5.8"
 	}
 }
