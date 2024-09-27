@@ -816,6 +816,18 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals([$this->locationId],$this->firstTimeframe->getLocationIDs());
 	}
 
+	public function testGetLocationString() {
+		$this->assertEquals($this->firstLocation->post_title,$this->firstTimeframe->getLocationString());
+		$allHoliday = new Timeframe( $this->createHolidayTimeframeForAllItemsAndLocations() );
+		$this->assertEquals("All",$allHoliday->getLocationString());
+		//update postmeta to seem like a manual selection of all locations
+		update_post_meta($allHoliday->ID, Timeframe::META_LOCATION_SELECTION_TYPE, Timeframe::SELECTION_MANUAL_ID);
+		$this->assertEquals("Multiple",$allHoliday->getLocationString());
+		//update postmeta to seem like category selection
+		update_post_meta($allHoliday->ID, Timeframe::META_LOCATION_SELECTION_TYPE, Timeframe::SELECTION_CATEGORY_ID);
+		$this->assertEquals("Multiple (by category)",$allHoliday->getLocationString());
+	}
+
 	public function testGetItem() {
 		$item = New Item($this->itemId);
 		$this->assertEquals($item,$this->firstTimeframe->getItem());
@@ -827,6 +839,18 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testGetItemID() {
 		$this->assertEquals($this->itemId,$this->firstTimeframe->getItemID());
+	}
+
+	public function testGetItemString() {
+		$this->assertEquals($this->firstItem->post_title,$this->firstTimeframe->getItemString());
+		$allHoliday = new Timeframe( $this->createHolidayTimeframeForAllItemsAndLocations() );
+		$this->assertEquals("All",$allHoliday->getItemString());
+		//update postmeta to seem like a manual selection of all items
+		update_post_meta($allHoliday->ID, Timeframe::META_ITEM_SELECTION_TYPE, Timeframe::SELECTION_MANUAL_ID);
+		$this->assertEquals("Multiple",$allHoliday->getItemString());
+		//update postmeta to seem like category selection
+		update_post_meta($allHoliday->ID, Timeframe::META_ITEM_SELECTION_TYPE, Timeframe::SELECTION_CATEGORY_ID);
+		$this->assertEquals("Multiple (by category)",$allHoliday->getItemString());
 	}
 
 	public function testGetItems() {
