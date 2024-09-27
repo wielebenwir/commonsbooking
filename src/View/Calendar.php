@@ -89,7 +89,7 @@ class Calendar {
 
 		$print  = '<div class="cb-table-scroll">';
 		$print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . '</colgroup><thead>';
-		$print .= "<tr><th colspan='2' class='sortless'>" . $desc . '</th>';
+		$print .= "<tr><td colspan='2' class='sortless'>" . $desc . '</td>';
 
 		// Render months
 		$print .= self::renderHeadlineMonths( $month_cols );
