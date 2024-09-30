@@ -877,8 +877,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			return null;
 		}
 		$attachedTFMeta = intval( get_post_meta( $this->ID, self::META_LAST_TIMEFRAME, true ) );
-		if ($attachedTFMeta === false) {
-			return null;
+		if ( empty ($attachedTFMeta)) {
+			throw new Exception("No attached timeframe found for orphaned booking.");
 		}
 		$attachedTF = new \CommonsBooking\Model\Timeframe( $attachedTFMeta );
 		return $attachedTF->getLocation();
