@@ -50,12 +50,16 @@ class MassOperations
 			if ( !in_array($booking->ID(), $bookingIds) ) {
 				continue;
 			}
-			$moveLocation = $booking->getMoveableLocation();
+			try {
+				$moveLocation = $booking->getMoveableLocation();
+			} catch ( \Exception $e ) {
+				$moveLocation = null;
+			}
 			if ($moveLocation !== null) {
 				update_post_meta($booking->ID, 'location-id', $moveLocation->ID());
 			}
 			else {
-				$result['message'] .= sprintf( __('No location found for booking with ID %s','commonsbooking'), $booking->ID() ) . '<br>' ;
+				$result['message'] .= sprintf( __('New location not found for booking with ID %s','commonsbooking'), $booking->ID() ) ;
 				$result['success'] = false;
 			}
 		}

@@ -38,6 +38,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	const META_OVERBOOKED_DAYS = 'days-overbooked';
 
+	/**
+	 * Usually not set, only set when changing a timeframe orphans the current booking.
+	 */
 	const META_LAST_TIMEFRAME = 'last-connected-timeframe';
 
     public const ERROR_TYPE = 'BookingValidationFailed';
@@ -877,8 +880,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			return null;
 		}
 		$attachedTFMeta = intval( get_post_meta( $this->ID, self::META_LAST_TIMEFRAME, true ) );
-		if ($attachedTFMeta === false) {
-			return null;
+		if ( empty ($attachedTFMeta)) {
+			throw new Exception("No attached timeframe found for orphaned booking.");
 		}
 		$attachedTF = new \CommonsBooking\Model\Timeframe( $attachedTFMeta );
 		return $attachedTF->getLocation();
