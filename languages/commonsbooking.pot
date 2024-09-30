@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-26T09:07:56+00:00\n"
+"POT-Creation-Date: 2024-09-30T12:21:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1434,73 +1434,73 @@ msgid "Could not send email because mail-template was not available. Check optio
 msgstr ""
 
 #. translators: %s = Booking code
-#: src/Model/Booking.php:142
+#: src/Model/Booking.php:145
 msgid "Your booking code is: %s"
 msgstr ""
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Booking.php:438
+#: src/Model/Booking.php:441
 msgid " on %s "
 msgstr ""
 
 #. translators: %1 = startdate, %2 = enddate in WordPress defined format
-#: src/Model/Booking.php:441
+#: src/Model/Booking.php:444
 msgid " from %1$s until %2$s "
 msgstr ""
 
-#: src/Model/Booking.php:573
+#: src/Model/Booking.php:576
 msgid "Please check your booking and click confirm booking"
 msgstr ""
 
-#: src/Model/Booking.php:579
+#: src/Model/Booking.php:582
 msgid "Your booking has been canceled at %s."
 msgstr ""
 
-#: src/Model/Booking.php:581
+#: src/Model/Booking.php:584
 msgid "Your booking has been canceled"
 msgstr ""
 
-#: src/Model/Booking.php:610
+#: src/Model/Booking.php:613
 msgid "Item not found"
 msgstr ""
 
-#: src/Model/Booking.php:619
+#: src/Model/Booking.php:622
 msgid "Location not found"
 msgstr ""
 
-#: src/Model/Booking.php:624
+#: src/Model/Booking.php:627
 msgid "There is no timeframe for this booking. Please create a timeframe first."
 msgstr ""
 
-#: src/Model/Booking.php:645
+#: src/Model/Booking.php:648
 msgid "There are one ore more overlapping bookings within the chosen timerange"
 msgstr ""
 
-#: src/Model/Booking.php:646
+#: src/Model/Booking.php:649
 msgid "Please adjust the start- or end-date."
 msgstr ""
 
-#: src/Model/Booking.php:647
+#: src/Model/Booking.php:650
 msgid "Affected Bookings: %s"
 msgstr ""
 
-#: src/Model/Booking.php:668
+#: src/Model/Booking.php:671
 msgid "Link to your booking"
 msgstr ""
 
-#: src/Model/Booking.php:989
+#: src/Model/Booking.php:992
 msgid "Confirmed"
 msgstr ""
 
-#: src/Model/Booking.php:991
+#: src/Model/Booking.php:994
 msgid "Unconfirmed"
 msgstr ""
 
-#: src/Model/Booking.php:993
+#: src/Model/Booking.php:996
 msgid "Cancelled"
 msgstr ""
 
-#: src/Model/Booking.php:995
+#: src/Model/Booking.php:998
 #: src/Service/TimeframeExport.php:509
 #: src/Service/TimeframeExport.php:519
 #: src/Service/TimeframeExport.php:525
@@ -1856,11 +1856,11 @@ msgstr ""
 msgid "No bookings to move selected."
 msgstr ""
 
-#: src/Service/MassOperations.php:58
-msgid "No location found for booking with ID %s"
+#: src/Service/MassOperations.php:62
+msgid "New location not found for booking with ID %s"
 msgstr ""
 
-#: src/Service/MassOperations.php:64
+#: src/Service/MassOperations.php:68
 msgid "All selected orphaned bookings have been migrated."
 msgstr ""
 

@@ -1301,33 +1301,33 @@ msgid "Could not send email because mail-template was not available. Check optio
 msgstr "E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar war. Optionen überprüfen -> Vorlagen"
 
 #. translators: %s = Booking code
-#: src/Model/Booking.php:142
+#: src/Model/Booking.php:145
 msgid "Your booking code is: %s"
 msgstr "Dein Buchungscode lautet: %s"
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Booking.php:438
+#: src/Model/Booking.php:441
 msgid " on %s "
 msgstr " am %s "
 
 #. translators: %1 = startdate, %2 = enddate in WordPress defined format
-#: src/Model/Booking.php:441
+#: src/Model/Booking.php:444
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
-#: src/Model/Booking.php:573
+#: src/Model/Booking.php:576
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:579
+#: src/Model/Booking.php:582
 msgid "Your booking has been canceled at %s."
 msgstr "Die Buchung wurde storniert am %s."
 
-#: src/Model/Booking.php:581
+#: src/Model/Booking.php:584
 msgid "Your booking has been canceled"
 msgstr "Die Buchung wurde storniert"
 
-#: src/Model/Booking.php:668
+#: src/Model/Booking.php:671
 msgid "Link to your booking"
 msgstr "Link zu deiner Buchung"
 
@@ -1630,7 +1630,7 @@ msgstr "CSV Herunterladen"
 msgid "Download Export"
 msgstr "Download Export"
 
-#: src/Model/Booking.php:995
+#: src/Model/Booking.php:998
 #: src/Service/TimeframeExport.php:509
 #: src/Service/TimeframeExport.php:519
 #: src/Service/TimeframeExport.php:525
@@ -3360,7 +3360,7 @@ msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 msgid "It is not possible to access this timeframe on frontend. Please edit timeframe in backend. If you want to check the result of your timeframe settings visit the item or location in frontend to see the booking calender"
 msgstr "Es ist nicht möglich, diesen Zeitrahmen im Frontend abzurufen. Bitte bearbeite den Zeitrahmen im Backend. Wenn du das Ergebnis deiner Zeitrahmeneinstellungen überprüfen möchtest, rufe den Artikel oder Standort im Frontend auf, um den Buchungskalender zu sehen"
 
-#: src/Model/Booking.php:993
+#: src/Model/Booking.php:996
 msgid "Cancelled"
 msgstr "Storniert"
 
@@ -4135,11 +4135,11 @@ msgstr "Bitte <a href=\\\"%s\\\">melde dich an </a> , um deine Buchungen zu sehe
 msgid "A WordPress plugin for the management and booking of common goods."
 msgstr "Ein WordPress-Plugin für die Verwaltung und Buchung von Gemeingütern."
 
-#: src/Model/Booking.php:991
+#: src/Model/Booking.php:994
 #~ msgid "Unconfirmed"
 #~ msgstr "Unbestätigt"
 
-#: src/Model/Booking.php:989
+#: src/Model/Booking.php:992
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
 
@@ -4228,27 +4228,27 @@ msgstr ""
 msgid "Timeframe is saved as draft."
 msgstr ""
 
-#: src/Model/Booking.php:610
+#: src/Model/Booking.php:613
 msgid "Item not found"
 msgstr ""
 
-#: src/Model/Booking.php:619
+#: src/Model/Booking.php:622
 msgid "Location not found"
 msgstr ""
 
-#: src/Model/Booking.php:624
+#: src/Model/Booking.php:627
 msgid "There is no timeframe for this booking. Please create a timeframe first."
 msgstr ""
 
-#: src/Model/Booking.php:645
+#: src/Model/Booking.php:648
 msgid "There are one ore more overlapping bookings within the chosen timerange"
 msgstr ""
 
-#: src/Model/Booking.php:646
+#: src/Model/Booking.php:649
 msgid "Please adjust the start- or end-date."
 msgstr ""
 
-#: src/Model/Booking.php:647
+#: src/Model/Booking.php:650
 msgid "Affected Bookings: %s"
 msgstr ""
 
@@ -4321,11 +4321,7 @@ msgstr ""
 msgid "No bookings to move selected."
 msgstr ""
 
-#: src/Service/MassOperations.php:58
-msgid "No location found for booking with ID %s"
-msgstr ""
-
-#: src/Service/MassOperations.php:64
+#: src/Service/MassOperations.php:68
 msgid "All selected orphaned bookings have been migrated."
 msgstr ""
 
@@ -4359,4 +4355,8 @@ msgstr ""
 
 #: templates/massoperations-index.php:7
 msgid "Migrate orphaned bookings"
+msgstr ""
+
+#: src/Service/MassOperations.php:62
+msgid "New location not found for booking with ID %s"
 msgstr ""
