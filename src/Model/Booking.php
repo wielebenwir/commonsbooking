@@ -39,7 +39,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	const META_OVERBOOKED_DAYS = 'days-overbooked';
 
 	/**
-	 * entUsually not set, only set when changing a timeframe orphans the current booking.
+	 * Usually not set, only set when changing a timeframe orphans the current booking.
 	 */
 	const META_LAST_TIMEFRAME = 'last-connected-timeframe';
 
