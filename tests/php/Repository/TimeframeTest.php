@@ -18,6 +18,9 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected int $timeframeDailyRepetition;
 	protected int $timeframeWeeklyRepetition;
 	protected int $timeframeManualRepetition;
+	protected int $otherItemId;
+	protected int $otherLocationId;
+	protected int $otherTimeframeId;
 
 	/**
 	 * The tests are designed in a way, that all timeframes should lie in the CURRENT_DATE plus 10 days.
@@ -148,7 +151,8 @@ class TimeframeTest extends CustomPostTypeTest {
 			3,
 			30
 		);
-		\CommonsBooking\Wordpress\CustomPostType\Timeframe::savePost(
+		$tfCPT = new \CommonsBooking\Wordpress\CustomPostType\Timeframe();
+		$tfCPT->savePost(
 			$holidayInFuture,
 			get_post( $holidayInFuture )
 		);
@@ -481,7 +485,7 @@ class TimeframeTest extends CustomPostTypeTest {
 	 */
 	public function testGetPostIdsByType_multiLocationMultiItem() {
 		// Timeframe with enddate and one item
-		$this->timeframeId = $this->createTimeframe(
+		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			$this->repetition_start,

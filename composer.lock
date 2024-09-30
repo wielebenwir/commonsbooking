@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "19b0c030a024c7eaca864b7ef6c1e2ec",
+    "content-hash": "6e65082ff96f03504ba7fcf2a43a66c2",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -174,16 +174,16 @@
         },
         {
             "name": "eluceo/ical",
-            "version": "2.13.0",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/markuspoerschke/iCal.git",
-                "reference": "43fd5991032d46db06ae0b3f67416adfdad38336"
+                "reference": "3123533f7ff0af015da1d788476204f936d18135"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/markuspoerschke/iCal/zipball/43fd5991032d46db06ae0b3f67416adfdad38336",
-                "reference": "43fd5991032d46db06ae0b3f67416adfdad38336",
+                "url": "https://api.github.com/repos/markuspoerschke/iCal/zipball/3123533f7ff0af015da1d788476204f936d18135",
+                "reference": "3123533f7ff0af015da1d788476204f936d18135",
                 "shasum": ""
             },
             "require": {
@@ -234,7 +234,7 @@
                 "issues": "https://github.com/markuspoerschke/iCal/issues",
                 "source": "https://github.com/markuspoerschke/iCal"
             },
-            "time": "2023-12-19T19:24:37+00:00"
+            "time": "2024-07-11T22:33:13+00:00"
         },
         {
             "name": "geocoder-php/common-http",
@@ -1429,16 +1429,16 @@
         },
         {
             "name": "scssphp/scssphp",
-            "version": "v1.12.1",
+            "version": "v1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scssphp/scssphp.git",
-                "reference": "394ed1e960138710a60d035c1a85d43d0bf0faeb"
+                "reference": "63d1157457e5554edf00b0c1fabab4c1511d2520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scssphp/scssphp/zipball/394ed1e960138710a60d035c1a85d43d0bf0faeb",
-                "reference": "394ed1e960138710a60d035c1a85d43d0bf0faeb",
+                "url": "https://api.github.com/repos/scssphp/scssphp/zipball/63d1157457e5554edf00b0c1fabab4c1511d2520",
+                "reference": "63d1157457e5554edf00b0c1fabab4c1511d2520",
                 "shasum": ""
             },
             "require": {
@@ -1503,9 +1503,9 @@
             ],
             "support": {
                 "issues": "https://github.com/scssphp/scssphp/issues",
-                "source": "https://github.com/scssphp/scssphp/tree/v1.12.1"
+                "source": "https://github.com/scssphp/scssphp/tree/v1.13.0"
             },
-            "time": "2024-01-13T12:36:40+00:00"
+            "time": "2024-08-17T21:02:11+00:00"
         },
         {
             "name": "symfony/cache",

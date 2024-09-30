@@ -1,6 +1,85 @@
 (function($) {
     "use strict";
     $(function() {
+        let fullDayCheckbox = $("#full-day");
+        let startTimeInput = $("#repetition-start_time");
+        let endTimeInput = $("#repetition-end_time");
+        let preserveManualCode = false;
+        fullDayCheckbox.on("change", function(event) {
+            if (fullDayCheckbox.is(":checked")) {
+                startTimeInput.val("00:00");
+                endTimeInput.val("23:59");
+                startTimeInput.hide();
+                endTimeInput.hide();
+            } else {
+                startTimeInput.show();
+                endTimeInput.show();
+            }
+        });
+        fullDayCheckbox.trigger("change");
+        let itemInput = $("#item-id");
+        let locationInput = $("#location-id");
+        let startDateInput = $("#repetition-start_date");
+        let bookingCodeInput = $("#_cb_bookingcode");
+        itemInput.on("change", function(event) {
+            let data = {
+                itemID: itemInput.val()
+            };
+            const fetchLocation = data => {
+                $.post(cb_ajax_get_bookable_location.ajax_url, {
+                    _ajax_nonce: cb_ajax_get_bookable_location.nonce,
+                    action: "cb_get_bookable_location",
+                    data: data
+                }, function(data) {
+                    if (data.success) {
+                        locationInput.val(data.locationID);
+                        fullDayCheckbox.prop("checked", data.fullDay);
+                        fullDayCheckbox.trigger("change");
+                    }
+                }).then(() => {
+                    fetchBookingCode();
+                });
+            };
+            fetchLocation(data);
+        });
+        itemInput.trigger("change");
+        const fetchBookingCode = () => {
+            if (!fullDayCheckbox.is(":checked")) {
+                return;
+            }
+            let data = {
+                itemID: itemInput.val(),
+                locationID: locationInput.val(),
+                startDate: startDateInput.val()
+            };
+            $.post(cb_ajax_get_booking_code.ajax_url, {
+                _ajax_nonce: cb_ajax_get_booking_code.nonce,
+                action: "cb_get_booking_code",
+                data: data
+            }, function(data) {
+                if (data.success) {
+                    bookingCodeInput.val(data.bookingCode);
+                    preserveManualCode = false;
+                } else if (!preserveManualCode) {
+                    bookingCodeInput.val("");
+                }
+            });
+        };
+        bookingCodeInput.on("keyup", function(event) {
+            preserveManualCode = true;
+        });
+        startDateInput.on("change", function(event) {
+            fetchBookingCode();
+        });
+        fullDayCheckbox.on("change", function(event) {
+            fetchBookingCode();
+        });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
         const groupName = "rules_group";
         const groupID = "cmb-group-rules_group-";
         const ruleSelectorID = "rule-type";
@@ -294,6 +373,40 @@
         handleUseGlobalSettings();
         useGlobalSettings.change(function() {
             handleUseGlobalSettings();
+        });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
+        $("#orphans-migration-start").on("click", function(event) {
+            event.preventDefault();
+            $("#orphans-migration-in-progress").show();
+            let checkedBoxes = $(".post-checkboxes:checkbox:checked");
+            let ids = [];
+            checkedBoxes.each(function() {
+                ids.push($(this).val());
+            });
+            let data = ids;
+            $.post(cb_ajax_orphaned_booking_migration.ajax_url, {
+                _ajax_nonce: cb_ajax_orphaned_booking_migration.nonce,
+                action: "cb_orphaned_booking_migration",
+                data: data
+            }).done(function(data) {
+                if (data.success) {
+                    $("#orphans-migration-in-progress").hide();
+                    $("#orphans-migration-done").show();
+                    $("#orphans-migration-done span").text(data.message);
+                    ids.forEach(function(id) {
+                        $("#row-booking-" + id).remove();
+                    });
+                } else {
+                    $("#orphans-migration-in-progress").hide();
+                    $("#orphans-migration-failed").show();
+                    $("#orphans-migration-failed span").text(data.message);
+                }
+            });
         });
     });
 })(jQuery);

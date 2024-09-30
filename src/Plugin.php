@@ -18,6 +18,7 @@ use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
+use CommonsBooking\View\MassOperations;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -317,6 +318,16 @@ class Plugin {
 				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
 				''
 			);
+
+			//Add menu item for mass operations
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Mass Operations', 'commonsbooking' ),
+				esc_html__( 'Mass Operations', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				'cb-mass-operations',
+				array( MassOperations::class, 'index' )
+			);
 		}
 	}
 
@@ -473,6 +484,7 @@ class Plugin {
 	public static function renderError() {
 		$errorTypes = [
 			Model\Timeframe::ERROR_TYPE,
+			Model\Timeframe::ORPHANED_TYPE,
 			BookingCode::ERROR_TYPE,
 			OptionsTab::ERROR_TYPE,
             Model\Booking::ERROR_TYPE,

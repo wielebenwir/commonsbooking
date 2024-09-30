@@ -50,17 +50,19 @@ trait Cache {
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
-     *
-     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
 	 * @param null $custom_id
 	 *
 	 * @return string
+	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
+	 * @since 2.9.4 added support for multisite caches
+	 *
 	 */
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-        $namespace     = COMMONSBOOKING_PLUGIN_DIR;
+		$namespace     = COMMONSBOOKING_PLUGIN_DIR; //To account for multiple instances on same server
+		$namespace     .= '_' . get_current_blog_id(); //To account for WP Multisite
 		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace     .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];

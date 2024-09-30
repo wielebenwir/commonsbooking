@@ -83,6 +83,16 @@ function commonsbooking_admin() {
 		. 'cb_applied_booking_rules=' . \CommonsBooking\Service\BookingRuleApplied::getRulesJSON() . ';',
 	);
 
+
+	//orphaned bookings migration - re-assign booking when timeframe has changed
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_orphaned_booking_migration',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_orphaned_booking_migration' ),
+		)
+	);
 	/**
 	 * Ajax - cache warmup
 	 */
@@ -92,6 +102,31 @@ function commonsbooking_admin() {
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
+		)
+	);
+
+
+	/**
+	 * Ajax - get location for item
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_get_bookable_location',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_get_bookable_location' ),
+		)
+	);
+
+	/**
+	 * Ajax - get booking code for backend booking
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_get_booking_code',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_get_booking_code' ),
 		)
 	);
 }

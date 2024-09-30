@@ -341,11 +341,12 @@ class BookingCodes {
 			throw new BookingCodeException( __( "No booking codes could be created because the item of the timeframe could not be found.", 'commonsbooking' )  );
 		}
 
-		$bookingCodesRandomizer = intval( $timeframe->ID );
-		$bookingCodesRandomizer += $item->ID;
-		$bookingCodesRandomizer += $location->ID;
+		$todayMidnight = new \DateTime('today midnight', $period->getStartDate()->getTimezone());
 
 		foreach ( $period as $dt ) {
+			// do not generate any codes for past days
+			if ($dt < $todayMidnight) continue;
+
 			$day = new Day( $dt->format( 'Y-m-d' ) );
 			if ( $day->isInTimeframe( $timeframe ) ) {
 
@@ -358,7 +359,7 @@ class BookingCodes {
 				$bookingCode = new BookingCode(
 					$dt->format( 'Y-m-d' ),
 					$item->ID,
-					$bookingCodesArray[ ( (int) $dt->format( 'z' ) + $bookingCodesRandomizer ) % count( $bookingCodesArray ) ]
+					$bookingCodesArray[ random_int(0, count($bookingCodesArray) - 1) ]
 				);
 				self::persist(
 					$bookingCode,

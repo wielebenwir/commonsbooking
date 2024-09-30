@@ -10,7 +10,7 @@ use SlopeIt\ClockMock\ClockMock;
 
 class BookingCodesTest extends CustomPostTypeTest
 {
-	private Timeframe $timeframeWithEndDate;
+	protected Timeframe $timeframeWithEndDate;
 	private Timeframe $timeframeWithoutEndDate;
 	private Timeframe $timeframeWithDisabledBookingCodesAndEndDate;
 	private Timeframe $timeframeWithDisabledBookingCodesWithoutEndDate;
@@ -128,7 +128,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		$timeframe_1 = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( 'today midnight' ),
 			null,
 		));
 
@@ -176,7 +176,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		$timeframe_2 = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( 'today midnight' ),
 			null,
 		));
 
@@ -221,7 +221,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		//now we should get all codes
 		$codes = BookingCodes::getCodes( $this->timeframeWithEndDate->ID,self::ADVANCE_GENERATION_DAYS);
 		$this->assertNotEmpty( $codes );
-		$this->assertCount( 31, $codes );
+		$this->assertCount( 30, $codes );
 		//check that the codes are in the correct order
 		$lastCode = null;
 		foreach ( $codes as $code ) {
@@ -245,10 +245,9 @@ class BookingCodesTest extends CustomPostTypeTest
 		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
 
 		// codes will be generated and returned
-		// - for yesterday which is timeframe start date (1),
 		// - for today (1) and
 		// - for additional BookingCodes::ADVANCE_GENERATION_DAYS
-		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + 2;
+		$codeAmount = 1 + BookingCodes::ADVANCE_GENERATION_DAYS ;
 		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
 		$this->assertNotEmpty( $codes );
 		$this->assertCount( $codeAmount, $codes );
@@ -292,14 +291,17 @@ class BookingCodesTest extends CustomPostTypeTest
 
 		// test behavior of getCodes() without specified startDate and endDate:
 		// codes will be generated and returned
-		// - for day before self::CURRENT_DATE which is timeframe start date (1),
-		// - for $daysInFuture,
-		// - for today (1) and
+		// - for the future date (1) and
 		// - for additional BookingCodes::ADVANCE_GENERATION_DAYS
-		$codeAmount = BookingCodes::ADVANCE_GENERATION_DAYS + $daysInFuture + 2;
+		$codeAmount = 1 + BookingCodes::ADVANCE_GENERATION_DAYS;
 		$codes = BookingCodes::getCodes( $this->timeframeWithoutEndDate->ID );
 		$this->assertNotEmpty( $codes );
 		$this->assertCount( $codeAmount, $codes );
+
+		// check that no codes have been generated from beginning of timeframe (in the past),
+		// by checking that first generated code is for the future date
+		$this->assertEquals( $futureDate->format( 'Y-m-d' ), $codes[0]->getDate() );
+
 		//check that the codes are in the correct order
 		$lastCode = null;
 		foreach ( $codes as $code ) {
@@ -371,20 +373,20 @@ class BookingCodesTest extends CustomPostTypeTest
 		$this->timeframeWithEndDate = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( self::CURRENT_DATE ),
 			strtotime( '+29 day', strtotime( self::CURRENT_DATE ) )
 		));
 		$this->timeframeWithoutEndDate = new Timeframe($this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( self::CURRENT_DATE ),
 			null,
 		));
 
 		$this->timeframeWithDisabledBookingCodesAndEndDate = new Timeframe($this->createTimeframe(
             $this->locationId,
             $this->itemId,
-            strtotime('-1 day', strtotime(self::CURRENT_DATE)),
+            strtotime( self::CURRENT_DATE ),
             strtotime('+30 day', strtotime(self::CURRENT_DATE)),
             \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
             "on",
@@ -408,7 +410,7 @@ class BookingCodesTest extends CustomPostTypeTest
 		$this->timeframeWithDisabledBookingCodesWithoutEndDate = new Timeframe($this->createTimeframe(
             $this->locationId,
             $this->itemId,
-            strtotime('-1 day', strtotime(self::CURRENT_DATE)),
+            strtotime( self::CURRENT_DATE ),
             null,
             \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
             "on",

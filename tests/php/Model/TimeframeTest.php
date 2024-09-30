@@ -445,7 +445,9 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$this->assertStringContainsString("Item or location is missing. Please set item and location.",$e->getMessage());
+			//also test, that correct notice for Timeframes is shown
+			$this->assertStringContainsString('Timeframe is saved as draft.', $e->getMessage());
 		}
 
 		$noLocationTF = new Timeframe($this->createTimeframe(
@@ -460,7 +462,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals("Item or location is missing. Please set item and location. Timeframe is saved as draft",$e->getMessage());
+			$this->assertStringContainsString("Item or location is missing. Please set item and location.",$e->getMessage());
 		}
 
 		$exceptionCaught = false;
@@ -475,7 +477,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch (TimeframeInvalidException $e ){
-			$this->assertEquals("Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.",$e->getMessage());
+			$this->assertStringContainsString("Startdate is missing.",$e->getMessage());
 		}
 
 		$isOverlapping = new Timeframe($this->createTimeframe(
@@ -592,7 +594,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->fail("TimeframeInvalidException was not thrown");
 		}
 		catch ( TimeframeInvalidException $e ) {
-			$this->assertEquals( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
+			$this->assertStringContainsString( "A pickup time but no return time has been set. Please set the return time.", $e->getMessage() );
 		}
 	}
 
