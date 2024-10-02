@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-30T12:21:37+00:00\n"
+"POT-Creation-Date: 2024-10-02T15:32:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1319,12 +1319,12 @@ msgstr ""
 msgid "Timeframe is saved as draft."
 msgstr ""
 
-#: src/Map/BaseShortcode.php:14
-#: src/Map/BaseShortcode.php:20
+#: src/Map/BaseShortcode.php:24
+#: src/Map/BaseShortcode.php:30
 msgid "no valid map id provided"
 msgstr ""
 
-#: src/Map/BaseShortcode.php:24
+#: src/Map/BaseShortcode.php:34
 msgid "map is not published"
 msgstr ""
 
@@ -1352,68 +1352,68 @@ msgstr ""
 msgid "Commons Booking Map"
 msgstr ""
 
-#: src/Map/MapShortcode.php:40
+#: src/Map/MapShortcode.php:43
 #: templates/map-admin-page-template.php:229
 #: templates/map-admin-page-template.php:248
 msgid "opening hours"
 msgstr ""
 
-#: src/Map/MapShortcode.php:41
+#: src/Map/MapShortcode.php:44
 msgid "contact"
 msgstr ""
 
-#: src/Map/MapShortcode.php:42
+#: src/Map/MapShortcode.php:45
 msgid "from"
 msgstr ""
 
-#: src/Map/MapShortcode.php:43
+#: src/Map/MapShortcode.php:46
 msgid "until"
 msgstr ""
 
-#: src/Map/MapShortcode.php:44
+#: src/Map/MapShortcode.php:47
 msgid "for at least"
 msgstr ""
 
-#: src/Map/MapShortcode.php:45
+#: src/Map/MapShortcode.php:48
 msgid "day(s)"
 msgstr ""
 
-#: src/Map/MapShortcode.php:46
+#: src/Map/MapShortcode.php:49
 msgid "Sorry, no locations found."
 msgstr ""
 
-#: src/Map/MapShortcode.php:47
+#: src/Map/MapShortcode.php:50
 msgid "filter"
 msgstr ""
 
-#: src/Map/MapShortcode.php:48
+#: src/Map/MapShortcode.php:51
 #: templates/map-admin-page-template.php:599
 msgid "availability"
 msgstr ""
 
-#: src/Map/MapShortcode.php:49
+#: src/Map/MapShortcode.php:52
 #: templates/map-admin-page-template.php:609
 msgid "categories"
 msgstr ""
 
-#: src/Map/MapShortcode.php:50
+#: src/Map/MapShortcode.php:53
 #: templates/map-admin-page-template.php:546
 msgid "distance"
 msgstr ""
 
-#: src/Map/MapShortcode.php:51
+#: src/Map/MapShortcode.php:54
 msgid "address"
 msgstr ""
 
-#: src/Map/MapShortcode.php:52
+#: src/Map/MapShortcode.php:55
 msgid "Sorry, an error occured during your request. Please try again later."
 msgstr ""
 
-#: src/Map/MapShortcode.php:53
+#: src/Map/MapShortcode.php:56
 msgid "The service is currently not available. Please try again later."
 msgstr ""
 
-#: src/Map/MapShortcode.php:54
+#: src/Map/MapShortcode.php:57
 msgid "comming soon"
 msgstr ""
 
