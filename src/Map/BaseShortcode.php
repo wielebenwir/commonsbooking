@@ -2,9 +2,18 @@
 
 namespace CommonsBooking\Map;
 
+/**
+ * Map shortcode base implementation.
+ * Derive from this class to create custom map shortcode.
+ * Examples of how to implement the abstract methods called in `execute` are {@see MapShortcode} and {@see SearchShortcode}.
+ */
 abstract class BaseShortcode {
+
 	/**
-	 * the shortcode handler - load all the needed assets and render the map container
+	 * The shortcode handler - load all the needed assets and render the map container
+	 *
+	 * @param array  $atts attributes for parametrization.
+	 * @param string $content content to display, if shortcode implementation allows to.
 	 **/
 	public static function execute( array $atts, string $content ): string {
 		$instance = new static();
