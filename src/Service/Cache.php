@@ -374,19 +374,26 @@ trait Cache {
 	}
 
 	/**
-	 * Iterates through array and executes shortcodecalls.
-	 * @param $shortCodeCalls
+	 * Iterates through array and statically executes given functions.
+	 *
+	 * @param string[] $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
 	 *
 	 * @return void
 	 */
-	private static function runShortcodeCalls($shortCodeCalls) {
+	private static function runShortcodeCalls( array $shortCodeCalls ): void {
 		foreach($shortCodeCalls as $shortcode) {
 			$shortcodeFunction = array_keys($shortcode)[0];
 			$attributes = $shortcode[$shortcodeFunction];
 
 			if(array_key_exists($shortcodeFunction, self::$cbShortCodeFunctions)) {
 				list($class, $function) = self::$cbShortCodeFunctions[$shortcodeFunction];
-				$class::$function($attributes);
+
+				try {
+					$class::$function( $attributes );
+				} catch ( Exception $e ) {
+					// Writes error to log anyway
+					error_log( (string) $e ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				}
 			}
 		}
 	}
