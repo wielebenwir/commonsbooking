@@ -652,7 +652,7 @@ class Plugin {
 	}
 
 	public function registerShortcodes() {
-		add_shortcode('cb_search', array(new SearchShortcode(), 'execute'));
+		add_shortcode( 'cb_search', array( SearchShortcode::class, 'execute' ) );
 	}
 
 	/**

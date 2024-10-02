@@ -35,7 +35,7 @@ class Map extends CustomPostType {
 		}
 
 		// Add shortcodes
-		add_shortcode( 'cb_map', array( new MapShortcode(), 'execute' ) );
+		add_shortcode( 'cb_map', array( MapShortcode::class, 'execute' ) );
 
 		// Add actions
 		add_action( 'save_post_' . self::$postType, array( MapAdmin::class, 'validate_options' ), 10, 3 );
