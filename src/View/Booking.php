@@ -68,6 +68,12 @@ class Booking extends View {
 			$order = sanitize_text_field( $_POST['order'] );
 		}
 
+		// Upon initial load, start date is not configured
+		$startDateDefined = false;
+		if ( array_key_exists( 'startDate', $_POST ) ) {
+			$startDateDefined = true;
+		}
+
 		$filters = [
 			'location'  => false,
 			'item'      => false,
@@ -111,7 +117,29 @@ class Booking extends View {
 			);
 
 			if ( ! $posts ) {
-				return false;
+				// Because upon initial load the form stays empty when we just have bookings in the past
+				// With an empty form, the user can't change the start date so we look for bookings in the past
+				if ( ! $startDateDefined ) {
+					//Don't fetch all bookings so that admins are not overwhelmed with all bookings of all time
+					for ( $year = 1; $year <= 3; $year++) {
+						$currentTime = strtotime( '-' . $year . ' year' );
+						$posts     = \CommonsBooking\Repository\Booking::getForUser(
+							$user,
+							true,
+							$currentTime
+						);
+						if ( $posts ) {
+							$filters['startDate'] = $currentTime;
+							break;
+						}
+					}
+					if ( ! $posts ) {
+						return false;
+					}
+				}
+				else {
+					return false;
+				}
 			}
 
 			// Prepare Templatedata and remove invalid posts

@@ -4,6 +4,9 @@ namespace CommonsBooking\Map;
 
 use CommonsBooking\Model\Map;
 
+/**
+ * Shortcode for the legacy map with the old non-responsive standard leaflet style.
+ */
 class MapShortcode extends BaseShortcode {
 	protected function create_container( $cb_map_id, $attrs, $options, $content ) {
 		$map        = new Map( $cb_map_id );

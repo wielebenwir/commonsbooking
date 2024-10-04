@@ -23,6 +23,15 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 	];
 
 	public function testGetBookingCode_AJAX() {
+		ClockMock::freeze( new \DateTime( CustomPostTypeTest::CURRENT_DATE ));
+
+		// Save timeframe post to trigger booking code generation.
+		// It is necessary to generate here after time has been frozen to CustomPostTypeTest::CURRENT_DATE
+		// because the code generation depends on the current date and codes are not generated for the past.
+		// (CustomPostTypeTest::CURRENT_DATE is a date in the past) 
+		$timeframeCPT = new Timeframe();
+		$timeframeCPT->savePost( $this->timeframeID, get_post($this->timeframeID) );
+
 		$_POST['_wpnonce'] = wp_create_nonce( 'cb_get_booking_code' );
 		$data = [
 			'locationID' => $this->locationID,
@@ -114,11 +123,9 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 
 		$bookingCodesString = implode( ',', $this->bookingCodes );
 
-		//init booking code table and initial booking codes for timeframe
+		//init booking code table
 		Settings::updateOption('commonsbooking_options_bookingcodes','bookingcodes',$bookingCodesString);
 		\CommonsBooking\Repository\BookingCodes::initBookingCodesTable();
-		$timeframeCPT = new Timeframe();
-		$timeframeCPT->savePost( $this->timeframeID, get_post($this->timeframeID) );
 	}
 
 	public function tear_down() {

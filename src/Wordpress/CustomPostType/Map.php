@@ -31,7 +31,7 @@ class Map extends CustomPostType {
 	 */
 	public function initHooks() {
 		// Add shortcodes
-		add_shortcode( 'cb_map', array( new MapShortcode(), 'execute' ) );
+		add_shortcode( 'cb_map', array( MapShortcode::class, 'execute' ) );
 
 		// Add actions
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );

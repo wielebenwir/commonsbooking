@@ -189,6 +189,27 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( $bookingObj->isUnconfirmed() );
 	}
 
+	public function testGetOrphaned() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE));
+		//create a new booking on a new timeframe and orphan it
+		$newLocation = $this->createLocation( 'newlocation', 'publish' );
+		$newItem = $this->createItem( 'newitem', 'publish' );
+		$newTimeframe = $this->createBookableTimeFrameIncludingCurrentDay($newLocation, $newItem);
+		$newBooking = $this->createBooking(
+			$newLocation,
+			$newItem,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
+		);
+		$evenNewerLocation = $this->createLocation( 'evennewerlocation', 'publish' );
+		update_post_meta( $newTimeframe, 'location-id', $evenNewerLocation );
+
+		//now retrieve all orphaned bookings and make sure we find the new one
+		$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned();
+		$this->assertCount(1, $orphanedBookings);
+		$this->assertEquals($newBooking, reset($orphanedBookings)->ID);
+	}
+
 	public function testReturnComment() {
 		$this->assertEquals( '', $this->testBookingTomorrow->returnComment() );
 

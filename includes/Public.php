@@ -171,6 +171,7 @@ if ( is_admin() ) {
 
 	//getting booking code for new backend booking AJAX
 	add_action( 'wp_ajax_cb_get_booking_code', array( \CommonsBooking\View\Booking::class, 'getBookingCode_AJAX' ) );
+	add_action( 'wp_ajax_cb_orphaned_booking_migration', array( \CommonsBooking\Service\MassOperations::class, 'ajaxMigrateOrphaned' ) );
 }
 
 // Map ajax

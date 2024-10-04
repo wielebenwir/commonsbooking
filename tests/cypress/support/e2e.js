@@ -23,6 +23,11 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   if (err.message.includes('Cannot read properties of undefined (reading \'serialize\')')) {
     return false
   }
+  
+  // #1632
+  if (err.message.includes('Cannot destructure property \'documentElement\' of \'o\' as it is null.')) {
+  	return false
+  }
   // we still want to ensure there are no other unexpected
   // errors, so we let them fail the test
 })

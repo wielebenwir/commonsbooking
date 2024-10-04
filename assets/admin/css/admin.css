@@ -5087,6 +5087,13 @@ a.disabled {
   animation: blinkText 1s infinite alternate;
 }
 
+#orphans-migration-in-progress,
+#orphans-migration-done,
+#orphans-migration-failed {
+  margin-bottom: 1rem;
+  display: none;
+}
+
 @keyframes blinkText {
   from {
     opacity: 0;
