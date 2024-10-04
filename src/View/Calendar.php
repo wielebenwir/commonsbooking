@@ -352,6 +352,7 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
+		$firstBookableDay   = null;
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
@@ -363,7 +364,7 @@ class Calendar {
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
 			$advanceBookingDays       = intval( $closestBookableTimeframe->getFieldValue( 'timeframe-advance-booking-days' ) );
-            $firstBookableDay = $closestBookableTimeframe->getFirstBookableDay();
+			$firstBookableDay         = $closestBookableTimeframe->getFirstBookableDay();
 
 			// Only if passed daterange must not be kept
 			if ( ! $keepDaterange ) {
