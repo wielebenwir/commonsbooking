@@ -121,6 +121,14 @@ class WordpressTest extends CustomPostTypeTest
 		$this->assertEquals( 5, count( $related ));
     }
 
+	public function testGetUTCFromDate() {
+		update_option( 'timezone_string', 'Europe/Berlin' );
+		$local = '2023-11-27 17:43:56';
+		$gmt   = '2023-11-27 16:43:56';
+		$dt = Wordpress::getUTCFromDate( $local );
+		$this->assertEquals( $gmt, $dt->format( 'Y-m-d H:i:s' ) );
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
