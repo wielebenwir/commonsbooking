@@ -58,18 +58,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies (PHP 7.4)
-      if: matrix.php == '7.4'
-      run: |
-        bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.core.version }}
-        composer install --prefer-dist --no-progress
-
-    - name: Install dependencies (other PHP versions)
-      if: matrix.php != '7.4'
-      run: |
-        bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.core.version }}
-        composer install --prefer-dist --no-progress --ignore-platform-reqs
-
     - name: Run test suite
       run: |
         composer dump-autoload -o
