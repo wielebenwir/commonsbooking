@@ -45,6 +45,9 @@ jobs:
       - name: setup wp env
         run: npm run env:start
         
+      - name: install test data for e2e test
+        run: npm run cypress:setup
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
