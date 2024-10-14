@@ -148,6 +148,7 @@ function commonsbooking_public() {
 }
 
 add_action( 'wp_enqueue_scripts', 'commonsbooking_public' );
+add_action( 'admin_enqueue_scripts', 'commonsbooking_public' );
 
 // Calendar data ajax
 add_action( 'wp_ajax_cb_calendar_data', array( Calendar::class, 'getCalendarData' ) );
