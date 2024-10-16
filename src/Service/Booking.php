@@ -47,6 +47,9 @@ class Booking {
 		}
 		if ( count( $bookings ) ) {
 			foreach ( $bookings as $booking ) {
+				if ( $booking->hasTotalBreakdown() ) {
+					continue;
+				}
 				$message = new $message( $booking->getPost()->ID, $message->getAction() );
 				$message->triggerMail();
 			}
