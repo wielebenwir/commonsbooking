@@ -286,7 +286,7 @@ class BookingRuleApplied extends BookingRule {
 				}
 				try {
 					$bookingRule->setAppliedParams(
-						$ruleParams ?? [],
+						$ruleParams,
 						$selectParam ?? null
 					);
 				} catch ( BookingRuleException $e ) {
