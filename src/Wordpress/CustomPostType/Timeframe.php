@@ -875,6 +875,7 @@ class Timeframe extends CustomPostType {
 				$e->getMessage(),
 				45
 			);
+			return;
 		}
 		$timeframe->updatePostMetaStartAndEndDate();
 
