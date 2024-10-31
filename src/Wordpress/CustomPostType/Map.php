@@ -51,8 +51,7 @@ class Map extends CustomPostType {
 	 **/
 	public static function replace_map_link_target() {
 		global $post;
-		$cb_item = 'cb_items';
-		if ( is_object( $post ) && $post->post_type == $cb_item ) {
+		if ( is_object( $post ) && $post->post_type == CB1::$ITEM_TYPE_ID ) {
 			//get timeframes of item
 			$cb_data    = new CB_Data();
 			$date_start = date( 'Y-m-d' ); // current date
