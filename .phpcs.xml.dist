@@ -81,6 +81,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
 
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
         <exclude name="Squiz.Commenting.FileComment" />
+        <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
         
         <exclude-pattern>tests/</exclude-pattern>
     </rule>
