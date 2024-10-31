@@ -1285,6 +1285,11 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+	/**
+	 * @param \WP_Query $query
+	 *
+	 * @return true|void returns true if inheriting method should set sort order, void if this method sets it
+	 */
 	public function setCustomColumnSortOrder( \WP_Query $query ) {
 		if (! parent::setCustomColumnSortOrder( $query ) ) {
 			return;
