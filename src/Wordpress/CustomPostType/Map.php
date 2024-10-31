@@ -8,6 +8,7 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
 use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\Repository\CB1;
 use CommonsBooking\Repository\Item;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
