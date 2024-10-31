@@ -9,6 +9,8 @@ namespace CommonsBooking\Map;
  */
 abstract class BaseShortcode {
 
+	final public function __construct() { }
+
 	/**
 	 * The shortcode handler - load all the needed assets and render the map container
 	 *
