@@ -6,6 +6,11 @@ use CommonsBooking\Plugin;
 use CommonsBooking\View\TimeframeExport;
 use Exception;
 
+/**
+ * This adds the settings pane to the commonsbooking plugin page.
+ * It uses CMB2 fields to display settings in a generic way and uses underlying functionality to save them.
+ * The structure and contents of all the settings is controlled via the file OptionsArray.
+ */
 class OptionsTab {
 
 	public $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
