@@ -227,7 +227,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Returns view-class.
-	 * @return \CommonsBooking\View\Timeframe
+	 * @return null
 	 */
 	public static function getView() {
 		// @TODO implement view.
@@ -931,8 +931,7 @@ class Timeframe extends CustomPostType {
 					commonsbooking_sanitizeHTML(
 						__(
 							'Orphaned bookings found, can migrate. <a href="admin.php?page=cb-mass-operations"> Click here to migrate </a>',
-							'commonsbooking',
-							5
+							'commonsbooking'
 						)
 					)
 				);
