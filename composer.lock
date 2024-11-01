@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e65082ff96f03504ba7fcf2a43a66c2",
+    "content-hash": "279f55d3ec009d757116e3fe8c40d729",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -130,47 +130,6 @@
                 "source": "http://wordpress.org/support/plugin/cmb2"
             },
             "time": "2022-02-22T14:15:16+00:00"
-        },
-        {
-            "name": "ed-itsolutions/cmb2-field-ajax-search",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Ed-ITSolutions/cmb2-field-ajax-search.git",
-                "reference": "9b25b9ece948a2b5e5e79a46df8cbf6197cf8c89"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Ed-ITSolutions/cmb2-field-ajax-search/zipball/9b25b9ece948a2b5e5e79a46df8cbf6197cf8c89",
-                "reference": "9b25b9ece948a2b5e5e79a46df8cbf6197cf8c89",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.3 || ^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "cmb2-field-ajax-search.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Adam Laycock",
-                    "email": "adam@arcath.net",
-                    "homepage": "https://arcath.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "CMB2",
-            "support": {
-                "source": "https://github.com/Ed-ITSolutions/cmb2-field-ajax-search/tree/master"
-            },
-            "time": "2020-07-01T15:35:03+00:00"
         },
         {
             "name": "eluceo/ical",
