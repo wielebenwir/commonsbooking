@@ -23,7 +23,12 @@
     {
       "type": "vcs",
       "url": "https://github.com/wielebenwir/cmb-field-select2"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/datengraben/cmb2-field-ajax-search"
     }
+
   ],
   "require": {
     "php": ">=7.3",

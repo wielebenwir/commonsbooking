@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "279f55d3ec009d757116e3fe8c40d729",
+    "content-hash": "b763ef2b6087adace705e874beb9cde5",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -130,6 +130,41 @@
                 "source": "http://wordpress.org/support/plugin/cmb2"
             },
             "time": "2022-02-22T14:15:16+00:00"
+        },
+        {
+            "name": "ed-itsolutions/cmb2-field-ajax-search",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/datengraben/cmb2-field-ajax-search.git",
+                "reference": "887470a5cb9363a51d573bb8d49259435f519511"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/datengraben/cmb2-field-ajax-search/zipball/887470a5cb9363a51d573bb8d49259435f519511",
+                "reference": "887470a5cb9363a51d573bb8d49259435f519511",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "type": "library",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Laycock",
+                    "email": "adam@arcath.net",
+                    "homepage": "https://arcath.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CMB2",
+            "support": {
+                "source": "https://github.com/datengraben/cmb2-field-ajax-search/tree/v2.0.1"
+            },
+            "time": "2024-11-01T18:36:49+00:00"
         },
         {
             "name": "eluceo/ical",
