@@ -1,6 +1,85 @@
 (function($) {
     "use strict";
     $(function() {
+        let fullDayCheckbox = $("#full-day");
+        let startTimeInput = $("#repetition-start_time");
+        let endTimeInput = $("#repetition-end_time");
+        let preserveManualCode = false;
+        fullDayCheckbox.on("change", function(event) {
+            if (fullDayCheckbox.is(":checked")) {
+                startTimeInput.val("00:00");
+                endTimeInput.val("23:59");
+                startTimeInput.hide();
+                endTimeInput.hide();
+            } else {
+                startTimeInput.show();
+                endTimeInput.show();
+            }
+        });
+        fullDayCheckbox.trigger("change");
+        let itemInput = $("#item-id");
+        let locationInput = $("#location-id");
+        let startDateInput = $("#repetition-start_date");
+        let bookingCodeInput = $("#_cb_bookingcode");
+        itemInput.on("change", function(event) {
+            let data = {
+                itemID: itemInput.val()
+            };
+            const fetchLocation = data => {
+                $.post(cb_ajax_get_bookable_location.ajax_url, {
+                    _ajax_nonce: cb_ajax_get_bookable_location.nonce,
+                    action: "cb_get_bookable_location",
+                    data: data
+                }, function(data) {
+                    if (data.success) {
+                        locationInput.val(data.locationID);
+                        fullDayCheckbox.prop("checked", data.fullDay);
+                        fullDayCheckbox.trigger("change");
+                    }
+                }).then(() => {
+                    fetchBookingCode();
+                });
+            };
+            fetchLocation(data);
+        });
+        itemInput.trigger("change");
+        const fetchBookingCode = () => {
+            if (!fullDayCheckbox.is(":checked")) {
+                return;
+            }
+            let data = {
+                itemID: itemInput.val(),
+                locationID: locationInput.val(),
+                startDate: startDateInput.val()
+            };
+            $.post(cb_ajax_get_booking_code.ajax_url, {
+                _ajax_nonce: cb_ajax_get_booking_code.nonce,
+                action: "cb_get_booking_code",
+                data: data
+            }, function(data) {
+                if (data.success) {
+                    bookingCodeInput.val(data.bookingCode);
+                    preserveManualCode = false;
+                } else if (!preserveManualCode) {
+                    bookingCodeInput.val("");
+                }
+            });
+        };
+        bookingCodeInput.on("keyup", function(event) {
+            preserveManualCode = true;
+        });
+        startDateInput.on("change", function(event) {
+            fetchBookingCode();
+        });
+        fullDayCheckbox.on("change", function(event) {
+            fetchBookingCode();
+        });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
         const groupName = "rules_group";
         const groupID = "cmb-group-rules_group-";
         const ruleSelectorID = "rule-type";
@@ -133,6 +212,68 @@
 (function($) {
     "use strict";
     $(function() {
+        let typeInput = $("#export-type");
+        let locationFields = $("#location-fields");
+        let itemFields = $("#item-fields");
+        let userFields = $("#user-fields");
+        let exportTimerangeStart = $("#export-timerange-start");
+        let exportTimerangeEnd = $("#export-timerange-end");
+        let inProgress = $("#timeframe-export-in-progress");
+        let inProgressSpan = $("#timeframe-export-in-progress span");
+        let done = $("#timeframe-export-done");
+        let failed = $("#timeframe-export-failed");
+        let failedSpan = $("#timeframe-export-failed span");
+        let doneSpan = $("#timeframe-export-done span");
+        $("#timeframe-export-start").on("click", function(event) {
+            event.preventDefault();
+            let settings = {
+                exportType: typeInput.val(),
+                locationFields: locationFields.val(),
+                itemFields: itemFields.val(),
+                userFields: userFields.val(),
+                exportStartDate: exportTimerangeStart.val(),
+                exportEndDate: exportTimerangeEnd.val()
+            };
+            let progress = "0/0 bookings exported";
+            let data = {
+                settings: settings,
+                progress: progress
+            };
+            inProgress.show();
+            const runExport = data => {
+                $.post(cb_ajax_export_timeframes.ajax_url, {
+                    _ajax_nonce: cb_ajax_export_timeframes.nonce,
+                    action: "cb_export_timeframes",
+                    data: data
+                }, function(data) {
+                    if (data.success) {
+                        done.show();
+                        doneSpan.text(data.message);
+                        inProgress.hide();
+                        const blob = new Blob([ data.csv ]);
+                        const filename = data.filename;
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    } else if (data.error) {
+                        failed.show();
+                        failedSpan.text(data.message);
+                        inProgress.hide();
+                    } else {
+                        inProgressSpan.text(data.progress);
+                        runExport(data);
+                    }
+                });
+            };
+            runExport(data);
+        });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
         const holidayLoadButton = $("#holiday_load_btn");
         const manualDateInput = $("#timeframe_manual_date");
         const manualDatePicker = $("#cmb2_multiselect_datepicker");
@@ -239,6 +380,69 @@
 (function($) {
     "use strict";
     $(function() {
+        $("#orphans-migration-start").on("click", function(event) {
+            event.preventDefault();
+            $("#orphans-migration-in-progress").show();
+            let checkedBoxes = $(".post-checkboxes:checkbox:checked");
+            let ids = [];
+            checkedBoxes.each(function() {
+                ids.push($(this).val());
+            });
+            let data = ids;
+            $.post(cb_ajax_orphaned_booking_migration.ajax_url, {
+                _ajax_nonce: cb_ajax_orphaned_booking_migration.nonce,
+                action: "cb_orphaned_booking_migration",
+                data: data
+            }).done(function(data) {
+                if (data.success) {
+                    $("#orphans-migration-in-progress").hide();
+                    $("#orphans-migration-done").show();
+                    $("#orphans-migration-done span").text(data.message);
+                    ids.forEach(function(id) {
+                        $("#row-booking-" + id).remove();
+                    });
+                } else {
+                    $("#orphans-migration-in-progress").hide();
+                    $("#orphans-migration-failed").show();
+                    $("#orphans-migration-failed span").text(data.message);
+                }
+            });
+        });
+    });
+})(jQuery);
+
+(function($) {
+    "use strict";
+    $(function() {
+        if ($("#upgrade-fields").length == 0) {
+            $(".cmb2-id-upgrade-header").hide();
+        }
+        $("#cmb2-metabox-migration #run-upgrade").on("click", function(event) {
+            event.preventDefault();
+            $("#upgrade-in-progress").show();
+            $("#run-upgrade").hide();
+            let data = {
+                progress: {
+                    task: 0,
+                    page: 1
+                }
+            };
+            const runUpgrade = data => {
+                $.post(cb_ajax_run_upgrade.ajax_url, {
+                    _ajax_nonce: cb_ajax_run_upgrade.nonce,
+                    action: "cb_run_upgrade",
+                    data: data
+                }, function(data) {
+                    if (data.success) {
+                        $("#upgrade-in-progress").hide();
+                        $("#upgrade-done").show();
+                    } else {
+                        runUpgrade(data);
+                    }
+                });
+            };
+            runUpgrade(data);
+        });
         $("#cmb2-metabox-migration #migration-start").on("click", function(event) {
             event.preventDefault();
             $("#migration-state").show();

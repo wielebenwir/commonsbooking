@@ -1,6 +1,44 @@
 (function ($) {
     'use strict';
     $(function () {
+
+        //conditionally hide entire field group "upgrade" if render function has not been called
+        //(workaround for show_on_cb not working on field groups)
+        if ($('#upgrade-fields').length == 0) {
+            $('.cmb2-id-upgrade-header').hide();
+        }
+
+        $('#cmb2-metabox-migration #run-upgrade').on('click', function (event) {
+            event.preventDefault();
+            $('#upgrade-in-progress').show();
+            $('#run-upgrade').hide();
+            let data = {
+                'progress' : {
+                    'task': 0,
+                    'page': 1,
+                }
+            };
+
+            const runUpgrade = (data) => {
+                $.post(
+                    cb_ajax_run_upgrade.ajax_url,
+                    {
+                        _ajax_nonce: cb_ajax_run_upgrade.nonce,
+                        action: "cb_run_upgrade",
+                        data: data
+                    },
+                    function (data) {
+                        if (data.success) {
+                            $('#upgrade-in-progress').hide();
+                            $('#upgrade-done').show();
+                        } else {
+                            runUpgrade(data)
+                        }
+                    });
+            };
+            runUpgrade(data);
+        });
+
         $('#cmb2-metabox-migration #migration-start').on('click', function (event) {
             event.preventDefault();
             $('#migration-state').show();

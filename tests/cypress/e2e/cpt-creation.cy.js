@@ -62,6 +62,7 @@ describe('correctly render metaboxes for backend CPT creation', () => {
         cy.get('#timeframe-repetition').select(MANUAL_SELECTION);
         cy.get('#holiday_load_btn').click();
         cy.get('#timeframe_manual_date').should('have.prop', 'value').should('not.be.empty')
+        cy.screenshot('cb-timeframe-holiday-loaded');
     })
 })
 

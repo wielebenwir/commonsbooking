@@ -27,6 +27,8 @@ class Timeframe extends CustomPost {
 	 */
 	public const ERROR_TYPE = 'timeframeValidationFailed';
 
+	public const ORPHANED_TYPE = 'timeframehasOrphanedBookings';
+
 	public const REPETITION_START = 'repetition-start';
 
 	public const REPETITION_END = 'repetition-end';
@@ -74,6 +76,17 @@ class Timeframe extends CustomPost {
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
 
 	/**
+	 * null means the data is not fetched yet
+	 * @var int|null
+	 */
+	private ?int $repetitionStart = null;
+	/**
+	 * null means the data is not fetched yet, 0 means there is no end date
+	 * @var int|null
+	 */
+	private ?int $repetitionEnd = null;
+
+	/**
 	 * Return the span of a timeframe in human-readable format
 	 *
 	 * "From xx.xx.",  "Until xx.xx.", "From xx.xx. until xx.xx.", "no longer available"
@@ -92,37 +105,58 @@ class Timeframe extends CustomPost {
 	 *
 	 * @return int
 	 */
-	public function getStartDate() : int {
+	public function getStartDate(): int {
+		if ( $this->repetitionStart !== null ) {
+			return $this->repetitionStart;
+		}
+
 		$startDate = $this->getMeta( self::REPETITION_START );
 
 		if ( (string) intval( $startDate ) !== $startDate ) {
 			$startDate = strtotime( $startDate );
+		} else {
+			$startDate = intval( $startDate );
 		}
-		else {
-			$startDate = intval ($startDate);
-		}
+
+		$this->repetitionStart = $startDate;
 
 		return $startDate;
 	}
 
-    /**
-     * Return defined end (repetition) date of timeframe.
-     *
-     * The timestamps are stored in local time (not in UTC).
-     * This means that we do not have to do timezone conversion in order to get the corresponding local time.
-     *
-     * @return false|int Timestamp of end date, false if no end date is set
-     */
-    public function getTimeframeEndDate() {
-        $endDate = $this->getMeta( self::REPETITION_END );
+	/**
+	 * Return defined end (repetition) date of timeframe.
+	 *
+	 * The timestamps are stored in local time (not in UTC).
+	 * This means that we do not have to do timezone conversion in order to get the corresponding local time.
+	 *
+	 * @return false|int Timestamp of end date, false if no end date is set
+	 */
+	public function getTimeframeEndDate() {
+		if ( $this->repetitionEnd !== null ) {
+			if ( $this->repetitionEnd === 0 ) {
+				return false;
+			}
+			return $this->repetitionEnd;
+		}
+
+		$endDate = $this->getMeta( self::REPETITION_END );
+
 		if ( (string) intval( $endDate ) != $endDate ) {
 			$endDate = strtotime( $endDate );
 		} else {
 			$endDate = intval( $endDate );
 		}
 
-        return $endDate;
-    }
+		if ( ! $endDate ) {
+			$this->repetitionEnd = 0;
+		}
+		else {
+			$this->repetitionEnd = $endDate;
+		}
+
+		return $endDate;
+	}
+
 	/**
 	 * Return End (repetition) date and respects advance booking days setting.
 	 * We need this function in order to display the correct end of the booking period for the user.
@@ -520,14 +554,14 @@ class Timeframe extends CustomPost {
 			}
 			catch ( \Exception $e ) {
 				throw new TimeframeInvalidException(__(
-						'Could not get item or location. Please set a valid item and location. Timeframe is saved as draft',
+						'Could not get item or location. Please set a valid item and location.',
 						'commonsbooking')
 				);
 			}
 			if ( ! $item || ! $location ) {
 				// if location or item is missing
 				throw new TimeframeInvalidException(__(
-						'Item or location is missing. Please set item and location. Timeframe is saved as draft',
+						'Item or location is missing. Please set item and location.',
 						'commonsbooking'   )
 				);
 			}
@@ -538,7 +572,7 @@ class Timeframe extends CustomPost {
 				$manual_selection_dates = $this->getManualSelectionDates();
 				if ( empty( $manual_selection_dates ) ){
 					throw new TimeframeInvalidException(__(
-							'No dates selected. Please select at least one date. Timeframe is saved as draft.',
+							'No dates selected. Please select at least one date.',
 							'commonsbooking'   )
 					);
 				}
@@ -546,7 +580,7 @@ class Timeframe extends CustomPost {
 				$unique_dates = array_unique($manual_selection_dates);
 				if ( count($unique_dates) != count($manual_selection_dates) ){
 					throw new TimeframeInvalidException(__(
-							'The same date was selected multiple times. Please select each date only once. Timeframe is saved as draft.',
+							'The same date was selected multiple times. Please select each date only once.',
 							'commonsbooking'   )
 					);
 				}
@@ -555,7 +589,7 @@ class Timeframe extends CustomPost {
 				if ( ! $this->getStartDate() ) {
 					// If there is at least one mandatory parameter missing, we cannot save/publish timeframe.
 					throw new TimeframeInvalidException( __(
-							'Startdate is missing. Timeframe is saved as draft. Please enter a start date to publish this timeframe.',
+							'Startdate is missing. Please enter a start date to publish this timeframe.',
 							'commonsbooking' )
 					);
 				}
