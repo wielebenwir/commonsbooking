@@ -34,6 +34,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 **Plugin websites**
 
 * [Official Website](https://commonsbooking.org)
+* [Official Documentation](https://commonsbooking.org/dokumentation)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
 
 
