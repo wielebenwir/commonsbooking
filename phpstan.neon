@@ -1,0 +1,18 @@
+parameters:
+  phpVersion: 70400
+  scanFiles:
+    - commonsbooking.php
+    - vendor/cmb2/cmb2/includes/helper-functions.php
+  scanDirectories:
+    - /tmp/wordpress
+    - /tmp/wordpress-tests-lib
+  paths:
+    - commonsbooking.php
+    - src/
+    - tests/
+    - includes/
+  level: 1
+  ignoreErrors:
+    - identifier: missingType.iterableValue
+    - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
+    
