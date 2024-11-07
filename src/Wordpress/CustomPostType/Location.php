@@ -435,6 +435,7 @@ class Location extends CustomPostType {
 		}
 
 		// we store registered metaboxes to options table to be able to retrieve it in export function
+		$metabox_fields = [];
 		foreach ($cmb->meta_box['fields'] as $metabox_field) {
 			$metabox_fields[$metabox_field['id']] = $metabox_field['name'];
 		}
