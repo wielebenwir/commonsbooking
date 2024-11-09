@@ -480,6 +480,7 @@ class Plugin {
 
 	/**
 	 * Renders error for backend_notice.
+	 * TODO refactor this using the AdminMessage type
 	 */
 	public static function renderError() {
 		$errorTypes = [
@@ -502,7 +503,7 @@ class Plugin {
 			}
 		}
 	}
-
+	
 	/**
 	 * Enable Legacy CB1 profile fields.
 	 */

@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Plugin;
 use CommonsBooking\View\TimeframeExport;
 use Exception;
@@ -16,6 +17,7 @@ class OptionsTab {
 
 	// Error type for backend error output
 	public const ERROR_TYPE = "commonsbooking-options-error";
+	public const SUCCESS_TYPE = "commonsbooking-options-success";
 	/**
 	 * @var \CMB2
 	 */
@@ -146,12 +148,21 @@ class OptionsTab {
 		} elseif ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_advanced-options" ) {
 			//Check for request to clear cache
 			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "clear-cache" ) {
-				Plugin::clearCache();
-				set_transient(
-					self::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
-					45
-				);
+				try {
+					Plugin::clearCache();
+					new AdminMessage(
+						commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
+						'success'
+					);
+				} catch ( Exception $e ) {
+					if ( WP_DEBUG ) {
+						error_log( $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					}
+					new AdminMessage(
+						commonsbooking_sanitizeHTML( __( "Error while clearing the cache.", 'commonsbooking' ) ),
+						'error'
+					);
+				}
 			}
 		}
 
