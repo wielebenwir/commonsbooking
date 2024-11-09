@@ -15,6 +15,11 @@ use WP_Post;
  * * All the public methods are available as template tags.
  *
  * @package CommonsBooking\Model
+ *
+ * @property int $post_author identifier of the WordPress user.
+ * @property int $post_status describes whether the post is published.
+ * @property int $ID of the WordPress post.
+ * @property string $post_title
  */
 class CustomPost {
 	/**
