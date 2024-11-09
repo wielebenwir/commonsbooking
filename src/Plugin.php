@@ -503,7 +503,7 @@ class Plugin {
 			}
 		}
 	}
-	
+
 	/**
 	 * Enable Legacy CB1 profile fields.
 	 */
