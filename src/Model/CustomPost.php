@@ -11,6 +11,9 @@ use WP_Post;
  * Pseudo extends WP_Post class.
  *
  * All the public methods are available as template tags.
+ * * In using magic methods you can retrieve data from model objects, when the model object class derive from this class.
+ * * All the public methods are available as template tags.
+ *
  * @package CommonsBooking\Model
  */
 class CustomPost {
@@ -27,9 +30,9 @@ class CustomPost {
 	/**
 	 * CustomPost constructor.
 	 *
-	 * @param int|WP_Post $post
+	 * @param int|WP_Post $post uses either int as id reference or the post object
 	 *
-	 * @throws Exception
+	 * @throws Exception when $post param does not reference a valid post object
 	 */
 	public function __construct( $post ) {
 		if ( $post instanceof WP_Post ) {
@@ -37,7 +40,7 @@ class CustomPost {
 		} elseif ( is_int( $post ) ) {
 			$this->post = get_post( $post );
 		} else {
-			throw new Exception( "Invalid post param. Needed WP_Post or ID (int)" );
+			throw new Exception( 'Invalid post param. Needed WP_Post or ID (int)' );
 		}
 	}
 
@@ -87,6 +90,15 @@ class CustomPost {
 		}
 	}
 
+	/**
+	 * Enables that we can call methods of \CustomPost as template tags.
+	 *
+	 * @param string $name of the member function
+	 * @param array  $arguments given to the template tag.
+	 *
+	 * @return array|mixed|void
+	 * @throws \ReflectionException if called template tag is not a registered method
+	 */
 	public function __call( $name, $arguments ) {
 		if ( method_exists( $this->post, $name ) ) {
 			$reflectionMethod = new ReflectionMethod( $this->post, $name );
