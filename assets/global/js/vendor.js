@@ -1,13 +1,25 @@
 "use strict";
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _callSuper(_this, derived, args) {
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      return !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    } catch (e) {
+      return false;
+    }
+  }
+  derived = _getPrototypeOf(derived);
+  return _possibleConstructorReturn(_this, isNativeReflectConstruct() ? Reflect.construct(derived, args || [], _getPrototypeOf(_this).constructor) : derived.apply(_this, args));
+}
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -148,13 +160,12 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
      * @param {Point} b Point B.
      * @return {boolean}
      */
-    _createClass(Point, null, [{
+    return _createClass(Point, null, [{
       key: "equals",
       value: function equals(a, b) {
         return a.x === b.x && a.y === b.y;
       }
     }]);
-    return Point;
   }();
   var Point$1 = Point;
   var Rect = /*#__PURE__*/function () {
@@ -191,13 +202,12 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
      * @param {Rect} b A Rectangle.
      * @return {boolean} Whether a and b intersect.
      */
-    _createClass(Rect, null, [{
+    return _createClass(Rect, null, [{
       key: "intersects",
       value: function intersects(a, b) {
         return a.left < b.left + b.width && b.left < a.left + a.width && a.top < b.top + b.height && b.top < a.top + a.height;
       }
     }]);
-    return Rect;
   }();
   var Classes = {
     BASE: 'shuffle',
@@ -231,7 +241,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
        */
       this.isHidden = false;
     }
-    _createClass(ShuffleItem, [{
+    return _createClass(ShuffleItem, [{
       key: "show",
       value: function show() {
         this.isVisible = true;
@@ -288,7 +298,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         this.element = null;
       }
     }]);
-    return ShuffleItem;
   }();
   ShuffleItem.Css = {
     INITIAL: {
@@ -724,8 +733,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   // Used for unique instance variables
   var id = 0;
   var Shuffle = /*#__PURE__*/function (_tinyEmitterExports) {
-    _inherits(Shuffle, _tinyEmitterExports);
-    var _super = _createSuper(Shuffle);
     /**
      * Categorize, sort, and filter a responsive grid of items.
      *
@@ -737,7 +744,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       var _this4;
       _classCallCheck(this, Shuffle);
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      _this4 = _super.call(this);
+      _this4 = _callSuper(this, Shuffle);
       _this4.options = _objectSpread(_objectSpread({}, Shuffle.options), options);
       _this4.lastSort = {};
       _this4.group = Shuffle.ALL_ITEMS;
@@ -759,7 +766,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       _this4.isInitialized = true;
       return _this4;
     }
-    _createClass(Shuffle, [{
+    _inherits(Shuffle, _tinyEmitterExports);
+    return _createClass(Shuffle, [{
       key: "_init",
       value: function _init() {
         this.items = this._getItems();
@@ -1565,7 +1573,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         if (!category || category && category.length === 0) {
           category = Shuffle.ALL_ITEMS; // eslint-disable-line no-param-reassign
         }
-
         this._filter(category);
 
         // Shrink each hidden item
@@ -1926,7 +1933,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         });
       }
     }]);
-    return Shuffle;
   }(tinyEmitterExports);
   Shuffle.ShuffleItem = ShuffleItem$1;
   Shuffle.ALL_ITEMS = 'all';
