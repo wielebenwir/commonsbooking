@@ -86,4 +86,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <exclude-pattern>tests/</exclude-pattern>
     </rule>
 
+    <!-- Adds commonsbooking specific wrappers around wp_kses ... -->
+    <!-- Note that phpcs as php is case insensitive -->
+    <rule ref="WordPress.Security.EscapeOutput">
+        <properties>
+            <property name="customEscapingFunctions" type="array">
+                <element value="commonsbooking_sanitizehtml"/>
+                <element value="commonsbooking_sanitizearrayorstring" />
+            </property>
+        </properties>
+    </rule>
+
 </ruleset>
