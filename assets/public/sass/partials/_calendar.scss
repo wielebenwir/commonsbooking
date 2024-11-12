@@ -4,7 +4,7 @@
  * Styles for the litepicker javascript
  *
  */
- 
+@use "../mixins/calendar";
 
 :root {
 	--litepickerBgColor: transparent;
@@ -72,7 +72,7 @@
 			
 		}
 		&__months {
-			@extend .cb-box-inner;
+			@extend .cb-box-inner !optional;
 
 			background: transparent; 
 			box-shadow: none;
@@ -236,7 +236,7 @@
 			}
 
 			.day-item {
-                @include day-item;
+                @include calendar.day-item;
 			}
 
 			.week-number {
