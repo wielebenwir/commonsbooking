@@ -2,6 +2,9 @@
 
 namespace CommonsBooking\Map;
 
+/**
+ * Shortcode for the legacy map with the old non-responsive standard leaflet style.
+ */
 class MapShortcode extends BaseShortcode {
 	protected function create_container($cb_map_id, $attrs, $options, $content) {
 		$map_height = MapAdmin::get_option( $cb_map_id, 'map_height' );

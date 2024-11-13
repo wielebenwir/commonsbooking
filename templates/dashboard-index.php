@@ -20,7 +20,7 @@
 						<li><a href="mailto:mail@commonsbooking.org?body=%0D%0A%0D%0A-----------%0D%0A%0D%0AInstallations-URL: <?php echo home_url(); ?>%0D%0A%0D%0ACB-Version: <?php echo commonsbooking_sanitizeHTML( COMMONSBOOKING_VERSION ); ?>" target="_blank"><?php echo esc_html__('Support E-Mail', 'commonsbooking') ;?></a></li>
 						<li><a href="https://commonsbooking.org/kontakt/" target="_blank"><?php echo __('Contact & Newsletter', 'commonsbooking') ;?></a></li>
 					</ul>
-				<p>			<?php echo esc_html__('CommonsBooking Version', 'commonsbooking') . ' ' . commonsbooking_sanitizeHTML( COMMONSBOOKING_VERSION ); ?></p>
+				<p>			<?php echo esc_html__('CommonsBooking Version', 'commonsbooking') . ' ' . commonsbooking_sanitizeHTML( COMMONSBOOKING_VERSION . ' ' . COMMONSBOOKING_VERSION_COMMENT);?></p>
 				</div><!-- .cb_welcome-panel-column -->
 			</div><!-- .cb_welcome-panel-column-container -->
 			<div style="clear:both;">

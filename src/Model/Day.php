@@ -38,9 +38,9 @@ class Day {
 	protected $types;
 
 	/**
-	 * @var array
+	 * @var Timeframe[]|null
 	 */
-	protected $timeframes;
+	protected ?array $timeframes = null;
 
 	/**
 	 * Day constructor.
@@ -49,8 +49,9 @@ class Day {
 	 * @param array $locations
 	 * @param array $items
 	 * @param array $types
+	 * @param array $possibleTimeframes
 	 */
-	public function __construct( string $date, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
 		$this->date      = $date;
 		$this->locations = array_map( function ( $location ) {
 			return $location instanceof WP_Post ? $location->ID : $location;
@@ -60,6 +61,11 @@ class Day {
 		}, $items );
 
 		$this->types = $types;
+
+		if ( ! empty ( $possibleTimeframes ) ) {
+			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
+			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
+		}
 	}
 
 	/**
@@ -124,12 +130,7 @@ class Day {
 
 			// check if user is allowed to book this timeframe and remove unallowed timeframes from array
 			// OR: Check for repetition timeframe selected days
-			foreach ( $timeFrames as $key => $timeframe ) {
-				if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ||
-				     ! $this->isInTimeframe( $timeframe )) {
-					unset( $timeFrames[ $key ] );
-				}
-			}
+			$timeFrames = array_filter( $timeFrames, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
 
 			$this->timeframes = $timeFrames;
 		}
@@ -375,6 +376,26 @@ class Day {
 	}
 
 	/**
+	 * Can be used as a callback to filter timeframes if they belong
+	 * to the day and are bookable for the current user
+	 *
+	 * @param Timeframe $timeframe
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function filterTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
+		if ( ! $this->isInTimeframe( $timeframe ) ) {
+			return false;
+		}
+		if ( ! commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Maps timeframes to timeslots.
 	 *
 	 * @param array $slots
@@ -439,6 +460,21 @@ class Day {
 			}
 		}
 	}
+
+	public function getStartTimestamp(): int {
+		$dt = new DateTime( $this->getDate() );
+		$dt->modify( 'midnight' );
+
+		return $dt->getTimestamp();
+	}
+
+	public function getEndTimestamp(): int {
+		$dt = new DateTime( $this->getDate() );
+		$dt->modify( '23:59:59' );
+
+		return $dt->getTimestamp();
+	}
+
 
 	/**
 	 * Remove empty and merge connected slots.

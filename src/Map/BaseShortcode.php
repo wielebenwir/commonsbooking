@@ -2,12 +2,22 @@
 
 namespace CommonsBooking\Map;
 
+/**
+ * Map shortcode base implementation.
+ * Derive from this class to create custom map shortcode.
+ * Examples of how to implement the abstract methods called in `execute` are {@see MapShortcode} and {@see SearchShortcode}.
+ */
 abstract class BaseShortcode {
+
 	/**
-	 * the shortcode handler - load all the needed assets and render the map container
+	 * The shortcode handler - load all the needed assets and render the map container
+	 *
+	 * @param array  $atts attributes for parametrization.
+	 * @param string $content content to display, if shortcode implementation allows to.
 	 **/
-	public function execute($atts, $content): string {
-		$attrs = $this->parse_attributes($atts);
+	public static function execute( array $atts, string $content ): string {
+		$instance = new static();
+		$attrs = $instance->parse_attributes($atts);
 		$options = array_filter($atts, "is_int", ARRAY_FILTER_USE_KEY);
 
 		if (! (int) $attrs['id']) {
@@ -25,10 +35,9 @@ abstract class BaseShortcode {
 		}
 
 		$cb_map_id = $post->ID;
-		$this->inject_script($cb_map_id);
-		return $this->create_container($cb_map_id, $attrs, $options, $content);
+		$instance->inject_script($cb_map_id);
+		return $instance->create_container($cb_map_id, $attrs, $options, $content);
 	}
-
 	abstract protected function parse_attributes($atts);
 	abstract protected function inject_script($cb_map_id);
 	abstract protected function create_container($cb_map_id, $attrs, $options, $content);

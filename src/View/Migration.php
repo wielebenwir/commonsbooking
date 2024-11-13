@@ -5,6 +5,7 @@ namespace CommonsBooking\View;
 
 use CMB2_Field;
 use CommonsBooking\Repository\CB1;
+use CommonsBooking\Service\Upgrade;
 
 /**
  * The class that renders the migration form to migrate from CB1 to CB2.
@@ -108,6 +109,27 @@ class Migration {
             </div>
            '
         );
+	}
+
+	public static function renderUpgradeForm( array $field_args, CMB2_Field $field ) {
+		if (! Upgrade::isAJAXUpgrade() ) return false;
+		?>
+		<div class="cmb-row cmb-type-text" id="upgrade-fields">
+			<div id="upgrade-in-progress" class="blinking">
+				<strong style="color: red">
+				<?php echo esc_html__( 'upgrade in process .. please wait ...', 'commonsbooking' ); ?>
+				</strong>
+			</div>
+			<div id="upgrade-done">
+				<strong style="color: green">
+				<?php echo esc_html__( 'Upgrade finished', 'commonsbooking' ); ?>
+				</strong>
+			</div>
+			<a id="run-upgrade" class="button button-secondary" href="#">
+				<?php echo esc_html__( 'Start Upgrade', 'commonsbooking' ); ?>
+			</a>
+		</div>
+		<?php
 	}
 
 }

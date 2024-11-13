@@ -43,17 +43,18 @@
     "ext-json": "*",
     "symfony/cache": "^5.4.30",
     "symfony/service-contracts": "^v2.5.2",
-    "eluceo/ical": "~2.13.0",
+    "eluceo/ical": "~2.14.0",
     "phpmailer/phpmailer": "^6.8.1",
     "ed-itsolutions/cmb2-field-ajax-search": "^2.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.6.6",
-    "phpunit/phpunit": "^8.5.34",
-    "yoast/phpunit-polyfills": "^2.0",
-    "wp-coding-standards/wpcs": "^2.3",
+    "phpunit/phpunit": "^9.6.21",
+    "yoast/phpunit-polyfills": "^3.0.0",
+    "wp-coding-standards/wpcs": "^3.1",
     "phpcompatibility/phpcompatibility-wp": "^2.1.4",
     "slope-it/clock-mock": "^0.4.0",
-    "phpunit/php-code-coverage": "^7.0.15"
+    "phpunit/php-code-coverage": "^9.2.32",
+    "myclabs/deep-copy": "^1.12.0"
   }
 }

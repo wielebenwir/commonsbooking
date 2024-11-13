@@ -111,20 +111,31 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns timeframe types.
+	 * Returns timeframe types as associative array. This can be used for timeframe selection in CMB2
+	 *
+	 * @param bool $includeAll - When toggled, will include the "All" Option as a selection option
+	 *
 	 * @return array
 	 */
-	public static function getTypes() {
-		return [
+	public static function getTypes( bool $includeAll = false ): array {
+		$typeOptions = [];
+		if ( $includeAll ) {
+			$typeOptions += [
+				'all' => esc_html__( 'All timeframe types', 'commonsbooking' )
+			];
+		}
+		$typeOptions += [
 			// Opening Hours disabled as its not implemented yet
 			//self::OPENING_HOURS_ID    => esc_html__("Opening Hours", 'commonsbooking'),
-			self::BOOKABLE_ID         => esc_html__( "Bookable", 'commonsbooking' ),
-			self::HOLIDAYS_ID         => esc_html__( "Holidays or location closed", 'commonsbooking' ),
+			self::BOOKABLE_ID => esc_html__( "Bookable", 'commonsbooking' ),
+			self::HOLIDAYS_ID => esc_html__( "Holidays or location closed", 'commonsbooking' ),
 			// Off Holidays disabled as its not implemented yet
 			//self::OFF_HOLIDAYS_ID     => esc_html__("Official Holiday", 'commonsbooking'),
-			self::REPAIR_ID           => esc_html__( "Blocked (not overbookable)", 'commonsbooking' ),
-			self::BOOKING_ID          => esc_html__( "Booking", 'commonsbooking' ),
+			self::REPAIR_ID   => esc_html__( "Blocked (not overbookable)", 'commonsbooking' ),
+			self::BOOKING_ID  => esc_html__( "Booking", 'commonsbooking' ),
 		];
+
+		return $typeOptions;
 	}
 
 	public static function getSimilarPostTypes() {
@@ -841,7 +852,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Save the new Custom Fields values
 	 */
-	public static function savePost( $post_id, WP_Post $post ) {
+	public function savePost( $post_id, WP_Post $post ) {
 		// This is just for timeframes
 		if ( $post->post_type !== static::getPostType() ) {
 			return;
@@ -898,6 +909,36 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+
+	public function updatedPostMeta($meta_id,$object_id,$meta_key,$meta_value)
+	{
+		//make sure, that action is only executed if timeframe is changed
+		if (get_post($object_id)->post_type !== Timeframe::getPostType()) {
+			return;
+		}
+		if ($meta_key == \CommonsBooking\Model\Timeframe::META_LOCATION_ID){ //Location ID was changed, the only evidence we still have is the item ID
+			$correspondingItems            = get_post_meta( $object_id, \CommonsBooking\Model\Timeframe::META_ITEM_ID );
+			$item_id          = reset( $correspondingItems ); //value has to be reset in order to retrieve first value
+			$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned(null,[$item_id]);
+			if ($orphanedBookings) {
+				foreach ($orphanedBookings as $booking) {
+					update_post_meta($booking->ID,\CommonsBooking\Model\Booking::META_LAST_TIMEFRAME,$object_id);
+				}
+				set_transient(
+					\CommonsBooking\Model\Timeframe::ORPHANED_TYPE,
+					/* translators: first %s = timeframe-ID, second %s is timeframe post_title */
+					commonsbooking_sanitizeHTML(
+						__(
+							'Orphaned bookings found, can migrate. <a href="admin.php?page=cb-mass-operations"> Click here to migrate </a>',
+							'commonsbooking',
+							5
+						)
+					)
+				);
+			}
+		}
+	}
+
 	/**
 	 * Adds 23h 59m 59s to repetition end, to set the timestamp at the end of the day and not
 	 * the very start.
@@ -944,6 +985,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Will update the dynamic item / location assignment for all timeframes.
+	 * Only valid for timeframes which can have a dynamic selection type (so far only holidays and repair timeframes)
 	 *
 	 * @return void
 	 */
@@ -953,7 +995,6 @@ class Timeframe extends CustomPostType {
 			[],
 			[
 				Timeframe::HOLIDAYS_ID,
-				Timeframe::BOOKABLE_ID,
 				Timeframe::REPAIR_ID
 			]
 		);
@@ -1323,6 +1364,8 @@ class Timeframe extends CustomPostType {
 
 		// must be 'save_post' only because of priority in relation to cmb2
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
+
+		add_action('updated_post_meta',array($this, 'updatedPostMeta'),11,4);
 		
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
