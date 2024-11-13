@@ -496,7 +496,11 @@ class Upgrade {
 		] );
 		foreach ( $maps as $map ) {
 			$options = get_post_meta( $map->ID, 'cb_map_options', true );
-			if ( empty( $options ) ) {
+			if ( empty( $options ) ) { //When default map options are empty
+				continue;
+			}
+			if ( get_post_meta( $map->ID, array_key_first( $options ), true ) ) {
+				//if the first key in the options array is already set, we assume that the migration has already been done
 				continue;
 			}
 			//will map to an associative array with key being the option name and the value the default value
