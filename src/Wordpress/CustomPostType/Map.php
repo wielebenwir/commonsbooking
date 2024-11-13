@@ -541,7 +541,7 @@ class Map extends CustomPostType {
 					'group_title'   => commonsbooking_sanitizeHTML( __( 'Filter group {#}', 'commonsbooking' ) ),
 					'add_button'    => commonsbooking_sanitizeHTML( __( 'Add another filter group', 'commonsbooking' ) ),
 					'remove_button' => commonsbooking_sanitizeHTML( __( 'Remove filter group', 'commonsbooking' ) ),
-					'sortable'      => false,
+					'sortable'      => true,
 				),
 				'fields'     => array(
 					array(
