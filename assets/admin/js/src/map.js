@@ -36,7 +36,6 @@
 
         const copyToClipboardButton = $('#shortcode-field').find('.button');
         copyToClipboardButton.on('click', function () {
-            debugger;
             copyToClipboard($('#shortcode-field'));
         });
 
