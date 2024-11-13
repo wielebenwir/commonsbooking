@@ -11,9 +11,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    allow:
-      - dependency-name: "*"
-        dependency-type: "production"
     commit-message:
       prefix: "npm"
       include: "scope"
@@ -23,9 +20,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    allow:
-      - dependency-name: "*"
-        dependency-type: "production"
     commit-message:
       prefix: "composer"
       include: "scope"
