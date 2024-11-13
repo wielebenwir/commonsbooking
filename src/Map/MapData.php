@@ -281,10 +281,11 @@ class MapData {
 						'markup' => $termName,
 					];
 				}
+				$isExclusive = $group['isExclusive'] ?? 'off';
 				$settings['filter_cb_item_categories'][ $groupID ] = [
-					'name'        => $group['name'],
+					'name'        => $group['name'] ?? "",
 					'elements'    => $elements,
-					'isExclusive' => $group['isExclusive'] == 'on',
+					'isExclusive' => $isExclusive == 'on',
 				];
 			}
 		}
