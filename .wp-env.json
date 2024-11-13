@@ -1,6 +1,6 @@
 {
   "phpVersion" : "7.4",
-  "core" : "https://wordpress.org/wordpress-6.7-RC2.zip",
+  "core" : "Wordpress/Wordpress#6.7",
   "plugins" : [
     ".",
     "https://downloads.wordpress.org/plugin/wp-crontrol.zip",
