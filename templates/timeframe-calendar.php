@@ -38,6 +38,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
             <input type="hidden" name="type" value="<?php echo esc_attr( $templateData['type'] ); ?>"/>
             <input type="hidden" name="post_type" value="cb_booking"/>
             <input type="hidden" name="post_status" value="unconfirmed"/>
+	        <input type="hidden" name="days-overbooked" value="0"/>
 
             <div class="time-selection-container">
                 <a id="resetPicker">
@@ -115,7 +116,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			<?php
 			if ( is_user_logged_in() ) {
                 ?>
-                <input type="submit" disabled="disabled"
+                <input type="submit" name="booking-update" disabled="disabled"
                        value="<?php echo esc_html__( 'Continue to booking confirmation', 'commonsbooking' ); ?>"/>
 			<?php } ?>
         </form>

@@ -514,9 +514,9 @@ class Migration {
 		$postMeta['full-day']                                           = 'on';
 		$postMeta['grid']                                               = '0';
 		$postMeta['weekdays']                                           = $weekdays;
-		$postMeta['show-booking-codes']                                 = 'on';
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS] = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]     = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES]                = 'on';
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS]    = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]                         = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
 
 		$existingPost = self::getExistingPost( $timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID );
 
@@ -580,17 +580,13 @@ class Migration {
 	 * @return mixed
 	 */
 	public static function migrateBookingCode( $bookingCode ) {
-		$cb2LocationId  = CB1::getCB2LocationId( $bookingCode['location_id'] );
 		$cb2ItemId      = CB1::getCB2ItemId( $bookingCode['item_id'] );
-		$cb2TimeframeId = CB1::getCB2TimeframeId( $bookingCode['timeframe_id'] );
 		$date           = $bookingCode['booking_date'];
 		$code           = $bookingCode['bookingcode'];
 
 		$bookingCode = new BookingCode(
 			$date,
 			$cb2ItemId,
-			$cb2LocationId,
-			$cb2TimeframeId,
 			$code
 		);
 

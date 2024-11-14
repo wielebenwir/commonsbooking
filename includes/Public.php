@@ -1,6 +1,6 @@
 <?php
 
-use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\Map\MapData;
 use CommonsBooking\Migration\Migration;
 use CommonsBooking\View\Booking;
 use CommonsBooking\View\Calendar;
@@ -160,15 +160,25 @@ add_action( 'wp_ajax_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'wa
 add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
 
 if ( is_admin() ) {
+	//migration AJAX
 	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'migrateAll' ) );
 	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
+	add_action( 'wp_ajax_cb_run_upgrade', array( \CommonsBooking\Service\Upgrade::class, 'runAJAXUpgradeTasks' ) );
+	add_action( 'wp_ajax_cb_export_timeframes', array( \CommonsBooking\Service\TimeframeExport::class, 'ajaxExportCsv' ) );
+
+	//getting bookable Location for item AJAX
+	add_action( 'wp_ajax_cb_get_bookable_location', array( \CommonsBooking\View\Booking::class, 'getLocationForItem_AJAX' ) );
+
+	//getting booking code for new backend booking AJAX
+	add_action( 'wp_ajax_cb_get_booking_code', array( \CommonsBooking\View\Booking::class, 'getBookingCode_AJAX' ) );
+	add_action( 'wp_ajax_cb_orphaned_booking_migration', array( \CommonsBooking\Service\MassOperations::class, 'ajaxMigrateOrphaned' ) );
 }
 
 // Map ajax
-add_action( 'wp_ajax_cb_map_locations', array( MapShortcode::class, 'get_locations' ) );
-add_action( 'wp_ajax_nopriv_cb_map_locations', array( MapShortcode::class, 'get_locations' ) );
-add_action( 'wp_ajax_cb_map_geo_search', array( MapShortcode::class, 'geo_search' ) );
-add_action( 'wp_ajax_nopriv_cb_map_geo_search', array( MapShortcode::class, 'geo_search' ) );
+add_action( 'wp_ajax_cb_map_locations', array( MapData::class, 'get_locations' ) );
+add_action( 'wp_ajax_nopriv_cb_map_locations', array( MapData::class, 'get_locations' ) );
+add_action( 'wp_ajax_cb_map_geo_search', array( MapData::class, 'geo_search' ) );
+add_action( 'wp_ajax_nopriv_cb_map_geo_search', array( MapData::class, 'geo_search' ) );
 
 // Query vars
 function commonsbooking_query_vars( $qvars ) {

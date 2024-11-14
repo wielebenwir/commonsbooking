@@ -1,0 +1,63 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.locations.schema.json",
+    "title": "Commons Api Locations Schema",
+    "description": "A schema for item locations of the Commons API",
+    "definitions": {
+        "location": {
+            "type": "object",
+            "description": "A GeoJson feature describing a location at which users can pick up items.",
+            "properties": {
+                "type": { "type": "string", "enum": ["Feature"] },
+                "properties": {
+                    "type": "object",
+                    "description": "The properties of the location",
+                    "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "description": { "type": "string" },
+                        "url": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "address": { "type": "string" }
+                    },
+                    "required": ["name", "id"]
+                },
+                "geometry": {
+                    "type": "object",
+                    "description": "A GeoJson point, containing the coordinates of the location",
+                    "required": ["type", "coordinates"],
+                    "properties": {
+                        "type": { "type": "string", "enum": ["Point"] },
+                        "coordinates": {
+                            "type": "array",
+                            "minItems": 2,
+                            "items": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["type", "properties", "geometry"]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "locations": {
+            "type": "object",
+            "description": "A GeoJson feature collection of the locations at which users can pick up items.",
+            "required": ["type", "features"],
+            "properties": {
+                "type": { "type": "string", "enum": ["FeatureCollection"] },
+                "features": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/location" },
+                    "uniqueItems": true
+                }
+            }
+        }
+    },
+    "required": ["locations"]
+}

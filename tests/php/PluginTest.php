@@ -2,15 +2,17 @@
 
 namespace CommonsBooking\Tests;
 
-use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\CustomPost;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
-use PHPUnit\Framework\TestCase;
+use SlopeIt\ClockMock\ClockMock;
 
-class PluginTest extends TestCase
+class PluginTest extends CustomPostTypeTest
 {
 
+	private $postIDs = [];
     public function testGetCustomPostTypes()
     {
 		$plugin = new Plugin();
@@ -24,8 +26,20 @@ class PluginTest extends TestCase
 		        'post_status' => 'publish'
 	        ]);
 	        $this->assertIsInt($post);
+	        $this->postIDs[] = $post;
 			//then, try to get a model from the post. Every declared CPT should have a model
 			$this->assertInstanceOf(CustomPost::class, CustomPostType::getModel($post));
 		}
     }
+
+	protected function setUp(): void {
+		parent::setUp();
+	}
+
+	protected function tearDown(): void {
+		foreach ($this->postIDs as $postID){
+			wp_delete_post($postID, true);
+		}
+		parent::tearDown();
+	}
 }

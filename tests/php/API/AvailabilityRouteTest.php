@@ -12,6 +12,12 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 	const USER_ID = 1;
 	const CURRENT_DATE = '2021-05-21';
 	protected $ENDPOINT = '/commonsbooking/v1/availability';
+	private array $locationIds;
+	private array $itemIds;
+	private array $timeframeIds;
+
+	private $locationId;
+	private $itemId;
 
 	public function setUp() : void {
 		parent::setUp();
@@ -38,6 +44,19 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		);
 
 		ClockMock::reset();
+	}
+
+	protected function tearDown(): void {
+		foreach ( $this->timeframeIds as $timeframeId ) {
+			wp_delete_post( $timeframeId, true );
+		}
+		foreach ( $this->locationIds as $locationId ) {
+			wp_delete_post( $locationId, true );
+		}
+		foreach ( $this->itemIds as $itemId ) {
+			wp_delete_post( $itemId, true );
+		}
+		parent::tearDown();
 	}
 
 	public function testsAvailabilitySuccess() {
@@ -106,8 +125,8 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		update_post_meta( $timeframeId, 'end-time', $endTime );
 		update_post_meta( $timeframeId, 'grid', $grid );
 		update_post_meta( $timeframeId, 'weekdays', $weekdays );
-		update_post_meta( $timeframeId, 'show-booking-codes', $showBookingCodes );
-		update_post_meta( $timeframeId, 'create-booking-codes', $createBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES, $showBookingCodes );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
 
 		$this->timeframeIds[] = $timeframeId;
 

@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - uses: ./.github/actions/build-plugin
 
@@ -33,10 +33,12 @@ jobs:
         BUILD_DIR: build/commonsbooking
         SLUG: commonsbooking # optional, remove if GitHub repo name matches SVN slug, including capitalization
 
-    - name: Upload release assets
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: ${{ steps.deploy.outputs.zip-path }}
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ steps.deploy.outputs.zip-path }}
+        asset_name: ${{ github.event.repository.name }}.zip
+        asset_content_type: application/zip

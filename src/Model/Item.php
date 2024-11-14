@@ -58,8 +58,11 @@ class Item extends BookablePost {
 		}
 		$itemAdminIds[] = get_post_field( 'post_author', $this->ID );
 
-		//intval and unique the array
-		return array_unique(array_map('intval', $itemAdminIds));
+		return array_values(
+			array_unique(
+				array_map('intval', $itemAdminIds )
+			)
+		);
 	}
 
 	/**

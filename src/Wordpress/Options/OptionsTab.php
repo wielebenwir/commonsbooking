@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
-use CommonsBooking\Settings\Settings;
+use CommonsBooking\Plugin;
 use CommonsBooking\View\TimeframeExport;
 use Exception;
 
@@ -126,26 +126,32 @@ class OptionsTab {
 	public static function savePostOptions() {
 		if ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_export" ) {
 			// Check for export action
-			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "download-export" ) {
-				TimeframeExport::exportCsv();
-			} else {
-				if ( array_key_exists( 'export-filepath', $_REQUEST ) && $_REQUEST['export-filepath'] !== "" ) {
+			if ( array_key_exists( 'export-filepath', $_REQUEST ) && $_REQUEST['export-filepath'] !== "" ) {
 
-					if ( ! is_dir( $_REQUEST['export-filepath'] ) ) {
-						set_transient(
-							self::ERROR_TYPE,
-							commonsbooking_sanitizeHTML( __( "The export path does not exist or is not readable.", 'commonsbooking' ) ),
-							45
-						);
-					}
-
-					if ( ! is_writable( $_REQUEST['export-filepath'] ) ) {
-						set_transient(
-							self::ERROR_TYPE,
-							commonsbooking_sanitizeHTML( __( "The export path is not writeable.", 'commonsbooking' ) ),
-							45 );
-					}
+				if ( ! is_dir( $_REQUEST['export-filepath'] ) ) {
+					set_transient(
+						self::ERROR_TYPE,
+						commonsbooking_sanitizeHTML( __( "The export path does not exist or is not readable.", 'commonsbooking' ) ),
+						45
+					);
 				}
+
+				if ( ! is_writable( $_REQUEST['export-filepath'] ) ) {
+					set_transient(
+						self::ERROR_TYPE,
+						commonsbooking_sanitizeHTML( __( "The export path is not writeable.", 'commonsbooking' ) ),
+						45 );
+				}
+			}
+		} elseif ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_advanced-options" ) {
+			//Check for request to clear cache
+			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "clear-cache" ) {
+				Plugin::clearCache();
+				set_transient(
+					self::ERROR_TYPE,
+					commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
+					45
+				);
 			}
 		}
 
