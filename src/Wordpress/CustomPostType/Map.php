@@ -78,9 +78,12 @@ class Map extends CustomPostType {
 				'type'    => 'select',
 				'options' => array(
 					'1' => esc_html__( 'OSM - mapnik', 'commonsbooking' ),
-					'2' => esc_html__( 'OSM - german style', 'commonsbooking' ),
+					'2' => esc_html__( 'OSM - german style', 'commonsbooking' )
+					/*
+					 * Reenable the map styles if neede
 					'3' => esc_html__( 'OSM - hike and bike', 'commonsbooking' ),
-					'4' => esc_html__( 'OSM - lokaler (min. zoom: 9)', 'commonsbooking' ),
+					'4' => esc_html__( 'OSM - lokaler (min. zoom: 9)', 'commonsbooking' )
+					*/
 				),
 				'classes' => 'presentation_option',
 			),
