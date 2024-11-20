@@ -5,6 +5,8 @@
 *
 */
 
+@use "../../../global/sass/partials/variables";
+
 #ui-datepicker-div {
     display: none;
     background-color: white;
@@ -54,7 +56,7 @@
         }
 
         .filter-wrapper {
-            @include font-default;
+            @include variables.font-default;
             margin-top: 10px;
             flex-basis: 220px;
 
@@ -102,7 +104,7 @@
     }
 
     #booking-list--results {
-        @include font-default;
+        @include variables.font-default;
         width: 100%;
 
         @media (min-width: 400px) {
@@ -113,12 +115,13 @@
             background-color: white;
 
             .content-wrapper {
+                margin-bottom: 5px;
+                font-size: 0.9em;
+
                 display: flex;
                 @media only screen and (max-width: 600px) {
                     display: block;
                 }
-                margin-bottom: 5px;
-                font-size: 0.9em;
 
                 & > p,
                 & > div {
@@ -267,7 +270,7 @@
     }
 
     #booking-list--pagination {
-        @include font-default;
+        @include variables.font-default;
 
         ul {
             display: flex;

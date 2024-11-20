@@ -3,37 +3,37 @@
  */
 
 /* Mixins */
-@import "mixins/_calendar";
+@use "mixins/_calendar" as calendarmixins;
 
 /* Global styles */
-@import "../../global/sass/global";
+@use "../../global/sass/global";
 
 /* Multi-column layouts */
-@import "partials/_layouts";
+@use "partials/_layouts";
 
 /* List styles */
-@import "partials/_lists";
+@use "partials/_lists";
 
 /* List styles */
-@import "partials/_single";
+@use "partials/_single";
 
 /* Form styles */
-@import "partials/_forms";
+@use "partials/_forms";
 
 /* Calendar styles */
-@import "partials/_calendar";
+@use "partials/_calendar";
 
 /* Map styles */
-@import "partials/_map";
+@use "partials/_map";
 
 /* Booking list styles */
-@import "partials/_bookings";
+@use "partials/_bookings";
 
 /* Notices and restrictions styles */
-@import "partials/_notice";
+@use "partials/_notice";
 
 /* Styles for items table */
-@import "partials/_shortcodeItemsTable";
+@use "partials/_shortcodeItemsTable";
 
 /* Fixes for specific WP Themes */
-@import "partials/_themeoptimization";
+@use "partials/_themeoptimization";
