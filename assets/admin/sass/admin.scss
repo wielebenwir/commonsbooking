@@ -5,33 +5,34 @@
  */
 
 /* Global styles */
-@import "../../global/sass/global";
-
-/* Lib: jQuery UI */
-.cb-admin {
-	@import "lib/_jquery-ui";
-}
+@use "../../global/sass/global";
 
 /* Dashboard */
-@import "./partials/_dashboard";
+@use "./partials/_dashboard";
 
 /* Timeframe Form */
-@import "./partials/_form-timeframe";
+@use "./partials/_form-timeframe";
 
 /** Migration Settings */
-@import "./partials/_migration";
+@use "./partials/_migration";
 
 /** Export Settings */
-@import "./partials/_form-export";
+@use "./partials/_form-export";
 
 /* Booking form  */
-@import "./partials/form-booking";
+@use "./partials/form-booking";
 
 /* Map creation */
 @import "./partials/form-map";
 
 /* Plugin update page  */
-@import "./partials/plugin_update";
+@use "./partials/plugin_update";
 
 /* Edit Screens Backend  */
-@import "./partials/admin-edit";
+@use "./partials/admin-edit";
+
+/* Lib: jQuery UI */
+@use "lib/_jquery-ui";
+.cb-admin {
+    @include jquery-ui.jquery-ui;
+}
