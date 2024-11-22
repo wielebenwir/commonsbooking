@@ -27,6 +27,7 @@ class Map extends CustomPostType {
 	public function initHooks() {
 		$cb_map_settings = new MapSettings();
 
+		// TODO check the following comment
 		// deactivated individual map settings because we don't need them righ now
 		// map setting should be integrated in CB settings in the future
 		//$cb_map_settings->prepare_settings();
@@ -49,6 +50,10 @@ class Map extends CustomPostType {
 
 	/**
 	 * enforce the replacement of the original (google maps) link target on cb_item booking pages
+	 *
+	 * @since 2.10 it is deprecated
+	 *
+	 * @deprecated to remove old legacy code.
 	 **/
 	public static function replace_map_link_target() {
 		global $post;
