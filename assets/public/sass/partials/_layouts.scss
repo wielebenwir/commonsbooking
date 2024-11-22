@@ -5,6 +5,7 @@
  *
  */
 
+@use "../../../global/sass/partials/mixins";
 
 /* -------------------- Tables -------------------- */
 
@@ -15,7 +16,7 @@
 		font-weight: bold;
 	}
 	
-	@include breakpoint(phablet) {
+	@include mixins.breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
 	    flex-wrap: wrap;
@@ -31,7 +32,7 @@
 }
 /* 50-50 */
 .cb-col-50-50 {
-	@include breakpoint(phablet) {
+	@include mixins.breakpoint(phablet) {
 		display: flex;
 		> :nth-child(odd) {
 			width: 50%;
@@ -62,7 +63,7 @@
 		}
 	}
 
-	@include breakpoint(phablet) {
+	@include mixins.breakpoint(phablet) {
 		
 		display: flex;
 		justify-content: space-between;
@@ -96,7 +97,7 @@
 		text-align: right;
 	}
 	
-	@include breakpoint(phablet) {
+	@include mixins.breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
 	    justify-content: space-between;
@@ -130,7 +131,7 @@
 }
 
 .cb-col-20-50-30 {
-	@include breakpoint(phablet) {
+	@include mixins.breakpoint(phablet) {
 		display: flex;
 		flex-direction: row;
 	    justify-content: space-between;
