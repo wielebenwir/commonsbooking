@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38c36164c98b25f6677140c6e0b3f06b",
+    "content-hash": "3cef4a58c672b31917fae588e87f7e67",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -136,12 +136,12 @@
             "version": "v2.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/datengraben/cmb2-field-ajax-search.git",
+                "url": "https://github.com/wielebenwir/cmb2-field-ajax-search.git",
                 "reference": "887470a5cb9363a51d573bb8d49259435f519511"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datengraben/cmb2-field-ajax-search/zipball/887470a5cb9363a51d573bb8d49259435f519511",
+                "url": "https://api.github.com/repos/wielebenwir/cmb2-field-ajax-search/zipball/887470a5cb9363a51d573bb8d49259435f519511",
                 "reference": "887470a5cb9363a51d573bb8d49259435f519511",
                 "shasum": ""
             },
@@ -162,7 +162,8 @@
             ],
             "description": "CMB2",
             "support": {
-                "source": "https://github.com/datengraben/cmb2-field-ajax-search/tree/v2.0.1"
+                "source": "https://github.com/wielebenwir/cmb2-field-ajax-search/tree/v2.0.1",
+                "issues": "https://github.com/wielebenwir/cmb2-field-ajax-search/issues"
             },
             "time": "2024-11-01T18:36:49+00:00"
         },
