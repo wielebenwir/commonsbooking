@@ -27,7 +27,7 @@ jobs:
       matrix:
         php:
           - '7.4'
-          - '8.2'
+          - '8.4'
         core:
           - {name: 'tested', version: 'null'}
           - {name: 'minimum', version: 'WordPress/WordPress#5.9'}
