@@ -430,6 +430,35 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getLocationString(): string {
+		switch ( $this->getMeta(self::META_LOCATION_SELECTION_TYPE) ) {
+			case self::SELECTION_MANUAL_ID:
+				$locations = $this->getLocations();
+				if ( count($locations) === 1 ) {
+					return reset($locations)->post_title;
+				}
+				else {
+					return __('Multiple', 'commonsbooking');
+				}
+			case self::SELECTION_ALL_ID:
+				return __('All', 'commonsbooking');
+			case self::SELECTION_CATEGORY_ID:
+				return __('Multiple (by category)', 'commonsbooking');
+			default:
+				//backwards compatible for tfs that don't have a defined selection option yet
+				$locations = $this->getLocations();
+				if ( count($locations) === 1 ) {
+					return reset($locations)->post_title;
+				}
+				else {
+					return '-';
+				}
+		}
+	}
+
+	/**
 	 * Get the corresponding single item for a timeframe.
 	 * Will get corresponding item object for this timeframe.
 	 * This function will return null if no item is set.
@@ -511,6 +540,40 @@ class Timeframe extends CustomPost {
 			else {
 				return [];
 			}
+		}
+	}
+
+	/**
+	 * Will return the assigned item as a string.
+	 * When one item is assigned this is the post title,
+	 * if multiple items are assigned this will return "Multiple"
+	 * and "All" for all. This is used to display the item assignment in the backend.
+	 * @return string
+	 */
+	public function getItemString(): string {
+		$id = $this->ID;
+		switch ( $this->getMeta(self::META_ITEM_SELECTION_TYPE) ) {
+			case self::SELECTION_MANUAL_ID:
+				$items = $this->getItems();
+				if ( count($items) === 1 ) {
+					return reset($items)->post_title;
+				}
+				else {
+					return __('Multiple', 'commonsbooking');
+				}
+			case self::SELECTION_ALL_ID:
+				return __('All', 'commonsbooking');
+			case self::SELECTION_CATEGORY_ID:
+				return __('Multiple (by category)', 'commonsbooking');
+			default:
+				//backwards compatible for tfs that don't have a defined selection option yet
+				$items = $this->getItems();
+				if ( count($items) === 1 ) {
+					return reset($items)->post_title;
+				}
+				else {
+					return '-';
+				}
 		}
 	}
 
