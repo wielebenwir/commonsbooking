@@ -731,6 +731,13 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
+				'name' => esc_html__( 'Delete timeframe after expiration', 'commonsbooking' ),
+				'desc' => esc_html__( 'Delete the timeframe after it has ended.', 'commonsbooking' ),
+				'id'   => "delete-expired-timeframe",
+				'type' => 'checkbox',
+				'default_cb' => 'commonsbooking_filter_from_cmb2',
+			),
+			array(
 				'name' => esc_html__( "Booking Codes", 'commonsbooking' ),
 				'desc' => commonsbooking_sanitizeHTML( __( 'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
