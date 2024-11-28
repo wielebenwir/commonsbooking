@@ -28,7 +28,7 @@ jobs:
       matrix:
         php:
           - '7.4'
-          - '8.2'
+          - '8.3'
         core:
           - { name: 'latest', version: 'latest' }
           - { name: 'minimum', version: '5.9' }
