@@ -2624,15 +2624,15 @@ msgstr "Verwendung als Zeitrahmenbild"
 msgid "<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> "
 msgstr "<strong>Standardwerte für folgende Felder wurden automatisch festgelegt oder wiederhergestellt, da sie leer waren:</strong><br> "
 
-#: src/Wordpress/Options/OptionsTab.php:48
+#: src/Wordpress/Options/OptionsTab.php:51
 msgid "CommonsBooking"
 msgstr "CommonsBooking"
 
-#: src/Wordpress/Options/OptionsTab.php:134
+#: src/Wordpress/Options/OptionsTab.php:143
 msgid "The export path does not exist or is not readable."
 msgstr "Der Exportpfad ist nicht vorhanden oder nicht lesbar."
 
-#: src/Wordpress/Options/OptionsTab.php:142
+#: src/Wordpress/Options/OptionsTab.php:151
 msgid "The export path is not writeable."
 msgstr "Der Exportpfad ist nicht beschreibbar."
 
@@ -3360,8 +3360,8 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:667
-#: src/Plugin.php:682
+#: src/Plugin.php:684
+#: src/Plugin.php:699
 #: src/Wordpress/CustomPostType/Booking.php:917
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
@@ -3729,7 +3729,7 @@ msgstr "Cache leeren"
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
-#: src/Wordpress/Options/OptionsTab.php:152
+#: src/Wordpress/Options/OptionsTab.php:162
 msgid "Cache cleared."
 msgstr "Cache geleert."
 
@@ -4351,4 +4351,8 @@ msgstr ""
 
 #: src/Service/MassOperations.php:62
 msgid "New location not found for booking with ID %s"
+msgstr ""
+
+#: src/Wordpress/Options/OptionsTab.php:170
+msgid "Error while clearing the cache."
 msgstr ""

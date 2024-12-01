@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-20T17:38:11+00:00\n"
+"POT-Creation-Date: 2024-12-01T19:58:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1631,8 +1631,8 @@ msgstr ""
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:667
-#: src/Plugin.php:682
+#: src/Plugin.php:684
+#: src/Plugin.php:699
 #: src/Wordpress/CustomPostType/Booking.php:917
 msgid "CommonsBooking Bookings"
 msgstr ""
@@ -3458,20 +3458,24 @@ msgstr ""
 msgid "<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> "
 msgstr ""
 
-#: src/Wordpress/Options/OptionsTab.php:48
+#: src/Wordpress/Options/OptionsTab.php:51
 msgid "CommonsBooking"
 msgstr ""
 
-#: src/Wordpress/Options/OptionsTab.php:134
+#: src/Wordpress/Options/OptionsTab.php:143
 msgid "The export path does not exist or is not readable."
 msgstr ""
 
-#: src/Wordpress/Options/OptionsTab.php:142
+#: src/Wordpress/Options/OptionsTab.php:151
 msgid "The export path is not writeable."
 msgstr ""
 
-#: src/Wordpress/Options/OptionsTab.php:152
+#: src/Wordpress/Options/OptionsTab.php:162
 msgid "Cache cleared."
+msgstr ""
+
+#: src/Wordpress/Options/OptionsTab.php:170
+msgid "Error while clearing the cache."
 msgstr ""
 
 #: src/Wordpress/Widget/UserWidget.php:18
