@@ -18,8 +18,6 @@ class OptionsTab {
 	// Error type for backend error output
 	public const ERROR_TYPE = "commonsbooking-options-error";
 
-	public const INFO_TYPE = "commonsbooking-options-info";
-
 	public const SUCCESS_TYPE = "commonsbooking-options-success";
 	/**
 	 * @var \CMB2
@@ -160,7 +158,7 @@ class OptionsTab {
 				try {
 					Plugin::clearCache();
 					set_transient(
-						self::INFO_TYPE,
+						self::SUCCESS_TYPE,
 						commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
 						45 );
 				} catch ( Exception $e ) {
