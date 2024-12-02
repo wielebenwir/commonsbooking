@@ -2,9 +2,6 @@
 
 namespace CommonsBooking\Map;
 
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-
 
 /**
  * This defines the map settings page in the admin area.

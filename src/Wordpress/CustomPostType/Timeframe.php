@@ -7,7 +7,6 @@ use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\BookingCode;
 use WP_Post;
 use Exception;
-use CommonsBooking\CB\CB;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
@@ -233,7 +232,7 @@ class Timeframe extends CustomPostType {
 		// @TODO implement view.
 	}
 
-    
+
     /**
 	 * Adds filter dropdown // filter by type (eg. bookable, repair etc.) in timeframe List
 	 *
@@ -304,7 +303,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in booking list
-	 * 
+	 *
 	 */
 	public static function addAdminStatusFilter() {
 		$values = [];
@@ -387,7 +386,7 @@ class Timeframe extends CustomPostType {
 					$query->query_vars[ $key ] = sanitize_text_field( $_GET[ $filter ] );
 				}
 			}
-			
+
 			// Timerange filtering
 			// Start date
 			if (
@@ -466,11 +465,11 @@ class Timeframe extends CustomPostType {
 	protected function getCustomFields() {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = "d/m/Y";
-		if ( strpos( get_locale(), 'de_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
 			$dateFormat = "d.m.Y";
 		}
 
-		if ( strpos( get_locale(), 'en_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'en_' ) ) {
 			$dateFormat = "m/d/Y";
 		}
 
@@ -1363,7 +1362,7 @@ class Timeframe extends CustomPostType {
 		// Add custom cmb2 type for email booking codes by cron
 		add_action( 'cmb2_render_booking_codes_email_fields', ['\CommonsBooking\View\BookingCodes','renderCronEmailFields'], 10, 5 );
 		add_action("cmb2_save_field_" . \CommonsBooking\View\BookingCodes::CRON_EMAIL_CODES,['\CommonsBooking\View\BookingCodes','cronEmailCodesSaved'],10,3);
-	
+
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
@@ -1371,7 +1370,7 @@ class Timeframe extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 
 		add_action('updated_post_meta',array($this, 'updatedPostMeta'),11,4);
-		
+
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );
