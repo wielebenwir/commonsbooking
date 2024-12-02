@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\Map;
 
-use DateTime;
 
 class MapFilter {
 

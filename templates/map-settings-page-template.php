@@ -1,7 +1,6 @@
 <?php
 
 use CommonsBooking\Map\MapSettings;
-use CommonsBooking\Wordpress\CustomPostType\Map;
 
 ?>
 <div class="wrap">

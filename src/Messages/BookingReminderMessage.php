@@ -4,7 +4,6 @@ namespace CommonsBooking\Messages;
 
 use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Repository\Booking;
-use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Settings\Settings;
 
 /**
