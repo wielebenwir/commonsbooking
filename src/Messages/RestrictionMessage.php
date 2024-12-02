@@ -75,7 +75,7 @@ class RestrictionMessage extends Message {
 			$subject
 		);
 
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 	/**
@@ -90,7 +90,7 @@ class RestrictionMessage extends Message {
 			$subject
 		);
 
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 	/**
@@ -105,7 +105,7 @@ class RestrictionMessage extends Message {
 			$subject
 		);
 
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 	/**

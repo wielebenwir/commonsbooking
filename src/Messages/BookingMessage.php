@@ -83,7 +83,7 @@ class BookingMessage extends Message {
 			$template_objects,
 			$attachment
 		);
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 }

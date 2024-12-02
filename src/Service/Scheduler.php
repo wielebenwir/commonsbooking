@@ -14,8 +14,8 @@ use CommonsBooking\Settings\Settings;
  */
 class Scheduler {
 
-	protected string $jobhook; 
-	protected string $reccurence; 
+	protected string $jobhook;
+	protected string $reccurence;
 	protected int $timestamp;
 
 	const UNSCHEDULER_HOOK = COMMONSBOOKING_PLUGIN_SLUG . '_unschedule';
@@ -45,7 +45,7 @@ class Scheduler {
 		// Add custom cron intervals
 		add_filter( 'cron_schedules', array( self::class, 'initIntervals' ) );
 
-		$this->jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' .$jobhook; //Prepends plugin slug so that hooks can be found easily afterwards 
+		$this->jobhook = COMMONSBOOKING_PLUGIN_SLUG . '_' .$jobhook; //Prepends plugin slug so that hooks can be found easily afterwards
 
 		if ((count($option) == 2)  && Settings::getOption($option[0],$option[1]) != 'on' ) { //removes job if option unset
 			$this->unscheduleJob();
@@ -54,7 +54,7 @@ class Scheduler {
 
 		if (empty($executionTime)){
 			$this->timestamp = time();
-		} 
+		}
 		elseif ($reccurence == 'daily'){
 			$this->timestamp = strtotime($executionTime);
 			if($this->timestamp < time()) { //if timestamp is in the past, add one day
@@ -226,7 +226,7 @@ class Scheduler {
 	 * - The job is no longer needed
 	 * - The job has been updated and needs to be rescheduled
 	 * - The plugin has been deactivated
-	 * @return boolean
+	 * @return int|false|\WP_Error
 	 */
 	private function unscheduleJob() {
 		return wp_clear_scheduled_hook($this->jobhook);
