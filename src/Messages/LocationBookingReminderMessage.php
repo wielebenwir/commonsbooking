@@ -74,7 +74,7 @@ class LocationBookingReminderMessage extends Message {
 
 		$sendMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $this );
 		if ( $sendMessage ) {
-			$this->sendNotificationMail();
+			$this->SendNotificationMail();
 		}
 	}
 }
