@@ -11,7 +11,7 @@
     background: transparent;
     padding: 0;
     > div:not(.cb-notice) { 
-      @extend .cb-box;
+      @extend .cb-box !optional;
       > div { /* sub list items */
         &:last-of-type {
           border-bottom: 0;

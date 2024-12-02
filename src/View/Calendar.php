@@ -89,7 +89,9 @@ class Calendar {
 
 		$print  = '<div class="cb-table-scroll">';
 		$print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . '</colgroup><thead>';
-		$print .= "<tr><th colspan='2' class='sortless'>" . $desc . '</th>';
+		// Use td-tag when no table header description is given, to match semantics of header cells
+		$accessible_table_header_tag = empty($desc) ? "td" : "th"; 
+		$print .= "<tr><$accessible_table_header_tag colspan='2' class='sortless'>" . $desc . "</$accessible_table_header_tag>";
 
 		// Render months
 		$print .= self::renderHeadlineMonths( $month_cols );

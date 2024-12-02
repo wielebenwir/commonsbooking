@@ -12,6 +12,12 @@ register_deactivation_hook( COMMONSBOOKING_PLUGIN_FILE, array( Plugin::class, 'd
 
 
 $cbPlugin = new Plugin();
+
+require_once __DIR__ . '/Users.php';
+require_once __DIR__ . '/TemplateParser.php';
+require_once __DIR__ . '/Shortcodes.php';
+require_once __DIR__ . '/Template.php';
+
 $cbPlugin->init();
 $cbPlugin->initRoutes();
 $cbPlugin->initBookingcodes();

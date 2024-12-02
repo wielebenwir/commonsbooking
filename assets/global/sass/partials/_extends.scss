@@ -11,29 +11,31 @@
  */
 
 /* -------------------- Boxes -------------------- */
+@use "mixins";
+@use "variables";
 
 .cb-box {
 	background: var(--commonsbooking-color-gray-background);
-	
+
+    overflow: hidden;
+    border-radius: var(--commonsbooking-radius);
+    margin-bottom: var(--commonsbooking-spacer);
+
 	padding: var(--commonsbooking-spacer-small) / 2 var(--commonsbooking-spacer-small);
-	@include breakpoint(phablet) {
+	@include mixins.breakpoint(phablet) {
 		padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
 	}
-	
-	overflow: hidden;
-	border-radius: var(--commonsbooking-radius);
-	margin-bottom: var(--commonsbooking-spacer);
 }
 
 .cb-box-inner {
-	background: $color-white;
+	background: variables.$color-white;
+
+    border-radius: var(--commonsbooking-radius);
 
 	padding: var(--commonsbooking-spacer-small);
-	@include breakpoint(phablet) {
+	@include mixins.breakpoint(phablet) {
 		padding: var(--commonsbooking-spacer);
 	}
-	
-	border-radius: var(--commonsbooking-radius);
 }
 
 /* -------------------- Typography -------------------- */
@@ -55,7 +57,7 @@
 
 .cb-hover {
 	@extend .shadow-small;
-	border: 1px solid $color-blue-dark;
+	border: 1px solid variables.$color-blue-dark;
 	border-radius: var(--commonsbooking-radius);
 }
 
@@ -74,7 +76,7 @@
 	text-decoration: none !important;
 	word-break: normal !important; /* TwentyTwenty theme fix */
 	white-space: nowrap;
-	color: $color-white;
+	color: variables.$color-white;
 	padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
 	font-weight: bold;
 
@@ -86,11 +88,11 @@
 	&:hover {
 		@extend .shadow-small;
 		background: var(--commonsbooking-color-secondary);
-		color: $color-white; /* Various themes fix */
+		color: variables.$color-white; /* Various themes fix */
 	}
 
 	&:visited {
-		color: $color-white;
+		color: variables.$color-white;
 	}
 
 	&.big {
@@ -99,7 +101,7 @@
 		line-height: var(--commonsbooking-font-size-big);
 	}
 	&.secondary {
-		background-color: $color-white;
+		background-color: variables.$color-white;
 		color: var(--commonsbooking-color-error);
 	}
 
@@ -138,7 +140,7 @@
 	margin: 0;
 	a {
 		text-decoration: none;
-		color: $color-white;
+		color: variables.$color-white;
 		padding: var(--commonsbooking-spacer-small) var(--commonsbooking-spacer);
 	}
 }

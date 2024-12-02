@@ -8,7 +8,7 @@
 
 .cb-wrapper {	
 	.cb-notice {
-		@extend .cb-box;
+		@extend .cb-box !optional;
 		margin-bottom: var(--commonsbooking-spacer-big);
 		font-size: var(--commonsbooking-font-size-big);
 		vertical-align: middle;
