@@ -484,6 +484,7 @@ class Plugin {
 
 	/**
 	 * Renders error for backend_notice.
+	 * TODO refactor this using the AdminMessage type
 	 */
 	public static function renderError() {
 		$errorTypes = [
@@ -503,6 +504,22 @@ class Plugin {
 					commonsbooking_sanitizeHTML( $error )
 				);
 				delete_transient( $errorType );
+			}
+		}
+
+		$infoTypes = [
+			OptionsTab::SUCCESS_TYPE,
+		];
+
+		foreach ( $infoTypes as $info_type ) {
+			if ( $message = get_transient( $info_type ) ) {
+				$class = 'notice notice-success is-dismissible';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					commonsbooking_sanitizeHTML( $message )
+				);
+				delete_transient( $info_type );
 			}
 		}
 	}
