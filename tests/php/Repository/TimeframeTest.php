@@ -31,14 +31,14 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected array $allTimeframes;
 
 	/**
-	 * Create a completely seperate item, location and timeframe.
+	 * Create a completely separate item, location and timeframe.
 	 * @return void
 	 */
 	private function createOtherTimeframe( $start = null, $end = null ) {
-		if ( $start = null ) {
+		if ( $start === null ) {
 			$start = $this->repetition_start;
 		}
-		if ( $end = null ) {
+		if ( $end === null ) {
 			$end = $this->repetition_end;
 		}
 		$this->otherItemId      = $this->createItem( "Other Item" );
