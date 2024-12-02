@@ -41,6 +41,7 @@
     "scssphp/scssphp": "^1.11.1",
     "ext-json": "*",
     "symfony/cache": "^5.4.30",
+    "symfony/polyfill-php80": "^1.31",
     "symfony/service-contracts": "^v2.5.2",
     "eluceo/ical": "~2.14.0",
     "phpmailer/phpmailer": "^6.8.1",
