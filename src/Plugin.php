@@ -29,6 +29,10 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
+/**
+ * @since 2.10 removed saveOptionsActions, the transient commonsbooking_options_saved which is used in
+ *             Plugin::admin_init is set in OptionsTab class
+ */
 class Plugin {
 
 	use Cache;
@@ -528,15 +532,6 @@ class Plugin {
 		if ( $enabled == 'on' ) {
 			new CB1UserFields();
 		}
-	}
-
-	/**
-	 * run actions after plugin options are saved
-	 * TODOD: @markus-mw I think this function is deprecated now. Would you please check this? It is only referenced by an inactive hook
-	 */
-	public static function saveOptionsActions() {
-		// Run actions after options update
-		set_transient( 'commonsbooking_options_saved', 1 );
 	}
 
 	/**

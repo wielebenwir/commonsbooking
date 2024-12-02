@@ -8,6 +8,7 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
 use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\Repository\CB1;
 use CommonsBooking\Repository\Item;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
@@ -26,6 +27,7 @@ class Map extends CustomPostType {
 	public function initHooks() {
 		$cb_map_settings = new MapSettings();
 
+		// TODO check the following comment
 		// deactivated individual map settings because we don't need them righ now
 		// map setting should be integrated in CB settings in the future
 		//$cb_map_settings->prepare_settings();
@@ -48,11 +50,14 @@ class Map extends CustomPostType {
 
 	/**
 	 * enforce the replacement of the original (google maps) link target on cb_item booking pages
+	 *
+	 * @since 2.10 it is deprecated
+	 *
+	 * @deprecated to remove old legacy code.
 	 **/
 	public static function replace_map_link_target() {
 		global $post;
-		$cb_item = 'cb_items';
-		if ( is_object( $post ) && $post->post_type == $cb_item ) {
+		if ( is_object( $post ) && $post->post_type == CB1::$ITEM_TYPE_ID ) {
 			//get timeframes of item
 			$cb_data    = new CB_Data();
 			$date_start = date( 'Y-m-d' ); // current date
@@ -81,6 +86,9 @@ class Map extends CustomPostType {
 	 * load all timeframes from db (that end in the future and it's item's status is 'publish')
 	 **/
 	public static function get_timeframes() {
+
+		$result = [];
+
 		$timeframes = Timeframe::getBookableForCurrentUser(
 			[],
 			[],
