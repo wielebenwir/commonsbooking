@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\Tests\View;
 
-use CommonsBooking\Service\TimeframeExport;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -28,7 +27,7 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		// Save timeframe post to trigger booking code generation.
 		// It is necessary to generate here after time has been frozen to CustomPostTypeTest::CURRENT_DATE
 		// because the code generation depends on the current date and codes are not generated for the past.
-		// (CustomPostTypeTest::CURRENT_DATE is a date in the past) 
+		// (CustomPostTypeTest::CURRENT_DATE is a date in the past)
 		$timeframeCPT = new Timeframe();
 		$timeframeCPT->savePost( $this->timeframeID, get_post($this->timeframeID) );
 

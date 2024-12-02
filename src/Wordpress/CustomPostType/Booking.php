@@ -3,13 +3,11 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingDeniedException;
-use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\iCalendar;
-use CommonsBooking\Settings\Settings;
 use Exception;
 use function wp_verify_nonce;
 
@@ -719,11 +717,11 @@ class Booking extends Timeframe {
 	protected function getCustomFields() {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = 'd/m/Y';
-		if ( strpos( get_locale(), 'de_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
 			$dateFormat = 'd.m.Y';
 		}
 
-		if ( strpos( get_locale(), 'en_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'en_' ) ) {
 			$dateFormat = 'm/d/Y';
 		}
 

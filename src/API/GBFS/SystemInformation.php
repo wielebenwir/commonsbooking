@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\API\GBFS;
 
-use Exception;
 use stdClass;
 use WP_REST_Response;
 

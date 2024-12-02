@@ -4,7 +4,6 @@
 namespace CommonsBooking\Repository;
 
 use CommonsBooking\Plugin;
-use Exception;
 use WP_Post;
 
 abstract class PostRepository {

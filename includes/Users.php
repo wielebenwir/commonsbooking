@@ -1,12 +1,7 @@
 <?php
 
 use CommonsBooking\Plugin;
-use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-use CommonsBooking\Wordpress\CustomPostType\Restriction;
-use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 
 /**

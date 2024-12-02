@@ -3,7 +3,6 @@
 namespace CommonsBooking\View;
 
 use CommonsBooking\Map\MapAdmin;
-use CommonsBooking\Plugin;
 
 /**
  * The Map shortcode. Further logic is found in @see \CommonsBooking\Map\
