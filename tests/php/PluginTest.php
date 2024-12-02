@@ -3,11 +3,9 @@
 namespace CommonsBooking\Tests;
 
 use CommonsBooking\Model\CustomPost;
-use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
-use SlopeIt\ClockMock\ClockMock;
 
 class PluginTest extends CustomPostTypeTest
 {
@@ -15,10 +13,9 @@ class PluginTest extends CustomPostTypeTest
 	private $postIDs = [];
     public function testGetCustomPostTypes()
     {
-		$plugin = new Plugin();
-		$this->assertIsArray($plugin->getCustomPostTypes());
+		$this->assertIsArray(Plugin::getCustomPostTypes());
 		//make sure, that we also have a model for each custom post type
-        foreach ($plugin->getCustomPostTypes() as $customPostType){
+        foreach (Plugin::getCustomPostTypes() as $customPostType){
 	        //first, create a post of this type
 	        $post = wp_insert_post([
 		        'post_type' => $customPostType::getPostType(),

@@ -7,7 +7,6 @@ use CommonsBooking\Model\Day;
 use CommonsBooking\View\Calendar;
 use DateInterval;
 use DatePeriod;
-use DateTime;
 use Exception;
 
 class MapItemAvailable {

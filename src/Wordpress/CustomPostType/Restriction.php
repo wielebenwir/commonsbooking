@@ -133,7 +133,7 @@ class Restriction extends CustomPostType {
 	}
 
 	/**
-	 * Adds filter dropdown // filter by status in restrictions list 
+	 * Adds filter dropdown // filter by status in restrictions list
 	 */
 	public static function addAdminStatusFilter() {
 		Filter::renderFilter(
@@ -220,7 +220,7 @@ class Restriction extends CustomPostType {
 	}
 
 	/**
-	 * Filters admin list by type, timerange, user 
+	 * Filters admin list by type, timerange, user
 	 *
 	 * @param \WP_Query $query for admin list objects
 	 *
@@ -404,11 +404,11 @@ class Restriction extends CustomPostType {
 	protected function getCustomFields(): array {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = "d/m/Y";
-		if ( strpos( get_locale(), 'de_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
 			$dateFormat = "d.m.Y";
 		}
 
-		if ( strpos( get_locale(), 'en_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'en_' ) ) {
 			$dateFormat = "m/d/Y";
 		}
 
