@@ -111,7 +111,7 @@ class Holiday {
 			$year_options .= '<option value="'. $year .'" ';
 			if($i === 0){
 				$year_options .= ' selected ';
-			};
+			}
 
 			$year_options .='>'. $year++ .'</option>';
 		}

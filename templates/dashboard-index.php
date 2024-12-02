@@ -1,5 +1,5 @@
 <h1>Dashboard</h1>
-<!-- based on Wordpress Dashboard --> 
+<!-- based on Wordpress Dashboard -->
 <div class="wrap">
 	<div id="cb_welcome-panel" class="cb_welcome-panel">
 		<div class="cb_welcome-panel-content">
@@ -16,7 +16,7 @@
 				<div class="cb_welcome-panel-column cb_welcome-panel-last">
 					<h3><?php echo esc_html__('Support', 'commonsbooking') ;?></h3>
 					<ul>
-						<li><a href="https://commonsbooking.org/dokumentation" target="_blank"><?php echo esc_html__('Documentation & Tutorials', 'commonsbooking') ;?></a></li>		
+						<li><a href="https://commonsbooking.org/dokumentation" target="_blank"><?php echo esc_html__('Documentation & Tutorials', 'commonsbooking') ;?></a></li>
 						<li><a href="mailto:mail@commonsbooking.org?body=%0D%0A%0D%0A-----------%0D%0A%0D%0AInstallations-URL: <?php echo home_url(); ?>%0D%0A%0D%0ACB-Version: <?php echo commonsbooking_sanitizeHTML( COMMONSBOOKING_VERSION ); ?>" target="_blank"><?php echo esc_html__('Support E-Mail', 'commonsbooking') ;?></a></li>
 						<li><a href="https://commonsbooking.org/kontakt/" target="_blank"><?php echo __('Contact & Newsletter', 'commonsbooking') ;?></a></li>
 					</ul>
@@ -37,7 +37,7 @@
 						<li><a href="edit.php?post_type=cb_timeframe"><span class="dashicons dashicons-calendar-alt"></span> <?php echo esc_html__('Timeframes', 'commonsbooking') ;?></a>
 						</li>
 					</ul>
-	
+
 				</div><!-- .cb_welcome-panel-column -->
 				<div class="cb_welcome-panel-column">
 					<h3 style="padding-bottom:20px"><?php echo esc_html__('See Bookings & manage restrictions', 'commonsbooking') ;?></h3>
@@ -67,28 +67,28 @@
 			<div class="cb_welcome-panel-column-container">
 				<div class="cb_welcome-panel-column" style="width: 50%;">
 					<h3><?php echo esc_html__("Today's pickups", 'commonsbooking') ;?></h3>
-					<?php 
+					<?php
 					// Display list of bookings with pickup date = today
 					$BeginningBookings = CommonsBooking\View\Dashboard::renderBeginningBookings();
 					if ($BeginningBookings) {
 						echo commonsbooking_sanitizeHTML($BeginningBookings);
 					} else {
-						echo esc_html__('No pickups today', 'commonsbooking');					
-					};
-					
+						echo esc_html__('No pickups today', 'commonsbooking');
+					}
+
 					?>
 				</div>
 				<div class="cb_welcome-panel-column" style="width: 50%">
 					<h3><?php echo esc_html__("Today's returns", 'commonsbooking') ;?></h3>
-					<?php 
+					<?php
 					// Display list of bookings with return date = today
 					$BeginningBookings = CommonsBooking\View\Dashboard::renderEndingBookings();
 					if ($BeginningBookings) {
 						echo commonsbooking_sanitizeHTML($BeginningBookings);
 					} else {
-						echo esc_html__('No returns today', 'commonsbooking');					
-					};
-					
+						echo esc_html__('No returns today', 'commonsbooking');
+					}
+
 					?>
 				</div>
 			</div>
