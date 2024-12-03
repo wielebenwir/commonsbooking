@@ -18,6 +18,7 @@ use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
+use CommonsBooking\View\MassOperations;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -28,6 +29,10 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
+/**
+ * @since 2.10 removed saveOptionsActions, the transient commonsbooking_options_saved which is used in
+ *             Plugin::admin_init is set in OptionsTab class
+ */
 class Plugin {
 
 	use Cache;
@@ -317,6 +322,16 @@ class Plugin {
 				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
 				''
 			);
+
+			//Add menu item for mass operations
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Mass Operations', 'commonsbooking' ),
+				esc_html__( 'Mass Operations', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				'cb-mass-operations',
+				array( MassOperations::class, 'index' )
+			);
 		}
 	}
 
@@ -417,11 +432,12 @@ class Plugin {
 			$taxonomy,
 			$customPostType,
 			array(
-				'label'        => esc_html__( 'Item Category', 'commonsbooking' ),
-				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical' => true,
-				'show_in_rest' => true,
-				'public' => true
+				'label'             => esc_html__( 'Item Category', 'commonsbooking' ),
+				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'public'            => true,
+				'show_admin_column' => true
 			)
 		);
 
@@ -448,10 +464,11 @@ class Plugin {
 			$taxonomy,
 			$customPostType,
 			array(
-				'label'        => esc_html__( 'Location Category', 'commonsbooking' ),
-				'rewrite'      => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical' => true,
-				'show_in_rest' => true,
+				'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
+				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true
 			)
 		);
 
@@ -467,10 +484,12 @@ class Plugin {
 
 	/**
 	 * Renders error for backend_notice.
+	 * TODO refactor this using the AdminMessage type
 	 */
 	public static function renderError() {
 		$errorTypes = [
 			Model\Timeframe::ERROR_TYPE,
+			Model\Timeframe::ORPHANED_TYPE,
 			BookingCode::ERROR_TYPE,
 			OptionsTab::ERROR_TYPE,
             Model\Booking::ERROR_TYPE,
@@ -487,6 +506,22 @@ class Plugin {
 				delete_transient( $errorType );
 			}
 		}
+
+		$infoTypes = [
+			OptionsTab::SUCCESS_TYPE,
+		];
+
+		foreach ( $infoTypes as $info_type ) {
+			if ( $message = get_transient( $info_type ) ) {
+				$class = 'notice notice-success is-dismissible';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					commonsbooking_sanitizeHTML( $message )
+				);
+				delete_transient( $info_type );
+			}
+		}
 	}
 
 	/**
@@ -497,15 +532,6 @@ class Plugin {
 		if ( $enabled == 'on' ) {
 			new CB1UserFields();
 		}
-	}
-
-	/**
-	 * run actions after plugin options are saved
-	 * TODOD: @markus-mw I think this function is deprecated now. Would you please check this? It is only referenced by an inactive hook
-	 */
-	public static function saveOptionsActions() {
-		// Run actions after options update
-		set_transient( 'commonsbooking_options_saved', 1 );
 	}
 
 	/**
@@ -638,7 +664,7 @@ class Plugin {
 	}
 
 	public function registerShortcodes() {
-		add_shortcode('cb_search', array(new SearchShortcode(), 'execute'));
+		add_shortcode( 'cb_search', array( SearchShortcode::class, 'execute' ) );
 	}
 
 	/**
@@ -722,6 +748,9 @@ class Plugin {
 		add_action( 'wp_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( Plugin::class, 'addWarmupAjaxToOutput' ) );
 
+		//Add custom hook to clear cache from cronjob
+		add_action( self::$clearCacheHook, array( $this, 'clearCache' ) );
+
 		add_action('plugins_loaded', array($this, 'commonsbooking_load_textdomain'), 20);
 
 		$map_admin = new LocationMapAdmin();
@@ -803,7 +832,7 @@ class Plugin {
 		if ( ! in_array( $post->post_status, $ignoredStates ) || $update ) {
 			$tags   = Wordpress::getRelatedPostIds( $post_id );
 			$tags[] = 'misc';
-			self::clearCache( $tags );
+			self::scheduleClearCache( $tags );
 		}
 	}
 
@@ -859,14 +888,12 @@ class Plugin {
 	/**
 	 * Adds bookingcode actions.
 	 * They:
-	 * 1. Delete booking codes when a booking is deleted.
-	 * 2. Hook appropriate function to button that downloads the booking codes in the backend.
+	 * - Hook appropriate function to button that downloads the booking codes in the backend.
 	 *    @see \CommonsBooking\View\BookingCodes::renderTable()
-	 * 3. Hook appropriate function to button that sends out emails with booking codes to the station.
+	 * - Hook appropriate function to button that sends out emails with booking codes to the station.
 	 *   @see \CommonsBooking\View\BookingCodes::renderDirectEmailRow()
 	 */
 	public function initBookingcodes() {
-		add_action( 'before_delete_post', array( BookingCodes::class, 'deleteBookingCodes' ), 10 );
 		add_action( 'admin_action_cb_download-bookingscodes-csv', array( View\BookingCodes::class, 'renderCSV' ), 10, 0 );
         add_action( 'admin_action_cb_email-bookingcodes', array(View\BookingCodes::class, 'emailCodes'), 10, 0);
 	}

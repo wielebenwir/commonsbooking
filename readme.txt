@@ -3,13 +3,13 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
-Tested up to: 6.4.1
-Stable Tag: 2.9.1
+Tested up to: 6.7
+Stable Tag: 2.9.4
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
 
-CommonsBooking is a plugin for management and booking of common goods. 
+CommonsBooking is a plugin for the management and booking of common goods.
 
 ## Description
 
@@ -34,6 +34,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 **Plugin websites**
 
 * [Official Website](https://commonsbooking.org)
+* [Official Documentation](https://commonsbooking.org/dokumentation)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
 
 
@@ -78,6 +79,27 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.9.4 (17.07.2024)
+FIXED: Plugin not usable in multisite mode
+
+### 2.9.3 (31.05.2024)
+ADDED: Download ics file directly from booking details page
+ENHANCED: Taxonomies will now be shown in item / location overview in the backend
+ENHANCE: If iCalendar attachments are enabled: The cancellation email will now contain a calendar event that will cancel the booking in the user's calendar
+FIXED: Restriction emails button not working in some instances
+FIXED: Unexpected behavior when booking expires before confirmation
+FIXED: German translation and typos
+
+### 2.9.2 (26.04.2024)
+ADDED: You can now configure reminder emails that are sent to the location before the start and before the end of a booking. (thanks @poilu)
+ENHANCED: You can now disable sending a copy of the booking confirmation email to the location.
+ENHANCED: New filter hooks for metaboxes
+FIXED: Excerpt of item now shown in map popup
+FIXED: Issue with special characters in booking email (Thanks @nelarsen)
+FIXED: Admin Booking was not sending emails for CB_Manager
+FIXED: API will even return response if the schema is not met and WP_DEBUG is enabled
+FIXED: Incompatibility with "Futurio Extra" plugin
 
 ### 2.9.1 (17.03.2024)
 FIXED: Timeframe export was not working

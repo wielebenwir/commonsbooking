@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Exception\BookingCodeException;
+use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use Exception;
 
@@ -36,6 +37,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Meta value for the amount of days that have been overbooked for this booking.
 	 */
 	const META_OVERBOOKED_DAYS = 'days-overbooked';
+
+	/**
+	 * Usually not set, only set when changing a timeframe orphans the current booking.
+	 */
+	const META_LAST_TIMEFRAME = 'last-connected-timeframe';
 
     public const ERROR_TYPE = 'BookingValidationFailed';
 
@@ -408,6 +414,17 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 		return intval ( $metaField );
 	}
+
+	public function getFormattedStartDate(): string {
+		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
+		return date_i18n( $date_format, $this->getStartDate() );
+	}
+
+	public function getFormattedEndDate(): string {
+		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
+		return date_i18n( $date_format, $this->getRawEndDate() );
+	}
+
 	/**
 	 * Get the booking date in a human-readable format.
 	 * This is used in the booking confirmation email as a template tag.
@@ -415,10 +432,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return string
 	 */
 	public function formattedBookingDate(): string {
-		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
-		$startdate = date_i18n( $date_format, $this->getStartDate() );
-		$enddate   = date_i18n( $date_format, $this->getRawEndDate() );
+		$startdate = $this->getFormattedStartDate();
+		$enddate   = $this->getFormattedEndDate();
 
 		if ( $startdate === $enddate ) {
 			/* translators: %s = date in WordPress defined format */
@@ -577,6 +593,67 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
+	 * Will check if a backend booking is valid.
+	 * Throws a TimeframeInvalidException containing the error message if the booking is not valid.
+	 * @return true if booking is valid
+	 * @throws TimeframeInvalidException
+	 */
+	public function isValid(): bool {
+		if ($this->getStartDate() > $this->getEndDate()) {
+			throw new TimeframeInvalidException('Start date is after end date' );
+		}
+
+
+		try {
+			$item = $this->getItem();
+			if ( ! $item ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( __('Item not found', 'commonsbooking' ) );
+		}
+
+		try {
+			$location = $this->getLocation();
+			if ( ! $location ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( __('Location not found', 'commonsbooking' ) );
+		}
+
+		$timeframe = $this->getBookableTimeFrame();
+		if ( $timeframe === null ) {
+			throw new TimeframeInvalidException( __( 'There is no timeframe for this booking. Please create a timeframe first.', 'commonsbooking' ) );
+		}
+
+		// validate if overlapping bookings exist
+		$overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings(
+			$item->ID,
+			$location->ID,
+			$this->getStartDate(),
+			$this->getEndDate(),
+			$this->ID
+		);
+
+		if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+
+			foreach ( $overlappingBookings as $overlappingBooking ) {
+				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
+			}
+
+			$formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
+
+			throw new TimeframeInvalidException(
+				__( 'There are one ore more overlapping bookings within the chosen timerange', 'commonsbooking' ) . PHP_EOL .
+				__( 'Please adjust the start- or end-date.', 'commonsbooking' ) . PHP_EOL .
+				sprintf( __( 'Affected Bookings: %s', 'commonsbooking' ), commonsbooking_sanitizeHTML( $formattedOverlappingLinks ) ),
+			);
+		}
+		return true;
+	}
+
+	/**
 	 * Render HTML Link to booking.
 	 * This is not just the URL but a complete HTML link with corresponding text.
 	 * This function is used in the booking confirmation email via template tags.
@@ -627,6 +704,24 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function isUserPrivileged( WP_User $user = null): bool {
 		$user ??= $this->getUserData();
 		return parent::isUserPrivileged($user);
+	}
+
+	/**
+	 * Will indicate if booking is orphaned meaning that the booking is not connectable to a bookable timeframe.
+	 * This can happen when a bookable timeframe is deleted but the booking is still in the database,
+	 * when a bookable timeframe has a location changed and the booking is still in the database,
+	 * or when a bookable timeframe is changed to a non-bookable timeframe and the booking is still in the database.
+	 *
+	 * This can also happen when a booking is created without a bookable timeframe, e.g. when a booking is created through the backend.
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function isOrphaned(): bool {
+		if ($this->getBookableTimeFrame() === null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -774,6 +869,23 @@ class Booking extends \CommonsBooking\Model\Timeframe {
     public function getFormattedEditLink() {
         return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
     }
+
+	/**
+	 * Will return a location where an orphaned booking can be moved to. This is
+	 * the new location of the timeframe the booking was previously attached to.
+	 * @return ?Location
+	 */
+	public function getMoveableLocation(): ?Location {
+		if (!$this->isOrphaned()) {
+			return null;
+		}
+		$attachedTFMeta = intval( get_post_meta( $this->ID, self::META_LAST_TIMEFRAME, true ) );
+		if ( empty ($attachedTFMeta)) {
+			throw new Exception("No attached timeframe found for orphaned booking.");
+		}
+		$attachedTF = new \CommonsBooking\Model\Timeframe( $attachedTFMeta );
+		return $attachedTF->getLocation();
+	}
 
     /**
      * Updates internal booking comment by adding new comment in a new line

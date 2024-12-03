@@ -697,7 +697,8 @@ class BookingRule {
 	 * @param $appliedTerms
 	 * @param int $allowedTotalBookings
 	 *
-	 * @return void
+	 * @return Booking[]|null
+	 * @throws Exception
 	 */
 	private static function checkBookingAmount( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, $appliedTerms, int $allowedTotalBookings ) {
 		$countedPostTypes = [ 'confirmed' ];

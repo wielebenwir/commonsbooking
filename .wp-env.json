@@ -1,30 +1,35 @@
 {
-	"phpVersion": "7.4",
-	"core": "Wordpress/Wordpress#6.4.1",
-        "plugins": [ 
-		".",
-	        "https://downloads.wordpress.org/plugin/wp-crontrol.zip",
-      	        "https://downloads.wordpress.org/plugin/wordpress-importer.zip",
-	        "https://downloads.wordpress.org/plugin/query-monitor.zip",
-		"https://downloads.wordpress.org/plugin/wp-mail-logging.zip",
-		"https://downloads.wordpress.org/plugin/jsm-show-post-meta.zip",
-		"https://downloads.wordpress.org/plugin/disable-welcome-messages-and-tips.zip"
-	],
-	"port": 1000,
-  	"testsPort": 1001,
-  	"config": {
-		"WP_DEBUG": true,
-		"WP_DEBUG_LOG": true,
-    		"WP_DEBUG_DISPLAY": false
-  	},
-	"themes": [
-		"flegfleg/kasimir-theme"
-	],
-        "env": {
-                "tests": {
-                        "mappings": {
-                                "wp-content/plugins/commonsbooking": "."
-                        }
-                }
-        }
+  "phpVersion" : "7.4",
+  "core" : "Wordpress/Wordpress#6.7",
+  "plugins" : [
+    ".",
+    "https://downloads.wordpress.org/plugin/wp-crontrol.zip",
+    "https://downloads.wordpress.org/plugin/wordpress-importer.zip",
+    "https://downloads.wordpress.org/plugin/query-monitor.zip",
+    "https://downloads.wordpress.org/plugin/wp-mail-logging.zip",
+    "https://downloads.wordpress.org/plugin/jsm-show-post-meta.zip",
+    "https://downloads.wordpress.org/plugin/disable-welcome-messages-and-tips.zip"
+  ],
+  "port" : 1000,
+  "testsPort" : 1001,
+  "config" : {
+    "WP_DEBUG" : true,
+    "WP_DEBUG_LOG" : true,
+    "WP_DEBUG_DISPLAY" : false
+  },
+  "themes" : [
+    "flegfleg/kasimir-theme"
+  ],
+  "env" : {
+    "tests" : {
+      "mappings" : {
+        "wp-content/plugins/commonsbooking" : "."
+      },
+      "config" : {
+        "WP_DEBUG" : true,
+        "WP_DEBUG_LOG" : true,
+        "WP_DEBUG_DISPLAY" : false
+      }
+    }
+  }
 }

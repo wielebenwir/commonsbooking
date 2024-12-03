@@ -3,7 +3,6 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\View\TimeframeExport;
 
 /**
  * This class is used to schedule jobs that are executed in the background.
@@ -152,6 +151,26 @@ class Scheduler {
 			'update_option_commonsbooking_options_reminder'
 		);
 
+		// Init booking start reminder job for locations
+		New Scheduler(
+			'location-reminder-booking-start',
+			array( \CommonsBooking\Service\Booking::class, 'sendBookingStartLocationReminderMessage' ),
+			'daily',
+			'today ' . Settings::getOption( 'commonsbooking_options_reminder', 'booking-start-location-reminder-time' ) . ':00',
+			array( 'commonsbooking_options_reminder', 'booking-start-location-reminder-activate'),
+			'update_option_commonsbooking_options_reminder'
+		);
+
+		// Init booking end reminder job for locations
+		New Scheduler(
+			'location-reminder-booking-end',
+			array( \CommonsBooking\Service\Booking::class, 'sendBookingEndLocationReminderMessage' ),
+			'daily',
+			'today ' . Settings::getOption( 'commonsbooking_options_reminder', 'booking-end-location-reminder-time' ) . ':00',
+			array( 'commonsbooking_options_reminder', 'booking-end-location-reminder-activate'),
+			'update_option_commonsbooking_options_reminder'
+		);
+
 		// Init booking feedback job
 		New Scheduler(
 			'feedback',
@@ -176,7 +195,7 @@ class Scheduler {
 		New Scheduler(
 			'export',
 			function() use ( $exportPath ) {
-				TimeframeExport::exportCsv( $exportPath );
+				TimeframeExport::cronExport( $exportPath );
 			},
 			$exportInterval,
 			'',

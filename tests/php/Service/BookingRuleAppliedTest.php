@@ -14,6 +14,8 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 	private Booking $testBookingTomorrow;
 	private int $testBookingId;
 	protected BookingRuleApplied $appliedAlwaysAllow,$appliedAlwaysDeny;
+	protected BookingRule $alwaysallow;
+	protected BookingRule $alwaysdeny;
 
 	protected function setUpTestBooking(): void {
 		$this->testBookingId       = $this->createBooking(

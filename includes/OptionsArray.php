@@ -23,10 +23,6 @@ if ( strpos( get_locale(), 'en_' ) !== false ) {
 	$dateFormat = "m/d/Y";
 }
 
-$typeOptions = [
-	'all' => esc_html__( 'All timeframe types', 'commonsbooking' )
-];
-$typeOptions += Timeframe::getTypes();
 
 /**
  * Plugin Options
@@ -879,7 +875,7 @@ For booking details and cancellation, click on this booking link: {{booking:book
 					<br>The email will be sent around midnight after the booking day has ended.'
 					, 'commonsbooking' ) ),
 				'fields' => array(
-					// settings pre booking reminder -- activate reminder
+					// settings post booking reminder -- activate reminder
 					array(
 						'name' => esc_html__( 'Activate', 'commonsbooking' ),
 						'id'   => 'post-booking-notice-activate',
@@ -906,6 +902,146 @@ Please let us know if any problems occurred.<br>
 				),
 			),
 			/* field group post booking reminder settings end */
+
+			/* field group booking start reminder for locations */
+			'booking-start-location-reminder' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Reminder for locations before booking starts', 'commonsbooking' ) ),
+				'id'     => 'booking-start-location-reminder',
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'You can set here whether locations should receive a reminder email before the start of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// settings booking start reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'booking-start-location-reminder-activate',
+						'type' => 'checkbox',
+						'desc' => esc_html__( 'The reminders need to be enabled for all locations individually. This is only the main on/off switch.', 'commonsbooking' ),
+					),
+					// E-Mail booking start reminder for locations
+					array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+					'id'      => 'booking-start-location-reminder-subject',
+					'type'    => 'text',
+					'default' => commonsbooking_sanitizeHTML( __( 'Upcoming booking of {{item:post_title}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+				),
+				array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+					'id'      => 'booking-start-location-reminder-body',
+					'type'    => 'textarea',
+					'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi,</h2>
+<p>The booking period for the item {{item:post_title}} at {{location:post_title}} will start soon.<br>
+The booking period: {{booking:formattedBookingDate}}<br><br>
+This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:user_email}} ). <br>
+
+{{booking:getEmailSignature}}', 'commonsbooking' ) ),
+				),
+				// settings booking start reminder -- set sending time
+				array(
+					'name'             => esc_html__( 'Time', 'commonsbooking' ),
+					'id'               => 'booking-start-location-reminder-time',
+					'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+							, 'commonsbooking' ) ),
+							'type'        => 'text_time',
+							'attributes'  => array(
+								'data-timepicker' => wp_json_encode(
+									array(
+										'stepMinute' => 60,
+										'timeFormat' => 'HH:mm',
+									)
+								),
+							),
+							'time_format' => esc_html(get_option( 'time_format' )),
+					),
+					array(
+						'name'             => esc_html__( 'Bookings of', 'commonsbooking' ),
+						'id'               => 'booking-start-location-reminder-day',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define for which booking start day the notifications should be sent'
+								, 'commonsbooking' ) ),
+						'type'             => 'select',
+						'show_option_none' => false,
+						'default'          => '1',
+						'options'          => array(
+							'1' => esc_html__( 'current day', 'commonsbooking' ),
+							'2' => esc_html__( 'next day', 'commonsbooking' ),
+						),
+					),
+				),
+			),
+			/* field group booking start reminder for locations end */
+
+			/* field group booking end reminder for locations */
+			'booking-end-location-reminder' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Reminder for locations before booking ends', 'commonsbooking' ) ),
+				'id'     => 'booking-end-location-reminder',
+				'desc'   => commonsbooking_sanitizeHTML( __(
+					'You can set here whether locations should receive a reminder email before the end of a booking.<br><a href="https://commonsbooking.org/?p=1763" target="_blank">More Information in the documentation</a>'
+					, 'commonsbooking' ) ),
+				'fields' => array(
+					// settings booking end reminder -- activate reminder
+					array(
+						'name' => esc_html__( 'Activate', 'commonsbooking' ),
+						'id'   => 'booking-end-location-reminder-activate',
+						'type' => 'checkbox',
+						'desc' => esc_html__( 'The reminders need to be enabled for all locations individually. This is only the main on/off switch.', 'commonsbooking' ),
+					),
+					// E-Mail booking end reminder for locations
+					array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
+					'id'      => 'booking-end-location-reminder-subject',
+					'type'    => 'text',
+					'default' => commonsbooking_sanitizeHTML( __( 'Booking of {{item:post_title}} {{booking:formattedBookingDate}}', 'commonsbooking' ) ),
+				),
+				array(
+					'name'    => commonsbooking_sanitizeHTML( __( 'email body', 'commonsbooking' ) ),
+					'id'      => 'booking-end-location-reminder-body',
+					'type'    => 'textarea',
+					'default' => commonsbooking_sanitizeHTML( __( '<h2>Hi,</h2>
+<p>The booking period for the item {{item:post_title}} at {{location:post_title}} will end soon.<br>
+The booking period: {{booking:formattedBookingDate}}<br><br>
+This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:user_email}} ). <br>
+
+
+{{booking:getEmailSignature}}', 'commonsbooking' ) ),
+				),
+				// settings booking end reminder -- set sending time
+				array(
+					'name'             => esc_html__( 'Time', 'commonsbooking' ),
+					'id'               => 'booking-end-location-reminder-time',
+					'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+							'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.'
+							, 'commonsbooking' ) ),
+					'type'        => 'text_time',
+					'default' => '1',
+					'attributes'  => array(
+						'data-timepicker' => wp_json_encode(
+							array(
+								'stepMinute' => 60,
+								'timeFormat' => 'HH:mm',
+							)
+						),
+					),
+					'time_format' => esc_html(get_option( 'time_format' )),
+					),
+					array(
+						'name'             => esc_html__( 'Bookings of', 'commonsbooking' ),
+						'id'               => 'booking-end-location-reminder-day',
+						'desc'             => '<br>' . commonsbooking_sanitizeHTML( __(
+								'Define for which booking end day the notifications should be sent'
+								, 'commonsbooking' ) ),
+						'type'             => 'select',
+						'show_option_none' => false,
+						'default'          => '1',
+						'options'          => array(
+							'1' => esc_html__( 'current day', 'commonsbooking' ),
+							'2' => esc_html__( 'next day', 'commonsbooking' ),
+						),
+					),
+				),
+			),
+			/* field group booking end reminder for locations end */
 		),
 		/* field group container end */
 	),
@@ -916,6 +1052,20 @@ Please let us know if any problems occurred.<br>
 		'title'        => __( 'Migration', 'commonsbooking' ),
 		'id'           => 'migration',
 		'field_groups' => array(
+			'upgrade'           => array(
+				'title'  => esc_html__( 'Finish upgrade to latest version', 'commonsbooking' ),
+				'id'     => 'upgrade',
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Click here to finish the upgrade to the latest version. <br> This needs to be done after updating the plugin to a new version. <br> If you do not do this, the plugin may not work correctly.', 'commonsbooking' ) ),
+				'fields' => [
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Finish upgrade', 'commonsbooking' ) ),
+						'id'            => 'upgrade-custom-field',
+						'type'          => 'text',
+						'render_row_cb' => array( Migration::class, 'renderUpgradeForm' ),
+					)
+				],
+			),
+			// migration cb1 -> cb2
 			'migration'         => array(
 				'title'  => esc_html__( 'Migrate from Commons Booking Version 0.X', 'commonsbooking' ),
 				'id'     => 'migration',
@@ -982,26 +1132,26 @@ Please let us know if any problems occurred.<br>
 						'desc'    => esc_html__( 'Select Type of this timeframe (e.g. bookable, repair, holidays, booking). See Documentation for detailed information.', 'commonsbooking' ),
 						'id'      => "export-type",
 						'type'    => 'select',
-						'options' => $typeOptions,
+						'options' => Timeframe::getTypes( true ),
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_location') ) ),
-						'id'   => 'location-fields',
+						'id'   => TimeframeExport::LOCATION_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_item') ) ),
-						'id'   => 'item-fields',
+						'id'   => TimeframeExport::ITEM_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
 						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ), 
-						'id'   => 'user-fields',
+						'id'   => TimeframeExport::USER_FIELD,
 						'type' => 'text'
 					),
 					array(
@@ -1027,7 +1177,7 @@ Please let us know if any problems occurred.<br>
 						'name'          => commonsbooking_sanitizeHTML( __( 'Export', 'commonsbooking' ) ),
 						'id'            => 'export-custom-field',
 						'type'          => 'text',
-						'render_row_cb' => array( TimeframeExport::class, 'renderExportForm' ),
+						'render_row_cb' => array( TimeframeExport::class, 'renderExportButton' ),
 					)
 				]
 			),

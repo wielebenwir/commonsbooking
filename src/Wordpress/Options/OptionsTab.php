@@ -2,10 +2,16 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
+use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Plugin;
 use CommonsBooking\View\TimeframeExport;
 use Exception;
 
+/**
+ * This adds the settings pane to the commonsbooking plugin page.
+ * It uses CMB2 fields to display settings in a generic way and uses underlying functionality to save them.
+ * The structure and contents of all the settings is controlled via the file OptionsArray.
+ */
 class OptionsTab {
 
 	public $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
@@ -16,6 +22,8 @@ class OptionsTab {
 
 	// Error type for backend error output
 	public const ERROR_TYPE = "commonsbooking-options-error";
+
+	public const SUCCESS_TYPE = "commonsbooking-options-success";
 	/**
 	 * @var \CMB2
 	 */
@@ -118,45 +126,55 @@ class OptionsTab {
 	}
 
 	/**
-	 * actions to be fired after the options page was saved
+	 * Actions to be fired after the options page was saved.
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public static function savePostOptions() {
+
+		// Dev note: At the moment this uses transients, which then are hooked into `admin_notices` action in Plugin.php
+		// Why? Transients are used here instead of AdminMessage class, because the hook of savePostOptions
+		// (CMB2-Hook 'cmb2_save_options-page_field') is too late for rendering of the admin page.
+		// So if you want to refactor this, savePostOptions needs to be hooked into an action which fires earlier.
+
 		if ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_export" ) {
 			// Check for export action
-			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "download-export" ) {
-				TimeframeExport::exportCsv();
-			} else {
-				if ( array_key_exists( 'export-filepath', $_REQUEST ) && $_REQUEST['export-filepath'] !== "" ) {
+			if ( array_key_exists( 'export-filepath', $_REQUEST ) && $_REQUEST['export-filepath'] !== "" ) {
 
-					if ( ! is_dir( $_REQUEST['export-filepath'] ) ) {
-						set_transient(
-							self::ERROR_TYPE,
-							commonsbooking_sanitizeHTML( __( "The export path does not exist or is not readable.", 'commonsbooking' ) ),
-							45
-						);
-					}
+				if ( ! is_dir( $_REQUEST['export-filepath'] ) ) {
+					set_transient(
+						self::ERROR_TYPE,
+						commonsbooking_sanitizeHTML( __( "The export path does not exist or is not readable.", 'commonsbooking' ) ),
+						45
+					);
+				}
 
-					if ( ! is_writable( $_REQUEST['export-filepath'] ) ) {
-						set_transient(
-							self::ERROR_TYPE,
-							commonsbooking_sanitizeHTML( __( "The export path is not writeable.", 'commonsbooking' ) ),
-							45 );
-					}
+				if ( ! is_writable( $_REQUEST['export-filepath'] ) ) {
+					set_transient(
+						self::ERROR_TYPE,
+						commonsbooking_sanitizeHTML( __( "The export path is not writeable.", 'commonsbooking' ) ),
+						45 );
 				}
 			}
-		}
-		elseif ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_advanced-options" ) {
+		} elseif ( array_key_exists( 'action', $_REQUEST ) && $_REQUEST['action'] == "commonsbooking_options_advanced-options" ) {
 			//Check for request to clear cache
 			if ( array_key_exists( 'submit-cmb', $_REQUEST ) && $_REQUEST['submit-cmb'] == "clear-cache" ) {
-				Plugin::clearCache();
-				set_transient(
-			self::ERROR_TYPE,
-					commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
-					45
-				);
+				try {
+					Plugin::clearCache();
+					set_transient(
+						self::SUCCESS_TYPE,
+						commonsbooking_sanitizeHTML( __( "Cache cleared.", 'commonsbooking' ) ),
+						45 );
+				} catch ( Exception $e ) {
+					if ( WP_DEBUG ) {
+						error_log( $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					}
+					set_transient(
+						self::ERROR_TYPE,
+						commonsbooking_sanitizeHTML( __( "Error while clearing the cache.", 'commonsbooking' ) ),
+						45 );
+				}
 			}
 		}
 

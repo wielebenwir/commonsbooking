@@ -3,6 +3,7 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Location;
@@ -34,7 +35,8 @@ class BookingMessage extends Message {
 		// get location email adresses to send them bcc copies
 		$location = get_post($booking->getMeta('location-id'));
 		$location_emails = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ) ; /*  email addresses, comma-seperated  */
-		if ($location_emails) {
+		$location_bcc_copy = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', $location )  == 'on' ; /*  email addresses, comma-seperated  */
+		if ($location_emails && $location_bcc_copy) {
 			$bcc_adresses = str_replace(' ','',$location_emails);
 		} else {
 			$bcc_adresses = null;
@@ -54,9 +56,9 @@ class BookingMessage extends Message {
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 
-		//generate attachment when set in settings and booking is not cancelled
+		//generate attachment when set in settings
 		$attachment = null;
-		if ((Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on') && (!$booking->isCancelled() )){
+		if ((Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on') ){
 			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle, $template_objects ) );
 
@@ -73,7 +75,7 @@ class BookingMessage extends Message {
 		}
 
 		$this->prepareMail(
-			$booking_user,
+			MessageRecipient::fromUser( $booking_user ),
 			$template_body,
 			$template_subject,
 			$fromHeaders,

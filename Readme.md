@@ -18,7 +18,7 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 * [WordPress Plugin Page](https://wordpress.org/plugins/commonsbooking/)
 * [View Changelog](https://wordpress.org/plugins/commonsbooking/#developers)
 * [Official Website](https://commonsbooking.org)
-* For users get [Support](https://commonsbooking.org/kontakt/)
+* For users read the [documentation](https://commonsbooking.org/dokumentation) or get [Support](https://commonsbooking.org/kontakt/)
 * For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
 
 ## Installation
