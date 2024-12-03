@@ -8,7 +8,7 @@ use CommonsBooking\Model\Map;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Model\Booking;
-use CommonsBooking\Plugin;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 
 /**
@@ -78,6 +78,142 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		}
 
 	}
+	public function testSanitizeOptions() {
+		//test the sanitization for an array of Items
+		$firstItem = $this->createItem("First Item",'publish');
+		$secondItem = $this->createItem("Second Item",'publish');
+		$thirdItem = $this->createItem("Third Item",'publish');
+		$itemArray = [$firstItem, $secondItem, $thirdItem];
+		$itemArray = array_map('get_post', $itemArray);
+		$expected = array(
+			$firstItem => "First Item",
+			$secondItem => "Second Item",
+			$thirdItem => "Third Item"
+		);
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions($itemArray));
+		//now add in one draft item
+		$draftItem = $this->createItem("Draft Item",'draft');
+		$itemArray[] = get_post($draftItem);
+		$expected[$draftItem] = "Draft Item [Draft]";
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions($itemArray));
+
+		//test the sanitization for terms
+		$term = wp_insert_term("test-item-term", \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category');
+		$term = get_term($term['term_id']);
+		$expected = array(
+			$term->term_id => "test-item-term (". $term->slug .")"
+		);
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions([$term]));
+
+		//other things should just be returned as a numbered array
+		$input = [1,2,3,4,5];
+		$expected = array(
+			0 => 1,
+			1 => 2,
+			2 => 3,
+			3 => 4,
+			4 => 5
+		);
+		$this->assertEquals($expected, CustomPostType::sanitizeOptions($input));
+	}
+
+	public function testGetCMB2FieldsArrayFromCustomMetadata() {
+		$metaDataRaw = 'item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain"';
+		$expectedOutput = [
+			[
+				'id' => 'waterproof',
+				'name' => 'Waterproof material',
+				'type' => 'checkbox',
+				'desc' => '"This item is waterproof and can be used in heavy rain"'
+			]
+		];
+		Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'metadata', $metaDataRaw );
+		$this->assertEquals($expectedOutput, CustomPostType::getCMB2FieldsArrayFromCustomMetadata('item'));
+
+		//test with multiple lines
+		$metaDataRaw = 'item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain"' . "\r\n" .
+	                    'item;color;Color;text;"The color of this item"';
+		$expectedOutput = [
+			[
+				'id' => 'waterproof',
+				'name' => 'Waterproof material',
+				'type' => 'checkbox',
+				'desc' => '"This item is waterproof and can be used in heavy rain"'
+			],
+			[
+				'id' => 'color',
+				'name' => 'Color',
+				'type' => 'text',
+				'desc' => '"The color of this item"'
+			]
+		];
+		Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'metadata', $metaDataRaw );
+		$this->assertEquals($expectedOutput, CustomPostType::getCMB2FieldsArrayFromCustomMetadata('item'));
+
+		//test with multiple lines and multiple types
+		$metaDataRaw = 'item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain"' . "\r\n" .
+	                    'item;color;Color;text;"The color of this item"' . "\r\n" .
+	                    'location;business;Business;checkbox;"Check, when the location is a business"';
+		$expectedOutputItem =
+			[
+				[
+					'id' => 'waterproof',
+					'name' => 'Waterproof material',
+					'type' => 'checkbox',
+					'desc' => '"This item is waterproof and can be used in heavy rain"'
+				],
+				[
+					'id' => 'color',
+					'name' => 'Color',
+					'type' => 'text',
+					'desc' => '"The color of this item"'
+				]
+			];
+		$expectedOutputLocation =
+			[
+				[
+					'id' => 'business',
+					'name' => 'Business',
+					'type' => 'checkbox',
+					'desc' => '"Check, when the location is a business"'
+				]
+			];
+		Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'metadata', $metaDataRaw );
+		$this->assertEquals($expectedOutputItem, CustomPostType::getCMB2FieldsArrayFromCustomMetadata('item'));
+		$this->assertEquals($expectedOutputLocation, CustomPostType::getCMB2FieldsArrayFromCustomMetadata('location'));
+
+		//add custom metadata through filter hook
+		$metaDataRaw = 'item;waterproof;Waterproof material;checkbox;"This item is waterproof and can be used in heavy rain"';
+		$expectedOutput = [
+			[
+				'id' => 'waterproof',
+				'name' => 'Waterproof material',
+				'type' => 'checkbox',
+				'desc' => '"This item is waterproof and can be used in heavy rain"'
+			],
+			[
+				'id' => 'custom',
+				'name' => 'Custom',
+				'type' => 'text',
+				'desc' => '"Custom metadata"',
+				'show_on_cb' => 'custom_callback'
+			]
+		];
+		add_filter('commonsbooking_custom_metadata', function($metaData) {
+			$metaData['item'][] = [
+				'id' => 'custom',
+				'name' => 'Custom',
+				'type' => 'text',
+				'desc' => '"Custom metadata"',
+				'show_on_cb' => 'custom_callback'
+			];
+			return $metaData;
+		});
+		Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'metadata', $metaDataRaw );
+		$this->assertEquals($expectedOutput, CustomPostType::getCMB2FieldsArrayFromCustomMetadata('item'));
+		remove_all_filters('commonsbooking_custom_metadata');
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeId    = $this->createBookableTimeFrameIncludingCurrentDay();

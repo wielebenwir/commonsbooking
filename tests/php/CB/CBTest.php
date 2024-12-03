@@ -37,19 +37,19 @@ class CBTest extends CustomPostTypeTest {
 	public function testLookUp() {
 		// Test if user meta value is found when handing over WP_Post object
 		$post = get_post( $this->postInstanceId );
-		$this->assertEquals( CB::lookUp( 'user', $this->userMetaKey, $post, [] ), $this->userMetaValue );
+		$this->assertEquals( CB::lookUp( 'user', $this->userMetaKey, $post, [], 'commonsbooking_sanitizeHTML' ), $this->userMetaValue );
 
 		// Test if post title is returned when handing over post key and post object
-		$this->assertEquals( CB::lookUp( 'post', 'post_title', $post, [] ), $this->postTitle );
+		$this->assertEquals( CB::lookUp( 'post', 'post_title', $post, [], 'commonsbooking_sanitizeHTML' ), $this->postTitle );
 
 		// Test if null is returned when trying to get not existing property of post
-		$this->assertEquals( null, CB::lookUp( 'user', 'post_title', $post, [] ) );
+		$this->assertEquals( null, CB::lookUp( 'user', 'post_title', $post, [], 'commonsbooking_sanitizeHTML' ) );
 
 		// Trying to get property without post object
-		$this->assertEquals( CB::lookUp( 'user', 'test', null, [] ), null );
-		$this->assertEquals( CB::lookUp( 'booking', 'test', null, [] ), null );
-		$this->assertEquals( CB::lookUp( 'item', 'test', null, [] ), null );
-		$this->assertEquals( CB::lookUp( 'location', 'test', null, [] ), null );
+		$this->assertEquals( CB::lookUp( 'user', 'test', null, [], 'commonsbooking_sanitizeHTML' ), null );
+		$this->assertEquals( CB::lookUp( 'booking', 'test', null, [], 'commonsbooking_sanitizeHTML' ), null );
+		$this->assertEquals( CB::lookUp( 'item', 'test', null, [], 'commonsbooking_sanitizeHTML' ), null );
+		$this->assertEquals( CB::lookUp( 'location', 'test', null, [], 'commonsbooking_sanitizeHTML' ), null );
 	}
 
 	public function testGet() {

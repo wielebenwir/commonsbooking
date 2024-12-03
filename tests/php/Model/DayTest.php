@@ -206,4 +206,17 @@ class DayTest extends CustomPostTypeTest {
 		$this->assertTrue(count($this->instance->getRestrictions()) == 1);
 	}
 
+
+	public function testGetStartTimestamp() {
+		$start = strtotime( self::CURRENT_DATE . ' midnight' );
+		$this->assertEquals( $start, $this->instance->getStartTimestamp() );
+	}
+
+	public function testGetEndTimestamp() {
+		$end = strtotime( self::CURRENT_DATE . ' 23:59:59' );
+		$this->assertEquals( $end, $this->instance->getEndTimestamp() );
+	}
+
+
+
 }

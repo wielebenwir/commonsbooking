@@ -73,12 +73,50 @@ describe('load shortcodes', () => {
         cy.visit('/?page_id=22')
         //wait a little bit to make sure the map tiles are loaded
         cy.wait(5000)
-        const mapID = 'cb-map-36'
+        const mapID = 'cb-map-123'
         cy.get('#' + mapID).should('be.visible')
         // Unfortunately I couldn't find a way to test the map itself without creating a new instance (which would not check if the data is correct)
         //That's why there is only the screenshot test
         cy.screenshot('cb-map-shortcode')
     })
+
+    it ('can load cb_search shortcode: MapWithAutoSidebar,Filter', function () {
+        cy.visit('/?page_id=102')
+        //wait a little bit to make sure the map tiles are loaded
+        cy.wait(5000)
+        cy.get('.leaflet-container').should('be.visible')
+        cy.get('.cb-common-filter').should('be.visible')
+        cy.screenshot('cb-search-shortcode-map-filter')
+    })
+
+    it ('can load cb_search shortcode: FilterList', function () {
+        cy.visit('/?page_id=108')
+        //give time to fetch data
+        cy.wait(5000);
+        cy.get('.cb-common-filter').should('be.visible')
+        cy.screenshot('cb-search-shortcode-filter-list')
+        //TODO: Check for presence of individual items (needs fixing of #1419)
+    })
+
+    it ('can load cb_bookings shortcode', function () {
+        cy.visit('/?page_id=128')
+        cy.get('.cb-wrapper').contains('Please login');
+        cy.screenshot( 'cb-bookings-shortcode-loggedout' );
+
+        //login
+        cy.visit( '/wp-login.php' );
+        cy.wait( 1000 );
+        cy.get( '#user_login' ).type( Cypress.env( "wpSubscriber" ) );
+        cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
+        cy.get( '#wp-submit' ).click();
+
+        cy.visit('/?page_id=128')
+        //This depends on the booking-process.cy.js running before this test
+        cy.get('.js-item--infos > :nth-child(2)').contains('Status: canceled')
+        cy.screenshot( 'cb-bookings-shortcode' );
+
+    })
+
     function convertEnDashToHyphen(text) {
         const regex = /–/g; // U+2013 is used here
         const hyphenMinus = '-';

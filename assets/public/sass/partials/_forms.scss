@@ -10,6 +10,8 @@
  * @copyright 2015 wielebenwir
  */
 
+@use "../../../global/sass/partials/variables";
+
 .cb-wrapper {
 
 
@@ -32,11 +34,11 @@
     textarea {
         -webkit-appearance: none;
         -moz-appearance: none;
-        background: $color-white;
+        background: variables.$color-white;
         border-radius: var(--commonsbooking-radius);
         border-style: solid;
         border-width: 0.1rem;
-        border-color: $color-black;
+        border-color: variables.$color-black;
         box-shadow: none;
         display: block;
         margin: 0;
@@ -55,12 +57,12 @@
     }
 
     .cb-action {
-        @extend .cb-box;
+        @extend .cb-box !optional;
 
         text-align: right;
 
         input {
-            @extend .cb-button;
+            @extend .cb-button !optional;
             float: right;
         }
 
@@ -87,6 +89,13 @@
         font-size: 0.875rem;
     }
 
+    input.cb-action-get_ics {
+        background-color: var(--commonsbooking-color-primary);
+        box-shadow: none !important;
+        font-size: 0.875rem;
+        float:left;
+    }
+
     #booking-form-container,
     #booking-form-container div {
         border-bottom: 0;
@@ -106,7 +115,7 @@
         width: 100%; /* do not extend litepicker width */
         color: var(--commonsbooking-textcolor-dark);
         input {
-            @extend .cb-button;
+            @extend .cb-button !optional;
             float: right;
         }
 
@@ -122,7 +131,7 @@
                 display: flex;
                 align-items: center;
 
-                @extend .cb-box-inner;
+                @extend .cb-box-inner !optional;
                 margin-bottom: var(--commonsbooking-spacer);
                 text-align: left;
                 overflow: hidden;
@@ -160,7 +169,7 @@
     }
 
     .cb-notice {
-        @extend .cb-box;
+        @extend .cb-box !optional;
         margin-bottom: var(--commonsbooking-spacer-big);
         font-size: var(--commonsbooking-font-size-big);
         vertical-align: middle;

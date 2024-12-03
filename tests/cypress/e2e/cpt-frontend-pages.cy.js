@@ -9,6 +9,8 @@ describe('check load of CPT frontend pages where available', () => {
       //Check that location is correctly assigned
       cy.get('.cb-title > a').contains(testName);
       cy.get('.cb-timeframe-calendar').should('be.visible');
+      cy.get('#cb_locationview_map').should('be.visible')
+      cy.get('#cb_locationview_map').scrollIntoView().screenshot('cb-itemtemplate-locationview-map')
   })
   it ('loads locations', () => {
       cy.visit('/?cb_location=basictest-koln-dom-locmap-noadmin')
@@ -18,6 +20,7 @@ describe('check load of CPT frontend pages where available', () => {
       cy.get('.entry-title').contains(testName);
       //check for location map
       cy.get('#cb_locationview_map').should('be.visible')
+      cy.get('#cb_locationview_map').scrollIntoView().screenshot('cb-locationtemplate-locationview-map')
       //check address
       cy.get('.cb-location-address > :nth-child(2)').contains("Domkloster 4, 50667 Köln")
       //check item

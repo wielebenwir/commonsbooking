@@ -36,7 +36,7 @@ class SchedulerTest extends CustomPostTypeTest
 	}
 
 	/**
-	 * Tests re-schedulign for jobs with daily recurrence
+	 * Tests re-scheduling for jobs with daily recurrence
 	 * @return void
 	 */
 	public function testReSchedule() {
@@ -51,7 +51,8 @@ class SchedulerTest extends CustomPostTypeTest
 		$this->jobhooks[] = $dailyJob->getJobhook();
 
 		$now = new DateTime();
-		$nextTime = DateTime::createFromFormat('H:i', '13:00');
+		//time is saved in UTC format, will be fixed in #1429
+		$nextTime = DateTime::createFromFormat('H:i', '13:00', new \DateTimeZone('UTC'));
 
 		if ($nextTime < $now) {
 			$nextTime->modify('+1 day');
@@ -63,18 +64,12 @@ class SchedulerTest extends CustomPostTypeTest
 			wp_next_scheduled($dailyJob->getJobhook())
 		);
 
-		//now we update the time and check if the job is rescheduled
+		//now we update the time and check if the job is rescheduled (it is first unscheduled and then loaded again)
 		Settings::updateOption($this->dummyOptionsKey,$this->dummyFieldId,'13:00');
-		$nextTime = DateTime::createFromFormat('H:i', '13:00');
-		$nextTimeTimestamp = $nextTime->getTimestamp();
-		if ($nextTime < $now) {
-			$nextTime->modify('+1 day');
-		}
-		$this->assertEquals(
-			$nextTimeTimestamp,
+		//job was unloaded to be rescheduled
+		$this->assertFalse(
 			wp_next_scheduled($dailyJob->getJobhook())
 		);
-
 	}
 
 	public function testCustomRecurrence() {
@@ -91,13 +86,15 @@ class SchedulerTest extends CustomPostTypeTest
 		// Should contain custom cron intervals, because Scheduler(...) adds filter 
 		$this->assertContains( 'thirty_minutes', array_keys( wp_get_schedules() ) );
 
-		$now = new DateTime();
-		$now->modify('+30 minutes');
-		$nextTimeTimestamp = $now->getTimestamp();
+		$now = new DateTime('now', new \DateTimeZone('UTC'));
+		$nowTS = $now->getTimestamp();
 		$this->assertEquals(
-			$nextTimeTimestamp,
+			$nowTS,
 			wp_next_scheduled($customSchedule->getJobhook())
 		);
+
+		$event = wp_get_scheduled_event($customSchedule->getJobhook());
+		$this->assertEquals('thirty_minutes',$event->schedule);
 
 	}
 

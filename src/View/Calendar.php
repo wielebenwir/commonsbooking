@@ -36,7 +36,11 @@ class Calendar {
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
-	 * @param $atts
+	 * @param $atts array Supports the following attributes:
+	 * 			          - locationcat: Filter by location category
+	 * 			          - itemcat: Filter by item category
+	 * 			          - days: Number of days to show in calendar table view
+	 * 			          - desc: Description text
 	 *
 	 * @return string
 	 * @throws Exception
@@ -85,7 +89,9 @@ class Calendar {
 
 		$print  = '<div class="cb-table-scroll">';
 		$print .= "<table class='cb-items-table tablesorter'><colgroup><col><col>" . $colStr . '</colgroup><thead>';
-		$print .= "<tr><th colspan='2' class='sortless'>" . $desc . '</th>';
+		// Use td-tag when no table header description is given, to match semantics of header cells
+		$accessible_table_header_tag = empty($desc) ? "td" : "th"; 
+		$print .= "<tr><$accessible_table_header_tag colspan='2' class='sortless'>" . $desc . "</$accessible_table_header_tag>";
 
 		// Render months
 		$print .= self::renderHeadlineMonths( $month_cols );
@@ -97,13 +103,14 @@ class Calendar {
 		$print .=  '</tr></thead><tbody>';
 
 		$items = get_posts(
-            array(
+			array(
 				'post_type'      => 'cb_item',
 				'post_status'    => 'publish',
-				'order'          => 'ASC',
+				'order'          => $atts['order'] ?? 'ASC',
+				'orderby'        => $atts['orderby'] ?? 'post_title',
 				'posts_per_page' => - 1,
-            )
-        );
+			)
+		);
 
 		$itemRowsHTML = '';
 
@@ -131,7 +138,8 @@ class Calendar {
 				// Collect unique locations from timeframes
 				$locations = [];
 				foreach ( $timeframes as $timeframe ) {
-					$locations[ $timeframe->getLocation()->ID ] = $timeframe->getLocation()->post_title;
+					// TODO #507
+					$locations[ $timeframe->getLocationID() ] = $timeframe->getLocation()->post_title;
 				}
 
 				// loop through location
@@ -346,6 +354,7 @@ class Calendar {
 		$endDate            = new Day( $endDateString );
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
+		$firstBookableDay   = null;
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
@@ -357,7 +366,7 @@ class Calendar {
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
 			$advanceBookingDays       = intval( $closestBookableTimeframe->getFieldValue( 'timeframe-advance-booking-days' ) );
-            $firstBookableDay = $closestBookableTimeframe->getFirstBookableDay();
+			$firstBookableDay         = $closestBookableTimeframe->getFirstBookableDay();
 
 			// Only if passed daterange must not be kept
 			if ( ! $keepDaterange ) {
@@ -400,22 +409,45 @@ class Calendar {
 	 *
 	 * @return \CommonsBooking\Model\Timeframe|null
 	 */
-	private static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
-		// Sort timeframes by startdate
-		usort(
-            $bookableTimeframes,
-            function ( \CommonsBooking\Model\Timeframe $item1, \CommonsBooking\Model\Timeframe $item2 ) {
-                $item1StartDateDistance = abs( time() - $item1->getStartDate() );
-                $item1EndDateDistance   = abs( time() - $item1->getEndDate() );
-                $item1SmallestDistance  = min( $item1StartDateDistance, $item1EndDateDistance );
+	public static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
+		$today           = new Day( date( 'Y-m-d' ) );
+		$todayTimeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $bookableTimeframes, $today->getStartTimestamp(), $today->getEndTimestamp() );
+		$todayTimeframes = array_filter( $todayTimeframes, function ( $timeframe ) use ( $today ) { //also consider repetition
+			return $today->isInTimeframe( $timeframe );
+		} );
+		switch ( count( $todayTimeframes ) ) {
+			case 1:
+				$bookableTimeframes = $todayTimeframes;
+				break;
+			case 0:
+				usort( $bookableTimeframes, function ( $a, $b ) {
+					$aStartDate = $a->getStartDate();
+					$bStartDate = $b->getStartDate();
 
-                $item2StartDateDistance = abs( time() - $item2->getStartDate() );
-                $item2EndDateDistance   = abs( time() - $item2->getEndDate() );
-                $item2SmallestDistance  = min( $item2StartDateDistance, $item2EndDateDistance );
+					if ( $aStartDate == $bStartDate ) {
+						$aStartTimeDT = $a->getStartTimeDateTime();
+						$bStartTimeDT = $b->getStartTimeDateTime();
 
-                return $item2SmallestDistance <=> $item1SmallestDistance;
-            }
-        );
+						return $bStartTimeDT <=> $aStartTimeDT;
+					}
+
+					return $bStartDate <=> $aStartDate;
+				} );
+				break;
+			default: //More than one timeframe for current day
+				// consider starttime and endtime
+				$now = new DateTime();
+				/** @var \CommonsBooking\Model\Timeframe $todayTimeframes */
+				$bookableTimeframes = array_filter( $todayTimeframes, function ( $timeframe ) use ( $now ) {
+					$startTime   = $timeframe->getStartTime();
+					$startTimeDT = new DateTime( $startTime );
+					$endTime     = $timeframe->getEndTime();
+					$endTimeDT   = new DateTime( $endTime );
+
+					return $startTimeDT <= $now && $now <= $endTimeDT;
+				} );
+				break;
+		}
 
 		return array_pop( $bookableTimeframes );
 	}

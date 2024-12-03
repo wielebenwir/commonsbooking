@@ -1,0 +1,17 @@
+#timeframe-export-done,
+#timeframe-export-failed,
+#timeframe-export-in-progress
+{
+    margin-bottom: 1rem;
+    display: none;
+}
+
+#timeframe-export-in-progress {
+    @keyframes blinkText {
+        from {opacity:0;}
+        to {opacity: 1;}
+    }
+    .blinking {
+        animation: blinkText 1s infinite alternate;
+    }
+}

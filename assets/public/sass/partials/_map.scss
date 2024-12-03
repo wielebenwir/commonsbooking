@@ -12,6 +12,8 @@
 * @copyright 2020 wielebenwir
 */
 
+@use "../../../global/sass/partials/variables";
+
 .cb-wrapper {	
 	
 	/* Leaflet Map */
@@ -139,11 +141,6 @@
 			  color: #444;
 			  background: linear-gradient(to top left, var(--commonsbooking-color-cancel) 0%, var(--commonsbooking-color-cancel) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
 			}
-			
-			.cb-map-popup-item-desc {
-				display: none;
-			}
-				
 	}
 
 }
@@ -152,7 +149,7 @@
 .cb-map-filters.cb-wrapper {
 	
 	margin-top: var(--commonsbooking-spacer);
-	@extend .cb-box;
+	@extend .cb-box !optional;
 	
 	input[type="checkbox"] {
 		margin: 0 var(--commonsbooking-spacer-small) 0 0;
@@ -178,12 +175,12 @@
 		> div {
 			margin-bottom: var(--commonsbooking-spacer);
 			padding-bottom: var(--commonsbooking-spacer);
-			border-bottom: 1px solid $color-gray-dark;
+			border-bottom: 1px solid variables.$color-gray-dark;
 		}
 	}
 
 	.cb-map-filter-group-label {
-		@extend .cb-big;
+		@extend .cb-big !optional;
 		color: var(--commonsbooking-color-primary);
 		margin-bottom: var(--commonsbooking-spacer-small);
 	}
@@ -193,7 +190,7 @@
 	.cb-map-availability-filter,
 	.cb-map-distance-filter {
 		.cb-map-filter-group {
-			@extend .cb-col-50-50-filter;
+			@extend .cb-col-50-50-filter !optional;
 			}
 	}
 	
@@ -210,7 +207,7 @@
 			}
 			button.undo-geo-search, button.geo-search {
 				background: transparent;
-				color: $color-white;
+				color: variables.$color-white;
 			}
 		}
 	}
@@ -250,7 +247,7 @@
 	.cb-map-button-wrapper {
 		text-align: right;
 		button {
-			@extend .cb-button;
+			@extend .cb-button !optional;
 		}
 	}
 }

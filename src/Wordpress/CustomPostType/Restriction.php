@@ -219,12 +219,12 @@ class Restriction extends CustomPostType {
 		}
 	}
 
-		/**
+	/**
 	 * Filters admin list by type, timerange, user 
 	 *
-	 * @param  (wp_query object) $query
+	 * @param \WP_Query $query for admin list objects
 	 *
-	 * @return Void
+	 * @return void
 	 */
 	public static function filterAdminList( $query ) {
 		global $pagenow;
@@ -428,14 +428,12 @@ class Restriction extends CustomPostType {
 				'name'             => esc_html__( "Location", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_LOCATION_ID,
 				'type'             => 'select',
-				'show_option_none' => esc_html__( 'All', 'commonsbooking' ),
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
 				'name'             => esc_html__( "Item", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_ITEM_ID,
 				'type'             => 'select',
-				'show_option_none' => esc_html__( 'All', 'commonsbooking' ),
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
@@ -471,7 +469,7 @@ class Restriction extends CustomPostType {
 				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
 			),
 			array(
-				'name'             => esc_html__( "State", 'commonsbooking' ),
+				'name'             => esc_html__( "Status", 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_STATE,
 				'desc'             => commonsbooking_sanitizeHTML( __( 'Choose status of this restriction. <br>
 				Set to <strong>None</strong> if you want to deactivate the restriction.<br>
