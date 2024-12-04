@@ -186,6 +186,19 @@ class TimeframeExport {
 		}
 	}
 
+	/**
+	 * Exports a file to the given directory path.
+	 * This functions wraps the actual logic of {@see __construct()}, {@see getExportData} and {@see getCsv}.
+	 *
+	 * Note: At the moment this is not a helper to be used outside its context.
+	 * It's heavily coupled to different values set via {@see Settings} and should therefore not be used outside of it's WordPress context.
+	 *
+	 * @param string $exportPath writable directory.
+	 *
+	 * @return void
+	 * @throws CacheException From cache layer.
+	 * @throws InvalidArgumentException From cache layer.
+	 */
 	public static function cronExport( $exportPath ) {
 		$timerange                = Settings::getOption( 'commonsbooking_options_export', 'export-timerange' );
 		$start                    = date( 'd.m.Y' );
@@ -201,16 +214,17 @@ class TimeframeExport {
 		} else {
 			$type = 0;
 		}
-		$exportObject = new self(
-			$type,
-			$start,
-			$end,
-			$configuredLocationFields ? self::convertInputFields( $configuredLocationFields ) : null,
-			$configuredItemFields ? self::convertInputFields( $configuredItemFields ) : null,
-			$configuredUserFields ? self::convertInputFields( $configuredUserFields ) : null,
-		);
-		$exportObject->setCron();
+
 		try {
+			$exportObject = new self(
+				$type,
+				$start,
+				$end,
+				$configuredLocationFields ? self::convertInputFields( $configuredLocationFields ) : null,
+				$configuredItemFields ? self::convertInputFields( $configuredItemFields ) : null,
+				$configuredUserFields ? self::convertInputFields( $configuredUserFields ) : null,
+			);
+			$exportObject->setCron();
 			$exportObject->getExportData();
 			$exportObject->getCSV( $exportPath . $exportObject->exportFilename );
 		} catch ( ExportException $e ) {

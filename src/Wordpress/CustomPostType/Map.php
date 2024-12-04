@@ -5,6 +5,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 
 
 use CommonsBooking\Map\MapShortcode;
+use CommonsBooking\Repository\CB1;
 use CommonsBooking\Repository\Item;
 use CMB2_Field;
 use CommonsBooking\Repository\Location;

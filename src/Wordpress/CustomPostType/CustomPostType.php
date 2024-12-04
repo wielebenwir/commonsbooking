@@ -370,13 +370,15 @@ abstract class CustomPostType {
 	}
 
 	/**
-	 * This is called by the inheritances of the customPosts, it will just check if we
-	 * are processing one of our CPTs.
+	 * Checks if we query is processing one of our CPTs.
+	 *
+	 * This is called by the inheritances of the customPosts.
+	 *
 	 * @param \WP_Query $query
 	 *
-	 * @return void
+	 * @return bool true if query is about our CPTs, false otherwise
 	 */
-	public function setCustomColumnSortOrder(\WP_Query $query) {
+	public function setCustomColumnSortOrder( \WP_Query $query ) {
 		if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'post_type' ) !== static::$postType ) {
 			return false;
 		}

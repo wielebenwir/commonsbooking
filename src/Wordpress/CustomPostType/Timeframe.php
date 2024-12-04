@@ -227,7 +227,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Returns view-class.
-	 * @return \CommonsBooking\View\Timeframe
+	 * @return null
 	 */
 	public static function getView() {
 		// @TODO implement view.
@@ -341,9 +341,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Filters admin list by type (e.g. bookable, repair etc. )
 	 *
-	 * @param  (wp_query object) $query
+	 * @param \WP_Query $query for admin list objects
 	 *
-	 * @return Void
+	 * @return void
 	 */
 	public static function filterAdminList( $query ) {
 		global $pagenow;
@@ -875,6 +875,7 @@ class Timeframe extends CustomPostType {
 				$e->getMessage(),
 				45
 			);
+			return;
 		}
 		$timeframe->updatePostMetaStartAndEndDate();
 
@@ -930,8 +931,7 @@ class Timeframe extends CustomPostType {
 					commonsbooking_sanitizeHTML(
 						__(
 							'Orphaned bookings found, can migrate. <a href="admin.php?page=cb-mass-operations"> Click here to migrate </a>',
-							'commonsbooking',
-							5
+							'commonsbooking'
 						)
 					)
 				);
@@ -958,7 +958,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Validates timeframe and sets state to draft if invalid.
 	 *
-	 * @param Timeframe $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return bool
 	 */
@@ -1285,6 +1285,11 @@ class Timeframe extends CustomPostType {
 		}
 	}
 
+	/**
+	 * @param \WP_Query $query
+	 *
+	 * @return true|void returns true if inheriting method should set sort order, void if this method sets it
+	 */
 	public function setCustomColumnSortOrder( \WP_Query $query ) {
 		if (! parent::setCustomColumnSortOrder( $query ) ) {
 			return;

@@ -62,9 +62,9 @@ class Item extends CustomPostType {
 	/**
 	 * Filters admin list by type (e.g. bookable, repair etc. )
 	 *
-	 * @param  (wp_query object) $query
+	 * @param \WP_Query $query for admin list objects
 	 *
-	 * @return Void
+	 * @return void
 	 */
 	public static function filterAdminList( $query ) {
 		global $pagenow;

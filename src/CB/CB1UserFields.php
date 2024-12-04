@@ -10,6 +10,31 @@ use CommonsBooking\Settings\Settings;
 
 class CB1UserFields {
 
+	/**
+	 * @var false|mixed
+	 */
+	private mixed $termsservices_url;
+	/**
+	 * @var array|string[]
+	 */
+	private array $registration_fields;
+	/**
+	 * @var array|array[]
+	 */
+	private array $extra_profile_fields;
+	/**
+	 * @var array|string[]
+	 */
+	private array $registration_fields_required;
+	/**
+	 * @var array|array[]
+	 */
+	private array $user_fields;
+	/**
+	 * @var array|mixed
+	 */
+	private mixed $user_vars;
+
 	public function __construct() {
 
 		// Registration: Form fields

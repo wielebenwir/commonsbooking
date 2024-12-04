@@ -29,6 +29,10 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
+/**
+ * @since 2.10 removed saveOptionsActions, the transient commonsbooking_options_saved which is used in
+ *             Plugin::admin_init is set in OptionsTab class
+ */
 class Plugin {
 
 	use Cache;
@@ -510,6 +514,7 @@ class Plugin {
 
 	/**
 	 * Renders error for backend_notice.
+	 * TODO refactor this using the AdminMessage type
 	 */
 	public static function renderError() {
 		$errorTypes = [
@@ -531,6 +536,22 @@ class Plugin {
 				delete_transient( $errorType );
 			}
 		}
+
+		$infoTypes = [
+			OptionsTab::SUCCESS_TYPE,
+		];
+
+		foreach ( $infoTypes as $info_type ) {
+			if ( $message = get_transient( $info_type ) ) {
+				$class = 'notice notice-success is-dismissible';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					commonsbooking_sanitizeHTML( $message )
+				);
+				delete_transient( $info_type );
+			}
+		}
 	}
 
 	/**
@@ -541,15 +562,6 @@ class Plugin {
 		if ( $enabled == 'on' ) {
 			new CB1UserFields();
 		}
-	}
-
-	/**
-	 * run actions after plugin options are saved
-	 * TODOD: @markus-mw I think this function is deprecated now. Would you please check this? It is only referenced by an inactive hook
-	 */
-	public static function saveOptionsActions() {
-		// Run actions after options update
-		set_transient( 'commonsbooking_options_saved', 1 );
 	}
 
 	/**
