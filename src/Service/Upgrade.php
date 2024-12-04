@@ -98,10 +98,6 @@ class Upgrade {
 		// update version number in options
 		update_option( self::VERSION_OPTION, $this->currentVersion );
 
-		//TODO: REMOVE THIS BEFORE MERGING, WE JUST USE THIS SO WE CAN TEST THE MIGRATION FUNCTION
-		//      BEFORE MERGING AND WE DO NOT HAVE TO TOUCH THE content-example.xml file!
-		self::migrateMapSettings();
-		//TODO: REMOVE THIS BEFORE MERGING!!!
 
 		// Clear cache
 		try {
@@ -121,7 +117,6 @@ class Upgrade {
 	public function __construct( string $previousVersion, string $currentVersion ) {
 		$this->previousVersion = $previousVersion;
 		$this->currentVersion  = $currentVersion;
-		self::migrateMapSettings(); //TODO: REMOVE BEFORE PUSHING TO MASTER
 	}
 
 	/**
