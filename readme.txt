@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.7
-Stable Tag: 2.9.4
+Stable Tag: 2.10
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,23 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10 (01.01.2025)
+ADDED: When changing the location of an item you will now be given the option to move the bookings to the new location.
+ENHANCED: Export of timeframes no longer time out.
+ENHANCED: Total breakdowns cancelling all bookings can now be disable
+ENHANCED: Map filter groups are now easier to configure.
+ENHANCED: Loading the map should now be significantly faster.
+ENHANCED: Greatly simplified booking codes; they will also not be generated for the past anymore. (thx @nelarsen)
+ENHANCED: Show past bookings in [cb_bookings] overview
+FIXED: Booking codes now truly random. (thx @nelarsen)
+FIXED: Map sometimes not rendering on certain aspects ratios. (thx @kmohrf)
+FIXED: Saving posts should now be faster
+FIXED: Cache warmup not working in some cases
+FIXED: In certain overlapping timeframe configurations timeframes were not shown as bookable. (thx @nelarsen)
+FIXED: Disabled restriction creation for all items / locations because of a missing permission check.
+UPDATED: Dependencies
+
 
 ### 2.9.4 (17.07.2024)
 FIXED: Plugin not usable in multisite mode
