@@ -1,0 +1,41 @@
+/*
+* The CPT creation form map
+ */
+
+#cmb2-metabox-cb_map-custom-fields {
+    .map-organizer {
+        .cmb2-metabox-title {
+            font-size: x-large;
+        }
+        .cmb2-metabox-title:before {
+            /* arrow to right */
+            content: "\2192  ";
+        }
+    }
+
+    .cmb-group-name {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+    .cmb-group-name:before {
+        content: "\2192  ";
+    }
+
+    #shortcode-field {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+
+    #shortcode-field code {
+        white-space: nowrap;
+        margin-right: 10px;
+    }
+
+    #shortcode-field .button {
+        padding: 5px 10px;
+        line-height: 1.5;
+    }
+}
