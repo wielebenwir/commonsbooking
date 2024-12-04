@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  * Admin styles
  *
@@ -3507,7 +3508,40 @@ a.disabled {
   display: none;
 }
 
-/* Booking form  */
+/* Map creation */
+/*
+* The CPT creation form map
+ */
+#cmb2-metabox-cb_map-custom-fields .map-organizer .cmb2-metabox-title {
+  font-size: x-large;
+}
+#cmb2-metabox-cb_map-custom-fields .map-organizer .cmb2-metabox-title:before {
+  /* arrow to right */
+  content: "→ ";
+}
+#cmb2-metabox-cb_map-custom-fields .cmb-group-name {
+  font-size: x-large;
+  font-weight: bold;
+}
+#cmb2-metabox-cb_map-custom-fields .cmb-group-name:before {
+  content: "→ ";
+}
+#cmb2-metabox-cb_map-custom-fields #shortcode-field {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+#cmb2-metabox-cb_map-custom-fields #shortcode-field code {
+  white-space: nowrap;
+  margin-right: 10px;
+}
+#cmb2-metabox-cb_map-custom-fields #shortcode-field .button {
+  padding: 5px 10px;
+  line-height: 1.5;
+}
+
+/* Plugin update page  */
 /**
  * Plugin list update message 
  *
