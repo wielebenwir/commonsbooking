@@ -12,7 +12,7 @@
 		"@babel/preset-env": "^7.26.0",
 		"@wordpress/env": "^10.13.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"cypress": "^13.16.0",
+		"cypress": "^13.16.1",
 		"editorconfig": "^2.0.0",
 		"grunt": "^1.6.1",
 		"grunt-babel": "^8.0.0",
