@@ -1,7 +1,6 @@
 <?php
 
 use CommonsBooking\Map\MapAdmin;
-use CommonsBooking\Wordpress\CustomPostType\Map;
 
 ?>
 <div class="inside">
@@ -206,10 +205,10 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
         <details>
             <summary><?php echo commonsbooking_sanitizeHTML( __( 'Marker Popup' ,'commonsbooking')); ?></summary>
             <table class="text-left">
-			<!-- 
+			<!--
 				deactivated popup information because we dont want to show contact infos before booking and do not want to display long pickup instructions here
 				needs to be optmized in future version
-				
+
                 <tr>
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __('show location opening hours' ,'commonsbooking')); ?>:
