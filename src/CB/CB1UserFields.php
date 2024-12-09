@@ -279,7 +279,7 @@ class CB1UserFields {
             <tr>
                 <th><label for="address"><?php esc_html_e( 'Address', 'commonsbooking' ); ?></label></th>
                 <td>
-                    <input type="textarea" name="address" id="address"
+                    <input type="text" name="address" id="address"
                            value="<?php echo esc_attr( get_the_author_meta( 'address', $user->ID ) ); ?>"
                            class="regular-text"/><br/>
                 </td>
