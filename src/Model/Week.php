@@ -15,13 +15,13 @@ use Exception;
 class Week {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $year;
 
 	/**
 	 * Day in the year to start the week from (0-365)
-	 * @var integer
+	 * @var int
 	 */
 	protected $dayOfYear;
 
