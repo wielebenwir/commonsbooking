@@ -6,6 +6,7 @@ use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
+use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use Psr\Cache\InvalidArgumentException;
 
@@ -49,7 +50,10 @@ class Upgrade {
 			[ self::class, 'fixBrokenICalTitle' ]
 		],
 		'2.9.2' => [
-			[self::class, 'enableLocationBookingNotification']
+			[ self::class, 'enableLocationBookingNotification' ]
+		],
+		'2.10'  => [
+			[ self::class, 'migrateMapSettings' ]
 		]
 	];
 
@@ -93,6 +97,7 @@ class Upgrade {
 
 		// update version number in options
 		update_option( self::VERSION_OPTION, $this->currentVersion );
+
 
 		// Clear cache
 		try {
@@ -461,14 +466,96 @@ class Upgrade {
 	 * Previously, if a location email was set that meant that they also receive a copy of each booking / cancellation email.
 	 * Now we have a separate checkbox to enable that which should be enabled for existing locations so that they will still receive emails after upgrade.
 	 *
-	 * @since 2.9.2
 	 * @return void
+	 * @since 2.9.2
 	 */
 	public static function enableLocationBookingNotification() {
 		$locations = \CommonsBooking\Repository\Location::get();
 
-		foreach ($locations as $location) {
-			update_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on');
+		foreach ( $locations as $location ) {
+			update_post_meta( $location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on' );
+		}
+	}
+
+
+	/**
+	 * Migrate Map Settings from old options to new CMB2 options
+	 *
+	 * @return void
+	 * @since 2.10
+	 */
+	public static function migrateMapSettings(): void {
+		$maps = get_posts( [
+			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Map::$postType,
+			'numberposts' => - 1
+		] );
+		foreach ( $maps as $map ) {
+			$options = get_post_meta( $map->ID, 'cb_map_options', true );
+			if ( empty( $options ) ) { //When default map options are empty
+				continue;
+			}
+			if ( get_post_meta( $map->ID, array_key_first( $options ), true ) ) {
+				//if the first key in the options array is already set, we assume that the migration has already been done
+				continue;
+			}
+			//will map to an associative array with key being the option name and the value the default value
+			$defaultValues = array_reduce(
+				Map::getCustomFields(),
+				function ( $result, $option ) {
+					if ( isset( $option['default'] ) ) {
+						$result[ $option['id'] ] = $option['default'];
+					}
+
+					return $result;
+				},
+				array()
+			);
+			foreach ( $options as $key => $value ) {
+				if ( empty( $value ) && ! empty( $defaultValues[ $key ] ) ) {
+					//fetch from default values when key happens to be empty
+					$value = $defaultValues[ $key ];
+				}
+				if ( ! empty( $value ) ) {
+					update_post_meta( $map->ID, $key, $value );
+				}
+			}
+			if ( ! empty( $options['custom_marker_media_id'] ) ) {
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['custom_marker_media_id'] ) );
+				update_post_meta( $map->ID, 'custom_marker_media', reset( $image ) );
+			}
+			if ( ! empty( $options['custom_marker_cluster_id'] ) ) {
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['custom_marker_cluster_id'] ) );
+				update_post_meta( $map->ID, 'custom_marker_cluster', reset( $image ) );
+			}
+			if ( ! empty( $options['marker_item_draft_media'] ) ) {
+				// write the image url to the metabox, this way CMB2 can properly display it
+				$image = wp_get_attachment_image_src( intval( $options['marker_item_draft_media'] ) );
+				update_post_meta( $map->ID, 'marker_item_draft', reset( $image ) );
+			}
+			if ( ! empty( $options['cb_items_available_categories'] ) ) {
+				$newCategoryArray     = [];
+				$currentCategoryIndex = -1; //start with -1 so we can increment to 0
+				foreach ( $options['cb_items_available_categories'] as $key => $value ) {
+					if ( substr( $key, 0, 1 ) == 'g' ) {
+						$currentCategoryIndex ++;
+						$newCategoryArray[ $currentCategoryIndex ] = [
+							'name'        => $value,
+							'type'        => '',
+							'isExclusive' => false,
+							'categories'  => []
+						];
+					} else {
+						$newCategoryArray[ $currentCategoryIndex ]['categories'][] = (string) $key;
+						//see if specified name is different from taxonomy name, save differing name in taxonomy meta
+						if ( get_term( $key )->name != $value ) {
+							update_term_meta( $key, COMMONSBOOKING_METABOX_PREFIX . 'markup', $value );
+						}
+					}
+				}
+				update_post_meta( $map->ID, 'filtergroups', $newCategoryArray );
+			}
 		}
 	}
 }
