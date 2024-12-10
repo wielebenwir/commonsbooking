@@ -243,6 +243,8 @@ class CB1 {
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]->cb2_id;
 		}
+
+		return null;
 	}
 
 	/**

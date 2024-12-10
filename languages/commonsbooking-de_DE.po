@@ -1130,71 +1130,71 @@ msgstr "REDIS-Caching aktivieren (experimentell)"
 msgid "REDIS DSN (REDIS Server URL)"
 msgstr "REDIS DSN (REDIS-Server-URL)"
 
-#: src/CB/CB1UserFields.php:44
+#: src/CB/CB1UserFields.php:69
 msgid "First Name"
 msgstr "Vorname"
 
-#: src/CB/CB1UserFields.php:47
+#: src/CB/CB1UserFields.php:72
 msgid "Please enter your first name"
 msgstr "Bitte gib deinen Vornamen ein"
 
-#: src/CB/CB1UserFields.php:51
+#: src/CB/CB1UserFields.php:76
 msgid "Last Name"
 msgstr "Nachname"
 
-#: src/CB/CB1UserFields.php:54
+#: src/CB/CB1UserFields.php:79
 msgid "Please enter your last name"
 msgstr "Bitte gib Deinen Nachnamen ein"
 
-#: src/CB/CB1UserFields.php:58
+#: src/CB/CB1UserFields.php:83
 msgid "Phone Number"
 msgstr "Telefonnummer"
 
-#: src/CB/CB1UserFields.php:61
+#: src/CB/CB1UserFields.php:86
 msgid "Please enter your phone number"
 msgstr "Bitte gib Deine Telefonnummer ein"
 
-#: src/CB/CB1UserFields.php:65
-#: src/CB/CB1UserFields.php:255
+#: src/CB/CB1UserFields.php:90
+#: src/CB/CB1UserFields.php:280
 #: src/Wordpress/CustomPostType/Location.php:219
 #: templates/booking-single.php:77
 msgid "Address"
 msgstr "Adresse"
 
-#: src/CB/CB1UserFields.php:68
+#: src/CB/CB1UserFields.php:93
 msgid "Please enter your address"
 msgstr "Bitte gib deine Adresse ein"
 
-#: src/CB/CB1UserFields.php:71
+#: src/CB/CB1UserFields.php:96
 msgid "Terms and Conditions"
 msgstr "Nutzungsbedingungen"
 
-#: src/CB/CB1UserFields.php:74
+#: src/CB/CB1UserFields.php:99
 msgid "I accept the terms & conditions"
 msgstr "Ich akzeptiere die Nutzungsbedingungen"
 
-#: src/CB/CB1UserFields.php:75
+#: src/CB/CB1UserFields.php:100
 msgid "Please accept the terms & conditions"
 msgstr "Bitte akzeptiere die Nutzungsbedingungen"
 
 #. translators: %s = terms and service url
-#: src/CB/CB1UserFields.php:160
+#: src/CB/CB1UserFields.php:185
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
 
-#: src/CB/CB1UserFields.php:243
+#: src/CB/CB1UserFields.php:268
 msgid "Extra Fields"
 msgstr "Zusatzfelder"
 
-#: src/CB/CB1UserFields.php:247
+#: src/CB/CB1UserFields.php:272
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: src/CB/CB1UserFields.php:263
+#: src/CB/CB1UserFields.php:288
 msgid "Terms and conditions"
 msgstr "Nutzungsbedingungen"
 
-#: src/CB/CB1UserFields.php:269
+#: src/CB/CB1UserFields.php:294
 msgid "Accepted Terms & Conditions"
 msgstr "Nutzungsbedingungen akzeptiert"
 
@@ -1222,18 +1222,18 @@ msgstr "Einstellungen für Commons Booking Karten"
 msgid "Commons Booking Map"
 msgstr "CommonsBooking Karte"
 
-#: src/Map/BaseShortcode.php:34
+#: src/Map/BaseShortcode.php:36
 msgid "map is not published"
 msgstr "Karte ist nicht veröffentlicht"
 
-#: src/Map/BaseShortcode.php:24
-#: src/Map/BaseShortcode.php:30
+#: src/Map/BaseShortcode.php:26
+#: src/Map/BaseShortcode.php:32
 msgid "no valid map id provided"
 msgstr "keine gültige Karten-ID angegeben"
 
 #: src/Map/MapShortcode.php:43
-#: templates/map-admin-page-template.php:229
-#: templates/map-admin-page-template.php:248
+#: templates/map-admin-page-template.php:230
+#: templates/map-admin-page-template.php:249
 msgid "opening hours"
 msgstr "Öffnungszeiten"
 
@@ -1266,17 +1266,17 @@ msgid "filter"
 msgstr "Filter"
 
 #: src/Map/MapShortcode.php:51
-#: templates/map-admin-page-template.php:599
+#: templates/map-admin-page-template.php:600
 msgid "availability"
 msgstr "Verfügbarkeit"
 
 #: src/Map/MapShortcode.php:52
-#: templates/map-admin-page-template.php:609
+#: templates/map-admin-page-template.php:610
 msgid "categories"
 msgstr "Kategorien"
 
 #: src/Map/MapShortcode.php:53
-#: templates/map-admin-page-template.php:546
+#: templates/map-admin-page-template.php:547
 msgid "distance"
 msgstr "Entfernung"
 
@@ -1380,33 +1380,33 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:305
-#: src/Plugin.php:306
+#: src/Plugin.php:309
+#: src/Plugin.php:310
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:315
-#: src/Plugin.php:316
+#: src/Plugin.php:319
+#: src/Plugin.php:320
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:431
+#: src/Plugin.php:435
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:463
+#: src/Plugin.php:467
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
-#: src/Repository/BookingCodes.php:328
+#: src/Repository/BookingCodes.php:330
 msgid "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da keine Buchungscodes zur Auswahl standen. Bitte lege einige Buchungscodes in den CommonsBooking-Einstellungen fest."
 
-#: src/Repository/BookingCodes.php:335
+#: src/Repository/BookingCodes.php:337
 msgid "No booking codes could be created because the location of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht gefunden wurde."
 
-#: src/Repository/BookingCodes.php:341
+#: src/Repository/BookingCodes.php:343
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
@@ -1431,14 +1431,14 @@ msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
 
 #: src/View/Admin/Filter.php:58
-#: src/Wordpress/CustomPostType/Booking.php:764
+#: src/Wordpress/CustomPostType/Booking.php:769
 #: src/Wordpress/CustomPostType/Restriction.php:446
 #: src/Wordpress/CustomPostType/Timeframe.php:700
 msgid "Start date"
 msgstr "Startdatum"
 
 #: src/View/Admin/Filter.php:62
-#: src/Wordpress/CustomPostType/Booking.php:781
+#: src/Wordpress/CustomPostType/Booking.php:786
 #: src/Wordpress/CustomPostType/Restriction.php:456
 #: src/Wordpress/CustomPostType/Timeframe.php:724
 msgid "End date"
@@ -1471,7 +1471,7 @@ msgstr "Nutzende*r"
 
 #: src/View/Booking.php:197
 #: src/View/MassOperations.php:43
-#: src/Wordpress/CustomPostType/Booking.php:954
+#: src/Wordpress/CustomPostType/Booking.php:959
 #: src/Wordpress/CustomPostType/Restriction.php:472
 msgid "Status"
 msgstr "Status"
@@ -1488,10 +1488,10 @@ msgstr "Die Datei wird als .txt Datei durch Tabstopp getrennt exportiert, sodass
 msgid "Booking codes list"
 msgstr "Liste der Buchungscodes"
 
-#: src/View/Calendar.php:223
+#: src/View/Calendar.php:225
 #: src/Wordpress/CustomPostType/Booking.php:442
-#: src/Wordpress/CustomPostType/Booking.php:746
-#: src/Wordpress/CustomPostType/Booking.php:970
+#: src/Wordpress/CustomPostType/Booking.php:751
+#: src/Wordpress/CustomPostType/Booking.php:975
 #: src/Wordpress/CustomPostType/Item.php:115
 #: src/Wordpress/CustomPostType/Restriction.php:54
 #: src/Wordpress/CustomPostType/Restriction.php:434
@@ -1500,14 +1500,14 @@ msgstr "Liste der Buchungscodes"
 msgid "Item"
 msgstr "Artikel"
 
-#: src/View/Calendar.php:167
+#: src/View/Calendar.php:169
 msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
-#: src/View/Calendar.php:224
+#: src/View/Calendar.php:226
 #: src/Wordpress/CustomPostType/Booking.php:443
-#: src/Wordpress/CustomPostType/Booking.php:752
-#: src/Wordpress/CustomPostType/Booking.php:966
+#: src/Wordpress/CustomPostType/Booking.php:757
+#: src/Wordpress/CustomPostType/Booking.php:971
 #: src/Wordpress/CustomPostType/Location.php:122
 #: src/Wordpress/CustomPostType/Restriction.php:55
 #: src/Wordpress/CustomPostType/Restriction.php:428
@@ -1631,11 +1631,11 @@ msgid "Download Export"
 msgstr "Download Export"
 
 #: src/Model/Booking.php:998
-#: src/Service/TimeframeExport.php:509
-#: src/Service/TimeframeExport.php:519
-#: src/Service/TimeframeExport.php:525
-#: src/Service/TimeframeExport.php:535
-#: src/Service/TimeframeExport.php:545
+#: src/Service/TimeframeExport.php:523
+#: src/Service/TimeframeExport.php:533
+#: src/Service/TimeframeExport.php:539
+#: src/Service/TimeframeExport.php:549
+#: src/Service/TimeframeExport.php:559
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1671,7 +1671,7 @@ msgstr "Status wurde vom Administrierenden über das Frontend geändert. Neuer S
 
 #: src/Wordpress/CustomPostType/Booking.php:326
 #: src/Wordpress/CustomPostType/Booking.php:518
-#: src/Wordpress/CustomPostType/Booking.php:697
+#: src/Wordpress/CustomPostType/Booking.php:702
 #: src/Wordpress/CustomPostType/Timeframe.php:135
 msgid "Booking"
 msgstr "Buchung"
@@ -1706,7 +1706,7 @@ msgid "Booking Status"
 msgstr "Buchungsstatus"
 
 #: src/Wordpress/CustomPostType/Booking.php:448
-#: src/Wordpress/CustomPostType/Booking.php:962
+#: src/Wordpress/CustomPostType/Booking.php:967
 #: src/Wordpress/CustomPostType/Timeframe.php:479
 msgid "Comment"
 msgstr "Kommentar"
@@ -1730,7 +1730,7 @@ msgid "Add new booking"
 msgstr "Neue Buchung hinzufügen"
 
 #: src/Wordpress/CustomPostType/Booking.php:521
-#: src/Wordpress/CustomPostType/Booking.php:728
+#: src/Wordpress/CustomPostType/Booking.php:733
 msgid "Edit booking"
 msgstr "Buchung bearbeiten"
 
@@ -1804,49 +1804,49 @@ msgstr "als Buchungsbild verwenden"
 msgid "Timeframes"
 msgstr "Zeitrahmen"
 
-#: src/Wordpress/CustomPostType/Booking.php:837
+#: src/Wordpress/CustomPostType/Booking.php:842
 msgid "External comment"
 msgstr "Öffentlicher Kommentar"
 
-#: src/Wordpress/CustomPostType/Booking.php:838
+#: src/Wordpress/CustomPostType/Booking.php:843
 msgid "This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings."
 msgstr "Dieser Kommentar ist intern für Zeitrahmen wie buchbar, Reparatur, Urlaub. Wenn es sich um eine Buchung handelt, kann dieser Kommentar von den Benutzenden während des Buchungsbestätigungsprozesses eingegeben werden."
 
-#: src/Wordpress/CustomPostType/Booking.php:843
+#: src/Wordpress/CustomPostType/Booking.php:848
 #: templates/booking-single.php:130
 msgid "Internal comment"
 msgstr "Interner Kommentar"
 
-#: src/Wordpress/CustomPostType/Booking.php:844
+#: src/Wordpress/CustomPostType/Booking.php:849
 msgid "This internal comment can only be seen in the backend by privileged users like admins or cb-managers"
 msgstr "Dieser interne Kommentar kann im Backend nur von autorisierten Nutzenden wie Admins oder CB-Managern gesehen werden"
 
-#: src/Wordpress/CustomPostType/Booking.php:765
+#: src/Wordpress/CustomPostType/Booking.php:770
 msgid "Set the start date. You must set the time to 00:00 if you want to book the full day "
 msgstr "Lege das Startdatum fest. Setze die Uhrzeit auf 00:00, wenn du den ganzen Tag buchen willst "
 
-#: src/Wordpress/CustomPostType/Booking.php:782
+#: src/Wordpress/CustomPostType/Booking.php:787
 msgid "Set the end date. You must set time to 23:59 if you want to book the full day"
 msgstr "Lege das Enddatum fest. Setze die Zeit auf 23:59 Uhr, wenn du den ganzen Tag buchen willst"
 
-#: src/Wordpress/CustomPostType/Booking.php:798
+#: src/Wordpress/CustomPostType/Booking.php:803
 #: templates/booking-single.php:59
 msgid "Booking Code"
 msgstr "Buchungscode"
 
-#: src/Wordpress/CustomPostType/Booking.php:804
+#: src/Wordpress/CustomPostType/Booking.php:809
 msgid "Booking User"
 msgstr "Buchende Person"
 
-#: src/Wordpress/CustomPostType/Booking.php:819
+#: src/Wordpress/CustomPostType/Booking.php:824
 msgid "Admin Booking User"
 msgstr "Admin Booking Konto"
 
-#: src/Wordpress/CustomPostType/Booking.php:830
+#: src/Wordpress/CustomPostType/Booking.php:835
 msgid "This is the admin user who created or modified this booking."
 msgstr "Dies ist der/die Admin-Nutzende, der diese Buchung erstellt oder geändert hat."
 
-#: src/Wordpress/CustomPostType/Booking.php:872
+#: src/Wordpress/CustomPostType/Booking.php:877
 msgid ""
 "Bookings should be created via frontend booking calendar. <br>\n"
 "\t\tAs an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated\n"
@@ -2127,11 +2127,11 @@ msgstr "Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geb
 msgid "Select location admins."
 msgstr "Wähle Standort-Admins."
 
-#: src/Wordpress/CustomPostType/Location.php:453
+#: src/Wordpress/CustomPostType/Location.php:454
 msgid "Allow locked day overbooking"
 msgstr "Überbuchen von geblockten Tagen erlauben"
 
-#: src/Wordpress/CustomPostType/Location.php:454
+#: src/Wordpress/CustomPostType/Location.php:455
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/?p=435\">Create Locations</a> for more information."
 msgstr "Wenn ausgewählt, können nicht aktivierte Tagen bei der Buchung überbucht werden. Dies gilt für alle Zeitrahmen vom Typ „buchbar“, die mit diesem Standort verknüpft sind. Lies die Dokumentation unter <a href=\"https://commonsbooking.org/?p=435\">Standorte anlegen</a> für mehr Informationen."
 
@@ -2139,49 +2139,49 @@ msgstr "Wenn ausgewählt, können nicht aktivierte Tagen bei der Buchung überbu
 msgid "Location Meta-Data"
 msgstr "Standort-Metadaten"
 
-#: src/Wordpress/CustomPostType/Map.php:361
+#: src/Wordpress/CustomPostType/Map.php:369
 #: templates/dashboard-index.php:55
 msgid "Maps"
 msgstr "Karten"
 
-#: src/Wordpress/CustomPostType/Map.php:362
+#: src/Wordpress/CustomPostType/Map.php:370
 msgid "Map"
 msgstr "Karte"
 
-#: src/Wordpress/CustomPostType/Map.php:363
-#: src/Wordpress/CustomPostType/Map.php:366
+#: src/Wordpress/CustomPostType/Map.php:371
+#: src/Wordpress/CustomPostType/Map.php:374
 msgid "create CB map"
 msgstr "CB-Karte erstellen"
 
-#: src/Wordpress/CustomPostType/Map.php:364
+#: src/Wordpress/CustomPostType/Map.php:372
 msgid "create Commons Booking map"
 msgstr "Commons Booking Karte erstellen"
 
-#: src/Wordpress/CustomPostType/Map.php:365
+#: src/Wordpress/CustomPostType/Map.php:373
 msgid "edit Commons Booking map"
 msgstr "CommonsBooking Karte bearbeiten"
 
-#: src/Wordpress/CustomPostType/Map.php:367
+#: src/Wordpress/CustomPostType/Map.php:375
 msgid "view CB map"
 msgstr "CB-Karte anzeigen"
 
-#: src/Wordpress/CustomPostType/Map.php:368
+#: src/Wordpress/CustomPostType/Map.php:376
 msgid "search CB maps"
 msgstr "CB-Karten suchen"
 
-#: src/Wordpress/CustomPostType/Map.php:369
+#: src/Wordpress/CustomPostType/Map.php:377
 msgid "no Commons Booking map found"
 msgstr "Keine Commons Booking Karte gefunden"
 
-#: src/Wordpress/CustomPostType/Map.php:370
+#: src/Wordpress/CustomPostType/Map.php:378
 msgid "no Commons Booking map found in the trash"
 msgstr "Keine Commons Booking Karte im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Map.php:371
+#: src/Wordpress/CustomPostType/Map.php:379
 msgid "parent CB maps"
 msgstr "Übergeordnete CB-Karten"
 
-#: src/Wordpress/CustomPostType/Map.php:400
+#: src/Wordpress/CustomPostType/Map.php:408
 msgid "Maps to show Commons Booking Locations and their Items"
 msgstr "Karten, um CommonsBooking Standorte und deren Artikel anzuzeigen"
 
@@ -2624,15 +2624,15 @@ msgstr "Verwendung als Zeitrahmenbild"
 msgid "<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> "
 msgstr "<strong>Standardwerte für folgende Felder wurden automatisch festgelegt oder wiederhergestellt, da sie leer waren:</strong><br> "
 
-#: src/Wordpress/Options/OptionsTab.php:48
+#: src/Wordpress/Options/OptionsTab.php:56
 msgid "CommonsBooking"
 msgstr "CommonsBooking"
 
-#: src/Wordpress/Options/OptionsTab.php:134
+#: src/Wordpress/Options/OptionsTab.php:148
 msgid "The export path does not exist or is not readable."
 msgstr "Der Exportpfad ist nicht vorhanden oder nicht lesbar."
 
-#: src/Wordpress/Options/OptionsTab.php:142
+#: src/Wordpress/Options/OptionsTab.php:156
 msgid "The export path is not writeable."
 msgstr "Der Exportpfad ist nicht beschreibbar."
 
@@ -2674,11 +2674,11 @@ msgstr "<li><a href=\"%s\">Anmelden</a></li>"
 msgid "<li><a href=\"%s\">Register</a></li>"
 msgstr "<li><a href=\"%s\">Registrieren</a></li>"
 
-#: src/Wordpress/Widget/UserWidget.php:104
+#: src/Wordpress/Widget/UserWidget.php:109
 msgid "Title:"
 msgstr "Titel:"
 
-#: src/Wordpress/Widget/UserWidget.php:110
+#: src/Wordpress/Widget/UserWidget.php:115
 msgid "Text:"
 msgstr "Text:"
 
@@ -2856,409 +2856,401 @@ msgstr "OSM - mapnik"
 msgid "OSM - german style"
 msgstr "OSM - deutscher Stil"
 
-#: templates/map-admin-page-template.php:34
-msgid "OSM - hike and bike"
-msgstr "OSM - Wanderung und Fahrrad"
-
-#: templates/map-admin-page-template.php:35
-msgid "OSM - lokaler (min. zoom: 9)"
-msgstr "OSM - Lokaler (min. Zoom: 9)"
-
-#: templates/map-admin-page-template.php:41
+#: templates/map-admin-page-template.php:42
 msgid "show scale"
 msgstr "Maßstab anzeigen"
 
-#: templates/map-admin-page-template.php:43
+#: templates/map-admin-page-template.php:44
 msgid "show the current scale in the left bottom corner of the map"
 msgstr "Zeigen Sie den aktuellen Maßstab in der linken unteren Ecke der Karte"
 
-#: templates/map-admin-page-template.php:51
+#: templates/map-admin-page-template.php:52
 msgid "map height"
 msgstr "Kartenhöhe"
 
-#: templates/map-admin-page-template.php:53
+#: templates/map-admin-page-template.php:54
 msgid "the height the map is rendered with - the width is the same as of the parent element"
 msgstr "Die Höhe, mit der die Karte gerendert wird - die Breite ist die gleiche wie beim übergeordneten Element"
 
-#: templates/map-admin-page-template.php:62
+#: templates/map-admin-page-template.php:63
 msgid "no locations message"
 msgstr "Meldung, wenn keine Standorte gefunden wurden"
 
-#: templates/map-admin-page-template.php:64
+#: templates/map-admin-page-template.php:65
 msgid "in case a user filters locations and gets no result, a message is shown - here the text can be customized"
 msgstr "Falls ein Benutzer Standorte filtert und kein Ergebnis erhält, wird eine Meldung angezeigt - hier kann der Text angepasst werden"
 
-#: templates/map-admin-page-template.php:72
+#: templates/map-admin-page-template.php:73
 msgid "enable data export"
 msgstr "Datenexport aktivieren"
 
-#: templates/map-admin-page-template.php:74
+#: templates/map-admin-page-template.php:75
 msgid "activate to enable a button that allows the export of map data (geojson format)"
 msgstr "Aktiviere, um eine Schaltfläche zu aktivieren, die den Export von Kartendaten ermöglicht (Geojson-Format)"
 
-#: templates/map-admin-page-template.php:85
+#: templates/map-admin-page-template.php:86
 msgid "Zoom"
 msgstr "Zoom"
 
-#: templates/map-admin-page-template.php:89
+#: templates/map-admin-page-template.php:90
 msgid "min. zoom level"
 msgstr "min. Zoomstufe"
 
-#: templates/map-admin-page-template.php:91
+#: templates/map-admin-page-template.php:92
 msgid "the minimal zoom level a user can choose"
 msgstr "die minimale Zoomstufe, die ein*e Benutzer*in auswählen kann"
 
-#: templates/map-admin-page-template.php:99
+#: templates/map-admin-page-template.php:100
 msgid "max. zoom level"
 msgstr "max. Zoomstufe"
 
-#: templates/map-admin-page-template.php:101
+#: templates/map-admin-page-template.php:102
 msgid "the maximal zoom level a user can choose"
 msgstr "die maximale Zoomstufe, die ein*e Benutzer*in auswählen kann"
 
-#: templates/map-admin-page-template.php:109
+#: templates/map-admin-page-template.php:110
 msgid "start zoom level"
 msgstr "Initiale Zoomstufe"
 
-#: templates/map-admin-page-template.php:111
+#: templates/map-admin-page-template.php:112
 msgid "the zoom level that will be set when the map is loaded"
 msgstr "die Zoomstufe, die beim Laden der Karte festgelegt wird"
 
-#: templates/map-admin-page-template.php:119
+#: templates/map-admin-page-template.php:120
 msgid "enable scroll wheel zoom"
 msgstr "Scrollradzoom aktivieren"
 
-#: templates/map-admin-page-template.php:121
+#: templates/map-admin-page-template.php:122
 msgid "when activated users can zoom the map using the scroll wheel"
 msgstr "Wenn aktiviert, können Benutzende die Karte mit dem Scrollrad zoomen"
 
-#: templates/map-admin-page-template.php:132
+#: templates/map-admin-page-template.php:133
 msgid "Map Positioning (center) at Intialization"
 msgstr "Kartenpositionierung (Mitte) bei Initialisierung"
 
-#: templates/map-admin-page-template.php:136
+#: templates/map-admin-page-template.php:137
 msgid "start latitude"
 msgstr "Start-Breitengrad"
 
-#: templates/map-admin-page-template.php:138
+#: templates/map-admin-page-template.php:139
 msgid "the latitude of the map center when the map is loaded"
 msgstr "der Breitengrad des Kartenzentrums, wenn die Karte geladen wird"
 
-#: templates/map-admin-page-template.php:146
+#: templates/map-admin-page-template.php:147
 msgid "start longitude"
 msgstr "Initialer Längengrad"
 
-#: templates/map-admin-page-template.php:148
+#: templates/map-admin-page-template.php:149
 msgid "the longitude of the map center when the map is loaded"
 msgstr "der Breitengrad des Kartenzentrums, wenn die Karte geladen wird"
 
-#: templates/map-admin-page-template.php:159
+#: templates/map-admin-page-template.php:160
 msgid "Adaptive Map Section"
 msgstr "Adaptiver Kartenabschnitt"
 
-#: templates/map-admin-page-template.php:163
+#: templates/map-admin-page-template.php:164
 msgid "initial adjustment to marker bounds"
 msgstr "anfängliche Anpassung an Markergrenzen"
 
-#: templates/map-admin-page-template.php:165
+#: templates/map-admin-page-template.php:166
 msgid "adjust map section to bounds of shown markers automatically when map is loaded"
 msgstr "Kartenabschnitt automatisch an Grenzen der angezeigten Marker anpassen, wenn die Karte geladen wird"
 
-#: templates/map-admin-page-template.php:174
+#: templates/map-admin-page-template.php:175
 msgid "adjustment to marker bounds on filter"
 msgstr "Anpassung an Markergrenzen am Filter"
 
-#: templates/map-admin-page-template.php:176
+#: templates/map-admin-page-template.php:177
 msgid "adjust map section to bounds of shown markers automatically when filtered by users"
 msgstr "Kartenabschnitt automatisch an die Grenzen der angezeigten Marker anpassen, wenn sie von Benutzern gefiltert werden"
 
-#: templates/map-admin-page-template.php:189
+#: templates/map-admin-page-template.php:190
 msgid "Marker Tooltip"
 msgstr "Kartenmarker Tooltip"
 
-#: templates/map-admin-page-template.php:194
+#: templates/map-admin-page-template.php:195
 msgid "show permanently"
 msgstr "permanent anzeigen"
 
-#: templates/map-admin-page-template.php:196
+#: templates/map-admin-page-template.php:197
 msgid "activate to show the marker tooltips permanently"
 msgstr "aktivieren, um die Marker-Tooltips dauerhaft anzuzeigen"
 
-#: templates/map-admin-page-template.php:206
+#: templates/map-admin-page-template.php:207
 msgid "Marker Popup"
 msgstr "Marker Popup"
 
-#: templates/map-admin-page-template.php:214
+#: templates/map-admin-page-template.php:215
 msgid "show location opening hours"
 msgstr "zeige Standort-Öffnungszeiten"
 
-#: templates/map-admin-page-template.php:216
+#: templates/map-admin-page-template.php:217
 msgid "activate to show the opening hours of locations in the marker popup"
 msgstr "aktivieren, um die Öffnungszeiten der Standorte im Marker-Popup anzuzeigen"
 
-#: templates/map-admin-page-template.php:223
-#: templates/map-admin-page-template.php:243
+#: templates/map-admin-page-template.php:224
+#: templates/map-admin-page-template.php:244
 msgid "label for opening hours"
 msgstr "Bezeichnung für Öffnungszeiten"
 
-#: templates/map-admin-page-template.php:226
+#: templates/map-admin-page-template.php:227
 msgid "alternative label for the opening hours of locations in the marker popup"
 msgstr "alternative Bezeichnung für die Öffnungszeiten der Standorte im Marker-Popup"
 
-#: templates/map-admin-page-template.php:234
+#: templates/map-admin-page-template.php:235
 msgid "show location contact"
 msgstr "zeige Standort-Kontakt"
 
-#: templates/map-admin-page-template.php:236
+#: templates/map-admin-page-template.php:237
 msgid "activate to show the location contact details in the marker popup"
 msgstr "aktivieren, um die Standortkontaktdetails im Marker-Popup anzuzeigen"
 
-#: templates/map-admin-page-template.php:245
+#: templates/map-admin-page-template.php:246
 msgid "alternative label for the contact information of locations in the marker popup"
 msgstr "alternative Bezeichnung für die Kontaktinformationen von Standorten im Marker-Popup"
 
-#: templates/map-admin-page-template.php:254
+#: templates/map-admin-page-template.php:255
 msgid "show item availability"
 msgstr "Artikelverfügbarkeit anzeigen"
 
-#: templates/map-admin-page-template.php:256
+#: templates/map-admin-page-template.php:257
 msgid "activate to show the item availability in the marker popup"
 msgstr "aktivieren, um die Artikelverfügbarkeit im Marker-Popup anzuzeigen"
 
-#: templates/map-admin-page-template.php:265
+#: templates/map-admin-page-template.php:266
 msgid "Max. available days in popup"
 msgstr "Max. Anzahl verfügbare Tage im Popup"
 
-#: templates/map-admin-page-template.php:270
+#: templates/map-admin-page-template.php:271
 msgid "Set how many days are displayed on the popup (starting from today)"
 msgstr "Lege fest, wie viele Tage im Popup angezeigt werden (ab heute)"
 
-#: templates/map-admin-page-template.php:283
+#: templates/map-admin-page-template.php:284
 msgid "Maximum days to choose in map availabilty filter "
 msgstr "Maximal Anzahl an Tagen, die im Verfügbarkeitsfilter gewählt werden können "
 
-#: templates/map-admin-page-template.php:288
+#: templates/map-admin-page-template.php:289
 msgid "Notice: Defines the maximun days a user can choose in the availabilty filter in frontend map"
 msgstr "Hinweis: Definiert die maximalen Tage, die ein Benutzer im Verfügbarkeitsfilter in der Frontend-Karte auswählen kann"
 
-#: templates/map-admin-page-template.php:302
+#: templates/map-admin-page-template.php:303
 msgid "Custom Marker"
 msgstr "Benutzerdefinierter Marker"
 
-#: templates/map-admin-page-template.php:306
-#: templates/map-admin-page-template.php:392
-#: templates/map-admin-page-template.php:467
+#: templates/map-admin-page-template.php:307
+#: templates/map-admin-page-template.php:393
+#: templates/map-admin-page-template.php:468
 msgid "image file"
 msgstr "Bilddatei"
 
-#: templates/map-admin-page-template.php:308
-#: templates/map-admin-page-template.php:394
-#: templates/map-admin-page-template.php:469
+#: templates/map-admin-page-template.php:309
+#: templates/map-admin-page-template.php:395
+#: templates/map-admin-page-template.php:470
 msgid "the default marker icon can be replaced by a custom image"
 msgstr "Das Standardmarkersymbol kann durch ein benutzerdefiniertes Bild ersetzt werden"
 
-#: templates/map-admin-page-template.php:312
-#: templates/map-admin-page-template.php:398
-#: templates/map-admin-page-template.php:473
+#: templates/map-admin-page-template.php:313
+#: templates/map-admin-page-template.php:399
+#: templates/map-admin-page-template.php:474
 msgid "select"
 msgstr "auswählen"
 
-#: templates/map-admin-page-template.php:314
-#: templates/map-admin-page-template.php:400
-#: templates/map-admin-page-template.php:475
+#: templates/map-admin-page-template.php:315
+#: templates/map-admin-page-template.php:401
+#: templates/map-admin-page-template.php:476
 msgid "remove"
 msgstr "entfernen"
 
-#: templates/map-admin-page-template.php:333
-#: templates/map-admin-page-template.php:419
-#: templates/map-admin-page-template.php:494
+#: templates/map-admin-page-template.php:334
+#: templates/map-admin-page-template.php:420
+#: templates/map-admin-page-template.php:495
 msgid "icon size"
 msgstr "Symbolgröße"
 
-#: templates/map-admin-page-template.php:335
-#: templates/map-admin-page-template.php:421
-#: templates/map-admin-page-template.php:496
+#: templates/map-admin-page-template.php:336
+#: templates/map-admin-page-template.php:422
+#: templates/map-admin-page-template.php:497
 msgid "the size of the custom marker icon image as it is shown on the map"
 msgstr "die Größe des benutzerdefinierten Markersymbolbildes, wie es auf der Karte angezeigt wird"
 
-#: templates/map-admin-page-template.php:349
-#: templates/map-admin-page-template.php:509
+#: templates/map-admin-page-template.php:350
+#: templates/map-admin-page-template.php:510
 msgid "anchor point"
 msgstr "Ankerpunkt"
 
-#: templates/map-admin-page-template.php:351
-#: templates/map-admin-page-template.php:511
+#: templates/map-admin-page-template.php:352
+#: templates/map-admin-page-template.php:512
 msgid "the position of the anchor point of the icon image, seen from the left top corner of the icon, often it is half of the width and full height of the icon size - this point is used to place the marker on the geo coordinates"
 msgstr "die Position des Ankerpunkts des Symbolbildes, von der linken oberen Ecke des Symbols aus gesehen, oft ist es die Hälfte der Breite und der vollen Höhe der Symbolgröße - dieser Punkt wird verwendet, um den Marker auf den Geo-Koordinaten zu platzieren"
 
-#: templates/map-admin-page-template.php:368
+#: templates/map-admin-page-template.php:369
 msgid "Cluster"
 msgstr "Cluster"
 
-#: templates/map-admin-page-template.php:372
+#: templates/map-admin-page-template.php:373
 msgid "max. cluster radius"
 msgstr "max. Clusterradius"
 
-#: templates/map-admin-page-template.php:374
+#: templates/map-admin-page-template.php:375
 msgid "combine markers to a cluster within given radius - 0 for deactivation"
 msgstr "Marker zu einem Cluster innerhalb eines bestimmten Radius kombinieren - 0 für die Deaktivierung"
 
-#: templates/map-admin-page-template.php:387
+#: templates/map-admin-page-template.php:388
 msgid "Custom Cluster Marker"
 msgstr "Benutzerdefinierte Cluster-Marker"
 
-#: templates/map-admin-page-template.php:439
+#: templates/map-admin-page-template.php:440
 msgid "Appearance by Item Status"
 msgstr "Darstellung nach Artikelstatus"
 
-#: templates/map-admin-page-template.php:444
+#: templates/map-admin-page-template.php:445
 msgid "appearance"
 msgstr "Erscheinen"
 
-#: templates/map-admin-page-template.php:446
+#: templates/map-admin-page-template.php:447
 msgid "how locations with items that are in draft status should be handled"
 msgstr "Wie Standorte mit Artikeln, die sich im Entwurfsstatus befinden, behandelt werden sollen"
 
-#: templates/map-admin-page-template.php:451
+#: templates/map-admin-page-template.php:452
 msgid "don't show drafts"
 msgstr "Entwürfe nicht anzeigen"
 
-#: templates/map-admin-page-template.php:452
+#: templates/map-admin-page-template.php:453
 msgid "show only drafts"
 msgstr "Nur Entwürfe anzeigen"
 
-#: templates/map-admin-page-template.php:453
+#: templates/map-admin-page-template.php:454
 msgid "show all together"
 msgstr "Alle anzeigen"
 
-#: templates/map-admin-page-template.php:463
+#: templates/map-admin-page-template.php:464
 msgid "Custom Item Draft Marker"
 msgstr "Benutzerdefinierte Artikel-Entwurfsmarkierung"
 
-#: templates/map-admin-page-template.php:528
+#: templates/map-admin-page-template.php:529
 msgid "Filter for Users"
 msgstr "Filter für Benutzer"
 
-#: templates/map-admin-page-template.php:532
+#: templates/map-admin-page-template.php:533
 msgid "show location distance filter"
 msgstr "Filter für Standort-Entfernung anzeigen"
 
-#: templates/map-admin-page-template.php:534
+#: templates/map-admin-page-template.php:535
 msgid "activate to show the location distance filter"
 msgstr "aktivieren, um den Standortentfernungsfilter anzuzeigen"
 
-#: templates/map-admin-page-template.php:541
+#: templates/map-admin-page-template.php:542
 msgid "label for location distance filter"
 msgstr "Bezeichnung für Standortentfernungsfilter"
 
-#: templates/map-admin-page-template.php:543
+#: templates/map-admin-page-template.php:544
 msgid "alternative label for the location distance filter"
 msgstr "alternative Bezeichnung für den Positionsentfernungsfilter"
 
-#: templates/map-admin-page-template.php:551
+#: templates/map-admin-page-template.php:552
 msgid "address search bounds - left bottom"
 msgstr "Begrenzung Adresssuche - links unten"
 
-#: templates/map-admin-page-template.php:553
+#: templates/map-admin-page-template.php:554
 msgid "the bottom left corner of the address search bounds"
 msgstr "die linke untere Ecke des Bereichs, in dem Adressen in Geokoordinaten aufgelöst werden"
 
-#: templates/map-admin-page-template.php:557
-#: templates/map-admin-page-template.php:574
+#: templates/map-admin-page-template.php:558
+#: templates/map-admin-page-template.php:575
 msgid "longitude"
 msgstr "Längengrad"
 
-#: templates/map-admin-page-template.php:561
-#: templates/map-admin-page-template.php:578
+#: templates/map-admin-page-template.php:562
+#: templates/map-admin-page-template.php:579
 msgid "latitude"
 msgstr "Breitengrad"
 
-#: templates/map-admin-page-template.php:568
+#: templates/map-admin-page-template.php:569
 msgid "address search bounds - right top"
 msgstr "Begrenzung Adresssuche - rechts oben"
 
-#: templates/map-admin-page-template.php:570
+#: templates/map-admin-page-template.php:571
 msgid "the top right corner of the address search bounds"
 msgstr "die obere rechte Ecke der Adresssuchgrenzen"
 
-#: templates/map-admin-page-template.php:585
+#: templates/map-admin-page-template.php:586
 msgid "show item availability filter"
 msgstr "Artikelverfügbarkeitsfilter anzeigen"
 
-#: templates/map-admin-page-template.php:587
+#: templates/map-admin-page-template.php:588
 msgid "activate to show the item availability filter"
 msgstr "aktivieren, um den Artikelverfügbarkeitsfilter anzuzeigen"
 
-#: templates/map-admin-page-template.php:594
+#: templates/map-admin-page-template.php:595
 msgid "label for item availability filter"
 msgstr "Bezeichnung für Artikelverfügbarkeitsfilter"
 
-#: templates/map-admin-page-template.php:596
+#: templates/map-admin-page-template.php:597
 msgid "alternative label for the item availability filter"
 msgstr "alternative Bezeichnung für den Artikelverfügbarkeitsfilter"
 
-#: templates/map-admin-page-template.php:604
+#: templates/map-admin-page-template.php:605
 msgid "label for item category filter"
 msgstr "Bezeichnung für Artikelkategoriefilter"
 
-#: templates/map-admin-page-template.php:606
+#: templates/map-admin-page-template.php:607
 msgid "alternative label for the item category filter"
 msgstr "Alternative Bezeichnung für den Artikelkategoriefilter"
 
-#: templates/map-admin-page-template.php:615
+#: templates/map-admin-page-template.php:616
 msgid "custom text for filter button"
 msgstr "Benutzerdefinierter Text für Filterschaltfläche"
 
-#: templates/map-admin-page-template.php:617
+#: templates/map-admin-page-template.php:618
 msgid "the text for the button used for filtering"
 msgstr "Der Text für die zum Filtern verwendete Schaltfläche"
 
-#: templates/map-admin-page-template.php:625
+#: templates/map-admin-page-template.php:626
 msgid "available categories"
 msgstr "verfügbare Kategorien"
 
-#: templates/map-admin-page-template.php:627
+#: templates/map-admin-page-template.php:628
 msgid "select the categories that are presented the users to filter items - none for no filters"
 msgstr "Wählen Sie die Kategorien aus, die den Benutzern zum Filtern von Elementen angezeigt werden - keine für keine Filter"
 
-#: templates/map-admin-page-template.php:641
+#: templates/map-admin-page-template.php:642
 msgid "grouping of and custom markup for filters"
 msgstr "Gruppieren von und benutzerdefiniertem Markup für Filter"
 
-#: templates/map-admin-page-template.php:644
+#: templates/map-admin-page-template.php:645
 msgid "add filter group"
 msgstr "Filtergruppe hinzufügen"
 
-#: templates/map-admin-page-template.php:653
+#: templates/map-admin-page-template.php:654
 msgid "Filter Item Presets"
 msgstr "Vorfiltern nach Artikel-Kategorie"
 
-#: templates/map-admin-page-template.php:657
-#: templates/map-admin-page-template.php:679
+#: templates/map-admin-page-template.php:658
+#: templates/map-admin-page-template.php:680
 msgid "preset categories"
 msgstr "voreingestellte Kategorien"
 
-#: templates/map-admin-page-template.php:659
+#: templates/map-admin-page-template.php:660
 msgid "select the categories that are used to prefilter the items that are shown on the map - none for all items"
 msgstr "Wähle die Kategorien, die benutzt werden um die Artikel, die auf der Karte angezeigt werden, vorzufiltern - leer lassen, um alle Artikel anzuzeigen"
 
-#: templates/map-admin-page-template.php:675
+#: templates/map-admin-page-template.php:676
 msgid "Filter Location Presets"
 msgstr "Vorfiltern nach Standort-Kategorien"
 
-#: templates/map-admin-page-template.php:681
+#: templates/map-admin-page-template.php:682
 msgid "select the categories that are used to prefilter the location categories that are shown on the map - none for all locations"
 msgstr "Wähle die Standort-Kategorien, die benutzt werden um die Artikel, die auf der Karte angezeigt werden, vorzufiltern - leer lassen, um alle Artikel anzuzeigen"
 
-#: templates/map-admin-page-template.php:740
+#: templates/map-admin-page-template.php:741
 msgid "filter group"
 msgstr "Filter-Gruppe"
 
-#: templates/map-admin-page-template.php:740
+#: templates/map-admin-page-template.php:741
 msgid "group name"
 msgstr "Filter-Gruppe"
 
-#: templates/map-admin-page-template.php:743
+#: templates/map-admin-page-template.php:744
 msgid "remove filter group"
 msgstr "Filter-Gruppe entfernen"
 
@@ -3368,9 +3360,9 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:667
-#: src/Plugin.php:682
-#: src/Wordpress/CustomPostType/Booking.php:917
+#: src/Plugin.php:679
+#: src/Plugin.php:694
+#: src/Wordpress/CustomPostType/Booking.php:922
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
 
@@ -3378,27 +3370,27 @@ msgstr "CommonsBooking Buchungen"
 msgid "Bookings not found"
 msgstr "Keine Buchungen gefunden"
 
-#: src/Wordpress/CustomPostType/Booking.php:942
+#: src/Wordpress/CustomPostType/Booking.php:947
 msgid "Booking start"
 msgstr "Buchungsbeginn"
 
-#: src/Wordpress/CustomPostType/Booking.php:946
+#: src/Wordpress/CustomPostType/Booking.php:951
 msgid "Booking end"
 msgstr "Buchungsende"
 
-#: src/Wordpress/CustomPostType/Booking.php:950
+#: src/Wordpress/CustomPostType/Booking.php:955
 msgid "Time of booking"
 msgstr "Buchungszeit"
 
-#: src/Wordpress/CustomPostType/Booking.php:958
+#: src/Wordpress/CustomPostType/Booking.php:963
 msgid "Booking code"
 msgstr "Buchungscode"
 
-#: src/Wordpress/CustomPostType/Booking.php:974
+#: src/Wordpress/CustomPostType/Booking.php:979
 msgid "Time of cancellation"
 msgstr "Storniert am"
 
-#: src/Wordpress/CustomPostType/Booking.php:978
+#: src/Wordpress/CustomPostType/Booking.php:983
 msgid "Admin booking by"
 msgstr "Adminbuchung von"
 
@@ -3434,19 +3426,19 @@ msgstr "Globale Standorteinstellungen nutzen"
 msgid "If selected, the global location settings (under the \"General\" tab) will be used for this location. If not selected, the settings below will be used."
 msgstr "Wenn diese Option ausgewählt ist, werden die globalen Standorteinstellungen ( im Reiter \"Allgemein\") für diesen Standort verwendet. Wenn sie nicht ausgewählt ist, werden die Einstellungen unten verwendet."
 
-#: src/Wordpress/CustomPostType/Location.php:459
+#: src/Wordpress/CustomPostType/Location.php:460
 msgid "Count locked days when overbooking"
 msgstr "Gesperrte Tage bei Überbuchung zählen"
 
-#: src/Wordpress/CustomPostType/Location.php:465
+#: src/Wordpress/CustomPostType/Location.php:466
 msgid "Count connected locked days as one"
 msgstr "Zusammenhängende gesperrte Tage werden als Einheit gezählt"
 
-#: src/Wordpress/CustomPostType/Location.php:466
+#: src/Wordpress/CustomPostType/Location.php:467
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
 msgstr "Hier kann festgelegt werden, ob eine zusammenhängende Spanne von überbuchten Tagen einzeln gezählt werden soll oder ob nur x Tage des maximalen Kontingents, das der Benutzer buchen darf, verbraucht werden sollen. Wenn dieses Feld auf 0 gesetzt wird, wird jeder Tag einzeln gezählt. Wenn dieses Feld auf 1 gesetzt wird, werden alle überbuchten Tage, egal wie viele, immer nur als 1 Tag gezählt. Wenn dieses Feld auf 2 gesetzt wird, werden maximal zwei Tage gezählt und so weiter."
 
-#: src/Wordpress/CustomPostType/Location.php:460
+#: src/Wordpress/CustomPostType/Location.php:461
 msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
 
@@ -3737,7 +3729,7 @@ msgstr "Cache leeren"
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
-#: src/Wordpress/Options/OptionsTab.php:152
+#: src/Wordpress/Options/OptionsTab.php:167
 msgid "Cache cleared."
 msgstr "Cache geleert."
 
@@ -4196,19 +4188,19 @@ msgstr ""
 msgid "Export finished"
 msgstr ""
 
-#: src/Service/TimeframeExport.php:240
+#: src/Service/TimeframeExport.php:254
 msgid "Export data is not complete. Please complete the process before trying to export."
 msgstr ""
 
-#: src/Service/TimeframeExport.php:244
+#: src/Service/TimeframeExport.php:258
 msgid "No data was found for the selected time period"
 msgstr ""
 
-#: src/Service/TimeframeExport.php:249
+#: src/Service/TimeframeExport.php:263
 msgid "You need to set an export path to execute the export"
 msgstr ""
 
-#: src/Service/TimeframeExport.php:350
+#: src/Service/TimeframeExport.php:364
 msgid "Processed %d of %d bookings"
 msgstr ""
 
@@ -4273,11 +4265,11 @@ msgid "Startdate is missing. Please enter a start date to publish this timeframe
 msgstr ""
 
 #: src/View/Booking.php:538
-#: src/Wordpress/CustomPostType/Booking.php:849
+#: src/Wordpress/CustomPostType/Booking.php:854
 msgid "Submit booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:730
+#: src/Wordpress/CustomPostType/Booking.php:735
 msgid ""
 "<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>\n"
 "\t\t\t\t<ul>\n"
@@ -4289,31 +4281,31 @@ msgid ""
 "\t\t\t\t"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:758
+#: src/Wordpress/CustomPostType/Booking.php:763
 msgid "Book full day"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:761
+#: src/Wordpress/CustomPostType/Booking.php:766
 msgid "The booking should apply to the entire day(s)"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:801
+#: src/Wordpress/CustomPostType/Booking.php:806
 msgid "Valid booking code will be automatically retrieved for bookings that apply to the full day."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:810
+#: src/Wordpress/CustomPostType/Booking.php:815
 msgid ""
 "Here you must select the user for whom the booking is made.<br>\n"
 "                        If the booking was made by a user via frontend booking process, the user will be shown in this field.\n"
 "                        <br><strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking is submitted."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:850
+#: src/Wordpress/CustomPostType/Booking.php:855
 msgid "This will create the specified booking and send out the booking confirmation email."
 msgstr ""
 
-#: src/Plugin.php:325
-#: src/Plugin.php:326
+#: src/Plugin.php:329
+#: src/Plugin.php:330
 msgid "Mass Operations"
 msgstr ""
 
@@ -4349,7 +4341,7 @@ msgstr ""
 msgid "New location name"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:931
+#: src/Wordpress/CustomPostType/Timeframe.php:932
 msgid "Orphaned bookings found, can migrate. <a href=\"admin.php?page=cb-mass-operations\"> Click here to migrate </a>"
 msgstr ""
 
@@ -4359,4 +4351,8 @@ msgstr ""
 
 #: src/Service/MassOperations.php:62
 msgid "New location not found for booking with ID %s"
+msgstr ""
+
+#: src/Wordpress/Options/OptionsTab.php:175
+msgid "Error while clearing the cache."
 msgstr ""

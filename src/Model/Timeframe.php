@@ -222,7 +222,7 @@ class Timeframe extends CustomPost {
 		$calculationBase = time();
 
 		// if meta-value not set we define a default value far in the future so that we count all possibly relevant timeframes
-		$advanceBookingDays = $this->getMeta( TimeFrame::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
+		$advanceBookingDays = $this->getMeta( Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) ?: 365;
 
 		// we subtract one day to reflect the current day in calculation
 		$advanceBookingDays --;

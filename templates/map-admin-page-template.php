@@ -31,8 +31,9 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                         <select name="cb_map_options[base_map]">
                             <option value="1" <?php echo  $selected_base_map == 1 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - mapnik' ,'commonsbooking')); ?></option>
                             <option value="2" <?php echo  $selected_base_map == 2 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - german style' ,'commonsbooking')); ?></option>
-                            <option value="3" <?php echo  $selected_base_map == 3 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - hike and bike' ,'commonsbooking')); ?></option>
-                            <option value="4" <?php echo  $selected_base_map == 4 ? 'selected' : '' ?>><?php echo commonsbooking_sanitizeHTML( __( 'OSM - lokaler (min. zoom: 9)' ,'commonsbooking')); ?></option>
+							<!-- Reenable the map styles if needed -->
+                            <!--<option value="3" <?php /* echo  $selected_base_map == 3 ? 'selected' : '' */ ?>><?php /* echo commonsbooking_sanitizeHTML( __( 'OSM - hike and bike' ,'commonsbooking')); */ ?></option>-->
+                            <!--<option value="4" <?php /* echo  $selected_base_map == 4 ? 'selected' : '' */ ?>><?php /* echo commonsbooking_sanitizeHTML( __( 'OSM - lokaler (min. zoom: 9)' ,'commonsbooking')); */ ?></option>-->
                         </select>
                     </td>
                 </tr>

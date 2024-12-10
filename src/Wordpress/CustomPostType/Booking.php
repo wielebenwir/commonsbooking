@@ -670,6 +670,11 @@ class Booking extends Timeframe {
 		}
     }
 
+	/**
+	 * @param \WP_Query $query
+	 *
+	 * @return void
+	 */
 	public function setCustomColumnSortOrder( \WP_Query $query ) {
 		if (! parent::setCustomColumnSortOrder( $query ) ) {
 			return;
