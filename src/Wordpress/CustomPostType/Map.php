@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Map\MapAdmin;
 use CommonsBooking\Map\MapSettings;
@@ -30,10 +29,10 @@ class Map extends CustomPostType {
 		// TODO check the following comment
 		// deactivated individual map settings because we don't need them righ now
 		// map setting should be integrated in CB settings in the future
-		//$cb_map_settings->prepare_settings();
-		
+		// $cb_map_settings->prepare_settings();
+
 		if ( $cb_map_settings->get_option( 'booking_page_link_replacement' ) ) {
-			add_action( 'wp_enqueue_scripts', array( Map::class, 'replace_map_link_target' ), 11 );
+			add_action( 'wp_enqueue_scripts', array( self::class, 'replace_map_link_target' ), 11 );
 		}
 
 		// Add shortcodes
@@ -58,25 +57,27 @@ class Map extends CustomPostType {
 	public static function replace_map_link_target() {
 		global $post;
 		if ( is_object( $post ) && $post->post_type == CB1::$ITEM_TYPE_ID ) {
-			//get timeframes of item
+			// get timeframes of item
 			$cb_data    = new CB_Data();
 			$date_start = date( 'Y-m-d' ); // current date
 			$timeframes = $cb_data->get_timeframes( $post->ID, $date_start );
 
-			$geo_coordinates = [];
+			$geo_coordinates = array();
 			if ( $timeframes ) {
 				foreach ( $timeframes as $timeframe ) {
-					$geo_coordinates[ $timeframe['id'] ] = [
+					$geo_coordinates[ $timeframe['id'] ] = array(
 						'lat' => get_post_meta( $timeframe['location_id'], 'cb-map_latitude', true ),
 						'lon' => get_post_meta( $timeframe['location_id'], 'cb-map_longitude', true ),
-					];
+					);
 				}
 			}
 
 			wp_register_script( 'cb_map_replace_map_link_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-replace-link.js' );
 
-			wp_add_inline_script( 'cb_map_replace_map_link_js',
-				"cb_map_timeframes_geo = " . wp_json_encode( $geo_coordinates ) . ";" );
+			wp_add_inline_script(
+				'cb_map_replace_map_link_js',
+				'cb_map_timeframes_geo = ' . wp_json_encode( $geo_coordinates ) . ';'
+			);
 
 			wp_enqueue_script( 'cb_map_replace_map_link_js' );
 		}
@@ -87,11 +88,11 @@ class Map extends CustomPostType {
 	 **/
 	public static function get_timeframes() {
 
-		$result = [];
+		$result = array();
 
 		$timeframes = Timeframe::getBookableForCurrentUser(
-			[],
-			[],
+			array(),
+			array(),
 			false,
 			true,
 			Helper::getLastFullHourTimestamp()
@@ -99,7 +100,7 @@ class Map extends CustomPostType {
 
 		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $timeframes as $timeframe ) {
-			//TODO #507
+			// TODO #507
 			$item     = $timeframe->getItem();
 			$location = $timeframe->getLocation();
 
@@ -107,19 +108,19 @@ class Map extends CustomPostType {
 				$item_desc = $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_info' );
 				$thumbnail = get_the_post_thumbnail_url( $item, 'thumbnail' );
 
-				$result[] = [
+				$result[] = array(
 					'location_id' => $timeframe->getLocationID(),
-					'item'        => [
+					'item'        => array(
 						'id'         => $item->ID,
 						'name'       => $item->post_title,
 						'short_desc' => $item_desc,
 						'link'       => get_permalink( $item ),
 						'thumbnail'  => $thumbnail ?: null,
 						'status'     => $item->post_status,
-					],
+					),
 					'date_start'  => $timeframe->getStartDate(),
 					'date_end'    => $timeframe->getEndDate(),
-				];
+				);
 			}
 		}
 
@@ -150,26 +151,25 @@ class Map extends CustomPostType {
 	 * @throws Exception
 	 */
 	public static function get_locations( $cb_map_id, $mapItemTerms ): array {
-		$locations = [];
+		$locations = array();
 
 		$show_location_contact       = MapAdmin::get_option( $cb_map_id, 'show_location_contact' );
 		$show_location_opening_hours = MapAdmin::get_option( $cb_map_id, 'show_location_opening_hours' );
 
-		$preset_categories = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
+		$preset_categories          = MapAdmin::get_option( $cb_map_id, 'cb_items_preset_categories' );
 		$preset_location_categories = MapAdmin::get_option( $cb_map_id, 'cb_locations_preset_categories' );
 
-
-		$args = [
+		$args = array(
 			'post_type'      => Location::$postType,
 			'posts_per_page' => - 1,
 			'post_status'    => 'publish',
-			'meta_query'     => [
-				[
+			'meta_query'     => array(
+				array(
 					'key'          => 'geo_longitude',
 					'meta_compare' => 'EXISTS',
-				],
-			],
-		];
+				),
+			),
+		);
 
 		$locationObjects = \CommonsBooking\Repository\Location::get(
 			$args,
@@ -180,23 +180,22 @@ class Map extends CustomPostType {
 		foreach ( $locationObjects as $post ) {
 			$location_meta = get_post_meta( $post->ID, null, true );
 
-			//set serialized empty array if not set
+			// set serialized empty array if not set
 			$closed_days = isset( $location_meta['commons-booking_location_closeddays'] ) ? $location_meta['commons-booking_location_closeddays'][0] : 'a:0:{}';
 
-			$items = [];
+			$items = array();
 
 			/**
 			 * filters out not preset location categories, if location categories are set
 			 */
 
-			 if ($preset_location_categories) {
-				if ( !has_term( $preset_location_categories , 'cb_locations_category' , $post->ID) ) {
-					continue; //skip to next location in loop
+			if ( $preset_location_categories ) {
+				if ( ! has_term( $preset_location_categories, 'cb_locations_category', $post->ID ) ) {
+					continue; // skip to next location in loop
 				}
-			 }
+			}
 
 			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
-
 				$item_terms = wp_get_post_terms(
 					$item->ID,
 					\CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category'
@@ -221,18 +220,17 @@ class Map extends CustomPostType {
 				 * Filter items by preset item categories
 				 */
 
-				 if ($preset_categories) {
-						 //check if preset category is in items
-						if ( !has_term( $preset_categories , 'cb_items_category' , $item->ID) ) {
-							continue; //skip to next item in loop
-						}
-				 }
+				if ( $preset_categories ) {
+						// check if preset category is in items
+					if ( ! has_term( $preset_categories, 'cb_items_category', $item->ID ) ) {
+						continue; // skip to next item in loop
+					}
+				}
 
-
-				$timeframesData = [];
+				$timeframesData = array();
 				$timeframes     = Timeframe::getBookableForCurrentUser(
-					[ $post->ID ],
-					[ $item->ID ],
+					array( $post->ID ),
+					array( $item->ID ),
 					null,
 					true
 				);
@@ -241,74 +239,73 @@ class Map extends CustomPostType {
 				foreach ( $timeframes as $timeframe ) {
 					$startDate        = date( 'Y-m-d', $timeframe->getStartDate() );
 					$endDate          = $timeframe->getEndDate() ?: date( 'Y-m-d', strtotime( '2999-01-01' ) );
-					$timeframesData[] = [
+					$timeframesData[] = array(
 						'date_start' => $startDate,
-						'date_end'   => $endDate
-					];
+						'date_end'   => $endDate,
+					);
 				}
 
 				$thumbnailID = get_post_thumbnail_id( $item->ID );
-				//this thumbnail is kept for backwards compatibility
+				// this thumbnail is kept for backwards compatibility
 				$thumbnail = wp_get_attachment_image_url( $thumbnailID, 'thumbnail' );
-				$images = [
+				$images    = array(
 					'thumbnail' => wp_get_attachment_image_src( $thumbnailID, 'thumbnail' ),
 					'medium'    => wp_get_attachment_image_src( $thumbnailID, 'medium' ),
 					'large'     => wp_get_attachment_image_src( $thumbnailID, 'large' ),
 					'full'      => wp_get_attachment_image_src( $thumbnailID, 'full' ),
-				];
-				$items[]   = [
+				);
+				$items[]   = array(
 					'id'         => $item->ID,
 					'name'       => $item->post_title,
-					'short_desc' => has_excerpt( $item->ID ) ? wp_strip_all_tags( get_the_excerpt( $item->ID ) ) : "",
+					'short_desc' => has_excerpt( $item->ID ) ? wp_strip_all_tags( get_the_excerpt( $item->ID ) ) : '',
 					'status'     => $item->post_status,
 					'terms'      => $item_terms,
 					'link'       => add_query_arg( 'cb-location', $post->ID, get_permalink( $item->ID ) ),
 					'thumbnail'  => $thumbnail ?: null,
 					'images'     => $images,
-					'timeframes' => $timeframesData
-				];
+					'timeframes' => $timeframesData,
+				);
 			}
 
 			if ( count( $items ) ) {
-				$locations[ $post->ID ] = [
+				$locations[ $post->ID ] = array(
 					'lat'           => (float) $location_meta['geo_latitude'][0],
 					'lon'           => (float) $location_meta['geo_longitude'][0],
 					'location_name' => $post->post_title,
-					'location_link' => get_permalink($post->ID),
+					'location_link' => get_permalink( $post->ID ),
 					'closed_days'   => unserialize( $closed_days ),
-					'address'       => [
+					'address'       => array(
 						'street' => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_street' ][0],
 						'city'   => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_city' ][0],
 						'zip'    => $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_postcode' ][0],
-					],
+					),
 					'items'         => $items,
-				];
+				);
 
 				if ( $show_location_contact ) {
 					$locations[ $post->ID ]['contact'] = $location_meta[ COMMONSBOOKING_METABOX_PREFIX . 'location_contact' ][0];
 				}
 			}
 
-			//@TODO: Check field -> we don't have such a field at the moment.
-//            if ($show_location_opening_hours) {
-//                $locations[$post->ID]['opening_hours'] = $location_meta['commons-booking_location_openinghours'][0];
-//            }
+			// @TODO: Check field -> we don't have such a field at the moment.
+			// if ($show_location_opening_hours) {
+			// $locations[$post->ID]['opening_hours'] = $location_meta['commons-booking_location_openinghours'][0];
+			// }
 		}
 
 		return $locations;
 	}
 
 	public static function get_cb_items_category_groups( $preset_categories ) {
-		$groups         = [];
+		$groups         = array();
 		$category_terms = Item::getTerms();
 
 		foreach ( $category_terms as $term ) {
 			if ( in_array( $term->term_id, $preset_categories ) ) {
 				if ( ! isset( $groups[ $term->parent ] ) ) {
-					$groups[ $term->parent ] = [];
+					$groups[ $term->parent ] = array();
 				}
 				$groups[ $term->parent ][] = $term->term_id;
-
 			}
 		}
 
@@ -351,8 +348,8 @@ class Map extends CustomPostType {
 	public static function cleanup_location_data_entry( $value, $linebreak_replacement ) {
 
 		if ( is_string( $value ) ) {
-			$value = preg_replace( '/(\r\n)|\n|\r/', $linebreak_replacement, $value ); //replace linebreaks
-			$value = preg_replace( '/<.*(.*?)/', '', $value ); //strip off everything that smell's like HTML
+			$value = preg_replace( '/(\r\n)|\n|\r/', $linebreak_replacement, $value ); // replace linebreaks
+			$value = preg_replace( '/<.*(.*?)/', '', $value ); // strip off everything that smell's like HTML
 		}
 
 		if ( is_array( $value ) ) {
@@ -421,7 +418,7 @@ class Map extends CustomPostType {
 	/**
 	 * @param $text
 	 * @param string $domain
-	 * @param null $default
+	 * @param null   $default
 	 *
 	 * @return mixed
 	 */

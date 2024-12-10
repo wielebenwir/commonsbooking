@@ -22,21 +22,21 @@ class NominatimGeoCodeService implements GeoCodeService {
 	 * @throws \Exception
 	 */
 	public function getAddressData( $addressString ): ?Location {
-		
+
 		// The Nomination service requires the curl extension to be installed
-		if (! function_exists('curl_version')) {
-			throw new \Exception("Could not get address data because of missing curl extension.");
+		if ( ! function_exists( 'curl_version' ) ) {
+			throw new \Exception( 'Could not get address data because of missing curl extension.' );
 		}
 
-		$defaultUserAgent = 'CommonsBooking v.' . COMMONSBOOKING_VERSION . " Contact: mail@commonsbooking.org";
+		$defaultUserAgent = 'CommonsBooking v.' . COMMONSBOOKING_VERSION . ' Contact: mail@commonsbooking.org';
 
 		$client = new Client(
 			null,
 			null,
-			[
+			array(
 				CURLOPT_SSL_VERIFYHOST => 0,
 				CURLOPT_SSL_VERIFYPEER => 0,
-			]
+			)
 		);
 
 		$provider = Nominatim::withOpenStreetMapServer(

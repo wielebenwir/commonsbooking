@@ -6,7 +6,7 @@ class MapSettings {
 
 	const BOOKING_PAGE_LINK_REPLACEMENT_DEFAULT = true;
 
-	const OPTION_KEYS = [ 'booking_page_link_replacement' ];
+	const OPTION_KEYS = array( 'booking_page_link_replacement' );
 
 	public static $options;
 
@@ -20,7 +20,7 @@ class MapSettings {
 	public static function get_option( $key ) {
 		self::load_options();
 
-		return commonsbooking_sanitizeHTML(self::$options[ $key ]);
+		return commonsbooking_sanitizeHTML( self::$options[ $key ] );
 	}
 
 	/**
@@ -63,21 +63,27 @@ class MapSettings {
 	 **/
 	public function prepare_settings() {
 
-		add_action( 'admin_menu', function () {
-			add_options_page(
-				esc_html__( 'Settings for Commons Booking Map', 'commonsbooking' ),
-				esc_html__( 'Commons Booking Map', 'commonsbooking' ),
-				'manage_options',
-				'commonsbooking',
-				array( $this, 'render_settings_page' )
-			);
-		} );
+		add_action(
+			'admin_menu',
+			function () {
+				add_options_page(
+					esc_html__( 'Settings for Commons Booking Map', 'commonsbooking' ),
+					esc_html__( 'Commons Booking Map', 'commonsbooking' ),
+					'manage_options',
+					'commonsbooking',
+					array( $this, 'render_settings_page' )
+				);
+			}
+		);
 
-		add_action( 'admin_init', function () {
-			register_setting( 'cb-map-settings', 'cb_map_options', array( $this, 'validate_options' ) );
-		} );
+		add_action(
+			'admin_init',
+			function () {
+				register_setting( 'cb-map-settings', 'cb_map_options', array( $this, 'validate_options' ) );
+			}
+		);
 
-		add_filter( "plugin_action_links_" . plugin_basename( __FILE__ ), array( $this, 'add_settings_link' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_settings_link' ) );
 	}
 
 	/**
@@ -86,7 +92,7 @@ class MapSettings {
 	public function validate_options( $input = array() ) {
 		self::load_options();
 
-		$validated_input = self::populate_option_defaults( [] );
+		$validated_input = self::populate_option_defaults( array() );
 
 		$validated_input['booking_page_link_replacement'] = isset( $input['booking_page_link_replacement'] );
 
@@ -109,6 +115,6 @@ class MapSettings {
 	public function render_settings_page() {
 		wp_enqueue_style( 'cb_map_admin_css', COMMONSBOOKING_MAP_ASSETS_URL . 'css/cb-map-admin.css' );
 
-		include_once( COMMONSBOOKING_MAP_PATH . 'templates/map-settings-page-template.php' );
+		include_once COMMONSBOOKING_MAP_PATH . 'templates/map-settings-page-template.php';
 	}
 }

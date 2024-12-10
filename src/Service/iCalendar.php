@@ -30,68 +30,78 @@ use DateInterval;
  */
 class iCalendar {
 
-    private ?Calendar $calendar;
+	private ?Calendar $calendar;
 
-	public const URL_SLUG = COMMONSBOOKING_PLUGIN_SLUG . '_ical_download';
-    public const QUERY_USER = COMMONSBOOKING_PLUGIN_SLUG . '_user';
-    public const QUERY_USERHASH = COMMONSBOOKING_PLUGIN_SLUG . '_userhash';
+	public const URL_SLUG       = COMMONSBOOKING_PLUGIN_SLUG . '_ical_download';
+	public const QUERY_USER     = COMMONSBOOKING_PLUGIN_SLUG . '_user';
+	public const QUERY_USERHASH = COMMONSBOOKING_PLUGIN_SLUG . '_userhash';
 
-    public function __construct()
-    {
+	public function __construct() {
 		// Create new calendar instance (eluceo/iCal)
-        $this->calendar = new Calendar();
-    }
+		$this->calendar = new Calendar();
+	}
 
 	/**
 	 * Registers url to download ics file.
-     * Only enabled, when the setting is set in the advanced options
+	 * Only enabled, when the setting is set in the advanced options
+	 *
 	 * @return void
 	 */
 	public static function initRewrite() {
-        if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-            add_action( 'wp_loaded', function (){
-                add_rewrite_rule( self::URL_SLUG, 'index.php?' . self::URL_SLUG. '=1', 'top' );
-            } );
+		if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on' ) {
+			add_action(
+				'wp_loaded',
+				function () {
+					add_rewrite_rule( self::URL_SLUG, 'index.php?' . self::URL_SLUG . '=1', 'top' );
+				}
+			);
 
-            add_filter( 'query_vars', function ( $query_vars ){
-                $query_vars[] =  self::URL_SLUG;
-                return $query_vars;
-            } );
+			add_filter(
+				'query_vars',
+				function ( $query_vars ) {
+					$query_vars[] = self::URL_SLUG;
+					return $query_vars;
+				}
+			);
 
-            add_action( 'parse_request', function( &$wp ){
+			add_action(
+				'parse_request',
+				function ( &$wp ) {
 
-                if (!array_key_exists(  self::URL_SLUG, $wp->query_vars ) ) {
-                    return;
-                }
-                self::getICSDownload();
-            });
-        }
+					if ( ! array_key_exists( self::URL_SLUG, $wp->query_vars ) ) {
+						return;
+					}
+					self::getICSDownload();
+				}
+			);
+		}
 	}
 
-    /**
-     * Returns a valid link to retrieve iCalendar data for the current user,
-     * for this it takes the user id and hashes it using the wp_hash algorithm.
-     * This should be relatively secure, since the hash is salted.
-     * Returns false when user is not logged in
-     *
-     * @return string | bool - false when user is not logged in
-     */
-    public static function getCurrentUserCalendarLink() {
-        if (!is_user_logged_in()) { return false;}
+	/**
+	 * Returns a valid link to retrieve iCalendar data for the current user,
+	 * for this it takes the user id and hashes it using the wp_hash algorithm.
+	 * This should be relatively secure, since the hash is salted.
+	 * Returns false when user is not logged in
+	 *
+	 * @return string | bool - false when user is not logged in
+	 */
+	public static function getCurrentUserCalendarLink() {
+		if ( ! is_user_logged_in() ) {
+			return false;}
 
-        $user_id = wp_get_current_user()->ID;
-        $user_hash = wp_hash($user_id);
-        $script_location = get_site_url() . '/';
+		$user_id         = wp_get_current_user()->ID;
+		$user_hash       = wp_hash( $user_id );
+		$script_location = get_site_url() . '/';
 
-        return add_query_arg(
-            array(
-                self::QUERY_USER => $user_id,
-                self::QUERY_USERHASH => $user_hash,
-                self::URL_SLUG => true
-            ),
-            $script_location
-        );
-    }
+		return add_query_arg(
+			array(
+				self::QUERY_USER => $user_id,
+				self::QUERY_USERHASH => $user_hash,
+				self::URL_SLUG => true,
+			),
+			$script_location
+		);
+	}
 
 	/**
 	 * Get the ics file for an existing booking. Will be called, when the "Add to Calendar" button on the booking page is pressed
@@ -104,12 +114,12 @@ class iCalendar {
 	public static function downloadICS( $bookingID ): void {
 		$postID           = $bookingID;
 		$booking          = new Booking( $postID );
-		$template_objects = [
+		$template_objects = array(
 			'booking'  => $booking,
 			'item'     => $booking->getItem(),
 			'location' => $booking->getLocation(),
 			'user'     => $booking->getUserData(),
-		];
+		);
 
 		$eventTitle       = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 		$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
@@ -128,101 +138,98 @@ class iCalendar {
 	 * The title and description for the iCalendar, that can be set by the user in the options, will be used as the title and description of the event.
 	 *
 	 * @param Booking $booking - The booking to add to the calendar
-	 * @param String $eventTitle - The title of the event in the ics calendar
-	 * @param String $eventDescription - The description of the event in the ics calendar
+	 * @param String  $eventTitle - The title of the event in the ics calendar
+	 * @param String  $eventDescription - The description of the event in the ics calendar
 	 *
 	 * @throws \Exception
 	 */
-    public function addBookingEvent(
-        Booking $booking,
-        String $eventTitle,
-        String $eventDescription)
-        {
-			$eventDescription = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $eventDescription); //remove empty lines from the description, they are not part of the standard
+	public function addBookingEvent(
+		Booking $booking,
+		string $eventTitle,
+		string $eventDescription
+	) {
+			$eventDescription = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $eventDescription ); // remove empty lines from the description, they are not part of the standard
 
-            $bookingLocation = $booking->getLocation();
-            $bookingLocation_latitude = $bookingLocation->getMeta( 'geo_latitude' );
-            $bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
+			$bookingLocation           = $booking->getLocation();
+			$bookingLocation_latitude  = $bookingLocation->getMeta( 'geo_latitude' );
+			$bookingLocation_longitude = $bookingLocation->getMeta( 'geo_longitude' );
 
-            //create immutable DateTime objects from Mutable (recommended by iCal library developer)
-            $booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCStartDateDateTime() );
-            $booking_endDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCEndDateDateTime() );
+			// create immutable DateTime objects from Mutable (recommended by iCal library developer)
+			$booking_startDateDateTime = DateTimeImmutable::createFromMutable( $booking->getUTCStartDateDateTime() );
+			$booking_endDateDateTime   = DateTimeImmutable::createFromMutable( $booking->getUTCEndDateDateTime() );
 
-            // Create timezone entity
-	        $php_date_time_zone = wp_timezone();
-			//will only get timezone object if current timezone has transitions that can be fetched
-			if ($php_date_time_zone->getTransitions()){
-				$timezone           = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
-					$php_date_time_zone,
-					$booking_startDateDateTime,
-					$booking_endDateDateTime
-				);
-				if (empty($this->calendar->getTimeZones())){
-					$this->calendar->addTimeZone($timezone);
-				}
+			// Create timezone entity
+			$php_date_time_zone = wp_timezone();
+			// will only get timezone object if current timezone has transitions that can be fetched
+		if ( $php_date_time_zone->getTransitions() ) {
+			$timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
+				$php_date_time_zone,
+				$booking_startDateDateTime,
+				$booking_endDateDateTime
+			);
+			if ( empty( $this->calendar->getTimeZones() ) ) {
+				$this->calendar->addTimeZone( $timezone );
 			}
+		}
 
-            //Create event occurrence
-            if ($booking->isFullDay()){
-                if ($booking_startDateDateTime->format('Y-m-d') == $booking_endDateDateTime->format('Y-m-d') ) { //is single day event
-                    $occurrence = new SingleDay(
-                        new Date( $booking_startDateDateTime )
-                    );
-                }
-                else { //is multi day event
-                    $occurrence = new MultiDay(
-                        new Date( $booking_startDateDateTime ),
-                        new Date( $booking_endDateDateTime )
-                    );
-                }
-            }
-            else { //is timespan
+			// Create event occurrence
+		if ( $booking->isFullDay() ) {
+			if ( $booking_startDateDateTime->format( 'Y-m-d' ) == $booking_endDateDateTime->format( 'Y-m-d' ) ) { // is single day event
+				$occurrence = new SingleDay(
+					new Date( $booking_startDateDateTime )
+				);
+			} else { // is multi day event
+				$occurrence = new MultiDay(
+					new Date( $booking_startDateDateTime ),
+					new Date( $booking_endDateDateTime )
+				);
+			}
+		} else { // is timespan
 
-                //add one minute to EndDate (this minute was removed to prevent overlapping but would confuse users)
-                $booking_endDateDateTime     = $booking_endDateDateTime->add(new DateInterval('PT1M'));
+			// add one minute to EndDate (this minute was removed to prevent overlapping but would confuse users)
+			$booking_endDateDateTime = $booking_endDateDateTime->add( new DateInterval( 'PT1M' ) );
 
-                $occurrence = new TimeSpan(
-                        new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_startDateDateTime, true),
-                        new \Eluceo\iCal\Domain\ValueObject\DateTime($booking_endDateDateTime, true)
-                );
-            }
+			$occurrence = new TimeSpan(
+				new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_startDateDateTime, true ),
+				new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_endDateDateTime, true )
+			);
+		}
 
 			$eventStatus = EventStatus::CONFIRMED();
-			if ($booking->isCancelled()) {
-				$eventStatus = EventStatus::CANCELLED();
-			}
+		if ( $booking->isCancelled() ) {
+			$eventStatus = EventStatus::CANCELLED();
+		}
 
 			// Create unique identifier
 
-			$uniqueIdentifier = new UniqueIdentifier($booking->post_name);
-            // Create Event domain entity.
-            $event = new Event($uniqueIdentifier);
-            $event
-                ->setSummary($eventTitle)
-                ->setDescription($eventDescription)
-                ->setOccurrence($occurrence)
-	            ->setStatus($eventStatus)
-	            ->touch(new Timestamp())
-                ;
+			$uniqueIdentifier = new UniqueIdentifier( $booking->post_name );
+			// Create Event domain entity.
+			$event = new Event( $uniqueIdentifier );
+			$event
+				->setSummary( $eventTitle )
+				->setDescription( $eventDescription )
+				->setOccurrence( $occurrence )
+				->setStatus( $eventStatus )
+				->touch( new Timestamp() );
 
-			//Add location to domain entity
+			// Add location to domain entity
 
-	        $location_address = $bookingLocation->formattedAddressOneLine();
-			if (!empty($location_address)){
-				$event->setLocation(
-					(
-					new Location( $location_address, $bookingLocation->post_title))
-						->withGeographicPosition(
-							new GeographicPosition(
-								floatval( $bookingLocation_latitude ),
-								floatval( $bookingLocation_longitude )
-							)
+			$location_address = $bookingLocation->formattedAddressOneLine();
+		if ( ! empty( $location_address ) ) {
+			$event->setLocation(
+				(
+				new Location( $location_address, $bookingLocation->post_title ) )
+					->withGeographicPosition(
+						new GeographicPosition(
+							floatval( $bookingLocation_latitude ),
+							floatval( $bookingLocation_longitude )
 						)
-				);
-			}
+					)
+			);
+		}
 
-            $this->calendar->addEvent($event);
-        }
+			$this->calendar->addEvent( $event );
+	}
 
 	/**
 	 * Will get the string representation of the current calendar.
@@ -230,29 +237,30 @@ class iCalendar {
 	 *
 	 * @return String - The string representation of the calendar
 	 */
-    public function getCalendarData (): String {
-        // Transform domain entity into an iCalendar component
-		$componentFactory = new CalendarFactory();
-		$calendarComponent = $componentFactory->createCalendar($this->calendar);
+	public function getCalendarData(): string {
+		// Transform domain entity into an iCalendar component
+		$componentFactory  = new CalendarFactory();
+		$calendarComponent = $componentFactory->createCalendar( $this->calendar );
 
 		return $calendarComponent->__toString();
-    }
+	}
 
 	/**
 	 * Adds a generic event to Calendar
 	 *
 	 * @param array|DateTimeImmutable $eventDate
-	 * @param string $eventTitle
-	 * @param string $eventDescription
-	 * @param bool $isTimeSpan
+	 * @param string                  $eventTitle
+	 * @param string                  $eventDescription
+	 * @param bool                    $isTimeSpan
 	 *
 	 * @return Event|false
 	 */
 	public function addEvent(
 		$eventDate,
-		String $eventTitle,
-		String $eventDescription,
-		bool $isTimeSpan=false):Event {
+		string $eventTitle,
+		string $eventDescription,
+		bool $isTimeSpan = false
+	): Event {
 
 		if ( is_array( $eventDate ) ) {
 			if ( count( $eventDate ) < 2 || ! ( $eventDate[0] instanceof DateTimeImmutable ) || ! ( $eventDate[1] instanceof DateTimeImmutable ) || $eventDate[0] > $eventDate[1] ) {
@@ -276,7 +284,6 @@ class iCalendar {
 			->setDescription( $eventDescription )
 			->setOccurrence( $occurence );
 
-
 		$this->calendar->addEvent( $event );
 
 		return $event;
@@ -296,33 +303,25 @@ class iCalendar {
 	 */
 	public static function getICSDownload() {
 
-		$user_id = intval($_GET[self::QUERY_USER]);
-		$user_hash = strval($_GET[self::QUERY_USERHASH]);
+		$user_id   = intval( $_GET[ self::QUERY_USER ] );
+		$user_hash = strval( $_GET[ self::QUERY_USERHASH ] );
 
-		if (commonsbooking_isUIDHashComboCorrect($user_id,$user_hash)){
-
-			$bookingiCal = \CommonsBooking\View\Booking::getBookingListiCal($user_id);
-			if ($bookingiCal) {
-				header('Content-Type: text/calendar; charset=utf-8');
-				header('Content-Disposition: attachment; filename="ical.ics"');
+		if ( commonsbooking_isUIDHashComboCorrect( $user_id, $user_hash ) ) {
+			$bookingiCal = \CommonsBooking\View\Booking::getBookingListiCal( $user_id );
+			if ( $bookingiCal ) {
+				header( 'Content-Type: text/calendar; charset=utf-8' );
+				header( 'Content-Disposition: attachment; filename="ical.ics"' );
 				echo $bookingiCal;
-                die();
+				die();
+			} else {
+				die( 'Error in retrieving booking list.' );
 			}
-			else {
-				die("Error in retrieving booking list.");
-			}
-
-		}
-		else {
-			if (!$user_id){
-				die("user id missing");
-			}
-			elseif (!$user_hash){
-				die("user hash missing");
-			}
-			else {
-				die("user_id and user_hash mismatch. Authentication failed.");
-			}
+		} elseif ( ! $user_id ) {
+				die( 'user id missing' );
+		} elseif ( ! $user_hash ) {
+			die( 'user hash missing' );
+		} else {
+			die( 'user_id and user_hash mismatch. Authentication failed.' );
 		}
 	}
 }
