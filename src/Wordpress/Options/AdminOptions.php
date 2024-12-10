@@ -20,7 +20,7 @@ class AdminOptions {
 	 */
 	public static function setOptionsDefaultValues() {
 
-		$options_array   = include( COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php' );
+		$options_array   = include COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php';
 		$restored_fields = array();
 
 		foreach ( $options_array as $tab_id => $tab ) {
@@ -31,7 +31,6 @@ class AdminOptions {
 				$fields = $group['fields'];
 
 				foreach ( $fields as $field ) {
-
 					$field_id = $field['id'];
 
 					// set to current value from wp_options
@@ -40,7 +39,7 @@ class AdminOptions {
 					// we check if there is a default value set in OptionsArray.php and if the field type is not checkbox (cause checkboxes have empty values if unchecked )
 					if ( array_key_exists( 'default', $field ) && $field['type'] != 'checkbox' ) {
 						// if field-value is not set already we add the default value to the options array
-						if ( empty ( $field_value ) ) {
+						if ( empty( $field_value ) ) {
 							Settings::updateOption( $option_key, $field_id, $field['default'] );
 							$restored_fields[] = $field['name'];
 						}
@@ -50,9 +49,9 @@ class AdminOptions {
 		}
 
 		// maybe show admin notice if fields are restored to their default value
-		if ( ! empty($restored_fields) ) {
-			$message = commonsbooking_sanitizeHTML( __( '<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) );
-			$message .= implode( "<br> ", $restored_fields );
+		if ( ! empty( $restored_fields ) ) {
+			$message  = commonsbooking_sanitizeHTML( __( '<strong>Default values for following fields automatically set or restored, because they were empty:</strong><br> ', 'commonsbooking' ) );
+			$message .= implode( '<br> ', $restored_fields );
 			new AdminMessage( $message );
 		}
 	}

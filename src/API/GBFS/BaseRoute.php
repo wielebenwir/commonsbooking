@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\API\GBFS;
 
-
 use CommonsBooking\Repository\Location;
 use Exception;
 use stdClass;
@@ -30,9 +29,9 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		$data                 = new stdClass();
 		$data->data           = new stdClass();
 		$data->data->stations = $this->getItemData( $request );
-		$data->last_updated   = current_time('timestamp', true);
+		$data->last_updated   = time();
 		$data->ttl            = 60;
-		$data->version        = "2.3";
+		$data->version        = '2.3';
 
 		if ( WP_DEBUG ) {
 			$this->validateData( $data );
@@ -49,7 +48,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	 * @return array
 	 */
 	public function getItemData( $request ): array {
-		$data      = [];
+		$data      = array();
 		$locations = Location::get();
 
 		foreach ( $locations as $location ) {
@@ -65,5 +64,4 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 
 		return $data;
 	}
-
 }

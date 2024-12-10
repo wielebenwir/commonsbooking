@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\View;
 
-
 use CommonsBooking\CB\CB;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
@@ -31,16 +30,16 @@ class Booking extends View {
 	}
 
 	/**
-	 * @param int $postsPerPage
+	 * @param int           $postsPerPage
 	 * @param \WP_User|null $user
 	 *
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData( int $postsPerPage = 6, \WP_User $user = null) {
+	public static function getBookingListData( int $postsPerPage = 6, \WP_User $user = null ) {
 
-		//sets selected user to current user when no specific user is passed
-		if ($user == null) {
+		// sets selected user to current user when no specific user is passed
+		if ( $user == null ) {
 			$user = wp_get_current_user();
 		}
 
@@ -74,14 +73,14 @@ class Booking extends View {
 			$startDateDefined = true;
 		}
 
-		$filters = [
+		$filters = array(
 			'location'  => false,
 			'item'      => false,
 			'user'      => false,
 			'startDate' => time(),
 			'endDate'   => false,
-			'status'    => false
-		];
+			'status'    => false,
+		);
 
 		foreach ( $filters as $key => $value ) {
 			if ( array_key_exists( $key, $_POST ) ) {
@@ -100,15 +99,15 @@ class Booking extends View {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$bookingDataArray             = [];
+			$bookingDataArray             = array();
 			$bookingDataArray['page']     = $page;
 			$bookingDataArray['per_page'] = $postsPerPage;
-			$bookingDataArray['filters']  = [
-				'user'     => [],
-				'item'     => [],
-				'location' => [],
-				'status'   => []
-			];
+			$bookingDataArray['filters']  = array(
+				'user'     => array(),
+				'item'     => array(),
+				'location' => array(),
+				'status'   => array(),
+			);
 
 			$posts = \CommonsBooking\Repository\Booking::getForUser(
 				$user,
@@ -120,10 +119,10 @@ class Booking extends View {
 				// Because upon initial load the form stays empty when we just have bookings in the past
 				// With an empty form, the user can't change the start date so we look for bookings in the past
 				if ( ! $startDateDefined ) {
-					//Don't fetch all bookings so that admins are not overwhelmed with all bookings of all time
-					for ( $year = 1; $year <= 3; $year++) {
+					// Don't fetch all bookings so that admins are not overwhelmed with all bookings of all time
+					for ( $year = 1; $year <= 3; $year++ ) {
 						$currentTime = strtotime( '-' . $year . ' year' );
-						$posts     = \CommonsBooking\Repository\Booking::getForUser(
+						$posts       = \CommonsBooking\Repository\Booking::getForUser(
 							$user,
 							true,
 							$currentTime
@@ -136,8 +135,7 @@ class Booking extends View {
 					if ( ! $posts ) {
 						return false;
 					}
-				}
-				else {
+				} else {
 					return false;
 				}
 			}
@@ -153,17 +151,16 @@ class Booking extends View {
 				$editLink = get_permalink( $booking->ID );
 
 				$actions = '<a class="cb-button small" href="' . $editLink . '">' .
-				           commonsbooking_sanitizeHTML( __( 'Details', 'commonsbooking' ) ) .
-				           '</a>';
+							commonsbooking_sanitizeHTML( __( 'Details', 'commonsbooking' ) ) .
+							'</a>';
 
 				$menuitems = '';
 
-				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on'){
-					$menuitems .= 	'<div id="icallink_text" title="'. commonsbooking_sanitizeHTML( __('Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file.','commonsbooking')) .'">' .
-										commonsbooking_sanitizeHTML( __('iCalendar Link:', 'commonsbooking')) .
+				if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'feed_enabled' ) == 'on' ) {
+					$menuitems .= '<div id="icallink_text" title="' . commonsbooking_sanitizeHTML( __( 'Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file.', 'commonsbooking' ) ) . '">' .
+										commonsbooking_sanitizeHTML( __( 'iCalendar Link:', 'commonsbooking' ) ) .
 									'</div>' .
-									'<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>'
-									;
+									'<input type="text" id="icallink" value="' . iCalendar::getCurrentUserCalendarLink() . '" readonly>';
 				}
 
 				$item          = $booking->getItem();
@@ -172,56 +169,54 @@ class Booking extends View {
 				$locationTitle = $location ? $booking->getLocation()->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
 
 				// Prepare row data
-				$rowData = [
-					"postID"			 => $booking->ID,
-					"startDate"          => $booking->getStartDate(),
-					"endDate"            => $booking->getEndDate(),
-					"startDateFormatted" => date( 'd.m.Y H:i', $booking->getStartDate() ),
-					"endDateFormatted"   => date( 'd.m.Y H:i', $booking->getEndDate() ),
-					"item"               => $itemTitle,
-					"location"           => $locationTitle,
-					"locationAddr"		 => $location->formattedAddressOneLine(),
-					"locationLat"		 => $location->getMeta( 'geo_latitude' ),
-					"locationLong"		 => $location->getMeta( 'geo_longitude' ),
-					"bookingDate"        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
-					"user"               => $userInfo->user_login,
-					"status"             => $booking->post_status,
-					"fullDay"			 => $booking->getMeta( 'full-day' ),
-					"calendarLink"       => $item && $location ? add_query_arg( 'cb-item', $item->ID, get_permalink( $location->ID ) ) : '',
-					"content"            => [
-						'user'   => [
+				$rowData = array(
+					'postID'             => $booking->ID,
+					'startDate'          => $booking->getStartDate(),
+					'endDate'            => $booking->getEndDate(),
+					'startDateFormatted' => date( 'd.m.Y H:i', $booking->getStartDate() ),
+					'endDateFormatted'   => date( 'd.m.Y H:i', $booking->getEndDate() ),
+					'item'               => $itemTitle,
+					'location'           => $locationTitle,
+					'locationAddr'       => $location->formattedAddressOneLine(),
+					'locationLat'        => $location->getMeta( 'geo_latitude' ),
+					'locationLong'       => $location->getMeta( 'geo_longitude' ),
+					'bookingDate'        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
+					'user'               => $userInfo->user_login,
+					'status'             => $booking->post_status,
+					'fullDay'            => $booking->getMeta( 'full-day' ),
+					'calendarLink'       => $item && $location ? add_query_arg( 'cb-item', $item->ID, get_permalink( $location->ID ) ) : '',
+					'content'            => array(
+						'user'   => array(
 							'label' => commonsbooking_sanitizeHTML( __( 'User', 'commonsbooking' ) ),
-							'value' => '<a href="' . get_author_posts_url($booking->post_author) . '">' .  $userInfo->first_name . ' ' . $userInfo->last_name . ' (' . $userInfo->user_login . ') </a>',
-						],
-						'status' => [
+							'value' => '<a href="' . get_author_posts_url( $booking->post_author ) . '">' . $userInfo->first_name . ' ' . $userInfo->last_name . ' (' . $userInfo->user_login . ') </a>',
+						),
+						'status' => array(
 							'label' => commonsbooking_sanitizeHTML( __( 'Status', 'commonsbooking' ) ),
 							'value' => commonsbooking_sanitizeHTML( __( $booking->post_status, 'commonsbooking' ) ),
-						]
-					]
-				];
+						),
+					),
+				);
 
 				// Add booking code if there is one
 				if ( $booking->getBookingCode() ) {
-					$rowData['bookingCode'] = [
+					$rowData['bookingCode'] = array(
 						'label' => commonsbooking_sanitizeHTML( __( 'Code', 'commonsbooking' ) ),
-						'value' => $booking->getBookingCode()
-					];
+						'value' => $booking->getBookingCode(),
+					);
 				}
 
 				$continue = false;
 				foreach ( $filters as $key => $value ) {
 					if ( $value ) {
-						if ( ! in_array( $key, [ 'startDate', 'endDate' ] ) ) {
+						if ( ! in_array( $key, array( 'startDate', 'endDate' ) ) ) {
 							if ( $rowData[ $key ] != $value ) {
 								$continue = true;
 							}
-						} else {
-							if (
+						} elseif (
 								( $key == 'startDate' && $value > intval( $booking->getEndDate() ) ) ||
 								( $key == 'endDate' && $value < intval( $booking->getStartDate() ) )
 							) {
 								$continue = true;
-							}
 						}
 					}
 				}
@@ -236,14 +231,14 @@ class Booking extends View {
 				// If search term was submitted, filter for it.
 				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
 					$rowData['actions']         = $actions;
-					$bookingDataArray['data'][] = apply_filters('commonsbooking_booking_filter', $rowData, $booking);
+					$bookingDataArray['data'][] = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
 				}
 			}
 
 			$bookingDataArray['total']       = 0;
 			$bookingDataArray['total_pages'] = 0;
 
-			if (!empty($menuitems)) {
+			if ( ! empty( $menuitems ) ) {
 				$bookingDataArray['menu'] = ' <div class="cb-dropdown" style="float:right;"> <div id="cb-bookingdropbtn" class="cb-dropbtn"></div> <div class="cb-dropdown-content">' . $menuitems . '</div> </div>';
 			}
 
@@ -278,11 +273,11 @@ class Booking extends View {
 				$offset = ( $page - 1 ) * $postsPerPage;
 
 				foreach ( $bookingDataArray['data'] as $key => $post ) {
-					if ( $offset > $index ++ ) {
+					if ( $offset > $index++ ) {
 						unset( $bookingDataArray['data'][ $key ] );
 						continue;
 					}
-					if ( $postsPerPage && $postsPerPage <= $pageCounter ++ ) {
+					if ( $postsPerPage && $postsPerPage <= $pageCounter++ ) {
 						unset( $bookingDataArray['data'][ $key ] );
 					}
 				}
@@ -291,7 +286,7 @@ class Booking extends View {
 
 			Plugin::setCacheItem(
 				$bookingDataArray,
-				Wordpress::getTags($posts),
+				Wordpress::getTags( $posts ),
 				$customId
 			);
 
@@ -303,49 +298,53 @@ class Booking extends View {
 	 * The function that processes the AJAX request to get a corresponding location for an item.
 	 *
 	 * Test @see \CommonsBooking\Tests\View\BookingTest_AJAX_TEST::testGetLocationForItem_AJAX()
+	 *
 	 * @return void
 	 */
 	public static function getLocationForItem_AJAX() {
-		//verify nonce
+		// verify nonce
 		check_ajax_referer( 'cb_get_bookable_location', 'nonce' );
 
 		$postData = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
 		$postData = commonsbooking_sanitizeArrayorString( $postData );
-		$itemID = intval ($postData['itemID']);
+		$itemID   = intval( $postData['itemID'] );
 
 		try {
-			$itemModel = new \CommonsBooking\Model\Item($itemID);
-			$location = \CommonsBooking\Repository\Location::getByItem($itemID, true);
-			//pick the first location, no matter what
-			$location = reset($location);
+			$itemModel = new \CommonsBooking\Model\Item( $itemID );
+			$location  = \CommonsBooking\Repository\Location::getByItem( $itemID, true );
+			// pick the first location, no matter what
+			$location  = reset( $location );
 			$timeframe = Timeframe::getBookable(
-				[ $location->ID ],
-				[ $itemID ],
+				array( $location->ID ),
+				array( $itemID ),
 				null,
 				true
 			);
 			/** @var \CommonsBooking\Model\Timeframe $timeframe */
-			$timeframe = reset($timeframe);
-		}
-		catch (Exception $e) {
-			//This won't be displayed anywhere
-			wp_send_json_error( array(
-				'message' => $e->getMessage()
-			) );
-		}
-		if ($location) {
-			wp_send_json( array(
-				'success'     => true,
-				'locationID'  => $location->ID,
-				'fullDay'     => $timeframe->isFullDay()
+			$timeframe = reset( $timeframe );
+		} catch ( Exception $e ) {
+			// This won't be displayed anywhere
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
 				)
 			);
 		}
-		else {
-			//This won't be displayed anywhere
-			wp_send_json_error( array(
-				'message' => 'No location found for this item.'
-			) );
+		if ( $location ) {
+			wp_send_json(
+				array(
+					'success'     => true,
+					'locationID'  => $location->ID,
+					'fullDay'     => $timeframe->isFullDay(),
+				)
+			);
+		} else {
+			// This won't be displayed anywhere
+			wp_send_json_error(
+				array(
+					'message' => 'No location found for this item.',
+				)
+			);
 		}
 	}
 
@@ -353,50 +352,54 @@ class Booking extends View {
 	 * The function that processes the AJAX request to get a valid booking code for
 	 *
 	 * Test @see \CommonsBooking\Tests\View\BookingTest_AJAX_TEST::testGetBookingCode_AJAX()
+	 *
 	 * @return void
 	 */
 	public static function getBookingCode_AJAX() {
-		//verify nonce
+		// verify nonce
 		check_ajax_referer( 'cb_get_booking_code', 'nonce' );
 
-		$postData = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
-		$postData = commonsbooking_sanitizeArrayorString( $postData );
-		$itemID = intval ($postData['itemID']);
-		$locationID = intval ($postData['locationID']);
-		$startDate = $postData['startDate'];
+		$postData   = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$postData   = commonsbooking_sanitizeArrayorString( $postData );
+		$itemID     = intval( $postData['itemID'] );
+		$locationID = intval( $postData['locationID'] );
+		$startDate  = $postData['startDate'];
 
 		$bookingCode = '';
 
-		//get the corresponding bookable timeframe if this booking was made
+		// get the corresponding bookable timeframe if this booking was made
 		try {
 			$timeframe = Timeframe::getBookable(
-				[ $locationID ],
-				[ $itemID ],
+				array( $locationID ),
+				array( $itemID ),
 				date( CB::getInternalDateFormat(), strtotime( $startDate ) ),
 				true
 			);
-			if ( ! $timeframe || count($timeframe) != 1 ) {
-				//this is immediately caught again
+			if ( ! $timeframe || count( $timeframe ) != 1 ) {
+				// this is immediately caught again
 				throw new Exception( 'No bookable timeframe found for this booking.' );
 			}
-			$timeframe = reset($timeframe);
+			$timeframe = reset( $timeframe );
 
-			//get the booking code
-			$bookingCode = \CommonsBooking\Repository\BookingCodes::getCode($timeframe, $itemID, $locationID, date('Y-m-d', strtotime($startDate)));
+			// get the booking code
+			$bookingCode = \CommonsBooking\Repository\BookingCodes::getCode( $timeframe, $itemID, $locationID, date( 'Y-m-d', strtotime( $startDate ) ) );
 			if ( ! $bookingCode ) {
-				//this is immediately caught again
+				// this is immediately caught again
 				throw new Exception( 'No booking code found for this booking.' );
 			}
 			$bookingCode = $bookingCode->getCode();
 		} catch ( Exception $e ) {
-			//This won't be displayed anywhere
-			wp_send_json_error( array(
-				'message' => $e->getMessage()
-			) );
+			// This won't be displayed anywhere
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
 		}
-		wp_send_json( array(
-			'success' => true,
-			'bookingCode'                 => $bookingCode
+		wp_send_json(
+			array(
+				'success' => true,
+				'bookingCode'                 => $bookingCode,
 			)
 		);
 	}
@@ -413,7 +416,7 @@ class Booking extends View {
 	 */
 	public static function shortcode( $atts ) {
 		global $templateData;
-		$templateData = [];
+		$templateData = array();
 		$templateData = self::getBookingListData();
 
 		ob_start();
@@ -431,14 +434,14 @@ class Booking extends View {
 	 * @return string
 	 */
 	public static function getError(): string {
-		$errorTypes = [
-			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id()
-		];
-		$message = '';
+		$errorTypes = array(
+			\CommonsBooking\Wordpress\CustomPostType\Booking::ERROR_TYPE . '-' . get_current_user_id(),
+		);
+		$message    = '';
 
 		foreach ( $errorTypes as $errorType ) {
 			if ( $error = get_transient( $errorType ) ) {
-				$class = 'cb-notice error';
+				$class   = 'cb-notice error';
 				$message = sprintf(
 					'<div class="%1$s"><p>%2$s</p></div>',
 					esc_attr( $class ),
@@ -447,16 +450,15 @@ class Booking extends View {
 				delete_transient( $errorType );
 			}
 		}
-		if ($message) {
+		if ( $message ) {
 			return '<div class="cb-wrapper">' . $message . '</div>';
-		}
-		else {
+		} else {
 			return '';
 		}
 	}
 
-  /**
-   * Will get the booking list as an iCalendar string for the specified user.
+	/**
+	 * Will get the booking list as an iCalendar string for the specified user.
 	 * This means, that this will include all the bookings the user has access to (e.g. bookings of his own items) and
 	 * bookings for items/locations that CB-Managers have access to.
 	 *
@@ -467,47 +469,44 @@ class Booking extends View {
 	 * @return String
 	 * @throws Exception
 	 */
-	public static function getBookingListiCal($user = null):String{
-		$eventTitle_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+	public static function getBookingListiCal( $user = null ): string {
+		$eventTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
-		$user = get_user_by('id', $user);
+		$user = get_user_by( 'id', $user );
 
-		if (!$user){
+		if ( ! $user ) {
 			return false;
 		}
 
-		$bookingList = self::getBookingListData(999,$user);
+		$bookingList = self::getBookingListData( 999, $user );
 
-		//returns false when booking list is empty
-		if (!$bookingList){
-
+		// returns false when booking list is empty
+		if ( ! $bookingList ) {
 			return false;
 		}
 
-		$calendar = New iCalendar();
+		$calendar = new iCalendar();
 
-		foreach ($bookingList["data"] as $booking)
-		{
-			$booking_model = New \CommonsBooking\Model\Booking($booking["postID"]);
-			if (! $booking_model->isConfirmed() ) {
+		foreach ( $bookingList['data'] as $booking ) {
+			$booking_model = new \CommonsBooking\Model\Booking( $booking['postID'] );
+			if ( ! $booking_model->isConfirmed() ) {
 				continue;
 			}
-			$template_objects = [
+			$template_objects = array(
 				'booking'  => $booking_model,
 				'item'     => $booking_model->getItem(),
 				'location' => $booking_model->getLocation(),
 				'user'     => $booking_model->getUserData(),
-			];
+			);
 
-			$eventTitle = commonsbooking_sanitizeHTML ( commonsbooking_parse_template ( $eventTitle_unparsed, $template_objects ) );
-			$eventDescription = commonsbooking_sanitizeHTML ( strip_tags ( commonsbooking_parse_template ( $eventDescription_unparsed, $template_objects ) ) );
+			$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle_unparsed, $template_objects ) );
+			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription_unparsed, $template_objects ) ) );
 
-			$calendar->addBookingEvent($booking_model,$eventTitle,$eventDescription);
+			$calendar->addBookingEvent( $booking_model, $eventTitle, $eventDescription );
 		}
 
 		return $calendar->getCalendarData();
-
 	}
 
 	/**
@@ -522,28 +521,27 @@ class Booking extends View {
 		$desc   = $field->args( 'desc' );
 		$postId = $field->object_id();
 
-		//don't render button if we are editing an existing booking
+		// don't render button if we are editing an existing booking
 		$postStatus = get_post( $postId )->post_status;
-		if ( $postId && ! ( $postStatus == 'auto-draft' || $postStatus == 'draft')) {
+		if ( $postId && ! ( $postStatus == 'auto-draft' || $postStatus == 'draft' ) ) {
 			return;
 		}
 
 		?>
 		<div class="cmb-row cmb-type-text">
 			<div class="cmb-th">
-				<label for="<?php echo esc_attr($id); ?>"><?php echo commonsbooking_sanitizeHTML($label); ?></label>
+				<label for="<?php echo esc_attr( $id ); ?>"><?php echo commonsbooking_sanitizeHTML( $label ); ?></label>
 			</div>
 			<div class="cmb-td">
-				<input type="submit" name="<?php echo esc_attr($id); ?>" id="cb-submit-booking"
-				       value="<?php echo esc_html__( 'Submit booking', 'commonsbooking' ); ?>"/>
+				<input type="submit" name="<?php echo esc_attr( $id ); ?>" id="cb-submit-booking"
+						value="<?php echo esc_html__( 'Submit booking', 'commonsbooking' ); ?>"/>
 				<?php if ( $desc ) { ?>
 					<p class="cmb2-metabox-description">
-						<?php echo commonsbooking_sanitizeHTML($desc); ?>
+						<?php echo commonsbooking_sanitizeHTML( $desc ); ?>
 					</p>
 				<?php } ?>
 			</div>
 		</div>
 		<?php
 	}
-
 }

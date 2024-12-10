@@ -12,7 +12,7 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 	 *
 	 * @param string $slug
 	 * @param string $name
-	 * @param bool $include
+	 * @param bool   $include
 	 * @param string $before
 	 * @param string $after
 	 *
@@ -37,7 +37,7 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 				if ( file_exists( $path . "{$slug}.php" ) ) {
 					$template = $path . "{$slug}.php";
 				}
-			} else if ( file_exists( $path . "{$slug}-{$name}.php" ) ) {
+			} elseif ( file_exists( $path . "{$slug}-{$name}.php" ) ) {
 				$template = $path . "{$slug}-{$name}.php";
 			}
 		}
@@ -50,13 +50,13 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 		// Allow 3rd party plugin filter template file from their plugin
 		$template = apply_filters( 'commonsbooking_get_template_part', $template, $slug, $name, $plugin_slug );
 
-		$has_post_thumbnail = ( has_post_thumbnail() ) ? 'has-post-thumbnail' : 'no-post-thumbnail'; //@TODO this feils because we have no global post anymore
+		$has_post_thumbnail = ( has_post_thumbnail() ) ? 'has-post-thumbnail' : 'no-post-thumbnail'; // @TODO this feils because we have no global post anymore
 
 		$template_classes = array(
 			'cb-' . $slug . '-' . $name,
 			'template-' . basename( $template, '.php' ),
-			'post-' . get_post_type(), //@TODO: this returns "page", not the type (e.g. "item") that is queried.
-			$has_post_thumbnail
+			'post-' . get_post_type(), // @TODO: this returns "page", not the type (e.g. "item") that is queried.
+			$has_post_thumbnail,
 		);
 
 		$css_classes = implode( ' ', $template_classes );
@@ -67,7 +67,7 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 
 		// Display debug message
 		if ( WP_DEBUG ) {
-			if ( empty ( $template ) ) {
+			if ( empty( $template ) ) {
 				$before_html .= ( '<div class="cb-debug">Template file not found</div>' );
 			} else {
 				$before_html .= ( '<div class="cb-debug">Template:<strong>' . basename( $template ) . '</strong></div>' );
@@ -78,7 +78,7 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 			echo( commonsbooking_sanitizeHTML( $before_html ) );
 			load_template( $template, false );
 			echo( commonsbooking_sanitizeHTML( $after_html ) );
-		} else if ( $template && $include === false ) {
+		} elseif ( $template && $include === false ) {
 			return $before_html . $template . $after_html;
 		}
 	}

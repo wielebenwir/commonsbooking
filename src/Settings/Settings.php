@@ -22,9 +22,9 @@ class Settings {
 	 *
 	 * @param mixed $options_key
 	 * @param mixed $field_id
-	 * @param mixed $sanitizeFunction Optional. Function to sanitize return value. If an array, each element 
-     *                                 is sanitized recursively. Use false to not sanitize. 
-	 *                                 Default: 'commonsbooking_sanitizeHTML'. 
+	 * @param mixed $sanitizeFunction Optional. Function to sanitize return value. If an array, each element
+	 *                                 is sanitized recursively. Use false to not sanitize.
+	 *                                 Default: 'commonsbooking_sanitizeHTML'.
 	 *
 	 * @return mixed
 	 */
@@ -41,14 +41,12 @@ class Settings {
 		} else {
 			return false;
 		}
-
 	}
 
 
 	/**
 	 * Updates a single field in a multidimensional options-array in wp_options
 	 * Will create the option if it does not exist yet.
-	 *
 	 *
 	 * @param mixed $option_name the options name as defined in wp_options table, column option_name
 	 * @param mixed $field_id the field_id in the array
@@ -60,8 +58,8 @@ class Settings {
 		// Load all the option values from wp_options
 		$options = get_option( $option_name );
 
-		//if the option does not exist, we need to create an empty
-		//array instead because we cannot convert false to an array
+		// if the option does not exist, we need to create an empty
+		// array instead because we cannot convert false to an array
 		if ( $options === false ) {
 			$options = array();
 		}
@@ -71,15 +69,14 @@ class Settings {
 
 		// Save to wp_options
 		return update_option( $option_name, $options );
-
 	}
 
 
 	public static function returnFormattedMetaboxFields( $postType ) {
-		$metabox_array = Settings::getOption('commonsbooking_settings_metaboxfields', $postType);
+		$metabox_array = self::getOption( 'commonsbooking_settings_metaboxfields', $postType );
 
-		$result = "<br>";
-		if(is_array($metabox_array)) {
+		$result = '<br>';
+		if ( is_array( $metabox_array ) ) {
 			foreach ( $metabox_array as $metabox_id => $metabox_name ) {
 				$result .= $metabox_name . ' => [' . $metabox_id . '] <br>';
 			}
@@ -87,5 +84,4 @@ class Settings {
 
 		return $result;
 	}
-
 }

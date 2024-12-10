@@ -10,7 +10,7 @@ namespace CommonsBooking\Model;
  *
  * Currently, it's only referenced by the @see \CommonsBooking\Wordpress\CustomPostType\CustomPostType::getModel() method to use the methods from the CustomPost class.
  */
-class Map extends CustomPost
-{
+class Map extends CustomPost {
+
 
 }

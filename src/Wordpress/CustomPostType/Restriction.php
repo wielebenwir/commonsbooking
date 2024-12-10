@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-
 use Exception;
 use CommonsBooking\View\Admin\Filter;
 
@@ -47,18 +46,17 @@ class Restriction extends CustomPostType {
 
 		/**
 		 * Backend listing columns.
+		 *
 		 * @var string[]
 		 */
-		$this->listColumns = [
+		$this->listColumns = array(
 			\CommonsBooking\Model\Restriction::META_TYPE                                          => esc_html__( 'Type', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_ITEM_ID                                       => esc_html__( 'Item', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_LOCATION_ID                                   => esc_html__( 'Location', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_START                              => esc_html__( 'Start Date', 'commonsbooking' ),
-			\CommonsBooking\Model\Restriction::META_END								 => esc_html__( 'End Date', 'commonsbooking' ),
+			\CommonsBooking\Model\Restriction::META_END                              => esc_html__( 'End Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_STATE                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
-		];
-
-
+		);
 
 		// List settings
 		$this->removeListDateColumn();
@@ -83,21 +81,21 @@ class Restriction extends CustomPostType {
 	 */
 	public static function addAdminItemFilter() {
 		$items = \CommonsBooking\Repository\Item::get(
-			[
+			array(
 				'post_status' => 'any',
 				'orderby'     => 'post_title',
 				'order'       => 'asc',
-				'nopaging'    => true
-			]
+				'nopaging'    => true,
+			)
 		);
 		if ( $items ) {
-			$values = [];
+			$values = array();
 			foreach ( $items as $item ) {
 				$values[ $item->ID ] = $item->post_title;
 			}
 
 			Filter::renderFilter(
-                static::$postType,
+				static::$postType,
 				esc_html__( 'Filter By Item ', 'commonsbooking' ),
 				'filter_item',
 				$values
@@ -110,15 +108,15 @@ class Restriction extends CustomPostType {
 	 */
 	public static function addAdminLocationFilter() {
 		$locations = \CommonsBooking\Repository\Location::get(
-			[
+			array(
 				'post_status' => 'any',
 				'orderby'     => 'post_title',
 				'order'       => 'asc',
-				'nopaging'    => true
-			]
+				'nopaging'    => true,
+			)
 		);
 		if ( $locations ) {
-			$values = [];
+			$values = array();
 			foreach ( $locations as $location ) {
 				$values[ $location->ID ] = $location->post_title;
 			}
@@ -133,7 +131,7 @@ class Restriction extends CustomPostType {
 	}
 
 	/**
-	 * Adds filter dropdown // filter by status in restrictions list 
+	 * Adds filter dropdown // filter by status in restrictions list
 	 */
 	public static function addAdminStatusFilter() {
 		Filter::renderFilter(
@@ -158,16 +156,16 @@ class Restriction extends CustomPostType {
 				case \CommonsBooking\Model\Restriction::META_ITEM_ID:
 					if ( $post = get_post( $value ) ) {
 						if ( get_post_type( $post ) == Location::getPostType() || get_post_type(
-							                                                          $post
-						                                                          ) == Item::getPostType() ) {
-							echo commonsbooking_sanitizeHTML($post->post_title);
+							$post
+						) == Item::getPostType() ) {
+							echo commonsbooking_sanitizeHTML( $post->post_title );
 							break;
 						}
 					}
 					echo '-';
 					break;
 				case \CommonsBooking\Model\Restriction::META_TYPE:
-					$output = "-";
+					$output = '-';
 
 					foreach ( $this->getCustomFields() as $customField ) {
 						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_TYPE ) {
@@ -178,10 +176,10 @@ class Restriction extends CustomPostType {
 							}
 						}
 					}
-					echo commonsbooking_sanitizeHTML($output);
+					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Restriction::META_STATE:
-					$output = "-";
+					$output = '-';
 
 					foreach ( $this->getCustomFields() as $customField ) {
 						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_STATE ) {
@@ -192,21 +190,21 @@ class Restriction extends CustomPostType {
 							}
 						}
 					}
-					echo commonsbooking_sanitizeHTML($output);
+					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Restriction::META_START:
 				case \CommonsBooking\Model\Restriction::META_END:
 					echo date( 'd.m.Y H:i', $value );
 					break;
 				default:
-					echo commonsbooking_sanitizeHTML($value);
+					echo commonsbooking_sanitizeHTML( $value );
 					break;
 			}
 		} else {
-			$bookingColumns = [
+			$bookingColumns = array(
 				'post_date',
 				'post_status',
-			];
+			);
 
 			if (
 				property_exists( $post = get_post( $post_id ), $column ) && (
@@ -214,13 +212,13 @@ class Restriction extends CustomPostType {
 					get_post_meta( $post_id, \CommonsBooking\Model\Restriction::META_TYPE, true ) == Timeframe::BOOKING_ID
 				)
 			) {
-				echo commonsbooking_sanitizeHTML($post->{$column});
+				echo commonsbooking_sanitizeHTML( $post->{$column} );
 			}
 		}
 	}
 
 	/**
-	 * Filters admin list by type, timerange, user 
+	 * Filters admin list by type, timerange, user
 	 *
 	 * @param \WP_Query $query for admin list objects
 	 *
@@ -231,23 +229,23 @@ class Restriction extends CustomPostType {
 
 		if (
 			is_admin() && $query->is_main_query() &&
-			isset( $_GET['post_type'] ) && static::$postType == sanitize_text_field(  $_GET['post_type'] ) &&
+			isset( $_GET['post_type'] ) && static::$postType == sanitize_text_field( $_GET['post_type'] ) &&
 			$pagenow == 'edit.php'
 		) {
 			// Meta value filtering
 			$query->query_vars['meta_query'] = array(
 				'relation' => 'AND',
 			);
-			$meta_filters                    = [
+			$meta_filters                    = array(
 				\CommonsBooking\Model\Restriction::META_TYPE        => 'admin_filter_type',
-				\CommonsBooking\Model\Restriction::META_STATE		=> 'admin_filter_state',
+				\CommonsBooking\Model\Restriction::META_STATE       => 'admin_filter_state',
 				\CommonsBooking\Model\Restriction::META_ITEM_ID     => 'admin_filter_item',
 				\CommonsBooking\Model\Restriction::META_LOCATION_ID => 'admin_filter_location',
-			];
+			);
 
 			foreach ( $meta_filters as $key => $filter ) {
 				if (
-					isset( $_GET[ $filter ] )  &&
+					isset( $_GET[ $filter ] ) &&
 					$_GET[ $filter ] != ''
 				) {
 					$query->query_vars['meta_query'][] = array(
@@ -257,11 +255,10 @@ class Restriction extends CustomPostType {
 				}
 			}
 
-
 			// Post field filtering
-			$post_filters = [
+			$post_filters = array(
 				'post_status' => 'admin_filter_post_status',
-			];
+			);
 			foreach ( $post_filters as $key => $filter ) {
 				if (
 					isset( $_GET[ $filter ] ) &&
@@ -274,25 +271,31 @@ class Restriction extends CustomPostType {
 			// Check if current user is allowed to see posts
 			if ( ! commonsbooking_isCurrentUserAdmin() ) {
 				$locations = \CommonsBooking\Repository\Location::getByCurrentUser();
-				array_walk( $locations, function ( &$item, $key ) {
-					$item = $item->ID;
-				} );
+				array_walk(
+					$locations,
+					function ( &$item, $key ) {
+						$item = $item->ID;
+					}
+				);
 				$items = \CommonsBooking\Repository\Item::getByCurrentUser();
-				array_walk( $items, function ( &$item, $key ) {
-					$item = $item->ID;
-				} );
+				array_walk(
+					$items,
+					function ( &$item, $key ) {
+						$item = $item->ID;
+					}
+				);
 
 				$query->query_vars['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
 						'key'     => \CommonsBooking\Model\Restriction::META_LOCATION_ID,
 						'value'   => $locations,
-						'compare' => 'IN'
+						'compare' => 'IN',
 					),
 					array(
 						'key'     => \CommonsBooking\Model\Restriction::META_ITEM_ID,
 						'value'   => $items,
-						'compare' => 'IN'
+						'compare' => 'IN',
 					),
 				);
 			}
@@ -376,7 +379,7 @@ class Restriction extends CustomPostType {
 			// dieser Wert wird später in der URL stehen
 			'rewrite'             => array( 'slug' => self::getPostType() ),
 
-			'show_in_rest' => true
+			'show_in_rest' => true,
 		);
 	}
 
@@ -385,11 +388,11 @@ class Restriction extends CustomPostType {
 	 */
 	public function registerMetabox() {
 		$cmb = new_cmb2_box(
-			[
-				'id'           => static::getPostType() . "-custom-fields",
+			array(
+				'id'           => static::getPostType() . '-custom-fields',
 				'title'        => esc_html__( 'Restriction', 'commonsbooking' ),
 				'object_types' => array( static::getPostType() ),
-			]
+			)
 		);
 
 		foreach ( $this->getCustomFields() as $customField ) {
@@ -399,48 +402,54 @@ class Restriction extends CustomPostType {
 
 	/**
 	 * Returns custom (meta) fields for Costum Post Type Timeframe.
+	 *
 	 * @return array
 	 */
 	protected function getCustomFields(): array {
 		// We need static types, because german month names dont't work for datepicker
-		$dateFormat = "d/m/Y";
+		$dateFormat = 'd/m/Y';
 		if ( strpos( get_locale(), 'de_' ) !== false ) {
-			$dateFormat = "d.m.Y";
+			$dateFormat = 'd.m.Y';
 		}
 
 		if ( strpos( get_locale(), 'en_' ) !== false ) {
-			$dateFormat = "m/d/Y";
+			$dateFormat = 'm/d/Y';
 		}
 
 		return array(
 			array(
 				'name'    => esc_html__( 'Type', 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Select the type of restriction.<br>
+				'desc'    => commonsbooking_sanitizeHTML(
+					__(
+						'Select the type of restriction.<br>
 				Select <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>
 				Select <strong>total breakdown</strong> if the defect means that the item can no longer be used. If you select total breakdown 
 				all affected bookings will be automatically canceled after activating this restriction and after clicking send the information email.
-				', 'commonsbooking' ) ),
+				',
+						'commonsbooking'
+					)
+				),
 				'id'      => \CommonsBooking\Model\Restriction::META_TYPE,
 				'type'    => 'select',
 				'options' => self::getTypes(),
 			),
 			array(
-				'name'             => esc_html__( "Location", 'commonsbooking' ),
+				'name'             => esc_html__( 'Location', 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_LOCATION_ID,
 				'type'             => 'select',
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
-				'name'             => esc_html__( "Item", 'commonsbooking' ),
+				'name'             => esc_html__( 'Item', 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_ITEM_ID,
 				'type'             => 'select',
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
-				'name' => esc_html__( "Hint", 'commonsbooking' ),
+				'name' => esc_html__( 'Hint', 'commonsbooking' ),
 				'id'   => \CommonsBooking\Model\Restriction::META_HINT,
 				'desc' => commonsbooking_sanitizeHTML( __( 'Please enter here a short information about the reason and possible effects of the usage restriction. <br>The explanation will be displayed on the article page and in the notification e-mail.', 'commonsbooking' ) ),
-				'type' => 'textarea'
+				'type' => 'textarea',
 			),
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
@@ -466,17 +475,22 @@ class Restriction extends CustomPostType {
 			array(
 				'type'    => 'hidden',
 				'id'      => 'restriction-prevent_delete_meta_movetotrash',
-				'default' => wp_create_nonce( plugin_basename( __FILE__ ) )
+				'default' => wp_create_nonce( plugin_basename( __FILE__ ) ),
 			),
 			array(
-				'name'             => esc_html__( "Status", 'commonsbooking' ),
+				'name'             => esc_html__( 'Status', 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_STATE,
-				'desc'             => commonsbooking_sanitizeHTML( __( 'Choose status of this restriction. <br>
+				'desc'             => commonsbooking_sanitizeHTML(
+					__(
+						'Choose status of this restriction. <br>
 				Set to <strong>None</strong> if you want to deactivate the restriction.<br>
 					Set to <strong>Active</strong> if the restriction is active. <br>
 Set to <strong>Problem Solved</strong>, if the restriction is no longer in effect.<br>
 Depending on the selected status, affected users will receive corresponding notification emails.
-Select the desired status and then click the "Send" button to send the e-mail.<br>', 'commonsbooking' ) ),
+Select the desired status and then click the "Send" button to send the e-mail.<br>',
+						'commonsbooking'
+					)
+				),
 				'type'             => 'select',
 				'show_option_none' => false,
 				'options'          => self::getStates(),
@@ -491,7 +505,7 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 			array(
 				'id'   => \CommonsBooking\Model\Restriction::META_SENT,
 				'type' => 'hidden',
-			)
+			),
 		);
 	}
 
@@ -500,10 +514,10 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 	 */
 	public static function getTypes() {
 
-		return [
+		return array(
 			'repair' => esc_html__( 'Total breakdown', 'commonsbooking' ),
 			'hint'   => esc_html__( 'Notice', 'commonsbooking' ),
-		];
+		);
 	}
 
 	/**
@@ -511,11 +525,11 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 	 */
 	public static function getStates() {
 
-		return [
+		return array(
 			'none' => esc_html__( 'Not active', 'commonsbooking' ),
 			'active'   => esc_html__( 'Active', 'commonsbooking' ),
 			'solved' => esc_html__( 'Problem solved', 'commonsbooking' ),
-		];
+		);
 	}
 
 	/**
@@ -538,5 +552,4 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 			}
 		}
 	}
-
 }

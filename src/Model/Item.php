@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Model;
 
-
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
@@ -21,15 +20,15 @@ class Item extends BookablePost {
 	 *
 	 * @param $locationId
 	 *
-	 * @param bool $asModel
+	 * @param bool       $asModel
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
 	public function getBookableTimeframesByLocation( $locationId, bool $asModel = false ): array {
 		return Timeframe::getBookableForCurrentUser(
-			[ $locationId ],
-			[ $this->ID ],
+			array( $locationId ),
+			array( $this->ID ),
 			null,
 			$asModel,
 			Helper::getLastFullHourTimestamp()
@@ -51,16 +50,16 @@ class Item extends BookablePost {
 		$itemAdminIds = get_post_meta( $itemId, '_' . \CommonsBooking\Wordpress\CustomPostType\Item::$postType . '_admins', true );
 		if ( is_string( $itemAdminIds ) ) {
 			if ( strlen( $itemAdminIds ) > 0 ) {
-				$itemAdminIds = [ $itemAdminIds ];
+				$itemAdminIds = array( $itemAdminIds );
 			} else {
-				$itemAdminIds = [];
+				$itemAdminIds = array();
 			}
 		}
 		$itemAdminIds[] = get_post_field( 'post_author', $this->ID );
 
 		return array_values(
 			array_unique(
-				array_map('intval', $itemAdminIds )
+				array_map( 'intval', $itemAdminIds )
 			)
 		);
 	}
@@ -69,16 +68,16 @@ class Item extends BookablePost {
 	 * Returns all applicable restrictions for this item.
 	 *
 	 * This function is not used anywhere yet.
+	 *
 	 * @return array
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {
 		return \CommonsBooking\Repository\Restriction::get(
-			[],
-			[$this->ID],
+			array(),
+			array( $this->ID ),
 			null,
 			true
 		);
 	}
-
 }

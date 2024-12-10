@@ -73,5 +73,4 @@ class Share {
 	public function getOwner() {
 		return $this->owner;
 	}
-
 }

@@ -42,5 +42,4 @@ class AdminMessage {
 		echo '</p>';
 		echo '</div>';
 	}
-
 }

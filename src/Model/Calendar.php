@@ -45,6 +45,7 @@ class Calendar {
 
 	/**
 	 * The timeframes that are relevant for this calendar.
+	 *
 	 * @var Timeframe[]
 	 */
 	protected array $timeframes;
@@ -52,14 +53,14 @@ class Calendar {
 	/**
 	 * Calendar constructor.
 	 *
-	 * @param Day $startDate
-	 * @param Day $endDate
+	 * @param Day   $startDate
+	 * @param Day   $endDate
 	 * @param int[] $locations
 	 * @param int[] $items
 	 * @param array $types
 	 */
-	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
-		//check, that it spans at least two days
+	public function __construct( Day $startDate, Day $endDate, array $locations = array(), array $items = array(), array $types = array() ) {
+		// check, that it spans at least two days
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
 		}
@@ -89,7 +90,6 @@ class Calendar {
 			serialize( $this->locations ) .
 			serialize( $this->types )
 		);
-
 
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
@@ -128,8 +128,8 @@ class Calendar {
 	 * @throws \Exception
 	 */
 	public function getAvailabilitySlots(): array {
-		$slots    = [];
-		$doneSlots = [];
+		$slots     = array();
+		$doneSlots = array();
 		/** @var Week $week */
 		foreach ( $this->getWeeks() as $week ) {
 			/** @var Day $day */
@@ -138,12 +138,12 @@ class Calendar {
 					$timeframe     = new Timeframe( $slot['timeframe'] );
 					$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
 
-					//Skip everything where the most important slot is not bookable. We are only interested in direct availability.
+					// Skip everything where the most important slot is not bookable. We are only interested in direct availability.
 					if ( $timeFrameType != \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ) {
 						continue;
 					}
 
-					//Skip timeframes that are not bookable today
+					// Skip timeframes that are not bookable today
 					if ( $timeframe->getFirstBookableDay() > $day->getDate() ) {
 						continue;
 					}
@@ -151,23 +151,23 @@ class Calendar {
 					$availabilitySlot = new stdClass();
 
 					// Init DateTime object for start
-					$dateTimeStart = Wordpress::getUTCDateTime('now');
+					$dateTimeStart = Wordpress::getUTCDateTime( 'now' );
 					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
 					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
 
 					// Init DateTime object for end
-					$dateTimeend = Wordpress::getUTCDateTime('now');
+					$dateTimeend = Wordpress::getUTCDateTime( 'now' );
 					$dateTimeend->setTimestamp( $slot['timestampend'] );
 					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
 
-					$availabilitySlot->locationId = "";
+					$availabilitySlot->locationId = '';
 					if ( $timeframe->getLocation() ) {
-						$availabilitySlot->locationId = $timeframe->getLocationID() . "";
+						$availabilitySlot->locationId = $timeframe->getLocationID() . '';
 					}
 
-					$availabilitySlot->itemId = "";
+					$availabilitySlot->itemId = '';
 					if ( $timeframe->getItem() ) {
-						$availabilitySlot->itemId = $timeframe->getItemID() . "";
+						$availabilitySlot->itemId = $timeframe->getItemID() . '';
 					}
 
 					$slotId = md5( serialize( $availabilitySlot ) );
@@ -183,7 +183,7 @@ class Calendar {
 
 	private function getTimeframes(): array {
 		if ( ! isset( $this->timeframes ) ) {
-			$this->timeframes = [];
+			$this->timeframes = array();
 			$timeframes       = \CommonsBooking\Repository\Timeframe::getInRange(
 				$this->startDate->getStartTimestamp(),
 				$this->endDate->getEndTimestamp(),
@@ -191,12 +191,11 @@ class Calendar {
 				$this->items,
 				$this->types,
 				true,
-				[ 'confirmed', 'publish' ]
+				array( 'confirmed', 'publish' )
 			);
 			$this->timeframes = $timeframes;
 		}
 
 		return $this->timeframes;
 	}
-    
 }

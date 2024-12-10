@@ -6,23 +6,25 @@ namespace CommonsBooking\Map;
  * Shortcode for the legacy map with the old non-responsive standard leaflet style.
  */
 class MapShortcode extends BaseShortcode {
-	protected function create_container($cb_map_id, $attrs, $options, $content) {
+	protected function create_container( $cb_map_id, $attrs, $options, $content ) {
 		$map_height = MapAdmin::get_option( $cb_map_id, 'map_height' );
 		return '<div id="cb-map-' . esc_attr( $cb_map_id ) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr( $map_height ) . 'px;"></div>';
 	}
 	protected function parse_attributes( $atts ) {
-		return shortcode_atts(array('id' => 0), $atts);
+		return shortcode_atts( array( 'id' => 0 ), $atts );
 	}
 
-	protected function inject_script($cb_map_id) {
-		wp_add_inline_script( 'cb-map-shortcode',
-			"jQuery(document).ready(function ($) {
+	protected function inject_script( $cb_map_id ) {
+		wp_add_inline_script(
+			'cb-map-shortcode',
+			'jQuery(document).ready(function ($) {
             var cb_map = new CB_Map();
-            cb_map.settings = " . wp_json_encode( MapData::get_settings( $cb_map_id ) ) . ";
-            cb_map.translation = " . wp_json_encode( $this->get_translation( $cb_map_id ) ) . ";
+            cb_map.settings = ' . wp_json_encode( MapData::get_settings( $cb_map_id ) ) . ';
+            cb_map.translation = ' . wp_json_encode( $this->get_translation( $cb_map_id ) ) . ';
             cb_map.init_filters($);
             cb_map.init_map();
-        });" );
+        });'
+		);
 		wp_enqueue_style( 'cb-map-shortcode' );
 		wp_enqueue_script( 'cb-map-shortcode' );
 	}
@@ -39,7 +41,7 @@ class MapShortcode extends BaseShortcode {
 		$label_item_category_filter     = MapAdmin::get_option( $cb_map_id, 'label_item_category_filter' );
 		$label_location_distance_filter = MapAdmin::get_option( $cb_map_id, 'label_location_distance_filter' );
 
-		return [
+		return array(
 			'OPENING_HOURS'          => strlen( $label_location_opening_hours ) > 0 ? $label_location_opening_hours : esc_html__( 'opening hours', 'commonsbooking' ),
 			'CONTACT'                => strlen( $label_location_contact ) > 0 ? $label_location_contact : esc_html__( 'contact', 'commonsbooking' ),
 			'FROM'                   => esc_html__( 'from', 'commonsbooking' ),
@@ -55,6 +57,6 @@ class MapShortcode extends BaseShortcode {
 			'GEO_SEARCH_ERROR'       => esc_html__( 'Sorry, an error occured during your request. Please try again later.', 'commonsbooking' ),
 			'GEO_SEARCH_UNAVAILABLE' => esc_html__( 'The service is currently not available. Please try again later.', 'commonsbooking' ),
 			'COMING_SOON'            => esc_html__( 'comming soon', 'commonsbooking' ),
-		];
+		);
 	}
 }

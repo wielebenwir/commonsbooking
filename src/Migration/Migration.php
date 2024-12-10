@@ -24,13 +24,13 @@ class Migration {
 
 	/**
 	 * Fields we don't want/need to migrate.
-     *
+	 *
 	 * @var string[]
 	 */
-	private static $ignoredMetaFields = [
+	private static $ignoredMetaFields = array(
 		'_edit_last',
 		'_edit_lock',
-	];
+	);
 
 	/**
 	 * @return void
@@ -45,48 +45,48 @@ class Migration {
 		}
 
 		if ( $post_data == 'false' ) {
-			$tasks = [
-				'locations'    => [
+			$tasks = array(
+				'locations'    => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-				'items'        => [
+				),
+				'items'        => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-				'timeframes'   => [
+				),
+				'timeframes'   => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-				'bookings'     => [
+				),
+				'bookings'     => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-				'bookingCodes' => [
+				),
+				'bookingCodes' => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-				'termsUrl'     => [
+				),
+				'termsUrl'     => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-				'options'      => [
+				),
+				'options'      => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-				'taxonomies'   => [
+				),
+				'taxonomies'   => array(
 					'index'    => 0,
 					'complete' => 0,
 					'failed'   => 0,
-				],
-			];
+				),
+			);
 		} else {
 			$tasks = $post_data;
 		}
@@ -94,40 +94,40 @@ class Migration {
 		$taskIndex = 0;
 		$taskLimit = 40;
 
-		$taskFunctions = [
-			'locations'    => [
+		$taskFunctions = array(
+			'locations'    => array(
 				'repoFunction'      => 'getLocations',
 				'migrationFunction' => 'migrateLocation',
-			],
-			'items'        => [
+			),
+			'items'        => array(
 				'repoFunction'      => 'getItems',
 				'migrationFunction' => 'migrateItem',
-			],
-			'timeframes'   => [
+			),
+			'timeframes'   => array(
 				'repoFunction'      => 'getTimeframes',
 				'migrationFunction' => 'migrateTimeframe',
-			],
-			'bookings'     => [
+			),
+			'bookings'     => array(
 				'repoFunction'      => 'getBookings',
 				'migrationFunction' => 'migrateBooking',
-			],
-			'bookingCodes' => [
+			),
+			'bookingCodes' => array(
 				'repoFunction'      => 'getBookingCodes',
 				'migrationFunction' => 'migrateBookingCode',
-			],
-			'termsUrl'     => [
+			),
+			'termsUrl'     => array(
 				'repoFunction'      => false,
 				'migrationFunction' => 'migrateUserAgreementUrl',
-			],
-			'options'      => [
+			),
+			'options'      => array(
 				'repoFunction'      => false,
 				'migrationFunction' => 'migrateCB1Options',
-			],
-			'taxonomies'   => [
+			),
+			'taxonomies'   => array(
 				'repoFunction'      => 'getCB1Taxonomies',
 				'migrationFunction' => 'migrateTaxonomy',
-			],
-		];
+			),
+		);
 
 		foreach ( $tasks as $key => &$task ) {
 			if (
@@ -135,7 +135,6 @@ class Migration {
 				array_key_exists( 'migrationFunction', $taskFunctions[ $key ] ) &&
 				$taskFunctions[ $key ]['migrationFunction']
 			) {
-
 				if ( $taskIndex >= $taskLimit ) {
 					break;
 				}
@@ -150,9 +149,8 @@ class Migration {
 
 					// If there are items to migrate
 					if ( count( $items ) ) {
-						for ( $index = $task['index']; $index < count( $items ); $index ++ ) {
-
-							if ( $taskIndex ++ >= $taskLimit ) {
+						for ( $index = $task['index']; $index < count( $items ); $index++ ) {
+							if ( $taskIndex++ >= $taskLimit ) {
 								break;
 							}
 
@@ -168,7 +166,7 @@ class Migration {
 
 						// No items for migration found
 					} else {
-						if ( $taskIndex ++ >= $taskLimit ) {
+						if ( $taskIndex++ >= $taskLimit ) {
 							break;
 						}
 						$task['complete'] = 1;
@@ -176,7 +174,7 @@ class Migration {
 
 					// Single Migration
 				} else {
-					if ( $taskIndex ++ >= $taskLimit ) {
+					if ( $taskIndex++ >= $taskLimit ) {
 						break;
 					}
 
@@ -200,10 +198,10 @@ class Migration {
 	public static function migrateLocation( WP_Post $location ): bool {
 		// Collect post data
 		$postData = array_merge(
-            $location->to_array(),
-            [
+			$location->to_array(),
+			array(
 				'post_type' => Location::$postType,
-			]
+			)
 		);
 
 		// Remove existing post id
@@ -211,12 +209,12 @@ class Migration {
 
 		// Exctract e-mails from CB1 contactinfo field so we can migrate it into new cb2 field _cb_location_email
 		$cb1_location_emails = self::fetchEmails(
-            get_post_meta(
-                $location->ID,
-                'commons-booking_location_contactinfo_text',
-                true
-            )
-        );
+			get_post_meta(
+				$location->ID,
+				'commons-booking_location_contactinfo_text',
+				true
+			)
+		);
 
 		if ( $cb1_location_emails ) {
 			$cb1_location_email_string = implode( ',', $cb1_location_emails );
@@ -230,7 +228,7 @@ class Migration {
 			'commons-booking_bookingsettings_allowclosed'
 		) == 'on' ? 'on' : 'off';
 
-		$cbMetaMappings = [
+		$cbMetaMappings = array(
 			COMMONSBOOKING_METABOX_PREFIX . 'location_street' => 'commons-booking_location_adress_street',
 			COMMONSBOOKING_METABOX_PREFIX . 'location_city' => 'commons-booking_location_adress_city',
 			COMMONSBOOKING_METABOX_PREFIX . 'location_postcode' => 'commons-booking_location_adress_zip',
@@ -238,7 +236,7 @@ class Migration {
 			COMMONSBOOKING_METABOX_PREFIX . 'location_contact' => 'commons-booking_location_contactinfo_text',
 			COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions' => 'commons-booking_location_openinghours',
 			'_thumbnail_id' => '_thumbnail_id',
-		];
+		);
 
 		// Get all post meta;
 		$postMeta = self::getFlatPostMeta( get_post_meta( $location->ID ) );
@@ -272,11 +270,11 @@ class Migration {
 		$words = str_word_count( $text, 1, '.@-_' );
 
 		return array_filter(
-            $words,
-            function ( $word ) {
-                return filter_var( $word, FILTER_VALIDATE_EMAIL );
-            }
-        );
+			$words,
+			function ( $word ) {
+				return filter_var( $word, FILTER_VALIDATE_EMAIL );
+			}
+		);
 	}
 
 	/**
@@ -442,15 +440,15 @@ class Migration {
 	public static function migrateItem( WP_Post $item ): bool {
 		// Collect post data
 		$postData = array_merge(
-            $item->to_array(),
-            [
+			$item->to_array(),
+			array(
 				'post_type'    => Item::$postType,
 				'post_excerpt' => get_post_meta(
-                    $item->ID,
+					$item->ID,
 					'commons-booking_item_descr',
-                    true
-                ),
-			]
+					true
+				),
+			)
 		);
 
 		// Remove existing post id
@@ -493,30 +491,30 @@ class Migration {
 		}
 
 		// Collect post data
-		$postData = [
+		$postData = array(
 			'post_title'  => $timeframe['timeframe_title'],
 			'post_type'   => Timeframe::$postType,
 			'post_name'   => Helper::generateRandomString(),
 			'post_status' => 'publish',
-		];
+		);
 
 		// convert cb1 metadata in cb2 postmeta fields
-        // CB2 <-> CB1
+		// CB2 <-> CB1
 		$postMeta[ COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' ] = $timeframe['id'];
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_START ]  = strtotime( $timeframe['date_start'] );
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_END ]    = strtotime( $timeframe['date_end'] );
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ]      = $cbItem ? $cbItem->ID : '';
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ]  = $cbLocation ? $cbLocation->ID : '';
-		$postMeta['type']                                               = Timeframe::BOOKABLE_ID;
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_REPETITION ]   = $timeframe_repetition;
-		$postMeta['start-time']                                         = '00:00';
-		$postMeta['end-time']                                           = '23:59';
-		$postMeta['full-day']                                           = 'on';
-		$postMeta['grid']                                               = '0';
-		$postMeta['weekdays']                                           = $weekdays;
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES]                = 'on';
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS]    = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]                         = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
+		$postMeta['type'] = Timeframe::BOOKABLE_ID;
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_REPETITION ] = $timeframe_repetition;
+		$postMeta['start-time']                                       = '00:00';
+		$postMeta['end-time'] = '23:59';
+		$postMeta['full-day'] = 'on';
+		$postMeta['grid']     = '0';
+		$postMeta['weekdays'] = $weekdays;
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES ]             = 'on';
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ] = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]                       = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
 
 		$existingPost = self::getExistingPost( $timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID );
 
@@ -541,7 +539,7 @@ class Migration {
 			$userName = $user->get( 'user_nicename' );
 		}
 
-		$postData = [
+		$postData = array(
 			'post_title'  => 'Buchung CB1-Import ' . $userName . ' - ' . $booking['date_start'],
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 			'post_name'   => Helper::generateRandomString(),
@@ -549,10 +547,10 @@ class Migration {
 			'post_date'   => $booking['booking_time'],
 			'post_author' => $booking['user_id'],
 
-		];
+		);
 
 		// CB2 <-> CB1
-		$postMeta = [
+		$postMeta = array(
 			COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' => $booking['id'],
 			\CommonsBooking\Model\Timeframe::REPETITION_START  => strtotime( $booking['date_start'] ),
 			\CommonsBooking\Model\Timeframe::REPETITION_END    => strtotime( $booking['date_end'] ),
@@ -565,7 +563,7 @@ class Migration {
 			'full-day'                                         => 'on',
 			'grid'                                             => '0',
 			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode'      => CB1::getBookingCode( $booking['code_id'] ),
-		];
+		);
 
 		$existingPost = self::getExistingPost( $booking['id'], \CommonsBooking\Wordpress\CustomPostType\Booking::$postType );
 
@@ -580,9 +578,9 @@ class Migration {
 	 * @return mixed
 	 */
 	public static function migrateBookingCode( $bookingCode ) {
-		$cb2ItemId      = CB1::getCB2ItemId( $bookingCode['item_id'] );
-		$date           = $bookingCode['booking_date'];
-		$code           = $bookingCode['bookingcode'];
+		$cb2ItemId = CB1::getCB2ItemId( $bookingCode['item_id'] );
+		$date      = $bookingCode['booking_date'];
+		$code      = $bookingCode['bookingcode'];
 
 		$bookingCode = new BookingCode(
 			$date,
@@ -640,5 +638,4 @@ class Migration {
 			wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
 		}
 	}
-
 }

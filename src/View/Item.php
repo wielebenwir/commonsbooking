@@ -21,23 +21,23 @@ class Item extends View {
 		if ( $post == null ) {
 			global $post;
 		}
-		$item      = $post;
-		$location  = get_query_var( 'cb-location' ) ?: false;
-		$customId = md5($item->ID . $location);
+		$item     = $post;
+		$location = get_query_var( 'cb-location' ) ?: false;
+		$customId = md5( $item->ID . $location );
 
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$locations = \CommonsBooking\Repository\Location::getByItem( $item->ID, true );
+			$locations   = \CommonsBooking\Repository\Location::getByItem( $item->ID, true );
 			$locationIds = array_map(
-				function (\CommonsBooking\Model\Location $location) {
+				function ( \CommonsBooking\Model\Location $location ) {
 					return $location->getPost()->ID;
 				},
 				$locations
 			);
 
-			$args = [
+			$args = array(
 				'post'      => $post,
 				'actionUrl' => admin_url( 'admin.php' ),
 				'item'      => new \CommonsBooking\Model\Item( $item ),
@@ -45,12 +45,12 @@ class Item extends View {
 				'type'      => Timeframe::BOOKING_ID,
 				'restrictions' => \CommonsBooking\Repository\Restriction::get(
 					$locationIds,
-					[$item->ID],
+					array( $item->ID ),
 					null,
 					true,
 					time()
-				)
-			];
+				),
+			);
 
 			// If there's no location selected, we'll show all available.
 			if ( ! $location ) {
@@ -62,7 +62,7 @@ class Item extends View {
 						$args['locations'] = $locations;
 					}
 				} else {
-					$args['locations'] = [];
+					$args['locations'] = array();
 				}
 			} else {
 				$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
@@ -70,13 +70,13 @@ class Item extends View {
 
 			$calendarData          = Calendar::getCalendarDataArray(
 				$item,
-				array_key_exists('location', $args) ? $args['location'] : null,
+				array_key_exists( 'location', $args ) ? $args['location'] : null,
 				date( 'Y-m-d', strtotime( 'first day of this month', time() ) ),
 				date( 'Y-m-d', strtotime( '+3 months', time() ) )
 			);
 			$args['calendar_data'] = wp_json_encode( $calendarData );
 
-			Plugin::setCacheItem($args, ['misc'], $customId);
+			Plugin::setCacheItem( $args, array( 'misc' ), $customId );
 
 			return $args;
 		}
@@ -94,7 +94,7 @@ class Item extends View {
 	 */
 	public static function shortcode( $atts ) {
 		global $templateData;
-		$templateData = [];
+		$templateData = array();
 		$queryArgs    = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() );
 
 		if ( is_array( $atts ) && array_key_exists( 'location-id', $atts ) ) {
@@ -103,25 +103,24 @@ class Item extends View {
 			$items = \CommonsBooking\Repository\Item::get( $queryArgs );
 		}
 
-		$itemData = [];
+		$itemData = array();
 		/** @var \CommonsBooking\Model\Item $item */
 		foreach ( $items as $item ) {
 			$itemData[ $item->ID ] = self::getShortcodeData( $item, 'Location' );
 		}
 
-		if ($itemData) {
+		if ( $itemData ) {
 			ob_start();
 			foreach ( $itemData as $id => $data ) {
 				$templateData['item'] = $id;
 				$templateData['data'] = $data;
-				commonsbooking_get_template_part( 'shortcode', 'items', true, false, false ) ;
+				commonsbooking_get_template_part( 'shortcode', 'items', true, false, false );
 			}
 			return ob_get_clean();
-		}
-		else { //Message to show when no item matches query
+		} else { // Message to show when no item matches query
 			return '<div class="cb-wrapper cb-shortcode-items template-shortcode-items post-post no-post-thumbnail">
-			<div class="cb-list-error">' 
-			. __('No bookable items found.','commonsbooking') .
+			<div class="cb-list-error">'
+			. __( 'No bookable items found.', 'commonsbooking' ) .
 			'</div>
 			</div>';
 		}

@@ -24,7 +24,7 @@ class PostStatus {
 	 *
 	 * @param $name
 	 * @param $label
-	 * @param bool $public
+	 * @param bool  $public
 	 */
 	public function __construct( $name, $label, bool $public = true ) {
 		$this->name   = $name;
@@ -39,14 +39,17 @@ class PostStatus {
 	 * Registers current post status.
 	 */
 	public function registerPostStatus() {
-		register_post_status( $this->name, array(
-			'label'       => $this->label,
-			'public'      => $this->public,
-			'label_count' => _n_noop(
-				$this->label . ' <span class="count">(%s)</span>',
-				$this->label . ' <span class="count">(%s)</span>'
+		register_post_status(
+			$this->name,
+			array(
+				'label'       => $this->label,
+				'public'      => $this->public,
+				'label_count' => _n_noop(
+					$this->label . ' <span class="count">(%s)</span>',
+					$this->label . ' <span class="count">(%s)</span>'
+				),
 			)
-		) );
+		);
 	}
 
 	/**
@@ -63,7 +66,7 @@ class PostStatus {
 	public function addOption() {
 		global $post;
 
-		$active = "";
+		$active = '';
 		if ( $post ) {
 			if ( $post->post_status == $this->name ) {
 				$active = "jQuery( '#post-status-display' ).text( '" . $this->label . "' ); jQuery( 'select[name=\"post_status\"]' ).val('" . $this->name . "');";
@@ -71,10 +74,10 @@ class PostStatus {
 
 			echo "<script>
             jQuery(document).ready( function() {
-                jQuery( 'select[name=\"post_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . "\">" . commonsbooking_sanitizeHTML( $this->label ) . "</option>' );
-                " . commonsbooking_sanitizeHTML( $active ) . "
+                jQuery( 'select[name=\"post_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . '">' . commonsbooking_sanitizeHTML( $this->label ) . "</option>' );
+                " . commonsbooking_sanitizeHTML( $active ) . '
             });
-        </script>";
+        </script>';
 		}
 	}
 
@@ -84,9 +87,8 @@ class PostStatus {
 	public function addQuickedit() {
 		echo "<script>
                 jQuery(document).ready( function() {
-                    jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . "\">" . commonsbooking_sanitizeHTML(  $this->label ) . "</option>' );
+                    jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . '">' . commonsbooking_sanitizeHTML( $this->label ) . "</option>' );
                 });
             </script>";
 	}
-
 }

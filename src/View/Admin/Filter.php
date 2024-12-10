@@ -13,16 +13,15 @@ class Filter {
 	 * @param $values
 	 */
 	public static function renderFilter( $postType, $label, $key, $values ) {
-		//only add filter to post type you want
+		// only add filter to post type you want
 		if ( isset( $_GET['post_type'] ) && $postType == $_GET['post_type'] ) {
 			?>
-            <select name="<?php echo 'admin_' . commonsbooking_sanitizeHTML( $key ); ?>">
-                <option value=""><?php echo commonsbooking_sanitizeHTML($label); ?></option>
+			<select name="<?php echo 'admin_' . commonsbooking_sanitizeHTML( $key ); ?>">
+				<option value=""><?php echo commonsbooking_sanitizeHTML( $label ); ?></option>
 				<?php
 				$filterValue = isset( $_GET[ 'admin_' . $key ] ) ? sanitize_text_field( $_GET[ 'admin_' . $key ] ) : '';
 				foreach ( $values as $value => $label ) {
-					printf
-					(
+					printf(
 						'<option value="%s"%s>%s</option>',
 						$value,
 						$value == $filterValue ? ' selected="selected"' : '',
@@ -30,13 +29,14 @@ class Filter {
 					);
 				}
 				?>
-            </select>
+			</select>
 			<?php
 		}
 	}
 
 	/**
-     * Renders Start-/Enddate filters for admin lists.
+	 * Renders Start-/Enddate filters for admin lists.
+	 *
 	 * @param $postType
 	 * @param $startDateInputName
 	 * @param $endDateInputName
@@ -60,9 +60,9 @@ class Filter {
 					'commonsbooking'
 				) . '" value="' . esc_attr( $from ) . '" />
             <input type="text" name="' . commonsbooking_sanitizeHTML( $endDateInputName ) . '" placeholder="' . esc_html__(
-				     'End date',
-				     'commonsbooking'
-			     ) . '" value="' . esc_attr( $to ) . '" />
+					'End date',
+					'commonsbooking'
+				) . '" value="' . esc_attr( $to ) . '" />
      
             <script>
             jQuery( function($) {
@@ -84,5 +84,4 @@ class Filter {
             </script>';
 		}
 	}
-
 }

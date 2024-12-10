@@ -34,24 +34,25 @@ class Upgrade {
 	 * you would add a new entry to this array with the key being "2.6.0" and the value being the function that needs to be run.
 	 *
 	 * This is so that once the upgrade from a specific version has been run, it will not be run again.
+	 *
 	 * @var array[]
 	 */
-	private static array $upgradeTasks = [
-		'2.6.0' => [
-			[ \CommonsBooking\Migration\Booking::class, 'migrate' ],
-			[ self::class, 'setAdvanceBookingDaysDefault' ]
-		],
-		'2.8.0' => [
-			[ \CommonsBooking\Service\Scheduler::class, 'unscheduleOldEvents' ]
-		],
-		'2.8.2' => [
-			[ self::class, 'resetBrokenColorScheme' ],
-			[ self::class, 'fixBrokenICalTitle' ]
-		],
-		'2.9.2' => [
-			[self::class, 'enableLocationBookingNotification']
-		]
-	];
+	private static array $upgradeTasks = array(
+		'2.6.0' => array(
+			array( \CommonsBooking\Migration\Booking::class, 'migrate' ),
+			array( self::class, 'setAdvanceBookingDaysDefault' ),
+		),
+		'2.8.0' => array(
+			array( \CommonsBooking\Service\Scheduler::class, 'unscheduleOldEvents' ),
+		),
+		'2.8.2' => array(
+			array( self::class, 'resetBrokenColorScheme' ),
+			array( self::class, 'fixBrokenICalTitle' ),
+		),
+		'2.9.2' => array(
+			array( self::class, 'enableLocationBookingNotification' ),
+		),
+	);
 
 	/**
 	 * This does the same as the above, but is for tasks that need a long time to run and might time out.
@@ -65,17 +66,18 @@ class Upgrade {
 	 *
 	 * @var array|array[]
 	 */
-	private static array $ajaxUpgradeTasks = [
-		'2.8.5' => [
-			[ self::class, 'removeBreakingPostmeta' ]
-		],
-		'2.9.0' => [
-			[ self::class, 'setMultiSelectTimeFrameDefault' ]
-		]
-	];
+	private static array $ajaxUpgradeTasks = array(
+		'2.8.5' => array(
+			array( self::class, 'removeBreakingPostmeta' ),
+		),
+		'2.9.0' => array(
+			array( self::class, 'setMultiSelectTimeFrameDefault' ),
+		),
+	);
 
 	/**
 	 * The tasks that will be run upon every upgrade.
+	 *
 	 * @return void
 	 */
 	private function runEveryUpgrade(): void {
@@ -100,7 +102,6 @@ class Upgrade {
 		} catch ( InvalidArgumentException $e ) {
 			// Do nothing
 		}
-
 	}
 
 	/**
@@ -126,7 +127,7 @@ class Upgrade {
 			if ( $this->previousVersion === $this->currentVersion ) {
 				return false;
 			}
-			//upgrade needs to be run in AJAX
+			// upgrade needs to be run in AJAX
 			if ( $this->getTasksForUpgrade( self::$ajaxUpgradeTasks ) ) {
 				new AdminMessage(
 					'<b>CommonsBooking:</b> ' .
@@ -170,7 +171,7 @@ class Upgrade {
 	 * @return array
 	 */
 	private function getTasksForUpgrade( $upgradeTasks ): array {
-		$tasks = [];
+		$tasks = array();
 		foreach ( $upgradeTasks as $version => $versionTasks ) {
 			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {
 				$tasks = array_merge( $tasks, $versionTasks );
@@ -196,59 +197,58 @@ class Upgrade {
 	/**
 	 *
 	 * Test in @see \CommonsBooking\Tests\Service\UpgradeTest_AJAX
-	 *
 	 */
 	public static function runAJAXUpgradeTasks(): void {
-		//verify nonce
+		// verify nonce
 		check_ajax_referer( 'cb_run_upgrade', 'nonce' );
-		$data = isset ( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$data = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
 		$data = commonsbooking_sanitizeArrayorString( $data );
 
 		$taskNo = $data['progress']['task'] ?? 0;
 		$page   = $data['progress']['page'] ?? 1;
 
-		$taskNo     = (int) $taskNo;
-		$page       = (int) $page;
-		$upgrade    = new Upgrade(
+		$taskNo                          = (int) $taskNo;
+		$page                            = (int) $page;
+		$upgrade                         = new Upgrade(
 			esc_html( get_option( self::VERSION_OPTION ) ),
 			COMMONSBOOKING_VERSION
 		);
-		$totalTasks = $upgrade->getTasksForUpgrade( self::$ajaxUpgradeTasks );
-		$task       = $totalTasks[ $taskNo ];
+		$totalTasks                      = $upgrade->getTasksForUpgrade( self::$ajaxUpgradeTasks );
+		$task                            = $totalTasks[ $taskNo ];
 		list ( $className, $methodName ) = $task;
-		$page = call_user_func( array( $className, $methodName ), $page );
-		//previous task was successful
+		$page                            = call_user_func( array( $className, $methodName ), $page );
+		// previous task was successful
 		if ( $page === true ) {
-			//check if there are more tasks
+			// check if there are more tasks
 			if ( isset( $totalTasks[ $taskNo + 1 ] ) ) {
-				$response = [
+				$response = array(
 					'success'  => false,
 					'error'    => false,
-					'progress' => [
+					'progress' => array(
 						'task' => $taskNo + 1,
-						'page' => 1
-					]
-				];
+						'page' => 1,
+					),
+				);
 			} else {
-				//all tasks are done
-				$response = [
+				// all tasks are done
+				$response = array(
 					'success' => true,
 					'error'   => false,
 
-				];
+				);
 			}
 		} else {
-			$response = [
+			$response = array(
 				'success'  => false,
 				'error'    => false,
-				'progress' => [
+				'progress' => array(
 					'task' => $taskNo,
-					'page' => $page
-				]
-			];
+					'page' => $page,
+				),
+			);
 		}
 
-		//run other upgrade actions
+		// run other upgrade actions
 		if ( $response['success'] === true ) {
 			$upgrade->runUpgradeTasks();
 			$upgrade->runEveryUpgrade();
@@ -259,6 +259,7 @@ class Upgrade {
 
 	/**
 	 * Will determine if the latest upgrade needs to run AJAX actions to complete.
+	 *
 	 * @return bool true if AJAX actions are needed, false if not.
 	 */
 	public static function isAJAXUpgrade(): bool {
@@ -365,13 +366,14 @@ class Upgrade {
 	/**
 	 * sets advance booking days to default value for existing timeframes.
 	 * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value.
+	 *
 	 * @return void
 	 * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS
 	 *
 	 * @since 2.6
 	 */
 	public static function setAdvanceBookingDaysDefault(): void {
-		$timeframes = \CommonsBooking\Repository\Timeframe::getBookable( [], [], null, true );
+		$timeframes = \CommonsBooking\Repository\Timeframe::getBookable( array(), array(), null, true );
 
 		foreach ( $timeframes as $timeframe ) {
 			if ( $timeframe->getMeta( Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ) < 1 ) {
@@ -467,8 +469,8 @@ class Upgrade {
 	public static function enableLocationBookingNotification() {
 		$locations = \CommonsBooking\Repository\Location::get();
 
-		foreach ($locations as $location) {
-			update_post_meta($location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on');
+		foreach ( $locations as $location ) {
+			update_post_meta( $location->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', 'on' );
 		}
 	}
 }
