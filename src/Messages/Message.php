@@ -91,6 +91,15 @@ abstract class Message {
 	}
 
 	public function getTo() {
+		/**
+         * E-Mail message recipient
+		 *
+         * @since 2.7.3 refactored filter name from cb_mail_to
+		 * @since 2.1.1
+         * 
+		 * @param string email address recipient
+         * @param string email action (see valid actions of the implementing message class)
+		 */
 		return apply_filters( 'commonsbooking_mail_to', $this->to, $this->getAction() );
 	}
 
@@ -99,14 +108,40 @@ abstract class Message {
 	}
 
 	public function getSubject() {
+		/**
+         * E-Mail message subject
+		 *
+         * @since 2.7.3 refactored filter name from cb_mail_subject
+		 * @since 2.1.1
+         * 
+		 * @param string email subject
+         * @param string email action (see valid actions of the implementing message class)
+		 */
 		return apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->getAction() );
 	}
 
 	public function getBody() {
+		/**
+         * E-Mail message body
+		 *
+         * @since 2.7.3 refactored filter name from cb_mail_body
+		 * @since 2.1.1
+         * 
+		 * @param string email body
+         * @param string email action (see valid actions of the implementing message class)
+		 */
 		return apply_filters( 'commonsbooking_mail_body', $this->body, $this->getAction() );
 	}
 
 	public function getAttachment(): array {
+		/**
+         * E-Mail attachment
+		 *
+         * @since 2.7.3
+         * 
+		 * @param array|null attachment
+         * @param string email action (see valid actions of the implementing message class)
+		 */
 		return apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->getAction() );
 	}
 
