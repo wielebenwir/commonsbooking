@@ -50,10 +50,20 @@ class CB {
 		// If possible cast to CB Custom Post Type Model to get additional functions
 		$wpObject = Helper::castToCBCustomType( $wpObject, $key );
 
-		$result     = self::lookUp( $key, $property, $wpObject, $args, $sanitizeFunction );  // Find matching methods, properties or metadata
-		$filterName = sprintf( 'commonsbooking_tag_%s_%s', $key, $property );
+		// Find matching methods, properties or metadata
+		$result = self::lookUp( $key, $property, $wpObject, $args, $sanitizeFunction );
 
-		return apply_filters( $filterName, $result );
+		/**
+         * Default value for post type properties.
+		 * 
+         *`The dynamic part of the hook $key is the name of the post type and the $property is the name of the meta field.
+		 * 
+         * @since 2.7.1 refactored filter name from cb_tag_* to its current form
+		 * @since 2.1.1
+		 *
+		 * @param string|null
+		 */
+		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result );
 	}
 
 	/**
