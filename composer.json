@@ -31,7 +31,7 @@
 
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.4",
     "cmb2/cmb2": "^2.10.1",
     "mustardbees/cmb-field-select2": "^3.0.4",
     "geocoder-php/nominatim-provider": "^5.7",
