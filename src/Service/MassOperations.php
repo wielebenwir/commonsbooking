@@ -63,8 +63,11 @@ class MassOperations {
 			} catch ( \Exception $e ) {
 				throw new \Exception( __( 'New location not found for booking with ID %s', 'commonsbooking' ) );
 			}
-			if ($moveLocation !== null) {
-				update_post_meta($booking->ID, 'location-id', $moveLocation->ID());
+			if ( \CommonsBooking\Repository\Booking::getExistingBookings( $booking->getItemID(), $moveLocation->ID(), $booking->getStartDate(), $booking->getEndDate() ) ) {
+				throw new \Exception( __( 'There is already a booking on the new location during the timeframe of an existing booking.', 'commonsbooking' ) );
+			}
+			if ( $moveLocation !== null ) {
+				update_post_meta( $booking->ID, 'location-id', $moveLocation->ID() );
 			}
 		}
 

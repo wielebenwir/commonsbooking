@@ -21,7 +21,7 @@ class MassOperationsTest extends CustomPostTypeTest {
 		$this->assertTrue( $toOrphan->isOrphaned() );
 		$orphans = \CommonsBooking\Repository\Booking::getOrphaned();
 		$this->assertCount( 1, $orphans );
-		$this->assertTrue ( MassOperations::migrateOrphaned( [ $toOrphan->ID ] ) );
+		$this->assertTrue( MassOperations::migrateOrphaned( [ $toOrphan->ID ] ) );
 
 		$this->assertFalse( $toOrphan->isOrphaned() );
 		$this->assertEquals( $newLocation, get_post_meta( $toOrphan->ID, 'location-id', true ) );
@@ -39,11 +39,11 @@ class MassOperationsTest extends CustomPostTypeTest {
 		update_post_meta( $this->testTimeframe->ID, 'location-id', $newLocation );
 
 		//create a booking on the new location (in the place where we try to move the orphan later)
-		$existingBooking = new Booking( $this->createConfirmedBookingStartingToday($newLocation) );
+		$existingBooking = new Booking( $this->createConfirmedBookingStartingToday( $newLocation ) );
 
 		$orphans = \CommonsBooking\Repository\Booking::getOrphaned();
 		$this->assertCount( 1, $orphans );
-		$this->expectExceptionMessage("There is already a booking on the new location during the timeframe of an existing booking.");
+		$this->expectExceptionMessage( "There is already a booking on the new location during the timeframe of an existing booking." );
 		MassOperations::migrateOrphaned( [ $toOrphan->ID ] );
 	}
 
