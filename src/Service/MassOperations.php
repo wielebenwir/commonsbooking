@@ -2,12 +2,10 @@
 
 namespace CommonsBooking\Service;
 
-class MassOperations
-{
+class MassOperations {
 
-	public static function ajaxMigrateOrphaned()
-	{
-		check_ajax_referer('cb_orphaned_booking_migration', 'nonce');
+	public static function ajaxMigrateOrphaned() {
+		check_ajax_referer( 'cb_orphaned_booking_migration', 'nonce' );
 
 		if ( $_POST['data'] == 'false' ) {
 			$post_data = 'false';
@@ -17,9 +15,26 @@ class MassOperations
 			$post_data = array_map( 'intval', $post_data );
 		}
 
-		$result = self::migrateOrphaned($post_data);
+		$success = false;
+		try {
+			$success = self::migrateOrphaned( $post_data );
+		} catch ( \Exception $e ) {
+			$errorMessage = $e->getMessage();
+		}
 
-		wp_send_json($result);
+		if ( $success ) {
+			$result = array(
+				'success' => true,
+				'message' => __( 'All selected orphaned bookings have been migrated.', 'commonsbooking' )
+			);
+		} else {
+			$result = array(
+				'success' => false,
+				'message' => $errorMessage ?? __( 'An error occurred while moving bookings.', 'commonsbooking' )
+			);
+		}
+
+		wp_send_json( $result );
 	}
 
 	/**
@@ -29,45 +44,30 @@ class MassOperations
 	 *
 	 * @param int[] $bookingIds
 	 *
-	 * @return array
+	 * @return true
 	 * @throws \Exception
 	 */
-	public static function migrateOrphaned(array $bookingIds): array {
-		$result = array(
-			'success' => true,
-			'message' => ''
-		);
-
-		if (empty($bookingIds)) {
-			$result['success'] = false;
-			$result['message'] = __('No bookings to move selected.','commonsbooking');
-			return $result;
+	public static function migrateOrphaned( array $bookingIds ): bool {
+		if ( empty( $bookingIds ) ) {
+			throw new \Exception( __( 'No bookings to move selected.', 'commonsbooking' ) );
 		}
 
 		$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned();
 		//iterate over them and assign them new locations
-		foreach ($orphanedBookings as $booking) {
-			if ( !in_array($booking->ID(), $bookingIds) ) {
+		foreach ( $orphanedBookings as $booking ) {
+			if ( ! in_array( $booking->ID(), $bookingIds ) ) {
 				continue;
 			}
 			try {
 				$moveLocation = $booking->getMoveableLocation();
 			} catch ( \Exception $e ) {
-				$moveLocation = null;
+				throw new \Exception( __( 'New location not found for booking with ID %s', 'commonsbooking' ) );
 			}
 			if ($moveLocation !== null) {
 				update_post_meta($booking->ID, 'location-id', $moveLocation->ID());
 			}
-			else {
-				$result['message'] .= sprintf( __('New location not found for booking with ID %s','commonsbooking'), $booking->ID() ) ;
-				$result['success'] = false;
-			}
 		}
 
-		if ($result['success']) {
-			$result['message'] = __('All selected orphaned bookings have been migrated.','commonsbooking');
-		}
-
-		return $result;
+		return true;
 	}
 }
