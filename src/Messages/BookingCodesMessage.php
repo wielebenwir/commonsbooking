@@ -181,11 +181,35 @@ class BookingCodesMessage extends Message {
 		$calendar = new iCalendar();
 
         foreach($bookingCodes as $bookingCode) {
-            $title=apply_filters('commonsbooking_emailcodes_icalevent_title',
-                            $bookingCode->getItemName() . " (" . $bookingCode->getCode() . ")", $bookingCode);
-            $desc=apply_filters('commonsbooking_emailcodes_icalevent_desc',
-                        sprintf( __( 'booking code for item "%1$s": %2$s', 'commonsbooking' ), $bookingCode->getItemName(),$bookingCode->getCode()),
-                        $bookingCode);
+	        /**
+	         * Default title of booking codes ical event
+	         *
+	         * @param string default title
+	         * @param BookingCode object
+	         *
+	         * @since 2.9.0
+	         */
+            $title = apply_filters( 'commonsbooking_emailcodes_icalevent_title',
+				$bookingCode->getItemName() . " (" . $bookingCode->getCode() . ")",
+				$bookingCode
+            );
+
+	        /**
+	         * Default description of booking codes ical event
+	         *
+	         * @param string default description
+	         * @param BookingCode object
+	         *
+	         * @since 2.9.0
+	         */
+			$desc = apply_filters( 'commonsbooking_emailcodes_icalevent_desc',
+				sprintf(
+					__( 'booking code for item "%1$s": %2$s', 'commonsbooking' ),
+					$bookingCode->getItemName(),
+					$bookingCode->getCode()
+				),
+				$bookingCode
+            );
 
 		    $calendar->addEvent( DateTimeImmutable::createFromFormat('Y-m-d',$bookingCode->getDate()), $title, $desc);
         }
