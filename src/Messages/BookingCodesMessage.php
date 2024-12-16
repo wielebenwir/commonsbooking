@@ -56,7 +56,11 @@ class BookingCodesMessage extends Message {
 		if ( empty( $bookingCodes ) ) {
 			return $this->raiseError( __( 'Could not find booking codes for this timeframe/period', 'commonsbooking' ) );
 		}
-
+		/**
+		 * TODO
+		 *
+		 * @since 2.9.0
+		 */
 		$bookingTable = apply_filters(
 			'commonsbooking_emailcodes_rendertable',
 			\CommonsBooking\View\BookingCodes::renderBookingCodesTable( $bookingCodes ),
@@ -64,6 +68,11 @@ class BookingCodesMessage extends Message {
 			'email'
 		);
 
+		/**
+		 * TODO
+		 *
+		 * @since 2.9.0
+		 */
 		$bAddIcal   = apply_filters(
 			'commonsbooking_emailcodes_addical',
 			Settings::getOption( 'commonsbooking_options_bookingcodes', 'mail-booking-' . $this->action . '-attach-ical' ),

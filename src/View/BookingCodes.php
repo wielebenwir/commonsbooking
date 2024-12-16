@@ -408,6 +408,15 @@ HTML;
                 </div>
                 <div class="cmb-td">';
 			if ( $timeframe->hasBookingCodes() ) {
+				/**
+				 * Default rendering of the booking code table.
+				 *
+				 * @param string rendering of booking codes list as html string
+				 * @param array $bookingCodes list of booking codes
+				 * @param string ?
+				 *
+				 * @since 2.9.0
+				 */
 				echo apply_filters(
 					'commonsbooking_emailcodes_rendertable',
 					self::renderBookingCodesTable( $bookingCodes ),
