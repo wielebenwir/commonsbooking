@@ -169,6 +169,7 @@ class Booking extends View {
 				$locationTitle = $location ? $booking->getLocation()->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
 
 				// Prepare row data
+				// FIXME does this follow any schema?
 				$rowData = [
 					'postID'             => $booking->ID,
 					'startDate'          => $booking->getStartDate(),
@@ -251,6 +252,7 @@ class Booking extends View {
 				$bookingDataArray['menu'] = ' <div class="cb-dropdown" style="float:right;"> <div id="cb-bookingdropbtn" class="cb-dropbtn"></div> <div class="cb-dropdown-content">' . $menuitems . '</div> </div>';
 			}
 
+			// TODO does this account for empty entries in data, when apply filters return empty booking object??? what purpose has the booking_filter?
 			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
 				$totalCount                      = count( $bookingDataArray['data'] );
 				$bookingDataArray['total']       = $totalCount;
