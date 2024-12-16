@@ -120,7 +120,13 @@ abstract class CustomPostType {
 			}
 		}
 
-		// allows to programmatically add custom metaboxes
+		/**
+		 * Default list of cmb2 meta boxes definitions.
+		 *
+		 * @param array $metaDataFields of arrays with [id, name, type, desc] keys.
+		 *
+		 * @since 2.9.2
+		 */
 		$metaDataFields = apply_filters( 'commonsbooking_custom_metadata', $metaDataFields );
 
 		if ( array_key_exists( $type, $metaDataFields ) ) {

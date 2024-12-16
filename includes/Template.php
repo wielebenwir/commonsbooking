@@ -47,7 +47,16 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 			$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
 		}
 
-		// Allow 3rd party plugin filter template file from their plugin
+		/**
+		 * Allow 3rd party plugin filter template file from their plugin
+		 *
+		 * @param string template path
+		 * @param string slug
+		 * @param string name
+		 * @param string plugin slug
+		 *
+		 * @since 2.2.4
+		 */
 		$template = apply_filters( 'commonsbooking_get_template_part', $template, $slug, $name, $plugin_slug );
 
 		$has_post_thumbnail = ( has_post_thumbnail() ) ? 'has-post-thumbnail' : 'no-post-thumbnail'; // @TODO this feils because we have no global post anymore

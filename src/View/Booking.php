@@ -231,6 +231,15 @@ class Booking extends View {
 				// If search term was submitted, filter for it.
 				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
 					$rowData['actions']         = $actions;
+
+					/**
+					 * Default assoc array of row data and the booking object, which gets added to the booking list data result.
+					 *
+					 * @param array $rowData
+					 * @param \CommonsBooking\Model\Booking $booking
+					 *
+					 * @since 2.7.3
+					 */
 					$bookingDataArray['data'][] = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
 				}
 			}

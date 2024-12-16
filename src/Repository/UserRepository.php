@@ -18,6 +18,11 @@ class UserRepository {
 	}
 
 	public static function getManagerRoles(): array {
+		/**
+		 * Default list of manager roles
+		 *
+		 * @since 2.8.3
+		 */
 		return apply_filters( 'commonsbooking_manager_roles', [ Plugin::$CB_MANAGER_ID ] );
 	}
 
@@ -27,6 +32,11 @@ class UserRepository {
 	 * @return array
 	 */
 	public static function getAdminRoles(): array {
+		/**
+		 * Default list of admin roles
+		 *
+		 * @since 2.8.3
+		 */
 		return apply_filters( 'commonsbooking_admin_roles', [ 'administrator' ] );
 	}
 
