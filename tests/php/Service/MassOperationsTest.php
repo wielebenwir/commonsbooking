@@ -33,6 +33,7 @@ class MassOperationsTest extends CustomPostTypeTest {
 		$this->assertTrue( MassOperations::migrateOrphaned( [ $orphanMove->ID ] ) );
 
 		$this->assertFalse( $orphanMove->isOrphaned() );
+		$this->assertTrue( $orphanStay->isOrphaned() );
 		$this->assertEquals( $newLocation, get_post_meta( $orphanMove->ID, 'location-id', true ) );
 		$this->expectExceptionMessage( 'No bookings to move selected.' );
 		//empty array given
