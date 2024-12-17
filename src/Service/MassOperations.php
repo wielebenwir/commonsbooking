@@ -55,19 +55,22 @@ class MassOperations {
 		$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned();
 		//iterate over them and assign them new locations
 		foreach ( $orphanedBookings as $booking ) {
-			if ( ! in_array( $booking->ID(), $bookingIds ) ) {
+			if ( ! in_array( $booking->ID, $bookingIds ) ) {
 				continue;
 			}
 			try {
 				$moveLocation = $booking->getMoveableLocation();
+				if ( $moveLocation === null ) {
+					throw new \Exception( sprintf( __( 'New location not found for booking with ID %s', 'commonsbooking' ), $booking->ID ) );
+				}
 			} catch ( \Exception $e ) {
-				throw new \Exception( __( 'New location not found for booking with ID %s', 'commonsbooking' ) );
+				throw new \Exception( sprintf( __( 'New location not found for booking with ID %s', 'commonsbooking' ), $booking->ID ) );
 			}
-			if ( \CommonsBooking\Repository\Booking::getExistingBookings( $booking->getItemID(), $moveLocation->ID(), $booking->getStartDate(), $booking->getEndDate() ) ) {
-				throw new \Exception( __( 'There is already a booking on the new location during the timeframe of an existing booking.', 'commonsbooking' ) );
+			if ( \CommonsBooking\Repository\Booking::getExistingBookings( $booking->getItemID(), $moveLocation->ID, $booking->getStartDate(), $booking->getEndDate() ) ) {
+				throw new \Exception( sprintf( __( 'There is already a booking on the new location during the timeframe of booking with ID %s.', 'commonsbooking' ), $booking->ID ) );
 			}
 			if ( $moveLocation !== null ) {
-				update_post_meta( $booking->ID, 'location-id', $moveLocation->ID() );
+				update_post_meta( $booking->ID, 'location-id', $moveLocation->ID );
 			}
 		}
 
