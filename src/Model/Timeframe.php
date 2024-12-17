@@ -955,6 +955,19 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
+	 * Returns true when timeframe has ended
+	 *
+	 * @return bool
+	 */
+	public function isPast(): bool {
+		if ( $this->getEndDate() < current_time( 'timestamp' ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Returns grid size in hours.
 	 * This means the length of the individual bookable slots.
 	 * For example if the grid is 2, the bookable slots are 2 hours long.
