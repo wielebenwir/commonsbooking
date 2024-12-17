@@ -863,11 +863,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			[$locationID],
 			[$itemID],
 			null,
-			true
+			true,
+			$this->getStartDate()
 		);
 		foreach ( $restrictions as $restriction ) {
 			if (
-				$restriction->getType() == Restriction::TYPE_REPAIR && $restriction->isActive()) {
+				$restriction->getType() == Restriction::TYPE_REPAIR ) {
 				$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $restriction );
 				foreach ( $bookings as $booking ) {
 					if ( $booking->ID == $this->ID ) {
