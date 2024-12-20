@@ -170,7 +170,10 @@ module.exports = function (grunt) {
 				],
 				tasks: [
 					'dart-sass:adminDev', 'dart-sass:publicDev'
-				]
+				],
+                options: {
+                    livereload: true
+                }
 			},
 			js: {
 				files: [
