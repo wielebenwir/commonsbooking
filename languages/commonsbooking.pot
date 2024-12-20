@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-02T14:15:17+00:00\n"
+"POT-Creation-Date: 2024-12-17T17:15:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1852,16 +1852,25 @@ msgstr ""
 msgid "Load Holidays"
 msgstr ""
 
-#: src/Service/MassOperations.php:43
+#: src/Service/MassOperations.php:28
+msgid "All selected orphaned bookings have been migrated."
+msgstr ""
+
+#: src/Service/MassOperations.php:33
+msgid "An error occurred while moving bookings."
+msgstr ""
+
+#: src/Service/MassOperations.php:52
 msgid "No bookings to move selected."
 msgstr ""
 
-#: src/Service/MassOperations.php:62
+#: src/Service/MassOperations.php:64
+#: src/Service/MassOperations.php:67
 msgid "New location not found for booking with ID %s"
 msgstr ""
 
-#: src/Service/MassOperations.php:68
-msgid "All selected orphaned bookings have been migrated."
+#: src/Service/MassOperations.php:70
+msgid "There is already a booking on the new location during the timeframe of booking with ID %s."
 msgstr ""
 
 #: src/Service/TimeframeExport.php:89
