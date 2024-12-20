@@ -197,7 +197,7 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
                               title="<?php echo commonsbooking_sanitizeHTML( __('activate to show the marker tooltips permanently' ,'commonsbooking')); ?>"></span>
                     </th>
                     <td><input type="checkbox"
-                               name="cb_map_options[marker_tooltip_permanent]" <?php echo  MapAdmin::get_option($cb_map_id, 'marker_tooltip_permanent' ,'commonsbooking') ? 'checked="checked"' : '' ?> value="on"></td>
+                               name="cb_map_options[marker_tooltip_permanent]" <?php echo  MapAdmin::get_option($cb_map_id, 'marker_tooltip_permanent') ? 'checked="checked"' : '' ?> value="on"></td>
                 </tr>
             </table>
         </details>
@@ -206,10 +206,10 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
         <details>
             <summary><?php echo commonsbooking_sanitizeHTML( __( 'Marker Popup' ,'commonsbooking')); ?></summary>
             <table class="text-left">
-			<!-- 
+			<!--
 				deactivated popup information because we dont want to show contact infos before booking and do not want to display long pickup instructions here
 				needs to be optmized in future version
-				
+
                 <tr>
                     <th>
                         <?php echo commonsbooking_sanitizeHTML( __('show location opening hours' ,'commonsbooking')); ?>:
