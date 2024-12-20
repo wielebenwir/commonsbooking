@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\View;
 
-use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\CustomPost;
@@ -14,7 +13,6 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use DateInterval;
 use DateTime;
 use Exception;
 use WP_Post;

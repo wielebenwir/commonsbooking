@@ -127,7 +127,7 @@ class TimeframeExportTest extends CustomPostTypeTest
 		$this->assertFileIsReadable($testFile);
 		$content = file_get_contents($testFile);
 		$this->assertNotEmpty($content);
-		$objects = $this->csvStringToStdObjects($content);
+		$objects = static::csvStringToStdObjects($content);
 		$this->assertEquals(1, count($objects));
 		$exportedBooking = reset($objects);
 		$this->assertEquals($this->booking->ID, $exportedBooking->ID);
@@ -146,7 +146,7 @@ class TimeframeExportTest extends CustomPostTypeTest
 		);
 		$export->getExportData();
 		$csv = $export->getCSV();
-		$objects = $this->csvStringToStdObjects($csv);
+		$objects = static::csvStringToStdObjects($csv);
 		$this->assertEquals(1, count($objects));
 		$exportedBooking = reset($objects);
 		$this->assertEquals($this->booking->ID, $exportedBooking->ID);

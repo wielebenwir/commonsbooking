@@ -1,7 +1,6 @@
 <?php
 
 
-use CommonsBooking\Helper;
 use CommonsBooking\Service\BookingRule;
 use CommonsBooking\View\Migration;
 use CommonsBooking\Helper\Wordpress;
@@ -15,11 +14,11 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 // We need static types, because german month names don't work for datepicker
 $dateFormat = "d/m/Y";
-if ( strpos( get_locale(), 'de_' ) !== false ) {
+if ( str_starts_with( get_locale(), 'de_' ) ) {
 	$dateFormat = "d.m.Y";
 }
 
-if ( strpos( get_locale(), 'en_' ) !== false ) {
+if ( str_starts_with( get_locale(), 'en_' ) ) {
 	$dateFormat = "m/d/Y";
 }
 
@@ -468,7 +467,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				)
 			),
 			/* image options end */
-			
+
 			/* field group color setting */
 
 			'colorscheme' => array(
@@ -536,7 +535,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'desc'    => commonsbooking_sanitizeHTML( __( 'The color used for the background of tables and similar elements', 'commonsbooking' ) ),
 						'default' => '#f6f6f6',
 					),
-					
+
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Notice Background Color', 'commonsbooking' ) ),
 						'id'      => 'colorscheme_noticebackgroundcolor',
@@ -784,7 +783,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'id'   => 'pre-booking-reminder-activate',
 						'type' => 'checkbox',
 					),
-					// E-Mail pre booking reminder 
+					// E-Mail pre booking reminder
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
 						'id'      => 'pre-booking-reminder-subject',
@@ -807,7 +806,7 @@ For booking details and cancellation, click on this booking link: {{booking:book
 {{booking:getEmailSignature}}', 'commonsbooking' ) ),
 					),
 
-					// settings pre booking reminder -- min days 
+					// settings pre booking reminder -- min days
 					array(
 						'name'       => commonsbooking_sanitizeHTML( __( 'Sent reminder x days before booking start', 'commonsbooking' ) ),
 						'id'         => 'pre-booking-days-before',
@@ -881,7 +880,7 @@ For booking details and cancellation, click on this booking link: {{booking:book
 						'id'   => 'post-booking-notice-activate',
 						'type' => 'checkbox',
 					),
-					// E-Mail post booking reminder 
+					// E-Mail post booking reminder
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'E-mail subject', 'commonsbooking' ) ),
 						'id'      => 'post-booking-notice-subject',
@@ -1136,21 +1135,21 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
-						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
+						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ),
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_location') ) ),
 						'id'   => TimeframeExport::LOCATION_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
-						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ), 
+						'desc' => sprintf ( commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ),
 						commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields('cb_item') ) ),
 						'id'   => TimeframeExport::ITEM_FIELD,
 						'type' => 'text'
 					),
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'User-Fields', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ), 
+						'desc' => commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a userfield or a meta-field. Comma separated list.', 'commonsbooking' ) ),
 						'id'   => TimeframeExport::USER_FIELD,
 						'type' => 'text'
 					),
