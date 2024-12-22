@@ -850,6 +850,36 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 	}
 
+	/**
+	 * Will return if a booking is affected by a total breakdown ( the booked item is not usable ).
+	 * Because since #866 not all total breakdowns are cancelled, we need a way to make sure that the user
+	 * will not be notified about their upcoming bookings or asked to give feedback because they might not have used the item.
+	 * @return bool true if booking is affected by a total breakdown
+	 */
+	public function hasTotalBreakdown(): bool {
+		$itemID = $this->getItem()->ID;
+		$locationID = $this->getLocation()->ID;
+		$restrictions = \CommonsBooking\Repository\Restriction::get(
+			[$locationID],
+			[$itemID],
+			null,
+			true,
+			$this->getStartDate()
+		);
+		foreach ( $restrictions as $restriction ) {
+			if (
+				$restriction->getType() == Restriction::TYPE_REPAIR ) {
+				$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $restriction );
+				foreach ( $bookings as $booking ) {
+					if ( $booking->ID == $this->ID ) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
     /**
      * Returns formatted user info based on the template field in settings -> templates
      *
