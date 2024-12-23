@@ -55,6 +55,6 @@
     "slope-it/clock-mock": "^0.4.0",
     "phpunit/php-code-coverage": "^9.2.32",
     "myclabs/deep-copy": "^1.12.0",
-    "phpstan/phpstan": "^1.12"
+    "phpstan/phpstan": "^2.0"
   }
 }
