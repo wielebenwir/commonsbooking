@@ -3,13 +3,9 @@ parameters:
   scanFiles:
     - commonsbooking.php
     - vendor/cmb2/cmb2/includes/helper-functions.php
-  scanDirectories:
-    - /tmp/wordpress
-    - /tmp/wordpress-tests-lib
   paths:
     - commonsbooking.php
     - src/
-    - tests/
     - includes/
   level: 1
   ignoreErrors:
