@@ -3,6 +3,8 @@ parameters:
   scanFiles:
     - commonsbooking.php
     - vendor/cmb2/cmb2/includes/helper-functions.php
+    - vendor/cmb2/cmb2/includes/CMB2_Utils.php
+    - vendor/cmb2/cmb2/includes/CMB2_Field.php
   paths:
     - commonsbooking.php
     - src/
