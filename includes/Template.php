@@ -81,5 +81,6 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 		} else if ( $template && $include === false ) {
 			return $before_html . $template . $after_html;
 		}
+		return '';
 	}
 }
