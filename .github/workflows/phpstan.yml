@@ -1,0 +1,57 @@
+name: PHPStan
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+    branches:
+      - 'master'
+
+env:
+  DB_DATABASE: wordpress_test
+  DB_USER: root
+  DB_PASSWORD: ''
+
+jobs:
+  phpstan:
+    name: 'WP latest on PHP 8.3'
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up MySQL
+      run: |
+        sudo /etc/init.d/mysql start
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: uopz
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies (other PHP versions)
+      run: |
+        bash bin/install-wp-tests.sh wordpress_test root root localhost latest
+        composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+    - name: Run static suite
+      run: |
+        composer dump-autoload -o
+
+
+    - uses: actions/checkout@v3
+    - uses: php-actions/composer@v6
+
+    - name: PHPStan Static Analysis
+      uses: php-actions/phpstan@v3
+      with:
+        configuration: phpstan.neon
