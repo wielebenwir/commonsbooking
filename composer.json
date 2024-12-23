@@ -6,7 +6,8 @@
     "platform-check": false,
     "allow-plugins": {
       "php-http/discovery": true,
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true
     }
   },
   "autoload": {
@@ -55,6 +56,8 @@
     "slope-it/clock-mock": "^0.4.0",
     "phpunit/php-code-coverage": "^9.2.32",
     "myclabs/deep-copy": "^1.12.0",
-    "phpstan/phpstan": "^1.12"
+    "phpstan/phpstan": "^1.12",
+    "szepeviktor/phpstan-wordpress": "^1.3",
+    "phpstan/extension-installer": "^1.4"
   }
 }
