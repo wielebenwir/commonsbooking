@@ -12,11 +12,6 @@ on:
     branches:
       - 'master'
 
-env:
-  DB_DATABASE: wordpress_test
-  DB_USER: root
-  DB_PASSWORD: ''
-
 jobs:
   phpstan:
     name: 'WP latest on PHP 8.3'
@@ -26,10 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up MySQL
-      run: |
-        sudo /etc/init.d/mysql start
-
+    # TODO Use the composer action below
     - uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
@@ -40,15 +32,13 @@ jobs:
 
     - name: Install dependencies (other PHP versions)
       run: |
-        bash bin/install-wp-tests.sh wordpress_test root root localhost latest
         composer install --prefer-dist --no-progress --ignore-platform-reqs
 
     - name: Run static suite
       run: |
         composer dump-autoload -o
 
-
-    #- uses: actions/checkout@v3
+    #- uses: actions/checkout@v4
     #- uses: php-actions/composer@v6
 
     - name: PHPStan Static Analysis
