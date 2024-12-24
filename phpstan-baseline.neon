@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Action callback returns bool but should not return anything\\.$#"
+			count: 1
+			path: src/Wordpress/CustomPostType/CustomPostType.php
