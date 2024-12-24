@@ -375,8 +375,21 @@ HTML;
                 </div>
                 <div class="cmb-td">';
             if($timeframe->hasBookingCodes()) {
-                echo apply_filters('commonsbooking_emailcodes_rendertable',
-                                self::renderBookingCodesTable($bookingCodes),$bookingCodes,'timeframe_form');
+	            /**
+	             * Default rendering of the booking code table.
+	             *
+	             * @param string rendering of booking codes list as html string
+	             * @param array $bookingCodes list of booking codes
+	             * @param string ?
+	             *
+	             * @since 2.9.0
+	             */
+                echo apply_filters(
+					'commonsbooking_emailcodes_rendertable',
+					self::renderBookingCodesTable($bookingCodes),
+					$bookingCodes,
+					'timeframe_form'
+                );
 				echo '<br>';
 				echo '<p  class="cmb2-metabox-description">';
 	                echo sprintf( __('Only showing booking codes for the next %s days.', 'commonsbooking'), $bcToShow );
