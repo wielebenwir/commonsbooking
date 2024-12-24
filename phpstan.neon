@@ -13,8 +13,7 @@ parameters:
     - includes/
   level: 1
   ignoreErrors:
-#    - identifier: missingType.iterableValue
-#    - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
+    - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
     - '#Instantiated class (CommonsBooking.*CB_Data) not found.#'
     - '#Function cb_object_to_array not found.#'
     
