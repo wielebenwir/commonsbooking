@@ -78,16 +78,15 @@ class LocationBookingReminderMessage extends Message {
 			]
 		);
 
+		$sendMessageToBeFiltered = $this;
 		/**
 		 * Default location booking reminder message
 		 *
-		 * @param LocationBookingReminderMessage object to be send.
-		 *
-		 * @return * TODO should return bool or object?
-		 *
 		 * @since 2.9.2
+		 *
+		 * @param LocationBookingReminderMessage $sendMessageToBeFiltered object to be sent.
 		 */
-		$sendMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $this );
+		$sendMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $sendMessageToBeFiltered );
 		if ( $sendMessage ) {
 			$this->sendNotificationMail();
 		}

@@ -90,59 +90,87 @@ abstract class Message {
 		return $this->action;
 	}
 
+	/**
+	 * Returns recipient address of the message.
+	 *
+	 * @return string|null
+	 */
 	public function getTo() {
+		$recipient     = $this->to;
+		$messageAction = $this->getAction();
 		/**
-         * E-Mail message recipient
-		 *
-         * @since 2.7.3 refactored filter name from cb_mail_to
-		 * @since 2.1.1
-         * 
-		 * @param string email address recipient
-         * @param string email action (see valid actions of the implementing message class)
-		 */
-		return apply_filters( 'commonsbooking_mail_to', $this->to, $this->getAction() );
+		* E-Mail message recipient
+		*
+		* @since 2.7.3 refactored filter name from cb_mail_to
+		* @since 2.1.1
+		*
+		* @param string $recipient email address recipient
+		* @param string $messageAction email action (see valid actions of the implementing message class)
+		*/
+		return apply_filters( 'commonsbooking_mail_to', $recipient, $messageAction );
 	}
 
 	public function getHeaders() {
 		return $this->headers;
 	}
 
+	/**
+	 * Subject of the email message.
+	 *
+	 * @return string|null
+	 */
 	public function getSubject() {
+		$subject       = $this->subject;
+		$messageAction = $this->getAction();
 		/**
-         * E-Mail message subject
+		 * E-Mail message subject
 		 *
-         * @since 2.7.3 refactored filter name from cb_mail_subject
+		 * @since 2.7.3 refactored filter name from cb_mail_subject
 		 * @since 2.1.1
-         * 
-		 * @param string email subject
-         * @param string email action (see valid actions of the implementing message class)
+		 *
+		 * @param string $subject email subject
+		 * @param string $messageAction email action (see valid actions of the implementing message class)
 		 */
-		return apply_filters( 'commonsbooking_mail_subject', $this->subject, $this->getAction() );
+		return apply_filters( 'commonsbooking_mail_subject', $subject, $messageAction );
 	}
 
+	/**
+	 * Return message body.
+	 *
+	 * @return string|null
+	 */
 	public function getBody() {
+		$body          = $this->body;
+		$messageAction = $this->getAction();
 		/**
-         * E-Mail message body
+		 * E-Mail message body
 		 *
-         * @since 2.7.3 refactored filter name from cb_mail_body
+		 * @since 2.7.3 refactored filter name from cb_mail_body
 		 * @since 2.1.1
-         * 
-		 * @param string email body
-         * @param string email action (see valid actions of the implementing message class)
+		 *
+		 * @param string $body email body
+		 * @param string $messageAction email action (see valid actions of the implementing message class)
 		 */
-		return apply_filters( 'commonsbooking_mail_body', $this->body, $this->getAction() );
+		return apply_filters( 'commonsbooking_mail_body', $body, $messageAction );
 	}
 
+	/**
+	 * Return array of attachment
+	 *
+	 * @return array
+	 */
 	public function getAttachment(): array {
+		$attachment    = $this->attachment;
+		$messageAction = $this->getAction();
 		/**
-         * E-Mail attachment
+		 * E-Mail attachment
 		 *
-         * @since 2.7.3
-         * 
-		 * @param array|null attachment
-         * @param string email action (see valid actions of the implementing message class)
+		 * @since 2.7.3
+		 *
+		 * @param array|null $attachment
+		 * @param string $messageAction email action (see valid actions of the implementing message class)
 		 */
-		return apply_filters( 'commonsbooking_mail_attachment', $this->attachment, $this->getAction() );
+		return apply_filters( 'commonsbooking_mail_attachment', $attachment, $messageAction );
 	}
 
 	/**

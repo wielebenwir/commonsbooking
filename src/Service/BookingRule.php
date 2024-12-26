@@ -331,7 +331,7 @@ class BookingRule {
 		/**
 		 * Default list of booking rules that get applied before booking confirmation
 		 *
-		 * @param BookingRule[] list of booking rule objects
+		 * @param BookingRule[] $defaultRuleSet list of booking rule objects
 		 *
 		 * @since 2.9 bigger refactoring # TODO
 		 * @since 2.7.4

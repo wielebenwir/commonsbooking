@@ -27,7 +27,7 @@ class CB {
 	 * @param mixed            $args
 	 * @param callable         $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
 	 *
-	 * @return Property of (custom) post (sanitized) or null if not found
+	 * @return string|null property of (custom) post (sanitized) or null if not found
 	 * @throws Exception
 	 */
 	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
@@ -54,14 +54,15 @@ class CB {
 		$result = self::lookUp( $key, $property, $wpObject, $args, $sanitizeFunction );
 
 		/**
-         * Default value for post type properties.
-		 * 
-         *`The dynamic part of the hook $key is the name of the post type and the $property is the name of the meta field.
-		 * 
-         * @since 2.7.1 refactored filter name from cb_tag_* to its current form
+		 * Default value for post type properties.
+		 *
+		 * The dynamic part of the hook $key is the name of the post type and the $property is the name of the meta
+		 * field.
+		 *
+		 * @since 2.7.1 refactored filter name from cb_tag_* to its current form
 		 * @since 2.1.1
 		 *
-		 * @param string|null
+		 * @param string|null $result from property lookup
 		 */
 		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result );
 	}

@@ -169,7 +169,8 @@ class Booking extends View {
 				$locationTitle = $location ? $booking->getLocation()->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
 
 				// Prepare row data
-				// FIXME does this follow any schema?
+				// FIXME does this follow any common schema, which we already use when exposing this data?
+				// If not, why not expose this as own type?
 				$rowData = [
 					'postID'             => $booking->ID,
 					'startDate'          => $booking->getStartDate(),
@@ -236,10 +237,10 @@ class Booking extends View {
 					/**
 					 * Default assoc array of row data and the booking object, which gets added to the booking list data result.
 					 *
-					 * @param array $rowData
-					 * @param \CommonsBooking\Model\Booking $booking
-					 *
 					 * @since 2.7.3
+					 *
+					 * @param array                         $rowData assoc array of one row booking data
+					 * @param \CommonsBooking\Model\Booking $booking booking model of one row booking data
 					 */
 					$bookingDataArray['data'][] = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
 				}

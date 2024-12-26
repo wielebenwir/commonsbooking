@@ -174,7 +174,17 @@ function commonsbooking_isCurrentUserAdmin() {
 		return false; }
 	$user = wp_get_current_user();
 
-	return apply_filters( 'commonsbooking_isCurrentUserAdmin', commonsbooking_isUserAdmin( $user ) );
+	$isAdmin = commonsbooking_isUserAdmin( $user );
+	/**
+	 * Default value if current user is admin.
+	 *
+	 * @since 2.10.0 add $user param
+	 * @since 2.4.3
+	 *
+	 * @param bool         $isAdmin true or false, if current user is admin
+	 * @param null|WP_User $user current user
+	 */
+	return apply_filters( 'commonsbooking_isCurrentUserAdmin', $isAdmin, $user );
 }
 
 /**

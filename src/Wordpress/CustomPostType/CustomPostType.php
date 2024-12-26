@@ -123,9 +123,9 @@ abstract class CustomPostType {
 		/**
 		 * Default list of cmb2 meta boxes definitions.
 		 *
-		 * @param array $metaDataFields of arrays with [id, name, type, desc] keys.
-		 *
 		 * @since 2.9.2
+		 *
+		 * @param array $metaDataFields of arrays with [id, name, type, desc] keys.
 		 */
 		$metaDataFields = apply_filters( 'commonsbooking_custom_metadata', $metaDataFields );
 

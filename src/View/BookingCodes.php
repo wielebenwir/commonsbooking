@@ -441,7 +441,7 @@ HTML;
 	/**
 	 * Renders HTML table of bookingCodes List.
 	 *
-	 * @param $bookingCodes array : CommonsBooking\Model\BookingCode
+	 * @param CommonsBooking\Model\BookingCode[] $bookingCodes list of booking codes
 	 *
 	 * @return string HTML table
 	 */
