@@ -56,6 +56,9 @@ class BookingCodesMessage extends Message {
 		if ( empty( $bookingCodes ) ) {
 			return $this->raiseError( __( 'Could not find booking codes for this timeframe/period', 'commonsbooking' ) );
 		}
+
+		$bookingTable = \CommonsBooking\View\BookingCodes::renderTableFor( 'email', $bookingCodes );
+
 		/**
 		 * TODO
 		 *

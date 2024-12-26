@@ -408,21 +408,8 @@ HTML;
                 </div>
                 <div class="cmb-td">';
 			if ( $timeframe->hasBookingCodes() ) {
-				/**
-				 * Default rendering of the booking code table.
-				 *
-				 * @param string rendering of booking codes list as html string
-				 * @param array $bookingCodes list of booking codes
-				 * @param string ?
-				 *
-				 * @since 2.9.0
-				 */
-				echo apply_filters(
-					'commonsbooking_emailcodes_rendertable',
-					self::renderBookingCodesTable( $bookingCodes ),
-					$bookingCodes,
-					'timeframe_form'
-				);
+				echo self::renderTableFor( 'timeframe_form', $bookingCodes );
+
 				echo '<br>';
 				echo '<p  class="cmb2-metabox-description">';
 					printf( __( 'Only showing booking codes for the next %s days.', 'commonsbooking' ), $bcToShow );
@@ -564,6 +551,31 @@ HTML;
 			commonsbooking_sanitizeHTML( __( 'An unknown error occured', 'commonsbooking' ) ),
 			commonsbooking_sanitizeHTML( __( 'Email booking codes', 'commonsbooking' ) ),
 			[ 'back_link' => true ]
+		);
+	}
+
+	/**
+	 * @param string                             $renderTarget code where email is rendered (email|timeframe_form)
+	 * @param CommonsBooking\Model\BookingCode[] $bookingCodes array of string booking codes
+	 *
+	 * @return string|null
+	 */
+	public static function renderTableFor( $renderTarget, $bookingCodes ) {
+		$renderedTable = self::renderBookingCodesTable( $bookingCodes );
+		/**
+		 * Default rendering of the booking code table in the specified target.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param string                             $renderedTable rendering of booking codes list as html string
+		 * @param CommonsBooking\Model\BookingCode[] $bookingCodes list of booking codes
+		 * @param string                             $renderTarget where email is rendered (email|timeframe_form)
+		 */
+		return apply_filters(
+			'commonsbooking_emailcodes_rendertable',
+			$renderedTable,
+			$bookingCodes,
+			$renderTarget
 		);
 	}
 }
