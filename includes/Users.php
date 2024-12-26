@@ -215,24 +215,42 @@ function commonsbooking_isUserAdmin( \WP_User $user ) {
  * @return bool
  */
 function commonsbooking_isUserCBManager( \WP_User $user ): bool {
-	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
+
+	/**
+	 * Default value if current user is cb manager.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param bool    $isManager true or false, if current user is cb manager
+	 * @param WP_User $user current user
+	 */
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
 }
 
 // Check if current user has subscriber role
 function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
 
-	return apply_filters( 'commonsbooking_isCurrentUserSubscriber', in_array( 'subscriber', $user->roles ), $user );
+	$isSubscriber = in_array( 'subscriber', $user->roles );
+	/**
+	 * Default value if current user is subscriber.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param bool    $isSubscriber true or false, if current user is subscriber
+	 * @param WP_User $user current user
+	 */
+	return apply_filters( 'commonsbooking_isCurrentUserSubscriber', $isSubscriber, $user );
 }
 
-// check if current user has CBManager role
+/**
+ * check if current user has CBManager role
+ *
+ * @return bool if is allowed
+ */
 function commonsbooking_isCurrentUserCBManager() {
-
-	$user = wp_get_current_user();
-
-	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
-
-	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
+	return commonsbooking_isUserCBManager( wp_get_current_user() );
 }
 
 /**
