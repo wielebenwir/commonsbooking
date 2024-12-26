@@ -172,7 +172,7 @@ class Booking extends View {
 				$locationTitle = $location ? $booking->getLocation()->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
 
 				// Prepare row data
-				// FIXME does this follow any schema?
+				// FIXME does this follow any schema? why we can't only use booking model and need this structure?
 				$rowData = [
 					"postID"			 => $booking->ID,
 					"startDate"          => $booking->getStartDate(),
@@ -241,12 +241,12 @@ class Booking extends View {
 					/**
 					 * Default assoc array of row data and the booking object
 					 *
-					 * @param array
-					 * @param \CommonsBooking\Model\Booking
-					 *
 					 * @since 2.7.3
+					 *
+					 * @param array                         $rowData assoc array of one row booking data
+					 * @param \CommonsBooking\Model\Booking $booking booking model of one row booking data
 					 */
-					$bookingDataArray['data'][] = apply_filters('commonsbooking_booking_filter', $rowData, $booking);
+					$bookingDataArray['data'][] = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
 				}
 			}
 

@@ -50,12 +50,12 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 		/**
 		 * Allow 3rd party plugin filter template file from their plugin
 		 *
-		 * @param string template path
-		 * @param string slug
-		 * @param string name
-		 * @param string plugin slug
-		 *
 		 * @since 2.2.4
+		 *
+		 * @param string $template template path
+		 * @param string $slug slug
+		 * @param string $name name
+		 * @param string $plugin_slug plugin slug
 		 */
 		$template = apply_filters( 'commonsbooking_get_template_part', $template, $slug, $name, $plugin_slug );
 

@@ -36,15 +36,16 @@ class UserWidget extends WP_Widget {
 		echo commonsbooking_sanitizeHTML($args['before_widget']);
 
 		if ( ! empty( $instance['title'] ) ) {
+			$title = $instance['title'];
 			/**
 			 * Default widget title
 			 *
-			 * @param string widget title
-			 *
 			 * @since 2.10.0 uses commonsbooking prefix
 			 * @since 2.4.0
+			 *
+			 * @param string $title of the widget
 			 */
-			$title = apply_filters( 'commonsbooking_widget_title', $instance['title'] );
+			$title = apply_filters( 'commonsbooking_widget_title', $title );
 			echo commonsbooking_sanitizeHTML($args['before_title'] . $title . $args['after_title']);
 		}
 
