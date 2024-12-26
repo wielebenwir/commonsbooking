@@ -52,17 +52,7 @@ class BookingCodesMessage extends Message {
 		$bookingCodes = BookingCodes::getCodes($timeframeId, $this->tsFrom,$this->tsTo);
         if(empty($bookingCodes)) return $this->raiseError( __( "Could not find booking codes for this timeframe/period", "commonsbooking" ));
 
-		/**
-		 * TODO
-		 *
-		 * @since 2.9.0
-		 */
-        $bookingTable = apply_filters(
-			'commonsbooking_emailcodes_rendertable',
-                      \CommonsBooking\View\BookingCodes::renderBookingCodesTable( $bookingCodes ),
-                      $bookingCodes,
-	                  'email'
-        );
+		$bookingTable = \CommonsBooking\View\BookingCodes::renderTableFor( 'email', $bookingCodes );
 
 		/**
 		 * TODO
