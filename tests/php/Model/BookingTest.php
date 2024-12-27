@@ -6,6 +6,7 @@ use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
+use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
@@ -342,6 +343,37 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $this->testBookingTomorrow->getPost(), $userObj ) );
 		$this->assertTrue( commonsbooking_isCurrentUserAllowedToEdit( $this->testBookingId ) );
 		$this->assertTrue( commonsbooking_isCurrentUserAdmin() );
+	}
+
+	public function testHasTotalBreakdown() {
+		$testBooking = new Booking( $this->createConfirmedBookingStartingToday() );
+		$this->assertFalse( $this->testBookingTomorrow->hasTotalBreakdown() );
+
+		//create a total breakdown that has been active in the past
+		$oldTotalBreakdown = $this->createRestriction(
+			Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime('- 10 days', strtotime( self::CURRENT_DATE )),
+			strtotime('- 9 days', strtotime( self::CURRENT_DATE ))
+		);
+		$this->assertFalse( $testBooking->hasTotalBreakdown() );
+
+		//create a total breakdown that is currently inactive
+		$totalBreakdown = $this->createRestriction(
+			Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			Restriction::STATE_SOLVED
+		);
+		$this->assertFalse( $testBooking->hasTotalBreakdown() );
+
+		//activate the total breakdown
+		update_post_meta( $totalBreakdown, Restriction::META_STATE, Restriction::STATE_ACTIVE );
+
+		$this->assertTrue( $testBooking->hasTotalBreakdown() );
 	}
 
 	/**
