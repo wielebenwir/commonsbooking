@@ -40,7 +40,7 @@ class Map extends CustomPostType {
 		add_shortcode( 'cb_map', array( MapShortcode::class, 'execute' ) );
 
 		// Add actions
-		add_action( 'save_post_' . self::$postType, array( MapAdmin::class, 'validate_options' ), 10, 3 );
+		add_action( 'save_post_' . self::$postType, array( MapAdmin::class, 'validate_options' ), 10, 1 );
 		add_action( 'add_meta_boxes_cb_map', array( MapAdmin::class, 'add_meta_boxes' ) );
 	}
 

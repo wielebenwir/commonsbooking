@@ -227,6 +227,7 @@ class CB1UserFields {
 	/**
 	 * Sets a flat array of user field/value pairs
 	 *
+	 * @since    2.10 deprecated (cb_object_to_array is unspecified)
 	 * @since    0.6
 	 *
 	 */
