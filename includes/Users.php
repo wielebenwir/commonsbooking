@@ -127,7 +127,7 @@ add_filter(
 
 // Add filter to change post counts in admin lists for custom post types.
 foreach ( Plugin::getCustomPostTypes() as $custom_post_type ) {
-	add_filter( 'views_edit-' . $custom_post_type::getPostType(), 'commonsbooking_custom_view_count', 10, 1 );
+	add_filter( 'views_edit-' . $custom_post_type, 'commonsbooking_custom_view_count', 10, 1 );
 }
 
 // Filter function for fix of counts in admin lists for custom post types.

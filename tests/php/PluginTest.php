@@ -18,8 +18,8 @@ class PluginTest extends CustomPostTypeTest {
 			// first, create a post of this type
 			$post = wp_insert_post(
 				[
-					'post_type' => $customPostType::getPostType(),
-					'post_title' => 'Test ' . $customPostType::getPostType(),
+					'post_type' => $customPostType,
+					'post_title' => 'Test ' . $customPostType,
 					'post_status' => 'publish',
 				]
 			);
