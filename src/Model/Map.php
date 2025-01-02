@@ -15,11 +15,14 @@ use Exception;
 class Map extends CustomPost {
 
 	/**
-	 * get geo data from location metadata
+	 * fetches locations and if available the connected items.
+	 * Will only include items and locations when either no categories are set or the item / location has a category that is in the map config
+	 * attaches start / enddate of the bookable timeframe to the item
+	 * Fetches location & item metadata to be displayed on the map
 	 *
 	 * @param $mapItemTerms array of term ids
 	 *
-	 * @return array with postIDs as keys for an array with location data relevant for the map
+	 * @return array with postIDs as keys for an array with location data relevant for this map
 	 * @throws Exception
 	 */
 	public function get_locations( array $mapItemTerms ): array {
@@ -53,6 +56,7 @@ class Map extends CustomPost {
 			$location_meta = get_post_meta( $post->ID, null, true );
 
 			//set serialized empty array if not set
+			//THIS FUNCTIONALITY IS DEPRECATED, closing days were a feature of 0.9.X
 			$closed_days = isset( $location_meta['commons-booking_location_closeddays'] ) ? $location_meta['commons-booking_location_closeddays'][0] : 'a:0:{}';
 
 			$items = [];
