@@ -210,12 +210,4 @@ class Map extends CustomPost {
 		return $locations;
 	}
 
-	/**
-	 * basic check if the given string is valid JSON
-	 **/
-	public static function is_json( $string ): bool {
-		json_decode( $string );
-
-		return ( json_last_error() == JSON_ERROR_NONE );
-	}
 }

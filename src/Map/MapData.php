@@ -64,7 +64,9 @@ class MapData {
 			} else {
 				if ( $data['response']['code'] == 200 ) {
 
-					if ( Map::is_json( $data['body'] ) ) {
+					json_decode( $data['body'] );
+					// Check if the json is valid
+					if ( json_last_error() == JSON_ERROR_NONE  ) {
 						wp_send_json( $data['body'] );
 					} else {
 						wp_send_json_error( [ 'error' => 4 ], 403 );
@@ -289,7 +291,6 @@ class MapData {
 				];
 			}
 		}
-
 		return $settings;
 	}
 }

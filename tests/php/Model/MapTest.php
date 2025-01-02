@@ -5,7 +5,6 @@ namespace CommonsBooking\Tests\Model;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Map;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
-use PHPUnit\Framework\TestCase;
 use SlopeIt\ClockMock\ClockMock;
 
 class MapTest extends CustomPostTypeTest {
@@ -27,14 +26,6 @@ class MapTest extends CustomPostTypeTest {
 		$this->assertEquals( "50667", $locations[ $this->geoLocation->ID ]['address']['zip'] );
 
 		$this->assertEquals( $this->itemId, $locations[ $this->geoLocation->ID ]['items'][0]['id'] );
-	}
-
-	public function testIs_json() {
-		//valid JSON string
-		$this->assertTrue( Map::is_json( '{"key":"value"}' ) );
-		//invalid JSON string
-		$this->assertFalse( Map::is_json( '{"key":"value"' ) );
-
 	}
 
 	public function testCleanup_location_data() {
