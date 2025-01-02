@@ -436,34 +436,28 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		return $locationId;
 	}
 
-	protected function createMap( $options = null ) {
+	protected function createMap() {
 		$mapId = wp_insert_post( [
 			'post_title'  => 'Map',
 			'post_type'   => Map::$postType,
 			'post_status' => 'publish'
 		] );
 
-		//TODO: This is the old map format, remove old tests that are dependent on it
-		if ( $options != null ) {
-			update_post_meta( $mapId, 'cb_map_options', $options );
-		} else {
-			//setup map in new format
-			$defaultValues = array_reduce(
-				Map::getCustomFields(),
-				function ( $result, $option ) {
-					if ( isset( $option['default'] ) ) {
-						$result[ $option['id'] ] = $option['default'];
-					}
+		//setup map in new format
+		$defaultValues = array_reduce(
+			Map::getCustomFields(),
+			function ( $result, $option ) {
+				if ( isset( $option['default'] ) ) {
+					$result[ $option['id'] ] = $option['default'];
+				}
 
-					return $result;
-				},
-				array()
-			);
-			foreach ( $defaultValues as $key => $value ) {
-				update_post_meta( $mapId, $key, $value );
-			}
+				return $result;
+			},
+			array()
+		);
+		foreach ( $defaultValues as $key => $value ) {
+			update_post_meta( $mapId, $key, $value );
 		}
-
 		$this->mapIds[] = $mapId;
 
 		return $mapId;
