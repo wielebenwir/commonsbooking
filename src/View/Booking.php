@@ -172,6 +172,7 @@ class Booking extends View {
 				$locationTitle = $location ? $booking->getLocation()->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
 
 				// Prepare row data
+				// FIXME does this follow any schema? why we can't only use booking model and need this structure?
 				$rowData = [
 					"postID"			 => $booking->ID,
 					"startDate"          => $booking->getStartDate(),
@@ -236,7 +237,16 @@ class Booking extends View {
 				// If search term was submitted, filter for it.
 				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
 					$rowData['actions']         = $actions;
-					$bookingDataArray['data'][] = apply_filters('commonsbooking_booking_filter', $rowData, $booking);
+
+					/**
+					 * Default assoc array of row data and the booking object
+					 *
+					 * @since 2.7.3
+					 *
+					 * @param array                         $rowData assoc array of one row booking data
+					 * @param \CommonsBooking\Model\Booking $booking booking model of one row booking data
+					 */
+					$bookingDataArray['data'][] = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
 				}
 			}
 
@@ -247,6 +257,7 @@ class Booking extends View {
 				$bookingDataArray['menu'] = ' <div class="cb-dropdown" style="float:right;"> <div id="cb-bookingdropbtn" class="cb-dropbtn"></div> <div class="cb-dropdown-content">' . $menuitems . '</div> </div>';
 			}
 
+			// TODO does this account for empty entries in data, when apply filters return empty booking object??? what purpose has the booking_filter?
 			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
 				$totalCount                      = count( $bookingDataArray['data'] );
 				$bookingDataArray['total']       = $totalCount;
