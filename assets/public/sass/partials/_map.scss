@@ -13,6 +13,8 @@
 */
 
 @use "../../../global/sass/partials/variables";
+@use "../../../global/sass/partials/extends";
+@use "layouts";
 
 .cb-wrapper {	
 	
@@ -149,7 +151,7 @@
 .cb-map-filters.cb-wrapper {
 	
 	margin-top: var(--commonsbooking-spacer);
-	@extend .cb-box !optional;
+	@extend .cb-box;
 	
 	input[type="checkbox"] {
 		margin: 0 var(--commonsbooking-spacer-small) 0 0;
@@ -180,7 +182,7 @@
 	}
 
 	.cb-map-filter-group-label {
-		@extend .cb-big !optional;
+		@extend .cb-big;
 		color: var(--commonsbooking-color-primary);
 		margin-bottom: var(--commonsbooking-spacer-small);
 	}
@@ -190,7 +192,7 @@
 	.cb-map-availability-filter,
 	.cb-map-distance-filter {
 		.cb-map-filter-group {
-			@extend .cb-col-50-50-filter !optional;
+			@extend .cb-col-50-50-filter;
 			}
 	}
 	
@@ -247,7 +249,7 @@
 	.cb-map-button-wrapper {
 		text-align: right;
 		button {
-			@extend .cb-button !optional;
+			@extend .cb-button;
 		}
 	}
 }
