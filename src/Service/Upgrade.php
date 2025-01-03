@@ -84,7 +84,7 @@ class Upgrade {
 	 */
 	private function runEveryUpgrade(): void {
 		// set Options default values (e.g. if there are new fields added)
-		AdminOptions::SetOptionsDefaultValues();
+		AdminOptions::setOptionsDefaultValues();
 
 		// flush rewrite rules
 		flush_rewrite_rules();

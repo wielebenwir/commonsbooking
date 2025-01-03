@@ -253,7 +253,7 @@ class Plugin {
 
 		// Check if we need to run post options updated actions
 		if ( get_transient( 'commonsbooking_options_saved' ) == 1 ) {
-			AdminOptions::SetOptionsDefaultValues();
+			AdminOptions::setOptionsDefaultValues();
 
 			flush_rewrite_rules();
 
