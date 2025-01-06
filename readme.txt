@@ -83,15 +83,15 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 ### 2.10 (01.01.2025)
 ADDED: When changing the location of an item you will now be given the option to move the bookings to the new location.
 ENHANCED: Export of timeframes no longer time out.
-ENHANCED: Total breakdowns cancelling all bookings can now be disable
+ENHANCED: Total breakdowns cancelling all bookings can now be disabled.
 ENHANCED: Map filter groups are now easier to configure.
 ENHANCED: Loading the map should now be significantly faster.
 ENHANCED: Greatly simplified booking codes; they will also not be generated for the past anymore. (thx @nelarsen)
-ENHANCED: Show past bookings in [cb_bookings] overview
+ENHANCED: Show past bookings in [cb_bookings] overview.
 FIXED: Booking codes now truly random. (thx @nelarsen)
 FIXED: Map sometimes not rendering on certain aspects ratios. (thx @kmohrf)
-FIXED: Saving posts should now be faster
-FIXED: Cache warmup not working in some cases
+FIXED: Saving posts should now be faster.
+FIXED: Cache warmup not working in some cases.
 FIXED: In certain overlapping timeframe configurations timeframes were not shown as bookable. (thx @nelarsen)
 FIXED: Disabled restriction creation for all items / locations because of a missing permission check.
 UPDATED: Dependencies
