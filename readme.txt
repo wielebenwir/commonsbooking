@@ -80,7 +80,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
-### 2.10 (01.01.2025)
+### 2.10 (09.01.2025)
 ADDED: When changing the location of an item you will now be given the option to move the bookings to the new location.
 ENHANCED: Export of timeframes no longer time out.
 ENHANCED: Total breakdowns cancelling all bookings can now be disabled.
