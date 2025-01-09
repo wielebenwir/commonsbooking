@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2024-12-12 16:01+0100\n"
+"PO-Revision-Date: 2025-01-06 18:35+0100\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
 "Language: de_DE\n"
@@ -850,7 +850,7 @@ msgstr "Buchungen auf neue Version migrieren"
 msgid "Migrate bookings to new format so that they are listed at bookings menu item. <br><strong>This function is only for special cases during migration. Please use it only in case of problems with migration.</strong>"
 msgstr "Migriere Buchungen in ein neues Format, sodass diese unter dem Menüpunkt Buchungen aufgelistet werden. <br><strong>Diese Funktion gilt nur für Sonderfälle während der Migration. Bitte nur bei Problemen währen der Migration verwenden. </strong>"
 
-#: includes/OptionsArray.php:1125 src/View/MassOperations.php:110
+#: includes/OptionsArray.php:1125 src/View/MassOperations.php:109
 #: src/View/Migration.php:107
 msgid "Migrate bookings"
 msgstr "Buchungen migrieren"
@@ -1401,14 +1401,14 @@ msgstr "iCalendar Link:"
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: src/View/Booking.php:193 src/View/MassOperations.php:39
+#: src/View/Booking.php:193 src/View/MassOperations.php:38
 #: src/Wordpress/CustomPostType/Booking.php:441
 #: src/Wordpress/CustomPostType/Timeframe.php:99
 #: templates/shortcode-bookings.php:73
 msgid "User"
 msgstr "Nutzende*r"
 
-#: src/View/Booking.php:197 src/View/MassOperations.php:43
+#: src/View/Booking.php:197 src/View/MassOperations.php:42
 #: src/Wordpress/CustomPostType/Booking.php:959
 #: src/Wordpress/CustomPostType/Restriction.php:472
 msgid "Status"
@@ -1525,7 +1525,7 @@ msgstr " Optionen aktualisiert / gespeichert"
 msgid "migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab"
 msgstr "Migration wird durchgeführt .. Bitte warten... <br>Dies kann einige Minuten dauern. Browserfenster bitte nicht schließen"
 
-#: src/View/MassOperations.php:100 src/View/Migration.php:53
+#: src/View/MassOperations.php:99 src/View/Migration.php:53
 #: src/View/Migration.php:98
 msgid "Migration finished"
 msgstr "Migration beendet"
@@ -1538,11 +1538,11 @@ msgstr "Abrufen von Standort-Geokoordinaten."
 msgid "If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking."
 msgstr "Wenn diese Option aktiviert ist, versucht CommonsBooking beim Import die passenden Geo-Koordinaten aus den Adressdaten der Standorte abzuleiten. Für diese Aufgabe verwenden wir eine Schnittstelle zu einem GeoCoder-Dienst (Nominatim). Dieser Dienst erlaubt nur eine Abfrage pro Sekunde, so dass sich die Laufzeit der Migration um 1 Sekunde pro Standort erhöht. Die Geokoordinaten werden benötigt, um die in CommonsBooking integrierte Standortkarte zu nutzen."
 
-#: src/View/MassOperations.php:95 src/View/Migration.php:93
+#: src/View/MassOperations.php:94 src/View/Migration.php:93
 msgid "migration in process .. please wait ..."
 msgstr "Migration wird durchgeführt … bitte warten ..."
 
-#: src/View/MassOperations.php:105 src/View/Migration.php:103
+#: src/View/MassOperations.php:104 src/View/Migration.php:103
 msgid "Migration failed"
 msgstr "Migration fehlgeschlagen"
 
@@ -1562,7 +1562,7 @@ msgstr "CSV Herunterladen"
 msgid "Download Export"
 msgstr "Download Export"
 
-#: src/Model/Booking.php:1027 src/Service/TimeframeExport.php:523
+#: src/Model/Booking.php:1028 src/Service/TimeframeExport.php:523
 #: src/Service/TimeframeExport.php:533 src/Service/TimeframeExport.php:539
 #: src/Service/TimeframeExport.php:549 src/Service/TimeframeExport.php:559
 msgid "Unknown"
@@ -2258,7 +2258,7 @@ msgstr "Benachrichtigungs-E-Mails an Nutzende senden"
 
 #: src/Wordpress/CustomPostType/Restriction.php:486
 msgid "Important: Please save this restriction before clicking the send-button. Dependent of the status of the restriction, the appropriate notifications are sent to all affected users and location admins. You can configure the e-mail templates via Options -> Commonsbooking -> Tab Restrictions"
-msgstr "Wichtig: Bitte speicher diese Einschränkung, bevor du auf den Senden-Button klickst. Abhängig vom Status der Einschränkung werden die entsprechenden Benachrichtigungen an alle betroffenen Nutzenden und Standortadministratrierende gesendet. Du kannst die E-Mail-Vorlagen über Optionen -> Commonsbooking -> Tab-Einschränkungen konfigurieren"
+msgstr "Wichtig: Bitte speichere diese Einschränkung, bevor du auf den Senden-Button klickst. Abhängig vom Status der Einschränkung werden die entsprechenden Benachrichtigungen an alle betroffenen Nutzenden und Standortadministrierenden gesendet. Du kannst die E-Mail-Vorlagen über Optionen -> CommonsBooking -> Einschränkungen konfigurieren"
 
 #: src/Wordpress/CustomPostType/Restriction.php:504
 msgid "Total breakdown"
@@ -3138,7 +3138,7 @@ msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 msgid "It is not possible to access this timeframe on frontend. Please edit timeframe in backend. If you want to check the result of your timeframe settings visit the item or location in frontend to see the booking calender"
 msgstr "Es ist nicht möglich, diesen Zeitrahmen im Frontend abzurufen. Bitte bearbeite den Zeitrahmen im Backend. Wenn du das Ergebnis deiner Zeitrahmeneinstellungen überprüfen möchtest, rufe den Artikel oder Standort im Frontend auf, um den Buchungskalender zu sehen"
 
-#: src/Model/Booking.php:1025
+#: src/Model/Booking.php:1026
 msgid "Cancelled"
 msgstr "Storniert"
 
@@ -4084,27 +4084,27 @@ msgstr "Keine Buchungen zum Umzug ausgewählt."
 msgid "All selected orphaned bookings have been migrated."
 msgstr "Alle ausgewählten verwaisten Buchungen sind migriert worden."
 
-#: src/View/MassOperations.php:38
+#: src/View/MassOperations.php:37
 msgid "ID"
 msgstr "ID"
 
-#: src/View/MassOperations.php:40
+#: src/View/MassOperations.php:39
 msgid "Item name"
 msgstr "Artikelname"
 
-#: src/View/MassOperations.php:41
+#: src/View/MassOperations.php:40
 msgid "Start-date"
 msgstr "Startdatum"
 
-#: src/View/MassOperations.php:42
+#: src/View/MassOperations.php:41
 msgid "End-date"
 msgstr "Enddatum"
 
-#: src/View/MassOperations.php:44
+#: src/View/MassOperations.php:43
 msgid "Location name"
 msgstr "Standortname"
 
-#: src/View/MassOperations.php:45
+#: src/View/MassOperations.php:44
 msgid "New location name"
 msgstr "Name des neuen Standorts"
 
@@ -4116,8 +4116,7 @@ msgstr "Verwaiste Buchungen gefunden, können migriert werden. <a href=\"admin.p
 msgid "Migrate orphaned bookings"
 msgstr "Verwaiste Buchungen migrieren"
 
-#: src/Service/MassOperations.php:64
-#: src/Service/MassOperations.php:67
+#: src/Service/MassOperations.php:64 src/Service/MassOperations.php:67
 msgid "New location not found for booking with ID %s"
 msgstr "Neuer Standort für Buchung mit ID %s konnte nicht gefunden werden"
 
@@ -4211,7 +4210,7 @@ msgstr "Filtergruppen"
 
 #: src/Wordpress/CustomPostType/Map.php:540
 msgid "Filter groups can group item or location categories together to allow for filtering in the map."
-msgstr "Filtergruppen können Artikel- oder Ortskategorien gruppieren, um eine Filterung auf der Karte zu ermöglichen."
+msgstr "Filtergruppen können Artikel- oder Standortkategorien gruppieren, um eine Filterung auf der Karte zu ermöglichen."
 
 #: src/Wordpress/CustomPostType/Map.php:545
 msgid "Filter group {#}"
@@ -4268,6 +4267,14 @@ msgstr "wähle die Kategorie, nach der die auf der Karte angezeigten Standorte v
 #: src/Wordpress/CustomPostType/Map.php:680
 msgid "Copy to clipboard"
 msgstr "In Zwischenablage kopieren"
+
+#: src/Service/MassOperations.php:33
+msgid "An error occurred while moving bookings."
+msgstr "Beim Umziehen der Buchungen ist ein Fehler aufgetreten."
+
+#: src/Service/MassOperations.php:70
+msgid "There is already a booking on the new location during the timeframe of booking with ID %s."
+msgstr "Es existiert bereits eine Buchung für den Standort in dem Zeitraum der existierenden Buchung mit der ID %s."
 
 #~ msgid "Unconfirmed"
 #~ msgstr "Unbestätigt"
