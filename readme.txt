@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.7
-Stable Tag: 2.10
+Stable Tag: 2.10.1
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.1 (09.01.2025)
+FIXED: Fatal error when loading map with certain timeframe configurations
+UPDATED: Dependencies
 
 ### 2.10 (09.01.2025)
 ADDED: When changing the location of an item you will now be given the option to move the bookings to the new location.
