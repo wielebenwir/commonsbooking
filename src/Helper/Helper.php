@@ -19,7 +19,7 @@ class Helper {
 		$characters       = '0123456789abcdefghijklmnopqrstuvwxyz';
 		$charactersLength = strlen( $characters );
 		$randomString     = '';
-		for ( $i = 0; $i < $length; $i ++ ) {
+		for ( $i = 0; $i < $length; $i++ ) {
 			$randomString .= $characters[ rand( 0, $charactersLength - 1 ) ];
 		}
 
@@ -38,7 +38,6 @@ class Helper {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
 		return date_i18n( $date_format, $timestamp );
-
 	}
 
 	/**
@@ -53,7 +52,6 @@ class Helper {
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		return date_i18n( $time_format, $timestamp );
-
 	}
 
 	/**
@@ -65,33 +63,38 @@ class Helper {
 	 */
 	public static function FormattedDateTime( $timestamp ) {
 
-		return Helper::FormattedDate( $timestamp ) . ' ' . Helper::FormattedTime( $timestamp );
+		return self::FormattedDate( $timestamp ) . ' ' . self::FormattedTime( $timestamp );
 	}
 
 	/**
 	 * Returns timestamp of last full hour, needed to get more cache hits.
 	 * Also used to determine if a post is still bookable because it is in the past or not.
+	 *
 	 * @return int
 	 */
 	public static function getLastFullHourTimestamp() {
-		$now = current_time('timestamp');
+		$now = current_time( 'timestamp' );
 		return $now - ( $now % 3600 );
 	}
 
 	/**
 	 * Returns timestamp of last full day, needed to get more cache hits.
+	 *
 	 * @param $timestamp
 	 *
 	 * @return int|mixed|null
 	 */
-	public static function getLastFullDayTimestamp($timestamp = null) {
-		if($timestamp === null) $timestamp = current_time('timestamp');
+	public static function getLastFullDayTimestamp( $timestamp = null ) {
+		if ( $timestamp === null ) {
+			$timestamp = current_time( 'timestamp' );
+		}
 
-		return $timestamp - ( $timestamp % (3600 * 24) );
+		return $timestamp - ( $timestamp % ( 3600 * 24 ) );
 	}
 
 	/**
 	 * Returns CB custom post type if possible.
+	 *
 	 * @param $post
 	 * @param $type
 	 *
@@ -102,10 +105,10 @@ class Helper {
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Booking::$postType ) {
 			$post = new Booking( $post->ID );
 		}
-		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType) {
+		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Item::$postType ) {
 			$post = new Item( $post->ID );
 		}
-		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType) {
+		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Location::$postType ) {
 			$post = new Location( $post->ID );
 		}
 
@@ -136,7 +139,7 @@ class Helper {
 		// Sort by start date.
 		usort(
 			$array_of_ranges,
-			function( $a, $b ) {
+			function ( $a, $b ) {
 				return $a['start_date'] <=> $b['start_date'];
 			}
 		);
@@ -170,12 +173,10 @@ class Helper {
 			} else {
 				// => No overlap, add new interval to result. Use as new last interval
 				$result[] = $next_interval;
-				$last ++;
+				++$last;
 			}
 		}
 
 		return $result;
 	}
-
-
 }

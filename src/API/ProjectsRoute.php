@@ -3,14 +3,13 @@
 
 namespace CommonsBooking\API;
 
-
 use stdClass;
 use WP_REST_Response;
 
 /**
  * Endpoint for information about the lending organisation.
- * Infos like site name, description etc. is retrieved from general Wordpress settings @see https://wordpress.com/support/general-settings/
- * 
+ * Infos like site name, description etc. is retrieved from general WordPress settings @see https://wordpress.com/support/general-settings/
+ *
  * Full schema see, @see https://github.com/wielebenwir/commons-api/blob/master/commons-api.projects.schema.json
  */
 class ProjectsRoute extends BaseRoute {
@@ -52,18 +51,18 @@ class ProjectsRoute extends BaseRoute {
 
 	/**
 	 * Returns raw data collection.
+	 *
 	 * @return object[]
 	 */
 	public function getItemData(): array {
 		return [
 			(object) [
-				"id"          => "1",
-				"name"        => get_bloginfo( 'name' ),
-				"url"         => get_bloginfo( 'url' ),
-				"description" => get_bloginfo( 'description' ),
-				"language"    => get_bloginfo( 'language' ),
-			]
+				'id'          => '1',
+				'name'        => get_bloginfo( 'name' ),
+				'url'         => get_bloginfo( 'url' ),
+				'description' => get_bloginfo( 'description' ),
+				'language'    => get_bloginfo( 'language' ),
+			],
 		];
 	}
-
 }

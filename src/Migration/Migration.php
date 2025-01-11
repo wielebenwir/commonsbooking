@@ -24,7 +24,7 @@ class Migration {
 
 	/**
 	 * Fields we don't want/need to migrate.
-     *
+	 *
 	 * @var string[]
 	 */
 	private static $ignoredMetaFields = [
@@ -135,7 +135,6 @@ class Migration {
 				array_key_exists( 'migrationFunction', $taskFunctions[ $key ] ) &&
 				$taskFunctions[ $key ]['migrationFunction']
 			) {
-
 				if ( $taskIndex >= $taskLimit ) {
 					break;
 				}
@@ -150,9 +149,8 @@ class Migration {
 
 					// If there are items to migrate
 					if ( count( $items ) ) {
-						for ( $index = $task['index']; $index < count( $items ); $index ++ ) {
-
-							if ( $taskIndex ++ >= $taskLimit ) {
+						for ( $index = $task['index']; $index < count( $items ); $index++ ) {
+							if ( $taskIndex++ >= $taskLimit ) {
 								break;
 							}
 
@@ -168,7 +166,7 @@ class Migration {
 
 						// No items for migration found
 					} else {
-						if ( $taskIndex ++ >= $taskLimit ) {
+						if ( $taskIndex++ >= $taskLimit ) {
 							break;
 						}
 						$task['complete'] = 1;
@@ -176,7 +174,7 @@ class Migration {
 
 					// Single Migration
 				} else {
-					if ( $taskIndex ++ >= $taskLimit ) {
+					if ( $taskIndex++ >= $taskLimit ) {
 						break;
 					}
 
@@ -200,8 +198,8 @@ class Migration {
 	public static function migrateLocation( WP_Post $location ): bool {
 		// Collect post data
 		$postData = array_merge(
-            $location->to_array(),
-            [
+			$location->to_array(),
+			[
 				'post_type' => Location::$postType,
 			]
 		);
@@ -211,12 +209,12 @@ class Migration {
 
 		// Exctract e-mails from CB1 contactinfo field so we can migrate it into new cb2 field _cb_location_email
 		$cb1_location_emails = self::fetchEmails(
-            get_post_meta(
-                $location->ID,
-                'commons-booking_location_contactinfo_text',
-                true
-            )
-        );
+			get_post_meta(
+				$location->ID,
+				'commons-booking_location_contactinfo_text',
+				true
+			)
+		);
 
 		if ( $cb1_location_emails ) {
 			$cb1_location_email_string = implode( ',', $cb1_location_emails );
@@ -272,11 +270,11 @@ class Migration {
 		$words = str_word_count( $text, 1, '.@-_' );
 
 		return array_filter(
-            $words,
-            function ( $word ) {
-                return filter_var( $word, FILTER_VALIDATE_EMAIL );
-            }
-        );
+			$words,
+			function ( $word ) {
+				return filter_var( $word, FILTER_VALIDATE_EMAIL );
+			}
+		);
 	}
 
 	/**
@@ -442,14 +440,14 @@ class Migration {
 	public static function migrateItem( WP_Post $item ): bool {
 		// Collect post data
 		$postData = array_merge(
-            $item->to_array(),
-            [
+			$item->to_array(),
+			[
 				'post_type'    => Item::$postType,
 				'post_excerpt' => get_post_meta(
-                    $item->ID,
+					$item->ID,
 					'commons-booking_item_descr',
-                    true
-                ),
+					true
+				),
 			]
 		);
 
@@ -501,22 +499,22 @@ class Migration {
 		];
 
 		// convert cb1 metadata in cb2 postmeta fields
-        // CB2 <-> CB1
+		// CB2 <-> CB1
 		$postMeta[ COMMONSBOOKING_METABOX_PREFIX . 'cb1_post_post_ID' ] = $timeframe['id'];
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_START ]  = strtotime( $timeframe['date_start'] );
 		$postMeta[ \CommonsBooking\Model\Timeframe::REPETITION_END ]    = strtotime( $timeframe['date_end'] );
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_ITEM_ID ]      = $cbItem ? $cbItem->ID : '';
 		$postMeta[ \CommonsBooking\Model\Timeframe::META_LOCATION_ID ]  = $cbLocation ? $cbLocation->ID : '';
-		$postMeta['type']                                               = Timeframe::BOOKABLE_ID;
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_REPETITION ]   = $timeframe_repetition;
-		$postMeta['start-time']                                         = '00:00';
-		$postMeta['end-time']                                           = '23:59';
-		$postMeta['full-day']                                           = 'on';
-		$postMeta['grid']                                               = '0';
-		$postMeta['weekdays']                                           = $weekdays;
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES]                = 'on';
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS]    = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
-		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]                         = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
+		$postMeta['type'] = Timeframe::BOOKABLE_ID;
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_REPETITION ] = $timeframe_repetition;
+		$postMeta['start-time']                                       = '00:00';
+		$postMeta['end-time'] = '23:59';
+		$postMeta['full-day'] = 'on';
+		$postMeta['grid']     = '0';
+		$postMeta['weekdays'] = $weekdays;
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES ]             = 'on';
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS ] = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_daystoshow' );
+		$postMeta[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]                       = Settings::getOption( 'commons-booking-settings-bookings', 'commons-booking_bookingsettings_maxdays' );
 
 		$existingPost = self::getExistingPost( $timeframe['id'], Timeframe::$postType, Timeframe::BOOKABLE_ID );
 
@@ -580,9 +578,9 @@ class Migration {
 	 * @return mixed
 	 */
 	public static function migrateBookingCode( $bookingCode ) {
-		$cb2ItemId      = CB1::getCB2ItemId( $bookingCode['item_id'] );
-		$date           = $bookingCode['booking_date'];
-		$code           = $bookingCode['bookingcode'];
+		$cb2ItemId = CB1::getCB2ItemId( $bookingCode['item_id'] );
+		$date      = $bookingCode['booking_date'];
+		$code      = $bookingCode['bookingcode'];
 
 		$bookingCode = new BookingCode(
 			$date,
@@ -640,5 +638,4 @@ class Migration {
 			wp_set_object_terms( $cb2PostId, $term, $cb1Taxonomy->taxonomy );
 		}
 	}
-
 }
