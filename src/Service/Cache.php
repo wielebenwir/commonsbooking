@@ -252,38 +252,35 @@ trait Cache {
 
 			// First get all pages with cb shortcodes
 			$sql = "SELECT post_content FROM $table_posts WHERE 
-			 (post_content LIKE '%cb_items%' OR
-			  post_content LIKE '%cb_locations%' OR
-			  post_content LIKE '%cb_map%' OR
-			  post_content LIKE '%cb_items_table%' OR
-			  post_content LIKE '%cb_bookings%') AND
-			  post_type LIKE 'page' AND
-			  post_status LIKE 'publish'";
+			  post_content LIKE '%[cb_%]%' AND
+			  post_type = 'page' AND
+			  post_status = 'publish'";
 			$pages = $wpdb->get_results( $sql );
 
-			// Now extract shortcode calles incl. attributes
+			$shortcodeNamesToCache = array_keys(self::$cbShortCodeFunctions);
+
+			$regex = get_shortcode_regex($shortcodeNamesToCache); // robust shortcode-regex generator from Wordpress
+
+			// Now extract shortcode calls including attributes and bodies
 			$shortCodeCalls = [];
 			foreach($pages as $page) {
-				// Get cb_ shortcodes
-				preg_match_all('/\[.*(cb\_.*)\]/i', $page->post_content, $cbShortCodes);
+				preg_match_all("/$regex/", $page->post_content, $shortcodeMatches, PREG_SET_ORDER);
 
-				// If there was found something between the brackets we continue
-				if(count($cbShortCodes) > 1) {
-					$cbShortCodes = $cbShortCodes[1];
+				// Process each matched shortcode
+				foreach ($shortcodeMatches as $match) {
+					$shortCode = $match[2]; // shortcode name e.g., "cb_search"
+					$attributesString = isset($match[3]) ? $match[3] : ''; // e.g., " id=123"
 
-					// each result will be prepared and added as shortcode call
-					foreach ($cbShortCodes as $shortCode) {
-						list($shortCode, $args) = self::getShortcodeAndAttributes($shortCode);
-						$shortCodeCalls[][$shortCode] = $args;
-					}
+					$shortCodeCalls[] = [
+						'shortcode' => $shortCode,
+						'attributes' => self::getShortcodeAndAttributes($shortCode . $attributesString)[1],
+						'body' => isset($match[5]) ? trim($match[5]) : '',
+					];
 				}
 			}
 
 			// Filter duplicate calls
-			$shortCodeCalls = array_intersect_key(
-				$shortCodeCalls,
-				array_unique(array_map('serialize', $shortCodeCalls))
-			);
+			$shortCodeCalls = array_unique($shortCodeCalls, SORT_REGULAR);
 
 			self::runShortcodeCalls($shortCodeCalls);
 
@@ -384,15 +381,16 @@ trait Cache {
 	 * @return void
 	 */
 	private static function runShortcodeCalls( array $shortCodeCalls ): void {
-		foreach($shortCodeCalls as $shortcode) {
-			$shortcodeFunction = array_keys($shortcode)[0];
-			$attributes = $shortcode[$shortcodeFunction];
+		foreach($shortCodeCalls as $shortCodeCall) {
+			$shortcodeFunction = $shortCodeCall['shortcode'];
+			$attributes = $shortCodeCall['attributes'];
+			$shortcodeBody = $shortCodeCall['body'];
 
 			if(array_key_exists($shortcodeFunction, self::$cbShortCodeFunctions)) {
 				list($class, $function) = self::$cbShortCodeFunctions[$shortcodeFunction];
 
 				try {
-					$class::$function( $attributes );
+					$class::$function( $attributes, $shortcodeBody );
 				} catch ( Exception $e ) {
 					// Writes error to log anyway
 					error_log( (string) $e ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -441,6 +439,7 @@ trait Cache {
 		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
 		"cb_locations" => array( \CommonsBooking\View\Location::class, 'shortcode' ),
 		"cb_map" => array( MapShortcode::class, 'execute' ),
+		"cb_search" => array( \CommonsBooking\Map\SearchShortcode::class, 'execute' ),
 		'cb_items_table' => array( Calendar::class, 'renderTable' )
 	];
 
