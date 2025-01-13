@@ -3,6 +3,8 @@
  *
  */
 
+@use "../../../global/sass/partials/extends";
+
 .cb-admin-page {
 	.cb-admin-cols {
 		display: flex;
@@ -18,7 +20,7 @@
 		ul {
 				li {
 					margin-top: 15px;
-					@extend .cb-box !optional;
+					@extend .cb-box;
 					.cb-summmary-item {
 						font-weight: bold;
 					}

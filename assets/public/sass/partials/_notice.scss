@@ -6,9 +6,11 @@
  *
  */
 
+@use "../../../global/sass/partials/extends";
+
 .cb-wrapper {	
 	.cb-notice {
-		@extend .cb-box !optional;
+		@extend .cb-box;
 		margin-bottom: var(--commonsbooking-spacer-big);
 		font-size: var(--commonsbooking-font-size-big);
 		vertical-align: middle;

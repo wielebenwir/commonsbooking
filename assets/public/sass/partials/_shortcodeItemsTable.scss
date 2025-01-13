@@ -13,6 +13,7 @@
 */
 
 @use "../../../global/sass/partials/variables";
+@use "../../../global/sass/partials/extends";
 @use "../../../public/sass/mixins/calendar";
 
 .cb-table-scroll {
@@ -21,7 +22,7 @@
 }
 
 .cb-items-table {
-	@extend .cb-box !optional;
+	@extend .cb-box;
 	overflow: auto; /* overwriting cb-box standard behaviour */
 	padding: 0; /* overwriting cb-box standard behaviour */
 	width: 100%;

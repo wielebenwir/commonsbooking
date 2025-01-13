@@ -437,7 +437,6 @@ class Calendar {
 			default: //More than one timeframe for current day
 				// consider starttime and endtime
 				$now = new DateTime();
-				/** @var \CommonsBooking\Model\Timeframe $todayTimeframes */
 				$bookableTimeframes = array_filter( $todayTimeframes, function ( $timeframe ) use ( $now ) {
 					$startTime   = $timeframe->getStartTime();
 					$startTimeDT = new DateTime( $startTime );
@@ -446,6 +445,19 @@ class Calendar {
 
 					return $startTimeDT <= $now && $now <= $endTimeDT;
 				} );
+
+				//condition, that we are not currently in a timeframe
+			    // for example, we have two timeframes, one from 02:00pm to 04:00pm and one from 04:00pm to 06:00pm.
+				// it is currently 11:00am, so we should take the first timeframe
+				if ( empty( $bookableTimeframes ) ) {
+					usort( $todayTimeframes, function ( $a, $b ) {
+						$aStartTimeDT = $a->getStartTimeDateTime();
+						$bStartTimeDT = $b->getStartTimeDateTime();
+
+						return $bStartTimeDT <=> $aStartTimeDT;
+					} );
+					$bookableTimeframes = $todayTimeframes;
+				}
 				break;
 		}
 

@@ -17,7 +17,7 @@ use WP_Post;
  * @package CommonsBooking\Model
  *
  * @property int $post_author identifier of the WordPress user.
- * @property int $post_status describes whether the post is published.
+ * @property string $post_status describes whether the post is published.
  * @property int $ID of the WordPress post.
  * @property string $post_title
  */

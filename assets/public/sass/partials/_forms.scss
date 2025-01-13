@@ -11,6 +11,7 @@
  */
 
 @use "../../../global/sass/partials/variables";
+@use "../../../global/sass/partials/extends";
 
 .cb-wrapper {
 
@@ -57,12 +58,12 @@
     }
 
     .cb-action {
-        @extend .cb-box !optional;
+        @extend .cb-box;
 
         text-align: right;
 
         input {
-            @extend .cb-button !optional;
+            @extend .cb-button;
             float: right;
         }
 
@@ -115,7 +116,7 @@
         width: 100%; /* do not extend litepicker width */
         color: var(--commonsbooking-textcolor-dark);
         input {
-            @extend .cb-button !optional;
+            @extend .cb-button;
             float: right;
         }
 
@@ -131,7 +132,7 @@
                 display: flex;
                 align-items: center;
 
-                @extend .cb-box-inner !optional;
+                @extend .cb-box-inner;
                 margin-bottom: var(--commonsbooking-spacer);
                 text-align: left;
                 overflow: hidden;
@@ -169,7 +170,7 @@
     }
 
     .cb-notice {
-        @extend .cb-box !optional;
+        @extend .cb-box;
         margin-bottom: var(--commonsbooking-spacer-big);
         font-size: var(--commonsbooking-font-size-big);
         vertical-align: middle;

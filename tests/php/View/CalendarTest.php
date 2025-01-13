@@ -309,6 +309,54 @@ class CalendarTest extends CustomPostTypeTest {
 					"end_time"         => "06:00 PM"
 				]
 			],
+			"daily overlap with different times (present) and no end-date" => [
+				"closest" => [
+					"repetition"       => "d",
+					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
+					"repetition_end"   => null,
+					"start_time"       => "8:00 AM",
+					"end_time"         => "01:00 PM"
+				],
+				"other"   => [
+					"repetition"       => "d",
+					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
+					"repetition_end"   => null,
+					"start_time"       => "02:00 PM",
+					"end_time"         => "06:00 PM"
+				]
+			],
+			"daily overlap when time has not been reached #1720" => [
+				"closest" => [
+					"repetition"       => "d",
+					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
+					"repetition_end"   => null,
+					"start_time"       => "04:00 PM",
+					"end_time"         => "05:00 PM"
+				],
+				"other"   => [
+					"repetition"       => "d",
+					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
+					"repetition_end"   => null,
+					"start_time"       => "07:00 PM",
+					"end_time"         => "08:00 PM"
+				],
+			],
+			"daily not overlapping but hasn't started yet" => [
+				"closest" => [
+					"repetition"       => "d",
+					"repetition_start" => strtotime( "+1 days", $currentTimestamp ),
+					"repetition_end"   => strtotime( "+2 days", $currentTimestamp ),
+					'start_time'       => '4:00 PM',
+					'end_time'         => '5:00 PM'
+				],
+				"other"   => [
+					"repetition"       => "d",
+					"repetition_start" => strtotime( "+3 days", $currentTimestamp ),
+					"repetition_end"   => strtotime( "+4 days", $currentTimestamp ),
+					'start_time'       => '7:00 PM',
+					'end_time'         => '8:00 PM'
+				]
+			],
 			"daily overlap with different times (future)"  => [
 				"closest" => [
 					"repetition"       => "d",

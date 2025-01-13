@@ -10,9 +10,9 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.26.0",
-		"@wordpress/env": "^10.14.0",
+		"@wordpress/env": "^10.15.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"cypress": "^13.16.1",
+		"cypress": "^13.17.0",
 		"editorconfig": "^2.0.0",
 		"grunt": "^1.6.1",
 		"grunt-babel": "^8.0.0",
@@ -25,7 +25,7 @@
 		"grunt-contrib-watch": "^1.1.0",
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
-		"sass": "^1.83.0"
+		"sass": "^1.83.1"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
