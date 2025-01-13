@@ -275,7 +275,7 @@ class BookingCodes {
             PRIMARY KEY (date, timeframe, location, item, code) 
         ) $charset_collate;";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' ); // TODO why is this included? we are using an autoloader, we don't need to load arbitrary wp modules.
 		dbDelta( $sql );
 		add_option( COMMONSBOOKING_PLUGIN_SLUG . '_bookingcodes_db_version', $cb_db_version );
 	}
