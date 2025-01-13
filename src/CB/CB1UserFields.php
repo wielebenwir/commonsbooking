@@ -11,9 +11,9 @@ use CommonsBooking\Settings\Settings;
 class CB1UserFields {
 
 	/**
-	 * @var false|mixed
+	 * @var mixed
 	 */
-	private mixed $termsservices_url;
+	private $termsservices_url;
 	/**
 	 * @var array|string[]
 	 */
@@ -33,7 +33,7 @@ class CB1UserFields {
 	/**
 	 * @var array|mixed
 	 */
-	private mixed $user_vars;
+	private $user_vars;
 
 	public function __construct() {
 
