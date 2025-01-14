@@ -1375,15 +1375,15 @@ msgstr "Artikel-Kategorie"
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
-#: src/Repository/BookingCodes.php:330
+#: src/Repository/BookingCodes.php:332
 msgid "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da keine Buchungscodes zur Auswahl standen. Bitte lege einige Buchungscodes in den CommonsBooking-Einstellungen fest."
 
-#: src/Repository/BookingCodes.php:337
+#: src/Repository/BookingCodes.php:339
 msgid "No booking codes could be created because the location of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht gefunden wurde."
 
-#: src/Repository/BookingCodes.php:343
+#: src/Repository/BookingCodes.php:345
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
