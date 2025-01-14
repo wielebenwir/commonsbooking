@@ -40,7 +40,7 @@ class Booking extends PostRepository {
 	 * @param int $timestamp
 	 * @param array $customArgs
 	 *
-	 * @return array|int[]|WP_Post[]
+	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [] ): array {
@@ -86,7 +86,7 @@ class Booking extends PostRepository {
 	 * @param int $timestamp
 	 * @param array $customArgs
 	 *
-	 * @return array|int[]|WP_Post[]
+	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [] ): array {
@@ -279,10 +279,10 @@ class Booking extends PostRepository {
 	/**
 	 * Returns all bookings, allowed to see for user.
 	 *
-	 * @param bool $asModel
+	 * @param bool $asModel if true, returns as Booking array, if false, return int array (defaults to false)
 	 * @param null $minTimestamp
 	 *
-	 * @return array
+	 * @return \CommonsBooking\Model\Booking[]|int[]
 	 * @throws Exception
 	 */
 	public static function getForUser(
@@ -354,11 +354,11 @@ class Booking extends PostRepository {
 	 * @param array $locations
 	 * @param array $items
 	 * @param string|null $date Date-String in format YYYY-mm-dd
-	 * @param bool $returnAsModel
+	 * @param bool $returnAsModel if true, returns booking model, if false return int array (defaults to false)
 	 * @param $minTimestamp
 	 * @param array $postStatus
 	 *
-	 * @return array
+	 * @return int[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function get(
