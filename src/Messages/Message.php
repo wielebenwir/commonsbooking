@@ -250,9 +250,9 @@ abstract class Message {
 	public function addStringAttachments($atts)
 	{
 		$attachment_arrays = [];
-		if (array_key_exists('attachments', $atts) && isset($atts['attachments']) && $atts['attachments']) {
+		if ( ! empty( $atts['attachments']) ) {
 			$attachments = $atts['attachments'];
-			if (is_array($attachments) && !empty($attachments)) {
+			if ( is_array($attachments) ) {
 				// Is the $attachments array a single array of attachment data, or an array containing multiple arrays of 
 				// attachment data? (note that the array may also be a one-dimensional array of file paths, as-per default usage).
 				$is_multidimensional_array = count($attachments) == count($attachments, COUNT_RECURSIVE) ? false : true;
