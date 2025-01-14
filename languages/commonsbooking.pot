@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-09T12:12:18+00:00\n"
+"POT-Creation-Date: 2025-01-13T20:29:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1235,7 +1235,7 @@ msgid "Allows you to change options regarding the caching system"
 msgstr ""
 
 #: includes/OptionsArray.php:1383
-#: src/Service/Cache.php:369
+#: src/Service/Cache.php:370
 msgid "Clear Cache"
 msgstr ""
 
@@ -1285,7 +1285,7 @@ msgid "Please enter your phone number"
 msgstr ""
 
 #: src/CB/CB1UserFields.php:90
-#: src/CB/CB1UserFields.php:280
+#: src/CB/CB1UserFields.php:281
 #: src/Wordpress/CustomPostType/Location.php:219
 #: templates/booking-single.php:77
 msgid "Address"
@@ -1312,19 +1312,19 @@ msgstr ""
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:268
+#: src/CB/CB1UserFields.php:269
 msgid "Extra Fields"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:272
+#: src/CB/CB1UserFields.php:273
 msgid "Phone number"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:288
+#: src/CB/CB1UserFields.php:289
 msgid "Terms and conditions"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:294
+#: src/CB/CB1UserFields.php:295
 msgid "Accepted Terms & Conditions"
 msgstr ""
 
@@ -1816,27 +1816,27 @@ msgstr ""
 msgid "Booking rules: No rule type specified."
 msgstr ""
 
-#: src/Service/Cache.php:302
+#: src/Service/Cache.php:303
 msgid "Connection status:"
 msgstr ""
 
-#: src/Service/Cache.php:309
+#: src/Service/Cache.php:310
 msgid "Successfully connected to REDIS database!"
 msgstr ""
 
-#: src/Service/Cache.php:320
+#: src/Service/Cache.php:321
 msgid "REDIS database not enabled"
 msgstr ""
 
-#: src/Service/Cache.php:346
+#: src/Service/Cache.php:347
 msgid "Directory %s is writeable."
 msgstr ""
 
-#: src/Service/Cache.php:351
+#: src/Service/Cache.php:352
 msgid "Directory %s could not be written to."
 msgstr ""
 
-#: src/Service/Cache.php:364
+#: src/Service/Cache.php:365
 msgid "Clear all cache items"
 msgstr ""
 
