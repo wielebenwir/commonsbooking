@@ -14,7 +14,7 @@ parameters:
   level: 1
   ignoreErrors:
     - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
-    - '#Instantiated class (CommonsBooking.*CB_Data) not found.#'
+#    - '#Instantiated class (CommonsBooking.*CB_Data) not found.#'
     - '#Function cb_object_to_array not found.#'
     - 
       identifier: requireOnce.fileNotFound # https://github.com/szepeviktor/phpstan-wordpress/issues/239
