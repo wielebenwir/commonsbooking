@@ -85,7 +85,7 @@ class Booking extends Timeframe {
         global $pagenow;
 
         $post = $post ?? get_post( $post_id );
-        $is_trash_action = str_contains(($_REQUEST ?? array())['action'] ?? '', 'trash');
+        $is_trash_action = str_contains($_REQUEST['action'] ?? '', 'trash');
 
         // we check if it's a new created post - TODO: This is not the case
         if (
