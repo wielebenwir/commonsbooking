@@ -4,9 +4,8 @@ parameters:
   phpVersion: 70400
   scanFiles:
     - commonsbooking.php
-    - vendor/cmb2/cmb2/includes/helper-functions.php
-    - vendor/cmb2/cmb2/includes/CMB2_Utils.php
-    - vendor/cmb2/cmb2/includes/CMB2_Field.php
+  scanDirectories:
+    - vendor/cmb2/cmb2/includes
   paths:
     - commonsbooking.php
     - src/
