@@ -271,7 +271,7 @@ class Booking extends Timeframe {
 			);
 		}
 
-		/** @var \CommonsBooking\Model\Booking $booking */
+		/** @var \CommonsBooking\Model\Booking|null $booking */
 		$booking = \CommonsBooking\Repository\Booking::getByDate(
 			$repetitionStart,
 			$repetitionEnd,
