@@ -98,11 +98,11 @@ class Timeframe extends PostRepository {
 	 * @param array $items
 	 * @param array $types
 	 * @param string|null $date Date-String in format YYYY-mm-dd
-	 * @param bool $returnAsModel
+	 * @param bool $returnAsModel if true, returns as custom wp-post model, if false, return wp-post or int array (defaults to false)
 	 * @param int|null $minTimestamp
 	 * @param string[] $postStatus
 	 *
-	 * @return array
+	 * @return int[]|WP_Post[]|\CommonsBooking\Model\Timeframe[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 * @throws \Psr\Cache\InvalidArgumentException|\Psr\Cache\CacheException
 	 */
@@ -754,7 +754,7 @@ class Timeframe extends PostRepository {
 	 * Why? In some cases we need more than WP_Post methods and for this case we have Models, that enrich WP_Post
 	 *      objects with useful additional functions.
 	 *
-	 * @param $posts
+	 * @param int[]|\WP_Post[] $posts
 	 *
 	 * @throws Exception
 	 */
