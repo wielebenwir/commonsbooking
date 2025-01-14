@@ -10,7 +10,7 @@ parameters:
     - commonsbooking.php
     - src/
     - includes/
-  level: 1
+  level: 2
   ignoreErrors:
     - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
 #    - '#Instantiated class (CommonsBooking.*CB_Data) not found.#'
