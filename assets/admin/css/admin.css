@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  * Admin styles
  *
@@ -3176,7 +3177,7 @@
  *
  */
 /* -------------------- Boxes -------------------- */
-.cb-box {
+.cb-box, .cb-admin-page .cb-admin-cols div ul li {
   background: var(--commonsbooking-color-gray-background);
   overflow: hidden;
   border-radius: var(--commonsbooking-radius);
@@ -3184,7 +3185,7 @@
   padding: var(--commonsbooking-spacer-small)/2 var(--commonsbooking-spacer-small);
 }
 @media (min-width: 37.5em) {
-  .cb-box {
+  .cb-box, .cb-admin-page .cb-admin-cols div ul li {
     padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   }
 }
@@ -3507,7 +3508,40 @@ a.disabled {
   display: none;
 }
 
-/* Booking form  */
+/* Map creation */
+/*
+* The CPT creation form map
+ */
+#cmb2-metabox-cb_map-custom-fields .map-organizer .cmb2-metabox-title {
+  font-size: x-large;
+}
+#cmb2-metabox-cb_map-custom-fields .map-organizer .cmb2-metabox-title:before {
+  /* arrow to right */
+  content: "→ ";
+}
+#cmb2-metabox-cb_map-custom-fields .cmb-group-name {
+  font-size: x-large;
+  font-weight: bold;
+}
+#cmb2-metabox-cb_map-custom-fields .cmb-group-name:before {
+  content: "→ ";
+}
+#cmb2-metabox-cb_map-custom-fields #shortcode-field {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+#cmb2-metabox-cb_map-custom-fields #shortcode-field code {
+  white-space: nowrap;
+  margin-right: 10px;
+}
+#cmb2-metabox-cb_map-custom-fields #shortcode-field .button {
+  padding: 5px 10px;
+  line-height: 1.5;
+}
+
+/* Plugin update page  */
 /**
  * Plugin list update message 
  *

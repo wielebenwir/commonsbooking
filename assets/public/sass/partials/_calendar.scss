@@ -5,6 +5,7 @@
  *
  */
 @use "../mixins/calendar";
+@use "../../../global/sass/partials/extends";
 
 :root {
 	--litepickerBgColor: transparent;
@@ -72,7 +73,7 @@
 			
 		}
 		&__months {
-			@extend .cb-box-inner !optional;
+			@extend .cb-box-inner;
 
 			background: transparent; 
 			box-shadow: none;

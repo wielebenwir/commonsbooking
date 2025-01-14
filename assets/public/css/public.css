@@ -3176,7 +3176,7 @@
  *
  */
 /* -------------------- Boxes -------------------- */
-.cb-box {
+.cb-box, .cb-items-table, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-wrapper .cb-action, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper {
   background: var(--commonsbooking-color-gray-background);
   overflow: hidden;
   border-radius: var(--commonsbooking-radius);
@@ -3184,24 +3184,24 @@
   padding: var(--commonsbooking-spacer-small)/2 var(--commonsbooking-spacer-small);
 }
 @media (min-width: 37.5em) {
-  .cb-box {
+  .cb-box, .cb-items-table, .cb-wrapper .cb-notice, .cb-map-filters.cb-wrapper, .cb-wrapper .cb-action, .cb-wrapper.template-location-single > div:not(.cb-notice), .cb-wrapper.template-item-single > div:not(.cb-notice), .cb-wrapper.template-booking-single > div:not(.cb-notice), .cb-wrapper {
     padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   }
 }
 
-.cb-box-inner {
+.cb-box-inner, .litepicker .container__months, .cb-wrapper #booking-form .time-selection-container > div, .cb-wrapper > .cb-wrapper {
   background: #FFF;
   border-radius: var(--commonsbooking-radius);
   padding: var(--commonsbooking-spacer-small);
 }
 @media (min-width: 37.5em) {
-  .cb-box-inner {
+  .cb-box-inner, .litepicker .container__months, .cb-wrapper #booking-form .time-selection-container > div, .cb-wrapper > .cb-wrapper {
     padding: var(--commonsbooking-spacer);
   }
 }
 
 /* -------------------- Typography -------------------- */
-.cb-big {
+.cb-big, .cb-map-filters.cb-wrapper .cb-map-filter-group-label {
   font-size: var(--commonsbooking-font-size-big);
   font-weight: bold;
 }
@@ -3211,7 +3211,7 @@
   box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
 }
 
-.shadow-small, .cb-button[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-button:hover, .cb-button-container a:hover, .cb-hover {
+.shadow-small, .cb-button[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-button-container a[disabled=disabled], .cb-button:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-button-container a:hover, .cb-hover {
   box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -3225,7 +3225,7 @@
 }
 
 /* -------------------- Buttons -------------------- */
-.cb-button, .cb-button-container a {
+.cb-button, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button, .cb-wrapper .cb-action input, .cb-wrapper #booking-form input, .cb-button-container a {
   border-radius: var(--commonsbooking-radius);
   font-size: var(--commonsbooking-font-size-normal);
   line-height: var(--commonsbooking-font-size-normal);
@@ -3238,43 +3238,43 @@
   padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   font-weight: bold;
 }
-.cb-button.small, .cb-button-container a.small {
+.cb-button.small, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.small, .cb-wrapper .cb-action input.small, .cb-wrapper #booking-form input.small, .cb-button-container a.small {
   padding: var(--commonsbooking-spacer);
   font-size: var(--commonsbooking-font-size-small);
 }
-.cb-button:hover, .cb-button-container a:hover {
+.cb-button:hover, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:hover, .cb-wrapper .cb-action input:hover, .cb-wrapper #booking-form input:hover, .cb-button-container a:hover {
   background: var(--commonsbooking-color-secondary);
   color: #FFF; /* Various themes fix */
 }
-.cb-button:visited, .cb-button-container a:visited {
+.cb-button:visited, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button:visited, .cb-wrapper .cb-action input:visited, .cb-wrapper #booking-form input:visited, .cb-button-container a:visited {
   color: #FFF;
 }
-.cb-button.big, .cb-button-container a.big {
+.cb-button.big, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.big, .cb-wrapper .cb-action input.big, .cb-wrapper #booking-form input.big, .cb-button-container a.big {
   padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
   font-size: var(--commonsbooking-font-size-big);
   line-height: var(--commonsbooking-font-size-big);
 }
-.cb-button.secondary, .cb-button-container a.secondary {
+.cb-button.secondary, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.secondary, .cb-wrapper .cb-action input.secondary, .cb-wrapper #booking-form input.secondary, .cb-button-container a.secondary {
   background-color: #FFF;
   color: var(--commonsbooking-color-error);
 }
-.cb-button.cancel, .cb-button-container a.cancel {
+.cb-button.cancel, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.cancel, .cb-wrapper .cb-action input.cancel, .cb-wrapper #booking-form input.cancel, .cb-button-container a.cancel {
   background-color: var(--commonsbooking-color-error);
 }
-.cb-button.confirm, .cb-button-container a.confirm {
+.cb-button.confirm, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.confirm, .cb-wrapper .cb-action input.confirm, .cb-wrapper #booking-form input.confirm, .cb-button-container a.confirm {
   background-color: var(--commonsbooking-color-success);
 }
-.cb-button.delete, .cb-button-container a.delete {
+.cb-button.delete, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.delete, .cb-wrapper .cb-action input.delete, .cb-wrapper #booking-form input.delete, .cb-button-container a.delete {
   background-color: var(--commonsbooking-color-error);
 }
-.cb-button[disabled=disabled], .cb-button-container a[disabled=disabled] {
+.cb-button[disabled=disabled], .cb-map-filters.cb-wrapper .cb-map-button-wrapper button[disabled=disabled], .cb-wrapper .cb-action input[disabled=disabled], .cb-wrapper #booking-form input[disabled=disabled], .cb-button-container a[disabled=disabled] {
   background-color: var(--commonsbooking-color-greyedout);
   color: var(--commonsbooking-textcolor-light);
 }
-.cb-button.no-right-radius, .cb-button-container a.no-right-radius {
+.cb-button.no-right-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-right-radius, .cb-wrapper .cb-action input.no-right-radius, .cb-wrapper #booking-form input.no-right-radius, .cb-button-container a.no-right-radius {
   border-radius: var(--commonsbooking-radius) 0;
 }
-.cb-button.no-left-radius, .cb-button-container a.no-left-radius {
+.cb-button.no-left-radius, .cb-map-filters.cb-wrapper .cb-map-button-wrapper button.no-left-radius, .cb-wrapper .cb-action input.no-left-radius, .cb-wrapper #booking-form input.no-left-radius, .cb-button-container a.no-left-radius {
   border-radius: 0 var(--commonsbooking-radius);
 }
 
@@ -3357,69 +3357,92 @@
   }
 }
 
-.cb-col-50-50-filter > div {
+.cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
   margin-bottom: var(--commonsbooking-spacer);
   width: 100%;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
 }
-.cb-col-50-50-filter > div label {
+.cb-col-50-50-filter > div label, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div label,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div label {
   flex: 0 0 30%;
 }
-.cb-col-50-50-filter > div input {
+.cb-col-50-50-filter > div input, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div input,
+.cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div input {
   flex: 0 1 50%;
 }
 @media (min-width: 37.5em) {
-  .cb-col-50-50-filter {
+  .cb-col-50-50-filter, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
   }
-  .cb-col-50-50-filter > div {
+  .cb-col-50-50-filter > div, .cb-map-filters.cb-wrapper .cb-map-availability-filter .cb-map-filter-group > div,
+  .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-group > div {
     width: 50%;
   }
 }
 
-.cb-col-auto { /* 2 fixed cols, 1 flexible in the middle */
+.cb-col-auto, .cb-wrapper .template-timeframe-withitem,
+.cb-wrapper .template-timeframe-withlocation,
+.cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header { /* 2 fixed cols, 1 flexible in the middle */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-.cb-col-auto > div.cb-thumbnail {
+.cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
+.cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+.cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
   flex: 0 0 20%;
   padding-right: var(--commonsbooking-spacer-big);
 }
-.cb-col-auto > div.cb-list-info {
+.cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
+.cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+.cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
   flex: 1 0 50%;
   border: none;
 }
-.cb-col-auto > div.cb-action { /* optional */
+.cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
+.cb-wrapper .template-timeframe-withlocation > div.cb-action,
+.cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action { /* optional */
   flex: 0 0 100%;
   text-align: right;
 }
 @media (min-width: 37.5em) {
-  .cb-col-auto {
+  .cb-col-auto, .cb-wrapper .template-timeframe-withitem,
+  .cb-wrapper .template-timeframe-withlocation,
+  .cb-wrapper .template-item-withlocation, .cb-wrapper .cb-list-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: nowrap;
     align-items: center;
   }
-  .cb-col-auto > div.cb-thumbnail {
+  .cb-col-auto > div.cb-thumbnail, .cb-wrapper .template-timeframe-withitem > div.cb-thumbnail,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-thumbnail,
+  .cb-wrapper .template-item-withlocation > div.cb-thumbnail, .cb-wrapper .cb-list-header > div.cb-thumbnail {
     flex: 0 0 20%;
     padding-right: var(--commonsbooking-spacer-big);
   }
-  .cb-col-auto > div.cb-list-info {
+  .cb-col-auto > div.cb-list-info, .cb-wrapper .template-timeframe-withitem > div.cb-list-info,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-list-info,
+  .cb-wrapper .template-item-withlocation > div.cb-list-info, .cb-wrapper .cb-list-header > div.cb-list-info {
     flex: 1 1 auto;
     border: none;
   }
-  .cb-col-auto > div.cb-action {
+  .cb-col-auto > div.cb-action, .cb-wrapper .template-timeframe-withitem > div.cb-action,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action,
+  .cb-wrapper .template-item-withlocation > div.cb-action, .cb-wrapper .cb-list-header > div.cb-action {
     flex: 1 0 auto;
   }
-  .cb-col-auto > div.cb-action a {
+  .cb-col-auto > div.cb-action a, .cb-wrapper .template-timeframe-withitem > div.cb-action a,
+  .cb-wrapper .template-timeframe-withlocation > div.cb-action a,
+  .cb-wrapper .template-item-withlocation > div.cb-action a, .cb-wrapper .cb-list-header > div.cb-action a {
     width: auto;
   }
 }
@@ -3445,6 +3468,7 @@
 }
 
 /* List styles */
+/* Multi-column layouts */
 /**
 * List styling
 *
@@ -4099,6 +4123,7 @@
 }
 
 /* Map styles */
+/* Multi-column layouts */
 /**
 * Map + Leaflet Filter Styling
 *

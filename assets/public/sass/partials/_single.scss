@@ -3,6 +3,8 @@
  *
  */
 
+@use "../../../global/sass/partials/extends";
+
 .cb-wrapper {
   /* invert the color scheme from the lists: wrapper has no bg, sub-wrapper colored */
   &.template-location-single,
@@ -11,7 +13,7 @@
     background: transparent;
     padding: 0;
     > div:not(.cb-notice) { 
-      @extend .cb-box !optional;
+      @extend .cb-box;
       > div { /* sub list items */
         &:last-of-type {
           border-bottom: 0;
