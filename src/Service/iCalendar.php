@@ -252,7 +252,7 @@ class iCalendar {
 		$eventDate,
 		String $eventTitle,
 		String $eventDescription,
-		bool $isTimeSpan=false):Event {
+		bool $isTimeSpan=false) {
 
 		if ( is_array( $eventDate ) ) {
 			if ( count( $eventDate ) < 2 || ! ( $eventDate[0] instanceof DateTimeImmutable ) || ! ( $eventDate[1] instanceof DateTimeImmutable ) || $eventDate[0] > $eventDate[1] ) {
