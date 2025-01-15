@@ -99,7 +99,7 @@ class iCalendar {
 	 * @param $bookingID
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public static function downloadICS( $bookingID ): void {
 		$postID           = $bookingID;
