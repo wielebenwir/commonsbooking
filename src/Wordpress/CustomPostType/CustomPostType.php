@@ -28,7 +28,7 @@ abstract class CustomPostType {
 	protected $menuPosition;
 
 	/**
-	 * @var array
+	 * @var array{string, string}
 	 */
 	protected $listColumns = null;
 

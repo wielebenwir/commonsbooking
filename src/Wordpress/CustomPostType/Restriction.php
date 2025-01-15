@@ -41,14 +41,9 @@ class Restriction extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
-
 	public function __construct() {
 		$this->types = self::getTypes();
 
-		/**
-		 * Backend listing columns.
-		 * @var string[]
-		 */
 		$this->listColumns = [
 			\CommonsBooking\Model\Restriction::META_TYPE                                          => esc_html__( 'Type', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_ITEM_ID                                       => esc_html__( 'Item', 'commonsbooking' ),
@@ -57,8 +52,6 @@ class Restriction extends CustomPostType {
 			\CommonsBooking\Model\Restriction::META_END								 => esc_html__( 'End Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Restriction::META_STATE                                   => esc_html__( 'Restriction Status', 'commonsbooking' ),
 		];
-
-
 
 		// List settings
 		$this->removeListDateColumn();
