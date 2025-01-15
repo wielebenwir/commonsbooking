@@ -222,7 +222,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Returns view-class.
-	 * @return null
+	 * @return void
 	 */
 	public static function getView() {
 		// @TODO implement view.
