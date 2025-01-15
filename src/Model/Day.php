@@ -398,7 +398,7 @@ class Day {
 	/**
 	 * Maps timeframes to timeslots.
 	 *
-	 * @param array $slots
+	 * @param array $slots untyped structure of timeframe slot information
 	 *
 	 * @throws Exception
 	 */

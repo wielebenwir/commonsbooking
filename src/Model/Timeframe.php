@@ -20,6 +20,8 @@ use Exception;
  * Additionally, all the public functions in this class can be called using Template Tags.
  *
  * @package CommonsBooking\Model
+ *
+ * @property bool locked {@see \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked()}
  */
 class Timeframe extends CustomPost {
 	/**
