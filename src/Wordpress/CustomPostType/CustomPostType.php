@@ -23,7 +23,7 @@ abstract class CustomPostType {
 	public static $postType;
 
 	/**
-	 * @var
+	 * @var int
 	 */
 	protected $menuPosition;
 
