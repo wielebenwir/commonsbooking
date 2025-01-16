@@ -9,17 +9,10 @@
         let locationInput = $("#location-id");
         let startDateInput = $("#repetition-start_date");
         let bookingCodeInput = $("#_cb_bookingcode");
-
-        // check if this is loaded on right kind of backend page
-        let allExist = [
-                fullDayCheckbox, startTimeInput, endTimeInput, itemInput, locationInput, startDateInput, bookingCodeInput
-        ].every(domElement => domElement.length === 1);
-
+        let allExist = [ fullDayCheckbox, startTimeInput, endTimeInput, itemInput, locationInput, startDateInput, bookingCodeInput ].every(domElement => domElement.length === 1);
         if (!allExist) {
-            // return early to prevent ajax calls with incorrect parameters
             return;
         }
-
         fullDayCheckbox.on("change", function(event) {
             if (fullDayCheckbox.is(":checked")) {
                 startTimeInput.val("00:00");
