@@ -99,9 +99,9 @@ function commonsbooking_parse_template_callback( $match, array $objects = [], $s
 /**
  *  Return Custom Post Type postType for template type string
  *
- * @param [type] $type type could be location, booking, item
+ * @param string $type type could be location, booking, item
  *
- * @return void
+ * @return string
  */
 function commonsbooking_getCBType( $type ) {
 	if ( $type == 'location' ) {

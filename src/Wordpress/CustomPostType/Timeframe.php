@@ -1403,6 +1403,8 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Initiates needed hooks.
+	 *
+	 * @return void
 	 */
 	public function initHooks() {
 		// Add custom cmb2 type for email booking codes by cron

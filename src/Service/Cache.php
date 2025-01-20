@@ -208,14 +208,15 @@ trait Cache {
 	 * Calls clearCache using WP Cron.
 	 * Why? ClearCache can be resource intensive on larger instances and should be offloaded.
 	 *
-	 * @param array $tags
+	 * @param array $tags to clear cache for
 	 *
 	 * @return void
 	 */
 	public static function scheduleClearCache( array $tags = [] ) {
-		$event = wp_schedule_single_event( time(), self::$clearCacheHook, [ $tags ] );
+		$event = wp_schedule_single_event( time(), self::$clearCacheHook, [ $tags ], true );
+		// TODO document why only on wp-error, why this can fail, why we don't re-try or do other things, instead of forcing the execution of this resource intensive task?
 		if ( is_wp_error( $event ) ) {
-			// run the event right away when scheduling fails
+			// runs the event right away, when scheduling fails
 			self::clearCache( $tags );
 		}
 	}

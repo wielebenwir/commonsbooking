@@ -135,7 +135,7 @@ abstract class CustomPostType {
 	 *
 	 * @param mixed $actions
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public static function modifyRowActions( $actions, $post ) {
 

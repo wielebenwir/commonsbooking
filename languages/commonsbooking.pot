@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Commons Booking 2.10.1\n"
+"Project-Id-Version: Commons Booking 2.10.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-09T12:12:18+00:00\n"
+"POT-Creation-Date: 2025-01-14T16:53:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1235,7 +1235,7 @@ msgid "Allows you to change options regarding the caching system"
 msgstr ""
 
 #: includes/OptionsArray.php:1383
-#: src/Service/Cache.php:369
+#: src/Service/Cache.php:370
 msgid "Clear Cache"
 msgstr ""
 
@@ -1285,7 +1285,7 @@ msgid "Please enter your phone number"
 msgstr ""
 
 #: src/CB/CB1UserFields.php:90
-#: src/CB/CB1UserFields.php:280
+#: src/CB/CB1UserFields.php:281
 #: src/Wordpress/CustomPostType/Location.php:219
 #: templates/booking-single.php:77
 msgid "Address"
@@ -1312,19 +1312,19 @@ msgstr ""
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:268
+#: src/CB/CB1UserFields.php:269
 msgid "Extra Fields"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:272
+#: src/CB/CB1UserFields.php:273
 msgid "Phone number"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:288
+#: src/CB/CB1UserFields.php:289
 msgid "Terms and conditions"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:294
+#: src/CB/CB1UserFields.php:295
 msgid "Accepted Terms & Conditions"
 msgstr ""
 
@@ -1638,15 +1638,15 @@ msgstr ""
 msgid "CommonsBooking Bookings"
 msgstr ""
 
-#: src/Repository/BookingCodes.php:330
+#: src/Repository/BookingCodes.php:332
 msgid "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings."
 msgstr ""
 
-#: src/Repository/BookingCodes.php:337
+#: src/Repository/BookingCodes.php:339
 msgid "No booking codes could be created because the location of the timeframe could not be found."
 msgstr ""
 
-#: src/Repository/BookingCodes.php:343
+#: src/Repository/BookingCodes.php:345
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr ""
 
@@ -1816,27 +1816,27 @@ msgstr ""
 msgid "Booking rules: No rule type specified."
 msgstr ""
 
-#: src/Service/Cache.php:302
+#: src/Service/Cache.php:303
 msgid "Connection status:"
 msgstr ""
 
-#: src/Service/Cache.php:309
+#: src/Service/Cache.php:310
 msgid "Successfully connected to REDIS database!"
 msgstr ""
 
-#: src/Service/Cache.php:320
+#: src/Service/Cache.php:321
 msgid "REDIS database not enabled"
 msgstr ""
 
-#: src/Service/Cache.php:346
+#: src/Service/Cache.php:347
 msgid "Directory %s is writeable."
 msgstr ""
 
-#: src/Service/Cache.php:351
+#: src/Service/Cache.php:352
 msgid "Directory %s could not be written to."
 msgstr ""
 
-#: src/Service/Cache.php:364
+#: src/Service/Cache.php:365
 msgid "Clear all cache items"
 msgstr ""
 

@@ -1156,7 +1156,7 @@ msgid "Please enter your phone number"
 msgstr "Bitte gib Deine Telefonnummer ein"
 
 #: src/CB/CB1UserFields.php:90
-#: src/CB/CB1UserFields.php:280
+#: src/CB/CB1UserFields.php:281
 #: src/Wordpress/CustomPostType/Location.php:219
 #: templates/booking-single.php:77
 msgid "Address"
@@ -1183,19 +1183,19 @@ msgstr "Bitte akzeptiere die Nutzungsbedingungen"
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
 
-#: src/CB/CB1UserFields.php:268
+#: src/CB/CB1UserFields.php:269
 msgid "Extra Fields"
 msgstr "Zusatzfelder"
 
-#: src/CB/CB1UserFields.php:272
+#: src/CB/CB1UserFields.php:273
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: src/CB/CB1UserFields.php:288
+#: src/CB/CB1UserFields.php:289
 msgid "Terms and conditions"
 msgstr "Nutzungsbedingungen"
 
-#: src/CB/CB1UserFields.php:294
+#: src/CB/CB1UserFields.php:295
 msgid "Accepted Terms & Conditions"
 msgstr "Nutzungsbedingungen akzeptiert"
 
@@ -1375,35 +1375,35 @@ msgstr "Artikel-Kategorie"
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
-#: src/Repository/BookingCodes.php:330
+#: src/Repository/BookingCodes.php:332
 msgid "No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da keine Buchungscodes zur Auswahl standen. Bitte lege einige Buchungscodes in den CommonsBooking-Einstellungen fest."
 
-#: src/Repository/BookingCodes.php:337
+#: src/Repository/BookingCodes.php:339
 msgid "No booking codes could be created because the location of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht gefunden wurde."
 
-#: src/Repository/BookingCodes.php:343
+#: src/Repository/BookingCodes.php:345
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:302
+#: src/Service/Cache.php:303
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
-#: src/Service/Cache.php:309
+#: src/Service/Cache.php:310
 msgid "Successfully connected to REDIS database!"
 msgstr "Erfolgreich mit REDIS-Datenbank verbunden!"
 
-#: src/Service/Cache.php:320
+#: src/Service/Cache.php:321
 msgid "REDIS database not enabled"
 msgstr "REDIS-Datenbank nicht aktiviert"
 
-#: src/Service/Cache.php:346
+#: src/Service/Cache.php:347
 msgid "Directory %s is writeable."
 msgstr "Der Ordner %s ist beschreibbar."
 
-#: src/Service/Cache.php:351
+#: src/Service/Cache.php:352
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
 
@@ -3565,11 +3565,11 @@ msgid "(not planned)"
 msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1383
-#: src/Service/Cache.php:369
+#: src/Service/Cache.php:370
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:364
+#: src/Service/Cache.php:365
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
