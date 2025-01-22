@@ -378,11 +378,14 @@ class BookingCodes {
 
 	/**
 	 * Stores a booking code in database without checking if code already exists (please check before)
-	 * @param BookingCode $bookingCode
-	 * @param timeframeId deprecated (only necessary to make database compatible to former versions of cb)
-	 * @param locationId deprecated (only necessary to make database compatible to former versions of cb)
 	 *
-	 * @return mixed
+	 * @since 2.10 $timeframeId and $locationId are deprecated to indicate only use for legacy support
+	 *
+	 * @param BookingCode $bookingCode
+	 * @param int $timeframeId deprecated (only necessary to make database compatible to former versions of cb)
+	 * @param int $locationId deprecated (only necessary to make database compatible to former versions of cb)
+	 *
+	 * @return false|int
 	 */
 	public static function persist( BookingCode $bookingCode, $timeframeId = 0, $locationId = 0 ) {
 		global $wpdb;
