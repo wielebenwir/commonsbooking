@@ -251,8 +251,8 @@ function cmb2_set_checkbox_default_for_new_post() {
 /**
  * Recursive sanitation for text or array
  *
- * @param mixed  array_or_string (array|string)
- * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
+ * @param array|string $data
+ * @param string $sanitizeFunction name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
  *
  * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
  *
