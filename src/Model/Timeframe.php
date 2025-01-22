@@ -527,7 +527,7 @@ class Timeframe extends CustomPost {
 	 * Timeframe::BOOKING_ID
 	 * Timeframe::BOOKING_CANCELLED_ID
      *
-	 * @return mixed
+	 * @return int
 	 */
 	public function getType() : int {
 		return intval( $this->getMeta( 'type' ) );
@@ -890,7 +890,7 @@ class Timeframe extends CustomPost {
 	 * 0 = slot
 	 * 1 = hourly
      *
-	 * @return mixed
+	 * @return int
 	 */
 	public function getGrid(): int {
 		return intval($this->getMeta( 'grid' ));

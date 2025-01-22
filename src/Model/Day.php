@@ -18,7 +18,7 @@ use WP_Post;
 class Day {
 
 	/**
-	 * @var
+	 * @var string
 	 */
 	protected $date;
 
@@ -38,7 +38,7 @@ class Day {
 	protected $types;
 
 	/**
-	 * @var Timeframe[]|null
+	 * @var \CommonsBooking\Model\Timeframe[]|null
 	 */
 	protected ?array $timeframes = null;
 

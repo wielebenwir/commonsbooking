@@ -30,7 +30,7 @@ class CustomPost {
 	protected $post;
 
 	/**
-	 * @var
+	 * @var string
 	 */
 	protected $date;
 
