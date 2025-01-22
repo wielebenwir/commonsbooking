@@ -102,7 +102,7 @@ class Timeframe extends PostRepository {
 	 * @param int|null $minTimestamp
 	 * @param string[] $postStatus
 	 *
-	 * @return int[]|WP_Post[]|\CommonsBooking\Model\Timeframe[]|\CommonsBooking\Model\Booking[]
+	 * @return int[]|\WP_Post[]|\CommonsBooking\Model\Timeframe[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 * @throws \Psr\Cache\InvalidArgumentException|\Psr\Cache\CacheException
 	 */
