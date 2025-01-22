@@ -7,7 +7,6 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
@@ -29,7 +28,7 @@ trait Cache {
 	 * @param null $custom_id
 	 *
 	 * @return mixed
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
@@ -150,7 +149,7 @@ trait Cache {
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
@@ -187,7 +186,7 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
 		if(!count($tags)) {
