@@ -37,8 +37,8 @@ trait Cache {
 		}
 
 		try {
-			/** @var CacheItem $cacheItem */
 			$cacheKey  = self::getCacheId( $custom_id );
+			/** @var CacheItem $cacheItem */
 			$cacheItem = self::getCache()->getItem( $cacheKey );
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
@@ -172,8 +172,8 @@ trait Cache {
 		}
 
 		$cache = self::getCache( '', intval( $expiration ) );
-		/** @var CacheItem $cacheItem */
 		$cacheKey  = self::getCacheId( $custom_id );
+		/** @var CacheItem $cacheItem */
 		$cacheItem = $cache->getItem( $cacheKey );
 		$cacheItem->tag($tags);
 		$cacheItem->set( $value );

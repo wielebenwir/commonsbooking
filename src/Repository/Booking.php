@@ -457,7 +457,6 @@ class Booking extends PostRepository {
 	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): ?array {
 
 		// Get existing bookings for defined parameters
-		/** @var \CommonsBooking\Model\Booking $existingBookingsinRange */
 		$existingBookingsInRange = self::getByTimerange(
 			$startDate,
 			$endDate,

@@ -406,7 +406,6 @@ class Day {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
-		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $this->getTimeframes() as $timeframe ) {
 			// Slots
 			$startSlot = $this->getStartSlot( $grid, $timeframe );
