@@ -23,7 +23,7 @@ class TimeframeExport {
 	 * The post type to export.
 	 * This corresponds to the return of @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes()
 	 * The all option is corresponding to 0.
-	 * @var string
+	 * @var int
 	 */
 	private int $exportType;
 	private ?array $locationFields = null;
@@ -37,7 +37,10 @@ class TimeframeExport {
 	private bool $exportDataComplete = false;
 	private bool $isCron = false;
 
-	private ?string $lastProcessedPage = null;
+	/**
+	 * @var int|null
+	 */
+	private $lastProcessedPage = null;
 	private ?string $totalPosts;
 	/**
 	 * @var int[]|null Array of timeframe post IDs that are relevant for the export
@@ -103,7 +106,7 @@ class TimeframeExport {
 		$this->locationFields     = $locationFields;
 		$this->itemFields         = $itemFields;
 		$this->userFields         = $userFields;
-		$this->lastProcessedPage  = $lastProcessedPage;
+		$this->lastProcessedPage  = $lastProcessedPage ? intval( $lastProcessedPage ) : null;
 		$this->totalPosts         = $totalPosts;
 		$this->relevantTimeframes = $relevantTimeframes;
 	}
@@ -144,7 +147,7 @@ class TimeframeExport {
 
 			return;
 		}
-		$nextPage = $exportObject->lastProcessedPage ? intval( $exportObject->lastProcessedPage ) + 1 : 1;
+		$nextPage = $exportObject->lastProcessedPage ? $exportObject->lastProcessedPage + 1 : 1;
 		$exportObject->getExportData( $nextPage );
 		if ( $exportObject->exportDataComplete ) {
 			try {
