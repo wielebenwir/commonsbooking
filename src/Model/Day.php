@@ -379,12 +379,12 @@ class Day {
 	 * Can be used as a callback to filter timeframes if they belong
 	 * to the day and are bookable for the current user
 	 *
-	 * @param Timeframe $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function filterTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
+	public function filterTimeframe( $timeframe ): bool {
 		if ( ! $this->isInTimeframe( $timeframe ) ) {
 			return false;
 		}
