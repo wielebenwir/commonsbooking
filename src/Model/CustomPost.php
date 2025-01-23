@@ -121,7 +121,7 @@ class CustomPost {
 	 * Get the corresponding WP_Post object
 	 * @return WP_Post
 	 */
-	public function getPost(): WP_Post { // TODO does this really return WP_Post? Why we can access with magic methods on this?
+	public function getPost() {
 		return $this->post;
 	}
 
