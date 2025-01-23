@@ -393,7 +393,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		} elseif ($countLockdaysMaximum == 0) {
 			$days = 0;
 		} else {
-			$days = max(0, $rawDaysOverbooked - $countLockdaysMaximum);
+			$days = max(0, $rawDaysOverbooked - intval( $countLockdaysMaximum ) );
 		}
 
 		update_post_meta($this->post->ID, self::META_OVERBOOKED_DAYS, $days);
