@@ -21,7 +21,7 @@ use Exception;
  *
  * @package CommonsBooking\Model
  *
- * @property bool locked {@see \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked()}
+ * @property bool $locked {@see \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked()}
  */
 class Timeframe extends CustomPost {
 	/**
