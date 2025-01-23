@@ -85,7 +85,7 @@ class Booking extends Timeframe {
         global $pagenow;
 
         $post = $post ?? get_post( $post_id );
-        $is_trash_action = str_contains(($_REQUEST ?? array())['action'] ?? '', 'trash');
+        $is_trash_action = str_contains($_REQUEST['action'] ?? '', 'trash');
 
         // we check if it's a new created post - TODO: This is not the case
         if (
@@ -271,7 +271,7 @@ class Booking extends Timeframe {
 			);
 		}
 
-		/** @var \CommonsBooking\Model\Booking $booking */
+		/** @var \CommonsBooking\Model\Booking|null $booking */
 		$booking = \CommonsBooking\Repository\Booking::getByDate(
 			$repetitionStart,
 			$repetitionEnd,
@@ -385,7 +385,7 @@ class Booking extends Timeframe {
 
 		if ( $postId instanceof \WP_Error ) {
 			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
-											  PHP_EOL . $postId->get_error_messages()
+											  PHP_EOL . implode( ", ", $postId->get_error_messages() )
 			);
 		}
 
@@ -901,7 +901,7 @@ class Booking extends Timeframe {
     public function displayOverlappingBookingNotice( $post ) {
 
         if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
-            echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning' ) );
+            echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );
         }
     }
 

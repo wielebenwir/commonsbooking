@@ -91,10 +91,6 @@ class Timeframe extends CustomPostType {
 	public function __construct() {
 		$this->types = self::getTypes();
 
-		/**
-		 * Backend listing columns.
-		 * @var string[]
-		 */
 		$this->listColumns = [
 			'timeframe-author'                                                   => esc_html__( 'User', 'commonsbooking' ),
 			'type'                                                               => esc_html__( 'Type', 'commonsbooking' ),
@@ -104,7 +100,6 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::REPETITION_END                      => esc_html__( 'End Date', 'commonsbooking' ),
 			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => esc_html__( 'Max. Booking Duration', 'commonsbooking' ),
 		];
-
 
 		// List settings
 		$this->removeListDateColumn();
@@ -227,7 +222,7 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Returns view-class.
-	 * @return null
+	 * @return void
 	 */
 	public static function getView() {
 		// @TODO implement view.

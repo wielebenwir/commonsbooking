@@ -21,12 +21,12 @@ class BookablePost extends CustomPost {
 	 *
 	 * @uses Timeframe::getBookableForCurrentUser()
 	 *
-	 * @param false $asModel - Whether to return the timeframes as model (CommonsBooking\Model\Timeframe) or as array of WP_Post
+	 * @param bool $asModel - Whether to return the timeframes as model (CommonsBooking\Model\Timeframe) or as array of WP_Post
 	 * @param array $locations - If called from Item, this array should contain the location IDs to filter the timeframes
 	 * @param array $items - If called from Location, this array should contain the item IDs to filter the timeframes
 	 * @param string|null $date - A datestring to get only the timeframes that are bookable on a specific date
 	 *
-	 * @return array - An array of CommonsBooking\Model\Timeframe or WP_Post, an empty array if no bookable timeframes were found
+	 * @return \CommonsBooking\Model\Timeframe[]|\WP_Post[] - An array of Timeframe models or WP_Post, an empty array if no bookable timeframes were found
 	 * @throws Exception
 	 */
 	public function getBookableTimeframes(

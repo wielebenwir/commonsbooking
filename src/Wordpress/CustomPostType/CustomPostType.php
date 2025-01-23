@@ -23,12 +23,12 @@ abstract class CustomPostType {
 	public static $postType;
 
 	/**
-	 * @var
+	 * @var int
 	 */
 	protected $menuPosition;
 
 	/**
-	 * @var array
+	 * @var array{string, string}
 	 */
 	protected $listColumns = null;
 

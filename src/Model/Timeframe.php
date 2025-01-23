@@ -20,6 +20,8 @@ use Exception;
  * Additionally, all the public functions in this class can be called using Template Tags.
  *
  * @package CommonsBooking\Model
+ *
+ * @property bool $locked {@see \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked()}
  */
 class Timeframe extends CustomPost {
 	/**
@@ -525,7 +527,7 @@ class Timeframe extends CustomPost {
 	 * Timeframe::BOOKING_ID
 	 * Timeframe::BOOKING_CANCELLED_ID
      *
-	 * @return mixed
+	 * @return int
 	 */
 	public function getType() : int {
 		return intval( $this->getMeta( 'type' ) );
@@ -888,7 +890,7 @@ class Timeframe extends CustomPost {
 	 * 0 = slot
 	 * 1 = hourly
      *
-	 * @return mixed
+	 * @return int
 	 */
 	public function getGrid(): int {
 		return intval($this->getMeta( 'grid' ));
@@ -1169,6 +1171,9 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getAdmins(): array {
+
+		$itemAdminIds = [];
+
 		$location = $this->getLocation();
 		if (! empty($location)) {
 			$locationAdminIds = $location->getAdmins();

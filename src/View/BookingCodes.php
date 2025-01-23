@@ -29,7 +29,7 @@ class BookingCodes
 	 * @param int $tsInitial - Timestamp of the inital date
 	 * @param int $periodMonths
      *
-     * @return DateTime   Datetime of nex Cron Event.
+     * @return DateTimeImmutable   Datetime of nex Cron Event.
 	 */
     public static function initialCronEmailEvent(int $tsInitial,int $periodMonths): DateTimeImmutable {
         $start = new DateTimeImmutable();
@@ -64,7 +64,7 @@ class BookingCodes
 	 *
      * @param bool              $updated Whether the metadata update action occurred.
      * @param string            $action  Action performed. Could be "repeatable", "updated", or "removed".
-     * @param CMB2_Field object $field   This field object
+     * @param \CMB2_Field       $field   This field object
  	 */
     public static function cronEmailCodesSaved( $updated, $action, $field): void {
 	    $postID = $field->object_id();
@@ -97,9 +97,9 @@ class BookingCodes
 	 * CMB2 sanitize field callback
 	 * Will take the entered start date and saves it as a timestamp.
 	 *
-     * @param  mixed      $value      The unsanitized value from the form.
-     * @param  array      $field_args Array of field arguments.
-     * @param  CMB2_Field $field      The field object
+     * @param  mixed       $value      The unsanitized value from the form.
+     * @param  array       $field_args Array of field arguments.
+     * @param  \CMB2_Field $field      The field object
      *
      * @return ?array                  Sanitized value to be stored.
  	 */
@@ -126,7 +126,7 @@ class BookingCodes
 	 *
      * @param  mixed      $value      The unescaped value from the database.
      * @param  array      $field_args Array of field arguments.
-     * @param  CMB2_Field $field      The field object
+     * @param  \CMB2_Field $field      The field object
      *
      * @return array                  Escaped value to be displayed.
  	*/
@@ -252,8 +252,8 @@ HTML;
  	/**
 	 * renders CMB2 field row
 	 *
-     * @param  array      $field_args Array of field arguments.
-     * @param  CMB2_Field $field      The field object
+     * @param  array       $field_args Array of field arguments.
+     * @param  \CMB2_Field $field      The field object
   	*/
     public static function renderDirectEmailRow( $field_args, $field) {
 
