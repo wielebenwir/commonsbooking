@@ -203,9 +203,9 @@ class Timeframe extends CustomPost {
 		/**
 		 * Default list of privilege roles
 		 *
-		 * @param string[] $privilegedRolesDefaults list of roles as strings that are privileged roles
-		 *
 		 * @since 2.9.0
+		 *
+		 * @param string[] $privilegedRolesDefaults list of roles as strings that are privileged roles
 		 */
 		$privilegedRoles = apply_filters( 'commonsbooking_privileged_roles', $privilegedRolesDefaults );
 		if ( ! empty( array_intersect( $privilegedRoles, $user->roles ) ) ) {
