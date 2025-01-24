@@ -16,16 +16,15 @@ jobs:
          generate_zip: 'true'
 
      - name: Upload zip
-       uses: Dylan700/sftp-upload-action@latest
+       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
        with:
-         server: v2202011131270131895.happysrv.de
+         server: ${{ secrets.CBZIPUPLOAD_SERVER }}
          username: ${{ secrets.CBZIPUPLOAD_USER }}
-         key: ${{ secrets.CBZIPUPLOAD_KEY }}
+         password: ${{ secrets.CBZIPUPLOAD_KEY }}
          delete: true
-         uploads: |
-           ./ => ./cbzip/${{ github.event.number }}/
-         ignore: |
-           !commonsbooking.zip
+         server-dir: ${{ github.event.number }}/
+         exclude: "!commonsbooking.zip"
+         protocol: ftps
              
      - name: Find Comment
        uses: peter-evans/find-comment@v3
@@ -41,5 +40,5 @@ jobs:
          comment-id: ${{ steps.fc.outputs.comment-id }}
          issue-number: ${{ github.event.pull_request.number }}
          body: |
-           Download zip from [here](https://cbzip.v2202011131270131895.happysrv.de/${{ github.event.number }}/commonsbooking.zip)
+           Download zip from [here](https://builds.commonsbooking.org/${{ github.event.number }}/commonsbooking.zip)
          edit-mode: replace
