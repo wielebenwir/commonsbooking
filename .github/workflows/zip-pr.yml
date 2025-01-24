@@ -18,7 +18,7 @@ jobs:
      - name: Upload zip
        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
        with:
-         exclude: '!commonsbooking.zip'
+         exclude: '!{commonsbooking.zip}'
          server: ${{ secrets.CBZIPUPLOAD_SERVER }}
          username: ${{ secrets.CBZIPUPLOAD_USER }}
          password: ${{ secrets.CBZIPUPLOAD_KEY }}
