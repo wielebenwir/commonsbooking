@@ -18,11 +18,12 @@ jobs:
      - name: Upload zip
        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
        with:
+         exclude: |
+          ! commonsbooking.zip
          server: ${{ secrets.CBZIPUPLOAD_SERVER }}
          username: ${{ secrets.CBZIPUPLOAD_USER }}
          password: ${{ secrets.CBZIPUPLOAD_KEY }}
          server-dir: ${{ github.event.number }}/
-         exclude: !{commonsbooking.zip}
          protocol: ftps
              
      - name: Find Comment
