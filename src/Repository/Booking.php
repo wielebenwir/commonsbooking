@@ -511,6 +511,9 @@ class Booking extends PostRepository {
 	/**
 	 * Returns bookings for location and / or item that don't have a corresponding timeframe
 	 * Will only consider bookings in the future
+	 * This function is used to find orphaned bookings due to moving a location.
+	 * It however will also show bookings whose corresponding timeframe has been shortened,
+	 * and therefore do not have a valid timeframe anymore.
 	 *
 	 * @param int|null $startdate
 	 * @param int[] $items

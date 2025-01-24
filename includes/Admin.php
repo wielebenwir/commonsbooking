@@ -29,13 +29,6 @@ function commonsbooking_admin() {
 		);
 	}
 
-    // Map marker upload scripts
-    // TODO needs to be evaluated. Maybe not working on all systems
-    if ( get_current_screen()->id == 'cb_map' ) {
-        $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-        wp_enqueue_script( 'cb-map-marker-upload_js', $script_path );
-    }
-
 	// CB 0.X migration
 	wp_localize_script(
 		'cb-scripts-admin',
@@ -287,7 +280,7 @@ function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanit
  * @param mixed $log can be a string, array or object
  * @param bool $backtrace if set true the file-path and line of the calling file will be added to the error message
  *
- * @return string logmessage 
+ * @return void
  */
 function commonsbooking_write_log( $log, $backtrace = true ) {
 
@@ -308,6 +301,5 @@ function commonsbooking_write_log( $log, $backtrace = true ) {
 		$logmessage  = $file . ':' . $line . ' ' . $logmessage;
 	}
 
-    error_log( $logmessage ) ;
-
+	error_log( $logmessage );
 }

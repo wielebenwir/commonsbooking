@@ -74,8 +74,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <exclude name="Wordpress.PHP.YodaConditions" />
         <exclude name="WordPress.NamingConventions.ValidVariableName" />
         <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid" />
-	
-       <!-- Too much false positives in our codebase, but please reactivate if necessary -->
+
+        <!-- Excludes Short Array Syntax sniffs entirely -->
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+
+        <!-- Too much false positives in our codebase, but please reactivate if necessary -->
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.LongIndexSpaceBeforeDoubleArrow" />
 
