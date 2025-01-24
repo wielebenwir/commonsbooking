@@ -21,9 +21,8 @@ jobs:
          server: ${{ secrets.CBZIPUPLOAD_SERVER }}
          username: ${{ secrets.CBZIPUPLOAD_USER }}
          password: ${{ secrets.CBZIPUPLOAD_KEY }}
-         delete: true
          server-dir: ${{ github.event.number }}/
-         exclude: "!commonsbooking.zip"
+         exclude: !{commonsbooking.zip}
          protocol: ftps
              
      - name: Find Comment
