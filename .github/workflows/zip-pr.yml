@@ -25,6 +25,7 @@ jobs:
          username: ${{ secrets.CBZIPUPLOAD_USER }}
          password: ${{ secrets.CBZIPUPLOAD_KEY }}
          server-dir: ${{ github.event.number }}/
+         dangerous-clean-slate: true
          protocol: ftps
              
      - name: Find Comment
