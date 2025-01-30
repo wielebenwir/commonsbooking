@@ -10,7 +10,15 @@ jobs:
     steps:
     
      - uses: actions/checkout@v4
+       with:
+        fetch-depth: 0  # Important for getting full commit history
 
+     - name: Update Version Comment
+       run: |
+        BRANCH=`git rev-parse --abbrev-ref HEAD` && \
+        SHA=`git rev-parse --short HEAD` && \
+        sed -i "s|define('COMMONSBOOKING_VERSION_COMMENT',.*|define('COMMONSBOOKING_VERSION_COMMENT', '$BRANCH at $SHA);|" commonsbooking.php
+        
      - uses: ./.github/actions/build-plugin
        with:
          generate_zip: 'true'
