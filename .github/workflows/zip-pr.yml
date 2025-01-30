@@ -39,7 +39,7 @@ jobs:
        with:
          issue-number: ${{ github.event.pull_request.number }}
          comment-author: 'github-actions[bot]'
-         body-includes: Download built plugin zip from
+         body-includes: Download built plugin zip
 
      - name: Create or update comment
        uses: peter-evans/create-or-update-comment@v4
@@ -47,5 +47,6 @@ jobs:
          comment-id: ${{ steps.fc.outputs.comment-id }}
          issue-number: ${{ github.event.pull_request.number }}
          body: |
-           Download built plugin zip from [here](https://builds.commonsbooking.org/${{ github.event.number }}/commonsbooking.zip)
+           [Download built plugin zip] (https://builds.commonsbooking.org/${{ github.event.number }}/commonsbooking.zip)
+           [Test Plugin in Wordpress Playground] (https://playground.wordpress.net/#{%22steps%22:[{%22step%22:%22installPlugin%22,%22pluginData%22:{%22resource%22:%22url%22,%22url%22:%22https://builds.commonsbooking.org/${{ github.event.number }}/commonsbooking.zip%22}},{%22step%22:%22importWxr%22,%22file%22:{%22resource%22:%22url%22,%22url%22:%22https://raw.githubusercontent.com/wielebenwir/commonsbooking/refs/heads/master/tests/cypress/wordpress-files/content-example.xml%22}}],%22preferredVersions%22:{%22php%22:%227.4%22,%22wp%22:%22latest%22},%22login%22:true})
          edit-mode: replace
