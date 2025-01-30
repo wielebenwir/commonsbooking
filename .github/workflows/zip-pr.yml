@@ -15,7 +15,7 @@ jobs:
 
      - name: Update Version Comment
        run: |
-        sed -i "s|define('COMMONSBOOKING_VERSION_COMMENT',.*|define('COMMONSBOOKING_VERSION_COMMENT', ' ${{ github.head_ref }} at ${{ github.event.pull_request.head.sha}}');|" commonsbooking.php
+        sed -i "s|define('COMMONSBOOKING_VERSION_COMMENT',.*|define('COMMONSBOOKING_VERSION_COMMENT', '${{ github.head_ref }} at ${{ github.event.pull_request.head.sha}}');|" commonsbooking.php
      - uses: ./.github/actions/build-plugin
        with:
          generate_zip: 'true'
