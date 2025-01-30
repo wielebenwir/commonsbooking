@@ -6,6 +6,8 @@
  *
  */
 
+@use "../../../global/sass/partials/extends";
+
 .cb-wrapper {	
 	.cb-notice {
 		@extend .cb-box;

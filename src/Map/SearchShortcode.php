@@ -1,6 +1,10 @@
 <?php
 
 namespace CommonsBooking\Map;
+
+/**
+ * Short code for a multi-widget with map, search and table capabilities.
+ */
 class SearchShortcode extends BaseShortcode {
 	protected $processed_map_ids = [];
 

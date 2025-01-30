@@ -29,6 +29,10 @@ use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
 
+/**
+ * @since 2.10 removed saveOptionsActions, the transient commonsbooking_options_saved which is used in
+ *             Plugin::admin_init is set in OptionsTab class
+ */
 class Plugin {
 
 	use Cache;
@@ -445,6 +449,36 @@ class Plugin {
 		//hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
 		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
 		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
+
+		//hook this for later, if we run it now, it would fail
+		add_action( 'cmb2_admin_init', array( self::class, 'registerItemTaxonomyMetaboxes' ) );
+	}
+
+	/**
+	 * Add custom label for item categories that will be displayed in the map filter groups.
+	 * @return void
+	 */
+	public static function registerItemTaxonomyMetaboxes() {
+		$taxonomy = Item::getPostType() . 's_category';
+
+		$cmb_taxonomy = new_cmb2_box(
+			array(
+				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'edit',
+				'title'        => esc_html__( 'Item Category', 'commonsbooking' ),
+				'object_types' => array( 'term' ),
+				'taxonomies'   => array( 'category', $taxonomy ),
+				'context'      => 'side',
+			)
+		);
+
+		$cmb_taxonomy->add_field(
+			array(
+				'name' => __( 'Add custom title for filter', 'commonsbooking' ),
+				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'markup',
+				'type' => 'textarea_small',
+				'desc' => __( 'Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used.', 'commonsbooking' ),
+			)
+		);
 	}
 
 	/**
@@ -480,6 +514,7 @@ class Plugin {
 
 	/**
 	 * Renders error for backend_notice.
+	 * TODO refactor this using the AdminMessage type
 	 */
 	public static function renderError() {
 		$errorTypes = [
@@ -501,6 +536,22 @@ class Plugin {
 				delete_transient( $errorType );
 			}
 		}
+
+		$infoTypes = [
+			OptionsTab::SUCCESS_TYPE,
+		];
+
+		foreach ( $infoTypes as $info_type ) {
+			if ( $message = get_transient( $info_type ) ) {
+				$class = 'notice notice-success is-dismissible';
+				printf(
+					'<div class="%1$s"><p>%2$s</p></div>',
+					esc_attr( $class ),
+					commonsbooking_sanitizeHTML( $message )
+				);
+				delete_transient( $info_type );
+			}
+		}
 	}
 
 	/**
@@ -511,15 +562,6 @@ class Plugin {
 		if ( $enabled == 'on' ) {
 			new CB1UserFields();
 		}
-	}
-
-	/**
-	 * run actions after plugin options are saved
-	 * TODOD: @markus-mw I think this function is deprecated now. Would you please check this? It is only referenced by an inactive hook
-	 */
-	public static function saveOptionsActions() {
-		// Run actions after options update
-		set_transient( 'commonsbooking_options_saved', 1 );
 	}
 
 	/**
@@ -652,7 +694,7 @@ class Plugin {
 	}
 
 	public function registerShortcodes() {
-		add_shortcode('cb_search', array(new SearchShortcode(), 'execute'));
+		add_shortcode( 'cb_search', array( SearchShortcode::class, 'execute' ) );
 	}
 
 	/**

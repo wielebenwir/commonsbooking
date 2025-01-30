@@ -4,7 +4,8 @@
  * Styles for the litepicker javascript
  *
  */
- 
+@use "../mixins/calendar";
+@use "../../../global/sass/partials/extends";
 
 :root {
 	--litepickerBgColor: transparent;
@@ -236,7 +237,7 @@
 			}
 
 			.day-item {
-                @include day-item;
+                @include calendar.day-item;
 			}
 
 			.week-number {

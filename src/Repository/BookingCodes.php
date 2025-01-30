@@ -129,14 +129,16 @@ class BookingCodes {
 
 	/**
 	 * Filter an array of BookingCode|s such that it contains only one BookingCode per date.
+	 * Works by reference on the variable.
+	 *
 	 * Function is only needed when new cb version handles database entries created by old cb version.
 	 * The filtering can be omitted in future cb versions when backward compatibility with old cb is dropped.
 	 *
-	 * @param $bookingCodes[] array of BookingCode|s. It is assumed that they all have the same itemId.
+	 * @param array &$bookingCodes reference of array of BookingCode|s. It is assumed that they all have the same itemId.
 	 * @param int $preferredTimeframeId timeframeId to prefer when filtering
 	 * @param int $preferredLocationId locationId to prefer when filtering
 	 *
-	 * @return $bookingCodes[] array of BookingCode|s (only one code per day)
+	 * @return void works by reference on param $bookingCodes
 	 */
 	private static function backwardCompatibilityFilter(&$bookingCodes, $preferredTimeframeId, $preferredLocationId) {
 		$filteredCodes = [];
@@ -273,8 +275,10 @@ class BookingCodes {
             PRIMARY KEY (date, timeframe, location, item, code) 
         ) $charset_collate;";
 
+		// Include dbDelta since it's not part of autoloaded modules
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
+
 		add_option( COMMONSBOOKING_PLUGIN_SLUG . '_bookingcodes_db_version', $cb_db_version );
 	}
 

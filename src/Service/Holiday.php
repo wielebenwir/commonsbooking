@@ -13,7 +13,7 @@ class Holiday {
 	 * @param $object_type
 	 * @param $field_type
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public static function renderFields( $field, $value, $object_id, $object_type, $field_type ) {
 
@@ -61,6 +61,8 @@ class Holiday {
 		<br class="clear">
 		<?php
 		echo $field_type->_desc( true );
+
+		return '';
 	}
 
 
@@ -111,7 +113,7 @@ class Holiday {
 			$year_options .= '<option value="'. $year .'" ';
 			if($i === 0){
 				$year_options .= ' selected ';
-			};
+			}
 
 			$year_options .='>'. $year++ .'</option>';
 		}

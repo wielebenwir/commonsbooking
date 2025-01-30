@@ -50,17 +50,14 @@ class TimeframeExportTest extends CustomPostTypeTest
 		$this->assertArrayHasKey( 'pickup' , $dataArray[0] ); //because this is only set for bookings
 	}
 
-	/**
-	 * @ignore
-	 */
-	public function testExportCsv_testsFileCreation() {
+	public function testExportCsvAndFileCreation() {
 
 		// TODO think about changing the signature of exportCSV or getExportData to include startDate and endDate, then it is less coupled to the actual usage atm
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		Settings::updateOption( 'commonsbooking_options_export', 'export-timerange', 14 );
 		Settings::updateOption( 'commonsbooking_options_export', 'export-type', 'all' );
 
-		$timeframeOneItemAndLocation = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
+		$this->createBookableTimeFrameIncludingCurrentDay();
 
 		TimeframeExport::cronExport( $this->directoryUnderTest );
 

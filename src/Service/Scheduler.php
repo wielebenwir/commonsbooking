@@ -213,6 +213,13 @@ class Scheduler {
 	}
 
 	/**
+	 * @return int timestamp of scheduled event
+	 */
+	public function getTimestamp(): int {
+		return $this->timestamp;
+	}
+
+	/**
 	 * Unschedules the current job.
 	 * This can have multiple reasons:
 	 * - The job is no longer needed

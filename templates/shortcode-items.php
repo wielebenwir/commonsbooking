@@ -35,7 +35,7 @@ $noResultText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLU
 <?php
 if ($hasTimeFrames) {
 	/**
-	 * if this item has bookable timeframes we load the template timeframe-withlocation.php and 
+	 * if this item has bookable timeframes we load the template timeframe-withlocation.php and
 	 * set the variables used in this template
 	 */
     foreach ($templateData['data'] as $locationId => $data ) {
@@ -45,4 +45,4 @@ if ($hasTimeFrames) {
         set_query_var( 'data', $data );
         commonsbooking_get_template_part( 'timeframe', 'withlocation' );
     }
- }; // end if ($timeframes) ?>
+ } // end if ($timeframes) ?>

@@ -95,6 +95,11 @@ class UserWidget extends WP_Widget {
 
 	}
 
+	/**
+	 * @param $instance
+	 *
+	 * @return string
+	 */
 	public function form( $instance ) {
 
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'commonsbooking' );
@@ -113,6 +118,8 @@ class UserWidget extends WP_Widget {
                       rows="10"><?php echo esc_attr( $text ); ?></textarea>
         </p>
 		<?php
+
+		return ''; // Parent class returns string, not used
 
 	}
 

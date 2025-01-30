@@ -2,16 +2,24 @@
 
 namespace CommonsBooking\Map;
 
+use CommonsBooking\Model\Map;
+
+/**
+ * Shortcode for the legacy map with the old non-responsive standard leaflet style.
+ */
 class MapShortcode extends BaseShortcode {
-	protected function create_container($cb_map_id, $attrs, $options, $content) {
-		$map_height = MapAdmin::get_option( $cb_map_id, 'map_height' );
+	protected function create_container( $cb_map_id, $attrs, $options, $content ) {
+		$map        = new Map( $cb_map_id );
+		$map_height = $map->getMeta( 'map_height' );
+
 		return '<div id="cb-map-' . esc_attr( $cb_map_id ) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr( $map_height ) . 'px;"></div>';
 	}
+
 	protected function parse_attributes( $atts ) {
-		return shortcode_atts(array('id' => 0), $atts);
+		return shortcode_atts( array( 'id' => 0 ), $atts );
 	}
 
-	protected function inject_script($cb_map_id) {
+	protected function inject_script( $cb_map_id ) {
 		wp_add_inline_script( 'cb-map-shortcode',
 			"jQuery(document).ready(function ($) {
             var cb_map = new CB_Map();
@@ -28,13 +36,14 @@ class MapShortcode extends BaseShortcode {
 	 * get the translations for the frontend
 	 **/
 	private function get_translation( $cb_map_id ): array {
-		$label_location_opening_hours   = MapAdmin::get_option( $cb_map_id, 'label_location_opening_hours' );
-		$label_location_contact         = MapAdmin::get_option( $cb_map_id, 'label_location_contact' );
-		$custom_no_locations_message    = MapAdmin::get_option( $cb_map_id, 'custom_no_locations_message' );
-		$custom_filterbutton_label      = MapAdmin::get_option( $cb_map_id, 'custom_filterbutton_label' );
-		$label_item_availability_filter = MapAdmin::get_option( $cb_map_id, 'label_item_availability_filter' );
-		$label_item_category_filter     = MapAdmin::get_option( $cb_map_id, 'label_item_category_filter' );
-		$label_location_distance_filter = MapAdmin::get_option( $cb_map_id, 'label_location_distance_filter' );
+		$map                            = new Map( $cb_map_id );
+		$label_location_opening_hours   = $map->getMeta( 'label_location_opening_hours' );
+		$label_location_contact         = $map->getMeta( 'label_location_contact' );
+		$custom_no_locations_message    = $map->getMeta( 'custom_no_locations_message' );
+		$custom_filterbutton_label      = $map->getMeta( 'custom_filterbutton_label' );
+		$label_item_availability_filter = $map->getMeta( 'label_item_availability_filter' );
+		$label_item_category_filter     = $map->getMeta( 'label_item_category_filter' );
+		$label_location_distance_filter = $map->getMeta( 'label_location_distance_filter' );
 
 		return [
 			'OPENING_HOURS'          => strlen( $label_location_opening_hours ) > 0 ? $label_location_opening_hours : esc_html__( 'opening hours', 'commonsbooking' ),

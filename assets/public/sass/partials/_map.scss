@@ -12,6 +12,10 @@
 * @copyright 2020 wielebenwir
 */
 
+@use "../../../global/sass/partials/variables";
+@use "../../../global/sass/partials/extends";
+@use "layouts";
+
 .cb-wrapper {	
 	
 	/* Leaflet Map */
@@ -173,7 +177,7 @@
 		> div {
 			margin-bottom: var(--commonsbooking-spacer);
 			padding-bottom: var(--commonsbooking-spacer);
-			border-bottom: 1px solid $color-gray-dark;
+			border-bottom: 1px solid variables.$color-gray-dark;
 		}
 	}
 
@@ -205,7 +209,7 @@
 			}
 			button.undo-geo-search, button.geo-search {
 				background: transparent;
-				color: $color-white;
+				color: variables.$color-white;
 			}
 		}
 	}
