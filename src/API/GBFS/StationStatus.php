@@ -4,6 +4,7 @@
 namespace CommonsBooking\API\GBFS;
 
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Location;
@@ -58,7 +59,7 @@ class StationStatus extends BaseRoute {
 	 */
 	private function getItemCountAtLocation($locationId){
 		$items = Item::getByLocation($locationId,true);
-		$nowDT = new \DateTime();
+		$nowDT = Wordpress::getUTCDateTime('now');
 		$availableCounter = 0;
 		foreach ($items as $item){
 			//we have to make our calendar span at least one day, otherwise we get no results
@@ -72,8 +73,8 @@ class StationStatus extends BaseRoute {
 			//we have to iterate over multiple slots because the calendar will give us more than we asked for
 			foreach ($availabilitySlots as $availabilitySlot){
 				//match our exact current time to the slot
-				$startDT = new \DateTime($availabilitySlot->start);
-				$endDT = new \DateTime($availabilitySlot->end);
+				$startDT = Wordpress::getUTCDateTime( $availabilitySlot->start );
+				$endDT = Wordpress::getUTCDateTime( $availabilitySlot->end );
 				if ($nowDT >= $startDT && $nowDT <= $endDT){
 					$availableCounter++;
 					//break out of the loop, we only need one match of availability per item
