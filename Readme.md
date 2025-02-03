@@ -51,8 +51,8 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 1. Make sure that composer is installed on your system
 2. Navigate into your wp-content/plugins directory
 3. Open a terminal and run `git clone https://github.com/wielebenwir/commonsbooking`
-4. cd into the directory commonsbooking and run `composer install`
-> This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev` if you just quickly want to test a specific branch without installing the extension.
+4. cd into the directory commonsbooking and run `npm start`
+> This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev && npm install && npm run dist`  if you just quickly want to test a specific branch without installing the extension.
 5. Activate the plugin in the plugins dashboard
 
 ## Contribute

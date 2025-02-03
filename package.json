@@ -9,10 +9,10 @@
 		"url": "https://github.com/wielebenwir/cb"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.26.0",
-		"@wordpress/env": "^10.15.0",
+		"@babel/preset-env": "^7.26.7",
+		"@wordpress/env": "^10.16.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"cypress": "^13.17.0",
+		"cypress": "^14.0.0",
 		"editorconfig": "^2.0.0",
 		"grunt": "^1.6.1",
 		"grunt-babel": "^8.0.0",
@@ -25,7 +25,7 @@
 		"grunt-contrib-watch": "^1.1.0",
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
-		"sass": "^1.83.1"
+		"sass": "^1.83.4"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",

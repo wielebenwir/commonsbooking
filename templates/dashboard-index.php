@@ -37,7 +37,7 @@
 						<li><a href="edit.php?post_type=cb_timeframe"><span class="dashicons dashicons-calendar-alt"></span> <?php echo esc_html__( 'Timeframes', 'commonsbooking' ); ?></a>
 						</li>
 					</ul>
-	
+
 				</div><!-- .cb_welcome-panel-column -->
 				<div class="cb_welcome-panel-column">
 					<h3 style="padding-bottom:20px"><?php echo esc_html__( 'See Bookings & manage restrictions', 'commonsbooking' ); ?></h3>
