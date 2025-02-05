@@ -22,6 +22,13 @@ use WP_REST_Response;
 class AvailabilityRoute extends BaseRoute {
 
 	/**
+	 * Default, minimum and maximum value for the optional ?weeks= parameter
+	 */
+	private const DEFAULT_WEEKS = 2;
+	private const MIN_WEEKS = 1;
+	private const MAX_WEEKS = 53;
+
+	/**
 	 * The base of this controller's route.
 	 *
 	 * @var string
@@ -39,14 +46,19 @@ class AvailabilityRoute extends BaseRoute {
 	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
 	 *
 	 * @param bool $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
+	 * @param int $weeks Number of weeks from today to return (will be rounded up return full weeks Monday-Sunday)
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getItemData( $id = false ): array {
+	private function getItemData( $id = false, $weeks): array {
+		if ( !is_numeric( $weeks ) || $weeks < self::MIN_WEEKS || $weeks > self::MAX_WEEKS ) {
+			$weeks = self::DEFAULT_WEEKS;
+		}
+
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
-			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
+			new Day( date( 'Y-m-d', strtotime( "+$weeks weeks" ) ) ),
 			[],
 			$id ? [ $id ] : []
 		);
@@ -65,8 +77,10 @@ class AvailabilityRoute extends BaseRoute {
 		//get parameters from request
 		$params             = $request->get_params();
 		$data               = new stdClass();
+		// optional parameter ?weeks= defaults to DEFAULT_WEEKS if missing or validation in getItemData() fails
+		$weeks = (int)$request->get_param('weeks');
 		try {
-			$data->availability = $this->getItemData( $params['id'] );
+			$data->availability = $this->getItemData( $params['id'], $weeks);
 
 			//return a response or error based on some conditional
 			if ( count( $data->availability ) ) {
@@ -92,6 +106,8 @@ class AvailabilityRoute extends BaseRoute {
 	public function get_items( $request ) {
 		$data               = new stdClass();
 		$data->availability = [];
+		// optional parameter ?weeks= defaults to DEFAULT_WEEKS if missing or validation in getItemData() fails
+		$weeks = (int)$request->get_param('weeks');
 
 		// Get all items
 		$items = Item::get([], true);
@@ -100,7 +116,7 @@ class AvailabilityRoute extends BaseRoute {
 		foreach ($items as $item) {
 			$data->availability = array_merge(
 				$data->availability,
-				$this->getItemData($item->ID)
+				$this->getItemData($item->ID, $weeks)
 			);
 		}
 		return new WP_REST_Response( $data, 200 );
