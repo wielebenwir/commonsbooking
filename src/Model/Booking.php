@@ -883,7 +883,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
     /**
      * Returns formatted user info based on the template field in settings -> templates
      *
-     * @return void
+     * @return mixed
      */
     public static function getFormattedUserInfo() {
         return commonsbooking_parse_template(

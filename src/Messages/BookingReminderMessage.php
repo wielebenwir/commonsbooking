@@ -54,7 +54,7 @@ class BookingReminderMessage extends Message {
                 'user'     => $booking_user,
 			]
 		);
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 }

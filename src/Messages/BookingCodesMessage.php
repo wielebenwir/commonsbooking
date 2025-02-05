@@ -39,32 +39,32 @@ class BookingCodesMessage extends Message {
 
     /**
      * prepares Message and sends by E-mail
-     * 
+     *
      * @return bool    true if message was sent, false otherwise. If the message is not sent, an error is raised.
      */
 	public function sendMessage(): bool {
         $timeframeId=(int)$this->getPostId();
         $timeframe=new Timeframe($timeframeId);
 
-        if(!$this->prepareReceivers($timeframe)) return $this->raiseError( 
+        if(!$this->prepareReceivers($timeframe)) return $this->raiseError(
                 __( "Unable to send Emails. No location email(s) configured, check location", "commonsbooking" ));
 
 		$bookingCodes = BookingCodes::getCodes($timeframeId, $this->tsFrom,$this->tsTo);
         if(empty($bookingCodes)) return $this->raiseError( __( "Could not find booking codes for this timeframe/period", "commonsbooking" ));
-        
+
         $bookingTable=apply_filters('commonsbooking_emailcodes_rendertable',
                                         \CommonsBooking\View\BookingCodes::renderBookingCodesTable( $bookingCodes ),
                                         $bookingCodes,'email');
-        
+
         $bAddIcal=apply_filters('commonsbooking_emailcodes_addical',
                             Settings::getOption( 'commonsbooking_options_bookingcodes', 'mail-booking-' . $this->action . '-attach-ical' ),
                             $timeframe);
         $attachment=$bAddIcal?$this->getIcalAttachment($bookingCodes):null;
-        
+
         //Workaround: arbitrary object for template parser
         $codes=new \WP_User((object)array( "ID" => -1));
         $codes->codeTable=$bookingTable;
-        
+
         $dispTo= wp_date("M-Y",strtotime(end($bookingCodes)->getDate()));
         $dispFrom= wp_date("M-Y",strtotime(reset($bookingCodes)->getDate()));
         $codes->formatDateRange=($dispFrom == $dispTo)?$dispFrom:$dispFrom . " - " . $dispTo;
@@ -97,19 +97,19 @@ class BookingCodesMessage extends Message {
             ],
 			$attachment
 		);
-        
+
         add_action( 'commonsbooking_mail_sent',array($this,'updateEmailSent'), 5, 2 );
-        
+
         if(count($this->locationAdmins) > 1) {
             add_filter('commonsbooking_mail_to', array($this,'addMultiTo'), 25);
-            $this->SendNotificationMail();
+            $this->sendNotificationMail();
             remove_filter('commonsbooking_mail_to', array($this,'addMultiTo'), 25);
         }
         else
-		    $this->SendNotificationMail();
+		    $this->sendNotificationMail();
 
         remove_action( 'commonsbooking_mail_sent',array($this,'updateEmailSent'), 5 );
-        
+
         return true;
     }
 
@@ -126,17 +126,17 @@ class BookingCodesMessage extends Message {
 	public function updateEmailSent($action,$result)
     {
         if($this->action != $action) return;
-            
+
         if($result === true)
         {
-            update_post_meta( (int)$this->getPostId(), \CommonsBooking\View\BookingCodes::LAST_CODES_EMAIL, time() ); 
+            update_post_meta( (int)$this->getPostId(), \CommonsBooking\View\BookingCodes::LAST_CODES_EMAIL, time() );
         }
 
     }
 
  	/**
 	 * filter commonsbooking_mail_to for adding multiple to email addresses
-     * 
+     *
      * @return array
  	 */
     public function addMultiTo(): array {
@@ -163,18 +163,18 @@ class BookingCodesMessage extends Message {
             foreach(array_map('trim', explode(',', $location_emails)) as $email) {
                 $dUser=$this->locationAdmins[]=new \WP_User((object)array( "ID" => $dummy_id--));
                 $dUser->user_nicename='';
-                $dUser->user_email=$email;           
+                $dUser->user_email=$email;
             }
         }
 
         return !empty($this->locationAdmins);
     }
-    
+
     /**
 	 * generates iCalendar attachment with all requested booking codes
 	 *
      * @param BookingCode[] $bookingCodes   List of BookingCode objects
-     * 
+     *
      * @return array
  	 */
     protected function getIcalAttachment( array $bookingCodes): array {
@@ -199,7 +199,7 @@ class BookingCodesMessage extends Message {
         ];
 
 		return $attachment;
-        
+
     }
 
 	/**

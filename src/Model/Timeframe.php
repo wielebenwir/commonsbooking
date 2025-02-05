@@ -5,7 +5,6 @@ namespace CommonsBooking\Model;
 use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
-use CommonsBooking\Tests\Repository\TimeframeTest;
 use DateTime;
 use Exception;
 
@@ -898,7 +897,7 @@ class Timeframe extends CustomPost {
 	 * Checks if timeframes are overlapping in time ranges or daily slots.
      *
 	 * Use {@see Timeframe::overlaps()} if you want to compute full-overlap between two timeframes.
-     * 
+     *
 	 * @param Timeframe $otherTimeframe
 	 *
 	 * @return bool If start-time and end-time overlaps, regardless of overlapping start-date and end-date.

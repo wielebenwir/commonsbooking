@@ -221,15 +221,15 @@ class Day {
 	 *
 	 * @param int $grid
 	 * @param Restriction $restriction
-	 
+
 	 * @return float|int
 	 */
-	protected function getRestrictionStartSlot( int $grid, \CommonsBooking\Model\Restriction $restriction ) {
+	protected function getRestrictionStartSlot( int $grid, Restriction $restriction ) {
 
 		$startTime = $restriction->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
 
-		$startDateBooking = intval( $restriction->getStartDate() );
+		$startDateBooking = $restriction->getStartDate();
 		$startDateDay     = strtotime( $this->getDate() );
 
 		// if restriction starts on day before, we set startslot to 0
@@ -285,7 +285,7 @@ class Day {
 	 * @return float|int
 	 * @throws Exception
 	 */
-	protected function getRestrictionEndSlot( array $slots, int $grid, \CommonsBooking\Model\Restriction $restriction ) {
+	protected function getRestrictionEndSlot( array $slots, int $grid, Restriction $restriction ) {
 		$endTime = $restriction->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
 		$endDate = $restriction->getEndDateDateTime();
 
@@ -440,7 +440,7 @@ class Day {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
-		/** @var \CommonsBooking\Model\Restriction $restriction */
+		/** @var Restriction $restriction */
 		foreach ( $this->getRestrictions() as $restriction ) {
 
 			// Only if there is a repair we block the timeframe
