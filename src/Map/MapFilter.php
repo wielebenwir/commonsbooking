@@ -12,7 +12,7 @@ class MapFilter {
 		foreach ( $category_groups as $group ) {
 			foreach ( $item_terms as $term ) {
 				if ( in_array( $term->term_id, $group ) ) {
-					$valid_groups_count ++;
+					++$valid_groups_count;
 					break;
 				}
 			}

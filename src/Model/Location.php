@@ -23,7 +23,7 @@ class Location extends BookablePost {
 	 * returns bookable timeframes for a given itemID
 	 *
 	 * @param mixed $itemId
-	 * @param bool $asModel
+	 * @param bool  $asModel
 	 *
 	 * @return array
 	 * @throws \Exception
@@ -47,25 +47,30 @@ class Location extends BookablePost {
 	 * E.g. a textarea "location format" in the backend that gets run through CB::get():
 	 * {{location_street}}<br>{{location_postcode}} {{location_city}}
 	 *
-	 *
 	 * @return string
 	 * @throws \Exception
 	 */
 	public function formattedAddress() {
-		$html_after    = '<br>';
-		$html_output[] = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, 'post_title', $this->post ) . $html_after;
-		$location_street = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_street',
-			$this->post );
-		if (!empty($location_street)){
+		$html_after      = '<br>';
+		$html_output[]   = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, 'post_title', $this->post ) . $html_after;
+		$location_street = CB::get(
+			\CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+			COMMONSBOOKING_METABOX_PREFIX . 'location_street',
+			$this->post
+		);
+		if ( ! empty( $location_street ) ) {
 			$html_output[] = $location_street . $html_after;
 		}
 		$location_postcode = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', $this->post );
-		if (!empty($location_postcode)){
+		if ( ! empty( $location_postcode ) ) {
 			$html_output[] = $location_postcode;
 		}
-		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city',
-			$this->post );
-		if (!empty($location_city)){
+		$location_city = CB::get(
+			\CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+			COMMONSBOOKING_METABOX_PREFIX . 'location_city',
+			$this->post
+		);
+		if ( ! empty( $location_city ) ) {
 			$html_output[] = $location_city . $html_after;
 		}
 
@@ -77,6 +82,7 @@ class Location extends BookablePost {
 	 * This function is usually called using template tags in the e-mail templates.
 	 *
 	 * TODO: Fix the uncaught exception.
+	 *
 	 * @return string html
 	 * @throws \Exception
 	 */
@@ -87,11 +93,11 @@ class Location extends BookablePost {
 
 		$location_city = CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_city', $this->post );
 
-		if (empty($location_street) && empty($location_postcode) && empty($location_city)){
-			return "";
-		}
-		elseif (empty($location_street) || empty($location_postcode)){
-			return sprintf('%s %s %s',
+		if ( empty( $location_street ) && empty( $location_postcode ) && empty( $location_city ) ) {
+			return '';
+		} elseif ( empty( $location_street ) || empty( $location_postcode ) ) {
+			return sprintf(
+				'%s %s %s',
 				$location_street,
 				$location_postcode,
 				$location_city
@@ -120,14 +126,15 @@ class Location extends BookablePost {
 	public function formattedContactInfo() {
 		$contact = array();
 		if ( ! empty( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) ) ) {
-			$contact[] = "<br>"; // needed for email template
-			$contact[] = esc_html__( 'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
-				'commonsbooking' );
+			$contact[] = '<br>'; // needed for email template
+			$contact[] = esc_html__(
+				'Please contact the contact persons at the location directly if you have any questions regarding collection or return:',
+				'commonsbooking'
+			);
 			$contact[] = nl2br( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) );
 		}
 
 		return implode( '<br>', $contact );
-
 	}
 
 	/**
@@ -143,7 +150,7 @@ class Location extends BookablePost {
 	 * @throws \Exception
 	 */
 	public function formattedContactInfoOneLine() {
-		return commonsbooking_sanitizeHTML(CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post)) . '<br>';
+		return commonsbooking_sanitizeHTML( CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', $this->post ) ) . '<br>';
 	}
 
 	/**
@@ -154,10 +161,13 @@ class Location extends BookablePost {
 	 * @throws \Exception
 	 */
 	public function formattedPickupInstructions(): string {
-		$html_br     = '<br>';
+		$html_br = '<br>';
 
-		return $html_br . $html_br . CB::get( \CommonsBooking\Wordpress\CustomPostType\Location::$postType,
-				COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions', $this->post ) . $html_br;
+		return $html_br . $html_br . CB::get(
+			\CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+			COMMONSBOOKING_METABOX_PREFIX . 'location_pickupinstructions',
+			$this->post
+		) . $html_br;
 	}
 
 	/**
@@ -176,7 +186,6 @@ class Location extends BookablePost {
 	/**
 	 * Calls the geocoder to update the geo coordinates of the location.
 	 * Caution: Do not call this function without a one-second delay between calls. Do not overload the geocoder.
-	 *
 	 */
 	public function updateGeoLocation() {
 		$street        = $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_street' );
@@ -191,7 +200,7 @@ class Location extends BookablePost {
 			return;
 		}
 
-		$addressString = $street . ", " . $postCode . " " . $city . ", " . $country;
+		$addressString = $street . ', ' . $postCode . ' ' . $city . ', ' . $country;
 		try {
 			$addressData = GeoHelper::getAddressData( $addressString );
 		} catch ( Exception $e ) {
@@ -238,8 +247,9 @@ class Location extends BookablePost {
 		$locationAdminIds[] = get_post_field( 'post_author', $locationId );
 
 		return array_unique(
-			array_map('intval',
-				array_values($locationAdminIds)
+			array_map(
+				'intval',
+				array_values( $locationAdminIds )
 			)
 		);
 	}
@@ -252,7 +262,7 @@ class Location extends BookablePost {
 	 */
 	public function getRestrictions(): array {
 		return \CommonsBooking\Repository\Restriction::get(
-			[$this->ID],
+			[ $this->ID ],
 			[],
 			null,
 			true
@@ -267,6 +277,6 @@ class Location extends BookablePost {
 	 * @return mixed
 	 */
 	public function hasMap() {
-		return $this->getMeta( 'loc_showmap') === "on";
+		return $this->getMeta( 'loc_showmap' ) === 'on';
 	}
 }

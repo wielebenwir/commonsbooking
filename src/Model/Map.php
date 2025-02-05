@@ -10,7 +10,6 @@ use Exception;
 /**
  * This class does the heavy lifting for the map shortcode
  * Code style differs because it has been taken from the fLotte Map shortcode plugin
- *
  */
 class Map extends CustomPost {
 
@@ -33,7 +32,6 @@ class Map extends CustomPost {
 		$preset_categories          = $this->getMeta( 'cb_items_preset_categories' );
 		$preset_location_categories = $this->getMeta( 'cb_locations_preset_categories' );
 
-
 		$args = [
 			'post_type'      => Location::$postType,
 			'posts_per_page' => - 1,
@@ -55,8 +53,8 @@ class Map extends CustomPost {
 		foreach ( $locationObjects as $post ) {
 			$location_meta = get_post_meta( $post->ID, null, true );
 
-			//set serialized empty array if not set
-			//THIS FUNCTIONALITY IS DEPRECATED, closing days were a feature of 0.9.X
+			// set serialized empty array if not set
+			// THIS FUNCTIONALITY IS DEPRECATED, closing days were a feature of 0.9.X
 			$closed_days = isset( $location_meta['commons-booking_location_closeddays'] ) ? $location_meta['commons-booking_location_closeddays'][0] : 'a:0:{}';
 
 			$items = [];
@@ -67,12 +65,11 @@ class Map extends CustomPost {
 
 			if ( $preset_location_categories ) {
 				if ( ! has_term( $preset_location_categories, 'cb_locations_category', $post->ID ) ) {
-					continue; //skip to next location in loop
+					continue; // skip to next location in loop
 				}
 			}
 
 			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
-
 				$item_terms = wp_get_post_terms(
 					$item->ID,
 					\CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category'
@@ -98,12 +95,11 @@ class Map extends CustomPost {
 				 */
 
 				if ( $preset_categories ) {
-					//check if preset category is in items
+					// check if preset category is in items
 					if ( ! has_term( $preset_categories, 'cb_items_category', $item->ID ) ) {
-						continue; //skip to next item in loop
+						continue; // skip to next item in loop
 					}
 				}
-
 
 				$timeframesData = [];
 				$timeframes     = Timeframe::getBookableForCurrentUser(
@@ -119,12 +115,12 @@ class Map extends CustomPost {
 					$endDate          = $timeframe->getEndDate() ?: date( 'Y-m-d', strtotime( '2999-01-01' ) );
 					$timeframesData[] = [
 						'date_start' => $startDate,
-						'date_end'   => $endDate
+						'date_end'   => $endDate,
 					];
 				}
 
 				$thumbnailID = get_post_thumbnail_id( $item->ID );
-				//this thumbnail is kept for backwards compatibility
+				// this thumbnail is kept for backwards compatibility
 				$thumbnail = wp_get_attachment_image_url( $thumbnailID, 'thumbnail' );
 				$images    = [
 					'thumbnail' => wp_get_attachment_image_src( $thumbnailID, 'thumbnail' ),
@@ -135,13 +131,13 @@ class Map extends CustomPost {
 				$items[]   = [
 					'id'         => $item->ID,
 					'name'       => $item->post_title,
-					'short_desc' => has_excerpt( $item->ID ) ? wp_strip_all_tags( get_the_excerpt( $item->ID ) ) : "",
+					'short_desc' => has_excerpt( $item->ID ) ? wp_strip_all_tags( get_the_excerpt( $item->ID ) ) : '',
 					'status'     => $item->post_status,
 					'terms'      => $item_terms,
 					'link'       => add_query_arg( 'cb-location', $post->ID, get_permalink( $item->ID ) ),
 					'thumbnail'  => $thumbnail ?: null,
 					'images'     => $images,
-					'timeframes' => $timeframesData
+					'timeframes' => $timeframesData,
 				];
 			}
 
@@ -180,13 +176,13 @@ class Map extends CustomPost {
 	public static function cleanup_location_data_entry( $value, $linebreak_replacement ) {
 
 		if ( is_string( $value ) ) {
-			$value = wp_strip_all_tags( $value ); //strip all tags
-			$value = preg_replace( '/(\r\n)|\n|\r/', $linebreak_replacement, $value ); //replace linebreaks
+			$value = wp_strip_all_tags( $value ); // strip all tags
+			$value = preg_replace( '/(\r\n)|\n|\r/', $linebreak_replacement, $value ); // replace linebreaks
 		}
 
 		if ( is_array( $value ) ) {
 			foreach ( $value as &$child_value ) {
-				//recursive call
+				// recursive call
 				$child_value = self::cleanup_location_data_entry( $child_value, $linebreak_replacement );
 			}
 		}
@@ -209,5 +205,4 @@ class Map extends CustomPost {
 
 		return $locations;
 	}
-
 }
