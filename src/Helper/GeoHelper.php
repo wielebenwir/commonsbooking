@@ -34,11 +34,11 @@ class GeoHelper {
 	 *
 	 * @return void
 	 */
-	public static function setGeoCodeServiceInstance( GeoCodeService $instance ) : void {
+	public static function setGeoCodeServiceInstance( GeoCodeService $instance ): void {
 		self::$geoCodeService = $instance;
 	}
 
-	public static function resetGeoCoder() : void {
-		GeoHelper::setGeoCodeServiceInstance( new NominatimGeoCodeService() );
+	public static function resetGeoCoder(): void {
+		self::setGeoCodeServiceInstance( new NominatimGeoCodeService() );
 	}
 }

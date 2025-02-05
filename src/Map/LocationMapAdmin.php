@@ -15,5 +15,4 @@ class LocationMapAdmin {
 			add_action( 'cmb2_render_cb_map', array( Map::class, 'render_cb_map' ), 10, 5 );
 		}
 	}
-
 }

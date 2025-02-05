@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
-
 use CommonsBooking\Map\MapShortcode;
 use CommonsBooking\Repository\CB1;
 use CommonsBooking\Repository\Item;
@@ -24,7 +23,7 @@ class Map extends CustomPostType {
 	 * Is used when no other coordinates are set.
 	 * These are currently the coordinates of Cologne, Germany.
 	 */
-	const LATITUDE_DEFAULT = 50.937531;
+	const LATITUDE_DEFAULT  = 50.937531;
 	const LONGITUDE_DEFAULT = 6.960279;
 
 	/**
@@ -41,12 +40,11 @@ class Map extends CustomPostType {
 	public function registerMetabox() {
 		$cmb = new_cmb2_box(
 			[
-				'id'           => static::getPostType() . "-custom-fields",
+				'id'           => static::getPostType() . '-custom-fields',
 				'title'        => esc_html__( 'Map settings', 'commonsbooking' ),
 				'object_types' => array( static::getPostType() ),
 			]
 		);
-
 
 		foreach ( self::getCustomFields() as $customField ) {
 			$cmb->add_field( $customField );
@@ -65,12 +63,12 @@ class Map extends CustomPostType {
 				'type'          => 'text',
 				'id'            => 'shortcode',
 			),
-			//Begin group presentation
+			// Begin group presentation
 			array(
 				'name'    => esc_html__( 'Presentation', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'presentation_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name'    => esc_html__( 'base map', 'commonsbooking' ),
@@ -79,7 +77,7 @@ class Map extends CustomPostType {
 				'type'    => 'select',
 				'options' => array(
 					'1' => esc_html__( 'OSM - mapnik', 'commonsbooking' ),
-					'2' => esc_html__( 'OSM - german style', 'commonsbooking' )
+					'2' => esc_html__( 'OSM - german style', 'commonsbooking' ),
 					/*
 					 * Reenable the map styles if neede
 					'3' => esc_html__( 'OSM - hike and bike', 'commonsbooking' ),
@@ -118,12 +116,12 @@ class Map extends CustomPostType {
 				'id'   => 'enable_map_data_export',
 				'type' => 'checkbox',
 			),
-			//Begin group Zoom
+			// Begin group Zoom
 			array(
 				'name'    => esc_html__( 'Zoom', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'zoom_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name'       => esc_html__( 'min. zoom level', 'commonsbooking' ),
@@ -136,7 +134,7 @@ class Map extends CustomPostType {
 					'pattern' => '\d*',
 					'min'     => '1',
 					'max'     => '19',
-				)
+				),
 			),
 			array(
 				'name'       => esc_html__( 'max. zoom level', 'commonsbooking' ),
@@ -149,7 +147,7 @@ class Map extends CustomPostType {
 					'pattern' => '\d*',
 					'min'     => '1',
 					'max'     => '19',
-				)
+				),
 			),
 			array(
 				'name'       => esc_html__( 'start zoom level', 'commonsbooking' ),
@@ -162,7 +160,7 @@ class Map extends CustomPostType {
 					'pattern' => '\d*',
 					'min'     => '1',
 					'max'     => '19',
-				)
+				),
 			),
 			array(
 				'name'       => esc_html__( 'enable scroll wheel zoom', 'commonsbooking' ),
@@ -171,13 +169,13 @@ class Map extends CustomPostType {
 				'type'       => 'checkbox',
 				'default_cb' => 'commonsbooking_cmb2_set_checkbox_default_for_new_post',
 			),
-			//End group Zoom
-			//Begin group Positioning
+			// End group Zoom
+			// Begin group Positioning
 			array(
 				'name'    => esc_html__( 'Positioning', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'positioning_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name'    => esc_html__( 'start latitude', 'commonsbooking' ),
@@ -207,13 +205,13 @@ class Map extends CustomPostType {
 				'type'       => 'checkbox',
 				'default_cb' => 'commonsbooking_cmb2_set_checkbox_default_for_new_post',
 			),
-			//End group Positioning
-			//Begin group Tooltip
+			// End group Positioning
+			// Begin group Tooltip
 			array(
 				'name'    => esc_html__( 'Marker Tooltip', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'marker_tooltip_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name' => esc_html__( 'Show marker tooltip permanently', 'commonsbooking' ),
@@ -221,19 +219,19 @@ class Map extends CustomPostType {
 				'id'   => 'marker_tooltip_permanent',
 				'type' => 'checkbox',
 			),
-			//End group Tooltip
-			//Begin group popup
+			// End group Tooltip
+			// Begin group popup
 			array(
 				'name'    => esc_html__( 'Marker Popup', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'marker_popup_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name' => esc_html__( 'show item availability', 'commonsbooking' ),
 				'desc' => esc_html__( 'activate to show the item availability in the marker popup', 'commonsbooking' ),
 				'id'   => 'show_item_availability',
-				'type' => 'checkbox'
+				'type' => 'checkbox',
 			),
 			array(
 				'name'       => esc_html__( 'Max. available days in popup', 'commonsbooking' ),
@@ -245,7 +243,7 @@ class Map extends CustomPostType {
 					'type'    => 'number',
 					'pattern' => '\d*',
 					'min'     => '1',
-				)
+				),
 			),
 			array(
 				'name'       => esc_html__( 'Maximum days to choose in map availabilty filter ', 'commonsbooking' ),
@@ -256,15 +254,15 @@ class Map extends CustomPostType {
 				'attributes' => array(
 					'type'    => 'number',
 					'pattern' => '\d*',
-				)
+				),
 			),
-			//End group popup
-			//Begin group custom marker
+			// End group popup
+			// Begin group custom marker
 			array(
 				'name'    => esc_html__( 'Custom Marker', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'custom_marker_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name'       => esc_html__( 'image file', 'commonsbooking' ),
@@ -322,13 +320,13 @@ class Map extends CustomPostType {
 					'pattern' => '\d*',
 				),
 			),
-			//End group custom marker
-			//Begin group cluster
+			// End group custom marker
+			// Begin group cluster
 			array(
 				'name'    => esc_html__( 'Cluster', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'cluster_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name'       => esc_html__( 'max. cluster radius', 'commonsbooking' ),
@@ -340,7 +338,7 @@ class Map extends CustomPostType {
 					'type'    => 'number',
 					'pattern' => '\d*',
 					'min'     => 0,
-					'max'     => 1000
+					'max'     => 1000,
 				),
 			),
 			array(
@@ -379,13 +377,13 @@ class Map extends CustomPostType {
 					'min'     => '1',
 				),
 			),
-			//End group cluster
-			//Begin group Appearance
+			// End group cluster
+			// Begin group Appearance
 			array(
 				'name'    => esc_html__( 'Appearance by Item Status', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'item_status_appearance_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name'    => esc_html__( 'appearance', 'commonsbooking' ),
@@ -455,13 +453,13 @@ class Map extends CustomPostType {
 					'pattern' => '\d*',
 				),
 			),
-			//End group Appearance
-			//Begin group Filters
+			// End group Appearance
+			// Begin group Filters
 			array(
 				'name'    => esc_html__( 'Filter for Users', 'commonsbooking' ),
 				'type'    => 'title',
 				'id'      => 'filter_info',
-				'classes' => 'map-organizer'
+				'classes' => 'map-organizer',
 			),
 			array(
 				'name' => esc_html__( 'show location distance filter', 'commonsbooking' ),
@@ -476,7 +474,7 @@ class Map extends CustomPostType {
 				'type'       => 'text',
 				'attributes' => array(
 					'placeholder' => esc_html__( 'distance', 'commonsbooking' ),
-				)
+				),
 			),
 			array(
 				'name' => esc_html__( 'address search bounds - left bottom', 'commonsbooking' ) . ' ' . esc_html__( 'longitude', 'commonsbooking' ),
@@ -515,7 +513,7 @@ class Map extends CustomPostType {
 				'type'       => 'text',
 				'attributes' => array(
 					'placeholder' => esc_html__( 'availability', 'commonsbooking' ),
-				)
+				),
 			),
 			array(
 				'name'       => esc_html__( 'label for item category filter', 'commonsbooking' ),
@@ -524,7 +522,7 @@ class Map extends CustomPostType {
 				'type'       => 'text',
 				'attributes' => array(
 					'placeholder' => esc_html__( 'categories', 'commonsbooking' ),
-				)
+				),
 			),
 			array(
 				'name'       => esc_html__( 'custom text for filter button', 'commonsbooking' ),
@@ -533,7 +531,7 @@ class Map extends CustomPostType {
 				'type'       => 'text',
 				'attributes' => array(
 					'placeholder' => esc_html__( 'filter', 'commonsbooking' ),
-				)
+				),
 			),
 			array(
 				'name'       => commonsbooking_sanitizeHTML( __( 'Filter groups', 'commonsbooking' ) ),
@@ -565,9 +563,9 @@ class Map extends CustomPostType {
 							'postmeta' => commonsbooking_sanitizeHTML( __( 'Post-meta', 'commonsbooking' ) ),
 						),
 						'default'    => 'taxonomy',
-						//TODO: disabled until postmeta is implemented
+						// TODO: disabled until postmeta is implemented
 						'attributes' => array(
-							'disabled' => true
+							'disabled' => true,
 						),
 					),
 					array(
@@ -586,9 +584,9 @@ class Map extends CustomPostType {
 					),
 				),
 			),
-			//TODO: Add available categories & filtergroups
-			//End group Filters
-			//Begin group Presets
+			// TODO: Add available categories & filtergroups
+			// End group Filters
+			// Begin group Presets
 			array(
 				'name'              => esc_html__( 'Filter Item Presets', 'commonsbooking' ),
 				'desc'              => esc_html__( 'select the categories that are used to prefilter the items that are shown on the map - none for all items', 'commonsbooking' ),
@@ -605,7 +603,7 @@ class Map extends CustomPostType {
 				'options'           => CustomPostType::sanitizeOptions( Location::getTerms() ),
 				'select_all_button' => false,
 			),
-			//End group Presets
+			// End group Presets
 		);
 	}
 
@@ -669,17 +667,15 @@ class Map extends CustomPostType {
 
 	/**
 	 * Renders the shortcode for the map
-	 *
 	 */
 	public static function getShortcode( array $field_args, CMB2_Field $field ) {
 		$id = get_the_ID();
 		?>
 		<b> Shortcode: </b>
 		<div class="cmb-row cmb-type-text" id="shortcode-field">
-			<code>[cb_map id=<?php echo $id ?>]</code>
-			<button type="button" class="button"><?php echo esc_html__( "Copy to clipboard", 'commonsbooking' ) ?></button>
+			<code>[cb_map id=<?php echo $id; ?>]</code>
+			<button type="button" class="button"><?php echo esc_html__( 'Copy to clipboard', 'commonsbooking' ); ?></button>
 		</div>
 		<?php
 	}
-
 }

@@ -8,23 +8,20 @@ use CommonsBooking\Model\Map;
 class MapData {
 	public static function geo_search() {
 		if ( isset( $_POST['query'] ) && $_POST['cb_map_id'] ) {
-
 			$map = new Map( $_POST['cb_map_id'] );
-
 
 			$check_capacity = true;
 			$attempts       = 0;
 
-			//because requests to nominatim are limited (max 1/s), we have to check for timestamp of last one and loop for a while, if needed
+			// because requests to nominatim are limited (max 1/s), we have to check for timestamp of last one and loop for a while, if needed
 			while ( $check_capacity ) {
-
 				if ( $attempts > 10 ) {
 					wp_send_json_error( [ 'error' => 5 ], 408 );
 
 					wp_die();
 				}
 
-				$attempts ++;
+				++$attempts;
 
 				$last_call_timestamp = commonsbooking_sanitizeHTML( get_option( 'cb_map_last_nominatim_call', 0 ) );
 				$current_timestamp   = time();
@@ -45,9 +42,8 @@ class MapData {
 			];
 
 			if ( $map->getMeta( 'address_search_bounds_left_bottom_lat' ) && $map->getMeta( 'address_search_bounds_left_bottom_lon' ) && $map->getMeta( 'address_search_bounds_right_top_lat' ) && $map->getMeta( 'address_search_bounds_right_top_lon' ) ) {
-
 				$params['bounded'] = 1;
-				//viewbox - lon1, lat1, lon2, lat2: 12.856779316446545, 52.379790828551016, 13.948545673868422, 52.79694936237738
+				// viewbox - lon1, lat1, lon2, lat2: 12.856779316446545, 52.379790828551016, 13.948545673868422, 52.79694936237738
 				$params['viewbox'] = $map->getMeta( 'address_search_bounds_left_bottom_lon' ) . ',' . $map->getMeta( 'address_search_bounds_left_bottom_lat' ) . ',' . $map->getMeta( 'address_search_bounds_right_top_lon' ) . ',' . $map->getMeta( 'address_search_bounds_right_top_lat' );
 			}
 
@@ -61,19 +57,16 @@ class MapData {
 
 			if ( is_wp_error( $data ) ) {
 				wp_send_json_error( [ 'error' => 2 ], 404 );
-			} else {
-				if ( $data['response']['code'] == 200 ) {
-
+			} elseif ( $data['response']['code'] == 200 ) {
 					json_decode( $data['body'] );
 					// Check if the json is valid
-					if ( json_last_error() == JSON_ERROR_NONE  ) {
-						wp_send_json( $data['body'] );
-					} else {
-						wp_send_json_error( [ 'error' => 4 ], 403 );
-					}
+				if ( json_last_error() == JSON_ERROR_NONE ) {
+					wp_send_json( $data['body'] );
 				} else {
-					wp_send_json_error( [ 'error' => 3 ], 404 );
+					wp_send_json_error( [ 'error' => 4 ], 403 );
 				}
+			} else {
+				wp_send_json_error( [ 'error' => 3 ], 404 );
 			}
 		} else {
 			wp_send_json_error( [ 'error' => 1 ], 400 );
@@ -86,7 +79,7 @@ class MapData {
 	 * the ajax request handler for locations
 	 **/
 	public static function get_locations() {
-		//handle local/import map
+		// handle local/import map
 		if ( isset( $_POST['cb_map_id'] ) ) {
 			check_ajax_referer( 'cb_map_locations', 'nonce' );
 
@@ -106,7 +99,6 @@ class MapData {
 			wp_die();
 		}
 
-
 		if ( $post->post_status == 'publish' ) {
 			$map                = new Map( $cb_map_id );
 			$settings           = self::get_settings( $cb_map_id );
@@ -115,7 +107,7 @@ class MapData {
 			$itemTerms          = self::getItemCategoryTerms( $settings );
 			$locations          = $map->get_locations( $itemTerms );
 
-			//create availabilities
+			// create availabilities
 			$show_item_availability        = $map->getMeta( 'show_item_availability' );
 			$show_item_availability_filter = $map->getMeta( 'show_item_availability_filter' );
 
@@ -123,10 +115,11 @@ class MapData {
 				$locations = MapItemAvailable::create_items_availabilities(
 					$locations,
 					$default_date_start,
-					$default_date_end );
+					$default_date_end
+				);
 			}
 
-			$locations = array_values( $locations ); //locations to indexed array
+			$locations = array_values( $locations ); // locations to indexed array
 			$locations = Map::cleanup_location_data( $locations, '<br>' );
 
 			header( 'Content-Type: application/json' );
@@ -140,6 +133,7 @@ class MapData {
 
 	/**
 	 * Returns configured item terms
+	 *
 	 * @return array
 	 */
 	public static function getItemCategoryTerms( $settings ): array {
@@ -233,11 +227,11 @@ class MapData {
 				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'custom_marker_media_id' ) ),
 				'iconSize'   => [
 					intval( $map->getMeta( 'marker_icon_width' ) ),
-					intval( $map->getMeta( 'marker_icon_height' ) )
+					intval( $map->getMeta( 'marker_icon_height' ) ),
 				],
 				'iconAnchor' => [
 					intval( $map->getMeta( 'marker_icon_anchor_x' ) ),
-					intval( $map->getMeta( 'marker_icon_anchor_y' ) )
+					intval( $map->getMeta( 'marker_icon_anchor_y' ) ),
 				],
 			];
 		}
@@ -247,11 +241,11 @@ class MapData {
 				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'marker_item_draft_media_id' ) ),
 				'iconSize'   => [
 					intval( $map->getMeta( 'marker_item_draft_icon_width' ) ),
-					intval( $map->getMeta( 'marker_item_draft_icon_height' ) )
+					intval( $map->getMeta( 'marker_item_draft_icon_height' ) ),
 				],
 				'iconAnchor' => [
 					intval( $map->getMeta( 'marker_item_draft_icon_anchor_x' ) ),
-					intval( $map->getMeta( 'marker_item_draft_icon_anchor_y' ) )
+					intval( $map->getMeta( 'marker_item_draft_icon_anchor_y' ) ),
 				],
 			];
 		}
@@ -266,8 +260,8 @@ class MapData {
 			];
 		}
 
-		//categories are only meant to be shown on local maps
-		//TODO: Evaluate if it makes sense to only show them when categories are imported
+		// categories are only meant to be shown on local maps
+		// TODO: Evaluate if it makes sense to only show them when categories are imported
 		if ( $map->getMeta( 'cb_items_available_categories' ) ) {
 			$settings['filter_cb_item_categories'] = [];
 
@@ -283,9 +277,9 @@ class MapData {
 						'markup' => $termName,
 					];
 				}
-				$isExclusive = $group['isExclusive'] ?? 'off';
+				$isExclusive                                       = $group['isExclusive'] ?? 'off';
 				$settings['filter_cb_item_categories'][ $groupID ] = [
-					'name'        => $group['name'] ?? "",
+					'name'        => $group['name'] ?? '',
 					'elements'    => $elements,
 					'isExclusive' => $isExclusive == 'on',
 				];
