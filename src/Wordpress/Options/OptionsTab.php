@@ -2,9 +2,7 @@
 
 namespace CommonsBooking\Wordpress\Options;
 
-use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Plugin;
-use CommonsBooking\View\TimeframeExport;
 use Exception;
 
 /**
@@ -81,7 +79,7 @@ class OptionsTab {
 	public function registerOptionsGroups() {
 
 		foreach ( $this->groups as $group ) {
-			$group = $this->prependTitle( $group ); /* prepend title + description html */
+			$group = static::prependTitle( $group ); /* prepend title + description html */
 
 			// Add Fields
 			$fields = $group['fields'];
