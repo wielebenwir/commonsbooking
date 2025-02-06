@@ -608,7 +608,11 @@ class Booking extends Timeframe {
 		if ( $column == 'booking_user' ) {
 			$post        = get_post( $post_id );
 			$bookingUser = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
+			if ( $bookingUser ) {
+				echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
+			} else {
+				echo '-';
+			}
 		}
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
