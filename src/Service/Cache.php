@@ -258,30 +258,30 @@ trait Cache {
 			  post_status = 'publish'";
 			$pages = $wpdb->get_results( $sql );
 
-			$shortcodeNamesToCache = array_keys(self::$cbShortCodeFunctions);
+			$shortcodeNamesToCache = array_keys( self::$cbShortCodeFunctions );
 
-			$regex = get_shortcode_regex($shortcodeNamesToCache); // robust shortcode-regex generator from Wordpress
+			$regex = get_shortcode_regex( $shortcodeNamesToCache ); // robust shortcode-regex generator from WordPress
 
 			// Now extract shortcode calls including attributes and bodies
 			$shortCodeCalls = [];
 			foreach ( $pages as $page ) {
-				preg_match_all("/$regex/", $page->post_content, $shortcodeMatches, PREG_SET_ORDER );
+				preg_match_all( "/$regex/", $page->post_content, $shortcodeMatches, PREG_SET_ORDER );
 
 				// Process each matched shortcode
-				foreach ($shortcodeMatches as $match ) {
-					$shortCode = $match[2]; // shortcode name e.g., "cb_search"
-					$attributesString = isset($match[3]) ? $match[3] : ''; // e.g., " id=123"
+				foreach ( $shortcodeMatches as $match ) {
+					$shortCode        = $match[2]; // shortcode name e.g., "cb_search"
+					$attributesString = isset( $match[3] ) ? $match[3] : ''; // e.g., " id=123"
 
 					$shortCodeCalls[] = [
-						'shortcode' => $shortCode ,
-						'attributes'         => self::getShortcodeAndAttributes($shortCode . $attributesString)[1],
-						'body' => isset($match[5]) ? trim($match[5]) : '',
+						'shortcode' => $shortCode,
+						'attributes'         => self::getShortcodeAndAttributes( $shortCode . $attributesString )[1],
+						'body' => isset( $match[5] ) ? trim( $match[5] ) : '',
 					];
 				}
 			}
 
 			// Filter duplicate calls
-			$shortCodeCalls = array_unique($shortCodeCalls, SORT_REGULAR);
+			$shortCodeCalls = array_unique( $shortCodeCalls, SORT_REGULAR );
 
 			self::runShortcodeCalls( $shortCodeCalls );
 
@@ -380,9 +380,9 @@ trait Cache {
 	 */
 	private static function runShortcodeCalls( array $shortCodeCalls ): void {
 		foreach ( $shortCodeCalls as $shortCodeCall ) {
-			$shortcodeFunction = $shortCodeCall['shortcode '];
+			$shortcodeFunction = $shortCodeCall['shortcode'];
 			$attributes        = $shortCodeCall['attributes'];
-			$shortcodeBody = $shortCodeCall['body' ];
+			$shortcodeBody     = $shortCodeCall['body'];
 
 			if ( array_key_exists( $shortcodeFunction, self::$cbShortCodeFunctions ) ) {
 				list($class, $function) = self::$cbShortCodeFunctions[ $shortcodeFunction ];
@@ -440,7 +440,7 @@ trait Cache {
 		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
 		'cb_locations' => array( \CommonsBooking\View\Location::class, 'shortcode' ),
 		'cb_map' => array( MapShortcode::class, 'execute' ),
-		"cb_search" => array( \CommonsBooking\Map\SearchShortcode::class, 'execute' ),
+		'cb_search' => array( \CommonsBooking\Map\SearchShortcode::class, 'execute' ),
 		'cb_items_table' => array( Calendar::class, 'renderTable' ),
 	];
 }
