@@ -106,7 +106,7 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 	protected function deleteCBOptions() {
 		foreach ( wp_load_alloptions() as $option => $value ) {
-			if ( strpos( $option, COMMONSBOOKING_PLUGIN_SLUG . '_options' ) === 0 ) {
+			if ( str_starts_with( $option, COMMONSBOOKING_PLUGIN_SLUG . '_options' ) ) {
 				delete_option( $option );
 			}
 		}

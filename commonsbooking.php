@@ -15,8 +15,6 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use CommonsBooking\Plugin;
-
 defined('ABSPATH') or die("Thanks for visiting");
 define('COMMONSBOOKING_VERSION', '2.10.2');
 define('COMMONSBOOKING_VERSION_COMMENT', ''); // Empty for release - Used to mark development versions

@@ -107,7 +107,7 @@ class MessageTest extends Email_Test_Case {
     }
 
     public function testSendNotificationMail() {
-		$this->message->SendNotificationMail();
+		$this->message->sendNotificationMail();
 	    /** @var \PHPMailer\PHPMailer\PHPMailer $mailer */
 	    $mailer = $this->getMockMailer();
 	    $this->assertEmpty($mailer->ErrorInfo);
@@ -162,7 +162,7 @@ class MessageTest extends Email_Test_Case {
 		$fromMail = self::FROM_MAIL;
 		$fromHeader = 'From: ' . $fromName . ' <' . $fromMail . '>';
 		$subject = 'Test ' . $specialChar . ' Subject';
-		
+
 		$this->message = $this->getMockBuilder(Message::class)
 		                      ->onlyMethods(['sendMessage'])
 		                      ->setConstructorArgs([$this->postID, self::ACTION])
@@ -175,7 +175,7 @@ class MessageTest extends Email_Test_Case {
 			$subject,
 			$fromHeader,
 		] );
-		$this->message->SendNotificationMail();
+		$this->message->sendNotificationMail();
 		/** @var \PHPMailer\PHPMailer\PHPMailer $mailer */
 		$mailer = $this->getMockMailer();
 		$this->assertEquals($fromMail, $mailer->From);

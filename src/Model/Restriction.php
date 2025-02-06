@@ -11,7 +11,7 @@ use DateTime;
 /**
  * Timeframe for restricting access to an item.
  * This is the logical wrapper for the restriction custom post type.
- * 
+ *
  * Retrieve restrictions from the database using the @see \CommonsBooking\Repository\Restriction class.
  * Additionally, all the public functions in this class can be called using Template Tags.
  *
@@ -29,7 +29,6 @@ class Restriction extends CustomPost {
 	/**
 	 * This means, that the item is still bookable, but that users will be notified about the restriction.
 	 * This is used for example when the item is only available in a limited manner.
-	 *
 	 */
 	const TYPE_HINT = 'hint';
 
@@ -85,7 +84,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns post id, for array_unique.
-     *
+	 *
 	 * @return string
 	 */
 	public function __toString(): string {
@@ -125,7 +124,7 @@ class Restriction extends CustomPost {
 	 * Returns true if the restriction has an enddate.
 	 *
 	 * As far as I know, this is never used.
-     *
+	 *
 	 * @return bool
 	 */
 	public function hasEnddate() {
@@ -134,7 +133,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns end timestamp. Of no end-date is set it returns a date far in the future.
-     *
+	 *
 	 * @return int Timestamp
 	 */
 	public function getEndDate(): int {
@@ -146,7 +145,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns true if restriction isn't active.
-     *
+	 *
 	 * @return bool
 	 */
 	public function isOverBookable(): bool {
@@ -180,7 +179,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns restriction hint.
 	 * The restriction hint is the little message explaining why the item is restricted.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getHint() {
@@ -189,7 +188,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted start datetime.
-     * 
+	 *
 	 * @return string, if META_START is not null.
 	 */
 	public function getFormattedStartDateTime() {
@@ -212,7 +211,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns nicely formatted end datetime.
-     *
+	 *
 	 * @return string, if META_END is not null.
 	 */
 	public function getFormattedEndDateTime() {
@@ -235,7 +234,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns item name for the item that is restricted.
-     *
+	 *
 	 * @return string
 	 */
 	public function getItemName(): string {
@@ -250,7 +249,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns itemId for the item that is restricted.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getItemId() {
@@ -259,7 +258,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns location name for the location that the restricted item is in.
-     *
+	 *
 	 * @return string
 	 */
 	public function getLocationName(): string {
@@ -274,7 +273,7 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns location id for the location that the restricted item is in.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getLocationId() {
@@ -290,15 +289,14 @@ class Restriction extends CustomPost {
 		if ( $this->isActive() ) {
 			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
 			if ( $bookings ) {
-                // send restriction mails to all affected bookings
-                $this->sendRestrictionMails( $bookings );
+				// send restriction mails to all affected bookings
+				$this->sendRestrictionMails( $bookings );
 
 				$userDisabledBookingCancellationOnTotalBreakdown = \CommonsBooking\Settings\Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-no-cancel-on-total-breakdown' ) == 'on';
-                // cancel all affected booking
+				// cancel all affected booking
 				if ( ! $userDisabledBookingCancellationOnTotalBreakdown && $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
 					$this->cancelBookings( $bookings );
 				}
-				
 			}
 		}
 
@@ -346,19 +344,19 @@ class Restriction extends CustomPost {
 			// get User ID from booking
 			$userId = $booking->getUserData()->ID;
 
-			//checks if this is the first booking that is processed
+			// checks if this is the first booking that is processed
 			$firstMessage = ( $key === array_key_first( $bookings ) );
 
-            // send restriction message for each booking 
-            $hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType(),$firstMessage);
-            $hintMail->triggerMail();
-        }
-    }
+			// send restriction message for each booking
+			$hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType(), $firstMessage );
+			$hintMail->triggerMail();
+		}
+	}
 
 	/**
-     * Returns true if a restriction status in cancelled.
+	 * Returns true if a restriction status in cancelled.
 	 * Maybe it would make more sense to create an isActive() method and use that instead.
-     *
+	 *
 	 * @return bool
 	 */
 	public function isCancelled(): bool {
@@ -368,5 +366,4 @@ class Restriction extends CustomPost {
 
 		return $this->canceled;
 	}
-
 }

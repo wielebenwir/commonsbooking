@@ -3,7 +3,6 @@
 namespace CommonsBooking\Tests\API\GBFS;
 
 use CommonsBooking\API\GBFS\StationStatus;
-use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use SlopeIt\ClockMock\ClockMock;

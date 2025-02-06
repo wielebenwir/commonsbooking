@@ -3,13 +3,11 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingDeniedException;
-use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\iCalendar;
-use CommonsBooking\Settings\Settings;
 use Exception;
 use function wp_verify_nonce;
 
@@ -18,9 +16,9 @@ use function wp_verify_nonce;
  */
 class Booking extends Timeframe {
 
-	//this is the error type for the validation that failed for the FRONTEND user
-	//TODO: Switch the error type with the one from Model/Booking, because most functions regarding backend booking are in this class
-	public const ERROR_TYPE = COMMONSBOOKING_PLUGIN_SLUG . '-bookingValidationError';
+	// this is the error type for the validation that failed for the FRONTEND user
+	// TODO: Switch the error type with the one from Model/Booking, because most functions regarding backend booking are in this class
+	public const ERROR_TYPE        = COMMONSBOOKING_PLUGIN_SLUG . '-bookingValidationError';
 	private const SUBMIT_BUTTON_ID = 'booking-submit';
 
 	/**
@@ -30,7 +28,7 @@ class Booking extends Timeframe {
 
 	/**
 	 * Position in backend menu.
-     *
+	 *
 	 * @var int
 	 */
 	protected $menuPosition = 4;
@@ -39,19 +37,18 @@ class Booking extends Timeframe {
 
 		// does not trigger when initiated in initHooks
 		add_action( 'post_updated', array( $this, 'postUpdated' ), 1, 3 );
-
 	}
 
 
-    /**
+	/**
 	 * Initiates needed hooks.
 	 */
 	public function initHooks() {
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
-        // we need to add some additional fields and modify the autor if admin booking is made
-        add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10 );
+		// we need to add some additional fields and modify the autor if admin booking is made
+		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10 );
 
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
@@ -69,102 +66,105 @@ class Booking extends Timeframe {
 
 		// show admin notice
 		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
-        add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
+		add_action( 'edit_form_top', array( $this, 'displayOverlappingBookingNotice' ), 99 );
 	}
 
-    /**
-     * Adds and modifies some booking CPT fields in order to make admin boookings
-     * compatible to user made bookings via frontend.
-     *
-     * @param  mixed $post_id
-     * @param  mixed $post
-     * @param  mixed $update
-     * @return void
-     */
-    public function savePost( $post_id, $post = null, $update = null ) {
-        global $pagenow;
+	/**
+	 * Adds and modifies some booking CPT fields in order to make admin boookings
+	 * compatible to user made bookings via frontend.
+	 *
+	 * @param  mixed $post_id
+	 * @param  mixed $post
+	 * @param  mixed $update
+	 * @return void
+	 */
+	public function savePost( $post_id, $post = null, $update = null ) {
+		global $pagenow;
 
-        $post = $post ?? get_post( $post_id );
-        $is_trash_action = str_contains($_REQUEST['action'] ?? '', 'trash');
+		$post            = $post ?? get_post( $post_id );
+		$is_trash_action = str_contains( ( $_REQUEST ?? array() )['action'] ?? '', 'trash' );
 
-        // we check if it's a new created post - TODO: This is not the case
-        if (
+		// we check if it's a new created post - TODO: This is not the case
+		if (
 			! empty( $_REQUEST ) &&
 			! $is_trash_action &&
 			$pagenow === 'post.php' &&
 			( commonsbooking_isCurrentUserAdmin() || commonsbooking_isCurrentUserCBManager() )
 		) {
-            // set request variables
-            $booking_user = isset( $_REQUEST['booking_user'] ) ? esc_html( $_REQUEST['booking_user'] ) : false;
+			// set request variables
+			$booking_user = isset( $_REQUEST['booking_user'] ) ? esc_html( $_REQUEST['booking_user'] ) : false;
 
-		    $post_status = esc_html( $_REQUEST['post_status'] ?? '' );
+			$post_status = esc_html( $_REQUEST['post_status'] ?? '' );
 
-            $start_time = isset( $_REQUEST['repetition-start'] ) ? esc_html( $_REQUEST['repetition-start']['time'] ?? '' ) : false;
-            $end_time = isset( $_REQUEST['repetition-end'] ) ? esc_html( $_REQUEST['repetition-end']['time'] ?? '' ) : false;
-            $full_day = ( !$start_time || $start_time === '0:00' || $start_time === '00:00' ) && ( !$end_time || $end_time === '23:59' ) ? 'on' : '';
+			$start_time = isset( $_REQUEST['repetition-start'] ) ? esc_html( $_REQUEST['repetition-start']['time'] ?? '' ) : false;
+			$end_time   = isset( $_REQUEST['repetition-end'] ) ? esc_html( $_REQUEST['repetition-end']['time'] ?? '' ) : false;
+			$full_day   = ( ! $start_time || $start_time === '0:00' || $start_time === '00:00' ) && ( ! $end_time || $end_time === '23:59' ) ? 'on' : '';
 
-            $postarr          = array(
+			$postarr = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
-                'post_author' => $booking_user,
-                'post_status' => $post_status,
-                'meta_input'  => [
-                    'admin_booking_id' => get_current_user_id(),
-                    'start-time'       => $start_time,
-                    'end-time'         => $end_time,
-                    'type'             => Timeframe::BOOKING_ID,
-                    'grid'             => '',
-                    'full-day'         => $full_day,
+				'post_author' => $booking_user,
+				'post_status' => $post_status,
+				'meta_input'  => [
+					'admin_booking_id' => get_current_user_id(),
+					'start-time'       => $start_time,
+					'end-time'         => $end_time,
+					'type'             => Timeframe::BOOKING_ID,
+					'grid'             => '',
+					'full-day'         => $full_day,
 				],
-            );
+			);
 
-            // set post_name if new post
-            if ( in_array( $post->post_status, array( 'auto-draft', 'new' ) ) || $post->post_name === '' ) {
-                $postarr['post_name'] = Helper::generateRandomString();
-            }
+			// set post_name if new post
+			if ( in_array( $post->post_status, array( 'auto-draft', 'new' ) ) || $post->post_name === '' ) {
+				$postarr['post_name'] = Helper::generateRandomString();
+			}
 
-            $postarr['ID'] = $post_id;
+			$postarr['ID'] = $post_id;
 
-            // unhook this function so it doesn't loop infinitely
-            remove_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
+			// unhook this function so it doesn't loop infinitely
+			remove_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
 
-            // update this post
-            wp_update_post( $postarr, true, true );
+			// update this post
+			wp_update_post( $postarr, true, true );
 
-			//run validation only on new posts (the submit button is only available on new posts)
-	        if ( array_key_exists( self::SUBMIT_BUTTON_ID, $_REQUEST ) ) {
-		        try {
-			        $booking = new \CommonsBooking\Model\Booking( $post_id );
-			        $booking->isValid();
-			        wp_update_post( array(
-					        'ID'          => $post_id,
-					        'post_status' => 'confirmed'
-				        )
-			        );
-			        $post_status = 'confirmed';
-		        } catch ( TimeframeInvalidException $e ) {
-			        // set to draft and display error message
-			        wp_update_post( array(
-				        'ID'          => $post_id,
-				        'post_status' => 'draft',
-			        ) );
-			        set_transient(
-				        \CommonsBooking\Model\Booking::ERROR_TYPE,
-				        nl2br(commonsbooking_sanitizeHTML( $e->getMessage() )),
-				        30 //Expires very quickly, so that outdated messsages will not be shown to the user
-			        );
-		        }
-            }
+			// run validation only on new posts (the submit button is only available on new posts)
+			if ( array_key_exists( self::SUBMIT_BUTTON_ID, $_REQUEST ) ) {
+				try {
+					$booking = new \CommonsBooking\Model\Booking( $post_id );
+					$booking->isValid();
+					wp_update_post(
+						array(
+							'ID'          => $post_id,
+							'post_status' => 'confirmed',
+						)
+					);
+					$post_status = 'confirmed';
+				} catch ( TimeframeInvalidException $e ) {
+					// set to draft and display error message
+					wp_update_post(
+						array(
+							'ID'          => $post_id,
+							'post_status' => 'draft',
+						)
+					);
+					set_transient(
+						\CommonsBooking\Model\Booking::ERROR_TYPE,
+						nl2br( commonsbooking_sanitizeHTML( $e->getMessage() ) ),
+						30 // Expires very quickly, so that outdated messsages will not be shown to the user
+					);
+				}
+			}
 
-	        // readd the hook
-	        add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
+			// readd the hook
+			add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
 
-			//if we just created a new confirmed booking we trigger the confirmation mail
-	        if ( $post_status == 'confirmed' ) {
-		        $booking_msg = new BookingMessage( $post_id, $post_status );
-		        $booking_msg->triggerMail();
-	        }
-        }
-    }
+			// if we just created a new confirmed booking we trigger the confirmation mail
+			if ( $post_status == 'confirmed' ) {
+				$booking_msg = new BookingMessage( $post_id, $post_status );
+				$booking_msg->triggerMail();
+			}
+		}
+	}
 
 	/**
 	 * Handles frontend save-Request for timeframe.
@@ -218,7 +218,7 @@ class Booking extends Timeframe {
 	 * @param string|null $itemId
 	 * @param string|null $locationId
 	 * @param string|null $post_status
-	 * @param int|null $post_ID
+	 * @param int|null    $post_ID
 	 * @param string|null $comment
 	 * @param string|null $repetitionStart
 	 * @param string|null $repetitionEnd
@@ -241,11 +241,11 @@ class Booking extends Timeframe {
 		int $overbookedDays = 0
 	): int {
 
-		if ( isset ( $_POST['calendar-download'] ) ) {
+		if ( isset( $_POST['calendar-download'] ) ) {
 			try {
 				iCalendar::downloadICS( $post_ID );
 			} catch ( Exception $e ) {
-				//redirect to booking page and do nothing
+				// redirect to booking page and do nothing
 				return $post_ID;
 			}
 			exit;
@@ -337,22 +337,21 @@ class Booking extends Timeframe {
 				'type'                                              => Timeframe::BOOKING_ID,
 			);
 
-			$postId = wp_insert_post( $postarr, true );
+			$postId          = wp_insert_post( $postarr, true );
 			$needsValidation = true;
 
 			// Existing booking
 		} else {
 			$postarr['ID'] = $booking->ID;
 			if ( $postarr['post_status'] === 'canceled' ) {
-				$postarr['meta_input']['cancellation_time'] = current_time('timestamp');
+				$postarr['meta_input']['cancellation_time'] = current_time( 'timestamp' );
 			}
-			$postId        = wp_update_post( $postarr );
+			$postId = wp_update_post( $postarr );
 
-			//we check if this is an already denied booking and demand validation again
-			if ($postarr["post_status"] == "unconfirmed"){
+			// we check if this is an already denied booking and demand validation again
+			if ( $postarr['post_status'] == 'unconfirmed' ) {
 				$needsValidation = true;
-			}
-			else {
+			} else {
 				$needsValidation = false;
 			}
 		}
@@ -363,29 +362,30 @@ class Booking extends Timeframe {
 		// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
 		try {
 			$bookingModel->assignBookableTimeframeFields();
-			if ( $overbookedDays > 0 ) { //avoid setting the value when not present (for example when updating the booking)
+			if ( $overbookedDays > 0 ) { // avoid setting the value when not present (for example when updating the booking)
 				$bookingModel->setOverbookedDays( $overbookedDays );
 			}
 		} catch ( \Exception $e ) {
-			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Thrown error:', 'commonsbooking' ) .
-			                                  PHP_EOL . $e->getMessage()
+			throw new BookingDeniedException(
+				__( 'There was an error while saving the booking. Please try again. Thrown error:', 'commonsbooking' ) .
+												PHP_EOL . $e->getMessage()
 			);
 		}
 
-        //check if the Booking we want to create conforms to the set booking rules
-		if( $needsValidation){
+		// check if the Booking we want to create conforms to the set booking rules
+		if ( $needsValidation ) {
 			try {
 				BookingRuleApplied::bookingConformsToRules( $bookingModel );
-			}
-			catch (BookingDeniedException $e) {
-				wp_delete_post($bookingModel->ID);
-				throw new BookingDeniedException($e->getMessage());
+			} catch ( BookingDeniedException $e ) {
+				wp_delete_post( $bookingModel->ID );
+				throw new BookingDeniedException( $e->getMessage() );
 			}
 		}
 
 		if ( $postId instanceof \WP_Error ) {
-			throw new BookingDeniedException( __( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
-											  PHP_EOL . $postId->get_error_messages()
+			throw new BookingDeniedException(
+				__( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
+												PHP_EOL . $postId->get_error_messages()
 			);
 		}
 
@@ -404,7 +404,7 @@ class Booking extends Timeframe {
 	 */
 	private static function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
 		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $startDate );
-		if ( $startTimeFrame && !$startTimeFrame->isFullDay() && $startTimeFrame->getGrid() == 0 ) {
+		if ( $startTimeFrame && ! $startTimeFrame->isFullDay() && $startTimeFrame->getGrid() == 0 ) {
 			update_post_meta(
 				$postId,
 				\CommonsBooking\Model\Booking::START_TIMEFRAME_GRIDSIZE,
@@ -412,7 +412,7 @@ class Booking extends Timeframe {
 			);
 		}
 		$endTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $endDate );
-		if ( $endTimeFrame && !$endTimeFrame->isFullDay() && $endTimeFrame->getGrid() == 0 ) {
+		if ( $endTimeFrame && ! $endTimeFrame->isFullDay() && $endTimeFrame->getGrid() == 0 ) {
 			update_post_meta(
 				$postId,
 				\CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE,
@@ -484,16 +484,16 @@ class Booking extends Timeframe {
 	 */
 	public function postUpdated( $post_ID, $post_after, $post_before ) {
 
-        if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
+		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
 			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
-    		if ( $isBooking ) {
+			if ( $isBooking ) {
 
-    				// Trigger Mail, only send mail if status has changed
+					// Trigger Mail, only send mail if status has changed
 				if ( $post_before->post_status != $post_after->post_status and
-				     ! (
-					     $post_before->post_status === 'unconfirmed' and
-					     $post_after->post_status === 'canceled'
-				     )
+					! (
+						$post_before->post_status === 'unconfirmed' and
+						$post_after->post_status === 'canceled'
+					)
 				) {
 					if ( $post_after->post_status == 'canceled' ) {
 						$booking = new \CommonsBooking\Model\Booking( $post_ID );
@@ -503,13 +503,13 @@ class Booking extends Timeframe {
 						$booking_msg->triggerMail();
 					}
 				}
-            }
+			}
 		}
 	}
 
 	/**
 	 * Returns CPT arguments.
-     *
+	 *
 	 * @return array
 	 */
 	public function getArgs() {
@@ -596,17 +596,21 @@ class Booking extends Timeframe {
 	 * @param $post_id
 	 */
 	public function setCustomColumnsData( $column, $post_id ) {
-        global $pagenow;
+		global $pagenow;
 
-        if ( $pagenow !== 'edit.php' || empty( esc_html( $_GET['post_type'] ) ) || esc_html( $_GET['post_type'] ) !== $this::$postType ) {
-            return;
-        }
+		if ( $pagenow !== 'edit.php' || empty( esc_html( $_GET['post_type'] ) ) || esc_html( $_GET['post_type'] ) !== $this::$postType ) {
+			return;
+		}
 
 		// we alter the  author column data and link the username to the user profile
 		if ( $column == 'booking_user' ) {
-			$post           = get_post( $post_id );
+			$post        = get_post( $post_id );
 			$bookingUser = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
+			if ( $bookingUser ) {
+				echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
+			} else {
+				echo '-';
+			}
 		}
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
@@ -615,7 +619,7 @@ class Booking extends Timeframe {
 				case 'item-id':
 					if ( $post = get_post( $value ) ) {
 						if ( get_post_type( $post ) == Location::getPostType() ||
-						     get_post_type( $post ) == Item::getPostType()
+							get_post_type( $post ) == Item::getPostType()
 						) {
 							echo commonsbooking_sanitizeHTML( $post->post_title );
 							break;
@@ -660,15 +664,15 @@ class Booking extends Timeframe {
 				)
 			) {
 
-                // get translated label for post status
-                if ($column === 'post_status') {
-                    echo __( commonsbooking_sanitizeHTML( get_post_status_object( get_post_status( $post_id ) )->label ) );
-                } else {
-                echo __( commonsbooking_sanitizeHTML( $post->{$column} ) );
-                }
-            }
+				// get translated label for post status
+				if ( $column === 'post_status' ) {
+					echo __( commonsbooking_sanitizeHTML( get_post_status_object( get_post_status( $post_id ) )->label ) );
+				} else {
+					echo __( commonsbooking_sanitizeHTML( $post->{$column} ) );
+				}
+			}
 		}
-    }
+	}
 
 	/**
 	 * @param \WP_Query $query
@@ -676,7 +680,7 @@ class Booking extends Timeframe {
 	 * @return void
 	 */
 	public function setCustomColumnSortOrder( \WP_Query $query ) {
-		if (! parent::setCustomColumnSortOrder( $query ) ) {
+		if ( ! parent::setCustomColumnSortOrder( $query ) ) {
 			return;
 		}
 
@@ -692,7 +696,7 @@ class Booking extends Timeframe {
 	 * Registers metaboxes for cpt.
 	 */
 	public function registerMetabox() {
-		//do not render the metabox if the user is on the login page (not yet logged in)
+		// do not render the metabox if the user is on the login page (not yet logged in)
 		if ( ! is_user_logged_in() ) {
 			return;
 		}
@@ -711,29 +715,29 @@ class Booking extends Timeframe {
 
 	/**
 	 * Returns custom (meta) fields for Costum Post Type Timeframe.
-     *
+	 *
 	 * @return array
 	 */
 	protected function getCustomFields() {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = 'd/m/Y';
-		if ( strpos( get_locale(), 'de_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
 			$dateFormat = 'd.m.Y';
 		}
 
-		if ( strpos( get_locale(), 'en_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'en_' ) ) {
 			$dateFormat = 'm/d/Y';
 		}
 
-        $booking_user = get_user_by('ID', get_current_user_id());
+		$booking_user = get_user_by( 'ID', get_current_user_id() );
 
-        // define form fields based on CMB2
+		// define form fields based on CMB2
 		return array(
 			array(
 				'name' => esc_html__( 'Edit booking', 'commonsbooking' ),
 				'desc' => '<div style="padding:20px; background-color:#efe05c"><p>' . commonsbooking_sanitizeHTML(
-                    __(
-                        '<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
+					__(
+						'<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>
 				<ul>
                     <li>Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.</li>
                     <li>Click on the <strong>Submit booking</strong> button at the end of the page to submit a new booking.</li>
@@ -741,9 +745,9 @@ class Booking extends Timeframe {
 				<strong>Please note</strong>: Only a few basic checks against existing bookings are performed. Please be wary of overlapping bookings.
                 </p> 
 				',
-                        'commonsbooking'
-                    ) . '</p></div>'
-                ),
+						'commonsbooking'
+					) . '</p></div>'
+				),
 				'id'   => 'title-booking-hint',
 				'type' => 'title',
 			),
@@ -763,7 +767,7 @@ class Booking extends Timeframe {
 				'name'    => esc_html__( 'Book full day', 'commonsbooking' ),
 				'id'      => 'full-day',
 				'type'    => 'checkbox',
-				'desc'	  => esc_html__( 'The booking should apply to the entire day(s)', 'commonsbooking' ),
+				'desc'    => esc_html__( 'The booking should apply to the entire day(s)', 'commonsbooking' ),
 			),
 			array(
 				'name'        => esc_html__( 'Start date', 'commonsbooking' ),
@@ -772,7 +776,7 @@ class Booking extends Timeframe {
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
-                'default'     => '00:00',
+				'default'     => '00:00',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
@@ -789,7 +793,7 @@ class Booking extends Timeframe {
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
-                'default'     => '23:59',
+				'default'     => '23:59',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
@@ -805,38 +809,38 @@ class Booking extends Timeframe {
 				'type' => 'text',
 				'desc' => esc_html__( 'Valid booking code will be automatically retrieved for bookings that apply to the full day.', 'commonsbooking' ),
 			),
-            array(
+			array(
 				'name'             => esc_html__( 'Booking User', 'commonsbooking' ),
 				'id'               => 'booking_user',
 				'type'             => 'user_ajax_search',
-                'multiple-items'   => true,
-                'default'          => array( self::class, 'getFrontendBookingUser' ),
-                'desc'             => commonsbooking_sanitizeHTML(
-                    __(
-                        'Here you must select the user for whom the booking is made.<br>
+				'multiple-items'   => true,
+				'default'          => array( self::class, 'getFrontendBookingUser' ),
+				'desc'             => commonsbooking_sanitizeHTML(
+					__(
+						'Here you must select the user for whom the booking is made.<br>
                         If the booking was made by a user via frontend booking process, the user will be shown in this field.
                         <br><strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking is submitted.',
-                        'commonsbooking'
-                    )
-                ),
+						'commonsbooking'
+					)
+				),
 			),
-            array(
+			array(
 				'name'             => esc_html__( 'Admin Booking User', 'commonsbooking' ),
 				'id'               => 'admin_booking_id',
 				'type'             => 'select',
-                'default'          => get_current_user_id(),
-                'options'          => array (
-                                            $booking_user->ID => $booking_user->get( 'user_nicename' ) . ' (' . $booking_user->first_name . ' ' . $booking_user->last_name . ')',
-                ),
-                'attributes'       => array(
-                    'readonly' => true,
-                ),
-                'desc'             => commonsbooking_sanitizeHTML(
-                    __(
-                        'This is the admin user who created or modified this booking.',
-                        'commonsbooking'
-                    )
-                ),
+				'default'          => get_current_user_id(),
+				'options'          => array(
+					$booking_user->ID => $booking_user->get( 'user_nicename' ) . ' (' . $booking_user->first_name . ' ' . $booking_user->last_name . ')',
+				),
+				'attributes'       => array(
+					'readonly' => true,
+				),
+				'desc'             => commonsbooking_sanitizeHTML(
+					__(
+						'This is the admin user who created or modified this booking.',
+						'commonsbooking'
+					)
+				),
 			),
 			array(
 				'name' => esc_html__( 'External comment', 'commonsbooking' ),
@@ -874,16 +878,16 @@ class Booking extends Timeframe {
 		global $pagenow;
 
 		$notice = commonsbooking_sanitizeHTML(
-            __(
-                'Bookings should be created via frontend booking calendar. <br>
+			__(
+				'Bookings should be created via frontend booking calendar. <br>
 		As an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated
 		and checked. Use this function with care.<br>
 		Click on preview to show booking details in frontend<br>
 		To search and filter bookings please integrate the frontend booking list via shortcode. 
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>',
-                'commonsbooking'
-            )
-        );
+				'commonsbooking'
+			)
+		);
 
 		if ( ( $pagenow == 'edit.php' ) && isset( $_GET['post_type'] ) ) {
 			if ( sanitize_text_field( $_GET['post_type'] ) == self::getPostType() ) {
@@ -893,17 +897,17 @@ class Booking extends Timeframe {
 	}
 
 
-    /**
-     * Displays a permanent admin-notice if booking overlaps
-     *
-     * @return void
-     */
-    public function displayOverlappingBookingNotice( $post ) {
+	/**
+	 * Displays a permanent admin-notice if booking overlaps
+	 *
+	 * @return void
+	 */
+	public function displayOverlappingBookingNotice( $post ) {
 
-        if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
-            echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );
-        }
-    }
+		if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
+			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );
+		}
+	}
 
 	/**
 	 * Export user bookings using the supplied email. This is for integration with the WordPress personal data exporter.
@@ -914,30 +918,30 @@ class Booking extends Timeframe {
 	 * @return array
 	 */
 	public static function exportUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
-		$page = intval( $page );
+		$page         = intval( $page );
 		$itemsPerPage = 10;
-		$exportItems = array();
-		//The internal group ID used by WordPress to group the data exported by this exporter.
-		$groupID = 'bookings';
+		$exportItems  = array();
+		// The internal group ID used by WordPress to group the data exported by this exporter.
+		$groupID    = 'bookings';
 		$groupLabel = __( 'CommonsBooking Bookings', 'commonsbooking' );
 
 		$user = get_user_by( 'email', $emailAddress );
 		if ( ! $user ) {
-		   return array(
-	           'data' => $exportItems,
-	           'done' => true,
-		   );
+			return array(
+				'data' => $exportItems,
+				'done' => true,
+			);
 		}
 		$bookings = \CommonsBooking\Repository\Booking::getForUserPaginated( $user, $page, $itemsPerPage );
 		if ( ! $bookings ) {
-		   return array(
-			'data' => $exportItems,
-			'done' => true,
-		   );
+			return array(
+				'data' => $exportItems,
+				'done' => true,
+			);
 		}
-		foreach ($bookings as $booking) {
+		foreach ( $bookings as $booking ) {
 			$bookingID = $booking->ID;
-			//exclude bookings that the user is eligible to see but are not their own
+			// exclude bookings that the user is eligible to see but are not their own
 			// we are only concerned about one user's personal data
 			if ( $booking->getUserData()->user_email !== $emailAddress ) {
 				continue;
@@ -945,7 +949,7 @@ class Booking extends Timeframe {
 			$bookingData = [
 				[
 					'name'  => __( 'Booking start', 'commonsbooking' ),
-					'value' => $booking->pickupDatetime() ,
+					'value' => $booking->pickupDatetime(),
 				],
 				[
 					'name'  => __( 'Booking end', 'commonsbooking' ),
@@ -953,7 +957,7 @@ class Booking extends Timeframe {
 				],
 				[
 					'name'  => __( 'Time of booking', 'commonsbooking' ),
-					'value' => Helper::FormattedDateTime(get_post_timestamp( $bookingID ) ),
+					'value' => Helper::FormattedDateTime( get_post_timestamp( $bookingID ) ),
 				],
 				[
 					'name'  => __( 'Status', 'commonsbooking' ),
@@ -991,7 +995,7 @@ class Booking extends Timeframe {
 				'item_id'     => $bookingID,
 				'data'        => $bookingData,
 			];
-		 }
+		}
 		$done = count( $bookings ) < $itemsPerPage;
 		return array(
 			'data' => $exportItems,
@@ -1001,14 +1005,15 @@ class Booking extends Timeframe {
 
 	/**
 	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
-	 * @param string $emailAddress The email address
+	 *
+	 * @param string                                                                                                         $emailAddress The email address
 	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
 	 *
 	 * @return array
 	 */
 	public static function removeUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
-		//we reset the page to 1, because we are deleting our results as we go. Therefore, increasing the page number would skip some results.
-		$page = 1;
+		// we reset the page to 1, because we are deleting our results as we go. Therefore, increasing the page number would skip some results.
+		$page         = 1;
 		$itemsPerPage = 10;
 		$removedItems = false;
 
@@ -1030,16 +1035,16 @@ class Booking extends Timeframe {
 				'done'           => true,
 			);
 		}
-		foreach ($bookings as $booking) {
+		foreach ( $bookings as $booking ) {
 			$bookingID = $booking->ID;
-			//exclude bookings that the user is eligible to see but are not their own
+			// exclude bookings that the user is eligible to see but are not their own
 			// we are only concerned about one user's personal data
 			if ( $booking->getUserData()->user_email !== $emailAddress ) {
 				continue;
 			}
-			//Cancel the booking before deletion so that status change emails are sent
+			// Cancel the booking before deletion so that status change emails are sent
 			$booking->cancel();
-			//Delete the booking
+			// Delete the booking
 			wp_delete_post( $bookingID, true );
 			$removedItems = true;
 		}
@@ -1053,21 +1058,21 @@ class Booking extends Timeframe {
 		);
 	}
 
-    /**
-     * Returns the user that a specific booking is for if booking exists, otherwise returns current user.
-     * The post_author of a booking is always who the booking is for but not always the one who MADE the booking.
-     * A booking can be created by an admin but still be for a different user.
-     * This is helper function
-     *
-     * @return int|string
-     */
-    public static function getFrontendBookingUser() {
-        global $post;
-        if ( $post ) {
-            $authorID = $post->post_author;
-        } else {
-            $authorID = get_current_user_id();
-        }
-        return $authorID;
-    }
+	/**
+	 * Returns the user that a specific booking is for if booking exists, otherwise returns current user.
+	 * The post_author of a booking is always who the booking is for but not always the one who MADE the booking.
+	 * A booking can be created by an admin but still be for a different user.
+	 * This is helper function
+	 *
+	 * @return int|string
+	 */
+	public static function getFrontendBookingUser() {
+		global $post;
+		if ( $post ) {
+			$authorID = $post->post_author;
+		} else {
+			$authorID = get_current_user_id();
+		}
+		return $authorID;
+	}
 }
