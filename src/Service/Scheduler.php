@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Service;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Settings\Settings;
 
 /**
@@ -51,14 +52,15 @@ class Scheduler {
 			$this->unscheduleJob();
 			return false;
 		}
-
 		if ( empty( $executionTime ) ) {
 			$this->timestamp = time();
-		} elseif ( $reccurence == 'daily' ) {
-			$this->timestamp = strtotime( $executionTime );
-			if ( $this->timestamp < time() ) { // if timestamp is in the past, add one day
-				$this->timestamp = strtotime( '+1 day', $this->timestamp );
+		}
+		elseif ($reccurence == 'daily'){
+			$dto = Wordpress::getUTCFromDate( $executionTime );
+			if( $dto->getTimestamp() < current_time( 'timestamp', true ) ) { //if timestamp is in the past, add one day
+				$dto->modify('+1 day');
 			}
+			$this->timestamp = $dto->getTimestamp();
 		} else {
 			return false;
 		}

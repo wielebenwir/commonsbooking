@@ -313,11 +313,43 @@ class Wordpress {
 		return $dto;
 	}
 
+	/**
+	 * This function does no actual conversion to another timezone, it just sets the timezone to UTC
+	 *
+	 * @param $datetime
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
 	public static function getUTCDateTime( $datetime = 'now' ): DateTime {
 		$dto = new DateTime( $datetime );
 		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
 
 		return $dto;
+	}
+
+	/**
+	 * Converts a datestring to a Datetime object in the UTC timezone.
+	 * Modelled after WordPress get_gmt_from_date().
+	 *
+	 * As opposed to @see self::getUTCDateTime()
+	 * this function sees the datestring as local time and converts the time to UTC.
+	 * @param $localDateString
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
+	public static function getUTCFromDate ($localDateString): DateTime {
+		$datetime = date_create( $localDateString, wp_timezone() );
+
+		if ( $datetime === false ) {
+			//use this as fallback if date_create fails
+			return self::getUTCDateTime( $localDateString );
+		}
+
+		$datetime->setTimezone( new \DateTimeZone( 'UTC' ) );
+
+		return $datetime;
 	}
 
 	public static function getLocalDateTime( $timestamp ): DateTime {

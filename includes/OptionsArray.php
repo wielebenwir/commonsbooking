@@ -935,7 +935,7 @@ For booking details and cancellation, click on this booking link: {{booking:book
 						'id'               => 'pre-booking-time',
 						'desc'             => '<br>' . commonsbooking_sanitizeHTML(
 							__(
-								'Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured.',
+								'Define when the reminder should be sent.',
 								'commonsbooking'
 							)
 						),
