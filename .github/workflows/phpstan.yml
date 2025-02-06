@@ -1,0 +1,47 @@
+name: PHPStan
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'release/**'
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  phpstan:
+    name: 'WP latest on PHP 8.3'
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # TODO Use the composer action below
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: uopz
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies (other PHP versions)
+      run: |
+        composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+    - name: Run static suite
+      run: |
+        composer dump-autoload -o
+
+    #- uses: actions/checkout@v4
+    #- uses: php-actions/composer@v6
+
+    - name: PHPStan Static Analysis
+      uses: php-actions/phpstan@v3
+      with:
+        configuration: phpstan.neon

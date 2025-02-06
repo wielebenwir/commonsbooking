@@ -72,29 +72,35 @@ class SchedulerTest extends CustomPostTypeTest
 		);
 	}
 
+	/**
+	 * Tests custom recurrences via wp cron interfaces
+	 */
 	public function testCustomRecurrence() {
+
+		$thirty_minutes = 'thirty_minutes';
+
 		$customSchedule = new Scheduler(
 			'test2',
 			'CommonsBooking\Tests\Service\dummyFunction',
-			'thirty_minutes',
+			$thirty_minutes,
 			'',
 			array($this->dummyOptionsKey,$this->dummyFieldId),
 			$this->dummyUpdateHook
 		);
 		$this->jobhooks[] = $customSchedule->getJobhook();
-		
-		// Should contain custom cron intervals, because Scheduler(...) adds filter 
-		$this->assertContains( 'thirty_minutes', array_keys( wp_get_schedules() ) );
 
-		$now = new DateTime('now', new \DateTimeZone('UTC'));
-		$nowTS = $now->getTimestamp();
+		// Should contain custom cron intervals, because Scheduler(...) adds filter
+		$this->assertContains( $thirty_minutes, array_keys( wp_get_schedules() ) );
+
 		$this->assertEquals(
-			$nowTS,
-			wp_next_scheduled($customSchedule->getJobhook())
+			// returns timestamp which is used to set internal event object (via wp_schedule_event in Scheduler class)
+			$customSchedule->getTimestamp(),
+			// returns timestamp from internal event object identified by job hook
+			wp_next_scheduled( $customSchedule->getJobhook() )
 		);
 
 		$event = wp_get_scheduled_event($customSchedule->getJobhook());
-		$this->assertEquals('thirty_minutes',$event->schedule);
+		$this->assertEquals( $thirty_minutes , $event->schedule );
 
 	}
 

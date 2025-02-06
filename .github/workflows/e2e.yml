@@ -24,14 +24,13 @@ jobs:
     runs-on: ubuntu-20.04
 
     strategy:
-      fail-fast: false
       matrix:
         php:
           - '7.4'
-          - '8.2'
+          - '8.3'
         core:
           - {name: 'tested', version: 'null'}
-          - {name: 'minimum', version: 'WordPress/WordPress#5.6'}
+          - {name: 'minimum', version: 'WordPress/WordPress#5.9'}
           - {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:
@@ -42,15 +41,10 @@ jobs:
       - name: Overwrite PHP versions & core for wp-env 
         if: matrix.core.version != 'null'
         run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
+
       - name: setup wp env
         run: npm run env:start
-
-      - name: Overwrite PHP version for wp-env
-        if: matrix.core.version == 'null'
-        run: jq '. + {"phpVersion":"${{ matrix.php }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
-      - name: setup wp env
-        run: npm run env:start
-
+        
       - name: install test data for e2e test
         run: npm run cypress:setup
 
@@ -66,3 +60,13 @@ jobs:
         with:
           name: cypress-screenshots-${{ matrix.php }}_${{ matrix.core.name }}
           path: ${{ github.workspace }}/tests/cypress/screenshots/
+  rerun-on-failure:
+    needs: e2e
+    if: failure() && fromJSON(github.run_attempt) < 3
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          GH_DEBUG: api
+        run: gh workflow run rerun.yml -r ${{ github.head_ref || github.ref_name }} -F run_id=${{ github.run_id }}

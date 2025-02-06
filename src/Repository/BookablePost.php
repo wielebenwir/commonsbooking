@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Repository;
 
-
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -17,11 +16,12 @@ abstract class BookablePost extends PostRepository {
 
 	/**
 	 * Types which can be connected to each other via a Timeframe
+	 *
 	 * @var string[]
 	 */
 	private static $relationalTypes = [
 		'item',
-		'location'
+		'location',
 	];
 
 	/**
@@ -47,7 +47,7 @@ abstract class BookablePost extends PostRepository {
 			$args = array(
 				'post_type' => static::getPostType(),
 				'author'    => $current_user->ID,
-				'nopaging'  => true
+				'nopaging'  => true,
 			);
 			if ( $publishedOnly ) {
 				$args['post_status'] = 'publish';
@@ -62,7 +62,7 @@ abstract class BookablePost extends PostRepository {
 				// if user has admin-role get all available items
 				$args = array(
 					'post_type' => static::getPostType(),
-					'nopaging'  => true
+					'nopaging'  => true,
 				);
 			} else {
 				// get all items where current user is assigned as admin
@@ -78,9 +78,9 @@ abstract class BookablePost extends PostRepository {
 							'key'     => '_' . static::getPostType() . '_admins',
 							'value'   => '"' . $current_user->ID . '"',
 							'compare' => 'like',
-						)
+						),
 					),
-					'nopaging'   => true
+					'nopaging'   => true,
 				);
 			}
 
@@ -91,19 +91,21 @@ abstract class BookablePost extends PostRepository {
 			$query = new WP_Query( $args );
 			if ( $query->have_posts() ) {
 				$items = array_merge( $items, $query->get_posts() );
-				usort( $items, function ( $a, $b ) {
-					$comparison = strcmp( strtolower( $a->post_title ), strtolower( $b->post_title ) );
+				usort(
+					$items,
+					function ( $a, $b ) {
+						$comparison = strcmp( strtolower( $a->post_title ), strtolower( $b->post_title ) );
 
-					if ( $comparison < 0 ) {
-						return - 1;
+						if ( $comparison < 0 ) {
+							return - 1;
+						}
+						if ( $comparison > 0 ) {
+							return 1;
+						}
+
+						return $comparison;
 					}
-					if ( $comparison > 0 ) {
-						return 1;
-					}
-
-					return $comparison;
-				} );
-
+				);
 			}
 			$tags   = Wordpress::getPostIdArray( $items );
 			$tags[] = 'misc';
@@ -114,14 +116,24 @@ abstract class BookablePost extends PostRepository {
 	}
 
 	/**
-	 * Gets all the defined terms for locations / items
+	 * Gets all the defined terms for locations / items.
+	 * Will return an empty array if there are no terms or an error occurred.
+	 *
 	 * @return int[]|string|string[]|\WP_Error|\WP_Term[]
 	 */
 	public static function getTerms() {
-		return get_terms(array(
-			'taxonomy'	=> static::getPostType() . 's_category',
-			'hide_empty' => false,
-		));
+		$terms = get_terms(
+			array(
+				'taxonomy'   => static::getPostType() . 's_category',
+				'hide_empty' => false,
+			)
+		);
+
+		if ( is_wp_error( $terms ) ) {
+			return [];
+		}
+
+		return $terms;
 	}
 	/**
 	 * @return string
@@ -134,7 +146,7 @@ abstract class BookablePost extends PostRepository {
 	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
 	 * @param $userId
-	 * @param false $asModel - Wether the posts should be returned as their respective model class or as WP_Post
+	 * @param false  $asModel - Wether the posts should be returned as their respective model class or as WP_Post
 	 *
 	 * @return array
 	 */
@@ -189,6 +201,7 @@ abstract class BookablePost extends PostRepository {
 
 	/**
 	 * Will get the class name of the model class that belongs to this post type.
+	 *
 	 * @return mixed
 	 */
 	abstract protected static function getModelClass();
@@ -196,17 +209,16 @@ abstract class BookablePost extends PostRepository {
 	/**
 	 * Returns an array of CB item post objects
 	 *
-	 *
 	 * @param array $args WP Post args
-	 * @param bool $bookable
+	 * @param bool  $bookable
 	 *
 	 * @return array
 	 */
 	public static function get( array $args = array(), bool $bookable = false ) {
 		$posts             = [];
 		$args['post_type'] = static::getPostType();
-		$args['nopaging'] = true;
-		
+		$args['nopaging']  = true;
+
 		// Add custom taxonomy filter
 		if ( array_key_exists( 'category_slug', $args ) ) {
 			$args['taxonomy'] = static::getPostType() . 's_category';
@@ -254,7 +266,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $postId
 	 * @param $originType
 	 * @param $relatedType
-	 * @param bool $bookable
+	 * @param bool        $bookable
 	 *
 	 * @return int[] Array of post ids
 	 * @throws Exception
@@ -353,5 +365,4 @@ abstract class BookablePost extends PostRepository {
 			return $relatedPosts;
 		}
 	}
-
 }

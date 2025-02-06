@@ -12,6 +12,10 @@
 * @copyright 2020 wielebenwir
 */
 
+@use "../../../global/sass/partials/variables";
+@use "../../../global/sass/partials/extends";
+@use "layouts";
+
 .cb-wrapper {	
 	
 	/* Leaflet Map */
@@ -139,11 +143,6 @@
 			  color: #444;
 			  background: linear-gradient(to top left, var(--commonsbooking-color-cancel) 0%, var(--commonsbooking-color-cancel) calc(50% - 1px), #333 50%, var(--commonsbooking-color-cancel) calc(50% + 1px), var(--commonsbooking-color-cancel) 100%);
 			}
-			
-			.cb-map-popup-item-desc {
-				display: none;
-			}
-				
 	}
 
 }
@@ -178,7 +177,7 @@
 		> div {
 			margin-bottom: var(--commonsbooking-spacer);
 			padding-bottom: var(--commonsbooking-spacer);
-			border-bottom: 1px solid $color-gray-dark;
+			border-bottom: 1px solid variables.$color-gray-dark;
 		}
 	}
 
@@ -210,7 +209,7 @@
 			}
 			button.undo-geo-search, button.geo-search {
 				background: transparent;
-				color: $color-white;
+				color: variables.$color-white;
 			}
 		}
 	}

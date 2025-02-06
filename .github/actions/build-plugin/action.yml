@@ -1,6 +1,15 @@
 name: 'Build Plugin'
 description: 'Builds plugin into ./build/commonsbooking'
 
+inputs:
+  generate_zip:
+    description: 'Set to true, if a zip file should be generated in the root of the plugin folder'
+    required: false
+    default: 'false'
+    options:
+      - true
+      - false
+
 runs:
   using: "composite"
   steps:
@@ -11,7 +20,7 @@ runs:
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -23,13 +32,19 @@ runs:
         composer install --no-dev --prefer-dist --no-progress
       shell: bash
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version-file: '.nvmrc'
         cache: 'npm'
     - run: npm ci --legacy-peer-deps --include=dev
       shell: bash
 
-    - name: Run build script
+    - name: Run build script (skip zip generation)
+      if: ${{ inputs.generate_zip == 'false' }}
       run: bin/build-zip.sh --skip-zip
+      shell: bash
+      
+    - name: Run build script and generate zip file
+      if: ${{ inputs.generate_zip == 'true' }}
+      run: bin/build-zip.sh
       shell: bash

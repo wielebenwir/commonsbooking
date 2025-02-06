@@ -11,7 +11,15 @@ use WP_Post;
  * Pseudo extends WP_Post class.
  *
  * All the public methods are available as template tags.
+ * * In using magic methods you can retrieve data from model objects, when the model object class derive from this class.
+ * * All the public methods are available as template tags.
+ *
  * @package CommonsBooking\Model
+ *
+ * @property int $post_author identifier of the WordPress user.
+ * @property string $post_status describes whether the post is published.
+ * @property int $ID of the WordPress post.
+ * @property string $post_title
  */
 class CustomPost {
 	/**
@@ -27,9 +35,9 @@ class CustomPost {
 	/**
 	 * CustomPost constructor.
 	 *
-	 * @param int|WP_Post $post
+	 * @param int|WP_Post $post uses either int as id reference or the post object
 	 *
-	 * @throws Exception
+	 * @throws Exception when $post param does not reference a valid post object
 	 */
 	public function __construct( $post ) {
 		if ( $post instanceof WP_Post ) {
@@ -37,7 +45,7 @@ class CustomPost {
 		} elseif ( is_int( $post ) ) {
 			$this->post = get_post( $post );
 		} else {
-			throw new Exception( "Invalid post param. Needed WP_Post or ID (int)" );
+			throw new Exception( 'Invalid post param. Needed WP_Post or ID (int)' );
 		}
 	}
 
@@ -73,6 +81,7 @@ class CustomPost {
 	/**
 	 * When getting a value from a Model Object, we can use this magic method to get the value from the WP_Post object instead.
 	 * This, for example, allows us to use $booking->post_title instead of $booking->post->post_title.
+	 *
 	 * @param $name
 	 *
 	 * @return array|mixed|void
@@ -87,6 +96,15 @@ class CustomPost {
 		}
 	}
 
+	/**
+	 * Enables that we can call methods of \CustomPost as template tags.
+	 *
+	 * @param string $name of the member function
+	 * @param array  $arguments given to the template tag.
+	 *
+	 * @return array|mixed|void
+	 * @throws \ReflectionException if called template tag is not a registered method
+	 */
 	public function __call( $name, $arguments ) {
 		if ( method_exists( $this->post, $name ) ) {
 			$reflectionMethod = new ReflectionMethod( $this->post, $name );
@@ -100,6 +118,7 @@ class CustomPost {
 
 	/**
 	 * Get the corresponding WP_Post object
+	 *
 	 * @return WP_Post
 	 */
 	public function getPost(): WP_Post {
@@ -127,7 +146,7 @@ class CustomPost {
 	 * @return string html
 	 */
 	public function titleLink(): string {
-		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_the_permalink( $this->ID )), commonsbooking_sanitizeHTML($this->post_title) );
+		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_the_permalink( $this->ID ) ), commonsbooking_sanitizeHTML( $this->post_title ) );
 	}
 
 	/**
@@ -136,7 +155,7 @@ class CustomPost {
 	 * @return string
 	 */
 	public function title(): string {
-		return sprintf( '<span class="cb-title">%s</span>', commonsbooking_sanitizeHTML($this->post_title) );
+		return sprintf( '<span class="cb-title">%s</span>', commonsbooking_sanitizeHTML( $this->post_title ) );
 	}
 
 	/**
@@ -150,8 +169,11 @@ class CustomPost {
 	 */
 	public function thumbnail( $size = 'thumbnail' ): string {
 		if ( has_post_thumbnail( $this->ID ) ) {
-			return '<div class="cb-thumbnail">' . get_the_post_thumbnail( $this->ID, $size,
-					array( 'class' => 'alignleft cb-image' ) ) . '</div>';
+			return '<div class="cb-thumbnail">' . get_the_post_thumbnail(
+				$this->ID,
+				$size,
+				array( 'class' => 'alignleft cb-image' )
+			) . '</div>';
 		}
 
 		return '';
@@ -166,6 +188,7 @@ class CustomPost {
 
 	/**
 	 * Returns user data.
+	 *
 	 * @return false|\WP_User
 	 */
 	public function getUserData() {
@@ -175,11 +198,12 @@ class CustomPost {
 
 	/**
 	 * Checks if the given user is the author of the current post.
+	 *
 	 * @param \WP_User $user
 	 *
-	 * @return boolean - true if user is author, false if not.
+	 * @return bool - true if user is author, false if not.
 	 */
-	public function isAuthor (\WP_User $user): bool {
+	public function isAuthor( \WP_User $user ): bool {
 		return $user->ID === intval( $this->post_author );
 	}
 
@@ -193,5 +217,4 @@ class CustomPost {
 
 		return $this;
 	}
-
 }

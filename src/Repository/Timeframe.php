@@ -3,24 +3,28 @@
 
 namespace CommonsBooking\Repository;
 
-
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Plugin;
 use Exception;
 
+/*
+ * Implements data access to timeframe custom post objects
+ *
+ * @since 2.9.0 Supports now single and multi selection of items and locations
+ */
 class Timeframe extends PostRepository {
 
 	/**
 	 * Returns only bookable timeframes.
 	 *
-	 * @param array $locations
-	 * @param array $items
-	 * @param string|null $date
-	 * @param bool $returnAsModel
+	 * @param array        $locations
+	 * @param array        $items
+	 * @param string|null  $date
+	 * @param bool         $returnAsModel
 	 * @param $minTimestamp
-	 * @param array $postStatus
+	 * @param array        $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -47,12 +51,12 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns only bookable timeframes for current user.
 	 *
-	 * @param array $locations
-	 * @param array $items
-	 * @param string|null $date
-	 * @param bool $returnAsModel
+	 * @param array        $locations
+	 * @param array        $items
+	 * @param string|null  $date
+	 * @param bool         $returnAsModel
 	 * @param $minTimestamp
-	 * @param array $postStatus
+	 * @param array        $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -75,7 +79,7 @@ class Timeframe extends PostRepository {
 			$postStatus
 		);
 
-		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+		$bookableTimeframes = self::filterTimeframesForCurrentUser( $bookableTimeframes );
 
 		return $bookableTimeframes;
 	}
@@ -89,16 +93,13 @@ class Timeframe extends PostRepository {
 	 * TODO: Investigate
 	 *       This function is not based on the WP_Query class, probably because of performance reasons.
 	 *
-	 * @param array $locations
-	 * @param array $items
-	 * @param array $types
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param array       $types
 	 * @param string|null $date Date-String in format YYYY-mm-dd
-	 *
-	 * @param bool $returnAsModel
-	 *
-	 * @param int|null $minTimestamp
-	 *
-	 * @param string[] $postStatus
+	 * @param bool        $returnAsModel
+	 * @param int|null    $minTimestamp
+	 * @param string[]    $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -123,12 +124,11 @@ class Timeframe extends PostRepository {
 			];
 		}
 
-		$customId = md5( serialize( $types ) );
+		$customId  = md5( serialize( $types ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-
 			$posts = [];
 
 			// Get Post-IDs considering types, items and locations
@@ -148,14 +148,14 @@ class Timeframe extends PostRepository {
 				$posts = self::filterTimeframes( $posts, $date );
 			}
 
-			// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
+			// if returnAsModel == TRUE the result is a timeframe model instead of a WordPress object
 			if ( $returnAsModel ) {
 				self::castPostsToModels( $posts );
 			}
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $items, $locations),
+				Wordpress::getTags( $posts, $items, $locations ),
 				$customId
 			);
 			return $posts;
@@ -163,12 +163,171 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
-	 * Returns Post-IDs by type(s), item(s), location(s)
+	 * Will get all timeframes in the database to perform mass operations on (like migrations).
+	 *
+	 * @param int   $page
+	 * @param int   $perPage
+	 * @param array $customArgs
+	 *
+	 * @return \stdClass Properties: array posts, int totalPosts, int totalPages, bool done
+	 * @throws Exception
+	 */
+	public static function getAllPaginated(
+		int $page = 1,
+		int $perPage = 10,
+		array $customArgs = []
+	): \stdClass {
+		$args  = [
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType(),
+			'paged'          => $page,
+			'posts_per_page' => $perPage,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+		];
+		$args  = array_merge( $args, $customArgs );
+		$query = new \WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+			self::castPostsToModels( $posts );
+
+			return (object) (
+			[
+				'posts'      => $posts,
+				'totalPosts' => $query->found_posts,
+				'totalPages' => $query->max_num_pages,
+				'done'       => $page >= $query->max_num_pages,
+			]
+			);
+		}
+
+		return (object) (
+		[
+			'posts'      => [],
+			'totalPosts' => 0,
+			'totalPages' => 0,
+			'done'       => true,
+		]
+		);
+	}
+
+
+	/**
+	 * Will get the timeframes in a specific range and return them as paginated result.
+	 * This will not consider the weekday configuration of the timeframes.j
+	 * We need this for the Timeframe Export, so that it does not time out on large datasets.
+	 * This function is in general slower than the getInRange function. But it can be used in AJAX requests.
+	 *
+	 * @param int      $minTimestamp
+	 * @param int|null $maxTimestamp
+	 * @param int      $page
+	 * @param int      $perPage
+	 * @param array    $types
+	 * @param bool     $asModel
+	 * @param array    $customArgs
+	 *
+	 * @return array An array with the keys 'posts', 'totalPages' and 'done' (bool) to indicate if there are more posts to fetch
+	 */
+	public static function getInRangePaginated(
+		int $minTimestamp,
+		int $maxTimestamp = null,
+		int $page = 1,
+		int $perPage = 10,
+		array $types = [
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+		],
+		$postStatus = [ 'confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit' ],
+		bool $asModel = false,
+		array $customArgs = []
+	): array {
+		$args = array(
+			'post_type'   => [
+				\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType,
+			],
+			// get posts within the range and also posts that do not have a repetition end
+			'meta_query'  => array(
+				'relation' => 'AND',
+				array(
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_START,
+					'value'   => $maxTimestamp,
+					'compare' => '<=',
+					'type'    => 'numeric',
+				),
+				array(
+					'relation' => 'OR',
+					array(
+						'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+						'value'   => $minTimestamp,
+						'compare' => '>=',
+						'type'    => 'numeric',
+					),
+					array(
+						'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+						'compare' => 'NOT EXISTS',
+					),
+				),
+				array(
+					'key'     => 'type',
+					'value'   => $types,
+					'compare' => 'IN',
+				),
+			),
+			'post_status'    => $postStatus,
+			'paged'          => $page,
+			'posts_per_page' => $perPage,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+		);
+
+		// Overwrite args with passed custom args
+		$args = array_merge( $args, $customArgs );
+
+		$query = new \WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			$posts = $query->get_posts();
+			if ( ! isset( $args['fields'] ) || $args['fields'] !== 'ids' ) {
+				$posts = array_filter(
+					$posts,
+					function ( $post ) use ( $args ) {
+						return in_array( $post->post_status, $args['post_status'] );
+					}
+				);
+			}
+
+			if ( $asModel ) {
+				self::castPostsToModels( $posts );
+			}
+			return [
+				'posts'      => $posts,
+				'totalPages' => $query->max_num_pages,
+				'totalPosts' => $query->found_posts,
+				'done'       => $page >= $query->max_num_pages,
+			];
+		}
+		return [
+			'posts'      => [],
+			'totalPages' => 0,
+			'totalPosts' => 0,
+			'done'       => true,
+		];
+	}
+
+	/**
+	 * Returns Post-IDs of timeframes by type(s), item(s), location(s)
+	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.
 	 *
-	 * @param array $types
-	 * @param array $items
-	 * @param array $locations
+	 * @param array $types the types of timeframes to return, will return default set when not set
+	 * @param array $items the items that the timeframes should be applicable to, will return all if not set
+	 * @param array $locations the locations that the timeframes should be applicable to, will return all if not set
+	 *
+	 * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
@@ -177,15 +336,15 @@ class Timeframe extends PostRepository {
 
 		if ( ! count( $types ) ) {
 			$types = [
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
-                \CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
-            ];
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
+			];
 		}
 
-		$customId = md5( serialize( $types ) );
+		$customId  = md5( serialize( $types ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -193,49 +352,47 @@ class Timeframe extends PostRepository {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
 
-			$itemQuery = "";
-
 			$items     = array_filter( $items );
 			$locations = array_filter( $locations );
 
-            // additional sanitizing. Allow only integer
-            $items      = commonsbooking_sanitizeArrayorString( $items, 'intval' );
-            $locations  = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
-            $types      = commonsbooking_sanitizeArrayorString( $types, 'intval' );
+			// additional sanitizing. Allow only integer
+			$items     = commonsbooking_sanitizeArrayorString( $items, 'intval' );
+			$locations = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
+			$types     = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
-
-			// Query for item(s)
+			$itemQuery = '';
 			if ( count( $items ) > 0 ) {
-				$itemQuery = "
-                    INNER JOIN $table_postmeta pm2 ON
-                        pm2.post_id = pm1.post_id AND
-                        pm2.meta_key = 'item-id' AND
-                        pm2.meta_value IN (" . implode( ',', $items ) . ")
-                ";
+				$itemQuery = self::getEntityQuery(
+					'pm2',
+					$table_postmeta,
+					$items,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID,
+					\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST
+				);
 			}
 
-			// Query for location(s)
-			$locationQuery = "";
+			$locationQuery = '';
 			if ( count( $locations ) > 0 ) {
-				$locationQuery = "
-                    INNER JOIN $table_postmeta pm3 ON
-                        pm3.post_id = pm1.post_id AND
-                        pm3.meta_key = 'location-id' AND
-                        pm3.meta_value IN (" . implode( ',', $locations ) . ")
-                ";
+				$locationQuery = self::getEntityQuery(
+					'pm3',
+					$table_postmeta,
+					$locations,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
+					\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST
+				);
 			}
 
 			// Complete query, including types
 			$query = "
                 SELECT DISTINCT pm1.post_id from $table_postmeta pm1
                 " .
-			         $itemQuery .
-			         $locationQuery .
-			         "
+					$itemQuery .
+					$locationQuery .
+					"
                  WHERE
                     pm1.meta_key = 'type' AND
-	                pm1.meta_value IN (" . implode( ',', $types ) . ")
-            ";
+	                pm1.meta_value IN (" . implode( ',', $types ) . ')
+            ';
 
 			// Run query
 			$postIds = $wpdb->get_results( $query, ARRAY_N );
@@ -246,13 +403,16 @@ class Timeframe extends PostRepository {
 			}
 
 			// Get Posts
-			$posts = array_map(function($post) {
-				return get_post($post);
-			}, $postIds);
+			$posts = array_map(
+				function ( $post ) {
+					return get_post( $post );
+				},
+				$postIds
+			);
 
 			Plugin::setCacheItem(
 				$postIds,
-				Wordpress::getTags($posts, $items, $locations),
+				Wordpress::getTags( $posts, $items, $locations ),
 				$customId
 			);
 
@@ -261,14 +421,47 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * Returns entity query as join statement, which considers single and multi selection.
+	 *
+	 * @since 2.9.0 Supports now single and multi selection for items and locations
+	 *
+	 * @return string join statement
+	 */
+	private static function getEntityQuery( string $joinAlias, string $table_postmeta, array $entities, string $singleEntityKey, string $multiEntityKey ): string {
+		$locationQueryParts = [];
+
+		// Single select
+		$singleLocationQuery  = "(
+		                        $joinAlias.meta_key = '" . $singleEntityKey . "' AND
+		                        $joinAlias.meta_value IN (" . implode( ',', $entities ) . ')
+	                        )';
+		$locationQueryParts[] = $singleLocationQuery;
+
+		// Multi select
+		$multiLocationQueries = [];
+		foreach ( $entities as $entityId ) {
+			$multiLocationQueries[] = "$joinAlias.meta_value LIKE '%:\"$entityId\";%'";
+		}
+		$multiLocationQuery   = "(
+					$joinAlias.meta_key = '" . $multiEntityKey . "' AND
+					(" . implode( ' OR ', $multiLocationQueries ) . ') 
+				)';
+		$locationQueryParts[] = $multiLocationQuery;
+
+		return "INNER JOIN $table_postmeta $joinAlias ON
+                    $joinAlias.post_id = pm1.post_id AND
+                    (" . implode( ' OR ', $locationQueryParts ) . ')';
+	}
+
+	/**
 	 * Queries for posts within $postIds and filters them by $date and/or $minTimestamp and $postStatus.
 	 * Why? This kind of filtering is needed nearly everywhere in commonsbooking.
 	 *
 	 * @param string|null $date
-	 * @param int|null $minTimestamp
-	 * @param int|null $maxTimestamp
-	 * @param array $postIds
-	 * @param array $postStatus
+	 * @param int|null    $minTimestamp
+	 * @param int|null    $maxTimestamp
+	 * @param array       $postIds
+	 * @param array       $postStatus
 	 *
 	 * @return array
 	 */
@@ -280,7 +473,7 @@ class Timeframe extends PostRepository {
 			global $wpdb;
 			$table_postmeta = $wpdb->prefix . 'postmeta';
 			$table_posts    = $wpdb->prefix . 'posts';
-			$dateQuery      = "";
+			$dateQuery      = '';
 
 			// Filter by date
 			if ( $date && ! $minTimestamp ) {
@@ -300,9 +493,9 @@ class Timeframe extends PostRepository {
 
 			// Complete query
 			$query = "SELECT DISTINCT pm1.* from $table_posts pm1
-                    " . $dateQuery . "
+                    " . $dateQuery . '
                     WHERE
-                        pm1.id in (" . implode( ",", $postIds ) . ") AND
+                        pm1.id in (' . implode( ',', $postIds ) . ") AND
                         pm1.post_type IN ('" . implode( "','", \CommonsBooking\Wordpress\CustomPostType\Timeframe::getSimilarPostTypes() ) . "') AND
                         pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
                 ";
@@ -312,7 +505,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $postIds)
+				Wordpress::getTags( $posts, $postIds )
 			);
 
 			return $posts;
@@ -362,13 +555,13 @@ class Timeframe extends PostRepository {
 	 * Returns query to get posts which end after $minTimestamp.
 	 *
 	 * @param string $table_postmeta
-	 * @param int $minTimestamp
+	 * @param int    $minTimestamp
 	 *
 	 * @return string
 	 */
 	private static function getFilterFromDateQuery( string $table_postmeta, int $minTimestamp ): string {
 		global $wpdb;
-		$minTimestamp = Helper::getLastFullDayTimestamp($minTimestamp);
+		$minTimestamp = Helper::getLastFullDayTimestamp( $minTimestamp );
 
 		return $wpdb->prepare(
 			"INNER JOIN $table_postmeta pm4 ON
@@ -392,8 +585,8 @@ class Timeframe extends PostRepository {
 
 	/**
 	 * @param string $table_postmeta
-	 * @param int $minTimestamp
-	 * @param int $maxTimestamp
+	 * @param int    $minTimestamp
+	 * @param int    $maxTimestamp
 	 *
 	 * @return string
 	 */
@@ -431,7 +624,7 @@ class Timeframe extends PostRepository {
 	/**
 	 * Wrapper function for all filters.
 	 *
-	 * @param array $posts
+	 * @param array       $posts
 	 * @param string|null $date
 	 *
 	 * @return array
@@ -449,7 +642,7 @@ class Timeframe extends PostRepository {
 	 * Why? Because you can define days for your timeframe. Here's the point where we make sure, that only these days
 	 *      are taken into account.
 	 *
-	 * @param array $posts
+	 * @param array       $posts
 	 * @param string|null $date string format: YYYY-mm-dd
 	 *
 	 * @return array
@@ -461,18 +654,20 @@ class Timeframe extends PostRepository {
 			return $cacheItem;
 		} else {
 			if ( $date ) {
-				$posts = array_filter( $posts, function ( $post ) use ( $date ) {
-					try {
-						$timeframe = new \CommonsBooking\Model\Timeframe( $post );
-						$day       = new Day( $date );
+				$posts = array_filter(
+					$posts,
+					function ( $post ) use ( $date ) {
+						try {
+							$timeframe = new \CommonsBooking\Model\Timeframe( $post );
+							$day       = new Day( $date );
 
-						return $day->isInTimeframe( $timeframe );
-					} catch ( Exception $e ) {
-						//this was also default behaviour before #802 (before #802 the function would just check the weekly repetition and if it was active on the given day return true)
-						//When none were set, it would return true for all days.
-						return true;
+							return $day->isInTimeframe( $timeframe );
+						} catch ( Exception $e ) {
+							// this was also default behaviour before #802 (before #802 the function would just check the weekly repetition and if it was active on the given day return true)
+							// When none were set, it would return true for all days.
+							return true;
+						}
 					}
-				}
 				);
 			}
 
@@ -491,21 +686,24 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function filterTimeframesByMaxBookingDays( $posts ): array {
-		return array_filter( $posts, function ( $post ) {
-			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
-				try {
-					$timeframe = new \CommonsBooking\Model\Timeframe( $post );
+		return array_filter(
+			$posts,
+			function ( $post ) {
+				if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
+					try {
+						$timeframe = new \CommonsBooking\Model\Timeframe( $post );
 
-					return $timeframe->isBookable();
-				} catch ( Exception $e ) {
-					error_log( $e->getMessage() );
+						return $timeframe->isBookable();
+					} catch ( Exception $e ) {
+						error_log( $e->getMessage() );
 
-					return false;
+						return false;
+					}
 				}
-			}
 
-			return true;
-		} );
+				return true;
+			}
+		);
 	}
 
 	/**
@@ -517,15 +715,50 @@ class Timeframe extends PostRepository {
 	 * @return array
 	 */
 	private static function filterTimeframesForCurrentUser( $posts ): array {
-		return array_filter( $posts, function ( $post ) {
-			try {
-				return commonsbooking_isCurrentUserAllowedToBook( $post->ID );
-			} catch ( Exception $e ) {
-				error_log( $e->getMessage() );
+		return array_filter(
+			$posts,
+			function ( $post ) {
+				try {
+					return commonsbooking_isCurrentUserAllowedToBook( $post->ID );
+				} catch ( Exception $e ) {
+					error_log( $e->getMessage() );
 
-				return false;
+					return false;
+				}
 			}
-		} );
+		);
+	}
+
+	/**
+	 * Will filter out all timeframes that are not in the given timerange.
+	 *
+	 * @param \CommonsBooking\Model\Timeframe[] $timeframes
+	 * @param int                               $startTimestamp
+	 * @param int                               $endTimestamp
+	 *
+	 * @return \CommonsBooking\Model\Timeframe[]
+	 * @throws Exception
+	 */
+	public static function filterTimeframesForTimerange( array $timeframes, int $startTimestamp, int $endTimestamp ): array {
+		return array_filter(
+			$timeframes,
+			function ( $timeframe ) use ( $startTimestamp, $endTimestamp ) {
+				// filter out anything in the future
+				if ( $timeframe->getStartDate() > $endTimestamp ) {
+					return false;
+				}
+				// always include infinite timeframes
+				if ( ! $timeframe->getEndDate() ) {
+					return true;
+				}
+				// filter out anything in the past
+				if ( $timeframe->getEndDate() < $startTimestamp ) {
+					return false;
+				}
+
+				return true;
+			}
+		);
 	}
 
 	/**
@@ -567,7 +800,7 @@ class Timeframe extends PostRepository {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$time_format        = esc_html(get_option( 'time_format' ));
+			$time_format        = esc_html( get_option( 'time_format' ) );
 			$startTimestampTime = date( $time_format, $timestamp );
 			$endTimestampTime   = date( $time_format, $timestamp + 1 );
 
@@ -575,7 +808,7 @@ class Timeframe extends PostRepository {
 				[ $locationId ],
 				[ $itemId ],
 				[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-				date('Y-m-d', $timestamp),
+				date( 'Y-m-d', $timestamp ),
 				true
 			);
 
@@ -585,7 +818,7 @@ class Timeframe extends PostRepository {
 					date( $time_format, strtotime( $timeframe->getStartTime() ) ) == $startTimestampTime ||
 					date( $time_format, strtotime( $timeframe->getEndTime() ) ) == $endTimestampTime
 				) {
-					Plugin::setCacheItem( $timeframe, [$timeframe->ID, $itemId, $locationId] );
+					Plugin::setCacheItem( $timeframe, [ $timeframe->ID, $itemId, $locationId ] );
 
 					return $timeframe;
 				}
@@ -602,11 +835,11 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array $locations
-	 * @param array $items
-	 * @param array $types
-	 * @param false $returnAsModel
-	 * @param string[] $postStatus
+	 * @param array        $locations
+	 * @param array        $items
+	 * @param array        $types
+	 * @param false        $returnAsModel
+	 * @param string[]     $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -630,7 +863,7 @@ class Timeframe extends PostRepository {
 			];
 		}
 
-		$customId = md5( serialize( $types ) );
+		$customId  = md5( serialize( $types ) );
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -659,7 +892,7 @@ class Timeframe extends PostRepository {
 
 			Plugin::setCacheItem(
 				$posts,
-				Wordpress::getTags($posts, $locations, $items),
+				Wordpress::getTags( $posts, $locations, $items ),
 				$customId
 			);
 
@@ -672,17 +905,16 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array $locations
-	 * @param array $items
-	 * @param array $types
-	 * @param false $returnAsModel
-	 * @param string[] $postStatus
+	 * @param array        $locations
+	 * @param array        $items
+	 * @param array        $types
+	 * @param false        $returnAsModel
+	 * @param string[]     $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-
-	 public static function getInRangeForCurrentUser(
+	public static function getInRangeForCurrentUser(
 		$minTimestamp,
 		$maxTimestamp,
 		array $locations = [],
@@ -691,9 +923,9 @@ class Timeframe extends PostRepository {
 		bool $returnAsModel = false,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
-		$bookableTimeframes = self::getInRange($minTimestamp,$maxTimestamp,$locations,$items,$types,$returnAsModel,$postStatus);
+		$bookableTimeframes = self::getInRange( $minTimestamp, $maxTimestamp, $locations, $items, $types, $returnAsModel, $postStatus );
 
-		$bookableTimeframes = self::filterTimeframesForCurrentUser($bookableTimeframes);
+		$bookableTimeframes = self::filterTimeframesForCurrentUser( $bookableTimeframes );
 		return $bookableTimeframes;
 	}
 }

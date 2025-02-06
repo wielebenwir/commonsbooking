@@ -10,6 +10,9 @@
  * @copyright 2015 wielebenwir
  */
 
+@use "../../../global/sass/partials/variables";
+@use "../../../global/sass/partials/extends";
+
 .cb-wrapper {
 
 
@@ -32,11 +35,11 @@
     textarea {
         -webkit-appearance: none;
         -moz-appearance: none;
-        background: $color-white;
+        background: variables.$color-white;
         border-radius: var(--commonsbooking-radius);
         border-style: solid;
         border-width: 0.1rem;
-        border-color: $color-black;
+        border-color: variables.$color-black;
         box-shadow: none;
         display: block;
         margin: 0;
@@ -85,6 +88,13 @@
         background-color: var(--commonsbooking-color-cancel);
         box-shadow: none !important;
         font-size: 0.875rem;
+    }
+
+    input.cb-action-get_ics {
+        background-color: var(--commonsbooking-color-primary);
+        box-shadow: none !important;
+        font-size: 0.875rem;
+        float:left;
     }
 
     #booking-form-container,

@@ -12,6 +12,10 @@
 * @copyright 2020 wielebenwir
 */
 
+@use "../../../global/sass/partials/variables";
+@use "../../../global/sass/partials/extends";
+@use "../../../public/sass/mixins/calendar";
+
 .cb-table-scroll {
 	position: relative;
 	overflow: scroll;
@@ -68,7 +72,7 @@
 		width: 100px;
 		min-width: 100px;
 		max-width: 100px;
-		background: $color-white;
+		background: variables.$color-white;
 	}
 	/* place first col */
 	thead tr:nth-child(2) th:first-child,
@@ -128,25 +132,25 @@
             background-color: var(--litepickerDayColorBg);
 
             &.is-holiday {
-                @include day-is-holiday;
+                @include calendar.day-is-holiday;
             }
             &.is-booked {
-                @include day-is-booked;
+                @include calendar.day-is-booked;
             }
 
             &.is-partially-booked {
-                @include day-is-partially-booked;
+                @include calendar.day-is-partially-booked;
             }
 
             &.is-partially-booked-start {
-                @include day-is-partially-booked-start;
+                @include calendar.day-is-partially-booked-start;
             }
             &.is-partially-booked-end {
-                @include day-is-partially-booked-end;
+                @include calendar.day-is-partially-booked-end;
             }
 
             &.is-locked {
-                @include day-is-locked;
+                @include calendar.day-is-locked;
             }
 		}
 	}

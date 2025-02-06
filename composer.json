@@ -6,17 +6,11 @@
     "platform-check": false,
     "allow-plugins": {
       "php-http/discovery": true,
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true
     }
-    },
+  },
   "autoload": {
-    "files": [
-      "includes/OptionsArray.php",
-      "includes/Shortcodes.php",
-      "includes/Template.php",
-      "includes/TemplateParser.php",
-      "includes/Users.php"
-    ],
     "psr-4": {
       "CommonsBooking\\": "src/"
     }
@@ -30,12 +24,17 @@
     {
       "type": "vcs",
       "url": "https://github.com/wielebenwir/cmb-field-select2"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/wielebenwir/cmb2-field-ajax-search"
     }
+
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.4",
     "cmb2/cmb2": "^2.10.1",
-    "mustardbees/cmb-field-select2": "3.0.4",
+    "mustardbees/cmb-field-select2": "^3.0.4",
     "geocoder-php/nominatim-provider": "^5.7",
     "php-http/curl-client": "^2.3",
     "nyholm/psr7": "^1.8",
@@ -44,17 +43,21 @@
     "ext-json": "*",
     "symfony/cache": "^5.4.30",
     "symfony/service-contracts": "^v2.5.2",
-    "eluceo/ical": "~2.12.1",
+    "eluceo/ical": "~2.14.0",
     "phpmailer/phpmailer": "^6.8.1",
-    "ed-itsolutions/cmb2-field-ajax-search": "^2.0"
+    "ed-itsolutions/cmb2-field-ajax-search": "v2.0.1"
   },
   "require-dev": {
     "mockery/mockery": "^1.6.6",
-    "phpunit/phpunit": "^8.5.34",
-    "yoast/phpunit-polyfills": "^1.1",
-    "wp-coding-standards/wpcs": "^2.3",
+    "phpunit/phpunit": "^9.6.21",
+    "yoast/phpunit-polyfills": "^3.0.0",
+    "wp-coding-standards/wpcs": "^3.1",
     "phpcompatibility/phpcompatibility-wp": "^2.1.4",
     "slope-it/clock-mock": "^0.4.0",
-    "phpunit/php-code-coverage": "^7.0.15"
+    "phpunit/php-code-coverage": "^9.2.32",
+    "myclabs/deep-copy": "^1.12.0",
+    "phpstan/phpstan": "^2.1",
+    "szepeviktor/phpstan-wordpress": "^2.0",
+    "phpstan/extension-installer": "^1.4"
   }
 }

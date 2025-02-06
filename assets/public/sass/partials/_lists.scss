@@ -11,6 +11,9 @@
 * @copyright 2020 wielebenwir
 */
 
+@use "../../../global/sass/partials/extends";
+@use "layouts";
+
 /* main wrapper */
 .cb-wrapper {
 	
@@ -19,7 +22,7 @@
 	display: block;
 	margin-top: var(--commonsbooking-spacer-big);
     color: var(--commonsbooking-textcolor-dark);
-	@extend .cb-box;
+	@extend .cb-box ;
 	
 	.cb-list-content.cb-pickupinstructions div {
 		white-space: pre-wrap; // enable line break in content from meta textfields 
@@ -56,7 +59,7 @@
 	/* sub lists wrapper */
 	> .cb-wrapper {
 		overflow: hidden;
-		@extend .cb-box-inner;
+		@extend .cb-box-inner ;
 	
 		
 		> div { /* sub list items */
@@ -71,10 +74,10 @@
 	.template-timeframe-withlocation,
 	.template-item-withlocation
 	 {
-		@extend .cb-col-auto;
+		@extend .cb-col-auto ;
 	}
 	.cb-list-header {
-		@extend .cb-col-auto;
+		@extend .cb-col-auto ;
 	}
 	.cb-list-header img{
 		

@@ -28,7 +28,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
 	<!-- Rules: WordPress Coding Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
-	<config name="minimum_supported_wp_version" value="5.6"/>
+	<config name="minimum_supported_wp_version" value="5.9"/>
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
@@ -74,15 +74,31 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <exclude name="Wordpress.PHP.YodaConditions" />
         <exclude name="WordPress.NamingConventions.ValidVariableName" />
         <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid" />
-	
-       <!-- Too much false positives in our codebase, but please reactivate if necessary -->
+
+        <!-- Excludes Short Array Syntax sniffs entirely -->
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+
+        <!-- Too much false positives in our codebase, but please reactivate if necessary -->
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.LongIndexSpaceBeforeDoubleArrow" />
 
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
         <exclude name="Squiz.Commenting.FileComment" />
+        <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
         
         <exclude-pattern>tests/</exclude-pattern>
+    </rule>
+
+    <!-- Adds commonsbooking specific wrappers around wp_kses ... -->
+    <!-- Note that phpcs as php is case insensitive -->
+    <rule ref="WordPress.Security.EscapeOutput">
+        <properties>
+            <property name="customEscapingFunctions" type="array">
+                <element value="commonsbooking_sanitizehtml"/>
+                <element value="commonsbooking_sanitizearrayorstring" />
+            </property>
+        </properties>
     </rule>
 
 </ruleset>

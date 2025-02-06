@@ -133,7 +133,7 @@ module.exports = function (grunt) {
 						dest: nodePackagesDestDir + 'commons-search/',
 						expand: true,
 						cwd: 'node_modules/@commonsbooking/frontend/dist/lib/commons-search/',
-						src: ['commons-search.umd.cjs', 'style.css'],
+						src: ['commons-search.umd.js', 'style.css'],
 					},
 					{
 						dest: nodePackagesDestDir + 'vue/',
@@ -141,6 +141,12 @@ module.exports = function (grunt) {
 						cwd: 'node_modules/vue/dist/',
 						src: 'vue.runtime.global.prod.js',
 					},
+                    {
+                        dest: 'includes/commons-api-json-schema/',
+                        expand: true,
+                        cwd: 'node_modules/commons-api/',
+                        src: '**schema.json',
+                    }
 				],
 			},
 		},
@@ -164,7 +170,10 @@ module.exports = function (grunt) {
 				],
 				tasks: [
 					'dart-sass:adminDev', 'dart-sass:publicDev'
-				]
+				],
+                options: {
+                    livereload: true
+                }
 			},
 			js: {
 				files: [

@@ -36,9 +36,12 @@ class Wordpress {
 	 * @return array|array[]|null[]|WP_Post[]
 	 */
 	public static function flattenWpdbResult( $posts ): array {
-		return array_map( function ( $post ) {
-			return get_post( $post->ID );
-		}, $posts );
+		return array_map(
+			function ( $post ) {
+				return get_post( $post->ID );
+			},
+			$posts
+		);
 	}
 
 	/**
@@ -46,20 +49,24 @@ class Wordpress {
 	 *
 	 * @return bool|false
 	 */
-	public static function isValidDateString($dateString): bool {
-		return preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/i',$dateString) === 1;
+	public static function isValidDateString( $dateString ): bool {
+		return preg_match( '/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/i', $dateString ) === 1;
 	}
 
 	/**
 	 * Returns array with IDs.
+	 *
 	 * @param $posts
 	 *
 	 * @return array
 	 */
-	public static function getPostIdArray($posts): array {
-		 return array_map( function ( $post ) {
-			return intval($post->ID);
-		}, $posts);
+	public static function getPostIdArray( $posts ): array {
+		return array_map(
+			function ( $post ) {
+				return intval( $post->ID );
+			},
+			$posts
+		);
 	}
 
 	/**
@@ -70,108 +77,104 @@ class Wordpress {
 	 *
 	 * @return array|string[]
 	 */
-	public static function getRelatedPostIds($postId): array {
+	public static function getRelatedPostIds( $postId ): array {
 		$postIds = [];
-		$post = get_post($postId);
+		$post    = get_post( $postId );
 
-		switch ($post->post_type) {
+		switch ( $post->post_type ) {
 			case Booking::$postType:
-				$postIds = self::getRelatedPostsIdsForBooking($postId);
+				$postIds = self::getRelatedPostsIdsForBooking( $postId );
 				break;
 			case Item::$postType:
-				$postIds = self::getRelatedPostsIdsForItem($postId);
+				$postIds = self::getRelatedPostsIdsForItem( $postId );
 				break;
 			case Location::$postType:
-				$postIds = self::getRelatedPostsIdsForLocation($postId);
+				$postIds = self::getRelatedPostsIdsForLocation( $postId );
 				break;
 			case Restriction::$postType:
-				$postIds = self::getRelatedPostsIdsForRestriction($postId);
+				$postIds = self::getRelatedPostsIdsForRestriction( $postId );
 				break;
 			case \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType:
-				$postIds = self::getRelatedPostsIdsForTimeframe($postId);
+				$postIds = self::getRelatedPostsIdsForTimeframe( $postId );
 				break;
 		}
 
 		// Remove empty tags
-		$postIds = array_filter($postIds);
+		$postIds = array_filter( $postIds );
 
 		return array_map( 'strval', $postIds );
 	}
 
 	/**
 	 * Returns all post ids in relation to $postId.
+	 *
 	 * @param $postId
 	 *
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getRelatedPostsIdsForLocation($postId) {
-		$timeframes = \CommonsBooking\Repository\Timeframe::get([$postId]);
-		$restrictions = \CommonsBooking\Repository\Restriction::get([$postId]);
+	public static function getRelatedPostsIdsForLocation( $postId ) {
+		$timeframes   = \CommonsBooking\Repository\Timeframe::get( [ $postId ] );
+		$restrictions = \CommonsBooking\Repository\Restriction::get( [ $postId ] );
 		return array_merge(
-			[$postId],
-			Wordpress::getPostIdArray($timeframes),
-			Wordpress::getPostIdArray($restrictions)
+			[ $postId ],
+			self::getPostIdArray( $timeframes ),
+			self::getPostIdArray( $restrictions )
 		);
 	}
 
 	/**
 	 * Returns all post ids in relation to $postId.
 	 * CAREFUL: This will not get the location that the item is in relation to.
+	 *
 	 * @param $postId
 	 *
 	 * @return array
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getRelatedPostsIdsForItem($postId): array {
-		$timeframes = \CommonsBooking\Repository\Timeframe::get([], [$postId]);
-		$restrictions = \CommonsBooking\Repository\Restriction::get([], [$postId]);
+	public static function getRelatedPostsIdsForItem( $postId ): array {
+		$timeframes   = \CommonsBooking\Repository\Timeframe::get( [], [ $postId ] );
+		$restrictions = \CommonsBooking\Repository\Restriction::get( [], [ $postId ] );
 		return array_merge(
-			[$postId],
-			Wordpress::getPostIdArray($timeframes),
-			Wordpress::getPostIdArray($restrictions)
+			[ $postId ],
+			self::getPostIdArray( $timeframes ),
+			self::getPostIdArray( $restrictions )
 		);
 	}
 
 	/**
 	 * Returns all post ids in relation to $postId.
+	 *
 	 * @param $postId
 	 *
 	 * @return array
 	 * @throws \Exception
 	 */
-	public static function getRelatedPostsIdsForTimeframe($postId): array {
-		$timeframe = new Timeframe($postId);
-		$ids = [$postId];
-
-		if($timeframe->getItem()) {
-			$ids[] = $timeframe->getItem()->ID;
-		}
-		if($timeframe->getLocation()) {
-			$ids[] = $timeframe->getLocation()->ID;
-		}
-
-		return $ids;
+	public static function getRelatedPostsIdsForTimeframe( $postId ): array {
+		$timeframe = new Timeframe( $postId );
+		$ids       = [ $postId ];
+		return array_merge( $ids, $timeframe->getItemIDs(), $timeframe->getLocationIDs() );
 	}
 
 	/**
 	 * Returns all post ids in relation to $postId.
+	 *
 	 * @param $postId
 	 *
 	 * @return array
 	 * @throws \Exception
 	 */
-	public static function getRelatedPostsIdsForBooking($postId): array {
-		$booking = new \CommonsBooking\Model\Booking($postId);
-		$ids = [$postId];
+	public static function getRelatedPostsIdsForBooking( $postId ): array {
+		$booking = new \CommonsBooking\Model\Booking( $postId );
+		$ids     = [ $postId ];
 
-		if($booking->getItem()) {
-			$ids[] = $booking->getItem()->ID;
+		if ( $booking->getItem() ) {
+			$ids[] = $booking->getItemID();
 		}
-		if($booking->getLocation()) {
-			$ids[] = $booking->getLocation()->ID;
+		if ( $booking->getLocation() ) {
+			$ids[] = $booking->getLocationID();
 		}
-		if($booking->getBookableTimeFrame()) {
+		if ( $booking->getBookableTimeFrame() ) {
 			$ids[] = $booking->getBookableTimeFrame()->ID;
 		}
 
@@ -186,28 +189,28 @@ class Wordpress {
 	 * @return array
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
-	public static function getRelatedPostsIdsForRestriction($postId): array {
-		$restriction = new \CommonsBooking\Model\Restriction($postId);
+	public static function getRelatedPostsIdsForRestriction( $postId ): array {
+		$restriction = new \CommonsBooking\Model\Restriction( $postId );
 
 		// Restriction itself
 		$relatedPostIds = [ $postId ];
 
 		// Item and related timeframes
-		if($itemId = $restriction->getItemId()) {
-			$timeframes = \CommonsBooking\Repository\Timeframe::get([], [$itemId]);
+		if ( $itemId = $restriction->getItemId() ) {
+			$timeframes       = \CommonsBooking\Repository\Timeframe::get( [], [ $itemId ] );
 			$relatedPostIds[] = $itemId;
-			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
+			$relatedPostIds   = array_merge( $relatedPostIds, self::getPostIdArray( $timeframes ) );
 		}
 
 		// Location and related timeframes
-		if($locationId = $restriction->getLocationId()) {
-			$timeframes = \CommonsBooking\Repository\Timeframe::get([$locationId]);
+		if ( $locationId = $restriction->getLocationId() ) {
+			$timeframes       = \CommonsBooking\Repository\Timeframe::get( [ $locationId ] );
 			$relatedPostIds[] = $locationId;
-			$relatedPostIds = array_merge($relatedPostIds, Wordpress::getPostIdArray($timeframes));
+			$relatedPostIds   = array_merge( $relatedPostIds, self::getPostIdArray( $timeframes ) );
 		}
 
 		return array_unique(
-			array_map( 'intval', $relatedPostIds)
+			array_map( 'intval', $relatedPostIds )
 		);
 	}
 
@@ -220,44 +223,58 @@ class Wordpress {
 	 *
 	 * @return array
 	 */
-	public static function getTags($posts, array $items = [], array $locations = []): array {
-		$itemsAndLocations = Wordpress::getLocationAndItemIdsFromPosts($posts);
+	public static function getTags( $posts, array $items = [], array $locations = [] ): array {
+		$itemsAndLocations = self::getLocationAndItemIdsFromPosts( $posts );
 
-		if(!count($items) && !count($locations)) {
+		if ( ! count( $items ) && ! count( $locations ) ) {
 			$items[] = 'misc';
 		}
 
-		return array_values(array_unique(
+		return array_values(
+			array_unique(
 				array_merge(
-					Wordpress::getPostIdArray($posts),
+					self::getPostIdArray( $posts ),
 					$itemsAndLocations,
 					$items,
 					$locations
-				))
+				)
+			)
 		);
 	}
 
 	/**
 	 * Returns an array of post ids of locations and items from posts.
+	 * The only posts that have items / locations assinged are timeframes and bookings.
+	 * Any other posts are skipped.
+	 *
 	 * @param $posts
 	 *
 	 * @return array
 	 */
-	public static function getLocationAndItemIdsFromPosts($posts): array {
+	public static function getLocationAndItemIdsFromPosts( array $posts ): array {
 		$itemsAndLocations = [];
-		array_walk($posts, function ($timeframe) use (&$itemsAndLocations) {
-			$itemsAndLocations[] = get_post_meta(
-				$timeframe->ID,
-				Timeframe::META_ITEM_ID,
-				true
-			);
-			$itemsAndLocations[] = get_post_meta(
-				$timeframe->ID,
-				Timeframe::META_LOCATION_ID,
-				true
-			);
-		});
-		return array_map('intval', $itemsAndLocations);
+		array_walk(
+			$posts,
+			function ( $timeframe ) use ( &$itemsAndLocations ) {
+				// only run for timeframe or booking
+				if ( ! in_array( $timeframe->post_type, [ \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType, Booking::$postType ] ) ) {
+					return;
+				}
+				if ( ! $timeframe instanceof Timeframe ) {
+					if ( $timeframe->post_type == Booking::$postType ) {
+						$timeframe = new \CommonsBooking\Model\Booking( $timeframe );
+					} elseif ( $timeframe->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType ) {
+						$timeframe = new Timeframe( $timeframe );
+					}
+				}
+				$itemsAndLocations = array_merge(
+					$itemsAndLocations,
+					$timeframe->getItemIDs(),
+					$timeframe->getLocationIDs()
+				);
+			}
+		);
+		return array_map( 'intval', $itemsAndLocations );
 	}
 
 	/**
@@ -270,12 +287,12 @@ class Wordpress {
 	 * @return DateTime
 	 * @throws \Exception
 	 */
-	public static function getUTCDateTimeByTimestamp($timestamp): DateTime {
+	public static function getUTCDateTimeByTimestamp( $timestamp ): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(
 			intval( $timestamp )
 		);
-		$dto->setTimezone(new \DateTimeZone('UTC'));
+		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
 
 		return $dto;
 	}
@@ -304,9 +321,9 @@ class Wordpress {
 	 * @return DateTime
 	 * @throws \Exception
 	 */
-	public static function getUTCDateTime($datetime = 'now'): DateTime {
-		$dto = new DateTime($datetime);
-		$dto->setTimezone(new \DateTimeZone('UTC'));
+	public static function getUTCDateTime( $datetime = 'now' ): DateTime {
+		$dto = new DateTime( $datetime );
+		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
 
 		return $dto;
 	}
@@ -335,12 +352,12 @@ class Wordpress {
 		return $datetime;
 	}
 
-	public static function getLocalDateTime($timestamp): DateTime {
+	public static function getLocalDateTime( $timestamp ): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(
 			$timestamp
 		);
-		$dto->setTimezone(new \DateTimeZone(wp_timezone_string()));
+		$dto->setTimezone( new \DateTimeZone( wp_timezone_string() ) );
 
 		return $dto;
 	}

@@ -3,23 +3,21 @@
 
 namespace CommonsBooking\API;
 
-use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
-use CommonsBooking\Model\Timeframe;
-use CommonsBooking\Model\Week;
 use CommonsBooking\Repository\Item;
-use DateTime;
-use DateTimeZone;
 use Exception;
 use stdClass;
 use WP_Error;
+use WP_REST_Request;
 use WP_REST_Response;
 
 /**
  * Endpoint exposes item availability
  *
- * @See Calendar for computing item availability
+ * @see Calendar for computing item availability.
+ *
+ * @see JSON-schema-Specification {@see https://github.com/wielebenwir/commons-api/blob/master/commons-api.availability.schema.json}
  */
 class AvailabilityRoute extends BaseRoute {
 
@@ -32,16 +30,15 @@ class AvailabilityRoute extends BaseRoute {
 
 	/**
 	 * Commons-API schema definition.
+	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "node_modules/commons-api/commons-api.availability.schema.json";
+	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.availability.schema.json';
 
 	/**
 	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
 	 *
-	 * @param bool $id The id of a \CommonsBooking\Wordpress\CustomPostType\Item::post_type post to search for
-	 * @param null $startTime The start date of the calendar to get the data for
-	 * @param null $endTime The end date of the calendar to get the data for
+	 * @param bool $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
 	 *
 	 * @return array
 	 * @throws Exception
@@ -59,30 +56,35 @@ class AvailabilityRoute extends BaseRoute {
 
 	/**
 	 * Get one item from the collection
+	 *
+	 * @param $request WP_REST_Request
+	 *
+	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_item( $request ) {
-		//get parameters from request
-		$params             = $request->get_params();
-		$data               = new stdClass();
+		// get parameters from request
+		$params = $request->get_params();
+		$data   = new stdClass();
 		try {
 			$data->availability = $this->getItemData( $params['id'] );
 
-			//return a response or error based on some conditional
+			// return a response or error based on some conditional
 			if ( count( $data->availability ) ) {
 				return new WP_REST_Response( $data, 200 );
 			} else {
-
+				// This was missing in previous versions. According to the availability spec, we can return a list with no items
+				// TODO this part and the enclosing if-clause can be removed in future version, if no problems arose ...
+				return new WP_REST_Response( $data, 200 );
 			}
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			return new WP_Error( 'code', $e->getMessage() );
 		}
-
 	}
 
 	/**
 	 * Get a collection of items
 	 *
-	 * @param $request Full data about the request.
+	 * @param $request WP_REST_Request full data about the request.
 	 *
 	 * @return WP_REST_Response
 	 */
@@ -91,16 +93,15 @@ class AvailabilityRoute extends BaseRoute {
 		$data->availability = [];
 
 		// Get all items
-		$items = Item::get([], true);
+		$items = Item::get( [], true );
 
 		// Collect availabilies for each item
-		foreach ($items as $item) {
+		foreach ( $items as $item ) {
 			$data->availability = array_merge(
 				$data->availability,
-				$this->getItemData($item->ID)
+				$this->getItemData( $item->ID )
 			);
 		}
 		return new WP_REST_Response( $data, 200 );
 	}
-
 }

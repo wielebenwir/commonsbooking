@@ -15,13 +15,14 @@ use Exception;
 class Week {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $year;
 
 	/**
-	 * Week of year.
-	 * @var integer
+	 * Day in the year to start the week from (0-365)
+	 *
+	 * @var int
 	 */
 	protected $dayOfYear;
 
@@ -41,15 +42,21 @@ class Week {
 	protected $types;
 
 	/**
+	 * @var Timeframe[]
+	 */
+	private array $timeframes = [];
+
+	/**
 	 * Week constructor.
 	 *
 	 * @param $year
 	 * @param $dayOfYear
-	 * @param array $locations
-	 * @param array $items
-	 * @param array $types
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param array       $types
+	 * @param Timeframe[] $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
 	 */
-	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}
@@ -58,6 +65,10 @@ class Week {
 		$this->locations = $locations;
 		$this->items     = $items;
 		$this->types     = $types;
+
+		if ( ! empty( $possibleTimeframes ) ) {
+			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
+		}
 	}
 
 	/**
@@ -77,15 +88,15 @@ class Week {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$yearTimestamp = mktime( 0, 0, 0, 1, 1, $this->year );
+			$yearTimestamp = $this->getYearTimestamp();
 			$dayOfYear     = $this->dayOfYear;
 			$timestamp     = strtotime( "+ $dayOfYear days", $yearTimestamp );
 			$dto           = Wordpress::getUTCDateTimeByTimestamp( $timestamp );
 
 			$days = array();
-			for ( $i = 0; $i < 7; $i ++ ) {
+			for ( $i = 0; $i < 7; $i++ ) {
 				$dayDate   = $dto->format( 'Y-m-d' );
-				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types );
+				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $this->timeframes ?: [] );
 				$dayOfWeek = $dto->format( 'w' );
 				if ( $dayOfWeek === '0' ) {
 					break;
@@ -101,4 +112,35 @@ class Week {
 		}
 	}
 
+	/**
+	 * Will return the timestamp of the first second of the given week.
+	 *
+	 * @return int
+	 */
+	public function getStartTimestamp(): int {
+		$yearTimestamp = $this->getYearTimestamp();
+		$timestamp     = strtotime( "+ $this->dayOfYear days", $yearTimestamp );
+
+		return $timestamp;
+	}
+
+	/**
+	 * Will return the timestamp of the last second of the given week.
+	 *
+	 * @return int
+	 */
+	public function getEndTimestamp(): int {
+		$yearTimestamp = $this->getYearTimestamp();
+		$timestamp     = strtotime( "+ $this->dayOfYear days", $yearTimestamp );
+		$timestamp     = strtotime( '+6 days 23:59:59', $timestamp );
+
+		return $timestamp;
+	}
+
+	/**
+	 * @return false|int
+	 */
+	private function getYearTimestamp() {
+		return mktime( 0, 0, 0, 1, 1, $this->year );
+	}
 }

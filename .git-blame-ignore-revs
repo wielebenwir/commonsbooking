@@ -1,0 +1,3 @@
+# .git-blame-ignore-revs
+# Apply phpcbf to entire codebase
+59340f68fb9c6d6e680ac3ad40a3d095e98837a6

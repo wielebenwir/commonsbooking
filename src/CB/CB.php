@@ -21,21 +21,22 @@ class CB {
 	/**
 	 * Returns property of (custom) post by class key and property.
 	 *
-	 * @param mixed $key
-	 * @param mixed $property
+	 * @param mixed            $key
+	 * @param mixed            $property
 	 * @param \WP_Post|WP_User $wpObject
-	 * @param mixed $args
+	 * @param mixed            $args
+	 * @param callable         $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
 	 *
-	 * @return mixed
+	 * @return Property of (custom) post (sanitized) or null if not found
 	 * @throws Exception
 	 */
-	public static function get( $key, $property, $wpObject = null, $args = null ) {
+	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
 
 		// Only CustomPost, WP_User or WP_Post ist allowed.
 		if ( $wpObject && ! (
 			( $wpObject instanceof WP_Post ) ||
 			( $wpObject instanceof WP_User ) ||
-			($wpObject instanceof CustomPost)
+			( $wpObject instanceof CustomPost )
 		) ) {
 			throw new Exception( 'invalid object type.' );
 		}
@@ -43,13 +44,13 @@ class CB {
 		// first we need to check if we are dealing with a post and set the post object properly
 		if ( ! $wpObject ) {
 			$postId   = self::getPostId( $key );
-			$wpObject = get_post($postId);
+			$wpObject = get_post( $postId );
 		}
 
 		// If possible cast to CB Custom Post Type Model to get additional functions
-		$wpObject = Helper::castToCBCustomType($wpObject, $key);
+		$wpObject = Helper::castToCBCustomType( $wpObject, $key );
 
-		$result     = self::lookUp( $key, $property, $wpObject, $args );  // Find matching methods, properties or metadata
+		$result     = self::lookUp( $key, $property, $wpObject, $args, $sanitizeFunction );  // Find matching methods, properties or metadata
 		$filterName = sprintf( 'commonsbooking_tag_%s_%s', $key, $property );
 
 		return apply_filters( $filterName, $result );
@@ -82,8 +83,8 @@ class CB {
 
 			// If we are dealing with a timeframe and key ist not booking, we may need to look up the CHILDs post meta, not the parents'
 			if ( $initialPostType == 'cb_timeframe' &&
-			     $key != Booking::$postType &&
-			     $key != 'user'
+				$key != Booking::$postType &&
+				$key != 'user'
 			) {
 				$subPostID = get_post_meta( $initialPost->ID, $key . '-id', true );    // item-id, location-id
 				if ( get_post_status( $subPostID ) ) { // Post with that ID exists
@@ -98,15 +99,16 @@ class CB {
 	}
 
 	/**
-	 * @param string $key
-	 * @param string $property
+	 * @param string   $key
+	 * @param string   $property
 	 * @param $post
 	 * @param $args
+	 * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
 	 *
 	 * @return string|null
 	 * @throws Exception
 	 */
-	public static function lookUp( string $key, string $property, $post, $args ): ?string {
+	public static function lookUp( string $key, string $property, $post, $args, $sanitizeFunction ): ?string {
 		// in any case we need the post object, otherwise we cannot return anything
 		if ( ! $post ) {
 			return null;
@@ -120,7 +122,7 @@ class CB {
 
 		if ( $result ) {
 			// sanitize output
-			return commonsbooking_sanitizeHTML( $result );
+			return call_user_func( $sanitizeFunction, $result );
 		}
 
 		return $result;
@@ -128,6 +130,7 @@ class CB {
 
 	/**
 	 * Tries to get a property of a post with different approaches.
+	 *
 	 * @param $post
 	 * @param $property
 	 * @param $args
@@ -137,7 +140,7 @@ class CB {
 	private static function getPostProperty( $post, $property, $args ) {
 		$result = null;
 
-		$postId = is_int($post) ? $post : $post->ID;
+		$postId = is_int( $post ) ? $post : $post->ID;
 
 		if ( get_post_meta( $postId, $property, true ) ) { // Post has meta fields
 			$result = get_post_meta( $postId, $property, true );
@@ -163,7 +166,7 @@ class CB {
 	 * Tries to get a property of a user with different approaches.
 	 *
 	 * @param WP_Post|WP_User $post
-	 * @param string $property
+	 * @param string          $property
 	 * @param $args
 	 *
 	 * @return int|mixed|null
@@ -172,7 +175,7 @@ class CB {
 	private static function getUserProperty( $post, string $property, $args ) {
 		$result = null;
 
-		$cb_user = self::getUserFromObject($post);
+		$cb_user = self::getUserFromObject( $post );
 
 		if ( method_exists( $cb_user, $property ) ) {
 			$result = $cb_user->$property( $args );
@@ -195,20 +198,19 @@ class CB {
 	 * @return false|WP_User
 	 * @throws Exception
 	 */
-	private static function getUserFromObject($object) {
+	private static function getUserFromObject( $object ) {
 		// Check if $post is of type WP_Post, then we're using Author as User
-		if( $object instanceof WP_Post) {
-			$userID  = intval( $object->post_author );
+		if ( $object instanceof WP_Post ) {
+			$userID = intval( $object->post_author );
 			return get_userdata( $userID );
 
-		// Check if $post is of Type WP_User, than we can use it directly.
-		} else if ( $object instanceof WP_User) {
+			// Check if $post is of Type WP_User, than we can use it directly.
+		} elseif ( $object instanceof WP_User ) {
 			return $object;
 
-		// Other types than WP_Post or WP_User are not allowed
+			// Other types than WP_Post or WP_User are not allowed
 		} else {
-			throw new Exception('invalid $post type.');
+			throw new Exception( 'invalid $post type.' );
 		}
 	}
-
 }

@@ -6,6 +6,8 @@
  *
  */
 
+@use "../../../global/sass/partials/extends";
+
 .cb-wrapper {	
 	.cb-notice {
 		@extend .cb-box;
@@ -28,7 +30,8 @@
 		}    
 		&.error {
 		  background: var(--commonsbooking-color-error);
-		}
+            color: var(--commonsbooking-textcolor-light);
+        }
 	  }
 	 .cb-notice-small {
 		 display: block;

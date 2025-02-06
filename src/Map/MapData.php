@@ -3,25 +3,25 @@
 namespace CommonsBooking\Map;
 
 use CommonsBooking\Helper\Wordpress;
-use CommonsBooking\Wordpress\CustomPostType\Map;
+use CommonsBooking\Model\Map;
 
 class MapData {
 	public static function geo_search() {
 		if ( isset( $_POST['query'] ) && $_POST['cb_map_id'] ) {
+			$map = new Map( $_POST['cb_map_id'] );
 
 			$check_capacity = true;
 			$attempts       = 0;
 
-			//because requests to nominatim are limited (max 1/s), we have to check for timestamp of last one and loop for a while, if needed
+			// because requests to nominatim are limited (max 1/s), we have to check for timestamp of last one and loop for a while, if needed
 			while ( $check_capacity ) {
-
 				if ( $attempts > 10 ) {
 					wp_send_json_error( [ 'error' => 5 ], 408 );
 
 					wp_die();
 				}
 
-				$attempts ++;
+				++$attempts;
 
 				$last_call_timestamp = commonsbooking_sanitizeHTML( get_option( 'cb_map_last_nominatim_call', 0 ) );
 				$current_timestamp   = time();
@@ -41,12 +41,10 @@ class MapData {
 				'limit'  => 1,
 			];
 
-			$options = MapAdmin::get_options( sanitize_text_field( $_POST['cb_map_id'] ), true );
-
-			if ( $options['address_search_bounds_left_bottom_lat'] && $options['address_search_bounds_left_bottom_lon'] && $options['address_search_bounds_right_top_lat'] && $options['address_search_bounds_right_top_lon'] ) {
+			if ( $map->getMeta( 'address_search_bounds_left_bottom_lat' ) && $map->getMeta( 'address_search_bounds_left_bottom_lon' ) && $map->getMeta( 'address_search_bounds_right_top_lat' ) && $map->getMeta( 'address_search_bounds_right_top_lon' ) ) {
 				$params['bounded'] = 1;
-				//viewbox - lon1, lat1, lon2, lat2: 12.856779316446545, 52.379790828551016, 13.948545673868422, 52.79694936237738
-				$params['viewbox'] = $options['address_search_bounds_left_bottom_lon'] . ',' . $options['address_search_bounds_left_bottom_lat'] . ',' . $options['address_search_bounds_right_top_lon'] . ',' . $options['address_search_bounds_right_top_lat'];
+				// viewbox - lon1, lat1, lon2, lat2: 12.856779316446545, 52.379790828551016, 13.948545673868422, 52.79694936237738
+				$params['viewbox'] = $map->getMeta( 'address_search_bounds_left_bottom_lon' ) . ',' . $map->getMeta( 'address_search_bounds_left_bottom_lat' ) . ',' . $map->getMeta( 'address_search_bounds_right_top_lon' ) . ',' . $map->getMeta( 'address_search_bounds_right_top_lat' );
 			}
 
 			$url  = 'https://nominatim.openstreetmap.org/search?' . http_build_query( $params );
@@ -59,17 +57,16 @@ class MapData {
 
 			if ( is_wp_error( $data ) ) {
 				wp_send_json_error( [ 'error' => 2 ], 404 );
-			} else {
-				if ( $data['response']['code'] == 200 ) {
-
-					if ( Map::is_json( $data['body'] ) ) {
-						wp_send_json( $data['body'] );
-					} else {
-						wp_send_json_error( [ 'error' => 4 ], 403 );
-					}
+			} elseif ( $data['response']['code'] == 200 ) {
+					json_decode( $data['body'] );
+					// Check if the json is valid
+				if ( json_last_error() == JSON_ERROR_NONE ) {
+					wp_send_json( $data['body'] );
 				} else {
-					wp_send_json_error( [ 'error' => 3 ], 404 );
+					wp_send_json_error( [ 'error' => 4 ], 403 );
 				}
+			} else {
+				wp_send_json_error( [ 'error' => 3 ], 404 );
 			}
 		} else {
 			wp_send_json_error( [ 'error' => 1 ], 400 );
@@ -82,7 +79,7 @@ class MapData {
 	 * the ajax request handler for locations
 	 **/
 	public static function get_locations() {
-		//handle local/import map
+		// handle local/import map
 		if ( isset( $_POST['cb_map_id'] ) ) {
 			check_ajax_referer( 'cb_map_locations', 'nonce' );
 
@@ -90,6 +87,7 @@ class MapData {
 
 			if ( $post && $post->post_type == 'cb_map' ) {
 				$cb_map_id = $post->ID;
+				$map       = new Map( $cb_map_id );
 			} else {
 				wp_send_json_error( [ 'error' => 2 ], 400 );
 
@@ -101,26 +99,27 @@ class MapData {
 			wp_die();
 		}
 
-
 		if ( $post->post_status == 'publish' ) {
+			$map                = new Map( $cb_map_id );
 			$settings           = self::get_settings( $cb_map_id );
 			$default_date_start = $settings['filter_availability']['date_min'];
 			$default_date_end   = $settings['filter_availability']['date_max'];
 			$itemTerms          = self::getItemCategoryTerms( $settings );
-			$locations          = Map::get_locations( $cb_map_id, $itemTerms );
+			$locations          = $map->get_locations( $itemTerms );
 
-			//create availabilities
-			$show_item_availability        = MapAdmin::get_option( $cb_map_id, 'show_item_availability' );
-			$show_item_availability_filter = MapAdmin::get_option( $cb_map_id, 'show_item_availability_filter' );
+			// create availabilities
+			$show_item_availability        = $map->getMeta( 'show_item_availability' );
+			$show_item_availability_filter = $map->getMeta( 'show_item_availability_filter' );
 
 			if ( $show_item_availability || $show_item_availability_filter ) {
 				$locations = MapItemAvailable::create_items_availabilities(
 					$locations,
 					$default_date_start,
-					$default_date_end );
+					$default_date_end
+				);
 			}
 
-			$locations = array_values( $locations ); //locations to indexed array
+			$locations = array_values( $locations ); // locations to indexed array
 			$locations = Map::cleanup_location_data( $locations, '<br>' );
 
 			header( 'Content-Type: application/json' );
@@ -134,6 +133,7 @@ class MapData {
 
 	/**
 	 * Returns configured item terms
+	 *
 	 * @return array
 	 */
 	public static function getItemCategoryTerms( $settings ): array {
@@ -154,12 +154,13 @@ class MapData {
 	 * get the settings for the frontend of the map with given id
 	 **/
 	public static function get_settings( $cb_map_id ): array {
+		$map                = new Map( $cb_map_id );
 		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );
-		$max_days_in_future = MapAdmin::get_option( $cb_map_id, 'availability_max_days_to_show' );
+		$max_days_in_future = $map->getMeta( 'availability_max_days_to_show' );
 		$date_max           = Wordpress::getUTCDateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
 		$date_max           = $date_max->format( 'Y-m-d' );
-		$maxdays            = MapAdmin::get_option( $cb_map_id, 'availability_max_day_count' );
+		$maxdays            = $map->getMeta( 'availability_max_day_count' );
 
 		$settings = [
 			'data_url'                     => get_site_url( null, '', null ) . '/wp-admin/admin-ajax.php',
@@ -178,88 +179,112 @@ class MapData {
 			'asset_path'                   => COMMONSBOOKING_MAP_ASSETS_URL,
 		];
 
-		$options = MapAdmin::get_options( $cb_map_id, true );
-
 		$pass_through = [
 			'base_map',
-			'show_scale',
 			'zoom_min',
 			'zoom_max',
-			'scrollWheelZoom',
 			'zoom_start',
 			'lat_start',
 			'lon_start',
+			'max_cluster_radius',
+			'label_location_distance_filter',
+			'label_item_availability_filter',
+			'label_item_category_filter',
+		];
+
+		$pass_through_conditional = [
+			'show_scale',
+			'scrollWheelZoom',
 			'marker_map_bounds_initial',
 			'marker_map_bounds_filter',
-			'max_cluster_radius',
 			'marker_tooltip_permanent',
 			'show_location_contact',
 			'show_location_opening_hours',
 			'show_item_availability',
 			'show_location_distance_filter',
-			'label_location_distance_filter',
 			'show_item_availability_filter',
-			'label_item_availability_filter',
-			'label_item_category_filter',
 		];
 
-		foreach ( $options as $key => $value ) {
-			if ( in_array( $key, $pass_through ) ) {
-				$settings[ $key ] = $value;
-			} elseif ( $key == 'custom_marker_media_id' ) {
-				if ( $value != null ) {
-					$settings['custom_marker_icon'] = [
-						'iconUrl'    => wp_get_attachment_url( $options['custom_marker_media_id'] ),
-						'iconSize'   => [ $options['marker_icon_width'], $options['marker_icon_height'] ],
-						'iconAnchor' => [ $options['marker_icon_anchor_x'], $options['marker_icon_anchor_y'] ],
-					];
-				}
-			} elseif ( $key == 'marker_item_draft_media_id' ) {
-				if ( $value != null ) {
-					$settings['item_draft_marker_icon'] = [
-						'iconUrl'    => wp_get_attachment_url( $options['marker_item_draft_media_id'] ),
-						'iconSize'   => [
-							$options['marker_item_draft_icon_width'],
-							$options['marker_item_draft_icon_height'],
-						], //[27, 35], // size of the icon
-						'iconAnchor' => [
-							$options['marker_item_draft_icon_anchor_x'],
-							$options['marker_item_draft_icon_anchor_y'],
-						], //[13.5, 0], // point of the icon which will correspond to marker's location
-					];
-				}
-			} elseif ( $key == 'custom_marker_cluster_media_id' ) {
-				if ( $value != null ) {
-					$settings['marker_cluster_icon'] = [
-						'url'  => wp_get_attachment_url( $options['custom_marker_cluster_media_id'] ),
-						'size' => [
-							'width'  => $options['marker_cluster_icon_width'],
-							'height' => $options['marker_cluster_icon_height'],
-						],
-					];
-				}
-			} //categories are only meant to be shown on local maps
-			elseif ( $key == 'cb_items_available_categories' ) {
-				$settings['filter_cb_item_categories'] = [];
-				$current_group_id                      = null;
-				foreach ( $options['cb_items_available_categories'] as $categoryKey => $content ) {
-					if ( substr( $categoryKey, 0, 1 ) == 'g' ) {
-						$current_group_id                                      = $categoryKey;
-						$settings['filter_cb_item_categories'][ $categoryKey ] = [
-							'name'     => $content,
-							'elements' => [],
-						];
-					} else {
-						$settings['filter_cb_item_categories'][ $current_group_id ]['elements'][] = [
-							'cat_id' => $categoryKey,
-							'markup' => $content,
-						];
-					}
-				}
+		foreach ( $pass_through as $key ) {
+			$meta = $map->getMeta( $key );
+			if ( is_numeric( $meta ) ) {
+				$meta = floatval( $meta );
 			}
-
+			$settings[ $key ] = $meta;
 		}
 
+		foreach ( $pass_through_conditional as $key ) {
+			$meta = $map->getMeta( $key );
+			if ( $meta == 'off' ) {
+				$settings[ $key ] = false;
+			} else {
+				$settings[ $key ] = boolval( $meta );
+			}
+		}
+
+		if ( $map->getMeta( 'custom_marker_media_id' ) ) {
+			$settings['custom_marker_icon'] = [
+				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'custom_marker_media_id' ) ),
+				'iconSize'   => [
+					intval( $map->getMeta( 'marker_icon_width' ) ),
+					intval( $map->getMeta( 'marker_icon_height' ) ),
+				],
+				'iconAnchor' => [
+					intval( $map->getMeta( 'marker_icon_anchor_x' ) ),
+					intval( $map->getMeta( 'marker_icon_anchor_y' ) ),
+				],
+			];
+		}
+
+		if ( $map->getMeta( 'marker_item_draft_media_id' ) ) {
+			$settings['item_draft_marker_icon'] = [
+				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'marker_item_draft_media_id' ) ),
+				'iconSize'   => [
+					intval( $map->getMeta( 'marker_item_draft_icon_width' ) ),
+					intval( $map->getMeta( 'marker_item_draft_icon_height' ) ),
+				],
+				'iconAnchor' => [
+					intval( $map->getMeta( 'marker_item_draft_icon_anchor_x' ) ),
+					intval( $map->getMeta( 'marker_item_draft_icon_anchor_y' ) ),
+				],
+			];
+		}
+
+		if ( $map->getMeta( 'custom_marker_cluster_media_id' ) ) {
+			$settings['marker_cluster_icon'] = [
+				'url'  => wp_get_attachment_url( $map->getMeta( 'custom_marker_cluster_media_id' ) ),
+				'size' => [
+					'width'  => intval( $map->getMeta( 'marker_cluster_icon_width' ) ),
+					'height' => intval( $map->getMeta( 'marker_cluster_icon_height' ) ),
+				],
+			];
+		}
+
+		// categories are only meant to be shown on local maps
+		// TODO: Evaluate if it makes sense to only show them when categories are imported
+		if ( $map->getMeta( 'cb_items_available_categories' ) ) {
+			$settings['filter_cb_item_categories'] = [];
+
+			foreach ( $map->getMeta( 'filtergroups' ) as $groupID => $group ) {
+				$elements = [];
+				foreach ( $group['categories'] as $termID ) {
+					$term         = get_term( $termID );
+					$customMarkup = get_term_meta( $termID, COMMONSBOOKING_METABOX_PREFIX . 'markup', true );
+					$termName     = empty( $customMarkup ) ? $term->name : $customMarkup;
+
+					$elements[] = [
+						'cat_id' => intval( $termID ),
+						'markup' => $termName,
+					];
+				}
+				$isExclusive                                       = $group['isExclusive'] ?? 'off';
+				$settings['filter_cb_item_categories'][ $groupID ] = [
+					'name'        => $group['name'] ?? '',
+					'elements'    => $elements,
+					'isExclusive' => $isExclusive == 'on',
+				];
+			}
+		}
 		return $settings;
 	}
 }
