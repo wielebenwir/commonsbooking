@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Exception;
 
-class BookingCodeException extends \Exception
-{
+class BookingCodeException extends \Exception {
+
 
 }

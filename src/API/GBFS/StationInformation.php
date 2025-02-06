@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\API\GBFS;
 
-
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use Exception;
@@ -35,24 +34,24 @@ class StationInformation extends BaseRoute {
 	 */
 	public function prepare_item_for_response( $item, $request ): stdClass {
 		$preparedItem                   = new stdClass();
-		$preparedItem->station_id       = $item->ID . "";
+		$preparedItem->station_id       = $item->ID . '';
 		$preparedItem->name             = $item->post_title;
 		$preparedItem->address          = $item->formattedAddressOneLine();
 		$preparedItem->rental_uris      = new stdClass();
 		$preparedItem->rental_uris->web = get_permalink( $item->ID );
 
 		// Additional possible fields (but we don't have the information):
-//        $preparedItem->short_name = "";
-//        $preparedItem->cross_street = "";
-//        $preparedItem->region_id = "";
-//        $preparedItem->post_code = "";
-//        $preparedItem->rental_methods = [];
-//        $preparedItem->is_virtual_station = false;
-//        $preparedItem->station_area = "";
-//        $preparedItem->capacity = "";
-//        $preparedItem->vehicle_capacity = "";
-//        $preparedItem->is_valet_station = "";
-//        $preparedItem->vehicle_type_capacity = "";
+		// $preparedItem->short_name = "";
+		// $preparedItem->cross_street = "";
+		// $preparedItem->region_id = "";
+		// $preparedItem->post_code = "";
+		// $preparedItem->rental_methods = [];
+		// $preparedItem->is_virtual_station = false;
+		// $preparedItem->station_area = "";
+		// $preparedItem->capacity = "";
+		// $preparedItem->vehicle_capacity = "";
+		// $preparedItem->is_valet_station = "";
+		// $preparedItem->vehicle_type_capacity = "";
 
 		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true ); // TODO this can be part of model $item Location
 		$longitude = get_post_meta( $item->ID, 'geo_longitude', true );
@@ -85,5 +84,4 @@ class StationInformation extends BaseRoute {
 
 		return $preparedItem;
 	}
-
 }

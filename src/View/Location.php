@@ -23,15 +23,15 @@ class Location extends View {
 		}
 		$location = $post;
 		$item     = get_query_var( 'cb-item' ) ?: false;
-		$customId = md5($item . $location->ID);
+		$customId = md5( $item . $location->ID );
 
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$items    = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
+			$items   = \CommonsBooking\Repository\Item::getByLocation( $location->ID, true );
 			$itemIds = array_map(
-				function (\CommonsBooking\Model\Item $item) {
+				function ( \CommonsBooking\Model\Item $item ) {
 					return $item->getPost()->ID;
 				},
 				$items
@@ -44,12 +44,12 @@ class Location extends View {
 				'postUrl'   => get_permalink( $location ),
 				'type'      => Timeframe::BOOKING_ID,
 				'restrictions' => \CommonsBooking\Repository\Restriction::get(
-					[$location->ID],
+					[ $location->ID ],
 					$itemIds,
 					null,
 					true,
-					current_time('timestamp')
-				)
+					current_time( 'timestamp' )
+				),
 			];
 
 			// If there's no item selected, we'll show all available.
@@ -67,7 +67,7 @@ class Location extends View {
 			}
 
 			$calendarData          = Calendar::getCalendarDataArray(
-				array_key_exists('item', $args) ? $args['item'] : null,
+				array_key_exists( 'item', $args ) ? $args['item'] : null,
 				$location,
 				date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE_START, time() ) ),
 				date( 'Y-m-d', strtotime( Calendar::DEFAULT_RANGE, time() ) )
@@ -94,8 +94,11 @@ class Location extends View {
 		global $templateData;
 		$templateData = [];
 		$locations    = [];
-		$queryArgs    = shortcode_atts( static::$allowedShortCodeArgs, $atts,
-			\CommonsBooking\Wordpress\CustomPostType\Location::getPostType() );
+		$queryArgs    = shortcode_atts(
+			static::$allowedShortCodeArgs,
+			$atts,
+			\CommonsBooking\Wordpress\CustomPostType\Location::getPostType()
+		);
 
 		if ( is_array( $atts ) && array_key_exists( 'item-id', $atts ) ) {
 			$location    = \CommonsBooking\Repository\Location::getByItem( $atts['item-id'] );
@@ -110,7 +113,7 @@ class Location extends View {
 			$locationData[ $location->ID ] = self::getShortcodeData( $location, 'Item' );
 		}
 
-		if ($locationData){
+		if ( $locationData ) {
 			ob_start();
 			foreach ( $locationData as $id => $data ) {
 				$templateData['location'] = $id;
@@ -118,18 +121,15 @@ class Location extends View {
 				commonsbooking_get_template_part( 'shortcode', 'locations', true, false, false );
 			}
 			return ob_get_clean();
-
-		}
-		else { //Message to show when no item matches query
+		} else { // Message to show when no item matches query
 			return '
 			<div class="cb-wrapper cb-shortcode-locations template-shortcode-locations post-post no-post-thumbnail">
 			<div class="cb-list-error">'
-			. __('No locations found.','commonsbooking') .
+			. __( 'No locations found.', 'commonsbooking' ) .
 			'</div>
 			</div>
 			';
 		}
-
 	}
 
 	/**
@@ -140,24 +140,23 @@ class Location extends View {
 	 * @return void
 	 */
 	public static function renderLocationMap( \CommonsBooking\Model\Location $post = null ) {
-		//renders map for location-calendar-header template, only renders when set as option
+		// renders map for location-calendar-header template, only renders when set as option
 		if ( $post->getMeta( 'loc_showmap' ) ) {
 			$latitude  = $post->getMeta( 'geo_latitude' );
 			$longitude = $post->getMeta( 'geo_longitude' );
-			wp_enqueue_style( 'cb-leaflet');
-			wp_enqueue_script( 'cb-leaflet');
-
+			wp_enqueue_style( 'cb-leaflet' );
+			wp_enqueue_script( 'cb-leaflet' );
 
 			echo '<div id="cb_locationview_map" style="width: 100%; height: 300px;"></div>';
 
-            wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js', array(), false, true );
+			wp_enqueue_script( 'cb-map-locationview_js', COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-locationview.js', array(), false, true );
 
-			//location geo-coordinates
+			// location geo-coordinates
 			$defaults = [
 				'latitude'  => $latitude,
 				'longitude' => $longitude,
 			];
-			wp_add_inline_script('cb-map-locationview_js','cb_map_locationview.defaults =' . wp_json_encode($defaults) );
+			wp_add_inline_script( 'cb-map-locationview_js', 'cb_map_locationview.defaults =' . wp_json_encode( $defaults ) );
 		}
 	}
 }

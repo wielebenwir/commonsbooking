@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\View;
 
-
 use CMB2_Field;
 use CommonsBooking\Repository\CB1;
 use CommonsBooking\Service\Upgrade;
@@ -15,21 +14,26 @@ class Migration {
 	/**
 	 * Render Migration Form.
 	 *
-	 * @param array $field_args Array of field arguments.
+	 * @param array      $field_args Array of field arguments.
 	 * @param CMB2_Field $field The field object
 	 */
 	public static function renderMigrationForm( array $field_args, CMB2_Field $field ) {
 		$cb1Installed = CB1::isInstalled();
 
 		?>
-        <div class="cmb-row cmb-type-text "><?php
+		<div class="cmb-row cmb-type-text ">
+		<?php
 
 		if ( ! $cb1Installed ) {
-			echo '<strong style="color:red">' . esc_html__( 'We could not detect a version of an older CommonsBooking Installation (Version 0.X).',
-					'commonsbooking' ) . '</strong>';
+			echo '<strong style="color:red">' . esc_html__(
+				'We could not detect a version of an older CommonsBooking Installation (Version 0.X).',
+				'commonsbooking'
+			) . '</strong>';
 		} else {
-			echo '<strong style="color: green">' . esc_html__( 'Found a version of an older CommonsBooking Installation (Version 0.X). You can migrate.',
-					'commonsbooking' ) . '</strong>';
+			echo '<strong style="color: green">' . esc_html__(
+				'Found a version of an older CommonsBooking Installation (Version 0.X). You can migrate.',
+				'commonsbooking'
+			) . '</strong>';
 		}
 		echo( '
             
@@ -45,7 +49,7 @@ class Migration {
             </div>
             <div id="migration-in-progress">
                 <p class="blinking" style="border:solid; border-color:red; border-width:4px; padding:20px"><strong style="color: red">
-                ' . commonsbooking_sanitizeHTML( __( 'migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab', 'commonsbooking' ) ). '
+                ' . commonsbooking_sanitizeHTML( __( 'migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab', 'commonsbooking' ) ) . '
                 </strong></p>
             </div>            
             <div id="migration-done">
@@ -57,31 +61,32 @@ class Migration {
 
 		if ( $cb1Installed ) {
 			?>
-            </div>
-            <div class="cmb-row cmb-type-text">
-                <div class="cmb-td">
-                    <input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations"
-                           checked>
-                    <label for="get-geo-locations"><?php echo esc_html__( 'Retrieve location geo coordinates.', 'commonsbooking' ); ?></label>
-                    <p class="cmb2-metabox-description">
-						<?php echo esc_html__( 'If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking.', 'commonsbooking' ); ?>
-                    </p>
-                </div>
-            </div>
-            <div class="cmb-row cmb-type-text">
-            <a id="migration-start" class="button button-primary" href="#">
-				<?php echo esc_html__( 'Start Migration', 'commonsbooking' ); ?>
-            </a>
-			<?php
+			</div>
+			<div class="cmb-row cmb-type-text">
+				<div class="cmb-td">
+					<input type="checkbox" class="cmb2-option cmb2-list" name="get-geo-locations" id="get-geo-locations"
+							checked>
+					<label for="get-geo-locations"><?php echo esc_html__( 'Retrieve location geo coordinates.', 'commonsbooking' ); ?></label>
+					<p class="cmb2-metabox-description">
+												<?php echo esc_html__( 'If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking.', 'commonsbooking' ); ?>
+					</p>
+				</div>
+			</div>
+			<div class="cmb-row cmb-type-text">
+			<a id="migration-start" class="button button-primary" href="#">
+												<?php echo esc_html__( 'Start Migration', 'commonsbooking' ); ?>
+			</a>
+												<?php
 		} // end if cb1installed
 		?>
-        </div>
+		</div>
 		<?php
 	}
 
 	/**
-     * Renders booking migration (timeframe to booking cpt) form.
-	 * @param array $field_args
+	 * Renders booking migration (timeframe to booking cpt) form.
+	 *
+	 * @param array      $field_args
 	 * @param CMB2_Field $field
 	 */
 	public static function renderBookingMigrationForm( array $field_args, CMB2_Field $field ) {
@@ -108,11 +113,13 @@ class Migration {
                 </a>            
             </div>
            '
-        );
+		);
 	}
 
 	public static function renderUpgradeForm( array $field_args, CMB2_Field $field ) {
-		if (! Upgrade::isAJAXUpgrade() ) return false;
+		if ( ! Upgrade::isAJAXUpgrade() ) {
+			return false;
+		}
 		?>
 		<div class="cmb-row cmb-type-text" id="upgrade-fields">
 			<div id="upgrade-in-progress" class="blinking">
@@ -131,5 +138,4 @@ class Migration {
 		</div>
 		<?php
 	}
-
 }

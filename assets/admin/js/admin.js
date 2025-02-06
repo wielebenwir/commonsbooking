@@ -5,6 +5,14 @@
         let startTimeInput = $("#repetition-start_time");
         let endTimeInput = $("#repetition-end_time");
         let preserveManualCode = false;
+        let itemInput = $("#item-id");
+        let locationInput = $("#location-id");
+        let startDateInput = $("#repetition-start_date");
+        let bookingCodeInput = $("#_cb_bookingcode");
+        let allExist = [ fullDayCheckbox, startTimeInput, endTimeInput, itemInput, locationInput, startDateInput, bookingCodeInput ].every(domElement => domElement.length === 1);
+        if (!allExist) {
+            return;
+        }
         fullDayCheckbox.on("change", function(event) {
             if (fullDayCheckbox.is(":checked")) {
                 startTimeInput.val("00:00");
@@ -17,10 +25,6 @@
             }
         });
         fullDayCheckbox.trigger("change");
-        let itemInput = $("#item-id");
-        let locationInput = $("#location-id");
-        let startDateInput = $("#repetition-start_date");
-        let bookingCodeInput = $("#_cb_bookingcode");
         itemInput.on("change", function(event) {
             let data = {
                 itemID: itemInput.val()

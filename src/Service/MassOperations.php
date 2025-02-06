@@ -25,12 +25,12 @@ class MassOperations {
 		if ( $success ) {
 			$result = array(
 				'success' => true,
-				'message' => __( 'All selected orphaned bookings have been migrated.', 'commonsbooking' )
+				'message' => __( 'All selected orphaned bookings have been migrated.', 'commonsbooking' ),
 			);
 		} else {
 			$result = array(
 				'success' => false,
-				'message' => $errorMessage ?? __( 'An error occurred while moving bookings.', 'commonsbooking' )
+				'message' => $errorMessage ?? __( 'An error occurred while moving bookings.', 'commonsbooking' ),
 			);
 		}
 
@@ -53,7 +53,7 @@ class MassOperations {
 		}
 
 		$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned();
-		//iterate over them and assign them new locations
+		// iterate over them and assign them new locations
 		foreach ( $orphanedBookings as $booking ) {
 			if ( ! in_array( $booking->ID, $bookingIds ) ) {
 				continue;

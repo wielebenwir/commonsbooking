@@ -70,19 +70,19 @@ class MapItemAvailable {
 				$availability = [];
 				foreach ( $filter_period as $date ) {
 					$availability[] = [
-						"date"   => $date->format( 'Y-m-d' ),
-						"status" => self::OUT_OF_TIMEFRAME,
+						'date'   => $date->format( 'Y-m-d' ),
+						'status' => self::OUT_OF_TIMEFRAME,
 					];
 				}
 
-                $calendarData = Calendar::getCalendarDataArray(
-                    $item['id'],
-                    $location_id,
-                    $startDay->getFormattedDate( 'Y-m-d' ),
-                    $endDay->getFormattedDate( 'Y-m-d' ),
-                );
+				$calendarData = Calendar::getCalendarDataArray(
+					$item['id'],
+					$location_id,
+					$startDay->getFormattedDate( 'Y-m-d' ),
+					$endDay->getFormattedDate( 'Y-m-d' ),
+				);
 
-				//mark days in timeframe
+				// mark days in timeframe
 				$availability = self::markDaysInTimeframe( $calendarData, $availability );
 
 				$item['availability'] = $availability;
@@ -111,21 +111,21 @@ class MapItemAvailable {
 	 * @return mixed
 	 */
 	protected static function markDaysInTimeframe( $calendarData, $availabilities ) {
-		//mark days which are inside a timeframe
+		// mark days which are inside a timeframe
 		foreach ( $availabilities as &$availability ) {
 			if ( array_key_exists( $availability['date'], $calendarData['days'] ) ) {
 				$day = $calendarData['days'][ $availability['date'] ];
-				if (! count( $day['slots'])){
+				if ( ! count( $day['slots'] ) ) {
 					$availability['status'] = self::ITEM_LOCKED;
-				}elseif ( $day['holiday']) {
+				} elseif ( $day['holiday'] ) {
 					$availability['status'] = self::LOCATION_HOLIDAY;
-				} elseif ($day['locked'] && $day['firstSlotBooked'] && $day['lastSlotBooked']){
+				} elseif ( $day['locked'] && $day['firstSlotBooked'] && $day['lastSlotBooked'] ) {
 					$availability['status'] = self::ITEM_BOOKED;
-				} elseif ( $day['locked'] && $day['partiallyBookedDay']) {
+				} elseif ( $day['locked'] && $day['partiallyBookedDay'] ) {
 					$availability['status'] = self::ITEM_PARTIALLY_BOOKED;
-                } elseif ( $day['locked'] ) {
-                    $availability['status'] = self::ITEM_LOCKED;
-                }  else {
+				} elseif ( $day['locked'] ) {
+					$availability['status'] = self::ITEM_LOCKED;
+				} else {
 					$availability['status'] = self::ITEM_AVAILABLE;
 				}
 			}
@@ -133,5 +133,4 @@ class MapItemAvailable {
 
 		return $availabilities;
 	}
-
 }

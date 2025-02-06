@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\API;
 
-
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use Exception;
@@ -76,7 +75,7 @@ class LocationsRoute extends BaseRoute {
 
 	public function getItemData( $request ) {
 		$data       = new stdClass();
-		$data->type = "FeatureCollection";
+		$data->type = 'FeatureCollection';
 
 		$params = $request->get_params();
 		$args   = [];
@@ -117,7 +116,7 @@ class LocationsRoute extends BaseRoute {
 		$preparedItem->type       = 'Feature';
 		$preparedItem->properties = new stdClass();
 
-		$preparedItem->properties->id                 = $item->ID . "";
+		$preparedItem->properties->id                 = $item->ID . '';
 		$preparedItem->properties->name               = $item->post_title;
 		$preparedItem->properties->description        = $this->escapeJsonString( $item->post_content );
 		$preparedItem->properties->url                = get_permalink( $item->ID );
@@ -130,7 +129,7 @@ class LocationsRoute extends BaseRoute {
 		// If we have latitude and longitude definec, we use them.
 		if ( $latitude && $longitude ) {
 			$preparedItem->geometry              = new stdClass();
-			$preparedItem->geometry->type        = "Point";
+			$preparedItem->geometry->type        = 'Point';
 			$preparedItem->geometry->coordinates = [
 				floatval( $longitude ),
 				floatval( $latitude ),
@@ -139,7 +138,7 @@ class LocationsRoute extends BaseRoute {
 			$address = GeoHelper::getAddressData( $item->formattedAddressOneLine() );
 			if ( $address !== null ) {
 				$preparedItem->geometry              = new stdClass();
-				$preparedItem->geometry->type        = "Point";
+				$preparedItem->geometry->type        = 'Point';
 				$preparedItem->geometry->coordinates = $address->getCoordinates()->toArray();
 
 				// Save data to items
@@ -160,5 +159,4 @@ class LocationsRoute extends BaseRoute {
 
 		return $preparedItem;
 	}
-
 }
