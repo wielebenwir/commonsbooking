@@ -490,6 +490,19 @@ class Calendar {
 	}
 
 	/**
+	 * The value for the amount of months shown in the Litepicker mobile view portrait mode.
+	 * Fixes #1103, an issue where one instance has issues with switching the months on mobile.
+	 * This value is configurable through a filter hook only.
+	 *
+	 * Default value is 1.
+	 *
+	 * @return int
+	 */
+	private static function getMobileCalendarMonthCount(): int {
+		return apply_filters( 'commonsbooking_mobile_calendar_month_count', 1 );
+	}
+
+	/**
 	 * Returns JSON-Data for Litepicker calendar.
 	 *
 	 * @param Day   $startDate
@@ -546,6 +559,7 @@ class Calendar {
 				'disallowLockDaysInRange' => true,
 				'countLockDaysInRange' => true,
 				'advanceBookingDays'      => $advanceBookingDays,
+				'mobileCalendarMonthCount' => self::getMobileCalendarMonthCount(),
 			];
 
 			if ( count( $locations ) === 1 ) {
