@@ -52,9 +52,12 @@ class CalendarTest extends CustomPostTypeTest {
 			$endDate
 		);
 
-		$jsonReponseBookableDaysOnly = array_filter( $jsonresponse['days'], function ( $day ) {
-			return ! $day['locked'];
-		} );
+		$jsonReponseBookableDaysOnly = array_filter(
+			$jsonresponse['days'],
+			function ( $day ) {
+				return ! $day['locked'];
+			}
+		);
 
 		// Timeframe starting in future, starts in range of calendar, ends out of calendar range
 		$timeframe = new Timeframe( $this->timeframeId );
@@ -93,7 +96,7 @@ class CalendarTest extends CustomPostTypeTest {
 	 * even when not all of them are set. (tests #1393)
 	 */
 	public function testOverbookingDefaultValues() {
-		//the default location has no overbooking values set, overbooking should be disabled
+		// the default location has no overbooking values set, overbooking should be disabled
 		$jsonresponse = Calendar::getCalendarDataArray(
 			$this->itemId,
 			$this->locationId,
@@ -104,9 +107,9 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertFalse( $jsonresponse['countLockDaysInRange'] );
 		$this->assertEquals( 0, $jsonresponse['countLockDaysMaxDays'] );
 
-		//old locations which only have overbooking enabled should not have the countLockDaysInRange set and countLockDaysMaxDays should be 0
-		$differentItemId = $this->createItem( "Different Item", 'publish' );
-		$oldLocationId   = $this->createLocation( "Old Location", 'publish' );
+		// old locations which only have overbooking enabled should not have the countLockDaysInRange set and countLockDaysMaxDays should be 0
+		$differentItemId = $this->createItem( 'Different Item', 'publish' );
+		$oldLocationId   = $this->createLocation( 'Old Location', 'publish' );
 		$otherTimeframe  = $this->createBookableTimeFrameIncludingCurrentDay( $oldLocationId, $differentItemId );
 		update_post_meta( $oldLocationId, COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range', 'on' );
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
@@ -126,15 +129,15 @@ class CalendarTest extends CustomPostTypeTest {
 		$startDate       = date( 'Y-m-d', strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ) );
 		$today           = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$endDate         = date( 'Y-m-d', strtotime( '+60 days midnight', strtotime( self::CURRENT_DATE ) ) );
-		$otherItemId     = $this->createItem( "Other Item", 'publish' );
-		$otherLocationId = $this->createLocation( "Other Location", 'publish' );
+		$otherItemId     = $this->createItem( 'Other Item', 'publish' );
+		$otherLocationId = $this->createLocation( 'Other Location', 'publish' );
 		$offsetTF        = $this->createTimeframe(
 			$otherLocationId,
 			$otherItemId,
 			strtotime( $startDate ),
 			strtotime( $endDate ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			"on",
+			'on',
 			'd',
 			0,
 			'8:00 AM',
@@ -153,10 +156,10 @@ class CalendarTest extends CustomPostTypeTest {
 			$startDate,
 			$endDate
 		);
-		//considering the advance booking days
+		// considering the advance booking days
 		$days = $jsonresponse['days'];
 		$this->assertEquals( 32, count( $days ) );
-		//considering the offset, today and tomorrow should be locked
+		// considering the offset, today and tomorrow should be locked
 		$this->assertTrue( $days[ $today ]['locked'] );
 		$this->assertTrue( $days[ date( 'Y-m-d', strtotime( '+1 day', strtotime( $today ) ) ) ]['locked'] );
 	}
@@ -166,7 +169,7 @@ class CalendarTest extends CustomPostTypeTest {
 	 * @return void
 	 */
 	public function testRepetition() {
-		//whole week from monday to sunday is queried, timeframe only spans monday to friday
+		// whole week from monday to sunday is queried, timeframe only spans monday to friday
 		$startDateDT = new \DateTime( self::CURRENT_DATE );
 		$startDateDT->modify( 'last monday' );
 		$startDate = date( 'Y-m-d', $startDateDT->getTimestamp() );
@@ -175,21 +178,21 @@ class CalendarTest extends CustomPostTypeTest {
 		$endDate = date( 'Y-m-d', $endDateDT->getTimestamp() );
 
 		ClockMock::freeze( new \DateTime( $startDate ) );
-		$otherItemId     = $this->createItem( "Other Item", 'publish' );
-		$otherLocationId = $this->createLocation( "Other Location", 'publish' );
+		$otherItemId     = $this->createItem( 'Other Item', 'publish' );
+		$otherLocationId = $this->createLocation( 'Other Location', 'publish' );
 		$moFrTimeframe   = $this->createTimeframe(
 			$otherLocationId,
 			$otherItemId,
 			strtotime( $startDate ),
 			strtotime( $endDate ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			"on",
+			'on',
 			'w',
 			0,
 			'8:00 AM',
 			'12:00 PM',
 			'publish',
-			[ "1", "2", "3", "4", "5" ]
+			[ '1', '2', '3', '4', '5' ]
 		);
 
 		$jsonresponse = Calendar::getCalendarDataArray(
@@ -199,16 +202,15 @@ class CalendarTest extends CustomPostTypeTest {
 			$endDate
 		);
 		$days         = $jsonresponse['days'];
-		//only monday to friday should be bookable
+		// only monday to friday should be bookable
 		$this->assertFalse( $days[ $startDate ]['locked'] );
 		$this->assertTrue( $days[ $endDate ]['locked'] );
-		//next week monday should be bookable again
+		// next week monday should be bookable again
 		$startDateDT->modify( '+1 week' );
 		$this->assertFalse( $days[ date( 'Y-m-d', $startDateDT->getTimestamp() ) ]['locked'] );
-		//everything after the timeframe should be locked
+		// everything after the timeframe should be locked
 		$endDateDT->modify( '+1 day' );
 		$this->assertTrue( $days[ date( 'Y-m-d', $endDateDT->getTimestamp() ) ]['locked'] );
-
 	}
 
 	public function testRenderTable() {
@@ -219,7 +221,7 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertStringContainsString( $item->post_title, $calendar );
 		$this->assertStringContainsString( $location->post_title, $calendar );
 
-		//in a year, all timeframes will have expired -> calendar should be empty
+		// in a year, all timeframes will have expired -> calendar should be empty
 		$inAYear = new \DateTime();
 		$inAYear->modify( '+1 year' );
 		ClockMock::freeze( $inAYear );
@@ -233,146 +235,146 @@ class CalendarTest extends CustomPostTypeTest {
 	 */
 	public function provideGetClosestBookableTimeFrameForToday() {
 		$currentTimestamp = strtotime( self::CURRENT_DATE . ' 12:00' );
-		//will define an array with settings for the timeframes
-		//that the getClosestBookableTimeFrameForToday function will be tested against
-		//you can provide the name of the test, the closest timeframe and another timeframe.
-		//supported arguments for timeframe, if not specified default values will be used
-		//repetition, repetition_start, repetition_end = null,weekdays = ["1","2","3","4","5","6","7"], start_time = '8:00 AM', end_time = '12:00 PM'
-		//if no start and endtime are provided, the timeframe will span the full day.
-		//If they are provided, fullday is turned off.
-		//Please note: The date that we test against is a thursday.
+		// will define an array with settings for the timeframes
+		// that the getClosestBookableTimeFrameForToday function will be tested against
+		// you can provide the name of the test, the closest timeframe and another timeframe.
+		// supported arguments for timeframe, if not specified default values will be used
+		// repetition, repetition_start, repetition_end = null,weekdays = ["1","2","3","4","5","6","7"], start_time = '8:00 AM', end_time = '12:00 PM'
+		// if no start and endtime are provided, the timeframe will span the full day.
+		// If they are provided, fullday is turned off.
+		// Please note: The date that we test against is a thursday.
 		return [
-			"daily not overlapping"                        => [
-				"closest" => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "-7 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+7 days", $currentTimestamp ),
+			'daily not overlapping'                        => [
+				'closest' => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '-7 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+7 days', $currentTimestamp ),
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+8 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+14 days", $currentTimestamp ),
-				]
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+8 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+14 days', $currentTimestamp ),
+				],
 			],
-			"weekly (different weekdays)"                  => [
-				"closest" => [
-					"repetition"       => "w",
-					"repetition_start" => strtotime( "-7 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+7 days", $currentTimestamp ),
-					"weekdays"         => [ "4" ] //just thursday
+			'weekly (different weekdays)'                  => [
+				'closest' => [
+					'repetition'       => 'w',
+					'repetition_start' => strtotime( '-7 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+7 days', $currentTimestamp ),
+					'weekdays'         => [ '4' ], // just thursday
 				],
-				"other"   => [
-					"repetition"       => "w",
-					"repetition_start" => strtotime( "-7 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+7 days", $currentTimestamp ),
-					"weekdays"         => [ "1", "2", "3", "5", "6", "7" ] //all but thursday
-				]
+				'other'   => [
+					'repetition'       => 'w',
+					'repetition_start' => strtotime( '-7 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+7 days', $currentTimestamp ),
+					'weekdays'         => [ '1', '2', '3', '5', '6', '7' ], // all but thursday
+				],
 			],
-			"both timeframes in future (daily rep)"        => [
-				"closest" => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+7 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+14 days", $currentTimestamp ),
+			'both timeframes in future (daily rep)'        => [
+				'closest' => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+7 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+14 days', $currentTimestamp ),
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+15 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+21 days", $currentTimestamp ),
-				]
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+15 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+21 days', $currentTimestamp ),
+				],
 			],
-			"weekly and daily"                             => [
-				"closest" => [
-					"repetition"       => "w",
-					"repetition_start" => strtotime( "-64 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+199 days", $currentTimestamp ),
-					"weekdays"         => [ "1", "2", "3", "4", "5" ]
+			'weekly and daily'                             => [
+				'closest' => [
+					'repetition'       => 'w',
+					'repetition_start' => strtotime( '-64 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+199 days', $currentTimestamp ),
+					'weekdays'         => [ '1', '2', '3', '4', '5' ],
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+21 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+21 days", $currentTimestamp )
-				]
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+21 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+21 days', $currentTimestamp ),
+				],
 			],
-			"daily overlap with different times (present)" => [
-				"closest" => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+1 days", $currentTimestamp ),
-					"start_time"       => "8:00 AM",
-					"end_time"         => "01:00 PM"
+			'daily overlap with different times (present)' => [
+				'closest' => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '-1 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+1 days', $currentTimestamp ),
+					'start_time'       => '8:00 AM',
+					'end_time'         => '01:00 PM',
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+1 days", $currentTimestamp ),
-					"start_time"       => "02:00 PM",
-					"end_time"         => "06:00 PM"
-				]
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '-1 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+1 days', $currentTimestamp ),
+					'start_time'       => '02:00 PM',
+					'end_time'         => '06:00 PM',
+				],
 			],
-			"daily overlap with different times (present) and no end-date" => [
-				"closest" => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
-					"repetition_end"   => null,
-					"start_time"       => "8:00 AM",
-					"end_time"         => "01:00 PM"
+			'daily overlap with different times (present) and no end-date' => [
+				'closest' => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '-1 days', $currentTimestamp ),
+					'repetition_end'   => null,
+					'start_time'       => '8:00 AM',
+					'end_time'         => '01:00 PM',
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
-					"repetition_end"   => null,
-					"start_time"       => "02:00 PM",
-					"end_time"         => "06:00 PM"
-				]
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '-1 days', $currentTimestamp ),
+					'repetition_end'   => null,
+					'start_time'       => '02:00 PM',
+					'end_time'         => '06:00 PM',
+				],
 			],
-			"daily overlap when time has not been reached #1720" => [
-				"closest" => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
-					"repetition_end"   => null,
-					"start_time"       => "04:00 PM",
-					"end_time"         => "05:00 PM"
+			'daily overlap when time has not been reached #1720' => [
+				'closest' => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '-1 days', $currentTimestamp ),
+					'repetition_end'   => null,
+					'start_time'       => '04:00 PM',
+					'end_time'         => '05:00 PM',
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "-1 days", $currentTimestamp ),
-					"repetition_end"   => null,
-					"start_time"       => "07:00 PM",
-					"end_time"         => "08:00 PM"
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '-1 days', $currentTimestamp ),
+					'repetition_end'   => null,
+					'start_time'       => '07:00 PM',
+					'end_time'         => '08:00 PM',
 				],
 			],
 			"daily not overlapping but hasn't started yet" => [
-				"closest" => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+1 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+2 days", $currentTimestamp ),
+				'closest' => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+1 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+2 days', $currentTimestamp ),
 					'start_time'       => '4:00 PM',
-					'end_time'         => '5:00 PM'
+					'end_time'         => '5:00 PM',
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+3 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+4 days", $currentTimestamp ),
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+3 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+4 days', $currentTimestamp ),
 					'start_time'       => '7:00 PM',
-					'end_time'         => '8:00 PM'
-				]
+					'end_time'         => '8:00 PM',
+				],
 			],
-			"daily overlap with different times (future)"  => [
-				"closest" => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+5 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+7 days", $currentTimestamp ),
-					"start_time"       => "8:00 AM",
-					"end_time"         => "01:00 PM"
+			'daily overlap with different times (future)'  => [
+				'closest' => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+5 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+7 days', $currentTimestamp ),
+					'start_time'       => '8:00 AM',
+					'end_time'         => '01:00 PM',
 				],
-				"other"   => [
-					"repetition"       => "d",
-					"repetition_start" => strtotime( "+5 days", $currentTimestamp ),
-					"repetition_end"   => strtotime( "+7 days", $currentTimestamp ),
-					"start_time"       => "02:00 PM",
-					"end_time"         => "06:00 PM"
+				'other'   => [
+					'repetition'       => 'd',
+					'repetition_start' => strtotime( '+5 days', $currentTimestamp ),
+					'repetition_end'   => strtotime( '+7 days', $currentTimestamp ),
+					'start_time'       => '02:00 PM',
+					'end_time'         => '06:00 PM',
 				],
-			]
+			],
 		];
 	}
 
@@ -383,55 +385,57 @@ class CalendarTest extends CustomPostTypeTest {
 	 * @dataProvider provideGetClosestBookableTimeFrameForToday
 	 */
 	public function testGetClosestBookableTimeFrameForToday( array $closest, array $other ) {
-		$testItem     = $this->createItem( "Item" );
-		$testLocation = $this->createLocation( "Location" );
+		$testItem     = $this->createItem( 'Item' );
+		$testLocation = $this->createLocation( 'Location' );
 		$currentTime  = new \DateTime( self::CURRENT_DATE );
 		$currentTime->setTime( 12, 0 );
-		//Time set to '01.07.2021 12:00'
+		// Time set to '01.07.2021 12:00'
 		ClockMock::freeze( $currentTime );
-		$expectedClosestTimeframe = $this->createTimeframeFromConfig( "closest timeframe", $testItem, $testLocation, $closest );
-		$otherTimeframe           = $this->createTimeframeFromConfig( "other timeframe", $testItem, $testLocation, $other );
-		$closestTimeframe         = Calendar::getClosestBookableTimeFrameForToday( [
-			$expectedClosestTimeframe,
-			$otherTimeframe
-		] );
+		$expectedClosestTimeframe = $this->createTimeframeFromConfig( 'closest timeframe', $testItem, $testLocation, $closest );
+		$otherTimeframe           = $this->createTimeframeFromConfig( 'other timeframe', $testItem, $testLocation, $other );
+		$closestTimeframe         = Calendar::getClosestBookableTimeFrameForToday(
+			[
+				$expectedClosestTimeframe,
+				$otherTimeframe,
+			]
+		);
 		$this->assertEquals( $expectedClosestTimeframe->ID, $closestTimeframe->ID );
 	}
 
 	/**
 	 * Will create the timeframes from the configuration defined in the dataProvider of testGetClosestBookableTimeFrameForToday
 	 *
-	 * @param int $itemId
-	 * @param int $locationID
+	 * @param int   $itemId
+	 * @param int   $locationID
 	 * @param array $config
 	 *
 	 * @return void
 	 */
 	private function createTimeframeFromConfig( string $name, int $itemId, int $locationID, array $config ): Timeframe {
-		$fullDay = ! ( isset ( $config["start_time"] ) && isset( $config["end_time"] ) );
-		$grid    = $fullDay ? 1 : 0; //Currently, grid is becoming hourly when not full day (TODO: Also test slots)
+		$fullDay = ! ( isset( $config['start_time'] ) && isset( $config['end_time'] ) );
+		$grid    = $fullDay ? 1 : 0; // Currently, grid is becoming hourly when not full day (TODO: Also test slots)
 
 		return new Timeframe(
 			$this->createTimeframe(
 				$locationID,
 				$itemId,
-				$config["repetition_start"],
-				$config["repetition_end"] ?? null,
+				$config['repetition_start'],
+				$config['repetition_end'] ?? null,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-				$fullDay ? "on" : "off",
-				$config["repetition"],
+				$fullDay ? 'on' : 'off',
+				$config['repetition'],
 				$grid,
-				$config["start_time"] ?? '8:00 AM',
-				$config["end_time"] ?? '12:00 PM',
-				"publish",
-				$config["weekdays"] ?? [ "1", "2", "3", "4", "5", "6", "7" ],
-				"",
+				$config['start_time'] ?? '8:00 AM',
+				$config['end_time'] ?? '12:00 PM',
+				'publish',
+				$config['weekdays'] ?? [ '1', '2', '3', '4', '5', '6', '7' ],
+				'',
 				self::USER_ID,
 				3,
 				30,
 				0,
-				"on",
-				"on",
+				'on',
+				'on',
 				$name
 			)
 		);
@@ -464,5 +468,4 @@ class CalendarTest extends CustomPostTypeTest {
 			strtotime( '+300 days midnight' )
 		);
 	}
-
 }

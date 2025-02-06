@@ -9,8 +9,8 @@ use SlopeIt\ClockMock\ClockMock;
 
 class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 
-	const USER_ID = 1;
-	const CURRENT_DATE = '2021-05-21';
+	const USER_ID       = 1;
+	const CURRENT_DATE  = '2021-05-21';
 	protected $ENDPOINT = '/commonsbooking/v1/availability';
 	private array $locationIds;
 	private array $itemIds;
@@ -19,22 +19,22 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 	private $locationId;
 	private $itemId;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		// TODO creates initial data (should be mocked in the future)
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 
 		// Create location
-		$this->locationId = self::createLocation('Testlocation', 'publish');
+		$this->locationId = self::createLocation( 'Testlocation', 'publish' );
 
 		// Create Item
-		$this->itemId = self::createItem('TestItem', 'publish');
+		$this->itemId = self::createItem( 'TestItem', 'publish' );
 
 		$mocked = new \DateTimeImmutable( self::CURRENT_DATE );
 
-		$start =  $mocked->modify( '-1 days');
-		$end = $mocked->modify( '+1 days');
+		$start = $mocked->modify( '-1 days' );
+		$end   = $mocked->modify( '+1 days' );
 
 		$this->createTimeframe(
 			$this->locationId,
@@ -85,27 +85,29 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		$repetitionStart,
 		$repetitionEnd,
 		$type = Timeframe::BOOKABLE_ID,
-		$fullday = "on",
+		$fullday = 'on',
 		$repetition = 'w',
 		$grid = 0,
 		$startTime = '8:00 AM',
 		$endTime = '12:00 PM',
 		$postStatus = 'publish',
-		$weekdays = [ "1", "2", "3", "4", "5", "6", "7" ],
+		$weekdays = [ '1', '2', '3', '4', '5', '6', '7' ],
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
-		$showBookingCodes = "on",
-		$createBookingCodes = "on",
+		$showBookingCodes = 'on',
+		$createBookingCodes = 'on',
 		$postTitle = 'TestTimeframe'
 	) {
 		// Create Timeframe
-		$timeframeId = wp_insert_post( [
-			'post_title'  => $postTitle,
-			'post_type'   => Timeframe::$postType,
-			'post_status' => $postStatus,
-			'post_author' => $postAuthor
-		] );
+		$timeframeId = wp_insert_post(
+			[
+				'post_title'  => $postTitle,
+				'post_type'   => Timeframe::$postType,
+				'post_status' => $postStatus,
+				'post_author' => $postAuthor,
+			]
+		);
 
 		update_post_meta( $timeframeId, 'type', $type );
 		update_post_meta( $timeframeId, 'location-id', $locationId );
@@ -133,32 +135,36 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		return $timeframeId;
 	}
 
-	public function createLocation($title, $postStatus, $admins = []) {
-		$locationId = wp_insert_post( [
-			'post_title'  => $title,
-			'post_type'   => Location::$postType,
-			'post_status' => $postStatus
-		] );
+	public function createLocation( $title, $postStatus, $admins = [] ) {
+		$locationId = wp_insert_post(
+			[
+				'post_title'  => $title,
+				'post_type'   => Location::$postType,
+				'post_status' => $postStatus,
+			]
+		);
 
 		$this->locationIds[] = $locationId;
 
-		if (! empty($admins)) {
+		if ( ! empty( $admins ) ) {
 			update_post_meta( $locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_admins', $admins );
 		}
 
 		return $locationId;
 	}
 
-	public function createItem($title, $postStatus, $admins = []) {
-		$itemId = wp_insert_post( [
-			'post_title'  => $title,
-			'post_type'   => Item::$postType,
-			'post_status' => $postStatus
-		] );
+	public function createItem( $title, $postStatus, $admins = [] ) {
+		$itemId = wp_insert_post(
+			[
+				'post_title'  => $title,
+				'post_type'   => Item::$postType,
+				'post_status' => $postStatus,
+			]
+		);
 
 		$this->itemIds[] = $itemId;
 
-		if (! empty($admins)) {
+		if ( ! empty( $admins ) ) {
 			update_post_meta( $itemId, COMMONSBOOKING_METABOX_PREFIX . 'item_admins', $admins );
 		}
 

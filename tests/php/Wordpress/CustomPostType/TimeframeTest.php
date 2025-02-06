@@ -15,15 +15,17 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->testPostId = wp_insert_post( [
-			'post_title'   => 'Booking'
-		] );
+		$this->testPostId = wp_insert_post(
+			[
+				'post_title'   => 'Booking',
+			]
+		);
 
 		// Timeframe is a booking
 		update_post_meta( $this->testPostId, 'type', Timeframe::BOOKING_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
@@ -38,7 +40,7 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testGetTimeframeRepetitions() {
-		$this->assertIsArray( Timeframe::getTimeFrameRepetitions( ) );
+		$this->assertIsArray( Timeframe::getTimeFrameRepetitions() );
 	}
 
 	public function testGetSelectionOptions() {
@@ -64,8 +66,8 @@ class TimeframeTest extends CustomPostTypeTest {
 			'on',
 			'd'
 		);
-		$timeframeCPT = new Timeframe();
-		$timeframeCPT->savePost( $validDailyTimeframe , get_post( $validDailyTimeframe ) );
+		$timeframeCPT        = new Timeframe();
+		$timeframeCPT->savePost( $validDailyTimeframe, get_post( $validDailyTimeframe ) );
 
 		$this->assertEquals( 'publish', get_post_status( $validDailyTimeframe ) );
 
@@ -78,7 +80,7 @@ class TimeframeTest extends CustomPostTypeTest {
 			'on',
 			'd'
 		);
-		$timeframeCPT->savePost( $invalidDailyTimeframe , get_post( $invalidDailyTimeframe ) );
+		$timeframeCPT->savePost( $invalidDailyTimeframe, get_post( $invalidDailyTimeframe ) );
 		$this->assertEquals( 'draft', get_post_status( $invalidDailyTimeframe ) );
 
 		$manualRepetitionTimeframe = $this->createTimeframe(
@@ -93,30 +95,30 @@ class TimeframeTest extends CustomPostTypeTest {
 			'08:00 AM',
 			'12:00 PM',
 			'publish',
-			[ "1", "2", "3", "4", "5", "6", "7" ],
+			[ '1', '2', '3', '4', '5', '6', '7' ],
 			"{$this->dateFormatted}"
 		);
-		$timeframeCPT->savePost( $manualRepetitionTimeframe , get_post( $manualRepetitionTimeframe ) );
+		$timeframeCPT->savePost( $manualRepetitionTimeframe, get_post( $manualRepetitionTimeframe ) );
 		$this->assertEquals( 'publish', get_post_status( $manualRepetitionTimeframe ) );
-		$this->assertEquals( strtotime(self::CURRENT_DATE), get_post_meta( $manualRepetitionTimeframe, \CommonsBooking\Model\Timeframe::REPETITION_START, true ) );
-		//the end date is always moved to the last second of the day
-		$this->assertEquals( strtotime('+23 Hours +59 Minutes +59 Seconds',strtotime(self::CURRENT_DATE) ), get_post_meta( $manualRepetitionTimeframe, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) );
-
+		$this->assertEquals( strtotime( self::CURRENT_DATE ), get_post_meta( $manualRepetitionTimeframe, \CommonsBooking\Model\Timeframe::REPETITION_START, true ) );
+		// the end date is always moved to the last second of the day
+		$this->assertEquals( strtotime( '+23 Hours +59 Minutes +59 Seconds', strtotime( self::CURRENT_DATE ) ), get_post_meta( $manualRepetitionTimeframe, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) );
 	}
 
 	public function testManageTimeframeMeta_withItemTaxonomy() {
-		//First, let's test if we can assign a timeframe to all items
+		// First, let's test if we can assign a timeframe to all items
 		$timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
-		//We now create a second item that can be automatically assigned with the "ALL" option
+		// We now create a second item that can be automatically assigned with the "ALL" option
 		$secondItemId = $this->createItem( 'Second Item' );
-		//now, let's set our timeframe to be assigned to all items
-		update_post_meta( $timeframeId,
+		// now, let's set our timeframe to be assigned to all items
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
 			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
 		);
-		//and run our function to update the information
+		// and run our function to update the information
 		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta( $timeframeId );
-		//now, let's check if our second item is assigned to our timeframe by getting the timeframe with the specific second item
+		// now, let's check if our second item is assigned to our timeframe by getting the timeframe with the specific second item
 		$timeframe = \CommonsBooking\Repository\Timeframe::get(
 			[ $this->locationId ],
 			[ $secondItemId ],
@@ -129,48 +131,51 @@ class TimeframeTest extends CustomPostTypeTest {
 		// Let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
 		$term = wp_create_term( 'Test Category', Item::getPostType() . 's_category' );
 		wp_set_post_terms( $secondItemId, [ $term['term_id'] ], Item::getPostType() . 's_category' );
-		//check, if our item is assigned to the category
+		// check, if our item is assigned to the category
 		$terms = wp_get_post_terms( $secondItemId, Item::getPostType() . 's_category' );
 		$this->assertEquals( 1, count( $terms ) );
 		$this->assertEquals( $term['term_id'], $terms[0]->term_id );
 
-		//now, let's assign our timeframe meta to the same category, we clear the multi select
-		update_post_meta( $timeframeId,
+		// now, let's assign our timeframe meta to the same category, we clear the multi select
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
 			[]
 		);
-		update_post_meta( $timeframeId,
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
 			\CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID
 		);
-		update_post_meta( $timeframeId,
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS,
 			( [ strval( $term['term_id'] ) ] )
 		);
-		//and run our function to update the information
+		// and run our function to update the information
 		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta( $timeframeId );
-		//now, let's check if our second item is assigned to our timeframe by getting the timeframe with the specific second item
+		// now, let's check if our second item is assigned to our timeframe by getting the timeframe with the specific second item
 		$timeframe = \CommonsBooking\Repository\Timeframe::get(
 			[ $this->locationId ],
 			[ $secondItemId ],
 		);
 		$this->assertEquals( 1, count( $timeframe ) );
 		$this->assertEquals( $timeframeId, $timeframe[0]->ID );
-
 	}
 
 	public function testManageTimeframeMeta_withLocationTaxonomy() {
 
-		//First, let's test if we can assign a timeframe to all items
+		// First, let's test if we can assign a timeframe to all items
 		$timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
-		//We now create a second location that can be automatically assigned with the "ALL" option
+		// We now create a second location that can be automatically assigned with the "ALL" option
 		$secondLocationId = $this->createLocation( 'Second Location' );
-		//now, let's set our timeframe to be assigned to all locations
-		update_post_meta( $timeframeId,
+		// now, let's set our timeframe to be assigned to all locations
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
 			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
 		);
-		//and run our function to update the information
+		// and run our function to update the information
 		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta( $timeframeId );
 		// now, let's check if our second location is assigned to our timeframe by getting the timeframe with the
 		// specific second location
@@ -186,36 +191,38 @@ class TimeframeTest extends CustomPostTypeTest {
 		// Let's assign our location to a category, that timeframe also to the same category and check if we can
 		// still get the timeframe
 		$term = wp_create_term( 'Location Test Category', Location::getPostType() . 's_category' );
-		wp_set_post_terms( $secondLocationId, [$term['term_id']], Location::getPostType() . 's_category' );
+		wp_set_post_terms( $secondLocationId, [ $term['term_id'] ], Location::getPostType() . 's_category' );
 		// check, if our location is assigned to the category
 		$terms = wp_get_post_terms( $secondLocationId, Location::getPostType() . 's_category' );
-		$this->assertEquals( 1, count($terms) );
+		$this->assertEquals( 1, count( $terms ) );
 		$this->assertEquals( $term['term_id'], $terms[0]->term_id );
 
 		// now, let's assign our timeframe meta to the same category, we clear the multi select
-		update_post_meta( $timeframeId,
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
 			[]
 		);
-		update_post_meta( $timeframeId,
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
 			\CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID
 		);
-		update_post_meta( $timeframeId,
+		update_post_meta(
+			$timeframeId,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS,
-			([strval($term['term_id'])])
+			( [ strval( $term['term_id'] ) ] )
 		);
-		//and run our function to update the information
-		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta($timeframeId);
-		//now, let's check if our second location is assigned to our timeframe by getting the timeframe
+		// and run our function to update the information
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta( $timeframeId );
+		// now, let's check if our second location is assigned to our timeframe by getting the timeframe
 		// with the specific location
 		$timeframe = \CommonsBooking\Repository\Timeframe::get(
-			[$secondLocationId],
-			[$this->itemId],
+			[ $secondLocationId ],
+			[ $this->itemId ],
 		);
-		$this->assertEquals( 1, count($timeframe) );
+		$this->assertEquals( 1, count( $timeframe ) );
 		$this->assertEquals( $timeframeId, $timeframe[0]->ID );
-
 	}
 
 	/**
@@ -236,7 +243,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS, [ '123' ] );
 
 		Timeframe::removeIrrelevantPostmeta( $tf );
-		//especially assert, that no item ids are assigned when updating the multi-select
+		// especially assert, that no item ids are assigned when updating the multi-select
 		Timeframe::manageTimeframeMeta( $tf->ID );
 		$this->assertEmpty( get_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST, true ) );
 		$this->assertEmpty( get_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST, true ) );
@@ -244,7 +251,5 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEmpty( get_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, true ) );
 		$this->assertEmpty( get_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS, true ) );
 		$this->assertEmpty( get_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS, true ) );
-
 	}
-
 }

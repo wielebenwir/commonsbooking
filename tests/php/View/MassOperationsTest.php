@@ -20,13 +20,13 @@ class MassOperationsTest extends CustomPostTypeTest {
 	}
 
 	public function testRenderBookingViewTable() {
-		//first with empty result
+		// first with empty result
 		ob_start();
 		MassOperations::renderBookingViewTable( [] );
 		$html = ob_get_clean();
 		$this->assertStringContainsString( '<p>No bookings found.</p>', $html );
 
-		//then with a booking
+		// then with a booking
 		$booking = new Booking( $this->createConfirmedBookingEndingToday() );
 		ob_start();
 		MassOperations::renderBookingViewTable( [ $booking ] );
