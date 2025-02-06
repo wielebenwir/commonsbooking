@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-06T12:31:58+00:00\n"
+"POT-Creation-Date: 2025-02-06T15:24:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1630,7 +1630,7 @@ msgstr ""
 
 #: src/Plugin.php:713
 #: src/Plugin.php:728
-#: src/Wordpress/CustomPostType/Booking.php:924
+#: src/Wordpress/CustomPostType/Booking.php:928
 msgid "CommonsBooking Bookings"
 msgstr ""
 
@@ -1924,14 +1924,14 @@ msgid ""
 msgstr ""
 
 #: src/View/Admin/Filter.php:58
-#: src/Wordpress/CustomPostType/Booking.php:771
+#: src/Wordpress/CustomPostType/Booking.php:775
 #: src/Wordpress/CustomPostType/Restriction.php:455
 #: src/Wordpress/CustomPostType/Timeframe.php:712
 msgid "Start date"
 msgstr ""
 
 #: src/View/Admin/Filter.php:62
-#: src/Wordpress/CustomPostType/Booking.php:788
+#: src/Wordpress/CustomPostType/Booking.php:792
 #: src/Wordpress/CustomPostType/Restriction.php:465
 #: src/Wordpress/CustomPostType/Timeframe.php:736
 msgid "End date"
@@ -1964,7 +1964,7 @@ msgstr ""
 
 #: src/View/Booking.php:194
 #: src/View/MassOperations.php:42
-#: src/Wordpress/CustomPostType/Booking.php:961
+#: src/Wordpress/CustomPostType/Booking.php:965
 #: src/Wordpress/CustomPostType/Restriction.php:481
 msgid "Status"
 msgstr ""
@@ -1974,7 +1974,7 @@ msgid "Code"
 msgstr ""
 
 #: src/View/Booking.php:537
-#: src/Wordpress/CustomPostType/Booking.php:856
+#: src/Wordpress/CustomPostType/Booking.php:860
 msgid "Submit booking"
 msgstr ""
 
@@ -2084,8 +2084,8 @@ msgstr ""
 
 #: src/View/Calendar.php:225
 #: src/Wordpress/CustomPostType/Booking.php:444
-#: src/Wordpress/CustomPostType/Booking.php:753
-#: src/Wordpress/CustomPostType/Booking.php:977
+#: src/Wordpress/CustomPostType/Booking.php:757
+#: src/Wordpress/CustomPostType/Booking.php:981
 #: src/Wordpress/CustomPostType/Item.php:117
 #: src/Wordpress/CustomPostType/Restriction.php:54
 #: src/Wordpress/CustomPostType/Restriction.php:443
@@ -2096,8 +2096,8 @@ msgstr ""
 
 #: src/View/Calendar.php:226
 #: src/Wordpress/CustomPostType/Booking.php:445
-#: src/Wordpress/CustomPostType/Booking.php:759
-#: src/Wordpress/CustomPostType/Booking.php:973
+#: src/Wordpress/CustomPostType/Booking.php:763
+#: src/Wordpress/CustomPostType/Booking.php:977
 #: src/Wordpress/CustomPostType/Location.php:123
 #: src/Wordpress/CustomPostType/Restriction.php:55
 #: src/Wordpress/CustomPostType/Restriction.php:437
@@ -2300,7 +2300,7 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:328
 #: src/Wordpress/CustomPostType/Booking.php:520
-#: src/Wordpress/CustomPostType/Booking.php:704
+#: src/Wordpress/CustomPostType/Booking.php:708
 #: src/Wordpress/CustomPostType/Timeframe.php:138
 msgid "Booking"
 msgstr ""
@@ -2335,7 +2335,7 @@ msgid "Booking Status"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:450
-#: src/Wordpress/CustomPostType/Booking.php:969
+#: src/Wordpress/CustomPostType/Booking.php:973
 #: src/Wordpress/CustomPostType/Timeframe.php:488
 msgid "Comment"
 msgstr ""
@@ -2359,7 +2359,7 @@ msgid "Add new booking"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:523
-#: src/Wordpress/CustomPostType/Booking.php:735
+#: src/Wordpress/CustomPostType/Booking.php:739
 msgid "Edit booking"
 msgstr ""
 
@@ -2433,7 +2433,7 @@ msgstr ""
 msgid "Timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:737
+#: src/Wordpress/CustomPostType/Booking.php:741
 msgid ""
 "<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>\n"
 "\t\t\t\t<ul>\n"
@@ -2445,72 +2445,72 @@ msgid ""
 "\t\t\t\t"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:765
+#: src/Wordpress/CustomPostType/Booking.php:769
 msgid "Book full day"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:768
+#: src/Wordpress/CustomPostType/Booking.php:772
 msgid "The booking should apply to the entire day(s)"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:772
+#: src/Wordpress/CustomPostType/Booking.php:776
 msgid "Set the start date. You must set the time to 00:00 if you want to book the full day "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:789
+#: src/Wordpress/CustomPostType/Booking.php:793
 msgid "Set the end date. You must set time to 23:59 if you want to book the full day"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:805
+#: src/Wordpress/CustomPostType/Booking.php:809
 #: templates/booking-single.php:59
 msgid "Booking Code"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:808
+#: src/Wordpress/CustomPostType/Booking.php:812
 msgid "Valid booking code will be automatically retrieved for bookings that apply to the full day."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:811
+#: src/Wordpress/CustomPostType/Booking.php:815
 msgid "Booking User"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:817
+#: src/Wordpress/CustomPostType/Booking.php:821
 msgid ""
 "Here you must select the user for whom the booking is made.<br>\n"
 "                        If the booking was made by a user via frontend booking process, the user will be shown in this field.\n"
 "                        <br><strong>Notice:</strong>The user will receive a booking confirmation as soon as the booking is submitted."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:826
+#: src/Wordpress/CustomPostType/Booking.php:830
 msgid "Admin Booking User"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:837
+#: src/Wordpress/CustomPostType/Booking.php:841
 msgid "This is the admin user who created or modified this booking."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:844
+#: src/Wordpress/CustomPostType/Booking.php:848
 msgid "External comment"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:845
+#: src/Wordpress/CustomPostType/Booking.php:849
 msgid "This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:850
+#: src/Wordpress/CustomPostType/Booking.php:854
 #: templates/booking-single.php:131
 msgid "Internal comment"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:851
+#: src/Wordpress/CustomPostType/Booking.php:855
 msgid "This internal comment can only be seen in the backend by privileged users like admins or cb-managers"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:857
+#: src/Wordpress/CustomPostType/Booking.php:861
 msgid "This will create the specified booking and send out the booking confirmation email."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:879
+#: src/Wordpress/CustomPostType/Booking.php:883
 msgid ""
 "Bookings should be created via frontend booking calendar. <br>\n"
 "\t\tAs an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated\n"
@@ -2520,27 +2520,27 @@ msgid ""
 "\t\tSee here <a target=\"_blank\" href=\"https://commonsbooking.org/?p=1433\">How to display the booking list</a>"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:949
+#: src/Wordpress/CustomPostType/Booking.php:953
 msgid "Booking start"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:953
+#: src/Wordpress/CustomPostType/Booking.php:957
 msgid "Booking end"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:957
+#: src/Wordpress/CustomPostType/Booking.php:961
 msgid "Time of booking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:965
+#: src/Wordpress/CustomPostType/Booking.php:969
 msgid "Booking code"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:981
+#: src/Wordpress/CustomPostType/Booking.php:985
 msgid "Time of cancellation"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Booking.php:985
+#: src/Wordpress/CustomPostType/Booking.php:989
 msgid "Admin booking by"
 msgstr ""
 
