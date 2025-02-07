@@ -4,3 +4,6 @@
 
 # Apply phpcbf to php tests code
 9f0bd0de52d5dca442317c14867be7702e1a7c73
+
+# Apply phpcbf to commonsbooking.php
+f8bdfd6d5d595f22d7c0345a2eb35571343ed134
