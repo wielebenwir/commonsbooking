@@ -27,8 +27,10 @@ jobs:
         run: composer install --prefer-dist --no-progress --ignore-platform-reqs
 
       - name: Run phpcbf
+        id: cbf
+        continue-on-error: true
         run: |
-          ./vendor/bin/phpcbf -q --parallel=1 src templates assets 2>&1 | tee phpcbf.output.txt
+          ./vendor/bin/phpcbf -q --parallel=1 src templates assets
 
 #  report-phpcbf:
 #    needs: phpcbf
@@ -37,6 +39,7 @@ jobs:
 #    steps:
 
       - name: Find Comment
+        if: steps.cbf.outcome == 'failure'
         uses: peter-evans/find-comment@v3
         id: fc
         with:
@@ -44,16 +47,12 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: PHP Code Beautifier and Fixer found the following fixable issues
 
-      - name: Read phpcbf output file
-        id: getcontent
-        run: echo "content=$(cat phpcbf.output.txt)" >> $GITHUB_OUTPUT
-
       - name: Create or update comment
+        if: steps.cbf.outcome == 'failure'
         uses: peter-evans/create-or-update-comment@v4
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            PHP Code Beautifier and Fixer found the following fixable issues, fix them first to ammend to contribution guidelines:
-            ${{ steps.getcontent.outputs.content }}
+            PHP Code Beautifier and Fixer found the following fixable issues, fix them first to ammend to contribution guidelines.
           edit-mode: replace
