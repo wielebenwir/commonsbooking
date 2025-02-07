@@ -45,7 +45,7 @@ jobs:
           body-includes: PHP Code Beautifier and Fixer found the following fixable issues
 
       - name: Read phpcbf output file
-        id: getversion
+        id: getcontent
         run: echo "content=$(cat phpcbf.output.txt)" >> $GITHUB_OUTPUT
 
       - name: Create or update comment
