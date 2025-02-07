@@ -28,8 +28,8 @@ class RestrictionTest extends CustomPostTypeTest {
 		$this->old_dfmt = get_option( 'date_format' );
 		update_option( 'time_format', 'H:i' );
 		update_option( 'date_format', 'd.m.Y' );
-		$this->assertEquals( get_option( 'time_format' ), 'H:i');
-		$this->assertEquals( get_option( 'date_format' ), 'd.m.Y');
+		$this->assertEquals( get_option( 'time_format' ), 'H:i' );
+		$this->assertEquals( get_option( 'date_format' ), 'd.m.Y' );
 	}
 
 	/**
@@ -40,7 +40,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		update_option( 'date_format', $this->old_dfmt );
 	}
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 
 		parent::setUp();
 
@@ -48,7 +48,7 @@ class RestrictionTest extends CustomPostTypeTest {
 			Restriction::META_HINT,
 			$this->locationId,
 			$this->itemId,
-			strtotime(self::CURRENT_DATE),
+			strtotime( self::CURRENT_DATE ),
 			null
 		);
 
@@ -56,36 +56,34 @@ class RestrictionTest extends CustomPostTypeTest {
 			Restriction::META_HINT,
 			$this->locationId,
 			$this->itemId,
-			strtotime(self::CURRENT_DATE),
-			strtotime("+3 weeks", strtotime(self::CURRENT_DATE))
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+3 weeks', strtotime( self::CURRENT_DATE ) )
 		);
-
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testGetEndDate() {
-		$restrictionWithoutEndDate = new Restriction($this->restrictionWithoutEndDateId);
-		$this->assertTrue($restrictionWithoutEndDate->getStartDate() == strtotime(self::CURRENT_DATE));
-		$this->assertFalse($restrictionWithoutEndDate->hasEnddate());
-		$this->assertTrue($restrictionWithoutEndDate->getEndDate() === Restriction::NO_END_TIMESTAMP);
+		$restrictionWithoutEndDate = new Restriction( $this->restrictionWithoutEndDateId );
+		$this->assertTrue( $restrictionWithoutEndDate->getStartDate() == strtotime( self::CURRENT_DATE ) );
+		$this->assertFalse( $restrictionWithoutEndDate->hasEnddate() );
+		$this->assertTrue( $restrictionWithoutEndDate->getEndDate() === Restriction::NO_END_TIMESTAMP );
 
-		$restrictionWithEndDate = new Restriction($this->restrictionWithEndDateId);
-		$this->assertTrue($restrictionWithEndDate->getStartDate() == strtotime(self::CURRENT_DATE));
-		$this->assertTrue($restrictionWithEndDate->getEndDate() == strtotime("+3 weeks", strtotime(self::CURRENT_DATE)));
-		$this->assertTrue($restrictionWithEndDate->hasEnddate());
+		$restrictionWithEndDate = new Restriction( $this->restrictionWithEndDateId );
+		$this->assertTrue( $restrictionWithEndDate->getStartDate() == strtotime( self::CURRENT_DATE ) );
+		$this->assertTrue( $restrictionWithEndDate->getEndDate() == strtotime( '+3 weeks', strtotime( self::CURRENT_DATE ) ) );
+		$this->assertTrue( $restrictionWithEndDate->hasEnddate() );
 	}
 
 	public function testGetFormattedDateTime() {
-		$restrictionWithoutEndDate = new Restriction($this->restrictionWithoutEndDateId);
-		$this->assertEquals( $restrictionWithoutEndDate->getFormattedStartDateTime(), "01.07.2021 00:00" );
+		$restrictionWithoutEndDate = new Restriction( $this->restrictionWithoutEndDateId );
+		$this->assertEquals( $restrictionWithoutEndDate->getFormattedStartDateTime(), '01.07.2021 00:00' );
 		// End Date is null, therefore getFormattedEndTime() won't compute a string
 
-		$restrictionWithEndDate = new Restriction($this->restrictionWithEndDateId);
-		$this->assertEquals( $restrictionWithEndDate->getFormattedStartDateTime(), "01.07.2021 00:00");
-		$this->assertEquals( $restrictionWithEndDate->getFormattedEndDateTime(),   "22.07.2021 00:00");
-
+		$restrictionWithEndDate = new Restriction( $this->restrictionWithEndDateId );
+		$this->assertEquals( $restrictionWithEndDate->getFormattedStartDateTime(), '01.07.2021 00:00' );
+		$this->assertEquals( $restrictionWithEndDate->getFormattedEndDateTime(), '22.07.2021 00:00' );
 	}
 }

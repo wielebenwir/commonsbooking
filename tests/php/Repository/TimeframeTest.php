@@ -41,8 +41,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		if ( $end === null ) {
 			$end = $this->repetition_end;
 		}
-		$this->otherItemId      = $this->createItem( "Other Item" );
-		$this->otherLocationId  = $this->createLocation( "Other Location" );
+		$this->otherItemId      = $this->createItem( 'Other Item' );
+		$this->otherLocationId  = $this->createLocation( 'Other Location' );
 		$this->otherTimeframeId = $this->createTimeframe(
 			$this->otherLocationId,
 			$this->otherItemId,
@@ -54,11 +54,14 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testGetInRange() {
 		$inRangeTimeFrames = Timeframe::getInRange( $this->repetition_start, $this->repetition_end );
-		//All timeframes should be in range
+		// All timeframes should be in range
 		$this->assertEquals( count( $this->allTimeframes ), count( $inRangeTimeFrames ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inRangeTimeFrames );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$inRangeTimeFrames
+		);
 		asort( $postIds );
 		$this->assertEquals( $this->allTimeframes, $postIds );
 	}
@@ -69,9 +72,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			[ $this->itemId ],
 		);
 		$this->assertEquals( count( $this->allTimeframes ), count( $inItemTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inItemTimeframes );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$inItemTimeframes
+		);
 		asort( $postIds );
 		$this->assertEquals( $this->allTimeframes, $postIds );
 	}
@@ -81,9 +87,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			[ $this->locationId ],
 		);
 		$this->assertEquals( count( $this->allTimeframes ), count( $inLocationTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inLocationTimeframes );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$inLocationTimeframes
+		);
 		asort( $postIds );
 		$this->assertEquals( $this->allTimeframes, $postIds );
 	}
@@ -94,9 +103,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			[ $this->itemId ],
 		);
 		$this->assertEquals( count( $this->allTimeframes ), count( $inLocationAndItemTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inLocationAndItemTimeframes );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$inLocationAndItemTimeframes
+		);
 		asort( $postIds );
 		$this->assertEquals( $this->allTimeframes, $postIds );
 	}
@@ -125,23 +137,26 @@ class TimeframeTest extends CustomPostTypeTest {
 				$this->timeframeDailyRepetition,
 				$this->timeframeWeeklyRepetition,
 				$this->timeframeManualRepetition,
-				$holidayId
+				$holidayId,
 			],
-			array_map( function ( $timeframe ) {
-				return $timeframe->ID;
-			}, $allTimeframesForLocAndItem )
+			array_map(
+				function ( $timeframe ) {
+					return $timeframe->ID;
+				},
+				$allTimeframesForLocAndItem
+			)
 		);
 
-		//Test-case for #1357 . The holiday should be returned regardless of the 'maxBookingDays'(aka advanceBookingDays) setting for the holiday. The maxBookingDays setting is only applicable for bookable timeframes.
-		//We remove the irrelevant postmeta so that it is not processed by the filtering functions anymore
+		// Test-case for #1357 . The holiday should be returned regardless of the 'maxBookingDays'(aka advanceBookingDays) setting for the holiday. The maxBookingDays setting is only applicable for bookable timeframes.
+		// We remove the irrelevant postmeta so that it is not processed by the filtering functions anymore
 		$holidayInFuture = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '+61 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+62 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
-			"on",
-			"d",
+			'on',
+			'd',
 			0,
 			'8:00 AM',
 			'12:00 PM',
@@ -151,15 +166,15 @@ class TimeframeTest extends CustomPostTypeTest {
 			3,
 			30
 		);
-		$tfCPT = new \CommonsBooking\Wordpress\CustomPostType\Timeframe();
+		$tfCPT           = new \CommonsBooking\Wordpress\CustomPostType\Timeframe();
 		$tfCPT->savePost(
 			$holidayInFuture,
 			get_post( $holidayInFuture )
 		);
-		//This is necessary, because the getLatestPossibleBookingDateTimestamp takes time() as the calculation base.
-		//the getLatestPossibleBookingDateTimestamp function takes the current time and adds the extra days on top to determine at what day you are allowed to book.
-		//Because our CURRENT_DATE is so far in the past, the latest possible booking date is also very far in the past which means that the test would not fail for a broken filterTimeframesByMaxBookingDays function.
-		//Therefore we have to freeze the time or else the test would make no sense.
+		// This is necessary, because the getLatestPossibleBookingDateTimestamp takes time() as the calculation base.
+		// the getLatestPossibleBookingDateTimestamp function takes the current time and adds the extra days on top to determine at what day you are allowed to book.
+		// Because our CURRENT_DATE is so far in the past, the latest possible booking date is also very far in the past which means that the test would not fail for a broken filterTimeframesByMaxBookingDays function.
+		// Therefore we have to freeze the time or else the test would make no sense.
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$allTimeframesForLocAndItem = Timeframe::get(
 			[ $this->locationId ],
@@ -174,28 +189,39 @@ class TimeframeTest extends CustomPostTypeTest {
 				$this->timeframeWeeklyRepetition,
 				$this->timeframeManualRepetition,
 				$holidayId,
-				$holidayInFuture
+				$holidayInFuture,
 			],
-			array_map( function ( $timeframe ) {
-				return $timeframe->ID;
-			}, $allTimeframesForLocAndItem )
+			array_map(
+				function ( $timeframe ) {
+					return $timeframe->ID;
+				},
+				$allTimeframesForLocAndItem
+			)
 		);
 	}
 
 	public function testFilterTimeframesForTimerange() {
-		$allTimeframeModels = array_map( function ( $timeframeId ) {
-			return new \CommonsBooking\Model\Timeframe( $timeframeId );
-		}, $this->allTimeframes );
-		//should return everything in the repetition
+		$allTimeframeModels = array_map(
+			function ( $timeframeId ) {
+				return new \CommonsBooking\Model\Timeframe( $timeframeId );
+			},
+			$this->allTimeframes
+		);
+		// should return everything in the repetition
 		$filteredTimeframes = Timeframe::filterTimeframesForTimerange(
 			$allTimeframeModels,
 			$this->repetition_start,
 			$this->repetition_end
 		);
-		$this->assertEqualsCanonicalizing( $this->allTimeframes, array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $filteredTimeframes ) );
-
+		$this->assertEqualsCanonicalizing(
+			$this->allTimeframes,
+			array_map(
+				function ( $timeframe ) {
+					return $timeframe->ID;
+				},
+				$filteredTimeframes
+			)
+		);
 	}
 
 	protected function setUp(): void {
@@ -221,7 +247,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 		$this->allTimeframes[]         = $this->timeframeWithoutEndDate;
 
-		//timeframe with daily repetition
+		// timeframe with daily repetition
 		$this->timeframeDailyRepetition = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -233,7 +259,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 		$this->allTimeframes[]          = $this->timeframeDailyRepetition;
 
-		//timeframe with weekly repetition from monday to friday
+		// timeframe with weekly repetition from monday to friday
 		$this->timeframeWeeklyRepetition = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -246,12 +272,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			'08:00 AM',
 			'12:00 PM',
 			'publish',
-			[ "1", "2", "3", "4", "5" ]
+			[ '1', '2', '3', '4', '5' ]
 		);
 		$this->allTimeframes[]           = $this->timeframeWeeklyRepetition;
 
 		$dateInAWeek = date( 'Y-m-d', strtotime( '+1 week', $this->repetition_start ) );
-		//timeframe with manual repetition for today and in a week
+		// timeframe with manual repetition for today and in a week
 		$this->timeframeManualRepetition = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -280,9 +306,12 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->dateFormatted
 		);
 		$this->assertEquals( count( $this->allTimeframes ), count( $inSpecificDate ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inSpecificDate );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$inSpecificDate
+		);
 		asort( $postIds );
 		$this->assertEquals( $this->allTimeframes, $postIds );
 
@@ -292,11 +321,14 @@ class TimeframeTest extends CustomPostTypeTest {
 			[],
 			date( 'Y-m-d', strtotime( '+1 week', $this->repetition_start ) )
 		);
-		//it should contain everything
+		// it should contain everything
 		$this->assertEquals( count( $this->allTimeframes ), count( $inOneWeek ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $inOneWeek );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$inOneWeek
+		);
 		asort( $postIds );
 		$this->assertEquals( $this->allTimeframes, $postIds );
 
@@ -306,29 +338,35 @@ class TimeframeTest extends CustomPostTypeTest {
 			[],
 			date( 'Y-m-d', strtotime( '+1 day', $this->repetition_start ) )
 		);
-		//it should contain everything except the manual repetition
+		// it should contain everything except the manual repetition
 		$this->assertEquals( count( $this->allTimeframes ) - 1, count( $tomorrow ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $tomorrow );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$tomorrow
+		);
 		asort( $postIds );
 		$this->assertEquals( array_diff( $this->allTimeframes, [ $this->timeframeManualRepetition ] ), $postIds );
 	}
 
 	public function testGetAllPaginated() {
-		$response = Timeframe::getAllPaginated( 1, 10 );
+		$response      = Timeframe::getAllPaginated( 1, 10 );
 		$allTimeframes = $response->posts;
 		$this->assertEquals( count( $this->allTimeframes ), $response->totalPosts );
 		$this->assertEquals( 1, $response->totalPages );
 		$this->assertTrue( $response->done );
 		$this->assertEquals( count( $this->allTimeframes ), count( $allTimeframes ) );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $allTimeframes );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$allTimeframes
+		);
 		$this->assertEqualsCanonicalizing( $this->allTimeframes, $postIds );
 
-		//test pagination
-		$response = Timeframe::getAllPaginated( 1, 2 );
+		// test pagination
+		$response   = Timeframe::getAllPaginated( 1, 2 );
 		$timeframes = $response->posts;
 		$this->assertEquals( 2, count( $timeframes ) );
 		$this->assertEquals( count( $this->allTimeframes ), $response->totalPosts );
@@ -336,21 +374,24 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertFalse( $response->done );
 		$allTimeframes = $timeframes;
 
-		$response = Timeframe::getAllPaginated( 2, 2 );
+		$response   = Timeframe::getAllPaginated( 2, 2 );
 		$timeframes = $response->posts;
 		$this->assertEquals( 2, count( $timeframes ) );
 		$this->assertFalse( $response->done );
 		$allTimeframes = array_merge( $allTimeframes, $timeframes );
 
-		//last page
-		$response = Timeframe::getAllPaginated( 3, 2 );
+		// last page
+		$response   = Timeframe::getAllPaginated( 3, 2 );
 		$timeframes = $response->posts;
 		$this->assertEquals( 1, count( $timeframes ) );
 		$this->assertTrue( $response->done );
 		$allTimeframes = array_merge( $allTimeframes, $timeframes );
-		$postIds = array_map( function ( $timeframe ) {
-			return $timeframe->ID;
-		}, $allTimeframes );
+		$postIds       = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$allTimeframes
+		);
 		$this->assertEqualsCanonicalizing( $this->allTimeframes, $postIds );
 	}
 
@@ -359,78 +400,90 @@ class TimeframeTest extends CustomPostTypeTest {
 			$this->repetition_start,
 			$this->repetition_end
 		);
-		$this->assertTrue($originalTimeframes['done']);
-		$this->assertEquals(1, $originalTimeframes['totalPages']);
-		$this->assertEquals(count($this->allTimeframes), count($originalTimeframes['posts']));
-		$postIds = array_map(function($timeframe) {
-			return $timeframe->ID;
-		}, $originalTimeframes['posts']);
-		$this->assertEqualsCanonicalizing($this->allTimeframes, $postIds);
-		//create a bunch of bookings to test pagination properly
+		$this->assertTrue( $originalTimeframes['done'] );
+		$this->assertEquals( 1, $originalTimeframes['totalPages'] );
+		$this->assertEquals( count( $this->allTimeframes ), count( $originalTimeframes['posts'] ) );
+		$postIds = array_map(
+			function ( $timeframe ) {
+				return $timeframe->ID;
+			},
+			$originalTimeframes['posts']
+		);
+		$this->assertEqualsCanonicalizing( $this->allTimeframes, $postIds );
+		// create a bunch of bookings to test pagination properly
 		$bookingIds = [];
-		for($i = 0; $i < 21; $i++) {
+		for ( $i = 0; $i < 21; $i++ ) {
 			$bookingIds[] = $this->createBooking(
 				$this->locationId,
 				$this->itemId,
-				strtotime("+ " . ($i + 10) . " days", strtotime(self::CURRENT_DATE)),
-				strtotime("+ ".($i + 11)." days", strtotime(self::CURRENT_DATE)),
+				strtotime( '+ ' . ( $i + 10 ) . ' days', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+ ' . ( $i + 11 ) . ' days', strtotime( self::CURRENT_DATE ) ),
 			);
 		}
 		$firstPage = Timeframe::getInRangePaginated(
-			strtotime("+ 10 days", strtotime(self::CURRENT_DATE)),
-			strtotime("+ 32 days", strtotime(self::CURRENT_DATE)),
+			strtotime( '+ 10 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+ 32 days', strtotime( self::CURRENT_DATE ) ),
 			1,
 			10,
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
 		);
-		$this->assertEquals(10, count($firstPage['posts']));
-		$this->assertEquals(3, $firstPage['totalPages']);
-		$this->assertFalse($firstPage['done']);
+		$this->assertEquals( 10, count( $firstPage['posts'] ) );
+		$this->assertEquals( 3, $firstPage['totalPages'] );
+		$this->assertFalse( $firstPage['done'] );
 
 		$secondPage = Timeframe::getInRangePaginated(
-			strtotime("+ 10 days", strtotime(self::CURRENT_DATE)),
-			strtotime("+ 32 days", strtotime(self::CURRENT_DATE)),
+			strtotime( '+ 10 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+ 32 days', strtotime( self::CURRENT_DATE ) ),
 			2,
 			10,
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
 		);
-		$this->assertFalse($secondPage['done']);
-		$this->assertEquals(3, $secondPage['totalPages']);
-		$this->assertEquals(10, count($secondPage['posts']));
+		$this->assertFalse( $secondPage['done'] );
+		$this->assertEquals( 3, $secondPage['totalPages'] );
+		$this->assertEquals( 10, count( $secondPage['posts'] ) );
 
 		$thirdPage = Timeframe::getInRangePaginated(
-			strtotime("+ 10 days", strtotime(self::CURRENT_DATE)),
-			strtotime("+ 32 days", strtotime(self::CURRENT_DATE)),
+			strtotime( '+ 10 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+ 32 days', strtotime( self::CURRENT_DATE ) ),
 			3,
 			10,
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ],
 		);
-		$this->assertTrue($thirdPage['done']);
-		$this->assertEquals(3, $thirdPage['totalPages']);
-		$this->assertEquals(1, count($thirdPage['posts']));
+		$this->assertTrue( $thirdPage['done'] );
+		$this->assertEquals( 3, $thirdPage['totalPages'] );
+		$this->assertEquals( 1, count( $thirdPage['posts'] ) );
 
-		//make sure, that no booking is in more than one page
-		$firstPageIDS = array_map(function($booking) {
-			return $booking->ID;
-		}, $firstPage['posts']);
-		$secondPageIDS = array_map(function($booking) {
-			return $booking->ID;
-		}, $secondPage['posts']);
-		$thirdPageIDS = array_map(function($booking) {
-			return $booking->ID;
-		}, $thirdPage['posts']);
+		// make sure, that no booking is in more than one page
+		$firstPageIDS  = array_map(
+			function ( $booking ) {
+				return $booking->ID;
+			},
+			$firstPage['posts']
+		);
+		$secondPageIDS = array_map(
+			function ( $booking ) {
+				return $booking->ID;
+			},
+			$secondPage['posts']
+		);
+		$thirdPageIDS  = array_map(
+			function ( $booking ) {
+				return $booking->ID;
+			},
+			$thirdPage['posts']
+		);
 
-		//make sure, that there are no duplicates among the pages
-		$this->assertEmpty(array_intersect($firstPageIDS, $secondPageIDS,$thirdPageIDS));
+		// make sure, that there are no duplicates among the pages
+		$this->assertEmpty( array_intersect( $firstPageIDS, $secondPageIDS, $thirdPageIDS ) );
 
-		//make sure, that all bookings are in one of the pages
-		$merged = array_merge($firstPageIDS, $secondPageIDS, $thirdPageIDS);
-		$this->assertEquals(21, count($merged));
-		$this->assertEqualsCanonicalizing($bookingIds, $merged);
+		// make sure, that all bookings are in one of the pages
+		$merged = array_merge( $firstPageIDS, $secondPageIDS, $thirdPageIDS );
+		$this->assertEquals( 21, count( $merged ) );
+		$this->assertEqualsCanonicalizing( $bookingIds, $merged );
 	}
 
 	public function testGetPostIdsByType_oneLocationMultiItem() {
-		$otherItemId = $this->createItem( "Other Item" );
+		$otherItemId = $this->createItem( 'Other Item' );
 		// Timeframe with enddate and two items
 		$multiItemTF   = $this->createTimeframe(
 			$this->locationId,
@@ -444,14 +497,17 @@ class TimeframeTest extends CustomPostTypeTest {
 			[ $this->locationId ]
 		);
 		$this->assertEquals( 6, count( $fromFirstItem ) );
-		$this->assertEqualsCanonicalizing( [
-			$multiItemTF,
-			$this->timeframeManualRepetition,
-			$this->timeframeWeeklyRepetition,
-			$this->timeframeDailyRepetition,
-			$this->timeframeWithoutEndDate,
-			$this->timeframeWithEndDate
-		], $fromFirstItem );
+		$this->assertEqualsCanonicalizing(
+			[
+				$multiItemTF,
+				$this->timeframeManualRepetition,
+				$this->timeframeWeeklyRepetition,
+				$this->timeframeDailyRepetition,
+				$this->timeframeWithoutEndDate,
+				$this->timeframeWithEndDate,
+			],
+			$fromFirstItem
+		);
 
 		$fromSecondItem = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
@@ -467,14 +523,17 @@ class TimeframeTest extends CustomPostTypeTest {
 			[ $this->locationId ]
 		);
 		$this->assertEquals( 6, count( $fromBothItems ) );
-		$this->assertEqualsCanonicalizing( [
-			$multiItemTF,
-			$this->timeframeManualRepetition,
-			$this->timeframeWeeklyRepetition,
-			$this->timeframeDailyRepetition,
-			$this->timeframeWithoutEndDate,
-			$this->timeframeWithEndDate
-		], $fromBothItems );
+		$this->assertEqualsCanonicalizing(
+			[
+				$multiItemTF,
+				$this->timeframeManualRepetition,
+				$this->timeframeWeeklyRepetition,
+				$this->timeframeDailyRepetition,
+				$this->timeframeWithoutEndDate,
+				$this->timeframeWithEndDate,
+			],
+			$fromBothItems
+		);
 	}
 
 	/**
@@ -493,7 +552,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 		$this->createOtherTimeframe();
 
-		//create holiday applicable for both
+		// create holiday applicable for both
 		$holidayId = $this->createTimeframe(
 			[ $this->locationId, $this->otherLocationId ],
 			[ $this->itemId, $this->otherItemId ],
@@ -517,7 +576,5 @@ class TimeframeTest extends CustomPostTypeTest {
 		);
 		$this->assertEquals( 1, count( $holidayFromSecondItemAndLoc ) );
 		$this->assertEquals( $holidayId, $holidayFromSecondItemAndLoc[0] );
-
 	}
-
 }

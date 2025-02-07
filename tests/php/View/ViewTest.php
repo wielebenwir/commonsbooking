@@ -19,11 +19,10 @@ class ViewTest extends CustomPostTypeTest {
 	public function testGetShortcodeDataWithFourRangesByItem() {
 		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
 		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
-		$this->assertCount(4, $shortCodeData[ $this->itemId ]['ranges']);
+		$this->assertCount( 4, $shortCodeData[ $this->itemId ]['ranges'] );
 
 		// Check for specific timeframe start date
 		$this->assertEquals( $shortCodeData[ $this->itemId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
-		
 	}
 
 	public function testGetShortcodeDataWithFourRangesByLocation() {
@@ -34,33 +33,33 @@ class ViewTest extends CustomPostTypeTest {
 		// Check for specific timeframe start date
 		$this->assertEquals( $shortCodeData[ $this->locationId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
 	}
-	
+
 	public function testShortcodeForLocationView() {
 		$body = \CommonsBooking\View\Location::shortcode( array() );
 		$html = '<html><body>' . $body . '</body></html>';
-		
-		// naive way of testing html validity
-		libxml_use_internal_errors(true);
-		$doc = new \DOMDocument();
-		$this->assertTrue($doc->loadHTML($html));
-		$this->assertEquals( 0, count( libxml_get_errors() ));
 
-		//assert presence of location and item string
+		// naive way of testing html validity
+		libxml_use_internal_errors( true );
+		$doc = new \DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $html ) );
+		$this->assertEquals( 0, count( libxml_get_errors() ) );
+
+		// assert presence of location and item string
 		$this->assertStringContainsString( $this->item->post_title, $body );
 		$this->assertStringContainsString( $this->location->post_title, $body );
 	}
-	
+
 	public function testShortcodeForItemView() {
 		$body = \CommonsBooking\View\Item::shortcode( array() );
 		$html = '<html><body>' . $body . '</body></html>';
-		
-		// naive way of testing html validity
-		libxml_use_internal_errors(true);
-		$doc = new \DOMDocument();
-		$this->assertTrue($doc->loadHTML($html));
-		$this->assertEquals( 0, count( libxml_get_errors() ));
 
-		//assert presence of location and item string
+		// naive way of testing html validity
+		libxml_use_internal_errors( true );
+		$doc = new \DOMDocument();
+		$this->assertTrue( $doc->loadHTML( $html ) );
+		$this->assertEquals( 0, count( libxml_get_errors() ) );
+
+		// assert presence of location and item string
 		$this->assertStringContainsString( $this->item->post_title, $body );
 		$this->assertStringContainsString( $this->location->post_title, $body );
 	}
@@ -70,30 +69,30 @@ class ViewTest extends CustomPostTypeTest {
 		$html = '<html><body>' . $body . '</body></html>';
 
 		// naive way of testing html validity
-		libxml_use_internal_errors(true);
+		libxml_use_internal_errors( true );
 		$doc = new \DOMDocument();
-		$this->assertTrue($doc->loadHTML($html));
+		$this->assertTrue( $doc->loadHTML( $html ) );
 		$lib_XML_errors = libxml_get_errors();
-		//TODO: This fails
-		//$this->assertEquals( 0, count( $lib_XML_errors ));
+		// TODO: This fails
+		// $this->assertEquals( 0, count( $lib_XML_errors ));
 	}
 
 	public function testGetColorCSS() {
-		//set the default color values
+		// set the default color values
 		AdminOptions::setOptionsDefaultValues();
-		$defaultValue = "--commonsbooking-color-primary: #84AE53;";
-		$colorCSS = View::getColorCSS();
+		$defaultValue = '--commonsbooking-color-primary: #84AE53;';
+		$colorCSS     = View::getColorCSS();
 		$this->assertStringContainsString( $defaultValue, $colorCSS );
 	}
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 
-		$now = time();
+		$now       = time();
 		$this->now = $now;
 
-		$this->item = new Item( $this->itemId );
+		$this->item     = new Item( $this->itemId );
 		$this->location = new Location( $this->locationId );
 
 		$timeframeId = $this->createTimeframe(
@@ -151,8 +150,7 @@ class ViewTest extends CustomPostTypeTest {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
-
 }
