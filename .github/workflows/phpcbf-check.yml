@@ -20,10 +20,11 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'  # Adjust this to your PHP version
+          php-version: '8.1'  # Adjust this to your PHP version
+          extensions: uopz
 
       - name: Install PHP_CodeSniffer
-        run: composer install
+        run: composer install --prefer-dist --no-progress --ignore-platform-reqs
 
       - name: Run phpcbf
         run: |
