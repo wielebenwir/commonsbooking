@@ -28,24 +28,13 @@ jobs:
 
       - name: Run phpcbf
         run: |
-          set -o pipefail
           ./vendor/bin/phpcbf -q --parallel=1 src templates assets 2>&1 | tee phpcbf.output.txt
 
-#      - name: Check for changes
-#        run: |
-#          if [[ $(git status --porcelain) ]]; then
-#            echo "phpcbf made changes to the code. Please fix these issues before committing."
-#            git --no-pager diff
-#            exit 1
-#          else
-#            echo "No changes detected. Code is properly formatted."
-#          fi
-
-  report-phpcbf:
-    needs: phpcbf
-    if: ${{ always() && contains(needs.*.result, 'failure') }}
-    runs-on: ubuntu-latest
-    steps:
+#  report-phpcbf:
+#    needs: phpcbf
+#    if: ${{ always() && contains(needs.*.result, 'failure') }}
+#    runs-on: ubuntu-latest
+#    steps:
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
@@ -65,6 +54,6 @@ jobs:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            PHP Code Beautifier and Fixer found the following fixable issues:
+            PHP Code Beautifier and Fixer found the following fixable issues, fix them first to ammend to contribution guidelines:
             ${{ steps.getcontent.outputs.content }}
           edit-mode: replace
