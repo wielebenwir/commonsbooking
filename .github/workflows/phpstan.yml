@@ -1,16 +1,17 @@
 name: PHPStan
 
 on:
+  # Run on all pushes and on all pull requests.
+  # Prevent the build from running when there are only irrelevant changes.
   push:
-    branches:
-      - 'master'
-      - 'release/**'
     paths-ignore:
       - '**.md'
       - '**.txt'
+      - '**.yml'
+      - '**.xml'
   pull_request:
-    branches:
-      - 'master'
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
 
 jobs:
   phpstan:
