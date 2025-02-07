@@ -28,7 +28,7 @@ jobs:
 
       - name: Run phpcbf
         run: |
-          ./vendor/bin/phpcbf src templates assets -q
+          ./vendor/bin/phpcbf -q --parallel=1 src templates assets
 
       - name: Check for changes
         run: |
