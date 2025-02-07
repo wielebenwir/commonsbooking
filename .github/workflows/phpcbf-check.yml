@@ -28,6 +28,7 @@ jobs:
 
       - name: Run phpcbf
         run: |
+          set -o pipefail
           ./vendor/bin/phpcbf -q --parallel=1 src templates assets 2>&1 | tee phpcbf.output.txt
 
 #      - name: Check for changes
