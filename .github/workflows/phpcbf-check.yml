@@ -39,3 +39,31 @@ jobs:
           else
             echo "No changes detected. Code is properly formatted."
           fi
+
+  report-phpcbf:
+    needs: phpcbf
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: PHP Code Beautifier and Fixer found the following fixable issues
+
+      - name: Read phpcbf output file
+        id: getversion
+        run: echo "content=$(cat phpcbf.output.txt)" >> $GITHUB_OUTPUT
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            PHP Code Beautifier and Fixer found the following fixable issues:
+            ${{ steps.getcontent.outputs.content }}
+          edit-mode: replace
