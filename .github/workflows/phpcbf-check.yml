@@ -42,7 +42,7 @@ jobs:
 
   report-phpcbf:
     needs: phpcbf
-    if: failure()
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     runs-on: ubuntu-latest
     steps:
 
