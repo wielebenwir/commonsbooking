@@ -28,7 +28,7 @@ jobs:
 
       - name: Run phpcbf
         run: |
-          ~/.composer/vendor/bin/phpcbf src templates assets -q
+          ./vendor/bin/phpcbf src templates assets -q
 
       - name: Check for changes
         run: |
