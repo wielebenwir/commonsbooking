@@ -32,12 +32,6 @@ jobs:
         run: |
           ./vendor/bin/phpcbf -q --parallel=1 src templates assets
 
-#  report-phpcbf:
-#    needs: phpcbf
-#    if: ${{ always() && contains(needs.*.result, 'failure') }}
-#    runs-on: ubuntu-latest
-#    steps:
-
       - name: Find Comment
         if: steps.cbf.outcome == 'failure'
         uses: peter-evans/find-comment@v3
