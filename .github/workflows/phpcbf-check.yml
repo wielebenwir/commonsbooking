@@ -23,7 +23,7 @@ jobs:
           php-version: '8.1'  # Adjust this to your PHP version
 
       - name: Install PHP_CodeSniffer
-        run: composer global require "squizlabs/php_codesniffer=*"
+        run: composer install
 
       - name: Run phpcbf
         run: |
