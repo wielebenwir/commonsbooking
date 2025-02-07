@@ -499,7 +499,15 @@ class Calendar {
 	 * @return int
 	 */
 	private static function getMobileCalendarMonthCount(): int {
-		return apply_filters( 'commonsbooking_mobile_calendar_month_count', 1 );
+		$month = 1;
+		/**
+		 * Default amount of months shown in the Litepicker mobile view portrait mode.
+		 *
+		 * @since 2.10.3
+		 *
+		 * @param int $month defaults is 1
+		 */
+		return apply_filters( 'commonsbooking_mobile_calendar_month_count', $month );
 	}
 
 	/**
