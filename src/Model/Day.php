@@ -594,4 +594,12 @@ class Day {
 	protected function getSlotTimestampEnd( $slotsPerDay, $slotNr ) {
 		return strtotime( $this->getDate() ) + ( ( $slotNr + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ) - 1;
 	}
+
+	/**
+	 * @return DateTime
+	 * @throws Exception
+	 */
+	public function getDateObject(): DateTime {
+		return Wordpress::getUTCDateTime( $this->getDate() );
+	}
 }
