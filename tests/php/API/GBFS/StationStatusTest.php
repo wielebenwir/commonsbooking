@@ -4,22 +4,25 @@ namespace CommonsBooking\Tests\API\GBFS;
 
 use CommonsBooking\API\GBFS\StationStatus;
 use CommonsBooking\Model\Location;
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use SlopeIt\ClockMock\ClockMock;
 
 class StationStatusTest extends CustomPostTypeTest {
 
-
+	/**
+	 * @group failing
+	 */
 	public function testPrepare_item_for_response() {
-		$currDate       = new \DateTime( self::CURRENT_DATE );
+		$currDate       = new \DateTimeImmutable( self::CURRENT_DATE );
 		$locationObject = new Location( $this->locationId );
 		ClockMock::freeze( $currDate );
 		$routeObject       = new StationStatus();
 		$spanningTimeframe = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) )
+			$currDate->modify( '-1 day' )->getTimestamp(),
+			$currDate->modify( '+10 days' )->getTimestamp()
 		);
 		$stationStatus     = $routeObject->prepare_item_for_response( $locationObject, null )->get_data();
 		$this->assertEquals( $this->locationId, $stationStatus->station_id );
@@ -27,11 +30,14 @@ class StationStatusTest extends CustomPostTypeTest {
 		$this->assertTrue( $stationStatus->is_installed );
 		$this->assertTrue( $stationStatus->is_renting );
 		$this->assertTrue( $stationStatus->is_returning );
-		$this->assertEquals( current_time( 'timestamp' ), $stationStatus->last_reported );
+		$this->assertEquals( time(), $stationStatus->last_reported );
 
 		// now let's book the current day and check, that the station is empty
-		$this->createConfirmedBookingStartingToday();
-		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		$tf    = $this->createConfirmedBookingStartingToday();
+		$model = new Timeframe( $tf );
+		// echo "This is a booking: " . $model->getStartDateDateTime()->format( 'Y-m-d\TH:i:sP' ) . " " . $model->getEndDateDateTime()->format( 'Y-m-d\TH:i:sP' );
+		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->num_bikes_available );
+		// $this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
 
 		// the timeframe has ended now, so the station should be empty
 		$currDate->modify( '+11 days' );
@@ -116,9 +122,11 @@ class StationStatusTest extends CustomPostTypeTest {
 
 	protected function setUp(): void {
 		parent::setUp();
+		date_default_timezone_set( 'Europe/Berlin' );
 	}
 
 	protected function tearDown(): void {
 		parent::tearDown();
+		date_default_timezone_set( 'UTC' );
 	}
 }

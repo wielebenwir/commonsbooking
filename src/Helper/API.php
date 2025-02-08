@@ -6,8 +6,12 @@ namespace CommonsBooking\Helper;
 use CommonsBooking\API\Share;
 use CommonsBooking\Repository\ApiShares;
 
+/**
+ * @deprecated
+ *
+ * @since 2.10 deprecated because unused
+ */
 class API {
-
 
 	/**
 	 * Triggers requests to all shares with push url.

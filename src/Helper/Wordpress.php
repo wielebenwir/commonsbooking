@@ -8,6 +8,7 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use DateTime;
+use DateTimeZone;
 use function get_pages;
 
 class Wordpress {
@@ -278,19 +279,20 @@ class Wordpress {
 	}
 
 	/**
-	 * This would theoretically work if the timestamp we get from the database is in UTC.
-	 * The problem is, that the timestamp is in the local timezone of the server.
-	 * If we convert it to UTC, we get the wrong date and everything breaks.
+	 * Transform local time timestamp into utc date time object.
 	 *
-	 * @param int|string $timestamp numeric value
+	 * NOTE: Does not have microseconds set. Timestamp is only seconds.
 	 *
-	 * @return DateTime
-	 * @throws \Exception
+	 * @since 2.10.1 does now return local time aware date time object
+	 *
+	 * @param int|string $local_timestamp local time
+	 *
+	 * @return DateTime in utc
 	 */
-	public static function getUTCDateTimeByTimestamp( $timestamp ): DateTime {
-		$dto = new DateTime();
+	public static function getUTCDateTimeByTimestamp( $local_timestamp ): DateTime {
+		$dto = new DateTime(); // local timezone
 		$dto->setTimestamp(
-			intval( $timestamp )
+			intval( $local_timestamp ) - $dto->getOffset()
 		);
 		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
 
@@ -313,6 +315,12 @@ class Wordpress {
 		return $dto;
 	}
 
+	/**
+	 * @param $datetime
+	 *
+	 * @return DateTime
+	 * @throws \DateMalformedStringException
+	 */
 	public static function getUTCDateTime( $datetime = 'now' ): DateTime {
 		$dto = new DateTime( $datetime );
 		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
@@ -327,6 +335,25 @@ class Wordpress {
 		);
 		$dto->setTimezone( new \DateTimeZone( wp_timezone_string() ) );
 
+		return $dto;
+	}
+
+	/**
+	 * @param int $utc_timestamp
+	 *
+	 * @return int in local time
+	 */
+	public static function getLocalTimestampFromUTCTimestamp( int $utc_timestamp ) {
+		$dto = self::getUTCDateTimeByUnixTimestamp( $utc_timestamp );
+		$dto->setTimezone( date_default_timezone_get() );
+		return $dto->getTimestamp() + $dto->getOffset();
+	}
+
+	public static function getUTCDateTimeByUnixTimestamp( $gmt_timestamp ) {
+		$dto = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		$dto->setTimestamp(
+			$gmt_timestamp
+		);
 		return $dto;
 	}
 }

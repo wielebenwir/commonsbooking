@@ -100,8 +100,8 @@ class Calendar {
 		} else {
 			$weeks = array();
 			while ( $startDate <= $endDate ) {
-				$dayOfYear = date( 'z', $startDate );
-				$year      = date( 'Y', $startDate );
+				$dayOfYear = gmdate( 'z', $startDate );
+				$year      = gmdate( 'Y', $startDate );
 				$weeks[]   = new Week(
 					$year,
 					$dayOfYear,
@@ -135,6 +135,7 @@ class Calendar {
 		$doneSlots = [];
 		/** @var Week $week */
 		foreach ( $this->getWeeks() as $week ) {
+			// echo "\n" . $week . "\n";
 			/** @var Day $day */
 			foreach ( $week->getDays() as $day ) {
 				foreach ( $day->getGrid() as $slot ) {
@@ -148,22 +149,26 @@ class Calendar {
 
 					// Skip timeframes that are not bookable today
 					if ( $timeframe->getFirstBookableDay() > $day->getDate() ) {
+						// echo "Skip slot: " . var_dump( $slot );
 						continue;
 					}
 
 					$availabilitySlot = new stdClass();
 
 					// Init DateTime object for start
-					$dateTimeStart = Wordpress::getUTCDateTime( 'now' );
+					$dateTimeStart = new \DateTime( 'now' ); // new \DateTimeZone( 'UTC' ) );
 					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
 					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
 
 					// Init DateTime object for end
-					$dateTimeend = Wordpress::getUTCDateTime( 'now' );
+					$dateTimeend = new \DateTime( 'now' ); // , new \DateTimeZone( 'UTC' ) );
 					$dateTimeend->setTimestamp( $slot['timestampend'] );
 					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
 
+					// echo "Add slot: " . $availabilitySlot->start . " -- " . $availabilitySlot->end . "\n";
+
 					$availabilitySlot->locationId = '';
+
 					if ( $timeframe->getLocation() ) {
 						$availabilitySlot->locationId = $timeframe->getLocationID() . '';
 					}

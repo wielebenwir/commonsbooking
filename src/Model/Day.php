@@ -18,7 +18,7 @@ use WP_Post;
 class Day {
 
 	/**
-	 * @var string
+	 * @var string $date local date
 	 */
 	protected $date;
 
@@ -45,7 +45,7 @@ class Day {
 	/**
 	 * Day constructor.
 	 *
-	 * @param string $date
+	 * @param string $date local time date
 	 * @param array  $locations
 	 * @param array  $items
 	 * @param array  $types
@@ -74,23 +74,16 @@ class Day {
 		}
 	}
 
-	/**
-	 * @return false|string
-	 */
-	public function getDayOfWeek() {
-		return date( 'w', strtotime( $this->getDate() ) );
+	public function getStartTimestamp(): int {
+		$dt = new DateTime( $this->getDate() );
+		$dt->modify( 'midnight' );
+		$dt->setTimezone( new \DateTimeZone( 'UTC' ) );
+
+		return $dt->getTimestamp();
 	}
 
 	/**
-	 * @return DateTime
-	 * @throws Exception
-	 */
-	public function getDateObject(): DateTime {
-		return Wordpress::getUTCDateTime( $this->getDate() );
-	}
-
-	/**
-	 * @return string
+	 * @return string local date
 	 */
 	public function getDate(): string {
 		return $this->date;
@@ -130,7 +123,7 @@ class Day {
 				$this->locations,
 				$this->items,
 				$this->types,
-				$this->getDate(),
+				$this->getDate(), // TODO this needs to be in non-local date
 				true,
 				null,
 				[ 'publish', 'confirmed' ]
@@ -316,7 +309,7 @@ class Day {
 	 * @throws Exception
 	 */
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-
+		// TODO test this method for utc and date ...
 		if ( $timeframe->getRepetition() ) {
 			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
@@ -470,6 +463,7 @@ class Day {
 	public function getStartTimestamp(): int {
 		$dt = new DateTime( $this->getDate() );
 		$dt->modify( 'midnight' );
+		$dt->setTimezone( new \DateTimeZone( 'UTC' ) );
 
 		return $dt->getTimestamp();
 	}
@@ -477,6 +471,7 @@ class Day {
 	public function getEndTimestamp(): int {
 		$dt = new DateTime( $this->getDate() );
 		$dt->modify( '23:59:59' );
+		$dt->setTimezone( new \DateTimeZone( 'UTC' ) );
 
 		return $dt->getTimestamp();
 	}
@@ -555,8 +550,8 @@ class Day {
 			// Init Slots
 			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
 				$slots[ $i ] = [
-					'timestart'      => date( esc_html( get_option( 'time_format' ) ), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timeend'        => date( esc_html( get_option( 'time_format' ) ), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timestart'      => gmdate( esc_html( get_option( 'time_format' ) ), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timeend'        => gmdate( esc_html( get_option( 'time_format' ) ), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
 					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
 					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i ),
 				];

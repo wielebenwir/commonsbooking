@@ -721,7 +721,7 @@ class Booking extends Timeframe {
 	}
 
 	/**
-	 * Returns custom (meta) fields for Costum Post Type Timeframe.
+	 * Returns custom (meta) fields for custom post type timeframe.
 	 *
 	 * @return array
 	 */
