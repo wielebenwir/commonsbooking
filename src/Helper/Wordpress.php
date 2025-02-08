@@ -345,7 +345,7 @@ class Wordpress {
 	 */
 	public static function getLocalTimestampFromUTCTimestamp( int $utc_timestamp ) {
 		$dto = self::getUTCDateTimeByUnixTimestamp( $utc_timestamp );
-		$dto->setTimezone( date_default_timezone_get() );
+		$dto->setTimezone( new DateTimeZone( date_default_timezone_get() ) );
 		return $dto->getTimestamp() + $dto->getOffset();
 	}
 
