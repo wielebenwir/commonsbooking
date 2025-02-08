@@ -74,8 +74,23 @@ class Day {
 		}
 	}
 
+	/**
+	 * Returns day of week as string from local date
+	 *
+	 * @return false|string
+	 */
+	public function getDayOfWeek() {
+		return date( 'w', strtotime( $this->getDate() ) );
+	}
+
+	/**
+	 * Returns utc
+	 *
+	 * @return int
+	 * @throws \DateMalformedStringException
+	 */
 	public function getStartTimestamp(): int {
-		$dt = new DateTime( $this->getDate() );
+		$dt = new DateTime( $this->getDate() ); // instantiated as local time
 		$dt->modify( 'midnight' );
 		$dt->setTimezone( new \DateTimeZone( 'UTC' ) );
 
