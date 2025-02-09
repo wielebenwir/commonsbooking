@@ -330,14 +330,16 @@ class Day {
 				// Weekly Rep
 				case 'w':
 					$dayOfWeek         = intval( $this->getDateObject()->format( 'w' ) );
-					$timeframeWeekdays = get_post_meta( $timeframe->ID, 'weekdays', true );
+					$timeframeWeekdays = array_map( 'intval', get_post_meta( $timeframe->ID, 'weekdays', true ) );
 
 					// Because of different day of week calculation we need to recalculate
-					if ( $dayOfWeek == 0 ) {
+					if ( $dayOfWeek === 0 ) {
 						$dayOfWeek = 7;
 					}
 
-					if ( is_array( $timeframeWeekdays ) && in_array( $dayOfWeek, $timeframeWeekdays ) ) {
+					$timeframeWeekdaysString = join(", ", $timeframeWeekdays);
+					echo "Weekly rep with $timeframeWeekdaysString weekday(s) and the $dayOfWeek day of week\n";
+					if ( is_array( $timeframeWeekdays ) && in_array( $dayOfWeek, $timeframeWeekdays, true ) ) {
 						return true;
 					} else {
 						return false;
