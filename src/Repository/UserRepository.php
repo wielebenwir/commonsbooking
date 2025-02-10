@@ -23,15 +23,15 @@ class UserRepository {
 	 * @return string[]
 	 */
 	public static function getManagerRoles(): array {
-		$manager_roles = [ Plugin::$CB_MANAGER_ID ];
+		$managerRoles = [ Plugin::$CB_MANAGER_ID ];
 		/**
 		 * Default list of manager roles
 		 *
 		 * @since 2.9.0
 		 *
-		 * @param string[] $manager_roles list of allowed manager roles that is returned by {@see UserRepository::getManagerRoles()}
+		 * @param string[] $managerRoles list of allowed manager roles that is returned by {@see UserRepository::getManagerRoles()}
 		 */
-		return apply_filters( 'commonsbooking_manager_roles', $manager_roles );
+		return apply_filters( 'commonsbooking_manager_roles', $managerRoles );
 	}
 
 	/**
@@ -40,15 +40,15 @@ class UserRepository {
 	 * @return string[]
 	 */
 	public static function getAdminRoles(): array {
-		$admin_roles = [ 'administrator' ];
+		$adminRoles = [ 'administrator' ];
 		/**
 		 * Default list of admin roles
 		 *
 		 * @since 2.8.3
 		 *
-		 * @param string[] $admin_roles list of allowed admin roles that are returned by {@see UserRepository::getAdminRoles()}
+		 * @param string[] $adminRoles list of allowed admin roles that are returned by {@see UserRepository::getAdminRoles()}
 		 */
-		return apply_filters( 'commonsbooking_admin_roles', $admin_roles );
+		return apply_filters( 'commonsbooking_admin_roles', $adminRoles );
 	}
 
 	/**

@@ -59,18 +59,18 @@ class BookingCodesMessage extends Message {
 
 		$bookingTable = \CommonsBooking\View\BookingCodes::renderTableFor( 'email', $bookingCodes );
 
-		$cb_settings_option = Settings::getOption( 'commonsbooking_options_bookingcodes', 'mail-booking-' . $this->action . '-attach-ical' );
+		$cbSettingsOption = Settings::getOption( 'commonsbooking_options_bookingcodes', 'mail-booking-' . $this->action . '-attach-ical' );
 		/**
 		 * Default value (from option settings) whether adding the ical attachment to booking codes email.
 		 *
 		 * @since 2.9.0
 		 *
-		 * @param bool $cb_settings_option
+		 * @param bool $cbSettingsOption
 		 * @param \CommonsBooking\Model\Timeframe $timeframe for which the booking codes are sent
 		 */
 		$bAddIcal   = apply_filters(
 			'commonsbooking_emailcodes_addical',
-			$cb_settings_option,
+			$cbSettingsOption,
 			$timeframe
 		);
 		$attachment = $bAddIcal ? $this->getIcalAttachment( $bookingCodes ) : null;
