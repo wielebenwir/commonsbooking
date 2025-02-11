@@ -24,6 +24,10 @@ class TimeframeRelations
 			PRIMARY KEY (timeframe, location, item, tftype)
 		) $charsetCollate;";
 
+		$sql .= "CREATE INDEX idx_{$tableName}_daterange ON $tableName (startdatetime, enddatetime);";
+
+		// TODO If we choose to use 9999-01-01 as our "infinity"-date instead of null, we can use the datetime columns in the primary key.
+
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql);
 	}
