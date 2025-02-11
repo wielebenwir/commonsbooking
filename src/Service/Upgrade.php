@@ -5,6 +5,7 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Messages\AdminMessage;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
+use CommonsBooking\Repository\TimeframeRelations;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
@@ -80,7 +81,7 @@ class Upgrade {
 			[ self::class, 'setMultiSelectTimeFrameDefault' ]
 		],
 		'2.10.3' => [
-			[ self::class, 'migrateTimeframeRelations ' ]
+			[ self::class, 'migrateTimeframeRelations' ]
 		]
 	];
 
