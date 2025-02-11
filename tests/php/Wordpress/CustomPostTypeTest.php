@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\Wordpress;
 
 use CommonsBooking\Plugin;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\Repository\TimeframeRelations;
 use CommonsBooking\Tests\BaseTestCase;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\Item;
@@ -550,7 +551,8 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 		$this->dateFormatted = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 
-		$this->setUpBookingCodesTable();
+	  $this->setUpBookingCodesTable();
+	  TimeframeRelations::initTable();
 
 		// Create location
 		$this->locationId = self::createLocation( 'Testlocation', 'publish' );
@@ -569,7 +571,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
             location bigint(20) unsigned NOT NULL,
             item bigint(20) unsigned NOT NULL,
             code varchar(100) NOT NULL,
-            PRIMARY KEY (date, timeframe, location, item, code) 
+            PRIMARY KEY (date, timeframe, location, item, code)
         ) $charset_collate;";
 
 		$wpdb->query( $sql );
