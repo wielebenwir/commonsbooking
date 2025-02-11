@@ -1352,22 +1352,22 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:311
-#: src/Plugin.php:312
+#: src/Plugin.php:369
+#: src/Plugin.php:370
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:321
-#: src/Plugin.php:322
+#: src/Plugin.php:379
+#: src/Plugin.php:380
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:437
-#: src/Plugin.php:470
+#: src/Plugin.php:495
+#: src/Plugin.php:528
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:500
+#: src/Plugin.php:558
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -3200,8 +3200,8 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:713
-#: src/Plugin.php:728
+#: src/Plugin.php:771
+#: src/Plugin.php:786
 #: src/Wordpress/CustomPostType/Booking.php:926
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
@@ -4143,8 +4143,8 @@ msgstr ""
 msgid "This will create the specified booking and send out the booking confirmation email."
 msgstr "Dadurch wird die angegebene Buchung erstellt und die Buchungsbestätigung per E-Mail verschickt."
 
-#: src/Plugin.php:331
-#: src/Plugin.php:332
+#: src/Plugin.php:389
+#: src/Plugin.php:390
 msgid "Mass Operations"
 msgstr "Massenverarbeitung"
 
@@ -4213,11 +4213,11 @@ msgstr "Buchungen bei Totalausfall nicht stornieren"
 msgid "If checked, bookings will not be cancelled if the item has broken down. The user will be notified and once the item becomes available again, the old bookings are still valid."
 msgstr "Wenn ausgewählt, werden Buchungen nicht storniert, wenn ein Totalausfall für den Artikel gesetzt ist. Der / die Benutzer*in wird benachrichtigt und sobald der Artikel wieder verfügbar ist, sind die alten Buchungen weiterhin gültig."
 
-#: src/Plugin.php:479
+#: src/Plugin.php:537
 msgid "Add custom title for filter"
 msgstr "Benutzerdefinierten Titel für Filtergruppe hinzufügen"
 
-#: src/Plugin.php:482
+#: src/Plugin.php:540
 msgid "Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used."
 msgstr "Legt den Namen fest, der für die Kategorie verwendet werden soll, wenn sie in der Karte als Teil der Filtergruppe angezeigt wird. Hier kann auch benutzerdefinierter HTML-Code zum Kategorienamen hinzugefügt werden. Bleibt der Eintrag leer, wird der Standard Name der Kategorie verwendet."
 

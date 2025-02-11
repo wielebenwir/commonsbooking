@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-06T15:26:24+00:00\n"
+"POT-Creation-Date: 2025-02-11T22:46:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1596,40 +1596,40 @@ msgstr ""
 msgid "The other timeframe is overlapping with your weekly configuration."
 msgstr ""
 
-#: src/Plugin.php:311
-#: src/Plugin.php:312
+#: src/Plugin.php:369
+#: src/Plugin.php:370
 msgid "Item Categories"
 msgstr ""
 
-#: src/Plugin.php:321
-#: src/Plugin.php:322
+#: src/Plugin.php:379
+#: src/Plugin.php:380
 msgid "Location Categories"
 msgstr ""
 
-#: src/Plugin.php:331
-#: src/Plugin.php:332
+#: src/Plugin.php:389
+#: src/Plugin.php:390
 msgid "Mass Operations"
 msgstr ""
 
-#: src/Plugin.php:437
-#: src/Plugin.php:470
+#: src/Plugin.php:495
+#: src/Plugin.php:528
 msgid "Item Category"
 msgstr ""
 
-#: src/Plugin.php:479
+#: src/Plugin.php:537
 msgid "Add custom title for filter"
 msgstr ""
 
-#: src/Plugin.php:482
+#: src/Plugin.php:540
 msgid "Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used."
 msgstr ""
 
-#: src/Plugin.php:500
+#: src/Plugin.php:558
 msgid "Location Category"
 msgstr ""
 
-#: src/Plugin.php:713
-#: src/Plugin.php:728
+#: src/Plugin.php:771
+#: src/Plugin.php:786
 #: src/Wordpress/CustomPostType/Booking.php:926
 msgid "CommonsBooking Bookings"
 msgstr ""
