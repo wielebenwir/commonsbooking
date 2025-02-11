@@ -228,6 +228,16 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 	} else {
 		$filterName    = sprintf( 'commonsbooking_defaults_%s', $field_args['id'] );
 		$default_value = array_key_exists( 'default_value', $field_args ) ? $field_args['default_value'] : '';
+
+		/**
+		 * Default value for cmb2 fields.
+		 *
+		 * The last part of the filter is the cmb2 field id.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param mixed $default_value default value for the field.
+		 */
 		return apply_filters( $filterName, $default_value );
 	}
 }
