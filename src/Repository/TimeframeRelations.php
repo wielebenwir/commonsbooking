@@ -37,12 +37,13 @@ class TimeframeRelations
 
         $endTimestamp = $timeframe->getEndDate();
 
-        if ($endTimestamp == 0 || empty($endTimestamp)) {
-            //$EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
-	        $EndDateTime = 'NULL';
-        } else {
-            $EndDateTime = date('Y-m-d H:i:s', $endTimestamp);
-        }
+		$dateConversionFails = false === date( 'Y-m-d H:i:s', $endTimestamp );
+		if ( $endTimestamp == 0 || empty( $endTimestamp ) || $dateConversionFails ) {
+			//$EndDateTime = date('Y-m-d H:i:s', strtotime("+90 days"));
+			$EndDateTime = 'NULL'; // TODO as 9999-01-01... in case of non-null enddatetime column change
+		} else {
+			$EndDateTime = date( 'Y-m-d H:i:s', $endTimestamp );
+		}
 
 
 		if (self::hasTimeframe($timeframe)) {
