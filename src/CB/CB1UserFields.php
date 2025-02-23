@@ -147,7 +147,7 @@ class CB1UserFields {
 													?>
 						<br/>
 						<input type="checkbox" name="<?php esc_attr_e( $field['field_name'] ); ?>"
-								id="<?php esc_attr_e( $field['field_name'] ); ?>" value="yes" 
+								id="<?php esc_attr_e( $field['field_name'] ); ?>" value="yes"
 													<?php
 													if ( $row == 'yes' ) {
 														echo 'checked';
@@ -279,7 +279,7 @@ class CB1UserFields {
 			<tr>
 				<th><label for="address"><?php esc_html_e( 'Address', 'commonsbooking' ); ?></label></th>
 				<td>
-					<input type="textarea" name="address" id="address"
+					<input type="text" name="address" id="address"
 							value="<?php echo esc_attr( get_the_author_meta( 'address', $user->ID ) ); ?>"
 							class="regular-text"/><br/>
 				</td>
@@ -289,7 +289,7 @@ class CB1UserFields {
 				</th>
 				<td>
 					<input type="checkbox" name="terms_accepted" id=" terms_accepted " disabled
-							value="yes" 
+							value="yes"
 							<?php
 							if ( esc_attr( get_the_author_meta( 'terms_accepted', $user->ID ) ) == 'yes' ) {
 								echo 'checked';
