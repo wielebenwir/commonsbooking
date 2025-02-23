@@ -10,6 +10,7 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Repository\TimeframeRelations;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
@@ -56,6 +57,9 @@ class Plugin {
 
 		// Init booking codes table
 		BookingCodes::initBookingCodesTable();
+
+		//Init Relations Table
+		TimeframeRelations::initTable();
 
 		self::clearCache();
 	}

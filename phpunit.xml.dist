@@ -16,6 +16,7 @@
 	</testsuites>
     <php>
         <ini name="xdebug.mode" value="coverage" />
+        <const name="PHPUNIT_COMMONSBOOKING_TESTING" value="true"/>
     </php>
     <logging>
         <testdoxXml outputFile="build/logs/xml.log" />
