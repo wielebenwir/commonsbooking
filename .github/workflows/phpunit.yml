@@ -46,6 +46,11 @@ jobs:
         php-version: ${{ matrix.php }}
         extensions: uopz
 
+    # This is needed for the WordPress test suite installation ( bin/install-wp-tests.sh )
+    - name: Install SVN
+      run: sudo apt install -y subversion
+
+
     - name: Validate composer.json and composer.lock
       run: composer validate
 
