@@ -22,7 +22,7 @@ jobs:
   phpunit:
     name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -45,6 +45,11 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
         extensions: uopz
+
+    # This is needed for the WordPress test suite installation ( bin/install-wp-tests.sh )
+    - name: Install SVN
+      run: sudo apt install -y subversion
+
 
     - name: Validate composer.json and composer.lock
       run: composer validate
