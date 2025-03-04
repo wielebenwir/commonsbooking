@@ -1179,6 +1179,9 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getAdmins(): array {
+
+		$itemAdminIds = [];
+
 		$location = $this->getLocation();
 		if ( ! empty( $location ) ) {
 			$locationAdminIds = $location->getAdmins();

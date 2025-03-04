@@ -271,7 +271,7 @@ class Booking extends Timeframe {
 			);
 		}
 
-		/** @var \CommonsBooking\Model\Booking $booking */
+		/** @var \CommonsBooking\Model\Booking|null $booking */
 		$booking = \CommonsBooking\Repository\Booking::getByDate(
 			$repetitionStart,
 			$repetitionEnd,
@@ -905,7 +905,7 @@ class Booking extends Timeframe {
 	public function displayOverlappingBookingNotice( $post ) {
 
 		if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
-			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning' ) );
+			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );
 		}
 	}
 
