@@ -169,7 +169,7 @@ class Booking extends View {
 				$locationTitle = $location ? $booking->getLocation()->post_title : commonsbooking_sanitizeHTML( __( 'Not available', 'commonsbooking' ) );
 
 				// Prepare row data
-				// FIXME does this follow any common schema, which we already use when exposing this data?
+				// FIXME This untyped structure is exposed via the filter commonsbooking_booking_filter below, but the set of keys of the assoc array must not be changed. This is not ideal and should be either replace by a dedicated object type or removed entirely.
 				// If not, why not expose this as own type?
 				$rowData = [
 					'postID'             => $booking->ID,
@@ -237,6 +237,8 @@ class Booking extends View {
 					/**
 					 * Default assoc array of row data and the booking object, which gets added to the booking list data result.
 					 *
+					 * NOTE: Upon using this filter hook, the schema of associative array keys needs to be adhered to in order to not break the booking list.
+					 *
 					 * @since 2.7.3
 					 *
 					 * @param array                         $rowData assoc array of one row booking data
@@ -253,7 +255,7 @@ class Booking extends View {
 				$bookingDataArray['menu'] = ' <div class="cb-dropdown" style="float:right;"> <div id="cb-bookingdropbtn" class="cb-dropbtn"></div> <div class="cb-dropdown-content">' . $menuitems . '</div> </div>';
 			}
 
-			// TODO does this account for empty entries in data, when apply filters return empty booking object??? what purpose has the booking_filter?
+			// TODO remove null values from $bookingDataArray['data'] to not break pagination logic
 			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
 				$totalCount                      = count( $bookingDataArray['data'] );
 				$bookingDataArray['total']       = $totalCount;
