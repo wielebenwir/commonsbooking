@@ -261,6 +261,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "disallowLockDaysInRange": globalCalendarData['disallowLockDaysInRange'],
                 "disallowHolidaysInRange": globalCalendarData['disallowLockDaysInRange'], //we treat holidays as locked days
                 "mobileFriendly": true,
+                "mobileCalendarMonthCount": globalCalendarData['mobileCalendarMonthCount'],
                 "selectForward": true,
                 "useResetBtn": true,
                 "maxDays": globalCalendarData['maxDays'],
