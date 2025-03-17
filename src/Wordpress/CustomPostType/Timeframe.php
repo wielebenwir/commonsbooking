@@ -307,7 +307,6 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in booking list
-	 *
 	 */
 	public static function addAdminStatusFilter() {
 		$values = [];
@@ -838,12 +837,13 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return array
 	 */
-	public static function getSelectionOptions() {
-		return [
-			\CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID => esc_html__( 'Manual selection', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID  => esc_html__( 'Select by category', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID  => esc_html__( 'All', 'commonsbooking' ),
-		];
+	public static function getSelectionOptions(): array {
+		$selection = [ \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID => esc_html__( 'Manual selection', 'commonsbooking' ) ];
+		if ( commonsbooking_isCurrentUserAdmin() ) {
+			$selection[ \CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID ] = esc_html__( 'Select by category', 'commonsbooking' );
+			$selection[ \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID ]      = esc_html__( 'All', 'commonsbooking' );
+		}
+		return $selection;
 	}
 
 	/**
