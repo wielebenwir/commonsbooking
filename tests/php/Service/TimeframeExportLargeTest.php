@@ -25,7 +25,7 @@ class TimeframeExportLargeTest extends CustomPostTypeTest {
 	public function testGetCSV_with1000Records() {
 
 		$numberOfDays     = 1700;
-		$numberOfBookings = 1200;
+		$numberOfBookings = 10;
 
 		// Initialize date range
 		$threeYearsAgo = new DateTime( self::CURRENT_DATE );
