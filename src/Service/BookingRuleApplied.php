@@ -191,21 +191,30 @@ class BookingRuleApplied extends BookingRule {
 	 *
 	 * @return string JSON-encoded rule properties, or an empty string on failure.
 	 */
- 	public static function getRulesJSON(): string {
-    try {
-      $ruleObjects = static::init(true);
+	public static function getRulesJSON(): string {
+		try {
+			$ruleObjects = static::init( true );
 
 			// Ensure we return valid JSON or an empty string if encoding fails
-			return wp_json_encode(array_map(function($rule) {
-				return get_object_vars($rule);
-			}, $ruleObjects)) ?: '';
-		} catch (Exception $e) {
-			if (WP_DEBUG) {
-				error_log( $e->getMessage() );
+			$json = wp_json_encode(
+				array_map(
+					function ( $rule ) {
+						return get_object_vars( $rule );
+					},
+					$ruleObjects
+				)
+			);
+			if ( $json ) {
+				return $json;
+			} elseif ( WP_DEBUG ) {
+				error_log( 'Could not encode rules object.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			}
-
-			return ''; // Return an empty string if initialization or encoding fails
+		} catch ( Exception $e ) {
+			if ( WP_DEBUG ) {
+				error_log( $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
 		}
+		return ''; // Return an empty string if initialization or encoding fails
 	}
 
 	/**
