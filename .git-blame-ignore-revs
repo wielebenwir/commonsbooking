@@ -1,3 +1,9 @@
 # .git-blame-ignore-revs
 # Apply phpcbf to entire codebase
 59340f68fb9c6d6e680ac3ad40a3d095e98837a6
+
+# Apply phpcbf to php tests code
+9f0bd0de52d5dca442317c14867be7702e1a7c73
+
+# Apply phpcbf to commonsbooking.php
+f8bdfd6d5d595f22d7c0345a2eb35571343ed134

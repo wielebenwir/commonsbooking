@@ -7,7 +7,7 @@ use CommonsBooking\View\Booking;
 
 final class BookingTest extends CustomPostTypeTest {
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->createBooking(
 			$this->locationId,
@@ -17,7 +17,7 @@ final class BookingTest extends CustomPostTypeTest {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
@@ -26,5 +26,4 @@ final class BookingTest extends CustomPostTypeTest {
 		$bookings = Booking::getBookingListData();
 		$this->assertTrue( $bookings['total'] == 1 );
 	}
-
 }

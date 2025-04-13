@@ -26,7 +26,7 @@ class DayTest extends CustomPostTypeTest {
 
 	private $bookableTimeframeManualDateInputTomorrow;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->bookableTimeframeForCurrentDayId = $this->createBookableTimeFrameIncludingCurrentDay();
 
@@ -37,7 +37,7 @@ class DayTest extends CustomPostTypeTest {
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
-			"norep"
+			'norep'
 		);
 
 		$this->bookableTimeframeNoRepSingleDayTodayId = $this->createTimeframe(
@@ -47,7 +47,7 @@ class DayTest extends CustomPostTypeTest {
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
-			"norep"
+			'norep'
 		);
 
 		$this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId = $this->createTimeframe(
@@ -57,40 +57,40 @@ class DayTest extends CustomPostTypeTest {
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
-			"norep"
+			'norep'
 		);
 
-		//get the current weekday of the current date
-		$weekday = date('w', strtotime(self::CURRENT_DATE)) ;
+		// get the current weekday of the current date
+		$weekday = date( 'w', strtotime( self::CURRENT_DATE ) );
 		$weekday = $weekday == 0 ? 7 : $weekday;
 
 		$this->bookableTimeframeOnceWeeklyValidTodayNoEnd = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-7 days', strtotime(self::CURRENT_DATE )),
+			strtotime( '-7 days', strtotime( self::CURRENT_DATE ) ),
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
-			"w",
+			'w',
 			0,
-			"8:00 AM",
-			"12:00 PM",
-			"publish",
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
 			[ strval( $weekday ) ]
 		);
 
 		$this->bookableTimeframeOnceWeeklyValidTodayWithEnd = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '-7 days', strtotime ( self::CURRENT_DATE ) ),
+			strtotime( '-7 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
-			"w",
+			'w',
 			0,
-			"8:00 AM",
-			"12:00 PM",
-			"publish",
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
 			[ strval( $weekday ) ]
 		);
 
@@ -101,15 +101,15 @@ class DayTest extends CustomPostTypeTest {
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
-			"manual",
+			'manual',
 			0,
-			"8:00 AM",
-			"12:00 PM",
-			"publish",
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
 			'',
 			$this->dateFormatted
 		);
-		$tfModel = new Timeframe($this->bookableTimeframeManualDateInputOnlyForToday);
+		$tfModel = new Timeframe( $this->bookableTimeframeManualDateInputOnlyForToday );
 		$tfModel->updatePostMetaStartAndEndDate();
 
 		$this->bookableTimeframeManualDateInputTomorrow = $this->createTimeframe(
@@ -119,16 +119,16 @@ class DayTest extends CustomPostTypeTest {
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
 			'on',
-			"manual",
+			'manual',
 			0,
-			"8:00 AM",
-			"12:00 PM",
-			"publish",
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
 			'',
 			date( 'Y-m-d', strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ) )
 		);
-		//we need to save the post so that a valid repetition_start and repetition_end is set
-		$tfModel = new Timeframe($this->bookableTimeframeManualDateInputTomorrow);
+		// we need to save the post so that a valid repetition_start and repetition_end is set
+		$tfModel = new Timeframe( $this->bookableTimeframeManualDateInputTomorrow );
 		$tfModel->updatePostMetaStartAndEndDate();
 
 		$this->createUnconfirmedBookingEndingTomorrow();
@@ -140,7 +140,7 @@ class DayTest extends CustomPostTypeTest {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
@@ -149,11 +149,11 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testGetDayOfWeek() {
-		$this->assertTrue( date('w', strtotime(self::CURRENT_DATE)) == $this->instance->getDayOfWeek() );
+		$this->assertTrue( date( 'w', strtotime( self::CURRENT_DATE ) ) == $this->instance->getDayOfWeek() );
 	}
 
 	public function testGetDate() {
-		$this->assertEquals($this->dateFormatted ,$this->instance->getDate() );
+		$this->assertEquals( $this->dateFormatted, $this->instance->getDate() );
 	}
 
 	public function testIsInTimeframe() {
@@ -192,18 +192,18 @@ class DayTest extends CustomPostTypeTest {
 	}
 
 	public function testGetRestrictions() {
-		$this->assertTrue( count($this->instance->getRestrictions()) == 0 );
+		$this->assertTrue( count( $this->instance->getRestrictions() ) == 0 );
 
 		$this->createRestriction(
-			"hint",
+			'hint',
 			$this->locationId,
 			$this->itemId,
-			strtotime(self::CURRENT_DATE),
-			strtotime("tomorrow", strtotime(self::CURRENT_DATE))
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) )
 		);
 
-		$this->assertIsArray($this->instance->getRestrictions());
-		$this->assertTrue(count($this->instance->getRestrictions()) == 1);
+		$this->assertIsArray( $this->instance->getRestrictions() );
+		$this->assertTrue( count( $this->instance->getRestrictions() ) == 1 );
 	}
 
 
@@ -216,7 +216,4 @@ class DayTest extends CustomPostTypeTest {
 		$end = strtotime( self::CURRENT_DATE . ' 23:59:59' );
 		$this->assertEquals( $end, $this->instance->getEndTimestamp() );
 	}
-
-
-
 }

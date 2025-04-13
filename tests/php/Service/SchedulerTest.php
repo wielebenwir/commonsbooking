@@ -8,30 +8,30 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use DateTime;
 
 function dummyFunction() {
-	print("Hello world");
+	print( 'Hello world' );
 }
 
-class SchedulerTest extends CustomPostTypeTest
-{
+class SchedulerTest extends CustomPostTypeTest {
+
 	private Scheduler $scheduler;
-	private String $dummyOptionsKey = 'commonsbooking_options_tests';
-	private String $dummyFieldId = 'test_field_toggle';
-	private String $dummyUpdateHook = 'update_option_commonsbooking_options_tests';
+	private string $dummyOptionsKey = 'commonsbooking_options_tests';
+	private string $dummyFieldId    = 'test_field_toggle';
+	private string $dummyUpdateHook = 'update_option_commonsbooking_options_tests';
 	private array $jobhooks;
 
 	public function testSchedule() {
 		$this->assertIsInt(
-			wp_next_scheduled($this->scheduler->getJobhook())
+			wp_next_scheduled( $this->scheduler->getJobhook() )
 		);
 	}
 
 	public function testUnschedule() {
 		$this->assertIsInt(
-			wp_next_scheduled($this->scheduler->getJobhook())
+			wp_next_scheduled( $this->scheduler->getJobhook() )
 		);
-		Settings::updateOption($this->dummyOptionsKey,$this->dummyFieldId,'off');
+		Settings::updateOption( $this->dummyOptionsKey, $this->dummyFieldId, 'off' );
 		$this->assertFalse(
-			wp_next_scheduled($this->scheduler->getJobhook())
+			wp_next_scheduled( $this->scheduler->getJobhook() )
 		);
 	}
 
@@ -40,35 +40,35 @@ class SchedulerTest extends CustomPostTypeTest
 	 * @return void
 	 */
 	public function testReSchedule() {
-		$dailyJob = new Scheduler(
+		$dailyJob         = new Scheduler(
 			'test2',
 			'CommonsBooking\Tests\Service\dummyFunction',
 			'daily',
 			'13:00',
-			array($this->dummyOptionsKey,$this->dummyFieldId),
+			array( $this->dummyOptionsKey, $this->dummyFieldId ),
 			$this->dummyUpdateHook
 		);
 		$this->jobhooks[] = $dailyJob->getJobhook();
 
 		$now = new DateTime();
-		//time is saved in UTC format, will be fixed in #1429
-		$nextTime = DateTime::createFromFormat('H:i', '13:00', new \DateTimeZone('UTC'));
+		// time is saved in UTC format, will be fixed in #1429
+		$nextTime = DateTime::createFromFormat( 'H:i', '13:00', new \DateTimeZone( 'UTC' ) );
 
-		if ($nextTime < $now) {
-			$nextTime->modify('+1 day');
+		if ( $nextTime < $now ) {
+			$nextTime->modify( '+1 day' );
 		}
 		$nextTimeTimestamp = $nextTime->getTimestamp();
 
 		$this->assertEquals(
 			$nextTimeTimestamp,
-			wp_next_scheduled($dailyJob->getJobhook())
+			wp_next_scheduled( $dailyJob->getJobhook() )
 		);
 
-		//now we update the time and check if the job is rescheduled (it is first unscheduled and then loaded again)
-		Settings::updateOption($this->dummyOptionsKey,$this->dummyFieldId,'13:00');
-		//job was unloaded to be rescheduled
+		// now we update the time and check if the job is rescheduled (it is first unscheduled and then loaded again)
+		Settings::updateOption( $this->dummyOptionsKey, $this->dummyFieldId, '13:00' );
+		// job was unloaded to be rescheduled
 		$this->assertFalse(
-			wp_next_scheduled($dailyJob->getJobhook())
+			wp_next_scheduled( $dailyJob->getJobhook() )
 		);
 	}
 
@@ -79,12 +79,12 @@ class SchedulerTest extends CustomPostTypeTest
 
 		$thirty_minutes = 'thirty_minutes';
 
-		$customSchedule = new Scheduler(
+		$customSchedule   = new Scheduler(
 			'test2',
 			'CommonsBooking\Tests\Service\dummyFunction',
 			$thirty_minutes,
 			'',
-			array($this->dummyOptionsKey,$this->dummyFieldId),
+			array( $this->dummyOptionsKey, $this->dummyFieldId ),
 			$this->dummyUpdateHook
 		);
 		$this->jobhooks[] = $customSchedule->getJobhook();
@@ -99,30 +99,28 @@ class SchedulerTest extends CustomPostTypeTest
 			wp_next_scheduled( $customSchedule->getJobhook() )
 		);
 
-		$event = wp_get_scheduled_event($customSchedule->getJobhook());
-		$this->assertEquals( $thirty_minutes , $event->schedule );
-
+		$event = wp_get_scheduled_event( $customSchedule->getJobhook() );
+		$this->assertEquals( $thirty_minutes, $event->schedule );
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
-		Settings::updateOption($this->dummyOptionsKey,$this->dummyFieldId,'on');
-		$this->scheduler = new Scheduler(
+		Settings::updateOption( $this->dummyOptionsKey, $this->dummyFieldId, 'on' );
+		$this->scheduler  = new Scheduler(
 			'test',
 			'CommonsBooking\Tests\Service\dummyFunction',
 			'hourly',
 			'',
-			array($this->dummyOptionsKey,$this->dummyFieldId),
+			array( $this->dummyOptionsKey, $this->dummyFieldId ),
 			$this->dummyUpdateHook
 		);
 		$this->jobhooks[] = $this->scheduler->getJobhook();
 	}
 
 	protected function tearDown(): void {
-		foreach ($this->jobhooks as $jobhook){
-			wp_clear_scheduled_hook($jobhook);
+		foreach ( $this->jobhooks as $jobhook ) {
+			wp_clear_scheduled_hook( $jobhook );
 		}
 		parent::tearDown();
 	}
-
 }

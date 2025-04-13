@@ -9,8 +9,8 @@ use CommonsBooking\Service\Upgrade;
  */
 class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 
-	const ACTION = 'cb_run_upgrade';
-	private static int $functionCounter = 1;
+	const ACTION                          = 'cb_run_upgrade';
+	private static int $functionCounter   = 1;
 	private static bool $secondTaskHasRun = false;
 
 	public function testRunAJAXUpgradeTasks() {
@@ -31,15 +31,15 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		$_POST['data'] = [
 			'progress' => [
 				'task' => $response->progress->task,
-				'page' => $response->progress->page
-			]
+				'page' => $response->progress->page,
+			],
 		];
 		try {
 			$this->_handleAjax( self::ACTION );
 		} catch ( \WPAjaxDieContinueException $e ) {
 			// We expect this exception to be thrown
 		}
-		//trim the first response away, for some reason, the responses are just appended to each other
+		// trim the first response away, for some reason, the responses are just appended to each other
 		$secondResponse = substr( $this->_last_response, strlen( $firstResponse ) );
 		$response       = json_decode( $secondResponse );
 		$this->assertEquals( 3, self::$functionCounter );
@@ -47,12 +47,12 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		$this->assertEquals( 0, $response->progress->task );
 		$this->assertFalse( $response->success );
 
-		//first task is done, after this the second task should be run
+		// first task is done, after this the second task should be run
 		$_POST['data'] = [
 			'progress' => [
 				'task' => $response->progress->task,
-				'page' => $response->progress->page
-			]
+				'page' => $response->progress->page,
+			],
 		];
 		try {
 			$this->_handleAjax( self::ACTION );
@@ -69,8 +69,8 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		$_POST['data'] = [
 			'progress' => [
 				'task' => $response->progress->task,
-				'page' => $response->progress->page
-			]
+				'page' => $response->progress->page,
+			],
 		];
 		try {
 			$this->_handleAjax( self::ACTION );
@@ -124,7 +124,7 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		$_POST['_wpnonce'] = wp_create_nonce( self::ACTION );
 		$_POST['data']     = [
 			'task' => '0',
-			'page' => '1'
+			'page' => '1',
 		];
 
 		$tasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'upgradeTasks' );
@@ -133,16 +133,18 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 
 		$ajaxTasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'ajaxUpgradeTasks' );
 		$ajaxTasks->setAccessible( true );
-		$ajaxTasks->setValue( [
-			'2.5.2' => [
-				[ self::class, 'incrementerFunction' ],
-				[ self::class, 'secondTaskFunction' ]
+		$ajaxTasks->setValue(
+			[
+				'2.5.2' => [
+					[ self::class, 'incrementerFunction' ],
+					[ self::class, 'secondTaskFunction' ],
+				],
 			]
-		] );
+		);
 	}
 
 	public function tear_down() {
-		self::$functionCounter = 1;
+		self::$functionCounter  = 1;
 		self::$secondTaskHasRun = false;
 		parent::tear_down();
 	}
