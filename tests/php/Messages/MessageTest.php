@@ -8,6 +8,9 @@ use CommonsBooking\Model\MessageRecipient;
 
 class MessageTest extends Email_Test_Case {
 
+	/**
+	 * @var Message
+	 */
 	private $message;
 	/**
 	 * @var int|\WP_Error
@@ -159,6 +162,18 @@ class MessageTest extends Email_Test_Case {
 		$this->assertIsArray( $wp_mail_attachments );
 		$this->assertCount( 1, $wp_mail_attachments );
 		$this->assertEquals( self::ATTACHMENT_STRING, $wp_mail_attachments[0] );
+	}
+
+	public function testAddStringAttachments_multidimenstionArray() {
+		// This only tests the function standalone and not the integration with WordPress
+		$atts = [ 'attachments' => [ [ self::ATTACHMENT_STRING ], [ self::ATTACHMENT_STRING ] ] ];
+		$this->message->addStringAttachments( $atts );
+		global $wp_mail_attachments;
+
+		$this->assertIsArray( $wp_mail_attachments );
+		$this->assertCount( 2, $wp_mail_attachments );
+		$this->assertEquals( self::ATTACHMENT_STRING, $wp_mail_attachments[0] );
+		$this->assertEquals( self::ATTACHMENT_STRING, $wp_mail_attachments[1] );
 	}
 
 	/**
