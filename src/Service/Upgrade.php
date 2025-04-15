@@ -56,6 +56,9 @@ class Upgrade {
 		'2.10'  => [
 			[ self::class, 'migrateMapSettings' ],
 		],
+		'2.10.3' => [
+			[ self::class, 'migrateCacheSettings' ],
+		],
 	];
 
 	/**
@@ -439,7 +442,7 @@ class Upgrade {
 
 	/**
 	 * sets the default value for multi selection to manual in all existing timeframes.
-	 * Multi selection for timeframes are available since 2.9 (estimated) - all timeframes created prior to this version need to have a value for selection
+	 * Multi selection for timeframes are available since 2.9 - all timeframes created prior to this version need to have a value for selection
 	 *
 	 * This function is labour intensive and runs in AJAX.
 	 *
@@ -559,6 +562,29 @@ class Upgrade {
 				}
 				update_post_meta( $map->ID, 'filtergroups', $newCategoryArray );
 			}
+		}
+	}
+
+	/**
+	 * Move the old settings for the cache over to the new format.
+	 *
+	 * @return void
+	 * @since 2.10.3
+	 */
+	public static function migrateCacheSettings(): void {
+		if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on' ) {
+			Settings::updateOption(
+				COMMONSBOOKING_PLUGIN_SLUG . '_options-advanced-options',
+				'cache_location',
+				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' )
+			);
+			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options-advanced-options', 'cache_adapter', 'redis' );
+		} else {
+			Settings::updateOption(
+				COMMONSBOOKING_PLUGIN_SLUG . '_options-advanced-options',
+				'cache_location',
+				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' )
+			);
 		}
 	}
 }
