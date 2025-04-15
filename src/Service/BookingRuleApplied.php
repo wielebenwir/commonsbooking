@@ -8,6 +8,7 @@ use CommonsBooking\Model\Booking;
 use CommonsBooking\Repository\UserRepository;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\Options\OptionsTab;
+use Exception;
 
 /**
  * Represents a valid configuration of a {@see BookingRule}, which can be applied to bookings.
@@ -184,17 +185,18 @@ class BookingRuleApplied extends BookingRule {
 	}
 
 	/**
-	 * Gets a string of all rule properties, so they can be displayed using CMB2
+	 * Retrieves a JSON string of all rule properties to display using CMB2.
 	 *
-	 * Will ignore errors, so that the settings page can still display the selected values even if they are invalid
+	 * If initialization or encoding fails, returns an empty string to ensure the page functions.
 	 *
-	 * @return string
+	 * @return string JSON-encoded rule properties, or an empty string on failure.
 	 */
 	public static function getRulesJSON(): string {
-		$ruleObjects = static::init( true );
+		try {
+			$ruleObjects = static::init( true );
 
-		if ( isset( $ruleObjects ) ) {
-			return wp_json_encode(
+			// Ensure we return valid JSON or an empty string if encoding fails
+			$json = wp_json_encode(
 				array_map(
 					function ( $rule ) {
 						return get_object_vars( $rule );
@@ -202,9 +204,17 @@ class BookingRuleApplied extends BookingRule {
 					$ruleObjects
 				)
 			);
-		} else {
-			return '';
+			if ( $json ) {
+				return $json;
+			} elseif ( WP_DEBUG ) {
+				error_log( 'Could not encode rules object.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
+		} catch ( Exception $e ) {
+			if ( WP_DEBUG ) {
+				error_log( $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			}
 		}
+		return ''; // Return an empty string if initialization or encoding fails
 	}
 
 	/**

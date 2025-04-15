@@ -27,7 +27,7 @@ class CB {
 	 * @param mixed            $args
 	 * @param callable         $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
 	 *
-	 * @return string|null property of (custom) post (sanitized) or null if not found
+	 * @return null|string property of (custom) post (sanitized) or null if not found
 	 * @throws Exception
 	 */
 	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {

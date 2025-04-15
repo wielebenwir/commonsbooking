@@ -3,6 +3,7 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Model\MessageRecipient;
+use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use function commonsbooking_parse_template;
 
@@ -321,10 +322,10 @@ abstract class Message {
 	 */
 	public function addStringAttachments( $atts ) {
 		$attachment_arrays = [];
-		if ( array_key_exists( 'attachments', $atts ) && isset( $atts['attachments'] ) && $atts['attachments'] ) {
+		if ( ! empty( $atts['attachments'] ) ) {
 			$attachments = $atts['attachments'];
-			if ( is_array( $attachments ) && ! empty( $attachments ) ) {
-				// Is the $attachments array a single array of attachment data, or an array containing multiple arrays of
+			if ( is_array( $attachments ) ) {
+				// Is the $attachments array a single array of attachment data, or an array containing multiple arrays of 
 				// attachment data? (note that the array may also be a one-dimensional array of file paths, as-per default usage).
 				$is_multidimensional_array = count( $attachments ) == count( $attachments, COUNT_RECURSIVE ) ? false : true;
 				if ( ! $is_multidimensional_array ) {
@@ -357,6 +358,9 @@ abstract class Message {
 			// the $wp_mail_attachments global to check for any additional attachments to add.
 			add_action(
 				'phpmailer_init',
+				/**
+				 * @var $phpmailer PHPMailer
+				 */
 				function ( $phpmailer ) {
 					// Check the $wp_mail_attachments global for any attachment data, and reset it for good measure.
 					$attachment_arrays = [];
