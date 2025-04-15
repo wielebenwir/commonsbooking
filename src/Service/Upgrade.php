@@ -56,7 +56,7 @@ class Upgrade {
 		'2.10'  => [
 			[ self::class, 'migrateMapSettings' ],
 		],
-		'2.10.3' => [
+		'2.10.4' => [
 			[ self::class, 'migrateCacheSettings' ],
 		],
 	];
@@ -569,7 +569,7 @@ class Upgrade {
 	 * Move the old settings for the cache over to the new format.
 	 *
 	 * @return void
-	 * @since 2.10.3
+	 * @since 2.10.4
 	 */
 	public static function migrateCacheSettings(): void {
 		if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on' ) {
