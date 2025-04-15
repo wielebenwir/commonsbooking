@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-15T11:41:56+00:00\n"
+"POT-Creation-Date: 2025-04-15T14:54:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: commonsbooking\n"
@@ -1417,7 +1417,7 @@ msgstr ""
 msgid "booking code for item \"%1$s\": %2$s"
 msgstr ""
 
-#: src/Messages/Message.php:204
+#: src/Messages/Message.php:205
 msgid "Could not send email because mail-template was not available. Check options -> templates"
 msgstr ""
 
@@ -1788,27 +1788,27 @@ msgstr ""
 msgid "You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month."
 msgstr ""
 
-#: src/Service/BookingRuleApplied.php:60
+#: src/Service/BookingRuleApplied.php:61
 msgid "You need to specify a category, if the rule does not apply to all items"
 msgstr ""
 
-#: src/Service/BookingRuleApplied.php:79
+#: src/Service/BookingRuleApplied.php:80
 msgid "Booking rules: Not enough parameters specified."
 msgstr ""
 
-#: src/Service/BookingRuleApplied.php:83
+#: src/Service/BookingRuleApplied.php:84
 msgid "Booking rules: Parameters need to be a number."
 msgstr ""
 
-#: src/Service/BookingRuleApplied.php:89
+#: src/Service/BookingRuleApplied.php:90
 msgid "Booking rules: Select parameter has not been properly set."
 msgstr ""
 
-#: src/Service/BookingRuleApplied.php:167
+#: src/Service/BookingRuleApplied.php:168
 msgid "This affects the following bookings:"
 msgstr ""
 
-#: src/Service/BookingRuleApplied.php:239
+#: src/Service/BookingRuleApplied.php:249
 msgid "Booking rules: No rule type specified."
 msgstr ""
 

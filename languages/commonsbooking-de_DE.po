@@ -1268,7 +1268,7 @@ msgstr "Der Dienst ist derzeit nicht verfügbar. Versuche  später erneut."
 msgid "comming soon"
 msgstr "Bald verfügbar"
 
-#: src/Messages/Message.php:204
+#: src/Messages/Message.php:205
 msgid "Could not send email because mail-template was not available. Check options -> templates"
 msgstr "E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar war. Optionen überprüfen -> Vorlagen"
 
@@ -3816,27 +3816,27 @@ msgstr "Du kannst maximal %1$s Tage pro Monat buchen. Bitte versuche es nochmal 
 msgid "You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month."
 msgstr "Du kannst maximal %1$s Buchungen pro Monat tätigen. Bitte versuche es nochmal nach dem %2$s. nächsten Monats."
 
-#: src/Service/BookingRuleApplied.php:60
+#: src/Service/BookingRuleApplied.php:61
 msgid "You need to specify a category, if the rule does not apply to all items"
 msgstr "Du musst eine Kategorie festlegen, wenn diese Regel nicht für alle Artikel gilt"
 
-#: src/Service/BookingRuleApplied.php:79
+#: src/Service/BookingRuleApplied.php:80
 msgid "Booking rules: Not enough parameters specified."
 msgstr "Buchungsregeln: Nicht genug Parameter angegeben."
 
-#: src/Service/BookingRuleApplied.php:83
+#: src/Service/BookingRuleApplied.php:84
 msgid "Booking rules: Parameters need to be a number."
 msgstr "Buchungsregeln: Parameter müssen eine Zahl sein."
 
-#: src/Service/BookingRuleApplied.php:89
+#: src/Service/BookingRuleApplied.php:90
 msgid "Booking rules: Select parameter has not been properly set."
 msgstr "Buchungsregeln: Auswahl-Parameter wurde nicht richtig gesetzt."
 
-#: src/Service/BookingRuleApplied.php:167
+#: src/Service/BookingRuleApplied.php:168
 msgid "This affects the following bookings:"
 msgstr "Das betrifft folgende Buchungen:"
 
-#: src/Service/BookingRuleApplied.php:239
+#: src/Service/BookingRuleApplied.php:249
 msgid "Booking rules: No rule type specified."
 msgstr "Buchungsregeln: Kein Regeltyp festgelegt."
 
