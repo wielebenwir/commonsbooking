@@ -166,7 +166,7 @@ class MessageTest extends Email_Test_Case {
 
 	public function testAddStringAttachments_multidimenstionArray() {
 		// This only tests the function standalone and not the integration with WordPress
-		$atts = [ 'attachments' => [ [ self::ATTACHMENT_STRING ], [ self::ATTACHMENT_STRING ] ] ];
+		$atts = [ 'attachments' => [ self::ATTACHMENT_FILENAME, self::ATTACHMENT_STRING ] ];
 		$this->message->addStringAttachments( $atts );
 		global $wp_mail_attachments;
 
