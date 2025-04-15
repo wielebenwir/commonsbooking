@@ -44,7 +44,12 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testGetSelectionOptions() {
-		$this->assertIsArray( Timeframe::getSelectionOptions() );
+		$this->createCBManager();
+		$this->createAdministrator();
+		wp_set_current_user( $this->adminUserID );
+		$this->assertCount(3,  Timeframe::getSelectionOptions() );
+		wp_set_current_user( $this->cbManagerUserID );
+		$this->assertCount(1,  Timeframe::getSelectionOptions() );
 	}
 
 	public function testGetGridOptions() {
