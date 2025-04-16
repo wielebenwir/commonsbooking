@@ -570,7 +570,7 @@ class Timeframe extends CustomPostType {
 					'type' => 'number',
 					'min'  => '1',
 				),
-				'default_value'    => 3,
+				'default_value'    => \CommonsBooking\Model\Timeframe::MAX_DAYS_DEFAULT,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
