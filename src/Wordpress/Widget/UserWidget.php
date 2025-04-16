@@ -15,46 +15,56 @@ class UserWidget extends WP_Widget {
 		parent::__construct(
 			'commonsbooking-user-widget',  // Base ID
 			'CommonsBooking User Widget',   // Name
-			array( 'description' => esc_html__( 'Shows links to My Bookings, Login, Logout. Please set the Bookings Page in CommonsBooking Settings (General-Tab)', 'commonsbooking' ), )
+			array( 'description' => esc_html__( 'Shows links to My Bookings, Login, Logout. Please set the Bookings Page in CommonsBooking Settings (General-Tab)', 'commonsbooking' ) )
 		);
 
-		add_action( 'widgets_init', function () {
-			register_widget( '\CommonsBooking\Wordpress\Widget\UserWidget' );
-		} );
-
+		add_action(
+			'widgets_init',
+			function () {
+				register_widget( '\CommonsBooking\Wordpress\Widget\UserWidget' );
+			}
+		);
 	}
 
 	public $args = array(
 		'before_title'  => '<h4 class="widgettitle">',
 		'after_title'   => '</h4>',
 		'before_widget' => '<div class="widget-wrap">',
-		'after_widget'  => '</div></div>'
+		'after_widget'  => '</div></div>',
 	);
 
 	public function widget( $args, $instance ) {
 
-		echo commonsbooking_sanitizeHTML($args['before_widget']);
+		echo commonsbooking_sanitizeHTML( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo commonsbooking_sanitizeHTML($args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title']);
+			$unfilteredTitle = $instance['title'];
+			/**
+			 * Default widget title
+			 *
+			 * @since 2.10.0 uses commonsbooking prefix
+			 * @since 2.4.0
+			 *
+			 * @param string $unfilteredTitle of the widget
+			 */
+			$title = apply_filters( 'commonsbooking_widget_title', $unfilteredTitle );
+			echo commonsbooking_sanitizeHTML( $args['before_title'] . $title . $args['after_title'] );
 		}
 
 		echo '<div class="textwidget">';
 
-		echo commonsbooking_sanitizeHTML($this->renderWidgetContent());
+		echo commonsbooking_sanitizeHTML( $this->renderWidgetContent() );
 
 		echo '</div>';
 
-		echo commonsbooking_sanitizeHTML($args['after_widget']);
-
+		echo commonsbooking_sanitizeHTML( $args['after_widget'] );
 	}
 
 	public function renderWidgetContent() {
 
-		$content = "";
+		$content = '';
 
 		if ( is_user_logged_in() ) {
-
 			$current_user = wp_get_current_user();
 
 			$bookings_page_url = get_permalink( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_general', 'bookings_page' ) );
@@ -63,7 +73,7 @@ class UserWidget extends WP_Widget {
 			}
 
 			// user name or email
-			if (!empty($current_user->first_name)) {
+			if ( ! empty( $current_user->first_name ) ) {
 				$loginname = $current_user->first_name;
 			} else {
 				$loginname = $current_user->user_email;
@@ -79,20 +89,17 @@ class UserWidget extends WP_Widget {
 			// translators: $s =  wp logout url
 			$content .= sprintf( __( '<li><a href="%s">Log out</a></li>', 'commonsbooking' ), wp_logout_url() );
 			$content .= '</ul>';
-
 		} else {
-
-			$content = __( 'You are not logged in.', 'commonsbooking' );
-			$content .= "<ul>";
+			$content  = __( 'You are not logged in.', 'commonsbooking' );
+			$content .= '<ul>';
 			// translators: $s = wp login url
 			$content .= sprintf( __( '<li><a href="%s">Login</a></li>', 'commonsbooking' ), wp_login_url() );
 			// translators: $s = wp registration url
 			$content .= sprintf( __( '<li><a href="%s">Register</a></li>', 'commonsbooking' ), wp_registration_url() );
-			$content .= "</ul>";
+			$content .= '</ul>';
 		}
 
 		return $content;
-
 	}
 
 	/**
@@ -105,22 +112,21 @@ class UserWidget extends WP_Widget {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'commonsbooking' );
 		$text  = ! empty( $instance['text'] ) ? $instance['text'] : esc_html__( '', 'commonsbooking' );
 		?>
-        <p>
-            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php echo esc_html__( 'Title:', 'commonsbooking' ); ?></label>
-            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
-                   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
-                   value="<?php echo esc_attr( $title ); ?>">
-        </p>
-        <p>
-            <label for="<?php echo esc_attr( $this->get_field_id( 'Text' ) ); ?>"><?php echo esc_html__( 'Text:', 'commonsbooking' ); ?></label>
-            <textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"
-                      name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="text" cols="30"
-                      rows="10"><?php echo esc_attr( $text ); ?></textarea>
-        </p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php echo esc_html__( 'Title:', 'commonsbooking' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
+					name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
+					value="<?php echo esc_attr( $title ); ?>">
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'Text' ) ); ?>"><?php echo esc_html__( 'Text:', 'commonsbooking' ); ?></label>
+			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"
+						name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" cols="30"
+						rows="10"><?php echo esc_attr( $text ); ?></textarea>
+		</p>
 		<?php
 
 		return ''; // Parent class returns string, not used
-
 	}
 
 	public function update( $new_instance, $old_instance ) {
@@ -132,7 +138,6 @@ class UserWidget extends WP_Widget {
 
 		return $instance;
 	}
-
 }
 
 $my_widget = new UserWidget();

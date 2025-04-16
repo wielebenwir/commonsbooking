@@ -62,13 +62,13 @@ class AvailabilityRoute extends BaseRoute {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_item( $request ) {
-		//get parameters from request
-		$params             = $request->get_params();
-		$data               = new stdClass();
+		// get parameters from request
+		$params = $request->get_params();
+		$data   = new stdClass();
 		try {
 			$data->availability = $this->getItemData( $params['id'] );
 
-			//return a response or error based on some conditional
+			// return a response or error based on some conditional
 			if ( count( $data->availability ) ) {
 				return new WP_REST_Response( $data, 200 );
 			} else {
@@ -76,10 +76,9 @@ class AvailabilityRoute extends BaseRoute {
 				// TODO this part and the enclosing if-clause can be removed in future version, if no problems arose ...
 				return new WP_REST_Response( $data, 200 );
 			}
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			return new WP_Error( 'code', $e->getMessage() );
 		}
-
 	}
 
 	/**
@@ -94,16 +93,15 @@ class AvailabilityRoute extends BaseRoute {
 		$data->availability = [];
 
 		// Get all items
-		$items = Item::get([], true);
+		$items = Item::get( [], true );
 
 		// Collect availabilies for each item
-		foreach ($items as $item) {
+		foreach ( $items as $item ) {
 			$data->availability = array_merge(
 				$data->availability,
-				$this->getItemData($item->ID)
+				$this->getItemData( $item->ID )
 			);
 		}
 		return new WP_REST_Response( $data, 200 );
 	}
-
 }

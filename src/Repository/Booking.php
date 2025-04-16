@@ -37,7 +37,7 @@ class Booking extends PostRepository {
 	/**
 	 * Returns bookings ending at day of timestamp.
 	 *
-	 * @param int $timestamp
+	 * @param int   $timestamp
 	 * @param array $customArgs
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
@@ -83,7 +83,7 @@ class Booking extends PostRepository {
 	/**
 	 * Returns bookings beginning at day of timestamp.
 	 *
-	 * @param int $timestamp
+	 * @param int   $timestamp
 	 * @param array $customArgs
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
@@ -213,8 +213,8 @@ class Booking extends PostRepository {
 	 * @param $endDate int
 	 * @param $locationId
 	 * @param $itemId
-	 * @param array $customArgs
-	 * @param array $postStatus
+	 * @param array         $customArgs
+	 * @param array         $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -351,12 +351,12 @@ class Booking extends PostRepository {
 	 * Returns bookings. This uses the CommonsBooking\Repository\Timeframe::get() method which
 	 * is not based on the WP_Query class but will perform its own SQL query.
 	 *
-	 * @param array $locations
-	 * @param array $items
-	 * @param string|null $date Date-String in format YYYY-mm-dd
-	 * @param bool $returnAsModel if true, returns booking model, if false return int array (defaults to false)
+	 * @param array        $locations
+	 * @param array        $items
+	 * @param string|null  $date Date-String in format YYYY-mm-dd
+	 * @param bool         $returnAsModel if true, returns booking model, if false return int array (defaults to false)
 	 * @param $minTimestamp
-	 * @param array $postStatus
+	 * @param array        $postStatus
 	 *
 	 * @return int[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -386,9 +386,9 @@ class Booking extends PostRepository {
 	 * this function will use the WP_Query class to perform the query allowing us to use the pagination features of WP_Query.
 	 *
 	 * @param \WP_User $user The user for which to get the bookings.
-	 * @param int $page The current page that is processed.
-	 * @param int $perPage The number of bookings per page. A lower number will result in faster queries.
-	 * @param array $customArgs Valid WP_Query args array.
+	 * @param int      $page The current page that is processed.
+	 * @param int      $perPage The number of bookings per page. A lower number will result in faster queries.
+	 * @param array    $customArgs Valid WP_Query args array.
 	 *
 	 * @return \CommonsBooking\Model\Booking[] An array of Booking models.
 	 */
@@ -424,7 +424,6 @@ class Booking extends PostRepository {
 	/**
 	 * Gets all bookings that are affected by the given restriction.
 	 *
-	 *
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
 	 * @return \WP_Post[]|null
@@ -450,7 +449,7 @@ class Booking extends PostRepository {
 	 * @param $locationId
 	 * @param $startDate
 	 * @param $endDate
-	 * @param null $postId
+	 * @param null       $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|null
 	 */
@@ -473,7 +472,6 @@ class Booking extends PostRepository {
 		}
 
 		return $existingBookingsInRange;
-
 	}
 
 	/**
@@ -515,8 +513,8 @@ class Booking extends PostRepository {
 	 * and therefore do not have a valid timeframe anymore.
 	 *
 	 * @param int|null $startdate
-	 * @param int[] $items
-	 * @param int[] $locations
+	 * @param int[]    $items
+	 * @param int[]    $locations
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|null
 	 * @throws Exception
@@ -526,22 +524,23 @@ class Booking extends PostRepository {
 		array $items = [],
 		array $locations = []
 	): ?array {
-		$startdate = $startdate ? $startdate : time(); //set startdate to now when no startdate is defined
+		$startdate = $startdate ? $startdate : time(); // set startdate to now when no startdate is defined
 
 		$bookings = self::get( $locations, $items, null, true, $startdate, [ 'confirmed' ] );
 
-		//check for bookings where location does not exist anymore
+		// check for bookings where location does not exist anymore
 
-		$bookings = array_filter( $bookings, function ( $booking ) {
-			if ( $booking->getBookableTimeFrame() ) {
-				return false;
-			} else {
-				return true;
+		$bookings = array_filter(
+			$bookings,
+			function ( $booking ) {
+				if ( $booking->getBookableTimeFrame() ) {
+					return false;
+				} else {
+					return true;
+				}
 			}
-
-		} );
+		);
 
 		return $bookings;
 	}
-
 }

@@ -1,6 +1,15 @@
 name: 'Build Plugin'
 description: 'Builds plugin into ./build/commonsbooking'
 
+inputs:
+  generate_zip:
+    description: 'Set to true, if a zip file should be generated in the root of the plugin folder'
+    required: false
+    default: 'false'
+    options:
+      - true
+      - false
+
 runs:
   using: "composite"
   steps:
@@ -30,6 +39,12 @@ runs:
     - run: npm ci --legacy-peer-deps --include=dev
       shell: bash
 
-    - name: Run build script
+    - name: Run build script (skip zip generation)
+      if: ${{ inputs.generate_zip == 'false' }}
       run: bin/build-zip.sh --skip-zip
+      shell: bash
+      
+    - name: Run build script and generate zip file
+      if: ${{ inputs.generate_zip == 'true' }}
+      run: bin/build-zip.sh
       shell: bash

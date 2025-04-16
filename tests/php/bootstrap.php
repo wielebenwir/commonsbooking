@@ -25,13 +25,13 @@ if ( ! function_exists( '_manually_load_plugin' ) ) {
 	 * Manually load the plugin being tested.
 	 */
 	function _manually_load_plugin() {
-		require dirname( __FILE__, 3 ) . '/commonsbooking.php';
+		require dirname( __DIR__, 2 ) . '/commonsbooking.php';
 	}
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-require_once dirname( __FILE__, 3 ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+require_once dirname( __DIR__, 2 ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 // Start up the WP testing environment.
 require_once "{$_tests_dir}/includes/bootstrap.php";

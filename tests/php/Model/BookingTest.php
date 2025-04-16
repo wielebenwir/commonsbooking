@@ -62,7 +62,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testTermsApply() {
 		\CommonsBooking\Plugin::registerItemTaxonomy();
-		//now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
+		// now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
 		$taxonomy  = \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() . 's_category';
 		$term      = wp_create_term( 'Test Category', $taxonomy );
 		$otherTerm = wp_create_term( 'Other Category', $taxonomy );
@@ -73,11 +73,11 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testFilterTermsApply() {
 		\CommonsBooking\Plugin::registerItemTaxonomy();
-		//now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
+		// now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
 		$taxonomy       = \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() . 's_category';
 		$term           = wp_create_term( 'Test Category', $taxonomy );
-		$otherItem      = $this->createItem( "Other Item", 'publish' );
-		$otherLocation  = $this->createLocation( "Other Location", 'publish' );
+		$otherItem      = $this->createItem( 'Other Item', 'publish' );
+		$otherLocation  = $this->createLocation( 'Other Location', 'publish' );
 		$otherTimeframe = $this->createBookableTimeFrameIncludingCurrentDay( $otherLocation, $otherItem );
 		$otherBooking   = $this->createBooking(
 			$otherLocation,
@@ -88,7 +88,7 @@ class BookingTest extends CustomPostTypeTest {
 		wp_set_post_terms( $this->itemId, [ $term['term_id'] ], $taxonomy );
 		$bookingArr       = array(
 			$this->testBookingTomorrow,
-			new Booking ( $otherBooking )
+			new Booking( $otherBooking ),
 		);
 		$filteredBookings = Booking::filterTermsApply( $bookingArr, $term['term_id'] );
 		$this->assertEquals( 1, count( $filteredBookings ) );
@@ -99,8 +99,8 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertEquals( 1, $this->testBookingTomorrow->getDuration() );
 		$this->assertEquals( 1, $this->testBookingPast->getDuration() );
 
-		//we now create a booking and cancel it shortly after it ends
-		//this way we can test if all days are counted when it is cancelled shortly before end of the tf
+		// we now create a booking and cancel it shortly after it ends
+		// this way we can test if all days are counted when it is cancelled shortly before end of the tf
 		$endTime         = strtotime( '+4 days', strtotime( self::CURRENT_DATE ) );
 		$cancelBookingId = $this->createBooking(
 			$this->locationId,
@@ -120,7 +120,7 @@ class BookingTest extends CustomPostTypeTest {
 
 		$this->assertEquals( 3, $cancelBooking->getDuration() );
 
-		//now we test what happens when a booking is cancelled in the middle of the tf
+		// now we test what happens when a booking is cancelled in the middle of the tf
 		$endTime         = strtotime( '+5 days', strtotime( self::CURRENT_DATE ) );
 		$cancelBookingId = $this->createBooking(
 			$this->locationId,
@@ -139,7 +139,7 @@ class BookingTest extends CustomPostTypeTest {
 		$cancelBooking = new Booking( $cancelBookingId );
 		$this->assertEquals( 2, $cancelBooking->getDuration() );
 
-		//now we test what happens when a booking is cancelled before it starts. It should have a length of 0
+		// now we test what happens when a booking is cancelled before it starts. It should have a length of 0
 		$cancelBookingId = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
@@ -160,15 +160,16 @@ class BookingTest extends CustomPostTypeTest {
 		// now test with overbooked days
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'on' );
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '1' );
-		$overbookedBooking = new Booking( $this->createBooking(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
-		) );
+		$overbookedBooking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+			)
+		);
 		$overbookedBooking->setOverbookedDays( 2 );
 		$this->assertEquals( 2, $overbookedBooking->getDuration() );
-
 	}
 
 	public function testConfirm() {
@@ -192,7 +193,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testGetOrphaned() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		//create a new booking on a new timeframe and orphan it
+		// create a new booking on a new timeframe and orphan it
 		$newLocation       = $this->createLocation( 'newlocation', 'publish' );
 		$newItem           = $this->createItem( 'newitem', 'publish' );
 		$newTimeframe      = $this->createTimeframe(
@@ -210,14 +211,17 @@ class BookingTest extends CustomPostTypeTest {
 		$evenNewerLocation = $this->createLocation( 'evennewerlocation', 'publish' );
 		update_post_meta( $newTimeframe, 'location-id', $evenNewerLocation );
 
-		//create a booking on the new location that does not collide (and is not an orphan)
-		$noOrphan = new Booking( $this->createBooking(
-			$evenNewerLocation,
-			$newItem,
-			strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+8 days' ), strtotime( self::CURRENT_DATE ) )
+		// create a booking on the new location that does not collide (and is not an orphan)
+		$noOrphan = new Booking(
+			$this->createBooking(
+				$evenNewerLocation,
+				$newItem,
+				strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+8 days' ),
+				strtotime( self::CURRENT_DATE )
+			)
 		);
-		//now retrieve all orphaned bookings and make sure we find the new one
+		// now retrieve all orphaned bookings and make sure we find the new one
 		$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned();
 		$this->assertCount( 1, $orphanedBookings );
 		$this->assertEquals( $newBooking, reset( $orphanedBookings )->ID );
@@ -227,7 +231,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertEquals( '', $this->testBookingTomorrow->returnComment() );
 
 		// Updates meta value
-		$commentValue = "Comment on this";
+		$commentValue = 'Comment on this';
 		update_post_meta( $this->testBookingId, 'comment', $commentValue );
 		wp_cache_flush();
 		$this->testBookingTomorrow = new Booking( $this->testBookingId );
@@ -238,7 +242,7 @@ class BookingTest extends CustomPostTypeTest {
 		// TODO 12- 12 correct?
 		$this->assertEquals( 'July 2, 2021 12:00 am - 12:00 am', $this->testBookingTomorrow->pickupDatetime() );
 
-		//Test Pickup for Slot Timeframes (#1342)
+		// Test Pickup for Slot Timeframes (#1342)
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 10:00 am - 3:00 pm', $this->testBookingSpanningOverTwoSlots->pickupDatetime() );
 	}
 
@@ -246,7 +250,7 @@ class BookingTest extends CustomPostTypeTest {
 		// TODO 12:01? correct
 		$this->assertEquals( 'July 3, 2021 8:00 am - 12:01 am', $this->testBookingTomorrow->returnDatetime() );
 
-		//Test Return for Slot Timeframes (#1342)
+		// Test Return for Slot Timeframes (#1342)
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 3:00 pm - 6:00 pm', $this->testBookingSpanningOverTwoSlots->returnDatetime() );
 	}
 
@@ -276,28 +280,32 @@ class BookingTest extends CustomPostTypeTest {
 
 		// assert meta value timeframe not null and booking null
 		foreach ( $neededMetaFields as $fieldName ) {
-			$this->assertNotNull( get_post_meta(
-				$timeframe->ID,
-				$fieldName,
-				true
-			) );
+			$this->assertNotNull(
+				get_post_meta(
+					$timeframe->ID,
+					$fieldName,
+					true
+				)
+			);
 
-			//$this->assertEquals( '', get_post_meta(
-			//	$this->testBookingId,
-			//	$fieldName,
-			//	true
-			//));
+			// $this->assertEquals( '', get_post_meta(
+			// $this->testBookingId,
+			// $fieldName,
+			// true
+			// ));
 		}
 
 		$this->testBookingTomorrow->assignBookableTimeframeFields();
 
 		// assert meta values of booking are set
 		foreach ( $neededMetaFields as $fieldName ) {
-			$this->assertNotNull( get_post_meta(
-				$this->testBookingId,
-				$fieldName,
-				true
-			) );
+			$this->assertNotNull(
+				get_post_meta(
+					$this->testBookingId,
+					$fieldName,
+					true
+				)
+			);
 		}
 	}
 
@@ -329,11 +337,11 @@ class BookingTest extends CustomPostTypeTest {
 
 		$this->assertNotSame( $userObj->ID, intval( $this->subscriberBookingInFuture->post_author ) );
 
-		//once with WP_Post object
+		// once with WP_Post object
 		$this->assertTrue( commonsbooking_isUserAllowedToSee( $this->subscriberBookingInFuture->getPost(), $userObj ) );
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $this->subscriberBookingInFuture->getPost(), $userObj ) );
 
-		//and with Model
+		// and with Model
 		$this->assertTrue( commonsbooking_isUserAllowedToSee( $this->subscriberBookingInFuture, $userObj ) );
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $this->subscriberBookingInFuture, $userObj ) );
 
@@ -349,17 +357,17 @@ class BookingTest extends CustomPostTypeTest {
 		$testBooking = new Booking( $this->createConfirmedBookingStartingToday() );
 		$this->assertFalse( $this->testBookingTomorrow->hasTotalBreakdown() );
 
-		//create a total breakdown that has been active in the past
+		// create a total breakdown that has been active in the past
 		$oldTotalBreakdown = $this->createRestriction(
 			Restriction::TYPE_REPAIR,
 			$this->locationId,
 			$this->itemId,
-			strtotime('- 10 days', strtotime( self::CURRENT_DATE )),
-			strtotime('- 9 days', strtotime( self::CURRENT_DATE ))
+			strtotime( '- 10 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '- 9 days', strtotime( self::CURRENT_DATE ) )
 		);
 		$this->assertFalse( $testBooking->hasTotalBreakdown() );
 
-		//create a total breakdown that is currently inactive
+		// create a total breakdown that is currently inactive
 		$totalBreakdown = $this->createRestriction(
 			Restriction::TYPE_REPAIR,
 			$this->locationId,
@@ -370,7 +378,7 @@ class BookingTest extends CustomPostTypeTest {
 		);
 		$this->assertFalse( $testBooking->hasTotalBreakdown() );
 
-		//activate the total breakdown
+		// activate the total breakdown
 		update_post_meta( $totalBreakdown, Restriction::META_STATE, Restriction::STATE_ACTIVE );
 
 		$this->assertTrue( $testBooking->hasTotalBreakdown() );
@@ -382,10 +390,10 @@ class BookingTest extends CustomPostTypeTest {
 	 * @return void
 	 */
 	public function testCanCancelCBManagerNoAssignment() {
-		//Case : CB Manager should not be able to cancel because the location/item of the booking is not his
+		// Case : CB Manager should not be able to cancel because the location/item of the booking is not his
 		wp_set_current_user( $this->cbManagerUserID );
 		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
-		//important distinction, CB Manager is not an admin
+		// important distinction, CB Manager is not an admin
 		$this->assertFalse( commonsbooking_isUserAdmin( $managerUserObj ) );
 		$this->assertNotSame( $managerUserObj->ID, intval( $this->subscriberBookingInFuture->post_author ) );
 		$this->assertFalse( commonsbooking_isUserAllowedToSee( $this->subscriberBookingInFuture->getPost(), $managerUserObj ) );
@@ -399,17 +407,17 @@ class BookingTest extends CustomPostTypeTest {
 	public function testCanCancelCBManagerItemAssignment() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
-		//let's now create a new item, location and timeframe where the CB Manager is the ITEM manager
+		// let's now create a new item, location and timeframe where the CB Manager is the ITEM manager
 		$managedItem         = new Item(
 			$this->createItem(
-				"Managed Item",
+				'Managed Item',
 				'publish',
 				[ $this->cbManagerUserID ]
 			)
 		);
 		$unmanagedLocation   = new Location(
 			$this->createLocation(
-				"Unmanaged Location",
+				'Unmanaged Location',
 				'publish'
 			)
 		);
@@ -431,7 +439,7 @@ class BookingTest extends CustomPostTypeTest {
 				$this->subscriberId
 			)
 		);
-		//and check if the CB Manager can see & cancel it (because it is their item)
+		// and check if the CB Manager can see & cancel it (because it is their item)
 		$this->assertTrue( commonsbooking_isUserAllowedToSee( $testBookingTomorrow, $managerUserObj ) );
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $testBookingTomorrow, $managerUserObj ) );
 		wp_set_current_user( $this->cbManagerUserID );
@@ -450,17 +458,17 @@ class BookingTest extends CustomPostTypeTest {
 	public function testOnlyViewerRole() {
 		$subscriberUserObj = get_user_by( 'ID', $this->subscriberId );
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		//let's now create a new item, location and timeframe and assign the SUBSCRIBER to it
+		// let's now create a new item, location and timeframe and assign the SUBSCRIBER to it
 		$managedItem         = new Item(
 			$this->createItem(
-				"Managed Item",
+				'Managed Item',
 				'publish',
 				[ $this->subscriberId ]
 			)
 		);
 		$unmanagedLocation   = new Location(
 			$this->createLocation(
-				"Unmanaged Location",
+				'Unmanaged Location',
 				'publish'
 			)
 		);
@@ -479,9 +487,9 @@ class BookingTest extends CustomPostTypeTest {
 			)
 		);
 
-		//just to make sure our test works, let's check that the booking is not from the subscriber
+		// just to make sure our test works, let's check that the booking is not from the subscriber
 		$this->assertNotSame( $subscriberUserObj->ID, $testBookingTomorrow->getUserData()->ID );
-		//the subscriber should be able to see the booking but because they lack the necessary role capabilities, they should not be able to edit or cancel it
+		// the subscriber should be able to see the booking but because they lack the necessary role capabilities, they should not be able to edit or cancel it
 		$this->assertTrue( commonsbooking_isUserAllowedToSee( $testBookingTomorrow, $subscriberUserObj ) );
 		$this->assertFalse( commonsbooking_isUserAllowedToEdit( $testBookingTomorrow, $subscriberUserObj ) );
 		wp_set_current_user( $this->subscriberId );
@@ -491,9 +499,9 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testIsValid() {
-		//create seperate items and locations for this test
-		$itemID      = $this->createItem( "Test Item", 'publish' );
-		$locationID  = $this->createLocation( "Test Location", 'publish' );
+		// create seperate items and locations for this test
+		$itemID      = $this->createItem( 'Test Item', 'publish' );
+		$locationID  = $this->createLocation( 'Test Location', 'publish' );
 		$timeframeID = $this->createTimeframe(
 			$locationID,
 			$itemID,
@@ -525,7 +533,7 @@ class BookingTest extends CustomPostTypeTest {
 		} catch ( TimeframeInvalidException $e ) {
 			$this->assertInstanceOf( TimeframeInvalidException::class, $e );
 			$this->assertStringContainsString( 'There are one ore more overlapping bookings within the chosen timerange', $e->getMessage() );
-			//also test, that correct notice for Bookings is shown
+			// also test, that correct notice for Bookings is shown
 			$this->assertStringContainsString( 'Booking is saved as draft.', $e->getMessage() );
 			$this->assertStringContainsString( $validBooking->getFormattedEditLink(), $e->getMessage() );
 		}
@@ -603,16 +611,16 @@ class BookingTest extends CustomPostTypeTest {
 	public function testCanCancelCBManagerLocationAssignment() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$managerUserObj = get_user_by( 'ID', $this->cbManagerUserID );
-		//let's now create a new item, location and timeframe where the CB Manager is the LOCATION manager
+		// let's now create a new item, location and timeframe where the CB Manager is the LOCATION manager
 		$unmanagedItem        = new Item(
 			$this->createItem(
-				"Unmanaged Item",
+				'Unmanaged Item',
 				'publish'
 			)
 		);
 		$managedLocation      = new Location(
 			$this->createLocation(
-				"Managed Location",
+				'Managed Location',
 				'publish',
 				[ $this->cbManagerUserID ]
 			)
@@ -635,7 +643,7 @@ class BookingTest extends CustomPostTypeTest {
 				$this->subscriberId
 			)
 		);
-		//and check if the CB Manager can see & cancel it (because it is their location)
+		// and check if the CB Manager can see & cancel it (because it is their location)
 		$this->assertTrue( commonsbooking_isUserAllowedToSee( $testBookingTomorrow2, $managerUserObj ) );
 		$this->assertTrue( commonsbooking_isUserAllowedToEdit( $testBookingTomorrow2, $managerUserObj ) );
 		wp_set_current_user( $this->cbManagerUserID );
@@ -646,23 +654,23 @@ class BookingTest extends CustomPostTypeTest {
 
 
 	public function testSetOverbookedDays() {
-		//case 1: no overbooked days are counted towards the booking limit
+		// case 1: no overbooked days are counted towards the booking limit
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'off' );
 		$this->assertEquals( 2, $this->testBookingTomorrow->setOverbookedDays( 2 ) );
 		$this->assertEquals( 2, $this->testBookingTomorrow->getOverbookedDays() );
 
-		//case 2: one overbooked day is counted towards the booking limit, the rest was overbooked
+		// case 2: one overbooked day is counted towards the booking limit, the rest was overbooked
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'on' );
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '1' );
 		$this->assertEquals( 6, $this->testBookingTomorrow->setOverbookedDays( 7 ) );
 		$this->assertEquals( 6, $this->testBookingTomorrow->getOverbookedDays() );
 
-		//case 3: two days are counted but only one is overbooked
+		// case 3: two days are counted but only one is overbooked
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '2' );
 		$this->assertEquals( 0, $this->testBookingTomorrow->setOverbookedDays( 1 ) );
 		$this->assertEquals( 0, $this->testBookingTomorrow->getOverbookedDays() );
 
-		//case 4: all overbooked days are counted towards the booking limit
+		// case 4: all overbooked days are counted towards the booking limit
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '0' );
 		$this->assertEquals( 0, $this->testBookingTomorrow->setOverbookedDays( 2 ) );
 		$this->assertEquals( 0, $this->testBookingTomorrow->getOverbookedDays() );
@@ -687,7 +695,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->testBookingPast     = new Booking( get_post( $this->testBookingPastId ) );
 
 		// Create fixed date booking
-		$this->testBookingFixedDate      = new Booking (
+		$this->testBookingFixedDate      = new Booking(
 			$this->createBooking(
 				$this->locationId,
 				$this->itemId,
@@ -718,16 +726,16 @@ class BookingTest extends CustomPostTypeTest {
 	 * @throws \Exception
 	 */
 	protected function setUpTestBookingOverSlotsTimeframes(): void {
-		$separateItem     = $this->createItem( "SlotItem", 'publish' );
-		$separateLocation = $this->createLocation( "SlotLocation", 'publish' );
+		$separateItem     = $this->createItem( 'SlotItem', 'publish' );
+		$separateLocation = $this->createLocation( 'SlotLocation', 'publish' );
 		$this->createTwoBookableTimeframeSlotsIncludingCurrentDay( $separateLocation, $separateItem );
-		//create booking spanning over two slots
+		// create booking spanning over two slots
 		$beginningTime = new \DateTime( self::CURRENT_DATE );
 		$beginningTime->setTime( 10, 00 );
 		$endingTime = new \DateTime( self::CURRENT_DATE );
 		$endingTime->setTime( 17, 59, 59 );
-		//we need to create this booking in the "frontend" way in order to save the correct grid sizes for the generation
-		//pickup and returntimes
+		// we need to create this booking in the "frontend" way in order to save the correct grid sizes for the generation
+		// pickup and returntimes
 		$testBookingSpanningOverTwoSlotsID     = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
 			$separateItem,
 			$separateLocation,
@@ -742,7 +750,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->testBookingSpanningOverTwoSlots = new Booking(
 			$testBookingSpanningOverTwoSlotsID
 		);
-		//add this to the array so it can be destroyed later
+		// add this to the array so it can be destroyed later
 		$this->bookingIds[] = $testBookingSpanningOverTwoSlotsID;
 	}
 

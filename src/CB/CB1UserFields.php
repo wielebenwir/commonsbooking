@@ -101,15 +101,13 @@ class CB1UserFields {
 			),
 		);
 
-
 		$this->registration_fields_required = $this->registration_fields;
 
 		$this->user_fields = $this->get_extra_profile_fields();
-
 	}
 
 	/*
-	*   Adds the user fields to the wordpress registration
+	*   Adds the user fields to the WordPress registration
 	*
 	* @since    0.6
 	*
@@ -120,7 +118,6 @@ class CB1UserFields {
 	 *
 	 * @return array
 	 * @since    0.6.
-	 *
 	 */
 	public function get_extra_profile_fields(): array {
 		return $this->extra_profile_fields;
@@ -137,29 +134,36 @@ class CB1UserFields {
 	public function registration_add_fields() {
 
 		foreach ( $this->user_fields as $field ) {
-
-			$row = ( ! empty( $_POST[ $field['field_name'] ] ) ) ? sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) ): '';
+			$row = ( ! empty( $_POST[ $field['field_name'] ] ) ) ? sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) ) : '';
 			?>
-            <p>
+			<p>
 				<?php if ( $field['type'] == 'checkbox' ) { ?>
-                    <label for="<?php esc_attr_e( $field['field_name'] ) ?>"><?php esc_attr_e(
-							$field['title'],
-							'commonsbooking'
-						) ?><br/>
-                        <input type="checkbox" name="<?php esc_attr_e( $field['field_name'] ) ?>"
-                               id="<?php esc_attr_e( $field['field_name'] ) ?>" value="yes" <?php if ( $row == "yes" ) {
-							echo "checked";
-						} ?> /><?php esc_attr_e( $field['description'], 'commonsbooking' ) ?><br/>
-                    </label>
-					<?php echo commonsbooking_sanitizeHTML($this->get_termsservices_string()); ?>
+					<label for="<?php esc_attr_e( $field['field_name'] ); ?>">
+													<?php
+													esc_attr_e(
+														$field['title'],
+														'commonsbooking'
+													)
+													?>
+						<br/>
+						<input type="checkbox" name="<?php esc_attr_e( $field['field_name'] ); ?>"
+								id="<?php esc_attr_e( $field['field_name'] ); ?>" value="yes"
+													<?php
+													if ( $row == 'yes' ) {
+														echo 'checked';
+													}
+													?>
+						/><?php esc_attr_e( $field['description'], 'commonsbooking' ); ?><br/>
+					</label>
+					<?php echo commonsbooking_sanitizeHTML( $this->get_termsservices_string() ); ?>
 				<?php } else { ?>
-                    <label for="<?php esc_attr_e( $field['field_name'] ) ?>"><?php esc_attr_e($field['title'],'commonsbooking') ?><br/>
-                        <input type="text" name="<?php esc_attr_e( $field['field_name'] ) ?>"
-                               id="<?php esc_attr_e( $field['field_name'] ) ?>" class="input"
-                               value="<?php echo esc_attr( wp_unslash( $row ) ); ?>" size="25"/><?php esc_attr_e($field['description'],'commonsbooking') ?>
-                    </label>
+					<label for="<?php esc_attr_e( $field['field_name'] ); ?>"><?php esc_attr_e( $field['title'], 'commonsbooking' ); ?><br/>
+						<input type="text" name="<?php esc_attr_e( $field['field_name'] ); ?>"
+								id="<?php esc_attr_e( $field['field_name'] ); ?>" class="input"
+								value="<?php echo esc_attr( wp_unslash( $row ) ); ?>" size="25"/><?php esc_attr_e( $field['description'], 'commonsbooking' ); ?>
+					</label>
 				<?php } ?>
-            </p>
+			</p>
 			<?php
 		}
 	}
@@ -176,17 +180,16 @@ class CB1UserFields {
 	 *
 	 * @return string
 	 * @since    0.6
-	 *
 	 */
 	public function get_termsservices_string(): string {
-		if ( ! empty ( $this->termsservices_url ) ) {
+		if ( ! empty( $this->termsservices_url ) ) {
 			// translators: %s = terms and service url
 			$string = sprintf(
 				commonsbooking_sanitizeHTML( __( '<a href="%s" target=_blank">Read the terms and services</a>', 'commonsbooking' ) ),
 				commonsbooking_sanitizeHTML( $this->termsservices_url )
 			);
 		} else {
-			$string = "";
+			$string = '';
 		}
 
 		return $string;
@@ -195,18 +198,15 @@ class CB1UserFields {
 	public function registration_set_errors( $errors, $username, $email ) {
 
 		foreach ( $this->user_fields as $field ) {
-
 			if ( $field['type'] == 'checkbox' ) {
 				if ( ! isset( $_POST[ $field['field_name'] ] ) ) {
 					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 				}
-			} else {
-				if (
+			} elseif (
 					empty( $_POST[ $field['field_name'] ] ) ||
 					! empty( $_POST[ $field['field_name'] ] ) &&
-					sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) == '' ) ){
+					sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) == '' ) ) {
 					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
-				}
 			}
 		}
 
@@ -229,7 +229,6 @@ class CB1UserFields {
 	 *
 	 * @since    2.10 deprecated (cb_object_to_array is unspecified)
 	 * @since    0.6
-	 *
 	 */
 	public function set_basic_user_vars( $user_id ) {
 		$user_basic = get_user_by( 'id', $user_id );
@@ -251,7 +250,6 @@ class CB1UserFields {
 	 * Add addiotinal key/value pairs to the user_vars array
 	 *
 	 * @since    0.5.3
-	 *
 	 */
 	public function add_user_vars( $key, $value ) {
 
@@ -262,47 +260,52 @@ class CB1UserFields {
 	 * Backend: Show the extra profile fields
 	 *
 	 * @since    0.2
-	 *
 	 */
-	public function show_extra_profile_fields( $user ) { ?>
+	public function show_extra_profile_fields( $user ) {
 
-        <h3><?php _e( 'Extra Fields', 'commonsbooking' ); ?> </h3>
+		?>
 
-        <table class="form-table">
-            <tr>
-                <th><label for="phone"><?php esc_html_e( 'Phone number', 'commonsbooking' ); ?></label></th>
-                <td>
-                    <input type="text" name="phone" id="phone"
-                           value="<?php echo esc_attr( get_the_author_meta( 'phone', $user->ID ) ); ?>"
-                           class="regular-text"/><br/>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="address"><?php esc_html_e( 'Address', 'commonsbooking' ); ?></label></th>
-                <td>
-                    <input type="textarea" name="address" id="address"
-                           value="<?php echo esc_attr( get_the_author_meta( 'address', $user->ID ) ); ?>"
-                           class="regular-text"/><br/>
-                </td>
-            </tr>
-            <tr>
-                <th><label for="terms_accepted"><?php esc_html_e( 'Terms and conditions', 'commonsbooking' ); ?></label>
-                </th>
-                <td>
-                    <input type="checkbox" name="terms_accepted" id=" terms_accepted " disabled
-                           value="yes" <?php if ( esc_attr( get_the_author_meta( "terms_accepted", $user->ID ) ) == "yes" ) {
-						echo "checked";
-					} ?> /><?php esc_html_e( 'Accepted Terms & Conditions', 'commonsbooking' ); ?><br/>
-                </td>
-            </tr>
-        </table>
-	<?php }
+		<h3><?php _e( 'Extra Fields', 'commonsbooking' ); ?> </h3>
+
+		<table class="form-table">
+			<tr>
+				<th><label for="phone"><?php esc_html_e( 'Phone number', 'commonsbooking' ); ?></label></th>
+				<td>
+					<input type="text" name="phone" id="phone"
+							value="<?php echo esc_attr( get_the_author_meta( 'phone', $user->ID ) ); ?>"
+							class="regular-text"/><br/>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="address"><?php esc_html_e( 'Address', 'commonsbooking' ); ?></label></th>
+				<td>
+					<input type="text" name="address" id="address"
+							value="<?php echo esc_attr( get_the_author_meta( 'address', $user->ID ) ); ?>"
+							class="regular-text"/><br/>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="terms_accepted"><?php esc_html_e( 'Terms and conditions', 'commonsbooking' ); ?></label>
+				</th>
+				<td>
+					<input type="checkbox" name="terms_accepted" id=" terms_accepted " disabled
+							value="yes"
+							<?php
+							if ( esc_attr( get_the_author_meta( 'terms_accepted', $user->ID ) ) == 'yes' ) {
+								echo 'checked';
+							}
+							?>
+					/><?php esc_html_e( 'Accepted Terms & Conditions', 'commonsbooking' ); ?><br/>
+				</td>
+			</tr>
+		</table>
+		<?php
+	}
 
 	/**
 	 * Backend: Update the extra profile fields
 	 *
 	 * @since    0.2
-	 *
 	 */
 	public function save_extra_profile_fields( $user_id ) {
 		if ( current_user_can( 'edit_user', $user_id ) ) {
@@ -313,7 +316,6 @@ class CB1UserFields {
 			update_user_meta( $user_id, 'address', $address );
 		}
 	}
-
 }
 
 

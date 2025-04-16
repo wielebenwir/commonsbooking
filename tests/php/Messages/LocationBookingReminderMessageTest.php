@@ -29,29 +29,29 @@ class LocationBookingReminderMessageTest extends Email_Test_Case {
 		$mailer = $this->getMockMailer();
 		$this->assertEmpty( $mailer->ErrorInfo );
 
-		//Check From
+		// Check From
 		$this->assertEquals( self::FROM_MAIL, $mailer->From );
 		$this->assertEquals( self::FROM_NAME, $mailer->FromName );
 
-		//Check To (should be location)
+		// Check To (should be location)
 		$this->assertEquals(
 			[
 				[
 					self::LOCATION_EMAIL,
-					self::LOCATION_NAME
-				]
+					self::LOCATION_NAME,
+				],
 			],
 			$mailer->getToAddresses()
 		);
 
-		//Check Bcc (should be the second (and more) e-mail address in the location email list)
+		// Check Bcc (should be the second (and more) e-mail address in the location email list)
 		$this->assertEquals( self::SECOND_LOCATION_EMAIL, $mailer->getBccAddresses()[0][0] );
 
-		//Check Subject & body
+		// Check Subject & body
 		$this->assertEquals( $startExpectedSubject, $mailer->Subject );
 		$this->assertEquals( $startExpectedBody, $mailer->Body );
 
-		//Reset before next email test
+		// Reset before next email test
 		$this->resetMailer();
 
 		// Test end reminder
@@ -59,7 +59,7 @@ class LocationBookingReminderMessageTest extends Email_Test_Case {
 		$message->triggerMail();
 		$mailer = $this->getMockMailer();
 
-		//Only Check subject & body here, the rest is the same as the start reminder
+		// Only Check subject & body here, the rest is the same as the start reminder
 		$this->assertEquals( $endExpectedSubject, $mailer->Subject );
 		$this->assertEquals( $endExpectedBody, $mailer->Body );
 	}

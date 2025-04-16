@@ -11,6 +11,7 @@ use CommonsBooking\Wordpress\CustomPostType\Location;
 /**
  * This message is sent out to locations to remind them of bookings starting soon or ending soon.
  * This is sent using a cron job.
+ *
  * @see \CommonsBooking\Service\Scheduler
  */
 class LocationBookingReminderMessage extends Message {
@@ -18,7 +19,7 @@ class LocationBookingReminderMessage extends Message {
 	/**
 	 * @var array|string[]
 	 */
-	protected $validActions = [ "booking-start-location-reminder", "booking-end-location-reminder" ];
+	protected $validActions = [ 'booking-start-location-reminder', 'booking-end-location-reminder' ];
 
 	/**
 	 * Sends reminder message.
@@ -39,14 +40,19 @@ class LocationBookingReminderMessage extends Message {
 		$location_emails        = explode( ',', $location_emails_option );
 
 		// get templates from Admin Options
-		$template_body    = Settings::getOption( 'commonsbooking_options_reminder',
-			$this->action . '-body' );
-		$template_subject = Settings::getOption( 'commonsbooking_options_reminder',
-			$this->action . '-subject', 'sanitize_text_field' );
+		$template_body    = Settings::getOption(
+			'commonsbooking_options_reminder',
+			$this->action . '-body'
+		);
+		$template_subject = Settings::getOption(
+			'commonsbooking_options_reminder',
+			$this->action . '-subject',
+			'sanitize_text_field'
+		);
 
 		// Setup email: From
 		$fromHeaders = sprintf(
-			"From: %s <%s>",
+			'From: %s <%s>',
 			Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-name', 'sanitize_text_field' ),
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
@@ -72,7 +78,15 @@ class LocationBookingReminderMessage extends Message {
 			]
 		);
 
-		$sendMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $this );
+		$sendMessageToBeFiltered = $this;
+		/**
+		 * Default location booking reminder message
+		 *
+		 * @since 2.9.2
+		 *
+		 * @param LocationBookingReminderMessage $sendMessageToBeFiltered object to be sent.
+		 */
+		$sendMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $sendMessageToBeFiltered );
 		if ( $sendMessage ) {
 			$this->sendNotificationMail();
 		}

@@ -65,14 +65,14 @@ class UpgradeTest extends CustomPostTypeTest {
 	 */
 	public function provideUpgradeConditions() {
 		return array(
-			"Upgrade directly on version with new function (major)"       => [ "2.4.0", "2.5.2", true ],
-			"Upgrade past version with new function (major)"              => [ "2.4.0", "2.6.0", true ],
-			"Direct minor upgrade on same version"                        => [ "2.5.1", "2.5.2", true ],
-			"Direct minor upgrade on version without new function"        => [ "2.5.0", "2.5.1", false ],
-			//This is a weird case that should not happen, usually the function would not be added before it is needed
-			"Direct minor upgrade past version with new function"         => [ "2.5.2", "2.5.3", false ],
-			"Direct minor upgrade past version with new function (major)" => [ "2.5.2", "2.6.0", false ],
-			"Downgrade from previous versions"                            => [ "2.5.3", "2.5.2", false ],
+			'Upgrade directly on version with new function (major)'       => [ '2.4.0', '2.5.2', true ],
+			'Upgrade past version with new function (major)'              => [ '2.4.0', '2.6.0', true ],
+			'Direct minor upgrade on same version'                        => [ '2.5.1', '2.5.2', true ],
+			'Direct minor upgrade on version without new function'        => [ '2.5.0', '2.5.1', false ],
+			// This is a weird case that should not happen, usually the function would not be added before it is needed
+			'Direct minor upgrade past version with new function'         => [ '2.5.2', '2.5.3', false ],
+			'Direct minor upgrade past version with new function (major)' => [ '2.5.2', '2.6.0', false ],
+			'Downgrade from previous versions'                            => [ '2.5.3', '2.5.2', false ],
 		);
 	}
 
@@ -100,27 +100,27 @@ class UpgradeTest extends CustomPostTypeTest {
 		$this->assertTrue( $upgrade->run() );
 		$this->assertEquals( '2.5.1', get_option( Upgrade::VERSION_OPTION ) );
 
-		//new installation
+		// new installation
 		$upgrade = new Upgrade( '', '2.5.0' );
 		$this->assertTrue( $upgrade->run() );
 		$this->assertEquals( '2.5.0', get_option( Upgrade::VERSION_OPTION ) );
 
-		//no version change
+		// no version change
 		$upgrade = new Upgrade( '2.5.0', '2.5.0' );
 		$this->assertFalse( $upgrade->run() );
 
-		//AJAX tasks present -> should not be run
+		// AJAX tasks present -> should not be run
 		$this->setUpAJAX();
 		$upgrade = new Upgrade( '2.5.1', '2.5.2' );
 		$this->assertFalse( $upgrade->run() );
 
-		//AJAX tasks should be ignored on new installation
+		// AJAX tasks should be ignored on new installation
 		$upgrade = new Upgrade( '', '2.5.2' );
 		$this->assertTrue( $upgrade->run() );
 	}
 
 	public function testSetAdvanceBookingDaysDefault() {
-		//create timeframe without advance booking days
+		// create timeframe without advance booking days
 		$timeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, '' );
 		Upgrade::setAdvanceBookingDaysDefault();
@@ -129,11 +129,11 @@ class UpgradeTest extends CustomPostTypeTest {
 
 	public function testRemoveBreakingPostmeta() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		//Create timeframe that should still be valid after the cleanup
+		// Create timeframe that should still be valid after the cleanup
 		$validTF = new Timeframe( $this->createBookableTimeFrameStartingInAWeek() );
 		$this->assertTrue( $validTF->isValid() );
 
-		//create holiday with ADVANCE_BOOKING_DAYS setting (the function does this by default)
+		// create holiday with ADVANCE_BOOKING_DAYS setting (the function does this by default)
 		$holiday = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
@@ -159,20 +159,20 @@ class UpgradeTest extends CustomPostTypeTest {
 	}
 
 	public function testIsAJAXUpgrade() {
-		//2.5.0 -> COMMONSBOOKING_VERSION
+		// 2.5.0 -> COMMONSBOOKING_VERSION
 		update_option( Upgrade::VERSION_OPTION, '2.5.0' );
 		$this->assertFalse( Upgrade::isAJAXUpgrade() );
 
 		$this->setUpAJAX();
 
-		//2.5.0 -> COMMONSBOOKING_VERSION
+		// 2.5.0 -> COMMONSBOOKING_VERSION
 		$this->assertTrue( Upgrade::isAJAXUpgrade() );
 
-		//2.6.0 -> COMMONSBOOKING_VERSION
+		// 2.6.0 -> COMMONSBOOKING_VERSION
 		update_option( Upgrade::VERSION_OPTION, '2.6.0' );
 		$this->assertFalse( Upgrade::isAJAXUpgrade() );
 
-		//fresh install
+		// fresh install
 		update_option( Upgrade::VERSION_OPTION, '' );
 		$this->assertFalse( Upgrade::isAJAXUpgrade() );
 	}
@@ -186,23 +186,22 @@ class UpgradeTest extends CustomPostTypeTest {
 			[
 				'2.5.2' => [
 					[ self::class, 'fakeUpdateFunctionA' ],
-				]
+				],
 			]
 		);
 
 		$this->ajaxTasks->setValue(
 			[
 				'2.5.2' => [
-					[ self::class, 'fakeUpdateFunctionB' ]
-				]
+					[ self::class, 'fakeUpdateFunctionB' ],
+				],
 			]
 		);
 	}
 
 	public function testMigrateMapSettings() {
 
-
-		//create taxonomies for test
+		// create taxonomies for test
 		$twowheelsCat      = wp_insert_term( '2 Räder', 'cb_items_category' )['term_id'];
 		$threewheelsCat    = wp_insert_term( '3 Räder', 'cb_items_category' )['term_id'];
 		$comboCat          = wp_insert_term( 'Gespann', 'cb_items_category' )['term_id'];
@@ -268,7 +267,7 @@ class UpgradeTest extends CustomPostTypeTest {
 					'g1723473495758-257563' => '',
 					$withMotorCat           => 'mit Elektro',
 					$manualPowerCat         => 'Zum Strampeln',
-					//this is changed markup for that category, should be moved to term meta (_cb_markup)
+					// this is changed markup for that category, should be moved to term meta (_cb_markup)
 				),
 			'cb_items_preset_categories'            =>
 				array(),
@@ -277,18 +276,20 @@ class UpgradeTest extends CustomPostTypeTest {
 			'availability_max_days_to_show'         => 11,
 			'availability_max_day_count'            => 14,
 		);
-		$oldMapId          = wp_insert_post( [
-			'post_title'  => 'Map',
-			'post_type'   => Map::$postType,
-			'post_status' => 'publish'
-		] );
+		$oldMapId = wp_insert_post(
+			[
+				'post_title'  => 'Map',
+				'post_type'   => Map::$postType,
+				'post_status' => 'publish',
+			]
+		);
 
 		update_post_meta( $oldMapId, 'cb_map_options', $mapOptions );
 
 		Upgrade::migrateMapSettings();
-		//each option should now have it's own meta entry
+		// each option should now have it's own meta entry
 		foreach ( $mapOptions as $key => $value ) {
-			if ( $key === 'cb_items_available_categories' || empty($value)) {
+			if ( $key === 'cb_items_available_categories' || empty( $value ) ) {
 				continue;
 			}
 			$this->assertEquals( $value, get_post_meta( $oldMapId, $key, true ) );
@@ -305,7 +306,7 @@ class UpgradeTest extends CustomPostTypeTest {
 							array(
 								0 => (string) $twowheelsCat,
 								1 => (string) $threewheelsCat,
-								2 => (string) $comboCat
+								2 => (string) $comboCat,
 							),
 					),
 				1 =>
@@ -317,7 +318,7 @@ class UpgradeTest extends CustomPostTypeTest {
 							array(
 								0 => (string) $childTransportCat,
 								1 => (string) $chestCat,
-								2 => (string) $rainCoverCat
+								2 => (string) $rainCoverCat,
 							),
 					),
 				2 =>
@@ -328,13 +329,13 @@ class UpgradeTest extends CustomPostTypeTest {
 						'categories'  =>
 							array(
 								0 => (string) $withMotorCat,
-								1 => (string) $manualPowerCat
+								1 => (string) $manualPowerCat,
 							),
 					),
 			);
 
 		$this->assertEquals( $expectedFilterCategories, get_post_meta( $oldMapId, 'filtergroups', true ) );
-		//assert, that custom markup has been moved
+		// assert, that custom markup has been moved
 		$expectedMarkup = 'Zum Strampeln';
 		$this->assertEquals( $expectedMarkup, get_term_meta( $manualPowerCat, COMMONSBOOKING_METABOX_PREFIX . 'markup', true ) );
 
@@ -351,29 +352,28 @@ class UpgradeTest extends CustomPostTypeTest {
 
 	protected function setUp(): void {
 		parent::setUp();
-		//This replaces the original update tasks with a internal test function that just sets a variable to true
+		// This replaces the original update tasks with a internal test function that just sets a variable to true
 		$this->testTasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'upgradeTasks' );
 		$this->testTasks->setAccessible( true );
 		$this->testTasks->setValue(
 			[
 				'2.5.2' => [
 					[ self::class, 'fakeUpdateFunctionA' ],
-					[ self::class, 'fakeUpdateFunctionB' ]
-				]
+					[ self::class, 'fakeUpdateFunctionB' ],
+				],
 			]
 		);
 
-		//empty AJAX tasks
+		// empty AJAX tasks
 		$this->ajaxTasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'ajaxUpgradeTasks' );
 		$this->ajaxTasks->setAccessible( true );
 		$this->ajaxTasks->setValue( [] );
-
 	}
 
 	protected function tearDown(): void {
 		self::$functionAHasRun = false;
 		self::$functionBHasRun = false;
-		//resets version back to current version
+		// resets version back to current version
 		update_option( \CommonsBooking\Service\Upgrade::VERSION_OPTION, COMMONSBOOKING_VERSION );
 		parent::tearDown();
 	}

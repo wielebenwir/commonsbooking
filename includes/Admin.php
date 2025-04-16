@@ -72,12 +72,11 @@ function commonsbooking_admin() {
 	// Additional info for CMB2 to handle booking rules
 	wp_add_inline_script(
 		'cb-scripts-admin',
-'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
+		'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
 		. 'cb_applied_booking_rules=' . \CommonsBooking\Service\BookingRuleApplied::getRulesJSON() . ';',
 	);
 
-
-	//orphaned bookings migration - re-assign booking when timeframe has changed
+	// orphaned bookings migration - re-assign booking when timeframe has changed
 	wp_localize_script(
 		'cb-scripts-admin',
 		'cb_ajax_orphaned_booking_migration',
@@ -97,7 +96,6 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
 		)
 	);
-
 
 	/**
 	 * Ajax - get location for item
@@ -137,7 +135,7 @@ add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 function commonsbooking_sanitizeHTML( $string ): string {
 	global $allowedposttags;
 
-	if ( empty ( $string ) ) {
+	if ( empty( $string ) ) {
 		return '';
 	}
 	$allowed_atts = array(
@@ -230,6 +228,16 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 	} else {
 		$filterName    = sprintf( 'commonsbooking_defaults_%s', $field_args['id'] );
 		$default_value = array_key_exists( 'default_value', $field_args ) ? $field_args['default_value'] : '';
+
+		/**
+		 * Default value for cmb2 fields.
+		 *
+		 * The last part of the filter is the cmb2 field id.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param mixed $default_value default value for the field.
+		 */
 		return apply_filters( $filterName, $default_value );
 	}
 }
@@ -253,24 +261,22 @@ function cmb2_set_checkbox_default_for_new_post() {
  * Recursive sanitation for text or array
  *
  * @param array|string $data
- * @param string $sanitizeFunction name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
+ * @param string                                $sanitizeFunction name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
  *
- * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ *                                See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
  *
  * @return array|string
  */
+function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanitize_text_field' ) {
+	if ( is_array( $data ) ) {
+		foreach ( $data as $key => $value ) {
+			$data[ $key ] = commonsbooking_sanitizeArrayorString( $value, $sanitizeFunction );
+		}
+	} else {
+		$data = call_user_func( $sanitizeFunction, $data );
+	}
 
-function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanitize_text_field'  ) {
-    if ( is_array( $data ) ) {
-        foreach ( $data as $key => $value ) {
-            $data[ $key ] = commonsbooking_sanitizeArrayorString( $value, $sanitizeFunction );
-        }
-    } else {
-        $data = call_user_func( $sanitizeFunction, $data );
-    }   
-    
-    return $data;
-
+	return $data;
 }
 
 
@@ -279,27 +285,27 @@ function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanit
  * only active if DEBUG_LOG is on
  *
  * @param mixed $log can be a string, array or object
- * @param bool $backtrace if set true the file-path and line of the calling file will be added to the error message
+ * @param bool  $backtrace if set true the file-path and line of the calling file will be added to the error message
  *
  * @return void
  */
 function commonsbooking_write_log( $log, $backtrace = true ) {
 
-    if ( ! WP_DEBUG_LOG ) {
-        return;
-    }
+	if ( ! WP_DEBUG_LOG ) {
+		return;
+	}
 
-    if ( is_array( $log ) || is_object( $log ) ) {
+	if ( is_array( $log ) || is_object( $log ) ) {
 		$logmessage = ( print_r( $log, true ) );
 	} else {
-		$logmessage =  $log ;
+		$logmessage = $log;
 	}
 
 	if ( $backtrace ) {
-		$bt   = debug_backtrace();
-		$file = $bt[0]['file'];
-		$line = $bt[0]['line'];
-		$logmessage  = $file . ':' . $line . ' ' . $logmessage;
+		$bt         = debug_backtrace();
+		$file       = $bt[0]['file'];
+		$line       = $bt[0]['line'];
+		$logmessage = $file . ':' . $line . ' ' . $logmessage;
 	}
 
 	error_log( $logmessage );

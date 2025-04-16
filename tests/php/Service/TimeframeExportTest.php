@@ -11,43 +11,43 @@ use DateTime;
 use SlopeIt\ClockMock\ClockMock;
 use stdClass;
 
-class TimeframeExportTest extends CustomPostTypeTest
-{
+class TimeframeExportTest extends CustomPostTypeTest {
+
 	protected Booking $booking;
 	protected $fileUnderTest;
 	protected $directoryUnderTest;
 
 	public function testGetTimeframeData() {
 		$timeframeOneItemAndLocation = $this->createBookableTimeFrameIncludingCurrentDay();
-		$dataArray = \CommonsBooking\Service\TimeframeExport::getTimeframeData( [ $timeframeOneItemAndLocation ] );
+		$dataArray                   = \CommonsBooking\Service\TimeframeExport::getTimeframeData( [ $timeframeOneItemAndLocation ] );
 		$this->assertEquals( 1, count( $dataArray ) );
 
-		$secondItem = $this->createItem( 'second-item' );
+		$secondItem                   = $this->createItem( 'second-item' );
 		$timeframeTwoItemsOneLocation =
 			$this->createTimeframe(
 				$this->locationId,
 				[ $this->itemId, $secondItem ],
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+1 week', strtotime( self::CURRENT_DATE ) )
-		);
-		$dataArray = TimeframeExport::getTimeframeData( [ $timeframeTwoItemsOneLocation ] );
+			);
+		$dataArray                    = TimeframeExport::getTimeframeData( [ $timeframeTwoItemsOneLocation ] );
 		$this->assertEquals( 2, count( $dataArray ) );
 
-		$secondLocation = $this->createLocation( 'second-location' );
+		$secondLocation                = $this->createLocation( 'second-location' );
 		$timeframeTwoItemsTwoLocations =
 			$this->createTimeframe(
 				[ $this->locationId, $secondLocation ],
 				[ $this->itemId, $secondItem ],
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+1 week', strtotime( self::CURRENT_DATE ) )
-		);
-		$dataArray = TimeframeExport::getTimeframeData( [ $timeframeTwoItemsTwoLocations ] );
+			);
+		$dataArray                     = TimeframeExport::getTimeframeData( [ $timeframeTwoItemsTwoLocations ] );
 		$this->assertEquals( 4, count( $dataArray ) );
 
-		$booking = $this->createConfirmedBookingStartingToday();
+		$booking   = $this->createConfirmedBookingStartingToday();
 		$dataArray = TimeframeExport::getTimeframeData( [ $booking ] );
 		$this->assertEquals( 1, count( $dataArray ) );
-		$this->assertArrayHasKey( 'pickup' , $dataArray[0] ); //because this is only set for bookings
+		$this->assertArrayHasKey( 'pickup', $dataArray[0] ); // because this is only set for bookings
 	}
 
 	public function testExportCsvAndFileCreation() {
@@ -61,7 +61,7 @@ class TimeframeExportTest extends CustomPostTypeTest
 
 		TimeframeExport::cronExport( $this->directoryUnderTest );
 
-		$fileName = scandir( $this->directoryUnderTest )[2];
+		$fileName            = scandir( $this->directoryUnderTest )[2];
 		$this->fileUnderTest = $this->directoryUnderTest . $fileName;
 
 		// Check basic properties
@@ -70,11 +70,11 @@ class TimeframeExportTest extends CustomPostTypeTest
 		ClockMock::reset();
 
 		// Parse csv contents
-		$i = 0;
-		$header = null;
+		$i         = 0;
+		$header    = null;
 		$firstLine = null;
-		$file = fopen($this->fileUnderTest, 'r');
-		while (($line = fgetcsv($file)) !== FALSE) {
+		$file      = fopen( $this->fileUnderTest, 'r' );
+		while ( ( $line = fgetcsv( $file ) ) !== false ) {
 			if ( $i == 0 ) {
 				$header = $line[0];
 			}
@@ -83,74 +83,72 @@ class TimeframeExportTest extends CustomPostTypeTest
 			}
 			$i += 1;
 		}
-		fclose($file);
+		fclose( $file );
 
 		$this->assertNotNull( $header );
-		$firstColumn = explode( ";", $header)[0];
+		$firstColumn = explode( ';', $header )[0];
 
-		$this->assertEquals( "ID", $firstColumn );
+		$this->assertEquals( 'ID', $firstColumn );
 		$this->assertNotNull( $firstLine );
 	}
 
 	public function testGetExportData() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$timeframeOneItemAndLocation = $this->createBookableTimeFrameIncludingCurrentDay();
-		$dataArray = TimeframeExport::getTimeframeData( [ $timeframeOneItemAndLocation ] );
+		$dataArray                   = TimeframeExport::getTimeframeData( [ $timeframeOneItemAndLocation ] );
 		$this->assertEquals( 1, count( $dataArray ) );
 
-		$secondItem = $this->createItem( 'second-item' );
+		$secondItem                   = $this->createItem( 'second-item' );
 		$timeframeTwoItemsOneLocation = $this->createTimeframe(
 			$this->locationId,
 			[ $this->itemId, $secondItem ],
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 week', strtotime( self::CURRENT_DATE ) )
 		);
-		$dataArray = TimeframeExport::getTimeframeData( [ $timeframeTwoItemsOneLocation ] );
+		$dataArray                    = TimeframeExport::getTimeframeData( [ $timeframeTwoItemsOneLocation ] );
 		$this->assertEquals( 2, count( $dataArray ) );
 	}
 
 	public function testCron() {
-		$yesterday = new DateTime(self::CURRENT_DATE);
-		$yesterday->modify('-1 day');
-		$tomorrow = new DateTime(self::CURRENT_DATE);
-		$tomorrow->modify('+1 day');
+		$yesterday = new DateTime( self::CURRENT_DATE );
+		$yesterday->modify( '-1 day' );
+		$tomorrow = new DateTime( self::CURRENT_DATE );
+		$tomorrow->modify( '+1 day' );
 		$testFile = '/tmp/test.csv';
-		$export = new TimeframeExport(
+		$export   = new TimeframeExport(
 			Timeframe::BOOKING_ID,
-			$yesterday->format('Y-m-d'),
-			$tomorrow->format('Y-m-d')
+			$yesterday->format( 'Y-m-d' ),
+			$tomorrow->format( 'Y-m-d' )
 		);
 		$export->setCron();
 		$export->getExportData();
-		$export->getCSV($testFile);
-		$this->assertFileExists($testFile);
-		$this->assertFileIsReadable($testFile);
-		$content = file_get_contents($testFile);
-		$this->assertNotEmpty($content);
-		$objects = $this->csvStringToStdObjects($content);
-		$this->assertEquals(1, count($objects));
-		$exportedBooking = reset($objects);
-		$this->assertEquals($this->booking->ID, $exportedBooking->ID);
+		$export->getCSV( $testFile );
+		$this->assertFileExists( $testFile );
+		$this->assertFileIsReadable( $testFile );
+		$content = file_get_contents( $testFile );
+		$this->assertNotEmpty( $content );
+		$objects = static::csvStringToStdObjects( $content );
+		$this->assertEquals( 1, count( $objects ) );
+		$exportedBooking = reset( $objects );
+		$this->assertEquals( $this->booking->ID, $exportedBooking->ID );
 	}
 
-	public function testGetCSV()
-	{
-		$yesterday = new DateTime(self::CURRENT_DATE);
-		$yesterday->modify('-1 day');
-		$tomorrow = new DateTime(self::CURRENT_DATE);
-		$tomorrow->modify('+1 day');
+	public function testGetCSV() {
+		$yesterday = new DateTime( self::CURRENT_DATE );
+		$yesterday->modify( '-1 day' );
+		$tomorrow = new DateTime( self::CURRENT_DATE );
+		$tomorrow->modify( '+1 day' );
 		$export = new TimeframeExport(
 			Timeframe::BOOKING_ID,
-			$yesterday->format('Y-m-d'),
-			$tomorrow->format('Y-m-d')
+			$yesterday->format( 'Y-m-d' ),
+			$tomorrow->format( 'Y-m-d' )
 		);
 		$export->getExportData();
-		$csv = $export->getCSV();
-		$objects = $this->csvStringToStdObjects($csv);
-		$this->assertEquals(1, count($objects));
-		$exportedBooking = reset($objects);
-		$this->assertEquals($this->booking->ID, $exportedBooking->ID);
-
+		$csv     = $export->getCSV();
+		$objects = static::csvStringToStdObjects( $csv );
+		$this->assertEquals( 1, count( $objects ) );
+		$exportedBooking = reset( $objects );
+		$this->assertEquals( $this->booking->ID, $exportedBooking->ID );
 	}
 
 	public static function csvStringToStdObjects( $csvString ): array {
@@ -186,7 +184,7 @@ class TimeframeExportTest extends CustomPostTypeTest
 
 		// Deletes directory if existent
 		if ( file_exists( $this->directoryUnderTest ) ) {
-			foreach( scandir( $this->directoryUnderTest ) as $fileInDir ) {
+			foreach ( scandir( $this->directoryUnderTest ) as $fileInDir ) {
 				wp_delete_file( $this->directoryUnderTest . $fileInDir );
 			}
 			rmdir( $this->directoryUnderTest );
@@ -199,8 +197,9 @@ class TimeframeExportTest extends CustomPostTypeTest
 	protected function tearDown(): void {
 		parent::tearDown();
 
-		if ($this->fileUnderTest)
+		if ( $this->fileUnderTest ) {
 			wp_delete_file( $this->fileUnderTest );
+		}
 
 		rmdir( $this->directoryUnderTest );
 	}

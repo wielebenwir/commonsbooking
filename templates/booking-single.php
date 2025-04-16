@@ -71,16 +71,16 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		</div>
 		<?php
 		$location_address = $location->formattedAddressOneLine();
-		if (!empty($location_address)){
+		if ( ! empty( $location_address ) ) {
 			?>
 			<div class="cb-list-content cb-address cb-col-30-70">
 				<div><?php echo esc_html__( 'Address', 'commonsbooking' ); ?></div>
 				<div><?php echo commonsbooking_sanitizeHTML( $location_address ); ?></div>
 			</div><!-- .cb-address -->
-		<?php
+			<?php
 		}
 		$location_pickup_instructions = $location->formattedPickupInstructionsOneLine();
-		if (!empty($location_pickup_instructions)){
+		if ( ! empty( $location_pickup_instructions ) ) {
 			?>
 			<div class="cb-list-content cb-pickupinstructions cb-col-30-70">
 				<div><?php echo esc_html__( 'Pickup instructions', 'commonsbooking' ); ?></div>
@@ -90,13 +90,13 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		}
 		// show contact details only after booking is confirmed or if options are set to show contactinfo even on unconfirmed booking status
 		if ( $post->post_status == 'confirmed' or $show_contactinfo_unconfirmed == 'on' ) {
-            ?>
+			?>
 			<div class="cb-list-content cb-contact cb-col-30-70">
 				<div><?php echo esc_html__( 'Contact', 'commonsbooking' ); ?></div>
 				<div><?php echo commonsbooking_sanitizeHTML( $location->formattedContactInfoOneLine() ); ?></div>
 			</div><!-- .cb-contact -->
 			<?php
-            // else; show info-text to inform user to confirm booking to see contact details
+			// else; show info-text to inform user to confirm booking to see contact details
 		} else {
 			?>
 			<div class="cb-list-content cb-contact cb-col-30-70">
@@ -104,7 +104,7 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 				<div><strong><?php echo commonsbooking_sanitizeHTML( $text_hidden_contactinfo ); ?></strong></div>
 			</div><!-- .cb-contact -->
 			<?php
-            // end if booking == confirmed
+			// end if booking == confirmed
 		}
 		?>
 	</div><!-- cb-booking-location -->
@@ -114,37 +114,39 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 		<div class="cb-list-header">
 			<h3><?php echo esc_html__( 'Your profile', 'commonsbooking' ); ?></h3>
 		</div>
-        <?php
-       if (commonsbooking_isCurrentUserAdmin() && $admin_booking_id ) { //
-        ?>
-         <div class="cb-list-content cb-user cb-col-30-70">
-       	<div><?php echo esc_html__( 'Admin Booking by', 'commonsbooking' ); ?></div>
-			<div><?php
-                $booking_admin = get_user_by('ID', $admin_booking_id);
-                echo esc_html( $booking_admin->user_login . " (" . $booking_admin->first_name . " " . $booking_admin->last_name . ")" );
-                ?>
-        </div>
-		</div>
-        <!-- internal comment /-->
-        <div class="cb-list-content cb-user cb-col-30-70">
-       	<div><?php echo esc_html__( 'Internal comment', 'commonsbooking' ); ?></div>
-			<div><?php
-                     echo nl2br( commonsbooking_sanitizeHTML( $internal_comment ) );
-                ?>
-        </div>
-		</div>
-        <?php
-        } // end if
-        ?>
+		<?php
+		if ( commonsbooking_isCurrentUserAdmin() && $admin_booking_id ) {
+			?>
 		<div class="cb-list-content cb-user cb-col-30-70">
-       			<div><?php echo esc_html__( 'Your E-Mail', 'commonsbooking' ); ?></div>
+			<div><?php echo esc_html__( 'Admin Booking by', 'commonsbooking' ); ?></div>
+			<div>
+			<?php
+				$booking_admin = get_user_by( 'ID', $admin_booking_id );
+				echo esc_html( $booking_admin->user_login . ' (' . $booking_admin->first_name . ' ' . $booking_admin->last_name . ')' );
+			?>
+		</div>
+		</div>
+		<!-- internal comment /-->
+		<div class="cb-list-content cb-user cb-col-30-70">
+			<div><?php echo esc_html__( 'Internal comment', 'commonsbooking' ); ?></div>
+			<div>
+			<?php
+					echo nl2br( commonsbooking_sanitizeHTML( $internal_comment ) );
+			?>
+		</div>
+		</div>
+			<?php
+		} // end if
+		?>
+		<div class="cb-list-content cb-user cb-col-30-70">
+					<div><?php echo esc_html__( 'Your E-Mail', 'commonsbooking' ); ?></div>
 			<div><?php echo commonsbooking_sanitizeHTML( CB::get( 'user', 'user_email' ) ); ?></div>
 		</div>
 		<div class="cb-list-content cb-user cb-col-30-70">
 			<div><?php echo esc_html__( 'Your data', 'commonsbooking' ); ?></div>
 			<div><a href="<?php echo get_edit_profile_url( $user->ID ); ?>"><?php echo esc_html( $user->first_name ) . ' ' . esc_html( $user->last_name ) . ' (' . esc_html( $user->user_login ) . ')'; ?> </a>
-                <br>
-                <?php echo commonsbooking_sanitizeHTML( $formatted_user_info ); ?>
+				<br>
+				<?php echo commonsbooking_sanitizeHTML( $formatted_user_info ); ?>
 			</div>
 		</div>
 	</div>
@@ -158,7 +160,7 @@ if ( $bookingCommentActive ) {
 	$bookingCommentDescription = Settings::getOption( 'commonsbooking_options_general', 'booking-comment-description' );
 
 	if ( $post->post_status == 'unconfirmed' ) {
-        ?>
+		?>
 		<div class="cb-wrapper cb-booking-comment">
 			<div class="cb-list-header">
 				<h3><?php echo commonsbooking_sanitizeHTML( $bookingCommentTitle ); ?></h3>
@@ -167,14 +169,13 @@ if ( $bookingCommentActive ) {
 			<div class="cb-list-content cb-comment cb-col-100">
 				<div>
 					<textarea id="cb-booking-comment"
-					          name="comment"><?php echo commonsbooking_sanitizeHTML( $booking->returnComment() ); ?></textarea>
+								name="comment"><?php echo commonsbooking_sanitizeHTML( $booking->returnComment() ); ?></textarea>
 				</div>
 			</div>
 		</div>
 		<?php
-	} else {
-		if ( $booking->returnComment() ) {
-			?>
+	} elseif ( $booking->returnComment() ) {
+		?>
 			<div class="cb-wrapper cb-booking-comment">
 				<div class="cb-list-header">
 					<h3><?php echo commonsbooking_sanitizeHTML( $bookingCommentTitle ); ?></h3>
@@ -184,7 +185,6 @@ if ( $bookingCommentActive ) {
 				</div>
 			</div>
 			<?php
-		}
 	}
 }
 if ( $current_status && $current_status !== 'draft' ) {
@@ -200,8 +200,8 @@ if ( $current_status && $current_status !== 'draft' ) {
 
 		// if booking is unconfirmed cancel link throws user back to item detail page
 		if ( $booking->post_status() == 'unconfirmed' ) {
-            $form_action = 'delete_unconfirmed';
-            include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
+			$form_action = 'delete_unconfirmed';
+			include COMMONSBOOKING_PLUGIN_DIR . 'templates/booking-single-form.php';
 		} else {
 			// if booking is confirmed we display the cancel booking button
 			$form_action = 'cancel';

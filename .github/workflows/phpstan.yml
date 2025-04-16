@@ -1,22 +1,23 @@
 name: PHPStan
 
 on:
+  # Run on all pushes and on all pull requests.
+  # Prevent the build from running when there are only irrelevant changes.
   push:
-    branches:
-      - 'master'
-      - 'release/**'
     paths-ignore:
       - '**.md'
       - '**.txt'
+      - '**.yml'
+      - '**.xml'
   pull_request:
-    branches:
-      - 'master'
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
 
 jobs:
   phpstan:
     name: 'WP latest on PHP 8.3'
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v4

@@ -26,7 +26,7 @@ class RestrictionMessage extends Message {
 
 	protected $validActions = [
 		Restriction::TYPE_REPAIR,
-		Restriction::TYPE_HINT
+		Restriction::TYPE_HINT,
 	];
 
 	/**
@@ -36,10 +36,10 @@ class RestrictionMessage extends Message {
 	 * @param $action
 	 */
 	public function __construct( $restriction, $user, Booking $booking, $action, bool $firstMessage = false ) {
-		$this->restriction = $restriction;
-		$this->user        = $user;
-		$this->booking    = $booking;
-		$this->action      = $action;
+		$this->restriction  = $restriction;
+		$this->user         = $user;
+		$this->booking      = $booking;
+		$this->action       = $action;
 		$this->firstMessage = $firstMessage;
 	}
 
@@ -75,7 +75,7 @@ class RestrictionMessage extends Message {
 			$subject
 		);
 
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 	/**
@@ -90,7 +90,7 @@ class RestrictionMessage extends Message {
 			$subject
 		);
 
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 	/**
@@ -105,7 +105,7 @@ class RestrictionMessage extends Message {
 			$subject
 		);
 
-		$this->SendNotificationMail();
+		$this->sendNotificationMail();
 	}
 
 	/**
@@ -117,14 +117,14 @@ class RestrictionMessage extends Message {
 	 * @throws \Exception
 	 */
 	protected function prepareRestrictionMail( $body, $subject ) {
-		$fromHeader = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name', 'sanitize_text_field' ) .
-		              ' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
+		$fromHeader  = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name', 'sanitize_text_field' ) .
+						' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
 		$restriction = $this->getRestriction();
 
-		$bcc_addresses = "";
-		if ($this->firstMessage){ //Notify the maintainer about the damage by putting them in the BCC for the first notice. Avoids the maintainer getting flooded with restriction messages.
-			$item_maintainer_email = CB::get( Item::$postType, COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email', $this->booking->getItem() ) ; /*  email addresses, comma-seperated  */
-			$bcc_addresses = str_replace(' ','',$item_maintainer_email);
+		$bcc_addresses = '';
+		if ( $this->firstMessage ) { // Notify the maintainer about the damage by putting them in the BCC for the first notice. Avoids the maintainer getting flooded with restriction messages.
+			$item_maintainer_email = CB::get( Item::$postType, COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email', $this->booking->getItem() ); /*  email addresses, comma-seperated  */
+			$bcc_addresses         = str_replace( ' ', '', $item_maintainer_email );
 		}
 
 		$this->prepareMail(
@@ -138,7 +138,7 @@ class RestrictionMessage extends Message {
 				'item'        => $this->booking->getItem(),
 				'location'    => $this->booking->getLocation(),
 				'booking'     => $this->getBooking(),
-				'user'        => $this->getUser()
+				'user'        => $this->getUser(),
 			]
 		);
 	}
@@ -163,5 +163,4 @@ class RestrictionMessage extends Message {
 	public function getBooking(): Booking {
 		return $this->booking;
 	}
-
 }

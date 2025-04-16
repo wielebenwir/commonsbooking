@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Repository;
 
-
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use Exception;
@@ -12,6 +11,14 @@ class Restriction extends PostRepository {
 
 	/**
 	 * Returns active restrictions.
+	 *
+	 * @param array       $locations one or more location ids to filter
+	 * @param array       $items     one or more item ids to filter
+	 * @param string|null $date if provided, filters restrictions to be valid on the given date
+	 * @param bool        $returnAsModel returns array of models instead of ids, default false (returns ids)
+	 * @param int         $minTimestamp if provided, returns restrictions where rep-end > min-timestamp. default null
+	 * @param string[]    $postStatus filters for given list of status, defaults to all WordPress post status enums
+	 *
 	 * @return \CommonsBooking\Model\Restriction[]
 	 * @throws Exception
 	 */
@@ -29,36 +36,36 @@ class Restriction extends PostRepository {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-
 			$posts = self::queryPosts( $date, $minTimestamp, $postStatus );
 
 			if ( $posts && count( $posts ) ) {
 				$posts = Wordpress::flattenWpdbResult( $posts );
 
 				// If there are locations or items to be filtered, we iterate through
-				// query result because wp_query is to slow for meta-querying them.
+				// query result because wp_query is too slow for meta-querying them.
 				if ( count( $locations ) || count( $items ) ) {
 					$posts = self::filterPosts( $posts, $locations, $items );
 				}
 
-				// if returnAsModel == TRUE the result is a timeframe model instead of a wordpress object
+				// if returnAsModel == TRUE the result is a timeframe model instead of a WordPress object
 				if ( $returnAsModel ) {
 					$posts = self::castPostsToRestrictions( $posts );
 				}
 			}
 
 			$posts = $posts ?: [];
-			Plugin::setCacheItem( $posts, Wordpress::getTags($posts, $items, $locations), $customCacheKey );
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts, $items, $locations ), $customCacheKey );
 
 			return $posts;
 		}
 	}
 
 	/**
-	 * Queries posts from db.
+	 * Queries restriction posts from db.
+	 * Only queries active restrictions.
 	 *
 	 * @param $date
-	 * @param $minTimestamp
+	 * @param $minTimestamp int checks if rep-end > minTimestamp (0:00)
 	 * @param $postStatus
 	 *
 	 * @return array|object|null
@@ -85,15 +92,15 @@ class Restriction extends PostRepository {
 			// Complete query
 			$query = "
                 SELECT DISTINCT pm1.* from $table_posts pm1                
-                " . $dateQuery . "
-                " . self::getActiveQuery() . "
+                " . $dateQuery . '
+                ' . self::getActiveQuery() . "
                 WHERE
                     pm1.post_type = '" . \CommonsBooking\Wordpress\CustomPostType\Restriction::getPostType() . "' AND
                     pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
             ";
 
 			$posts = $wpdb->get_results( $query );
-			Plugin::setCacheItem( $posts, Wordpress::getTags($posts) );
+			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
 
 			return $posts;
 		}
@@ -110,7 +117,8 @@ class Restriction extends PostRepository {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
-		return $wpdb->prepare( "
+		return $wpdb->prepare(
+			"
                 INNER JOIN $table_postmeta pm4 ON
                     pm4.post_id = pm1.id AND (
                         ( 
@@ -142,7 +150,7 @@ class Restriction extends PostRepository {
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
 		return $wpdb->prepare(
-		"INNER JOIN $table_postmeta pm4 ON
+			"INNER JOIN $table_postmeta pm4 ON
                     pm4.post_id = pm1.id AND
                     pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_START . "' AND
                     pm4.meta_value BETWEEN 0 AND %d
@@ -168,6 +176,7 @@ class Restriction extends PostRepository {
 
 	/**
 	 * Returns query to filter only active restrictions.
+	 *
 	 * @return string
 	 */
 	private static function getActiveQuery(): string {
@@ -194,47 +203,49 @@ class Restriction extends PostRepository {
 	 * @return array
 	 */
 	private static function filterPosts( array $posts, array $locations, array $items ): array {
-		return array_filter( $posts, function ( $post ) use ( $locations, $items ) {
-			// Check if restriction is in relation to item and/or location
-			$location                      = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
-			$restrictionHasLocation        = $location !== 0;
-			$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
+		return array_filter(
+			$posts,
+			function ( $post ) use ( $locations, $items ) {
+				// Check if restriction is in relation to item and/or location
+				$location                      = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_LOCATION_ID, true ) );
+				$restrictionHasLocation        = $location !== 0;
+				$restrictedLocationInLocations = $restrictionHasLocation && in_array( $location, $locations );
 
-			$item                  = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
-			$restrictionHasItem    = $item !== 0;
-			$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
+				$item                  = intval( get_post_meta( $post->ID, \CommonsBooking\Model\Restriction::META_ITEM_ID, true ) );
+				$restrictionHasItem    = $item !== 0;
+				$restrictedItemInItems = $restrictionHasItem && in_array( $item, $items );
 
-			// No item or location for restriction set
-			$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
+				// No item or location for restriction set
+				$noLocationNoItem = ( ! $restrictionHasLocation && ! $restrictionHasItem );
 
-			// No location, item matching
-			$noLocationItemMatches = (
+				// No location, item matching
+				$noLocationItemMatches = (
 				! $restrictionHasLocation &&
 				$restrictionHasItem &&
 				$restrictedItemInItems
-			);
+				);
 
-			// No item, location matching
-			$noItemLocationMatches = (
+				// No item, location matching
+				$noItemLocationMatches = (
 				! $restrictionHasItem &&
 				$restrictionHasLocation &&
 				$restrictedLocationInLocations
-			);
+				);
 
-			// Item and location matching
-			$itemAndLocationMatches = (
+				// Item and location matching
+				$itemAndLocationMatches = (
 				$restrictionHasLocation &&
 				$restrictedLocationInLocations &&
 				$restrictionHasItem &&
 				$restrictedItemInItems
-			);
+				);
 
-			return
-				$noLocationNoItem ||
+				return $noLocationNoItem ||
 				$noLocationItemMatches ||
 				$noItemLocationMatches ||
 				$itemAndLocationMatches;
-		} );
+			}
+		);
 	}
 
 	/**
@@ -252,5 +263,4 @@ class Restriction extends PostRepository {
 
 		return $posts;
 	}
-
 }

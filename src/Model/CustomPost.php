@@ -83,6 +83,7 @@ class CustomPost {
 	/**
 	 * When getting a value from a Model Object, we can use this magic method to get the value from the WP_Post object instead.
 	 * This, for example, allows us to use $booking->post_title instead of $booking->post->post_title.
+	 *
 	 * @param $name
 	 *
 	 * @return array|mixed|void
@@ -119,6 +120,7 @@ class CustomPost {
 
 	/**
 	 * Get the corresponding WP_Post object
+	 *
 	 * @return WP_Post
 	 */
 	public function getPost() {
@@ -146,7 +148,7 @@ class CustomPost {
 	 * @return string html
 	 */
 	public function titleLink(): string {
-		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_the_permalink( $this->ID )), commonsbooking_sanitizeHTML($this->post_title) );
+		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_the_permalink( $this->ID ) ), commonsbooking_sanitizeHTML( $this->post_title ) );
 	}
 
 	/**
@@ -155,7 +157,7 @@ class CustomPost {
 	 * @return string
 	 */
 	public function title(): string {
-		return sprintf( '<span class="cb-title">%s</span>', commonsbooking_sanitizeHTML($this->post_title) );
+		return sprintf( '<span class="cb-title">%s</span>', commonsbooking_sanitizeHTML( $this->post_title ) );
 	}
 
 	/**
@@ -169,8 +171,11 @@ class CustomPost {
 	 */
 	public function thumbnail( $size = 'thumbnail' ): string {
 		if ( has_post_thumbnail( $this->ID ) ) {
-			return '<div class="cb-thumbnail">' . get_the_post_thumbnail( $this->ID, $size,
-					array( 'class' => 'alignleft cb-image' ) ) . '</div>';
+			return '<div class="cb-thumbnail">' . get_the_post_thumbnail(
+				$this->ID,
+				$size,
+				array( 'class' => 'alignleft cb-image' )
+			) . '</div>';
 		}
 
 		return '';
@@ -185,6 +190,7 @@ class CustomPost {
 
 	/**
 	 * Returns user data.
+	 *
 	 * @return false|\WP_User
 	 */
 	public function getUserData() {
@@ -194,11 +200,12 @@ class CustomPost {
 
 	/**
 	 * Checks if the given user is the author of the current post.
+	 *
 	 * @param \WP_User $user
 	 *
-	 * @return boolean - true if user is author, false if not.
+	 * @return bool - true if user is author, false if not.
 	 */
-	public function isAuthor (\WP_User $user): bool {
+	public function isAuthor( \WP_User $user ): bool {
 		return $user->ID === intval( $this->post_author );
 	}
 
@@ -212,5 +219,4 @@ class CustomPost {
 
 		return $this;
 	}
-
 }
