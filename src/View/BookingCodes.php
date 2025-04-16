@@ -428,7 +428,7 @@ HTML;
 	/**
 	 * Renders HTML table of bookingCodes List.
 	 *
-	 * @param CommonsBooking\Model\BookingCode[] $bookingCodes list of booking codes
+	 * @param BookingCode[] $bookingCodes list of booking codes
 	 *
 	 * @return string HTML table
 	 */
@@ -555,8 +555,8 @@ HTML;
 	}
 
 	/**
-	 * @param string                             $renderTarget code where email is rendered (email|timeframe_form)
-	 * @param CommonsBooking\Model\BookingCode[] $bookingCodes array of string booking codes
+	 * @param string        $renderTarget code where email is rendered (email|timeframe_form)
+	 * @param BookingCode[] $bookingCodes array of string booking codes
 	 *
 	 * @return string|null
 	 */
@@ -567,9 +567,9 @@ HTML;
 		 *
 		 * @since 2.9.0
 		 *
-		 * @param string                             $renderedTable rendering of booking codes list as html string
-		 * @param CommonsBooking\Model\BookingCode[] $bookingCodes list of booking codes
-		 * @param string                             $renderTarget where email is rendered (email|timeframe_form)
+		 * @param string        $renderedTable rendering of booking codes list as html string
+		 * @param BookingCode[] $bookingCodes list of booking codes
+		 * @param string        $renderTarget where email is rendered (email|timeframe_form)
 		 */
 		return apply_filters(
 			'commonsbooking_emailcodes_rendertable',
