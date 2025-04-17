@@ -30,7 +30,7 @@ class MassOperations {
 		} else {
 			$result = array(
 				'success' => false,
-				'message' => empty( $errorMessage ) ?? __( 'An error occurred while moving bookings.', 'commonsbooking' )
+				'message' => empty( $errorMessage ) ?? __( 'An error occurred while moving bookings.', 'commonsbooking' ),
 			);
 		}
 
