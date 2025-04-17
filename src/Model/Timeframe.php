@@ -196,8 +196,6 @@ class Timeframe extends CustomPost {
 			return false;
 		}
 
-
-
 		// these roles are always allowed to book
 		$privilegedRolesDefaults = [ 'administrator' ];
 		/**
