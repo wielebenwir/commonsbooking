@@ -1,6 +1,31 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Action callback returns bool but should not return anything\\.$#"
+			message: '#^Access to an undefined property WP_User\:\:\$codeTable\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Messages/BookingCodesMessage.php
+
+		-
+			message: '#^Access to an undefined property WP_User\:\:\$formatDateRange\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Messages/BookingCodesMessage.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$locked\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Model/Day.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$locked\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/View/Calendar.php
+
+		-
+			message: '#^Action callback returns bool but should not return anything\.$#'
+			identifier: return.void
 			count: 1
 			path: src/Wordpress/CustomPostType/CustomPostType.php

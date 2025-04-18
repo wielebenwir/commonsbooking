@@ -106,7 +106,7 @@ class Plugin {
 	/**
 	 * Returns needed roles and caps for specific roles
 	 *
-	 * @return \bool[][]
+	 * @return bool[][]
 	 */
 	public static function getRoleCapMapping( $roleName = null ) {
 		if ( $roleName === null ) {

@@ -189,7 +189,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns nicely formatted start datetime.
 	 *
-	 * @return string, if META_START is not null.
+	 * @return string if META_START is not null.
 	 */
 	public function getFormattedStartDateTime() {
 		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() );
@@ -212,7 +212,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns nicely formatted end datetime.
 	 *
-	 * @return string, if META_END is not null.
+	 * @return string if META_END is not null.
 	 */
 	public function getFormattedEndDateTime() {
 		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );

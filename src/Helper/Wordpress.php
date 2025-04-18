@@ -33,7 +33,7 @@ class Wordpress {
 	 *
 	 * @param $posts
 	 *
-	 * @return array|array[]|null[]|WP_Post[]
+	 * @return array|array[]|null[]|\WP_Post[]
 	 */
 	public static function flattenWpdbResult( $posts ): array {
 		return array_map(
