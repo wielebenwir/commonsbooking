@@ -1312,43 +1312,43 @@ msgstr "Bitte kontaktiere die Kontaktpersonen vor Ort direkt, wenn du Fragen zur
 msgid "Not set"
 msgstr "Nicht gesetzt"
 
-#: src/Model/Timeframe.php:261
+#: src/Model/Timeframe.php:259
 msgid "Available here"
 msgstr "Hier verfügbar"
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Timeframe.php:266
+#: src/Model/Timeframe.php:264
 msgid "on %s"
 msgstr "am %s"
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Timeframe.php:271
+#: src/Model/Timeframe.php:269
 msgid "from %s"
 msgstr "von %s"
 
-#: src/Model/Timeframe.php:275
+#: src/Model/Timeframe.php:273
 msgid "permanently"
 msgstr "dauerhaft"
 
 #. translators: %1$s = startdate, second %2$s = enddate in WordPress defined format
-#: src/Model/Timeframe.php:281
+#: src/Model/Timeframe.php:279
 msgid "from %1$s until %2$s"
 msgstr "von %1$s bis %2$s"
 
 #. translators: %s = enddate in WordPress defined format
-#: src/Model/Timeframe.php:288
+#: src/Model/Timeframe.php:286
 msgid "until %s"
 msgstr "bis %s"
 
-#: src/Model/Timeframe.php:616
+#: src/Model/Timeframe.php:614
 msgid "A pickup time but no return time has been set. Please set the return time."
 msgstr "Eine Abholzeit, aber keine Rückgabezeit wurde festgelegt. Lege bitte eine Rückgabezeit fest."
 
-#: src/Model/Timeframe.php:626
+#: src/Model/Timeframe.php:624
 msgid "End date is before start date. Please set a valid end date."
 msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 
-#: src/Model/Timeframe.php:661
+#: src/Model/Timeframe.php:659
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
@@ -3196,7 +3196,7 @@ msgstr "Es ist nicht möglich, diesen Zeitrahmen im Frontend abzurufen. Bitte be
 msgid "Cancelled"
 msgstr "Storniert"
 
-#: src/Model/Timeframe.php:636
+#: src/Model/Timeframe.php:634
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
@@ -3283,24 +3283,24 @@ msgid "If selected, days that are overbooked will be counted towards the maximum
 msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:697
+#: src/Model/Timeframe.php:695
 msgid "See overlapping timeframe ID: %1$s %2$s"
 msgstr "Sich überschneidende Zeitrahmen ID: %1$s %2$s"
 
-#: src/Model/Timeframe.php:796
+#: src/Model/Timeframe.php:794
 msgid "Overlapping bookable timeframes are only allowed to have the same grid."
 msgstr "Sich überschneidende buchbare Zeiträume müssen das gleiche Raster haben."
 
-#: src/Model/Timeframe.php:826
+#: src/Model/Timeframe.php:824
 msgid "Overlapping bookable timeframes are not allowed to have the same weekdays."
 msgstr "Mehrere buchbare Zeiträume überschneiden sich in den definierten Wochentagen."
 
-#: src/Model/Timeframe.php:838
+#: src/Model/Timeframe.php:836
 msgid "Overlapping bookable timeframes are not allowed to have the same dates."
 msgstr "Mehrere buchbare Zeiträume überschneiden sich in dem definierten Datumsbereich."
 
-#: src/Model/Timeframe.php:845
-#: src/Model/Timeframe.php:852
+#: src/Model/Timeframe.php:843
+#: src/Model/Timeframe.php:850
 msgid "The other timeframe is overlapping with your weekly configuration."
 msgstr "Der andere Zeitrahmen überschneidet sich mit einer wöchentlichen Konfiguration."
 
@@ -3340,7 +3340,7 @@ msgstr "Feiertage importieren"
 msgid "Select the year and state to import holidays for (as of now only German holidays are supported)"
 msgstr "Wählen Sie das Jahr und das Bundesland, für das Sie Feiertage importieren möchten (derzeit werden Feiertage in Deutschland unterstützt)"
 
-#: src/Model/Timeframe.php:812
+#: src/Model/Timeframe.php:810
 msgid "Daily repeated time periods are not allowed to overlap."
 msgstr "Täglich wiederholende Zeiträume dürfen sich nicht überschneiden."
 
@@ -4072,23 +4072,23 @@ msgstr "Bitte passe das Start- oder Enddatum an."
 msgid "Affected Bookings: %s"
 msgstr "Betroffene Buchungen: %s"
 
-#: src/Model/Timeframe.php:561
+#: src/Model/Timeframe.php:559
 msgid "Could not get item or location. Please set a valid item and location."
 msgstr "Artikel oder Standort konnte nicht gefunden werden. Bitte wähle einen gültigen Artikel oder Standort."
 
-#: src/Model/Timeframe.php:570
+#: src/Model/Timeframe.php:568
 msgid "Item or location is missing. Please set item and location."
 msgstr "Artikel oder Standort fehlen. Bitte Artikel und Standort festlegen."
 
-#: src/Model/Timeframe.php:583
+#: src/Model/Timeframe.php:581
 msgid "No dates selected. Please select at least one date."
 msgstr "Kein Datum ausgewählt. Bitte mindestens ein Datum auswählen."
 
-#: src/Model/Timeframe.php:593
+#: src/Model/Timeframe.php:591
 msgid "The same date was selected multiple times. Please select each date only once."
 msgstr "Das gleiche Datum wurde mehrere Male ausgewählt. Bitte ein Datum nur einmal auswählen."
 
-#: src/Model/Timeframe.php:602
+#: src/Model/Timeframe.php:600
 msgid "Startdate is missing. Please enter a start date to publish this timeframe."
 msgstr "Das Startdatum fehlt. Ein Startdatum muss eingegeben werden, damit der Zeitrahmen veröffentlicht werden kann."
 
