@@ -304,4 +304,50 @@ class Item extends CustomPostType {
 		}
 		Settings::updateOption( 'commonsbooking_settings_metaboxfields', static::getPostType(), $metabox_fields );
 	}
+
+	public static function registerPostTypeTaxonomy() {
+		parent::registerPostTypeTaxonomy();
+
+		// hook this for later, if we run it now, it would fail
+		add_action( 'cmb2_admin_init', array( self::class, 'registerTaxonomyMetaboxes' ) );
+	}
+
+	protected static function getTaxonomyArgs() {
+		return array(
+			'label'             => esc_html__( 'Item Category', 'commonsbooking' ),
+			'rewrite'           => array( 'slug' => static::getPostType() . '-cat' ),
+			'hierarchical'      => true,
+			'show_in_rest'      => true,
+			'public'            => true,
+			'show_admin_column' => true,
+		);
+	}
+
+	/**
+	 * Add custom label for item categories that will be displayed in the map filter groups.
+	 *
+	 * @return void
+	 */
+	public static function registerTaxonomyMetaboxes() {
+		$taxonomy = self::getPostType() . 's_category';
+
+		$cmb_taxonomy = new_cmb2_box(
+			array(
+				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'edit',
+				'title'        => esc_html__( 'Item Category', 'commonsbooking' ),
+				'object_types' => array( 'term' ),
+				'taxonomies'   => array( 'category', $taxonomy ),
+				'context'      => 'side',
+			)
+		);
+
+		$cmb_taxonomy->add_field(
+			array(
+				'name' => __( 'Add custom title for filter', 'commonsbooking' ),
+				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'markup',
+				'type' => 'textarea_small',
+				'desc' => __( 'Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used.', 'commonsbooking' ),
+			)
+		);
+	}
 }

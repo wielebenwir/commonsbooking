@@ -131,7 +131,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( 1, count( $timeframe ) );
 		$this->assertEquals( $timeframeId, $timeframe[0]->ID );
 
-		\CommonsBooking\Plugin::registerItemTaxonomy();
+		\CommonsBooking\Wordpress\CustomPostType\Item::registerPostTypeTaxonomy();
 
 		// Let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
 		$term = wp_create_term( 'Test Category', Item::getPostType() . 's_category' );
@@ -191,7 +191,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( 1, count( $timeframe ) );
 		$this->assertEquals( $timeframeId, $timeframe[0]->ID );
 
-		\CommonsBooking\Plugin::registerLocationTaxonomy();
+		\CommonsBooking\Wordpress\CustomPostType\Location::registerPostTypeTaxonomy();
 
 		// Let's assign our location to a category, that timeframe also to the same category and check if we can
 		// still get the timeframe
