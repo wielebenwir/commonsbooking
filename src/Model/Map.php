@@ -64,7 +64,7 @@ class Map extends CustomPost {
 			 */
 
 			if ( $preset_location_categories ) {
-				if ( ! has_term( $preset_location_categories, 'cb_locations_category', $post->ID ) ) {
+				if ( ! has_term( $preset_location_categories, Location::getTaxonomyName(), $post->ID ) ) {
 					continue; // skip to next location in loop
 				}
 			}
@@ -72,7 +72,7 @@ class Map extends CustomPost {
 			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
 				$item_terms = wp_get_post_terms(
 					$item->ID,
-					\CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category'
+					\CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName()
 				);
 				if ( is_array( $item_terms ) && count( $item_terms ) ) {
 					$item_terms = array_map(
@@ -96,7 +96,7 @@ class Map extends CustomPost {
 
 				if ( $preset_categories ) {
 					// check if preset category is in items
-					if ( ! has_term( $preset_categories, 'cb_items_category', $item->ID ) ) {
+					if ( ! has_term( $preset_categories, \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName(), $item->ID ) ) {
 						continue; // skip to next item in loop
 					}
 				}

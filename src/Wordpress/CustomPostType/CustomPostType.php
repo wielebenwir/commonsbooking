@@ -38,6 +38,15 @@ abstract class CustomPostType {
 	protected $types = null;
 
 	/**
+	 * Returns the default taxonomy name
+	 *
+	 * @return string
+	 */
+	public static function getTaxonomyName(): string {
+		return static::$postType . 's_category';
+	}
+
+	/**
 	 * @return string
 	 */
 	public static function getWPAction(): string {
@@ -328,7 +337,7 @@ abstract class CustomPostType {
 		$values = [];
 		$terms  = get_terms(
 			array(
-				'taxonomy'  => static::$postType . 's_category',
+				'taxonomy'  => static::getTaxonomyName(),
 			)
 		);
 		foreach ( $terms as $term ) {

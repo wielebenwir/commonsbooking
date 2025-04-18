@@ -124,7 +124,7 @@ abstract class BookablePost extends PostRepository {
 	public static function getTerms() {
 		$terms = get_terms(
 			array(
-				'taxonomy'   => static::getPostType() . 's_category',
+				'taxonomy'   => static::getTaxonomyName(),
 				'hide_empty' => false,
 			)
 		);
@@ -139,6 +139,11 @@ abstract class BookablePost extends PostRepository {
 	 * @return string
 	 */
 	abstract protected static function getPostType();
+
+	/**
+	 * @return string
+	 */
+	abstract protected static function getTaxonomyName();
 
 	/**
 	 * Returns cb-posts for a user (respects author and assigned admins).
@@ -221,7 +226,7 @@ abstract class BookablePost extends PostRepository {
 
 		// Add custom taxonomy filter
 		if ( array_key_exists( 'category_slug', $args ) ) {
-			$args['taxonomy'] = static::getPostType() . 's_category';
+			$args['taxonomy'] = static::getTaxonomyName();
 			$args['term']     = $args['category_slug'];
 			unset( $args['category_slug'] );
 		}

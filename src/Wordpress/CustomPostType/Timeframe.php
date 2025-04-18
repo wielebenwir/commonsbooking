@@ -1058,7 +1058,7 @@ class Timeframe extends CustomPostType {
 			$taxQuery              = array(
 				'tax_query' => array(
 					array(
-						'taxonomy' => Item::getPostType() . 's_category',
+						'taxonomy' => Item::getTaxonomyName(),
 						'field' => 'term_id',
 						'terms' => $itemCategorySelection,
 					),
@@ -1090,7 +1090,7 @@ class Timeframe extends CustomPostType {
 			$taxQuery                  = array(
 				'tax_query' => array(
 					array(
-						'taxonomy' => Location::getPostType() . 's_category',
+						'taxonomy' => Location::getTaxonomyName(),
 						'field' => 'term_id',
 						'terms' => $locationCategorySelection,
 					),
