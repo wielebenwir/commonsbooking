@@ -53,7 +53,7 @@ class Location extends CustomPostType {
 	 * @return void
 	 */
 	public static function termChange( $term_id, $tt_id, $taxonomy ) {
-		if ( $taxonomy == self::$postType . 's_category' ) {
+		if ( $taxonomy == self::getTaxonomyName() ) {
 			// update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
 		}
@@ -93,7 +93,7 @@ class Location extends CustomPostType {
 			) {
 				$query->query_vars['tax_query'] = array(
 					array(
-						'taxonomy'  => self::$postType . 's_category',
+						'taxonomy'  => self::getTaxonomyName(),
 						'field'     => 'term_id',
 						'terms'     => $_GET['admin_filter_post_category'],
 					),
@@ -191,7 +191,7 @@ class Location extends CustomPostType {
 			),
 
 			// Soll der Post Type Kategien haben?
-			'taxonomies'          => array( self::$postType . 's_category' ),
+			'taxonomies'          => array( self::getTaxonomyName() ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
