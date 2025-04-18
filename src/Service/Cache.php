@@ -8,14 +8,16 @@ use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
+use Symfony\Component\Cache\Adapter\NullAdapter;
 use Symfony\Component\Cache\CacheItem;
+use Symfony\Component\Cache\Exception\CacheException;
 
 trait Cache {
+
 
 	/**
 	 * TODO: Refactor to constant after PHP 8.2
@@ -106,39 +108,110 @@ trait Cache {
 	 *
 	 * @param string      $namespace
 	 * @param int         $defaultLifetime
-	 * @param string|null $directory
+	 * @param string|null $location
 	 *
 	 * @return TagAwareAdapterInterface
 	 */
-	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
-		if ( $directory === null ) {
-			$customCachePath = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' ) );
-			if ( $customCachePath ) {
-				$directory = $customCachePath;
-			}
-			// Since this is the default cache path by Symfony we'd rather set it to null so that Symfony can take over with it's own default value.
-			elseif ( $customCachePath == '/tmp/symfony-cache/' ) {
-				$directory = null;
-			}
-		}
+	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $location = null ): TagAwareAdapterInterface {
 
-		if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on' ) {
-			try {
-				$adapter = new RedisTagAwareAdapter(
-					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
-					$namespace,
-					$defaultLifetime
-				);
-				return $adapter;
-			} catch ( Exception $e ) {
-				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
-				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
-			}
+		if ( $location === null ) {
+			$location = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_location' ) );
 		}
-		$adapter = new TagAwareAdapter(
-			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
-		);
+		$identifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' ) ?: 'filesystem';
+		try {
+			$adapter = self::getAdapter(
+				$identifier,
+				$namespace,
+				$defaultLifetime,
+				$location
+			);
+		} catch ( CacheException $e ) {
+			// fall back to generic filesystem adapter, if it fails
+			$adapter = new FilesystemTagAwareAdapter( $namespace, $defaultLifetime );
+			commonsbooking_write_log( $e->getMessage() . '\n' . 'Falling back to Filesystem adapter' );
+		}
 		return $adapter;
+	}
+
+	/**
+	 * Will get all the available adapters for the cache.
+	 * Adapters need to implement the AdapterInterface.
+	 * When we select it from a menu, we only need to pass the labels.
+	 *
+	 * @param bool $onlyLabels Will get associative array with adapter identifier as key and translated label as value
+	 * @return array
+	 */
+	public static function getAdapters( $onlyLabels = false ): array {
+		$adapters = [
+			'filesystem' => [
+				'label' => __( 'Filesystem', 'commonsbooking' ),
+				'factory' => function ( array $config ) {
+					$location = $config['cacheLocation'] ?: sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache';
+					if ( ! is_writable( $location ) ) {
+						throw new CacheException(
+							sprintf( commonsbooking_sanitizeHTML( __( 'Directory %s could not be written to.', 'commonsbooking' ) ), $config['cacheLocation'] )
+						);
+					}
+					return new FilesystemTagAwareAdapter(
+						$config['namespace'],
+						$config['defaultLifetime'],
+						$config['cacheLocation']
+					);
+				},
+			],
+			'redis' => [
+				'label' => __( 'Redis', 'commonsbooking' ),
+				'factory' => function ( array $config ) {
+					return new RedisTagAwareAdapter(
+						RedisTagAwareAdapter::createConnection( $config['cacheLocation'] ),
+						$config['namespace'],
+						$config['defaultLifetime']
+					);
+				},
+			],
+			'disabled' => [
+				'label' => __( 'Disabled', 'commonsbooking' ),
+				'factory' => fn() => new TagAwareAdapter( new NullAdapter() ),
+			],
+		];
+
+		if ( $onlyLabels ) {
+			$labels = [];
+			foreach ( $adapters as $identifier => $label ) {
+				$labels[ $identifier ] = $label['label'];
+			}
+			return $labels;
+		} else {
+			return $adapters;
+		}
+	}
+
+	/**
+	 * This will get an adapter by the adapter identifier.
+	 *
+	 * @param $identifier
+	 * @param $namespace
+	 * @param $defaultLifetime
+	 * @param null            $cacheLocation
+	 * @return TagAwareAdapterInterface
+	 * @throws CacheException
+	 */
+	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = null ): TagAwareAdapterInterface {
+		$adapters = self::getAdapters();
+		if ( ! array_key_exists( $identifier, $adapters ) ) {
+			throw new CacheException( 'Adapter not found' ); // Not translated bc this is a developer error
+		}
+		try {
+			return $adapters[ $identifier ]['factory'](
+				[
+					'namespace' => $namespace,
+					'defaultLifetime' => $defaultLifetime,
+					'cacheLocation' => $cacheLocation,
+				]
+			);
+		} catch ( Exception $e ) { // Symfony adapters do not always throw CacheException, for example the REDIS adapter can throw InvalidArgumentException
+			throw new CacheException( $e->getMessage() );
+		}
 	}
 
 	/**
@@ -252,7 +325,7 @@ trait Cache {
 			$table_posts = $wpdb->prefix . 'posts';
 
 			// First get all pages with cb shortcodes
-			$sql   = "SELECT post_content FROM $table_posts WHERE 
+			$sql   = "SELECT post_content FROM $table_posts WHERE
 			  post_content LIKE '%[cb_%]%' AND
 			  post_type = 'page' AND
 			  post_status = 'publish'";
@@ -292,12 +365,26 @@ trait Cache {
 	}
 
 	/**
-	 * Renders little connections status information for REDIS database
+	 * Renders little connections status information for the cache adapter
 	 *
 	 * @param array      $field_args
 	 * @param CMB2_Field $field
 	 */
-	public static function renderREDISConnectionStatus( array $field_args, CMB2_Field $field ) {
+	public static function renderCacheStatus( array $field_args, CMB2_Field $field ) {
+		$success           = true;
+		$errorMessage      = '';
+		$adapterIdentifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' );
+		try {
+			$adapter = self::getAdapter(
+				$adapterIdentifier,
+				'',
+				0,
+				commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_location' ) )
+			);
+		} catch ( CacheException $e ) {
+			$success      = false;
+			$errorMessage = commonsbooking_sanitizeArrayorString( $e->getMessage() );
+		}
 		?>
 		<div class="cmb-row cmb-type-text table-layout">
 			<div class="cmb-th">
@@ -305,50 +392,18 @@ trait Cache {
 			</div>
 			<div class="cmb-th">
 				<?php
-				if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) == 'on' ) {
-					if ( is_a( self::getCache(), 'Symfony\Component\Cache\Adapter\RedisTagAwareAdapter' ) ) {
-						echo '<div style="color:green">';
-							echo __( 'Successfully connected to REDIS database!', 'commonsbooking' );
-						echo '</div>';
-					} else {
-						echo '<div style="color:red">';
-							echo get_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error' );
-						echo '</div>';
-					}
-				} else {
+				if ( $adapterIdentifier === 'disabled' ) {
 					echo '<div style="color:orange">';
-						echo __( 'REDIS database not enabled', 'commonsbooking' );
-					echo '</div>';
-				}
-				?>
-			</div>
-		</div>
-		<?php
-	}
-
-	public static function renderFilesystemStatus( array $field_ars, CMB2_Field $field ) {
-		?>
-		<div class="cmb-row cmb-type-text table-layout">
-			<div class="cmb-th">
-				Directory status:
-			</div>
-			<div class="cmb-th">
-				<?php
-				$cachePath = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' );
-				if ( empty( $cachePath ) ) {
-					$cachePath = sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache';
-				} else {
-					$cachePath = realpath( $cachePath ) ?: $cachePath;
-				}
-				if ( is_writable( $cachePath ) ) {
+					echo __( 'Cache is disabled.', 'commonsbooking' );
+				} elseif ( $success ) {
 					echo '<div style="color:green">';
-					printf( commonsbooking_sanitizeHTML( __( 'Directory %s is writeable.', 'commonsbooking' ) ), $cachePath );
-					echo '</div>';
+					echo __( 'Cache adapter successfully connected.', 'commonsbooking' );
 				} else {
 					echo '<div style="color:red">';
-					printf( commonsbooking_sanitizeHTML( __( 'Directory %s could not be written to.', 'commonsbooking' ) ), $cachePath );
-					echo '</div>';
+					echo $errorMessage;
 				}
+				echo '</div>';
+
 				?>
 			</div>
 		</div>
