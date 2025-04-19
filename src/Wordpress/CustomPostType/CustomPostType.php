@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Wordpress\CustomPostType;
 
+use BadMethodCallException;
 use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Settings\Settings;
@@ -56,6 +57,34 @@ abstract class CustomPostType {
 	 */
 	public static function getWPNonceId(): string {
 		return static::getPostType() . '-custom-fields' . '_wpnonce';
+	}
+
+	/**
+	 * @return array
+	 */
+	protected static function getTaxonomyArgs() {
+		throw new BadMethodCallException( 'Not implemented' );
+	}
+
+	public static function registerPostTypeTaxonomy() {
+
+		$customPostType = static::getPostType();
+		$taxonomy       = static::getPostType() . 's_category';
+
+		$result = register_taxonomy(
+			$taxonomy,
+			$customPostType,
+			static::getTaxonomyArgs()
+		);
+
+		// If error, yell about it.
+		if ( is_wp_error( $result ) ) {
+			wp_die( $result->get_error_message() );
+		}
+
+		// hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
+		add_action( 'saved_' . $taxonomy, array( static::class, 'termChange' ), 10, 3 );
+		add_action( 'delete_' . $taxonomy, array( static::class, 'termChange' ), 10, 3 );
 	}
 
 	/**
