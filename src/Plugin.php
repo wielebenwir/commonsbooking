@@ -369,7 +369,7 @@ class Plugin {
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName(),
 				''
 			);
 
@@ -379,7 +379,7 @@ class Plugin {
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName(),
 				''
 			);
 
@@ -444,8 +444,8 @@ class Plugin {
 		}
 
 		switch ( $current_screen->taxonomy ) {
-			case 'cb_items_category':
-			case 'cb_locations_category':
+			case Item::getTaxonomyName():
+			case Location::getTaxonomyName():
 				return $classes . ' ' . $cssClass;
 		}
 
@@ -486,7 +486,7 @@ class Plugin {
 	 */
 	public static function registerItemTaxonomy() {
 		$customPostType = Item::getPostType();
-		$taxonomy       = $customPostType . 's_category';
+		$taxonomy       = Item::getTaxonomyName();
 
 		$result = register_taxonomy(
 			$taxonomy,
@@ -520,7 +520,7 @@ class Plugin {
 	 * @return void
 	 */
 	public static function registerItemTaxonomyMetaboxes() {
-		$taxonomy = Item::getPostType() . 's_category';
+		$taxonomy = Item::getTaxonomyName();
 
 		$cmb_taxonomy = new_cmb2_box(
 			array(
@@ -549,7 +549,7 @@ class Plugin {
 	 */
 	public static function registerLocationTaxonomy() {
 		$customPostType = Location::getPostType();
-		$taxonomy       = $customPostType . 's_category';
+		$taxonomy       = Location::getTaxonomyName();
 
 		$result = register_taxonomy(
 			$taxonomy,
@@ -1018,8 +1018,8 @@ class Plugin {
 				$current_screen->taxonomy && in_array(
 					$current_screen->taxonomy,
 					[
-						Location::$postType . 's_category',
-						Item::$postType . 's_category',
+						Location::getTaxonomyName(),
+						Item::getTaxonomyName(),
 					]
 				)
 			) {

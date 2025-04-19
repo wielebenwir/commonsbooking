@@ -749,8 +749,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// terms are not applicable if either location or item is not found
 			return false;
 		}
-		$isInItemCat     = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category', $item->getPost() );
-		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::$postType . 's_category', $location->getPost() );
+		$isInItemCat     = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName(), $item->getPost() );
+		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName(), $location->getPost() );
 		return ( $isInItemCat || $isInLocationCat );
 	}
 

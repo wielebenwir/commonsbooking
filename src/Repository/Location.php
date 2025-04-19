@@ -28,6 +28,13 @@ class Location extends BookablePost {
 	}
 
 	/**
+	 * @return string
+	 */
+	protected static function getTaxonomyName() {
+		return \CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName();
+	}
+
+	/**
 	 * This is the model class that belongs to the post type.
 	 * With the model class, you are able to perform additional functions on the post type.
 	 *

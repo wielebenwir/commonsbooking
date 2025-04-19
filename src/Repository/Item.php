@@ -36,4 +36,11 @@ class Item extends BookablePost {
 	protected static function getModelClass(): string {
 		return \CommonsBooking\Model\Item::class;
 	}
+
+	/**
+	 * @return string
+	 */
+	protected static function getTaxonomyName() {
+		return \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName();
+	}
 }

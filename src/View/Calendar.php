@@ -115,7 +115,7 @@ class Calendar {
 		foreach ( $items as $item ) {
 			// Check for category term
 			if ( $itemCategory ) {
-				if ( ! has_term( $itemCategory, Item::$postType . 's_category', $item->ID ) ) {
+				if ( ! has_term( $itemCategory, Item::getTaxonomyName(), $item->ID ) ) {
 					continue;
 				}
 			}
@@ -149,7 +149,7 @@ class Calendar {
 					} else {
 						// Check for category term
 						if ( $locationCategory ) {
-							if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
+							if ( ! has_term( $locationCategory, Location::getTaxonomyName(), $locationId ) ) {
 								continue;
 							}
 						}
