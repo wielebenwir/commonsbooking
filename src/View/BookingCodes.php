@@ -62,9 +62,9 @@ class BookingCodes {
 	/**
 	 * CMB2 callback on field saved
 	 *
-	 * @param bool              $updated Whether the metadata update action occurred.
-	 * @param string            $action  Action performed. Could be "repeatable", "updated", or "removed".
-	 * @param \CMB2_Field       $field   This field object
+	 * @param bool        $updated Whether the metadata update action occurred.
+	 * @param string      $action  Action performed. Could be "repeatable", "updated", or "removed".
+	 * @param \CMB2_Field $field   This field object
 	 */
 	public static function cronEmailCodesSaved( $updated, $action, $field ): void {
 		$postID = $field->object_id();
@@ -128,8 +128,8 @@ class BookingCodes {
 	/**
 	 * CMB2 escape field callback
 	 *
-	 * @param  mixed      $value      The unescaped value from the database.
-	 * @param  array      $field_args Array of field arguments.
+	 * @param  mixed       $value      The unescaped value from the database.
+	 * @param  array       $field_args Array of field arguments.
 	 * @param  \CMB2_Field $field      The field object
 	 *
 	 * @return array                  Escaped value to be displayed.
