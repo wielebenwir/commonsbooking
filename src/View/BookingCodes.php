@@ -29,7 +29,7 @@ class BookingCodes {
 	 * @param int $tsInitial - Timestamp of the inital date
 	 * @param int $periodMonths
 	 *
-	 * @return DateTime   Datetime of nex Cron Event.
+	 * @return DateTimeImmutable   Datetime of nex Cron Event.
 	 */
 	public static function initialCronEmailEvent( int $tsInitial, int $periodMonths ): DateTimeImmutable {
 		$start = new DateTimeImmutable();
@@ -62,9 +62,9 @@ class BookingCodes {
 	/**
 	 * CMB2 callback on field saved
 	 *
-	 * @param bool              $updated Whether the metadata update action occurred.
-	 * @param string            $action  Action performed. Could be "repeatable", "updated", or "removed".
-	 * @param CMB2_Field object $field   This field object
+	 * @param bool        $updated Whether the metadata update action occurred.
+	 * @param string      $action  Action performed. Could be "repeatable", "updated", or "removed".
+	 * @param \CMB2_Field $field   This field object
 	 */
 	public static function cronEmailCodesSaved( $updated, $action, $field ): void {
 		$postID = $field->object_id();
@@ -97,9 +97,9 @@ class BookingCodes {
 	 * CMB2 sanitize field callback
 	 * Will take the entered start date and saves it as a timestamp.
 	 *
-	 * @param  mixed      $value      The unsanitized value from the form.
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object
+	 * @param  mixed       $value      The unsanitized value from the form.
+	 * @param  array       $field_args Array of field arguments.
+	 * @param  \CMB2_Field $field      The field object
 	 *
 	 * @return ?array                  Sanitized value to be stored.
 	 */
@@ -128,9 +128,9 @@ class BookingCodes {
 	/**
 	 * CMB2 escape field callback
 	 *
-	 * @param  mixed      $value      The unescaped value from the database.
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object
+	 * @param  mixed       $value      The unescaped value from the database.
+	 * @param  array       $field_args Array of field arguments.
+	 * @param  \CMB2_Field $field      The field object
 	 *
 	 * @return array                  Escaped value to be displayed.
 	 */
@@ -263,8 +263,8 @@ HTML;
 	/**
 	 * renders CMB2 field row
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object
+	 * @param  array       $field_args Array of field arguments.
+	 * @param  \CMB2_Field $field      The field object
 	 */
 	public static function renderDirectEmailRow( $field_args, $field ) {
 
@@ -428,7 +428,7 @@ HTML;
 	/**
 	 * Renders HTML table of bookingCodes List.
 	 *
-	 * @param CommonsBooking\Model\BookingCode[] $bookingCodes list of booking codes
+	 * @param BookingCode[] $bookingCodes list of booking codes
 	 *
 	 * @return string HTML table
 	 */
@@ -555,8 +555,8 @@ HTML;
 	}
 
 	/**
-	 * @param string                             $renderTarget code where email is rendered (email|timeframe_form)
-	 * @param CommonsBooking\Model\BookingCode[] $bookingCodes array of string booking codes
+	 * @param string        $renderTarget code where email is rendered (email|timeframe_form)
+	 * @param BookingCode[] $bookingCodes array of string booking codes
 	 *
 	 * @return string|null
 	 */
@@ -567,9 +567,9 @@ HTML;
 		 *
 		 * @since 2.9.0
 		 *
-		 * @param string                             $renderedTable rendering of booking codes list as html string
-		 * @param CommonsBooking\Model\BookingCode[] $bookingCodes list of booking codes
-		 * @param string                             $renderTarget where email is rendered (email|timeframe_form)
+		 * @param string        $renderedTable rendering of booking codes list as html string
+		 * @param BookingCode[] $bookingCodes list of booking codes
+		 * @param string        $renderTarget where email is rendered (email|timeframe_form)
 		 */
 		return apply_filters(
 			'commonsbooking_emailcodes_rendertable',

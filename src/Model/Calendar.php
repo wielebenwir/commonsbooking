@@ -39,11 +39,6 @@ class Calendar {
 	protected $types;
 
 	/**
-	 * @var
-	 */
-	protected $weeks;
-
-	/**
 	 * The timeframes that are relevant for this calendar.
 	 *
 	 * @var Timeframe[]

@@ -385,7 +385,7 @@ class Booking extends Timeframe {
 		if ( $postId instanceof \WP_Error ) {
 			throw new BookingDeniedException(
 				__( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
-												PHP_EOL . $postId->get_error_messages()
+												PHP_EOL . implode( ', ', $postId->get_error_messages() )
 			);
 		}
 

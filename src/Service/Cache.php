@@ -7,7 +7,6 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
@@ -30,7 +29,7 @@ trait Cache {
 	 * @param null $custom_id
 	 *
 	 * @return mixed
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
@@ -38,8 +37,8 @@ trait Cache {
 		}
 
 		try {
+			$cacheKey = self::getCacheId( $custom_id );
 			/** @var CacheItem $cacheItem */
-			$cacheKey  = self::getCacheId( $custom_id );
 			$cacheItem = self::getCache()->getItem( $cacheKey );
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
@@ -150,7 +149,7 @@ trait Cache {
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
@@ -171,9 +170,9 @@ trait Cache {
 			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
 		}
 
-		$cache = self::getCache( '', intval( $expiration ) );
+		$cache    = self::getCache( '', intval( $expiration ) );
+		$cacheKey = self::getCacheId( $custom_id );
 		/** @var CacheItem $cacheItem */
-		$cacheKey  = self::getCacheId( $custom_id );
 		$cacheItem = $cache->getItem( $cacheKey );
 		$cacheItem->tag( $tags );
 		$cacheItem->set( $value );
@@ -187,7 +186,7 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
 		if ( ! count( $tags ) ) {

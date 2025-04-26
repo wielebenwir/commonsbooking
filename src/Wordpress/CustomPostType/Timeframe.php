@@ -93,11 +93,6 @@ class Timeframe extends CustomPostType {
 	public function __construct() {
 		$this->types = self::getTypes();
 
-		/**
-		 * Backend listing columns.
-		 *
-		 * @var string[]
-		 */
 		$this->listColumns = [
 			'timeframe-author'                                                   => esc_html__( 'User', 'commonsbooking' ),
 			'type'                                                               => esc_html__( 'Type', 'commonsbooking' ),
@@ -230,7 +225,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns view-class.
 	 *
-	 * @return null
+	 * @return void
 	 */
 	public static function getView() {
 		// @TODO implement view.

@@ -18,7 +18,7 @@ use WP_Post;
 class Day {
 
 	/**
-	 * @var
+	 * @var string
 	 */
 	protected $date;
 
@@ -38,7 +38,7 @@ class Day {
 	protected $types;
 
 	/**
-	 * @var Timeframe[]|null
+	 * @var \CommonsBooking\Model\Timeframe[]|null
 	 */
 	protected ?array $timeframes = null;
 
@@ -387,7 +387,7 @@ class Day {
 	 * Can be used as a callback to filter timeframes if they belong
 	 * to the day and are bookable for the current user
 	 *
-	 * @param Timeframe $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
 	 *
 	 * @return bool
 	 * @throws Exception
@@ -406,7 +406,7 @@ class Day {
 	/**
 	 * Maps timeframes to timeslots.
 	 *
-	 * @param array $slots
+	 * @param array $slots untyped structure of timeframe slot information
 	 *
 	 * @throws Exception
 	 */
@@ -414,7 +414,6 @@ class Day {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
-		/** @var \CommonsBooking\Model\Timeframe $timeframe */
 		foreach ( $this->getTimeframes() as $timeframe ) {
 			// Slots
 			$startSlot = $this->getStartSlot( $grid, $timeframe );

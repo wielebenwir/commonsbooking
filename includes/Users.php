@@ -282,7 +282,7 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ): bool {
  *
  * @param $booking - A booking of the cb_booking type
  *
- * @return void
+ * @return bool
  */
 function commonsbooking_isCurrentUserAllowedToSee( $booking ): bool {
 	if ( ! is_user_logged_in() ) {

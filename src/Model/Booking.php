@@ -381,11 +381,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function setOverbookedDays( int $rawDaysOverbooked ): int {
 		$location             = $this->getLocation();
 		$countLockdaysInRange = $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range' ) === 'on';
-		$countLockdaysMaximum = $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum' );
+		// Evaluate to 0 even if getMeta returns '' (valid but non-existent meta-key for the post) or false (post-id invalid)
+		$countLockdaysMaximum = intval( $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum' ) );
 
 		if ( ! $countLockdaysInRange ) {
 			$days = $rawDaysOverbooked;
-		} elseif ( $countLockdaysMaximum == 0 ) {
+		} elseif ( $countLockdaysMaximum === 0 ) {
 			$days = 0;
 		} else {
 			$days = max( 0, $rawDaysOverbooked - $countLockdaysMaximum );
@@ -525,7 +526,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * TODO: Clarify why this implementation is different from the one in the parent class.
 	 *
-	 * @return mixed|string
+	 * @return int
 	 */
 	public function getStartDate(): int {
 		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
@@ -538,7 +539,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * TODO: Clarify why this implementation is different from the one in the parent class.
 	 *
-	 * @return mixed|string
+	 * @return int
 	 */
 	public function getEndDate(): int {
 		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
@@ -949,8 +950,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param   \CommonsBooking\Model\Booking[] $bookings
-	 * @return void
+	 * @param \CommonsBooking\Model\Booking[] $bookings
+	 * @return int
 	 */
 	public static function getTotalDuration( array $bookings ): int {
 		$totalDurationOfDays = 0;

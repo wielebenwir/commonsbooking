@@ -109,7 +109,7 @@ class iCalendar {
 	 * @param $bookingID
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public static function downloadICS( $bookingID ): void {
 		$postID           = $bookingID;
@@ -260,7 +260,7 @@ class iCalendar {
 		string $eventTitle,
 		string $eventDescription,
 		bool $isTimeSpan = false
-	): Event {
+	) {
 
 		if ( is_array( $eventDate ) ) {
 			if ( count( $eventDate ) < 2 || ! ( $eventDate[0] instanceof DateTimeImmutable ) || ! ( $eventDate[1] instanceof DateTimeImmutable ) || $eventDate[0] > $eventDate[1] ) {
