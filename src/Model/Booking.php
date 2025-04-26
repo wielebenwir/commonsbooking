@@ -381,14 +381,15 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function setOverbookedDays( int $rawDaysOverbooked ): int {
 		$location             = $this->getLocation();
 		$countLockdaysInRange = $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range' ) === 'on';
-		$countLockdaysMaximum = $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum' );
+		// Evaluate to 0 even if getMeta returns '' (valid but non-existent meta-key for the post) or false (post-id invalid)
+		$countLockdaysMaximum = intval( $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum' ) );
 
 		if ( ! $countLockdaysInRange ) {
 			$days = $rawDaysOverbooked;
-		} elseif ( $countLockdaysMaximum == 0 ) {
+		} elseif ( $countLockdaysMaximum === 0 ) {
 			$days = 0;
 		} else {
-			$days = max( 0, $rawDaysOverbooked - intval( $countLockdaysMaximum ) );
+			$days = max( 0, $rawDaysOverbooked - $countLockdaysMaximum );
 		}
 
 		update_post_meta( $this->post->ID, self::META_OVERBOOKED_DAYS, $days );

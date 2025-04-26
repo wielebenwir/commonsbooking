@@ -179,9 +179,9 @@ class Booking extends View {
 					'endDateFormatted'   => date( 'd.m.Y H:i', $booking->getEndDate() ),
 					'item'               => $itemTitle,
 					'location'           => $locationTitle,
-					'locationAddr'       => $location->formattedAddressOneLine(),
-					'locationLat'        => $location->getMeta( 'geo_latitude' ),
-					'locationLong'       => $location->getMeta( 'geo_longitude' ),
+					'locationAddr'       => $location ? $location->formattedAddressOneLine() : '',
+					'locationLat'        => $location ? $location->getMeta( 'geo_latitude' ) : 0,
+					'locationLong'       => $location ? $location->getMeta( 'geo_longitude' ) : 0,
 					'bookingDate'        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					'user'               => $userInfo->user_login,
 					'status'             => $booking->post_status,
@@ -232,7 +232,7 @@ class Booking extends View {
 
 				// If search term was submitted, filter for it.
 				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
-					$rowData['actions']         = $actions;
+					$rowData['actions'] = $actions;
 
 					/**
 					 * Default assoc array of row data and the booking object, which gets added to the booking list data result.

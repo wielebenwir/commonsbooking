@@ -123,7 +123,7 @@ class CustomPost {
 	 *
 	 * @return WP_Post
 	 */
-	public function getPost() {
+	public function getPost(): WP_Post {
 		return $this->post;
 	}
 

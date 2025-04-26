@@ -26,10 +26,10 @@ class BookingCodesMessage extends Message {
 	private ?array $locationAdmins;
 
 	/**
-     * @param int $postId       ID or Post of timeframe
-     * @param string    $action    Message action
-	 * @param int|null  $tsFrom  Timestamp of first Booking Code
-	 * @param int|null  $tsTo    Timestamp of last Booking Code
+	 * @param int      $postId       ID or Post of timeframe
+	 * @param string   $action    Message action
+	 * @param int|null $tsFrom  Timestamp of first Booking Code
+	 * @param int|null $tsTo    Timestamp of last Booking Code
 	 */
 	public function __construct( $postId, string $action, int $tsFrom = null, int $tsTo = null ) {
 		parent::__construct( $postId, $action );

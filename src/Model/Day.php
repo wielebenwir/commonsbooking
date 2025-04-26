@@ -392,7 +392,7 @@ class Day {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function filterTimeframe( $timeframe ): bool {
+	public function filterTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
 		if ( ! $this->isInTimeframe( $timeframe ) ) {
 			return false;
 		}
