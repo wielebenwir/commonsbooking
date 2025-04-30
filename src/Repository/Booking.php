@@ -130,7 +130,7 @@ class Booking extends PostRepository {
 			foreach ( $posts as &$post ) {
 				$post = new \CommonsBooking\Model\Booking( $post );
 			}
-
+			/** @var \CommonsBooking\Model\Booking[] $posts */
 			return $posts;
 		}
 
