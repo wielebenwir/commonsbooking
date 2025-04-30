@@ -49,7 +49,7 @@ class Scheduler {
 
 		if ( ( count( $option ) == 2 ) && Settings::getOption( $option[0], $option[1] ) != 'on' ) { // removes job if option unset
 			$this->unscheduleJob();
-			return false;
+			return;
 		}
 
 		if ( empty( $executionTime ) ) {
@@ -60,7 +60,7 @@ class Scheduler {
 				$this->timestamp = strtotime( '+1 day', $this->timestamp );
 			}
 		} else {
-			return false;
+			return;
 		}
 
 		$this->reccurence = $reccurence;
