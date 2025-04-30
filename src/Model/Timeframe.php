@@ -145,7 +145,7 @@ class Timeframe extends CustomPost {
 
 		$endDate = $this->getMeta( self::REPETITION_END );
 
-		if ( (string) intval( $endDate ) != $endDate ) {
+		if ( ! is_numeric( $endDate ) ) {
 			$endDate = strtotime( $endDate );
 		} else {
 			$endDate = intval( $endDate );
