@@ -480,10 +480,10 @@ class Booking extends View {
 	 *
 	 * @param $user
 	 *
-	 * @return String
+	 * @return string|false
 	 * @throws Exception
 	 */
-	public static function getBookingListiCal( $user = null ): string {
+	public static function getBookingListiCal( $user = null ) {
 		$eventTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
