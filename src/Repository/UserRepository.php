@@ -5,6 +5,7 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Plugin;
 use WP_Query;
+use WP_User;
 
 class UserRepository {
 
@@ -54,7 +55,7 @@ class UserRepository {
 	/**
 	 * Returns all users with items/locations.
 	 *
-	 * @return array
+	 * @return WP_User[]
 	 */
 	public static function getOwners(): array {
 		$owners   = [];
