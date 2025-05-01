@@ -426,7 +426,7 @@ class Booking extends PostRepository {
 	 *
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
-	 * @return \WP_Post[]|null
+	 * @return \CommonsBooking\Model\Booking[]|null
 	 * @throws Exception
 	 */
 	public static function getByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
