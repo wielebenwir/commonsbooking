@@ -499,6 +499,7 @@ class Booking extends PostRepository {
 				$post = new \CommonsBooking\Model\Booking( $post );
 			}
 
+			/** @var \CommonsBooking\Model\Booking[] $posts */
 			return $posts;
 		}
 
