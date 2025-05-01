@@ -161,6 +161,8 @@ abstract class CustomPostType {
 	}
 
 	/**
+	 * Returns view-class.
+	 *
 	 * @return mixed
 	 */
 	abstract public static function getView();
