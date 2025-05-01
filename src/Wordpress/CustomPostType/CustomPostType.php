@@ -362,7 +362,7 @@ abstract class CustomPostType {
 	 *
 	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
-	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe|\CommonsBooking\Model\Map
+	 * @return CustomPost
 	 * @throws PostException
 	 */
 	public static function getModel( $post ) {
