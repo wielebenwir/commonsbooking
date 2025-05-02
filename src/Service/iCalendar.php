@@ -30,7 +30,10 @@ use DateInterval;
  */
 class iCalendar {
 
-	private ?Calendar $calendar;
+	/**
+	 * @var Calendar
+	 */
+	private Calendar $calendar;
 
 	public const URL_SLUG       = COMMONSBOOKING_PLUGIN_SLUG . '_ical_download';
 	public const QUERY_USER     = COMMONSBOOKING_PLUGIN_SLUG . '_user';
