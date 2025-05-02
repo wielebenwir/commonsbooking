@@ -251,10 +251,10 @@ class iCalendar {
 	/**
 	 * Adds a generic event to Calendar
 	 *
-	 * @param array|DateTimeImmutable $eventDate
-	 * @param string                  $eventTitle
-	 * @param string                  $eventDescription
-	 * @param bool                    $isTimeSpan
+	 * @param DateTimeImmutable[]|DateTimeImmutable $eventDate
+	 * @param string                                $eventTitle
+	 * @param string                                $eventDescription
+	 * @param bool                                  $isTimeSpan
 	 *
 	 * @return Event|false
 	 */
@@ -266,18 +266,16 @@ class iCalendar {
 	) {
 
 		if ( is_array( $eventDate ) ) {
-			if ( count( $eventDate ) < 2 || ! ( $eventDate[0] instanceof DateTimeImmutable ) || ! ( $eventDate[1] instanceof DateTimeImmutable ) || $eventDate[0] > $eventDate[1] ) {
-				return false;
+			if ( count( $eventDate ) < 2 || $eventDate[0] > $eventDate[1] ) {
+				return false; // FIXME Why fail siltenly?
 			}
 			if ( $isTimeSpan ) {
 				$occurence = new TimeSpan( new DateTime( $eventDate[0], false ), new DateTime( $eventDate[1], false ) );
 			} else {
 				$occurence = new MultiDay( $eventDate[0], $eventDate[1] );
 			}
-		} elseif ( $eventDate instanceof DateTimeImmutable ) {
-			$occurence = new SingleDay( new Date( $eventDate ) );
 		} else {
-			return false;
+			$occurence = new SingleDay( new Date( $eventDate ) );
 		}
 
 		// Create Event domain entity.
