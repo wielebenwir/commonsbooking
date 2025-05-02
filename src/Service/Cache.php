@@ -26,7 +26,7 @@ trait Cache {
 	/**
 	 * Returns cache item based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return mixed
 	 * @throws \Psr\Cache\InvalidArgumentException
@@ -52,7 +52,7 @@ trait Cache {
 	/**
 	 * Returns cache id, based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return string
 	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
@@ -145,7 +145,7 @@ trait Cache {
 	 *
 	 * @param $value
 	 * @param array       $tags
-	 * @param null        $custom_id
+	 * @param mixed|null  $custom_id
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
