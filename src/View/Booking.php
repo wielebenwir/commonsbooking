@@ -108,6 +108,7 @@ class Booking extends View {
 				'location' => [],
 				'status'   => [],
 			];
+			$bookingDataArray['data']     = [];
 
 			$posts = \CommonsBooking\Repository\Booking::getForUser(
 				$user,
@@ -256,7 +257,7 @@ class Booking extends View {
 			}
 
 			// TODO remove null values from $bookingDataArray['data'] to not break pagination logic
-			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
+			if ( count( $bookingDataArray['data'] ) ) {
 				$totalCount                      = count( $bookingDataArray['data'] );
 				$bookingDataArray['total']       = $totalCount;
 				$bookingDataArray['total_pages'] = ceil( $totalCount / $postsPerPage );
