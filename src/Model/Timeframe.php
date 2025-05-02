@@ -116,7 +116,7 @@ class Timeframe extends CustomPost {
 
 		$startDate = $this->getMeta( self::REPETITION_START );
 
-		if ( (string) intval( $startDate ) !== $startDate ) {
+		if ( ! is_numeric( $startDate ) ) {
 			$startDate = strtotime( $startDate );
 		} else {
 			$startDate = intval( $startDate );
