@@ -210,7 +210,7 @@ abstract class View {
 		$result  = $compiler->compileString( $content );
 		$css     = $result->getCss();
 
-		if ( ! empty( $css ) && is_string( $css ) ) {
+		if ( ! empty( $css ) ) {
 			return $css;
 		} else {
 			return false;
