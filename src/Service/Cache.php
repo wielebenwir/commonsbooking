@@ -272,9 +272,9 @@ trait Cache {
 					$attributesString = isset( $match[3] ) ? $match[3] : ''; // e.g., " id=123"
 
 					$shortCodeCalls[] = [
-						'shortcode' => $shortCode,
-						'attributes'         => self::getShortcodeAndAttributes( $shortCode . $attributesString )[1],
-						'body' => isset( $match[5] ) ? trim( $match[5] ) : '',
+						'shortcode'  => $shortCode,
+						'attributes' => self::getShortcodeAndAttributes( $shortCode . $attributesString )[1],
+						'body'       => isset( $match[5] ) ? trim( $match[5] ) : '',
 					];
 				}
 			}
@@ -373,7 +373,7 @@ trait Cache {
 	/**
 	 * Iterates through array and statically executes given functions.
 	 *
-	 * @param string[] $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
+	 * @param array{shortcode: string, attributes: array, body: string} $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
 	 *
 	 * @return void
 	 */

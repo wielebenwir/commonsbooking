@@ -72,9 +72,9 @@ class CustomPost {
 	/**
 	 * Returns meta-field value.
 	 *
-	 * @param $field
+	 * @param string $field
 	 *
-	 * @return string The value of the meta field. An empty string if the field doesn't exist.
+	 * @return string|array The value of the meta field. An empty string if the field doesn't exist.
 	 */
 	public function getMeta( $field ) {
 		return get_post_meta( $this->post->ID, $field, true );

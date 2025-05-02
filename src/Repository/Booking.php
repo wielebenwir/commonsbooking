@@ -130,7 +130,7 @@ class Booking extends PostRepository {
 			foreach ( $posts as &$post ) {
 				$post = new \CommonsBooking\Model\Booking( $post );
 			}
-
+			/** @var \CommonsBooking\Model\Booking[] $posts */
 			return $posts;
 		}
 
@@ -426,7 +426,7 @@ class Booking extends PostRepository {
 	 *
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
-	 * @return \WP_Post[]|null
+	 * @return \CommonsBooking\Model\Booking[]|null
 	 * @throws Exception
 	 */
 	public static function getByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
@@ -499,6 +499,7 @@ class Booking extends PostRepository {
 				$post = new \CommonsBooking\Model\Booking( $post );
 			}
 
+			/** @var \CommonsBooking\Model\Booking[] $posts */
 			return $posts;
 		}
 

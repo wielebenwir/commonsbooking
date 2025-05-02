@@ -75,6 +75,7 @@ class Timeframe extends CustomPost {
 	 * Example: 2020-01-01,2020-01-02,2020-01-03
 	 */
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
+	const MAX_DAYS_DEFAULT             = 3;
 
 	/**
 	 * null means the data is not fetched yet
@@ -144,7 +145,7 @@ class Timeframe extends CustomPost {
 
 		$endDate = $this->getMeta( self::REPETITION_END );
 
-		if ( (string) intval( $endDate ) != $endDate ) {
+		if ( ! is_numeric( $endDate ) ) {
 			$endDate = strtotime( $endDate );
 		} else {
 			$endDate = intval( $endDate );
@@ -1241,7 +1242,14 @@ class Timeframe extends CustomPost {
 		return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getMaxDays(): int {
-		return $this->getMeta( self::META_MAX_DAYS );
+		$meta = $this->getMeta( self::META_MAX_DAYS );
+		if ( is_numeric( $meta ) ) {
+			return (int) $meta;
+		}
+		return self::MAX_DAYS_DEFAULT;
 	}
 }

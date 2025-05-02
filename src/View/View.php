@@ -175,9 +175,9 @@ abstract class View {
 	/**
 	 * Compiles the user defined color scheme from settings (templates) using SCSSPHP and returns it
 	 *
-	 * @return string
+	 * @return string|false
 	 */
-	public static function getColorCSS(): string {
+	public static function getColorCSS() {
 		$compiler    = new Compiler();
 		$var_import  = COMMONSBOOKING_PLUGIN_DIR . 'assets/global/sass/partials/_variables.scss';
 		$import_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/sass/partials/';

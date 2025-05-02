@@ -332,7 +332,7 @@ function commonsbooking_isUserAllowedToSee( $post, WP_User $user ): bool {
 	$isAdmin   = commonsbooking_isUserAdmin( $user );
 	$isAllowed = $isAdmin || $isAuthor;
 
-	if ( ! $isAllowed ) {
+	if ( ! $isAllowed && method_exists( $postModel, 'getAdmins' ) ) {
 		$admins    = $postModel->getAdmins();
 		$isAllowed = ( is_string( $admins ) && $user->ID == $admins ) ||
 					( is_array( $admins ) && in_array( $user->ID, $admins, true ) );

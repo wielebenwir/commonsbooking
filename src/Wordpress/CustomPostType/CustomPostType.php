@@ -28,7 +28,7 @@ abstract class CustomPostType {
 	protected $menuPosition;
 
 	/**
-	 * @var array{string, string}
+	 * @var array<string, string>
 	 */
 	protected $listColumns = null;
 
@@ -161,6 +161,8 @@ abstract class CustomPostType {
 	}
 
 	/**
+	 * Returns view-class.
+	 *
 	 * @return mixed
 	 */
 	abstract public static function getView();
@@ -360,7 +362,7 @@ abstract class CustomPostType {
 	 *
 	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
-	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe|\CommonsBooking\Model\Map
+	 * @return CustomPost
 	 * @throws PostException
 	 */
 	public static function getModel( $post ) {

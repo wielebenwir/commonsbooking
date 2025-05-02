@@ -595,7 +595,7 @@ class Migration {
 	 * Migrates CB1 user agreement url option to CB2.
 	 * Only relevant for legacy user profile.
 	 *
-	 * @return true
+	 * @return bool
 	 */
 	public static function migrateUserAgreementUrl() {
 		$cb1_url = Settings::getOption( 'commons-booking-settings-pages', 'commons-booking_termsservices_url' );

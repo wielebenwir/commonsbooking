@@ -14,9 +14,9 @@ class Dashboard extends View {
 	}
 
 	/**
-	 * Renders list of beginngin bookings for today.
+	 * Renders list of bookings, which are starting today.
 	 *
-	 * @return void
+	 * @return string|false
 	 * @throws \Exception
 	 */
 	public static function renderBeginningBookings() {
@@ -59,9 +59,9 @@ class Dashboard extends View {
 
 
 	/**
-	 * Renders list of ending bookings for today.
+	 * Renders list of bookings, which are ending today.
 	 *
-	 * @return void
+	 * @return string|false
 	 * @throws \Exception
 	 */
 	public static function renderEndingBookings() {
