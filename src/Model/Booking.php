@@ -631,7 +631,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$this->ID
 		);
 
-		if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+		if ( count( $overlappingBookings ) >= 1 ) {
 			foreach ( $overlappingBookings as $overlappingBooking ) {
 				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
 			}
