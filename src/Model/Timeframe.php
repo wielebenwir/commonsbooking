@@ -195,9 +195,6 @@ class Timeframe extends CustomPost {
 		if ( ! $user ) {
 			$user = wp_get_current_user();
 		}
-		if ( ! $user ) {
-			return false;
-		}
 
 		// these roles are always allowed to book
 		$privilegedRolesDefaults = [ 'administrator' ];
