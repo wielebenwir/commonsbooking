@@ -783,10 +783,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// Booking has no valid status
 			return 0;
 		}
-		if ( $interval === null ) {
-			// no interval created
-			return 0;
-		}
+
 		$days = $interval->d;
 		// when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
 		if ( $interval->h > 0 ) {
