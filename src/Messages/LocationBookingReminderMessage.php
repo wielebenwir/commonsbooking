@@ -79,11 +79,13 @@ class LocationBookingReminderMessage extends Message {
 		 * Default location booking reminder message
 		 *
 		 * @since 2.9.2
+		 * @since 2.10.5 filter result can be false
 		 *
-		 * @param LocationBookingReminderMessage $sendMessageToBeFiltered object to be sent.
+		 * @param LocationBookingReminderMessage|false $sendMessageToBeFiltered object to be sent.
 		 */
 		$sendMessage = apply_filters( 'commonsbooking_before_send_location_reminder_mail', $sendMessageToBeFiltered );
 		if ( $sendMessage ) {
+			// TODO $this can safely be renamed to $sendMessage?
 			$this->sendNotificationMail();
 		}
 	}
