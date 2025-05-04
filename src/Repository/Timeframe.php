@@ -838,7 +838,7 @@ class Timeframe extends PostRepository {
 	 * @param array        $locations
 	 * @param array        $items
 	 * @param array        $types
-	 * @param false        $returnAsModel
+	 * @param bool         $returnAsModel
 	 * @param string[]     $postStatus
 	 *
 	 * @return array
