@@ -447,7 +447,7 @@ HTML;
 		if ( count( $lines ) % 2 != 0 ) {
 			array_push( $lines, '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>' );
 		}
-		$parts = array_chunk( $lines, ceil( count( $lines ) / 2 ) );
+		$parts = array_chunk( $lines, intval( ceil( count( $lines ) / 2 ) ) );
 
 		return "<table  cellspacing='0' cellpadding='20' class='cmb2-codes-outer-table' ><tbody><tr><td><table class='cmb2-codes-column' cellspacing=\"0\" cellpadding=\"8\" border=\"1\"><tbody>" .
 						implode( '', $parts[0] ) .
