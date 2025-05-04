@@ -654,7 +654,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
 	 *
-	 * @param null $linktext
+	 * @param string|null $linktext
 	 *
 	 * @return string
 	 */
