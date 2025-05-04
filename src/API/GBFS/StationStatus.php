@@ -52,12 +52,12 @@ class StationStatus extends BaseRoute {
 	 * or can only be booked through overbooking.
 	 * This is because the GBFS spec only accounts for items available in that instant.
 	 *
-	 * @param $locationId
+	 * @param int $locationId
 	 *
-	 * @return int|null
+	 * @return int
 	 * @throws \Exception
 	 */
-	private function getItemCountAtLocation( $locationId ) {
+	private function getItemCountAtLocation( $locationId ): int {
 		$items            = Item::getByLocation( $locationId, true );
 		$nowDT            = new \DateTime();
 		$availableCounter = 0;
