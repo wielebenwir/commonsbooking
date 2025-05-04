@@ -354,11 +354,11 @@ class TimeframeExport {
 	/**
 	 * Gets export fields array from the comma separated string in the settings.
 	 *
-	 * @param $inputString
+	 * @param string|null $inputString
 	 *
-	 * @return false|string[]
+	 * @return string[] returns an empty array when non-string or empty-string input
 	 */
-	private static function convertInputFields( $inputString ) {
+	private static function convertInputFields( $inputString ): array {
 		return array_filter( explode( ',', sanitize_text_field( $inputString ) ) );
 	}
 
