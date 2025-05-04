@@ -277,7 +277,7 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ): bool {
  *
  * It only makes sense to check this with booking posts as all CPTs are / should be public.
  *
- * @param $booking - A booking of the cb_booking type
+ * @param \CommonsBooking\Model\Booking|int|WP_Post $booking - A booking of the cb_booking type
  *
  * @return bool
  */
