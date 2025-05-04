@@ -57,10 +57,6 @@ class LocationBookingReminderMessage extends Message {
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 
-		if ( ! is_array( $location_emails ) ) {
-			return;
-		}
-
 		$recipientUser = new MessageRecipient( array_shift( $location_emails ), $booking->getLocation()->post_title );
 		$bcc_adresses  = implode( ',', $location_emails );
 
