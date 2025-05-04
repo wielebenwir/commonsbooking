@@ -290,11 +290,7 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ): bool {
 
 	$user = wp_get_current_user();
 
-	if ( $user ) {
-		return commonsbooking_isUserAllowedToSee( $booking, $user );
-	} else {
-		return false;
-	}
+	return commonsbooking_isUserAllowedToSee( $booking, $user );
 }
 
 /**
