@@ -116,7 +116,7 @@ trait Cache {
 				$directory = $customCachePath;
 			}
 			// Since this is the default cache path by Symfony we'd rather set it to null so that Symfony can take over with it's own default value.
-			elseif ( $customCachePath == '/tmp/symfony-cache/' ) {
+			if ( $customCachePath === '/tmp/symfony-cache/' ) {
 				$directory = null;
 			}
 		}
