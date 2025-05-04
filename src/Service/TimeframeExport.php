@@ -111,6 +111,11 @@ class TimeframeExport {
 	}
 
 
+	/**
+	 * @return void
+	 * @throws CacheException
+	 * @throws InvalidArgumentException
+	 */
 	public static function ajaxExportCsv() {
 		// verify nonce
 		check_ajax_referer( 'cb_export_timeframes', 'nonce' );
@@ -145,8 +150,6 @@ class TimeframeExport {
 					'message' => $e->getMessage(),
 				)
 			);
-
-			return;
 		}
 		$nextPage = $exportObject->lastProcessedPage ? $exportObject->lastProcessedPage + 1 : 1;
 		$exportObject->getExportData( $nextPage );
@@ -161,8 +164,6 @@ class TimeframeExport {
 						'message' => $e->getMessage(),
 					)
 				);
-
-				return;
 			}
 			wp_send_json(
 				array(
