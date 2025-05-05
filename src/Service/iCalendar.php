@@ -86,14 +86,14 @@ class iCalendar {
 	 * This should be relatively secure, since the hash is salted.
 	 * Returns false when user is not logged in
 	 *
-	 * @return string | bool - false when user is not logged in
+	 * @return string | false - false when user is not logged in
 	 */
 	public static function getCurrentUserCalendarLink() {
 		if ( ! is_user_logged_in() ) {
 			return false;}
 
 		$user_id         = wp_get_current_user()->ID;
-		$user_hash       = wp_hash( $user_id );
+		$user_hash       = wp_hash( (string) $user_id );
 		$script_location = get_site_url() . '/';
 
 		return add_query_arg(
