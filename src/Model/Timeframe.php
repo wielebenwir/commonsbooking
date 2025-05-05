@@ -1137,7 +1137,7 @@ class Timeframe extends CustomPost {
 	 *
 	 * TODO: Clarify what the exact difference between endTime and endDate is.
 	 *
-	 * @param null $endDateString
+	 * @param string|int|null $endDateString
 	 *
 	 * @return DateTime
 	 * @throws Exception

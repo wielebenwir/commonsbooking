@@ -72,7 +72,7 @@ class CustomPost {
 	/**
 	 * Returns meta-field value.
 	 *
-	 * @param string $field
+	 * @param string $field key of post_meta field for this post
 	 *
 	 * @return string|array The value of the meta field. An empty string if the field doesn't exist.
 	 */

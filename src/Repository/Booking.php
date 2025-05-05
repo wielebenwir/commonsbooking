@@ -209,12 +209,12 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * @param $startDate int
-	 * @param $endDate int
+	 * @param int        $startDate
+	 * @param int        $endDate
 	 * @param $locationId
 	 * @param $itemId
-	 * @param array         $customArgs
-	 * @param array         $postStatus
+	 * @param array      $customArgs
+	 * @param array      $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -279,8 +279,8 @@ class Booking extends PostRepository {
 	/**
 	 * Returns all bookings, allowed to see for user.
 	 *
-	 * @param bool $asModel if true, returns as Booking array, if false, return int array (defaults to false)
-	 * @param null $minTimestamp
+	 * @param bool     $asModel if true, returns as Booking array, if false, return int array (defaults to false)
+	 * @param int|null $minTimestamp
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|int[]
 	 * @throws Exception
@@ -447,9 +447,9 @@ class Booking extends PostRepository {
 	 *
 	 * @param $itemId
 	 * @param $locationId
-	 * @param $startDate
-	 * @param $endDate
-	 * @param null       $postId
+	 * @param int        $startDate
+	 * @param int        $endDate
+	 * @param int|null   $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|null
 	 */
