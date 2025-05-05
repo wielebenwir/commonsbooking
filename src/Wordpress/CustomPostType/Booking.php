@@ -102,7 +102,7 @@ class Booking extends Timeframe {
 
 			$postarr = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
-				'post_author' => $booking_user,
+				'post_author' => (int) $booking_user,
 				'post_status' => $post_status,
 				'meta_input'  => [
 					'admin_booking_id' => get_current_user_id(),
