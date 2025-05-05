@@ -83,10 +83,15 @@ class CustomPost {
 	/**
 	 * @param string $key of post_meta field for this post
 	 *
-	 * @return int
+	 * @return int|null int if meta field yields integer value
 	 */
-	public function getMetaInt( string $key ): int {
-		return intval( $this->getMeta( $key ) );
+	public function getMetaInt( string $key ): ?int {
+		$val = $this->getMeta( $key );
+
+		if ( filter_var( $val, FILTER_VALIDATE_INT ) !== false ) {
+			return (int) $val;
+		}
+		return null;
 	}
 
 
