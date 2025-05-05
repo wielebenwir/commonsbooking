@@ -39,7 +39,7 @@ function commonsbooking_public() {
 	}
 
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-datepicker', '', array( 'jquery' ) );
 
 	wp_enqueue_script(
 		'cb-scripts-vendor',

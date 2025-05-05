@@ -5,10 +5,10 @@ function commonsbooking_admin() {
 	wp_enqueue_script( 'jquery' );
 
 	// Datepicker extension
-	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-datepicker', '', array( 'jquery' ) );
 
 	// Tooltip extension
-	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-tooltip', '', array( 'jquery' ) );
 
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 
