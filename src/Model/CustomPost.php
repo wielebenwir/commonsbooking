@@ -81,6 +81,16 @@ class CustomPost {
 	}
 
 	/**
+	 * @param string $key of post_meta field for this post
+	 *
+	 * @return int
+	 */
+	public function getMetaInt( string $key ): int {
+		return intval( $this->getMeta( $key ) );
+	}
+
+
+	/**
 	 * When getting a value from a Model Object, we can use this magic method to get the value from the WP_Post object instead.
 	 * This, for example, allows us to use $booking->post_title instead of $booking->post->post_title.
 	 *

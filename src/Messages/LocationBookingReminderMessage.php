@@ -30,7 +30,7 @@ class LocationBookingReminderMessage extends Message {
 		$booking_user = get_userdata( $this->getPost()->post_author );
 
 		// get location email adresses to send them bcc copies
-		$location               = get_post( $booking->getMeta( 'location-id' ) );
+		$location               = get_post( $booking->getMetaInt( 'location-id' ) );
 		$location_emails_option = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ); /*  email addresses, comma-seperated  */
 		if ( empty( $location_emails_option ) ) {
 			return;
