@@ -251,11 +251,12 @@ class Booking extends Timeframe {
 			exit;
 		}
 
-		if ( $itemId === null || ! get_post( $itemId ) ) {
+		if ( $itemId === null || ! filter_var( $itemId, FILTER_VALIDATE_INT ) || ! get_post( (int) $itemId ) ) {
 			// translators: $s = id of the item
 			throw new BookingDeniedException( sprintf( __( 'Item does not exist. (%s)', 'commonsbooking' ), $itemId ) );
 		}
-		if ( $locationId === null || ! get_post( $locationId ) ) {
+
+		if ( $locationId === null || ! filter_var( $locationId, FILTER_VALIDATE_INT ) || ! get_post( (int) $locationId ) ) {
 			// translators: $s = id of the location
 			throw new BookingDeniedException( sprintf( __( 'Location does not exist. (%s)', 'commonsbooking' ), $locationId ) );
 		}
@@ -263,6 +264,12 @@ class Booking extends Timeframe {
 		if ( $repetitionStart === null || $repetitionEnd === null ) {
 			throw new BookingDeniedException( __( 'Start- and/or end-date is missing.', 'commonsbooking' ) );
 		}
+
+		// Validation end, set correctly typed params
+		$itemId          = (int) $itemId;
+		$locationId      = (int) $locationId;
+		$repetitionStart = (int) $repetitionStart;
+		$repetitionEnd   = (int) $repetitionEnd;
 
 		if ( $post_ID != null && ! get_post( $post_ID ) ) {
 			throw new BookingDeniedException(
