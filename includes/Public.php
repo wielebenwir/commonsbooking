@@ -102,7 +102,7 @@ function commonsbooking_public() {
 			'cb-scripts-public',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/public.js',
 			array( 'jquery' ),
-			time(),
+			(string) time(),
 			true
 		);
 	} else {

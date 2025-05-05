@@ -18,7 +18,7 @@ function commonsbooking_admin() {
 			'cb-scripts-admin',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js',
 			array(),
-			time()
+			(string) time()
 		);
 	} else {
 		wp_enqueue_script(
