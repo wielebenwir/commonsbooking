@@ -459,7 +459,7 @@ HTML;
 	/**
 	 * Renders CVS file (txt-format) with booking codes for download
 	 *
-	 * @param $timeframeId
+	 * @param int|null $timeframeId
 	 */
 	public static function renderCSV( $timeframeId = null ) {
 		if ( $timeframeId == null ) {
