@@ -272,7 +272,7 @@ class iCalendar {
 			if ( $isTimeSpan ) {
 				$occurence = new TimeSpan( new DateTime( $eventDate[0], false ), new DateTime( $eventDate[1], false ) );
 			} else {
-				$occurence = new MultiDay( $eventDate[0], $eventDate[1] );
+				$occurence = new MultiDay( new Date( $eventDate[0] ), new Date( $eventDate[1] ) );
 			}
 		} else {
 			$occurence = new SingleDay( new Date( $eventDate ) );
