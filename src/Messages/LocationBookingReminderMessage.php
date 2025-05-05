@@ -27,7 +27,7 @@ class LocationBookingReminderMessage extends Message {
 	public function sendMessage() {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking      = Booking::getPostById( $this->getPostId() );
-		$booking_user = get_userdata( $this->getPost()->post_author );
+		$booking_user = get_userdata( (int) $this->getPost()->post_author );
 
 		// get location email adresses to send them bcc copies
 		$location               = get_post( $booking->getMetaInt( 'location-id' ) );
