@@ -202,11 +202,10 @@ class CB1UserFields {
 				if ( ! isset( $_POST[ $field['field_name'] ] ) ) {
 					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 				}
-			} elseif (
-					empty( $_POST[ $field['field_name'] ] ) ||
-					! empty( $_POST[ $field['field_name'] ] ) &&
-					sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) == '' ) ) {
-					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
+			} elseif ( empty( $_POST[ $field['field_name'] ] ) ||
+						! empty( $_POST[ $field['field_name'] ] ) &&
+						sanitize_text_field( $_POST[ $field['field_name'] ] ) === '' ) {
+				$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 			}
 		}
 
