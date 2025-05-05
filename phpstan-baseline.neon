@@ -31,6 +31,12 @@ parameters:
 			path: src/Migration/Migration.php
 
 		-
+			message: '#^Parameter \#3 \$timeframe_type of static method CommonsBooking\\Migration\\Migration\:\:getExistingPost\(\) expects null, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
 			message: '#^Right side of && is always true\.$#'
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
