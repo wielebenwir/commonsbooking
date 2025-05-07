@@ -226,7 +226,7 @@ class Booking extends PostRepository {
 		$itemId = null,
 		array $customArgs = [],
 		array $postStatus = [ 'confirmed', 'unconfirmed' ]
-	): ?array {
+	): array {
 		// Default query
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
@@ -451,9 +451,9 @@ class Booking extends PostRepository {
 	 * @param $endDate
 	 * @param null       $postId
 	 *
-	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @return \CommonsBooking\Model\Booking[] empty array if none are found
 	 */
-	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): ?array {
+	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): array {
 
 		// Get existing bookings for defined parameters
 		$existingBookingsInRange = self::getByTimerange(
