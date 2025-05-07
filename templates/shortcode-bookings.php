@@ -31,16 +31,16 @@ if ( $templateData && $templateData['total'] > 0 ) {
 	$response .= '
         <div class="booking-list--filters cb-filter' . ( $showFilters ?: ' hide' ) . '">
         	<div class="filter-wrapper">
-	            <label class="filter-label">' . __( 'Startdate', 'commonsbooking' ) . '</label>
-	             <div class="filter-startdate" id="filter-startdate">        
-	                <input id="startDate-datepicker" type="text" value="">
+	            <label for="startDate-datepicker" class="filter-label">' . __( 'Startdate', 'commonsbooking' ) . '</label>
+	             <div class="filter-startdate" id="filter-startdate">
+	                <input name="startDate-datepicker" id="startDate-datepicker" type="text" value="">
 	                <input id="startDate" type="hidden" value="">
 	            </div>
         	</div>
         	<div class="filter-wrapper">
-	            <label class="filter-label">' . __( 'Enddate', 'commonsbooking' ) . '</label>
+	            <label for="endDate-datepicker" class="filter-label">' . __( 'Enddate', 'commonsbooking' ) . '</label>
 	            <div class="filter-enddate" id="filter-enddate">
-	                <input id="endDate-datepicker" type="text" value="">
+	                <input name="endDate-datepicker" id="endDate-datepicker" type="text" value="">
 	                <input id="endDate" type="hidden" value="">
 	            </div>
 	        </div>';
@@ -48,9 +48,9 @@ if ( $templateData && $templateData['total'] > 0 ) {
 	foreach ( $templateData['filters'] as $label => $values ) {
 		$response .= '
             <div class="filter-wrapper">
-                <label class="filter-label">' . __( ucfirst( $label ), 'commonsbooking' ) . '</label>
+                <label for="filter-' . $label . '" class="filter-label">' . __( ucfirst( $label ), 'commonsbooking' ) . '</label>
                 <div class="filter-' . $label . 's">
-                    <select class="select2" id="filter-' . $label . '">
+                    <select name="filter-' . $label . '" class="select2" id="filter-' . $label . '">
                         <option value="all" selected="selected">' . __( 'All', 'commonsbooking' ) . '</option>
             ';
 		foreach ( $values as $value ) {
@@ -65,8 +65,8 @@ if ( $templateData && $templateData['total'] > 0 ) {
 
 	$response .= '
 	        <div class="filter-wrapper">
-	            <label class="filter-label">' . __( 'Sorting', 'commonsbooking' ) . '</label>
-	            <select class="select2" id="sorting">
+	            <label for="sorting" class="filter-label">' . __( 'Sorting', 'commonsbooking' ) . '</label>
+	            <select name="sorting" class="select2" id="sorting">
 	                <option value="startDate">' . __( 'Startdate', 'commonsbooking' ) . '</option>
 	                <option value="endDate">' . __( 'Enddate', 'commonsbooking' ) . '</option>
 	                <option value="item">' . __( 'Item', 'commonsbooking' ) . '</option>
@@ -75,15 +75,19 @@ if ( $templateData && $templateData['total'] > 0 ) {
 	            </select>
 	        </div>
 	        <div class="filter-wrapper">
-	            <label class="filter-label">' . __( 'Order', 'commonsbooking' ) . '</label>
-	            <select class="select2" id="order">
+	            <label for="order" class="filter-label">' . __( 'Order', 'commonsbooking' ) . '</label>
+	            <select name="order" class="select2" id="order">
 	                <option value="asc">' . __( 'Ascending', 'commonsbooking' ) . '</option>
 	                <option value="desc">' . __( 'Descending', 'commonsbooking' ) . '</option>
 	            </select>
 	        </div>
 	        <div class="filter-wrapper reset-filters">
-	            <a id="reset-filters">' . __( 'Reset filters', 'commonsbooking' ) . '</a>
-	            <a class="cb-button" id="filter">' . __( 'Filter', 'commonsbooking' ) . '</a>
+	            <button type="button" id="reset-filters" class="cb-button reset-filters">
+	                ' . __( 'Reset filters', 'commonsbooking' ) . '
+	            </button>
+	            <button type="submit" id="filter" class="cb-button">
+	                ' . __( 'Filter', 'commonsbooking' ) . '
+	            </button>
 	        </div>
 	    </div>';
 
