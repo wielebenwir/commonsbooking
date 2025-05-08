@@ -110,10 +110,7 @@ add_filter(
 			}
 
 			// Save posts to global variable for later use -> fix of counts in admin lists
-			if (
-				array_key_exists( 'post_type', $_GET ) &&
-				is_array( $query->query ) && array_key_exists( 'post_type', $query->query )
-			) {
+			if ( array_key_exists( 'post_type', $_GET ) ) {
 				global ${'posts' . $query->query['post_type']};
 				${'posts' . $query->query['post_type']} = $posts;
 			}
@@ -280,7 +277,7 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ): bool {
  *
  * It only makes sense to check this with booking posts as all CPTs are / should be public.
  *
- * @param $booking - A booking of the cb_booking type
+ * @param \CommonsBooking\Model\Booking|int|WP_Post $booking - A booking of the cb_booking type
  *
  * @return bool
  */
@@ -293,11 +290,7 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ): bool {
 
 	$user = wp_get_current_user();
 
-	if ( $user ) {
-		return commonsbooking_isUserAllowedToSee( $booking, $user );
-	} else {
-		return false;
-	}
+	return commonsbooking_isUserAllowedToSee( $booking, $user );
 }
 
 /**

@@ -294,7 +294,8 @@ class Restriction extends CustomPost {
 
 				$userDisabledBookingCancellationOnTotalBreakdown = \CommonsBooking\Settings\Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-no-cancel-on-total-breakdown' ) == 'on';
 				// cancel all affected booking
-				if ( ! $userDisabledBookingCancellationOnTotalBreakdown && $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
+				if ( ! $userDisabledBookingCancellationOnTotalBreakdown
+					&& $this->getType() === self::TYPE_REPAIR ) {
 					$this->cancelBookings( $bookings );
 				}
 			}

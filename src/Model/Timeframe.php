@@ -116,7 +116,7 @@ class Timeframe extends CustomPost {
 
 		$startDate = $this->getMeta( self::REPETITION_START );
 
-		if ( (string) intval( $startDate ) !== $startDate ) {
+		if ( ! is_numeric( $startDate ) ) {
 			$startDate = strtotime( $startDate );
 		} else {
 			$startDate = intval( $startDate );
@@ -194,9 +194,6 @@ class Timeframe extends CustomPost {
 	public function isUserPrivileged( \WP_User $user = null ): bool {
 		if ( ! $user ) {
 			$user = wp_get_current_user();
-		}
-		if ( ! $user ) {
-			return false;
 		}
 
 		// these roles are always allowed to book
@@ -622,7 +619,7 @@ class Timeframe extends CustomPost {
 				}
 
 				// check if end date is before start date
-				if ( ( $this->getStartDate() && $this->getEndDate() ) && ( $this->getStartDate() > $this->getTimeframeEndDate() ) ) {
+				if ( $this->getEndDate() && ( $this->getStartDate() > $this->getTimeframeEndDate() ) ) {
 					throw new TimeframeInvalidException(
 						__(
 							'End date is before start date. Please set a valid end date.',

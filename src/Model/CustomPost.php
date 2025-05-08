@@ -16,7 +16,7 @@ use WP_Post;
  *
  * @package CommonsBooking\Model
  *
- * @property int $post_author {@see WP_Post::$post_author}
+ * @property int|string $post_author {@see WP_Post::$post_author}
  * @property string $post_status {@see WP_Post::$post_status}
  * @property int $ID {@see WP_Post::$ID}
  * @property string $post_title {@see WP_Post::$post_title}

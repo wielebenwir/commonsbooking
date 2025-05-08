@@ -111,6 +111,11 @@ class TimeframeExport {
 	}
 
 
+	/**
+	 * @return void
+	 * @throws CacheException
+	 * @throws InvalidArgumentException
+	 */
 	public static function ajaxExportCsv() {
 		// verify nonce
 		check_ajax_referer( 'cb_export_timeframes', 'nonce' );
@@ -145,8 +150,6 @@ class TimeframeExport {
 					'message' => $e->getMessage(),
 				)
 			);
-
-			return;
 		}
 		$nextPage = $exportObject->lastProcessedPage ? $exportObject->lastProcessedPage + 1 : 1;
 		$exportObject->getExportData( $nextPage );
@@ -161,8 +164,6 @@ class TimeframeExport {
 						'message' => $e->getMessage(),
 					)
 				);
-
-				return;
 			}
 			wp_send_json(
 				array(
@@ -353,11 +354,11 @@ class TimeframeExport {
 	/**
 	 * Gets export fields array from the comma separated string in the settings.
 	 *
-	 * @param $inputString
+	 * @param string|null $inputString
 	 *
-	 * @return false|string[]
+	 * @return string[] returns an empty array when non-string or empty-string input
 	 */
-	private static function convertInputFields( $inputString ) {
+	private static function convertInputFields( $inputString ): array {
 		return array_filter( explode( ',', sanitize_text_field( $inputString ) ) );
 	}
 

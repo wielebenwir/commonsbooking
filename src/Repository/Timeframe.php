@@ -134,7 +134,7 @@ class Timeframe extends PostRepository {
 			// Get Post-IDs considering types, items and locations
 			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
-			if ( $postIds && count( $postIds ) ) {
+			if ( $postIds ) {
 				$posts = self::getPostsByBaseParams(
 					$date,
 					$minTimestamp,
@@ -144,7 +144,7 @@ class Timeframe extends PostRepository {
 				);
 			}
 
-			if ( $posts && count( $posts ) ) {
+			if ( $posts ) {
 				$posts = self::filterTimeframes( $posts, $date );
 			}
 
@@ -329,7 +329,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
-	 * @return mixed
+	 * @return string[]|int[]
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
@@ -838,7 +838,7 @@ class Timeframe extends PostRepository {
 	 * @param array        $locations
 	 * @param array        $items
 	 * @param array        $types
-	 * @param false        $returnAsModel
+	 * @param bool         $returnAsModel
 	 * @param string[]     $postStatus
 	 *
 	 * @return array
@@ -873,7 +873,7 @@ class Timeframe extends PostRepository {
 			// Get Post-IDs considering types, items and locations
 			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
-			if ( $postIds && count( $postIds ) ) {
+			if ( $postIds ) {
 				$posts = self::getPostsByBaseParams(
 					null,
 					$minTimestamp,

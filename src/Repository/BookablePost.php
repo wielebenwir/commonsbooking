@@ -150,8 +150,8 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
-	 * @param $userId
-	 * @param false  $asModel - Wether the posts should be returned as their respective model class or as WP_Post
+	 * @param mixed $userId
+	 * @param bool  $asModel - Whether the posts should be returned as their respective model class or as WP_Post
 	 *
 	 * @return array
 	 */
