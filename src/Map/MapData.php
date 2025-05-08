@@ -17,8 +17,6 @@ class MapData {
 			while ( $check_capacity ) {
 				if ( $attempts > 10 ) {
 					wp_send_json_error( [ 'error' => 5 ], 408 );
-
-					wp_die();
 				}
 
 				++$attempts;
@@ -71,8 +69,6 @@ class MapData {
 		} else {
 			wp_send_json_error( [ 'error' => 1 ], 400 );
 		}
-
-		wp_die();
 	}
 
 	/**
@@ -90,13 +86,9 @@ class MapData {
 				$map       = new Map( $cb_map_id );
 			} else {
 				wp_send_json_error( [ 'error' => 2 ], 400 );
-
-				wp_die();
 			}
 		} else {
 			wp_send_json_error( [ 'error' => 3 ], 400 );
-
-			wp_die();
 		}
 
 		if ( $post->post_status == 'publish' ) {
@@ -224,38 +216,38 @@ class MapData {
 
 		if ( $map->getMeta( 'custom_marker_media_id' ) ) {
 			$settings['custom_marker_icon'] = [
-				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'custom_marker_media_id' ) ),
+				'iconUrl'    => wp_get_attachment_url( $map->getMetaInt( 'custom_marker_media_id' ) ),
 				'iconSize'   => [
-					intval( $map->getMeta( 'marker_icon_width' ) ),
-					intval( $map->getMeta( 'marker_icon_height' ) ),
+					$map->getMetaInt( 'marker_icon_width' ),
+					$map->getMetaInt( 'marker_icon_height' ),
 				],
 				'iconAnchor' => [
-					intval( $map->getMeta( 'marker_icon_anchor_x' ) ),
-					intval( $map->getMeta( 'marker_icon_anchor_y' ) ),
+					$map->getMetaInt( 'marker_icon_anchor_x' ),
+					$map->getMetaInt( 'marker_icon_anchor_y' ),
 				],
 			];
 		}
 
 		if ( $map->getMeta( 'marker_item_draft_media_id' ) ) {
 			$settings['item_draft_marker_icon'] = [
-				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'marker_item_draft_media_id' ) ),
+				'iconUrl'    => wp_get_attachment_url( $map->getMetaInt( 'marker_item_draft_media_id' ) ),
 				'iconSize'   => [
-					intval( $map->getMeta( 'marker_item_draft_icon_width' ) ),
-					intval( $map->getMeta( 'marker_item_draft_icon_height' ) ),
+					$map->getMetaInt( 'marker_item_draft_icon_width' ),
+					$map->getMetaInt( 'marker_item_draft_icon_height' ),
 				],
 				'iconAnchor' => [
-					intval( $map->getMeta( 'marker_item_draft_icon_anchor_x' ) ),
-					intval( $map->getMeta( 'marker_item_draft_icon_anchor_y' ) ),
+					$map->getMetaInt( 'marker_item_draft_icon_anchor_x' ),
+					$map->getMetaInt( 'marker_item_draft_icon_anchor_y' ),
 				],
 			];
 		}
 
 		if ( $map->getMeta( 'custom_marker_cluster_media_id' ) ) {
 			$settings['marker_cluster_icon'] = [
-				'url'  => wp_get_attachment_url( $map->getMeta( 'custom_marker_cluster_media_id' ) ),
+				'url'  => wp_get_attachment_url( $map->getMetaInt( 'custom_marker_cluster_media_id' ) ),
 				'size' => [
-					'width'  => intval( $map->getMeta( 'marker_cluster_icon_width' ) ),
-					'height' => intval( $map->getMeta( 'marker_cluster_icon_height' ) ),
+					'width'  => $map->getMetaInt( 'marker_cluster_icon_width' ),
+					'height' => $map->getMetaInt( 'marker_cluster_icon_height' ),
 				],
 			];
 		}

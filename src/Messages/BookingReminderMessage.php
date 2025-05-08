@@ -27,7 +27,7 @@ class BookingReminderMessage extends Message {
 	public function sendMessage() {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking      = Booking::getPostById( $this->getPostId() );
-		$booking_user = get_userdata( $this->getPost()->post_author );
+		$booking_user = get_userdata( (int) $this->getPost()->post_author );
 
 		// get templates from Admin Options
 		$template_body    = Settings::getOption(

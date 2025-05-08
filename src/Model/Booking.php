@@ -116,8 +116,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Send mail to booking user, that it was canceled.
+	 *
+	 * @return void
 	 */
-	protected function sendCancellationMail() {
+	protected function sendCancellationMail(): void {
 		$booking_msg = new BookingMessage( $this->getPost()->ID, 'canceled' );
 		$booking_msg->triggerMail();
 	}
@@ -185,8 +187,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * This leads to a lot of post meta for bookings that only make sense in a timeframe context.
 	 *
 	 * @throws Exception
+	 *
+	 * @return void
 	 */
-	public function assignBookableTimeframeFields() {
+	public function assignBookableTimeframeFields(): void {
 		$timeframe = $this->getBookableTimeFrame();
 		if ( $timeframe ) {
 			$neededMetaFields = [
@@ -273,7 +277,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @return array|null
+	 * @return Booking[]
 	 * @throws Exception
 	 */
 	public function getAdjacentBookings(): ?array {
@@ -288,7 +292,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @since 2.9.0
 	 *
 	 * @param WP_User $user
-	 * @return array
+	 * @return Booking[]
 	 */
 	public function getBookingChain( WP_User $user ): array {
 		$bookingChain    = [];
@@ -321,7 +325,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Returns time from repetition-[start/end] field in format H:i.
 	 * We need this meta-field in order to display the pick-up and return time to the user.
 	 *
-	 * @param $fieldName
+	 * @param string $fieldName
 	 *
 	 * @return string
 	 */
@@ -631,7 +635,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$this->ID
 		);
 
-		if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+		if ( count( $overlappingBookings ) >= 1 ) {
 			foreach ( $overlappingBookings as $overlappingBooking ) {
 				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
 			}
@@ -654,7 +658,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
 	 *
-	 * @param null $linktext
+	 * @param string|null $linktext
 	 *
 	 * @return string
 	 */
@@ -739,7 +743,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param int|array|string $term
+	 * @param int|string|array<int|string> $term
 	 * @return bool
 	 */
 	public function termsApply( $term ): bool {
@@ -783,10 +787,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// Booking has no valid status
 			return 0;
 		}
-		if ( $interval === null ) {
-			// no interval created
-			return 0;
-		}
+
 		$days = $interval->d;
 		// when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
 		if ( $interval->h > 0 ) {
@@ -969,9 +970,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param Booking[]   $bookings The booking to check
-	 * @param array|false $terms The terms that the bookings are filtered against
-	 * @return array|null
+	 * @param Booking[]                    $bookings The booking to check
+	 * @param int|string|array<int|string> $terms The terms that the bookings are filtered against
+	 * @return Booking[]|null
 	 */
 	public static function filterTermsApply( array $bookings, $terms ): ?array {
 		if ( ! empty( $terms ) ) {
@@ -995,9 +996,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param   array   $bookings
-	 * @param WP_User $user
-	 * @return array|null
+	 * @param Booking[] $bookings
+	 * @param WP_User   $user
+	 * @return Booking[]|null
 	 */
 	public static function filterForUser( array $bookings, WP_User $user ): ?array {
 		return array_filter(

@@ -67,7 +67,7 @@ class BookingCodes {
 			}
 			// when we still don't have an end-date, we will just get the coming ADVANCE_GENERATION_DAYS (should default to 365 days)
 			if ( ! $endDate ) {
-				$endDate = strtotime( '+' . $advanceGenerationDays . ' days', null ); // null means date and time now
+				$endDate = strtotime( '+' . $advanceGenerationDays . ' days' ); // null means date and time now
 				// a code will be generated for $endDate because time generally > 00:00:00 (due to initialitaion with current date and time)
 			}
 

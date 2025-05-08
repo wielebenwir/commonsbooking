@@ -479,9 +479,9 @@ class Calendar {
 	 * Returns Last day of month after next as default for calendar view,
 	 * based on $startDate param.
 	 *
-	 * @param $startDate
+	 * @param Day $startDate
 	 *
-	 * @return false|int
+	 * @return int
 	 */
 	private static function getDefaultCalendarEnddateTimestamp( $startDate ) {
 		return strtotime( 'last day of +3 months', $startDate->getDateObject()->getTimestamp() );

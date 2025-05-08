@@ -9,14 +9,13 @@ class Location extends BookablePost {
 	/**
 	 * Returns array with locations for item based on bookable timeframes.
 	 *
-	 * @param $itemId
+	 * @param int  $itemId
+	 * @param bool $bookable
 	 *
-	 * @param bool   $bookable
-	 *
-	 * @return array
+	 * @return WP_Post[]
 	 * @throws Exception
 	 */
-	public static function getByItem( $itemId, bool $bookable = false ): array {
+	public static function getByItem( int $itemId, bool $bookable = false ): array {
 		return self::getByRelatedPost( $itemId, 'item', 'location', $bookable );
 	}
 
