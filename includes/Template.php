@@ -10,11 +10,11 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 	 * Load template files of the plugin also include a filter pn_get_template_part<br>
 	 * Based on WooCommerce function<br>
 	 *
-	 * @param string $slug
-	 * @param string $name
-	 * @param bool   $include
-	 * @param string $before
-	 * @param string $after
+	 * @param string       $slug
+	 * @param string       $name
+	 * @param bool         $include
+	 * @param string|false $before
+	 * @param string|false $after
 	 *
 	 * @return string
 	 */
@@ -83,13 +83,17 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 			}
 		}
 
-		if ( $template && $include === true ) {
-			echo( commonsbooking_sanitizeHTML( $before_html ) );
-			load_template( $template, false );
-			echo( commonsbooking_sanitizeHTML( $after_html ) );
-		} elseif ( $template && $include === false ) {
-			return $before_html . $template . $after_html;
+		if ( ! $template ) {
+			return '';
 		}
-		return '';
+
+		if ( $include ) {
+			echo commonsbooking_sanitizeHTML( $before_html );
+			load_template( $template, false );
+			echo commonsbooking_sanitizeHTML( $after_html );
+			return '';
+		}
+
+		return $before_html . $template . $after_html;
 	}
 }

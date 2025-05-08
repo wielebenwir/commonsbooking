@@ -116,7 +116,7 @@ class Timeframe extends CustomPost {
 
 		$startDate = $this->getMeta( self::REPETITION_START );
 
-		if ( (string) intval( $startDate ) !== $startDate ) {
+		if ( ! is_numeric( $startDate ) ) {
 			$startDate = strtotime( $startDate );
 		} else {
 			$startDate = intval( $startDate );
@@ -194,9 +194,6 @@ class Timeframe extends CustomPost {
 	public function isUserPrivileged( \WP_User $user = null ): bool {
 		if ( ! $user ) {
 			$user = wp_get_current_user();
-		}
-		if ( ! $user ) {
-			return false;
 		}
 
 		// these roles are always allowed to book
@@ -622,7 +619,7 @@ class Timeframe extends CustomPost {
 				}
 
 				// check if end date is before start date
-				if ( ( $this->getStartDate() && $this->getEndDate() ) && ( $this->getStartDate() > $this->getTimeframeEndDate() ) ) {
+				if ( $this->getEndDate() && ( $this->getStartDate() > $this->getTimeframeEndDate() ) ) {
 					throw new TimeframeInvalidException(
 						__(
 							'End date is before start date. Please set a valid end date.',
@@ -1069,7 +1066,7 @@ class Timeframe extends CustomPost {
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
-		return Wordpress::convertTimestampToUTCDatetime( $startDateString );
+		return Wordpress::convertTimestampToUTCDatetime( intval( $startDateString ) );
 	}
 
 	/**
@@ -1090,7 +1087,7 @@ class Timeframe extends CustomPost {
 		$startDate = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
 			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
-			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
+			$startDate->setTime( (int) $startTime->format( 'H' ), (int) $startTime->format( 'i' ) );
 		}
 
 		return $startDate;
@@ -1140,7 +1137,7 @@ class Timeframe extends CustomPost {
 	 *
 	 * TODO: Clarify what the exact difference between endTime and endDate is.
 	 *
-	 * @param null $endDateString
+	 * @param string|int|null $endDateString
 	 *
 	 * @return DateTime
 	 * @throws Exception
@@ -1151,7 +1148,7 @@ class Timeframe extends CustomPost {
 
 		if ( $endTimeString ) {
 			$endTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $endTimeString ) );
-			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+			$endDate->setTime( (int) $endTime->format( 'H' ), (int) $endTime->format( 'i' ) );
 		} else {
 			$endDate = Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
