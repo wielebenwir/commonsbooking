@@ -229,6 +229,20 @@ class Plugin {
 	}
 
 	/**
+	 * Returns assoc array of dependencies to their version numbers
+	 *
+	 * @return array<string, string>
+	 */
+	public static function getManagedDepsVersions(): array {
+		$version_file_path    = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
+		$version_file_content = file_get_contents( $version_file_path );
+		$versions             = json_decode( $version_file_content, true );
+		if ( JSON_ERROR_NONE !== json_last_error() ) {
+			trigger_error( "Unable to parse commonsbooking asset version file in $version_file_path." );
+		}
+	}
+
+	/**
 	 * Tests if a given post belongs to our CPTs
 	 *
 	 * @param $post int|\WP_Post - post id or post object
@@ -543,12 +557,7 @@ class Plugin {
 	public static function registerScriptsAndStyles() {
 		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
 
-		$version_file_path    = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
-		$version_file_content = file_get_contents( $version_file_path );
-		$versions             = json_decode( $version_file_content, true );
-		if ( JSON_ERROR_NONE !== json_last_error() ) {
-			trigger_error( "Unable to parse commonsbooking asset version file in $version_file_path." );
-		}
+		$versions = self::getManagedDepsVersions();
 
 		// spin.js
 		wp_register_script( 'cb-spin', $base . 'spin-js/spin.min.js', [], $versions['spin.js'] );
