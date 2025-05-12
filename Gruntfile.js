@@ -33,6 +33,15 @@ module.exports = function (grunt) {
 					dest: 'assets/public/css',
 				}],
 			},
+			global: {
+				files: [{
+					expand: true,
+					src: ['*.scss'],
+					ext: '.css',
+					cwd: 'assets/global/sass',
+					dest: 'assets/global/css'
+				}]
+			},
 			adminDev: {
 				options: {
 					outputStyle: 'expanded',
@@ -57,6 +66,19 @@ module.exports = function (grunt) {
 					dest: 'assets/public/css',
 				}],
 			},
+			globalDev: {
+				options: {
+					outputStyle: 'expanded',
+					sourceMap: true,
+				},
+				files: [{
+					expand: true,
+					src: ['*.scss'],
+					ext: '.css',
+					cwd: 'assets/global/sass',
+					dest: 'assets/global/css'
+				}]
+			}
 		},
 		// concat and minify our JS
 		uglify: {
@@ -84,6 +106,15 @@ module.exports = function (grunt) {
 					compress: true
 				},
 				files: {
+					'assets/public/js/public.js': [
+						/* add path to js dependencies (ie in node_modules) here */
+						'assets/public/js/src/**/*.js',
+					],
+					'assets/admin/js/admin.js': [
+						/* add path to js dependencies (ie in node_modules) here */
+						'assets/admin/js/src/*.js',
+						'node_modules/feiertagejs/build/feiertage.umd.js'
+					],
 					'assets/public/js/public.min.js': [
 						'assets/public/js/public.js'
 					],
@@ -146,7 +177,19 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: 'node_modules/commons-api/',
                         src: '**schema.json',
-                    }
+                    },
+					{
+						dest: nodePackagesDestDir + 'select2/',
+						expand: true,
+						cwd: 'node_modules/select2/dist/',
+						src: ['**/select2.min.js', '**/select2.min.css']
+					},
+					{
+						dest: nodePackagesDestDir + 'moment/',
+						expand: true,
+						cwd: 'node_modules/moment/min/',
+						src: ['moment.min.js']
+					},
 				],
 			},
 		},
@@ -169,7 +212,7 @@ module.exports = function (grunt) {
 					'assets/public/sass/**/*.scss'
 				],
 				tasks: [
-					'dart-sass:adminDev', 'dart-sass:publicDev'
+					'dart-sass:adminDev', 'dart-sass:publicDev', 'dart-sass:globalDev'
 				],
                 options: {
                     livereload: true
@@ -212,6 +255,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', [
 		'dart-sass:adminDev',
 		'dart-sass:publicDev',
+		'dart-sass:globalDev',
 		'dart-sass:themes',
 		'uglify:dev',
 		'uglify:dist',
@@ -222,6 +266,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('dev', [
 		'dart-sass:adminDev',
 		'dart-sass:publicDev',
+		'dart-sass:globalDev',
 		'dart-sass:themes',
 		'uglify:dev',
 		'babel',
@@ -232,9 +277,10 @@ module.exports = function (grunt) {
 	grunt.registerTask('dist', [
 		'dart-sass:admin',
 		'dart-sass:public',
+		'dart-sass:global',
 		'dart-sass:themes',
-		'uglify:dist',
 		'babel',
+		'uglify:dist',
 		'copy',
 		'node_versions',
 	]);
