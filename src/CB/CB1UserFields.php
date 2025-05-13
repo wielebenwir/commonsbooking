@@ -288,7 +288,7 @@ class CB1UserFields {
 				<th><label for="terms_accepted"><?php esc_html_e( 'Terms and conditions', 'commonsbooking' ); ?></label>
 				</th>
 				<td>
-					<input type="checkbox" name="terms_accepted" id=" terms_accepted " disabled
+					<input type="checkbox" name="terms_accepted" id="terms_accepted" disabled
 							value="yes"
 							<?php
 							if ( esc_attr( get_the_author_meta( 'terms_accepted', $user->ID ) ) == 'yes' ) {

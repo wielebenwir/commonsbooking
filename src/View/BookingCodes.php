@@ -212,7 +212,7 @@ class BookingCodes {
                         jQuery('#ui-datepicker-div').addClass('cmb2-element');
                     }
                 });
-            } );        
+            } );
         ",
 			'after'
 		);
@@ -225,7 +225,7 @@ class BookingCodes {
 		}
 
 		echo <<< HTML
-            <input type="checkbox" class="cmb2-option cmb2-list" name="{$field_type->_name( '[cron-booking-codes-enabled]' )}" 
+            <input type="checkbox" class="cmb2-option cmb2-list" name="{$field_type->_name( '[cron-booking-codes-enabled]' )}"
                                         id="{$field_type->_id( '[cron-booking-codes-enabled]' )}" value="on" {$checked} >
             <label id="cron-email-booking-code" for="{$field_type->_id( '[cron-booking-codes-enabled]' )}">
                 <span class="cmb2-metabox-description">{$field->args['desc_cb']} </span>
@@ -239,7 +239,7 @@ class BookingCodes {
                         <b>{$field->args['name_start']}</b>
                     </label>
                     </p>
-                    <input class='cmb2-text-small cb-custom-dtp' name="{$field_type->_name( '[cron-email-booking-code-start]' )}" 
+                    <input class='cmb2-text-small cb-custom-dtp' name="{$field_type->_name( '[cron-email-booking-code-start]' )}"
                                 value="{$value['cron-email-booking-code-start']}" type='text' id="{$field_type->_id( '[cron-email-booking-code-start]' )}" >
                     <p class="cmb2-metabox-description">{$field->args['desc_start']}</p>
                 </div>
@@ -250,7 +250,7 @@ class BookingCodes {
                         <b>{$field->args['name_nummonth']}</b>
                     </label>
                     </p>
-                    <input class='cmb2-text-small' name="{$field_type->_name( '[cron-email-booking-code-nummonth]' )}" 
+                    <input class='cmb2-text-small' name="{$field_type->_name( '[cron-email-booking-code-nummonth]' )}"
                             value="{$value['cron-email-booking-code-nummonth']}" type='number' min="1" id="{$field_type->_id( '[cron-email-booking-code-nummonth]' )}" >
                     <p  class="cmb2-metabox-description">{$field->args['desc_nummonth']}</p>
                 </div>
@@ -295,7 +295,7 @@ HTML;
 		} else {
 			echo '
             	<div id ="timeframe-bookingcodes-sendall">
-                  <a id="email-booking-codes-list-all" 
+                  <a id="email-booking-codes-list-all"
                                 href="' . esc_url(
 				add_query_arg(
 					[
@@ -314,7 +314,7 @@ HTML;
 			$to   = strtotime( 'midnight last day of this month' );
 			echo '
 			<div id ="timeframe-bookingcodes-send_current_month">
-          		<br><a id="email-booking-codes-list-current" 
+          		<br><a id="email-booking-codes-list-current"
                                     href="' . esc_url(
 				add_query_arg(
 					[
@@ -334,7 +334,7 @@ HTML;
 
 			echo '
 			<div id ="timeframe-bookingcodes-send_next_month">
-          	<br><a id="email-booking-codes-list-next" 
+          	<br><a id="email-booking-codes-list-next"
                                     href="' . esc_url(
 				add_query_arg(
 					[

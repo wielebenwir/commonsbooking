@@ -46,7 +46,7 @@ class Filter {
 	public static function renderDateFilter( $postType, $startDateInputName, $endDateInputName, $from, $to ) {
 		if ( isset( $_GET['post_type'] ) && $postType == sanitize_text_field( $_GET['post_type'] ) ) {
 			echo '<style>
-                input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . '], 
+                input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . '],
                 input[name=' . commonsbooking_sanitizeHTML( $endDateInputName ) . ']{
                     line-height: 28px;
                     height: 28px;
@@ -54,32 +54,28 @@ class Filter {
                     width:150px;
                 }
             </style>
-     
-            <input type="text" name="' . commonsbooking_sanitizeHTML( $startDateInputName ) . '" placeholder="' . esc_html__(
-					'Start date',
-					'commonsbooking'
-				) . '" value="' . esc_attr( $from ) . '" />
-            <input type="text" name="' . commonsbooking_sanitizeHTML( $endDateInputName ) . '" placeholder="' . esc_html__(
-					'End date',
-					'commonsbooking'
-				) . '" value="' . esc_attr( $to ) . '" />
-     
+
+            <label for="' . commonsbooking_sanitizeHTML( $startDateInputName ) . '">' . esc_html__('Start date', 'commonsbooking') . '</label>
+            <input type="text" id="' . commonsbooking_sanitizeHTML( $startDateInputName ) . '" name="' . commonsbooking_sanitizeHTML( $startDateInputName ) . '" value="' . esc_attr( $from ) . '" />
+            <label for="' . commonsbooking_sanitizeHTML( $endDateInputName ) . '">' . esc_html__('End date', 'commonsbooking') . '</label>
+            <input type="text" id="' . commonsbooking_sanitizeHTML( $endDateInputName ) . '" name="' . commonsbooking_sanitizeHTML( $endDateInputName ) . '" value="' . esc_attr( $to ) . '" />
+
             <script>
             jQuery( function($) {
                 var from = $(\'input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . ']\'),
                     to = $(\'input[name=' . commonsbooking_sanitizeHTML( $endDateInputName ) . ']\');
-     
-                $(\'input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . '], input[name=' . commonsbooking_sanitizeHTML( $endDateInputName ) . ']\' ).datepicker( 
+
+                $(\'input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . '], input[name=' . commonsbooking_sanitizeHTML( $endDateInputName ) . ']\' ).datepicker(
                     {
                         dateFormat : "yy-mm-dd"
                     }
                 );
                 from.on( \'change\', function() {
                     to.datepicker( \'option\', \'minDate\', from.val() );
-                }); 
+                });
                 to.on( \'change\', function() {
                     from.datepicker( \'option\', \'maxDate\', to.val() );
-                }); 
+                });
             });
             </script>';
 		}

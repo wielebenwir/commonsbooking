@@ -32,7 +32,7 @@ if ( $templateData && $templateData['total'] > 0 ) {
         <div class="booking-list--filters cb-filter' . ( $showFilters ?: ' hide' ) . '">
         	<div class="filter-wrapper">
 	            <label class="filter-label">' . __( 'Startdate', 'commonsbooking' ) . '</label>
-	             <div class="filter-startdate" id="filter-startdate">        
+	             <div class="filter-startdate" id="filter-startdate">
 	                <input id="startDate-datepicker" type="text" value="">
 	                <input id="startDate" type="hidden" value="">
 	            </div>

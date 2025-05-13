@@ -211,17 +211,17 @@ function CB_Map_Filters($, cb_map) {
 
     var $undo_geo_search_button = $('<button type="button" class="undo-geo-search no-right-radius"><span class="dashicons dashicons-no"></span></button>');
     $geo_search_input_group.append($undo_geo_search_button);
-    var $address = $('<input type="text" class="no-left-radius no-right-radius" name="position_address" placeholder="' + cb_map.translation['ADDRESS'] + '"></input>');
+    var $address = $('<input type="text" id="position_address" class="no-left-radius no-right-radius" name="position_address" placeholder="' + cb_map.translation['ADDRESS'] + '"></input>');
     $geo_search_input_group.append($address);
     var $geo_search_button = $('<button class="geo-search no-left-radius"><span class="dashicons dashicons-location-alt"></span></button>');
     $geo_search_input_group.append($geo_search_button);
     $wrapper.append($geo_search_input_group);
-    
+
     var $cb_map_distance_group = $('<div class="cb-map-filter-distance-group"></div>');
-    
-    var $distance_input = $('<input name="max_distance" class="cb-map-distance" type="number" min="0" value="2.5" step="0.25"></input>');
+
+    var $distance_input = $('<input name="max_distance" id="max_distance" class="cb-map-distance" type="number" min="0" value="2.5" step="0.25"></input>');
     $cb_map_distance_group.append($distance_input);
-    $cb_map_distance_group.append('<label>km</label>');
+    $cb_map_distance_group.append('<label for="max_distance">km</label>');
     $wrapper.append($cb_map_distance_group);
 
     $undo_geo_search_button.click(function(event) {
@@ -255,32 +255,32 @@ function CB_Map_Filters($, cb_map) {
     var $wrapper = $('<div class="cb-map-filter-group"></div>');
     $container.append($wrapper);
 
-    var $date_start_input = $('<input type="date" name="date_start" min="' + cb_map.settings.filter_availability.date_min + '" max="' + cb_map.settings.filter_availability.date_max + '" value="' + cb_map.settings.filter_availability.date_min +'">');
-    var $date_end_input = $('<input type="date" name="date_end" min="' + cb_map.settings.filter_availability.date_min + '" max="' + cb_map.settings.filter_availability.date_max + '"  value="' + cb_map.settings.filter_availability.date_max +'">');
+    var $date_start_input = $('<input type="date" id="date_start" name="date_start" min="' + cb_map.settings.filter_availability.date_min + '" max="' + cb_map.settings.filter_availability.date_max + '" value="' + cb_map.settings.filter_availability.date_min + '"></input>');
+    var $date_end_input = $('<input type="date" id="date_end" name="date_end" min="' + cb_map.settings.filter_availability.date_min + '" max="' + cb_map.settings.filter_availability.date_max + '"  value="' + cb_map.settings.filter_availability.date_max + '"></input>');
     var $day_count_select = $('<select name="day_count"></select>')
     for(var d = 1; d <= cb_map.settings.filter_availability.day_count_max; d++) {
       var show_value = d == 0 ? '-' : d;
       $day_count_select.append('<option value="' + d + '">' + show_value + '</option>')
     }
-    
-    
+
+
     var $wrapper_from = $('<div class="date-col-from"></div>');
     $wrapper_from.append('<label>' + cb_map.translation['FROM'] + '</label>');
     $wrapper_from.append($date_start_input);
-    
+
     var $wrapper_until = $('<div class="date-col-until"></div>');
     $wrapper_until.append('<label>' + cb_map.translation['UNTIL'] + '</label>');
-    $wrapper_until.append($date_end_input);  
-    
+    $wrapper_until.append($date_end_input);
+
     var $wrapper_atleast = $('<div class="date-col-atleast"></div>');
     $wrapper_atleast.append('<label>' + cb_map.translation['AT_LEAST'] + '</label>');
     $wrapper_atleast.append($day_count_select);
     $wrapper_atleast.append('<label>' + cb_map.translation['DAYS'] + '</label>');
-    
-   $wrapper.append( $wrapper_from);    
-   $wrapper.append( $wrapper_until);    
-   $wrapper.append( $wrapper_atleast);    
-  
+
+   $wrapper.append( $wrapper_from);
+   $wrapper.append( $wrapper_until);
+   $wrapper.append( $wrapper_atleast);
+
 
     $filter_options.append($container);
   },
@@ -307,7 +307,7 @@ function CB_Map_Filters($, cb_map) {
         // $fieldset.append($input);
         // $fieldset.append($label);
         $fieldset.append($wrapper);
-        
+
       });
 
       $wrapper.append($fieldset);

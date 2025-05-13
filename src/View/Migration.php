@@ -36,8 +36,8 @@ class Migration {
 			) . '</strong>';
 		}
 		echo( '
-            
-            <div id="migration-state">                
+
+            <div id="migration-state">
                 <span id="locations-index">0</span>/<span id="locations-count">0</span> ' . esc_html__( ' Locations updated/saved', 'commonsbooking' ) . '<br>
                 <span id="items-index">0</span>/<span id="items-count">0</span>' . esc_html__( ' Items updated/saved', 'commonsbooking' ) . '<br>
                 <span id="timeframes-index">0</span>/<span id="timeframes-count">0</span>' . esc_html__( ' Timeframes updated/saved', 'commonsbooking' ) . '<br>
@@ -51,7 +51,7 @@ class Migration {
                 <p class="blinking" style="border:solid; border-color:red; border-width:4px; padding:20px"><strong style="color: red">
                 ' . commonsbooking_sanitizeHTML( __( 'migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab', 'commonsbooking' ) ) . '
                 </strong></p>
-            </div>            
+            </div>
             <div id="migration-done">
                 <strong style="color: green">
                 ' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
@@ -97,12 +97,12 @@ class Migration {
                     <strong style="color: red">
                     ' . esc_html__( 'migration in process .. please wait ...', 'commonsbooking' ) . '
                     </strong>
-                </div>            
+                </div>
                 <div id="booking-migration-done">
                     <strong style="color: green">
                     ' . esc_html__( 'Migration finished', 'commonsbooking' ) . '
                     </strong>
-                </div>    
+                </div>
                 <div id="booking-migration-failed">
 	                <strong style="color: red">
 	                ' . esc_html__( 'Migration failed', 'commonsbooking' ) . '
@@ -110,7 +110,7 @@ class Migration {
 	            </div>
                 <a id="booking-update-start" class="button button-secondary" href="#">
 				    ' . esc_html__( 'Migrate bookings', 'commonsbooking' ) . '
-                </a>            
+                </a>
             </div>
            '
 		);

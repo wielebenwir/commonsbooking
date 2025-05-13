@@ -251,7 +251,7 @@ trait Cache {
 			$table_posts = $wpdb->prefix . 'posts';
 
 			// First get all pages with cb shortcodes
-			$sql   = "SELECT post_content FROM $table_posts WHERE 
+			$sql   = "SELECT post_content FROM $table_posts WHERE
 			  post_content LIKE '%[cb_%]%' AND
 			  post_type = 'page' AND
 			  post_status = 'publish'";
