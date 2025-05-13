@@ -193,6 +193,17 @@ module.exports = function (grunt) {
 				],
 			},
 		},
+		clean: {
+			dist: [
+				'assets/packaged/*',
+				'assets/admin/css/*',
+				'assets/public/css/*',
+				'assets/public/js/public.*',
+				'assets/global/js/vendor.*',
+				'assets/admin/js/admin.*'
+			]
+
+		},
 		babel: {
 			options: {
 				sourceMap: true,
@@ -235,6 +246,7 @@ module.exports = function (grunt) {
 	});
 
 	// Load tasks
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-dart-sass');
@@ -275,6 +287,7 @@ module.exports = function (grunt) {
 		'watch',
 	]);
 	grunt.registerTask('dist', [
+		'clean',
 		'dart-sass:admin',
 		'dart-sass:public',
 		'dart-sass:global',
