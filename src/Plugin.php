@@ -590,7 +590,7 @@ class Plugin {
 			if ( $error = get_transient( $errorType ) ) {
 				$class = 'notice notice-error';
 				printf(
-					'<div class="%1$s"><p>%2$s</p></div>',
+					'<div class="%1$s" role="alert" aria-live="polite"><p>%2$s</p></div>',
 					esc_attr( $class ),
 					commonsbooking_sanitizeHTML( $error )
 				);
@@ -606,7 +606,7 @@ class Plugin {
 			if ( $message = get_transient( $info_type ) ) {
 				$class = 'notice notice-success is-dismissible';
 				printf(
-					'<div class="%1$s"><p>%2$s</p></div>',
+					'<div class="%1$s" role="status" aria-live="polite"><p>%2$s</p></div>',
 					esc_attr( $class ),
 					commonsbooking_sanitizeHTML( $message )
 				);
