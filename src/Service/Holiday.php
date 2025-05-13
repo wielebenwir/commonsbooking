@@ -64,7 +64,7 @@ class Holiday {
 			</div>
 			<br>
 			<div class="cb_admin_holiday_table">
-				<button type="button" id="holiday_load_btn"
+				<button type="button" id="holiday_load_btn" aria-label="<?php echo esc_attr__( 'Load holidays for selected year and state', 'commonsbooking' ); ?>"
 				><?php echo esc_html__( 'Load Holidays', 'commonsbooking' ); ?></button>
 			</div>
 		</div>
