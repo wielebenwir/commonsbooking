@@ -34,7 +34,7 @@ class Map extends View {
 				<label>' . esc_html__( 'Set / Update GPS Coordinates', 'commonsbooking' ) . '</label>
 			</div>
 			<div class="cmb-td">
-				<button type="button" id="get_gps" class="button button-secondary" onclick="cb_map_positioning.search()">' .
+				<button type="button" id="get_gps" class="button button-secondary" onclick="cb_map_positioning.search()" aria-label="' . esc_attr__( 'Set or update GPS coordinates from address', 'commonsbooking' ) . '">' .
 					esc_html__( 'Set / update GPS coordinates from address', 'commonsbooking' ) .
 				'</button>
 				<p>' .
