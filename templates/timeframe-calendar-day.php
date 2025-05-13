@@ -24,7 +24,7 @@
 							<input type="hidden" name="post_status" value="unconfirmed" />
 							<input type="hidden" name="repetition-start" value="{{ slot.timestampstart }}">
 							<input type="hidden" name="repetition-end" value="{{ slot.timestampend }}">
-							<input type="submit" value="Buchen" style="font-size: 12px;padding:0;" />
+							<input type="submit" value="<?php esc_html_e('Book', 'commonsbooking'); ?>" class="cb-button small" aria-label="<?php esc_attr_e('Book this time slot', 'commonsbooking'); ?>" />
 						</form>
 						{% endif %}
 					</div>
