@@ -231,9 +231,9 @@ class Plugin {
 	/**
 	 * Returns assoc array of dependencies to their version numbers
 	 *
-	 * @return array<string, string>
+	 * @return array<string, string>|null
 	 */
-	public static function getManagedDepsVersions(): array {
+	public static function getManagedDepsVersions(): ?array {
 		$version_file_path    = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
 		$version_file_content = file_get_contents( $version_file_path );
 		$versions             = json_decode( $version_file_content, true );
