@@ -67,7 +67,8 @@ class MassOperations {
 			$tableString .= '
 				<tr id="row-booking-' . $booking->ID . '">
 					<th scope="row" class="check-column">
-						<input type="checkbox" class="post-checkboxes" value="' . $booking->ID . '">
+						<label class="screen-reader-text" for="cb-select-booking-' . $booking->ID . '">Select booking ' . $booking->ID . '</label>
+						<input type="checkbox" id="cb-select-booking-' . $booking->ID . '" class="post-checkboxes" value="' . $booking->ID . '">
 					</th>
 					<td class="manage-column column-cb_id">' . $booking->ID . '</td>
 					<td class="manage-column column-cb_user_nicename">' . $booking->getUserData()->user_nicename . '</td>
