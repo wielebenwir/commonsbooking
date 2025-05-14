@@ -2076,6 +2076,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         updatePicker(data);
                         picker.gotoDate(startDate);
                     });
+                },
+                onRender: function(ui) {
+                    // Enhance calendar accessibility after render
+                    enhanceCalendarAccessibility();
                 }
             });
             jQuery("#litepicker .litepicker").hide();
@@ -2083,6 +2087,63 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 updateCalendarColumns(picker);
             });
         };
+
+        // Function to enhance calendar accessibility
+        const enhanceCalendarAccessibility = () => {
+            // Add proper ARIA attributes to calendar days
+            jQuery('.litepicker .day-item').each(function() {
+                const $day = jQuery(this);
+                const isDisabled = $day.hasClass('is-locked') || $day.hasClass('is-booked');
+
+                // Set ARIA attributes based on state
+                $day.attr('role', 'button');
+
+                if (isDisabled) {
+                    $day.attr('aria-disabled', 'true');
+                }
+
+                // Add more descriptive labels
+                if ($day.hasClass('is-start-date')) {
+                    $day.attr('aria-label', 'Selected pickup date ' + $day.text());
+                } else if ($day.hasClass('is-end-date')) {
+                    $day.attr('aria-label', 'Selected return date ' + $day.text());
+                } else if ($day.hasClass('is-in-range')) {
+                    $day.attr('aria-label', 'Date in selected range ' + $day.text());
+                } else if ($day.hasClass('is-locked')) {
+                    $day.attr('aria-label', 'Unavailable date ' + $day.text());
+                } else if ($day.hasClass('is-booked')) {
+                    $day.attr('aria-label', 'Already booked date ' + $day.text());
+                } else {
+                    $day.attr('aria-label', 'Available date ' + $day.text());
+                }
+            });
+
+            // Add proper ARIA attributes to month header
+            jQuery('.litepicker .month-item-header').attr('role', 'heading').attr('aria-level', '2');
+
+            // Add keyboard navigation
+            jQuery('.litepicker .container__days').attr('role', 'grid');
+            jQuery('.litepicker .month-item-weekdays-row').attr('role', 'row');
+            jQuery('.litepicker .month-item-weekdays-row > div').attr('role', 'columnheader');
+
+            // Add instructions for screen readers
+            const srInstructions = jQuery('<div class="sr-only" aria-live="polite">Use arrow keys to navigate the calendar, Space or Enter to select a date</div>');
+            if (jQuery('.litepicker .sr-only').length === 0) {
+                jQuery('.litepicker').prepend(srInstructions);
+            }
+
+            // Add keyboard event handling
+            jQuery('.litepicker .day-item').on('keydown', function(e) {
+                const $currentDay = jQuery(this);
+
+                // Enter or Space to select date
+                if (e.keyCode === 13 || e.keyCode === 32) {
+                    e.preventDefault();
+                    $currentDay.click();
+                }
+            });
+        };
+
         const updatePicker = globalCalendarData => {
             fadeOutCalendar();
             picker.setOptions({
