@@ -182,7 +182,7 @@ function CB_Map() {
             location.items.forEach(function (item) {
                 item_names.push(item.name);
 
-                var item_thumb_image = item.thumbnail ? '<img src="' + item.thumbnail + '">' : '';
+                var item_thumb_image = item.thumbnail ? '<img src="' + item.thumbnail + '" alt="' + item.name + '">' : '';
 
                 popup_items += '<div class="cb-map-popup-item">'
                     + '<div class="cb-map-popup-item-thumbnail">'

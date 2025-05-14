@@ -8,7 +8,7 @@
 			echo esc_html__( 'Welcome to CommonsBooking', 'commonsbooking' );?>.</h2>
 			<div class="cb_welcome-panel-column-container">
 				<div class="cb_welcome-panel-column">
-					<img src="<?php echo plugin_dir_url( __DIR__ ) . 'assets/global/cb-ci/logo.png'; ?>" style="width:200px">
+					<img src="<?php echo plugin_dir_url( __DIR__ ) . 'assets/global/cb-ci/logo.png'; ?>" style="width:200px" alt="<?php echo esc_attr__('CommonsBooking Logo', 'commonsbooking'); ?>">
 				</div><!-- .cb_welcome-panel-column -->
 				<div class="cb_welcome-panel-column">
 				<p></p>

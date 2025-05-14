@@ -174,7 +174,10 @@ class CustomPost {
 			return '<div class="cb-thumbnail">' . get_the_post_thumbnail(
 				$this->ID,
 				$size,
-				array( 'class' => 'alignleft cb-image' )
+				array(
+					'class' => 'alignleft cb-image',
+					'alt' => esc_attr(get_the_title($this->ID))
+				)
 			) . '</div>';
 		}
 
