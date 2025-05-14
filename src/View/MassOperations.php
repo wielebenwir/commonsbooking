@@ -31,7 +31,7 @@ class MassOperations {
 			<thead>
 			<tr>
 				<th scope="col" class="manage-column column-cb check-column">
-					<label class="screen-reader-text" for="cb-select-all-1">Select All</label>
+					<label class="screen-reader-text" for="cb-select-all-1">' . esc_html__( 'Select All', 'commonsbooking' ) . '</label>
 					<input type="checkbox" id="cb-select-all-1">
 				</th>
 				<th scope="col" class="manage-column column-title column-primary" id="id">' . esc_html__( 'ID', 'commonsbooking' ) . '</th>
