@@ -168,6 +168,7 @@ if ( $bookingCommentActive ) {
 			<p><?php echo commonsbooking_sanitizeHTML( $bookingCommentDescription ); ?></p>
 			<div class="cb-list-content cb-comment cb-col-100">
 				<div>
+					<label for="cb-booking-comment" class="screen-reader-text"><?php echo commonsbooking_sanitizeHTML( $bookingCommentTitle ); ?></label>
 					<textarea id="cb-booking-comment"
 								name="comment"><?php echo commonsbooking_sanitizeHTML( $booking->returnComment() ); ?></textarea>
 				</div>
