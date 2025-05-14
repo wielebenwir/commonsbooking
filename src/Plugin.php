@@ -240,6 +240,7 @@ class Plugin {
 		if ( JSON_ERROR_NONE !== json_last_error() ) {
 			trigger_error( "Unable to parse commonsbooking asset version file in $version_file_path." );
 		}
+		return $versions;
 	}
 
 	/**
