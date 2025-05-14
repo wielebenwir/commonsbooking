@@ -19,11 +19,11 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 	?>
 	</script>
 	<!-- generate calendar /-->
-	<div id="litepicker"></div>
+	<div id="litepicker" role="application" aria-label="<?php echo esc_attr__('Booking calendar', 'commonsbooking'); ?>"></div>
 
 	<!-- show booking form with date / time selection /-->
-	<div id="booking-form-container">
-		<form method="get" id="booking-form">
+	<div id="booking-form-container" role="region" aria-label="<?php echo esc_attr__('Booking form', 'commonsbooking'); ?>">
+		<form method="get" id="booking-form" aria-describedby="calendar-footnote">
 		<?php
 			wp_nonce_field(
 				\CommonsBooking\Wordpress\CustomPostType\Booking::getWPAction(),
@@ -41,37 +41,36 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			<input type="hidden" name="days-overbooked" value="0"/>
 
 			<div class="time-selection-container">
-				<a id="resetPicker">
+				<a id="resetPicker" role="button" aria-controls="litepicker" aria-label="<?php echo esc_attr__('Reset date selection', 'commonsbooking'); ?>">
 				<?php echo esc_html__( 'Reset date selection', 'commonsbooking' ); ?>
 				</a>
-				<div class="time-selection repetition-start">
-					<label for="repetition-start">
+				<div class="time-selection repetition-start" role="group" aria-labelledby="repetition-start-label">
+					<label for="repetition-start" id="repetition-start-label">
 					<?php echo esc_html__( 'Pickup', 'commonsbooking' ); ?>:
 					</label>
 					<div>
-						<span class="hint-selection"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
-						<span class="date"></span>
-						<select style="display: none" id="repetition-start" name="repetition-start"></select>
-
+						<span class="hint-selection" aria-live="polite"><?php echo esc_html__( 'Please select the pickup date in the calendar', 'commonsbooking' ); ?></span>
+						<span class="date" aria-live="polite"></span>
+						<select style="display: none" id="repetition-start" name="repetition-start" aria-label="<?php echo esc_attr__('Pickup time', 'commonsbooking'); ?>"></select>
 					</div>
 				</div>
-				<div class="time-selection repetition-end">
-					<label for="repetition-end">
+				<div class="time-selection repetition-end" role="group" aria-labelledby="repetition-end-label">
+					<label for="repetition-end" id="repetition-end-label">
 					<?php echo esc_html__( 'Return', 'commonsbooking' ); ?>:
 					</label>
 					<div>
-						<span class="hint-selection"><?php echo esc_html__( 'Please select the return date in the calendar', 'commonsbooking' ); ?></span>
-						<span class="date"></span>
-						<select style="display: none" id="repetition-end" name="repetition-end"></select>
+						<span class="hint-selection" aria-live="polite"><?php echo esc_html__( 'Please select the return date in the calendar', 'commonsbooking' ); ?></span>
+						<span class="date" aria-live="polite"></span>
+						<select style="display: none" id="repetition-end" name="repetition-end" aria-label="<?php echo esc_attr__('Return time', 'commonsbooking'); ?>"></select>
 					</div>
 				</div>
 				<?php
 				$restrictions = $templateData['restrictions'];
 				if ( count( $restrictions ) ) {
 					?>
-						<div class="restriction">
+						<div class="restriction" role="alert" aria-live="polite">
 						<?php echo '⚠ ' . esc_html__( 'Usage Restrictions', 'commonsbooking' ); ?>:
-							
+
 								<span class="restrictions">
 									<ul>
 							<?php
@@ -117,11 +116,12 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 			if ( is_user_logged_in() ) {
 				?>
 				<input type="submit" name="booking-update" disabled="disabled"
-						value="<?php echo esc_html__( 'Continue to booking confirmation', 'commonsbooking' ); ?>"/>
+						value="<?php echo esc_html__( 'Continue to booking confirmation', 'commonsbooking' ); ?>"
+						aria-label="<?php echo esc_attr__('Continue to booking confirmation', 'commonsbooking'); ?>"/>
 			<?php } ?>
 		</form>
 	</div>
-		<div id="calendar-footnote">
+		<div id="calendar-footnote" role="complementary" aria-label="<?php echo esc_attr__('Calendar information', 'commonsbooking'); ?>">
 				<?php
 				// get Calendar Data
 				$calendarData = json_decode( $templateData['calendar_data'] );
