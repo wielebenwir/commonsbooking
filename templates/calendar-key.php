@@ -6,11 +6,27 @@
  * This template part is used by timeframe-calendar and the item table
  */
 
+global $templateData;
 ?>
-<div id="cb-colorkey-legend">
-	<strong><?php echo commonsbooking_sanitizeHTML( __( 'Color legend', 'commonsbooking' ) ); ?>:</strong><br>
-	<div class="colorkey-square colorkey-accept"></div> <?php echo commonsbooking_sanitizeHTML( __( 'bookable', 'commonsbooking' ) ); ?> | 
-	<div class="colorkey-square colorkey-cancel"></div> <?php echo commonsbooking_sanitizeHTML( __( 'booked/blocked', 'commonsbooking' ) ); ?>  | 
-	<div class="colorkey-square colorkey-holiday"></div> <?php echo commonsbooking_sanitizeHTML( __( 'station closed', 'commonsbooking' ) ); ?>  | 
-	<div class="colorkey-square colorkey-greyedout"></div> <?php echo commonsbooking_sanitizeHTML( __( 'not bookable', 'commonsbooking' ) ); ?> <br>
+
+<div class="cb-calendar-key" role="region" aria-label="<?php echo esc_attr__('Calendar legend', 'commonsbooking'); ?>">
+	<ul aria-labelledby="calendar-legend-title">
+		<li id="calendar-legend-title" class="calendar-key-title"><?php echo esc_html__('Calendar Legend', 'commonsbooking'); ?>:</li>
+		<li>
+			<span class="cal-key av" aria-hidden="true"></span>
+			<span class="status"><?php echo esc_html__('Available', 'commonsbooking'); ?></span>
+		</li>
+		<li>
+			<span class="cal-key bo" aria-hidden="true"></span>
+			<span class="status"><?php echo esc_html__('Booked', 'commonsbooking'); ?></span>
+		</li>
+		<li>
+			<span class="cal-key ho" aria-hidden="true"></span>
+			<span class="status"><?php echo esc_html__('Holiday, closed', 'commonsbooking'); ?></span>
+		</li>
+		<li>
+			<span class="cal-key gr" aria-hidden="true"></span>
+			<span class="status"><?php echo esc_html__('Outside bookable range', 'commonsbooking'); ?></span>
+		</li>
+	</ul>
 </div>
