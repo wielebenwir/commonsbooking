@@ -6,6 +6,7 @@ on:
 
 jobs:
   zip-pr:
+    if: github.repository == 'wielebenwir/commonsbooking'
     runs-on: ubuntu-24.04
     steps:
     
