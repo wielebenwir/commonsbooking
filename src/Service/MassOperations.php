@@ -30,7 +30,7 @@ class MassOperations {
 		} else {
 			$result = array(
 				'success' => false,
-				'message' => empty( $errorMessage ) ?? __( 'An error occurred while moving bookings.', 'commonsbooking' ),
+				'message' => ! empty( $errorMessage ) ? $errorMessage : __( 'An error occurred while moving bookings.', 'commonsbooking' ),
 			);
 		}
 
@@ -69,9 +69,7 @@ class MassOperations {
 			if ( \CommonsBooking\Repository\Booking::getExistingBookings( $booking->getItemID(), $moveLocation->ID, $booking->getStartDate(), $booking->getEndDate() ) ) {
 				throw new \Exception( sprintf( __( 'There is already a booking on the new location during the timeframe of booking with ID %s.', 'commonsbooking' ), $booking->ID ) );
 			}
-			if ( $moveLocation !== null ) {
-				update_post_meta( $booking->ID, 'location-id', $moveLocation->ID );
-			}
+			update_post_meta( $booking->ID, 'location-id', $moveLocation->ID );
 		}
 
 		return true;

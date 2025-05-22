@@ -31,7 +31,7 @@ define( 'COMMONSBOOKING_METABOX_PREFIX', '_cb_' ); // Start with an underscore t
 define( 'COMMONSBOOKING_MAP_PATH', wp_normalize_path( plugin_dir_path( __FILE__ ) ) );
 define( 'COMMONSBOOKING_MAP_ASSETS_URL', plugins_url( 'assets/map/', __FILE__ ) );
 define( 'COMMONSBOOKING_MAP_LANG_PATH', dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-define( 'COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array( 'Version' => 'Version' ), false ) );
+define( 'COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array( 'Version' => 'Version' ) ) );
 
 global $cb_db_version;
 $cb_db_version = '1.0';

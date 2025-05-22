@@ -225,7 +225,7 @@ class Scheduler {
 	 * - The job has been updated and needs to be rescheduled
 	 * - The plugin has been deactivated
 	 *
-	 * @return int|false|\WP_Error
+	 * @return int|false
 	 */
 	private function unscheduleJob() {
 		return wp_clear_scheduled_hook( $this->jobhook );

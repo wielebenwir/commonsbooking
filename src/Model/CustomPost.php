@@ -16,7 +16,7 @@ use WP_Post;
  *
  * @package CommonsBooking\Model
  *
- * @property int $post_author {@see WP_Post::$post_author}
+ * @property int|string $post_author {@see WP_Post::$post_author}
  * @property string $post_status {@see WP_Post::$post_status}
  * @property int $ID {@see WP_Post::$ID}
  * @property string $post_title {@see WP_Post::$post_title}
@@ -54,9 +54,9 @@ class CustomPost {
 	/**
 	 * Returns field value, even if it's a meta field.
 	 *
-	 * @param $fieldName
+	 * @param string $fieldName
 	 *
-	 * @return mixed
+	 * @return array|mixed|null
 	 */
 	public function getFieldValue( $fieldName ) {
 		$fieldName  = trim( $fieldName );
@@ -72,24 +72,39 @@ class CustomPost {
 	/**
 	 * Returns meta-field value.
 	 *
-	 * @param string $field
+	 * @param string $field key of post_meta field for this post
 	 *
-	 * @return string|array The value of the meta field. An empty string if the field doesn't exist.
+	 * @return string|array<mixed> The value of the meta field. An empty string if the field doesn't exist.
 	 */
-	public function getMeta( $field ) {
+	public function getMeta( string $field ) {
 		return get_post_meta( $this->post->ID, $field, true );
 	}
+
+	/**
+	 * @param string $key of post_meta field for this post
+	 *
+	 * @return int|null int if meta field yields integer value
+	 */
+	public function getMetaInt( string $key ): ?int {
+		$val = $this->getMeta( $key );
+
+		if ( filter_var( $val, FILTER_VALIDATE_INT ) !== false ) {
+			return (int) $val;
+		}
+		return null;
+	}
+
 
 	/**
 	 * When getting a value from a Model Object, we can use this magic method to get the value from the WP_Post object instead.
 	 * This, for example, allows us to use $booking->post_title instead of $booking->post->post_title.
 	 *
-	 * @param $name
+	 * @param string $name property name
 	 *
 	 * @return array|mixed|void
 	 */
 	public function __get( $name ) {
-		if ( $this->post == null ) {
+		if ( $this->post === null ) {
 			return;
 		}
 
@@ -100,14 +115,15 @@ class CustomPost {
 
 	/**
 	 * Enables that we can call methods of \CustomPost as template tags.
+	 * These methods are called with a list of arguments (named are not allowed arguments).
 	 *
-	 * @param string $name of the member function
-	 * @param array  $arguments given to the template tag.
+	 * @param string      $name Name of the member function
+	 * @param list<mixed> $arguments Positional arguments for the template tag.
 	 *
-	 * @return array|mixed|void
+	 * @return mixed|void
 	 * @throws \ReflectionException if called template tag is not a registered method
 	 */
-	public function __call( $name, $arguments ) {
+	public function __call( string $name, array $arguments ) {
 		if ( method_exists( $this->post, $name ) ) {
 			$reflectionMethod = new ReflectionMethod( $this->post, $name );
 
@@ -165,7 +181,7 @@ class CustomPost {
 	 * uses custom defined image sizes (defined in AddImageSizes()
 	 * Custom sizes: cb_listing_small or cb_listing_medium
 	 *
-	 * @param string|int[] $size
+	 * @param string|array{int, int} $size
 	 *
 	 * @return string
 	 */
@@ -182,9 +198,9 @@ class CustomPost {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getDate() {
+	public function getDate(): string {
 		return $this->date;
 	}
 
@@ -214,7 +230,7 @@ class CustomPost {
 	 *
 	 * @return CustomPost
 	 */
-	public function setDate( string $date = null ) {
+	public function setDate( string $date = null ): CustomPost {
 		$this->date = $date;
 
 		return $this;

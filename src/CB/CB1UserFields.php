@@ -25,7 +25,7 @@ class CB1UserFields {
 	/**
 	 * @var array|string[]
 	 */
-	private array $registration_fields_required;
+	private array $registration_fields_required; // @phpstan-ignore property.onlyWritten
 	/**
 	 * @var array|array[]
 	 */
@@ -33,7 +33,7 @@ class CB1UserFields {
 	/**
 	 * @var array|mixed
 	 */
-	private $user_vars;
+	private $user_vars; // @phpstan-ignore property.onlyWritten
 
 	public function __construct() {
 
@@ -202,11 +202,10 @@ class CB1UserFields {
 				if ( ! isset( $_POST[ $field['field_name'] ] ) ) {
 					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 				}
-			} elseif (
-					empty( $_POST[ $field['field_name'] ] ) ||
-					! empty( $_POST[ $field['field_name'] ] ) &&
-					sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) == '' ) ) {
-					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
+			} elseif ( empty( $_POST[ $field['field_name'] ] ) ||
+						! empty( $_POST[ $field['field_name'] ] ) &&
+						sanitize_text_field( $_POST[ $field['field_name'] ] ) === '' ) {
+				$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 			}
 		}
 
