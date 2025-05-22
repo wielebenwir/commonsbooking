@@ -143,9 +143,8 @@ class TimeframeExport {
 				$relevantTimeframes,
 			);
 		} catch ( ExportException $e ) {
-			wp_send_json(
+			wp_send_json_error(
 				array(
-					'success' => false,
 					'error'   => true,
 					'message' => $e->getMessage(),
 				)
@@ -157,9 +156,8 @@ class TimeframeExport {
 			try {
 				$csvString = $exportObject->getCSV();
 			} catch ( ExportException $e ) {
-				wp_send_json(
+				wp_send_json_error(
 					array(
-						'success' => false,
 						'error'   => true,
 						'message' => $e->getMessage(),
 					)
