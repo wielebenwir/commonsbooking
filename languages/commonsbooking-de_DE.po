@@ -47,6 +47,7 @@ msgid "Welcome to CommonsBooking"
 msgstr "Willkommen bei CommonsBooking"
 
 #: includes/OptionsArray.php:50
+#, php-format
 msgid ""
 "You are using CommonsBooking Version %s\n"
 "\n"
@@ -87,6 +88,7 @@ msgid "Items slug"
 msgstr "Artikel slug"
 
 #: includes/OptionsArray.php:98
+#, php-format
 msgid "The slug for article detail page. Type in the slug without slashes. Example: <strong>cb_item</strong> or <strong>article</strong>.  The url for the items detail will be like %s"
 msgstr "Die Slug für Artikel Detailseite. Gib den Slug ohne Schrägstriche ein. Beispiel: <strong>cb-artikel</strong> oder <strong>artikel</strong>.  Die URL für die Artikel-Detailseite lautet dann z.b: %s"
 
@@ -95,6 +97,7 @@ msgid "Locations slug"
 msgstr "Standorte Slug"
 
 #: includes/OptionsArray.php:115
+#, php-format
 msgid "The slug for location detail page. Type in the slug without slashes. Example: <strong>cb_location</strong> or <strong>location</strong>.  The url for the items detail will be like %s"
 msgstr "Die Slug für die Standort Detailseite. Gib den Slug ohne Schrägstriche ein. Beispiel: <strong>cb-standort</strong> oder <strong>Standort</strong>.  Die URL für die Standort-Detailseite lautet dann z.b: %s"
 
@@ -896,6 +899,7 @@ msgstr "Standort-Felder"
 
 #: includes/OptionsArray.php:1284
 #: includes/OptionsArray.php:1293
+#, php-format
 msgid "Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s"
 msgstr "Fügen weitere Feldnamen hinzu, egal ob es sich um ein Post- oder ein Metafelder handelt. Kommagetrennte Liste. Neben den Standard-Postfeldern und Standard-Postmeta-Feldern stehen die folgenden benutzerdefinierten Metafelder zur Verfügung. Kopieren nur die Werte in [] in das Feld ohne die Klammern. %s"
 
@@ -1176,6 +1180,7 @@ msgstr "Bitte akzeptiere die Nutzungsbedingungen"
 
 #. translators: %s = terms and service url
 #: src/CB/CB1UserFields.php:188
+#, php-format
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
 
@@ -1274,16 +1279,19 @@ msgstr "E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar 
 
 #. translators: %s = Booking code
 #: src/Model/Booking.php:142
+#, php-format
 msgid "Your booking code is: %s"
 msgstr "Dein Buchungscode lautet: %s"
 
 #. translators: %s = date in WordPress defined format
 #: src/Model/Booking.php:437
+#, php-format
 msgid " on %s "
 msgstr " am %s "
 
 #. translators: %1 = startdate, %2 = enddate in WordPress defined format
 #: src/Model/Booking.php:440
+#, php-format
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
@@ -1292,6 +1300,7 @@ msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
 #: src/Model/Booking.php:577
+#, php-format
 msgid "Your booking has been canceled at %s."
 msgstr "Die Buchung wurde storniert am %s."
 
@@ -1318,11 +1327,13 @@ msgstr "Hier verfügbar"
 
 #. translators: %s = date in WordPress defined format
 #: src/Model/Timeframe.php:267
+#, php-format
 msgid "on %s"
 msgstr "am %s"
 
 #. translators: %s = date in WordPress defined format
 #: src/Model/Timeframe.php:272
+#, php-format
 msgid "from %s"
 msgstr "von %s"
 
@@ -1332,11 +1343,13 @@ msgstr "dauerhaft"
 
 #. translators: %1$s = startdate, second %2$s = enddate in WordPress defined format
 #: src/Model/Timeframe.php:282
+#, php-format
 msgid "from %1$s until %2$s"
 msgstr "von %1$s bis %2$s"
 
 #. translators: %s = enddate in WordPress defined format
 #: src/Model/Timeframe.php:289
+#, php-format
 msgid "until %s"
 msgstr "bis %s"
 
@@ -1349,6 +1362,7 @@ msgid "End date is before start date. Please set a valid end date."
 msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 
 #: src/Model/Timeframe.php:662
+#, php-format
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
@@ -1396,10 +1410,12 @@ msgid "REDIS database not enabled"
 msgstr "REDIS-Datenbank nicht aktiviert"
 
 #: src/Service/Cache.php:344
+#, php-format
 msgid "Directory %s is writeable."
 msgstr "Der Ordner %s ist beschreibbar."
 
 #: src/Service/Cache.php:348
+#, php-format
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
 
@@ -1618,11 +1634,13 @@ msgstr "Admin-Buchung"
 
 #. translators: $s = id of the item
 #: src/Wordpress/CustomPostType/Booking.php:256
+#, php-format
 msgid "Item does not exist. (%s)"
 msgstr "Artikel existiert nicht. (%s)"
 
 #. translators: $s = id of the location
 #: src/Wordpress/CustomPostType/Booking.php:260
+#, php-format
 msgid "Location does not exist. (%s)"
 msgstr "Standort existiert nicht. (%s)"
 
@@ -2615,21 +2633,25 @@ msgstr "Zeigt Links zu Meine Buchungen, Login, Logout. Bitte die Buchungsseite i
 
 #. translators: $s = user first name or email
 #: src/Wordpress/Widget/UserWidget.php:83
+#, php-format
 msgid "Welcome %s"
 msgstr "Willkommen %s"
 
 #. translators: $s = bookings page url
 #: src/Wordpress/Widget/UserWidget.php:86
+#, php-format
 msgid "<li><a href=\"%s\">My Bookings</a></li>"
 msgstr "<li><a href=\"%s\">Meine Buchungen</a></li>"
 
 #. translators: $s = user profile url
 #: src/Wordpress/Widget/UserWidget.php:88
+#, php-format
 msgid "<li><a href=\"%s\">My Profile</a></li>"
 msgstr "<li><a href=\"%s\">Mein Profil</a></li>"
 
 #. translators: $s =  wp logout url
 #: src/Wordpress/Widget/UserWidget.php:90
+#, php-format
 msgid "<li><a href=\"%s\">Log out</a></li>"
 msgstr "<li><a href=\"%s\">Abmelden</a></li>"
 
@@ -2639,11 +2661,13 @@ msgstr "Du bist nicht angemeldet."
 
 #. translators: $s = wp login url
 #: src/Wordpress/Widget/UserWidget.php:96
+#, php-format
 msgid "<li><a href=\"%s\">Login</a></li>"
 msgstr "<li><a href=\"%s\">Anmelden</a></li>"
 
 #. translators: $s = wp registration url
 #: src/Wordpress/Widget/UserWidget.php:98
+#, php-format
 msgid "<li><a href=\"%s\">Register</a></li>"
 msgstr "<li><a href=\"%s\">Registrieren</a></li>"
 
@@ -2782,6 +2806,7 @@ msgstr "Keine Rückgaben heute"
 #. translators: %1$s: wp_login_url, 1$s: wp_registration_url
 #: templates/item-single.php:44
 #: templates/location-single.php:43
+#, php-format
 msgid "To be able to book, you must first <a href=\"%1$s\">login</a> or <a href=\"%2$s\">register</a>."
 msgstr "Um buchen zu können, musst du dich zuerst <a href=\"%1$s\">anmelden</a> oder <a href=\"%2$s\">registrieren</a>."
 
@@ -3166,11 +3191,13 @@ msgstr "Nutzungs-Einschränkungen"
 
 #. translators: %1$s = Start date and time formatted
 #: templates/timeframe-calendar.php:84
+#, php-format
 msgid "From %1$s"
 msgstr "Von %s"
 
 #. translators: %1$s = End date and time formatted
 #: templates/timeframe-calendar.php:94
+#, php-format
 msgid "until probably %1$s:"
 msgstr "bis voraussichtlich %1$s:"
 
@@ -3180,11 +3207,13 @@ msgstr "Weiter zur Buchungsprüfung"
 
 #. translators: %1$s is a number of days
 #: templates/timeframe-calendar.php:130
+#, php-format
 msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
 msgstr "Maximal %1$s Tage hintereinander buchbar. Je nach Einstellung ist es auch möglich, über einen grauen Bereich (z.B. Wochenende) zu buchen."
 
 #. translators: %1$s is a number of days
 #: templates/timeframe-calendar.php:135
+#, php-format
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 
@@ -3239,6 +3268,7 @@ msgid "New features and changes: Please backup your site before upgrading!"
 msgstr "Neue Funktionen und Änderungen: Bitte die Website vor dem Upgrade sichern!"
 
 #: src/Service/Upgrade.php:309
+#, php-format
 msgid ""
 "\n"
 "\t\t\t\t\tThis CommonsBooking update has a lot of new features and changes on some templates.<br>\n"
@@ -3284,6 +3314,7 @@ msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anz
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
 #: src/Model/Timeframe.php:698
+#, php-format
 msgid "See overlapping timeframe ID: %1$s %2$s"
 msgstr "Sich überschneidende Zeitrahmen ID: %1$s %2$s"
 
@@ -3433,6 +3464,7 @@ msgid "Could not find booking codes for this timeframe/period"
 msgstr "Es konnten keine Buchungscodes für diesen Zeitrahmen/Zeitraum gefunden werden"
 
 #: src/Messages/BookingCodesMessage.php:217
+#, php-format
 msgid "booking code for item \"%1$s\": %2$s"
 msgstr "Buchungscodes für Artikel \"%1$s\": %2$s"
 
@@ -3501,10 +3533,12 @@ msgid "Download booking codes"
 msgstr "Buchungscodes herunterladen"
 
 #: src/View/BookingCodes.php:392
+#, php-format
 msgid "Will download all available booking codes for this timeframe. If the timeframe has no end-date, the booking codes for the next %s days will be retrieved."
 msgstr "Lädt alle verfügbaren Buchungscodes für diesen Zeitrahmen herunter. Wenn der Zeitrahmen kein Enddatum hat, werden die Buchungscodes für die nächsten %s Tage abgerufen."
 
 #: src/View/BookingCodes.php:415
+#, php-format
 msgid "Only showing booking codes for the next %s days."
 msgstr "Zeige nur Buchungscodes für die nächsten %s Tage."
 
@@ -3797,22 +3831,27 @@ msgid "Number of bookings each user is allowed to make per month"
 msgstr "Anzahl der Buchungen die jeder Nutzende pro Monat tätigen darf"
 
 #: src/Service/BookingRule.php:463
+#, php-format
 msgid "You can only book %1$s days out of %2$s days. Please wait a while in-between bookings."
 msgstr "Du kannst maximal %1$s Tage alle %2$s Tage buchen. Bitte lass etwas Zeit zwischen deinen Buchungen."
 
 #: src/Service/BookingRule.php:495
+#, php-format
 msgid "You can only book %1$s days per week, please try again after %2$s next week."
 msgstr "Du kannst maximal %1$s Tage pro Woche buchen. Bitte versuche es nochmal nach %2$s nächste Woche."
 
 #: src/Service/BookingRule.php:513
+#, php-format
 msgid "You are only allowed to have %1$s booking(s) per week, please try again after %2$s next week."
 msgstr "Du kannst maximal %1$s Buchungen pro Woche tätigen. Bitte versuche es nochmal nach %2$s nächste Woche."
 
 #: src/Service/BookingRule.php:542
+#, php-format
 msgid "You can only book %1$s days per month, please try again after the %2$s. next month."
 msgstr "Du kannst maximal %1$s Tage pro Monat buchen. Bitte versuche es nochmal nach dem %2$s. nächsten Monats."
 
 #: src/Service/BookingRule.php:557
+#, php-format
 msgid "You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month."
 msgstr "Du kannst maximal %1$s Buchungen pro Monat tätigen. Bitte versuche es nochmal nach dem %2$s. nächsten Monats."
 
@@ -3959,6 +3998,7 @@ msgid "Add to Calendar"
 msgstr "Zum Kalender hinzufügen"
 
 #: templates/shortcode-bookings.php:16
+#, php-format
 msgid "Please <a href=\"%s\"> login </a> to see your bookings."
 msgstr "Bitte <a href=\\\"%s\\\">melde dich an </a> , um deine Buchungen zu sehen."
 
@@ -4069,6 +4109,7 @@ msgid "Please adjust the start- or end-date."
 msgstr "Bitte passe das Start- oder Enddatum an."
 
 #: src/Model/Booking.php:644
+#, php-format
 msgid "Affected Bookings: %s"
 msgstr "Betroffene Buchungen: %s"
 
@@ -4190,6 +4231,7 @@ msgstr "Verwaiste Buchungen migrieren"
 
 #: src/Service/MassOperations.php:64
 #: src/Service/MassOperations.php:67
+#, php-format
 msgid "New location not found for booking with ID %s"
 msgstr "Neuer Standort für Buchung mit ID %s konnte nicht gefunden werden"
 
@@ -4346,10 +4388,12 @@ msgid "An error occurred while moving bookings."
 msgstr "Beim Umziehen der Buchungen ist ein Fehler aufgetreten."
 
 #: src/Service/MassOperations.php:70
+#, php-format
 msgid "There is already a booking on the new location during the timeframe of booking with ID %s."
 msgstr "Es existiert bereits eine Buchung für den Standort in dem Zeitraum der existierenden Buchung mit der ID %s."
 
 #: src/Service/TimeframeExport.php:377
+#, php-format
 msgid "Processed %1$d of %2$d bookings"
 msgstr "%1$d von %2$d Buchungen verarbeitet"
 
