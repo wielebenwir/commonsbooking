@@ -266,8 +266,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "useResetBtn": true,
                 "maxDays": globalCalendarData['maxDays'],
                 "buttonText": {
-                    apply: 'Buchen',
-                    cancel: 'Abbrechen',
+                    apply: globalCalendarData['i18n.buttonText.apply'],
+                    cancel: globalCalendarData['i18n.buttonText.cancel'],
                 },
                 onAutoApply: (datePicked) => {
                     if (datePicked) {
