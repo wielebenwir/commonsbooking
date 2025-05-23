@@ -1006,7 +1006,7 @@ class Booking extends Timeframe {
 	/**
 	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
 	 *
-	 * @param string                                                                                                         $emailAddress The email address
+	 * @param string $emailAddress The email address
 	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
 	 *
 	 * @return array
