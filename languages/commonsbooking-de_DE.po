@@ -1321,47 +1321,47 @@ msgstr "Bitte kontaktiere die Kontaktpersonen vor Ort direkt, wenn du Fragen zur
 msgid "Not set"
 msgstr "Nicht gesetzt"
 
-#: src/Model/Timeframe.php:262
+#: src/Model/Timeframe.php:259
 msgid "Available here"
 msgstr "Hier verfügbar"
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Timeframe.php:267
+#: src/Model/Timeframe.php:264
 #, php-format
 msgid "on %s"
 msgstr "am %s"
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Timeframe.php:272
+#: src/Model/Timeframe.php:269
 #, php-format
 msgid "from %s"
 msgstr "von %s"
 
-#: src/Model/Timeframe.php:276
+#: src/Model/Timeframe.php:273
 msgid "permanently"
 msgstr "dauerhaft"
 
 #. translators: %1$s = startdate, second %2$s = enddate in WordPress defined format
-#: src/Model/Timeframe.php:282
+#: src/Model/Timeframe.php:279
 #, php-format
 msgid "from %1$s until %2$s"
 msgstr "von %1$s bis %2$s"
 
 #. translators: %s = enddate in WordPress defined format
-#: src/Model/Timeframe.php:289
+#: src/Model/Timeframe.php:286
 #, php-format
 msgid "until %s"
 msgstr "bis %s"
 
-#: src/Model/Timeframe.php:617
+#: src/Model/Timeframe.php:614
 msgid "A pickup time but no return time has been set. Please set the return time."
 msgstr "Eine Abholzeit, aber keine Rückgabezeit wurde festgelegt. Lege bitte eine Rückgabezeit fest."
 
-#: src/Model/Timeframe.php:627
+#: src/Model/Timeframe.php:624
 msgid "End date is before start date. Please set a valid end date."
 msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 
-#: src/Model/Timeframe.php:662
+#: src/Model/Timeframe.php:659
 #, php-format
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
@@ -1433,24 +1433,24 @@ msgstr "Startdatum"
 msgid "End date"
 msgstr "Enddatum"
 
-#: src/View/Booking.php:154
+#: src/View/Booking.php:155
 msgid "Details"
 msgstr "Details"
 
-#: src/View/Booking.php:160
+#: src/View/Booking.php:161
 msgid "Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file."
 msgstr "Benutze diesen Link um die Buchungsdaten automatisch in deinem Kalender zu abonnieren. Bitte gib die URL in deinem Kalenderprogramm an und versuche nicht die Datei herunterzuladen."
 
-#: src/View/Booking.php:161
+#: src/View/Booking.php:162
 msgid "iCalendar Link:"
 msgstr "iCalendar Link:"
 
-#: src/View/Booking.php:167
-#: src/View/Booking.php:169
+#: src/View/Booking.php:168
+#: src/View/Booking.php:170
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: src/View/Booking.php:192
+#: src/View/Booking.php:193
 #: src/View/MassOperations.php:38
 #: src/Wordpress/CustomPostType/Booking.php:441
 #: src/Wordpress/CustomPostType/Timeframe.php:97
@@ -1458,14 +1458,14 @@ msgstr "Nicht verfügbar"
 msgid "User"
 msgstr "Nutzende*r"
 
-#: src/View/Booking.php:196
+#: src/View/Booking.php:197
 #: src/View/MassOperations.php:42
 #: src/Wordpress/CustomPostType/Booking.php:963
 #: src/Wordpress/CustomPostType/Restriction.php:475
 msgid "Status"
 msgstr "Status"
 
-#: src/View/Booking.php:205
+#: src/View/Booking.php:206
 msgid "Code"
 msgstr "Code"
 
@@ -1619,12 +1619,12 @@ msgstr "CSV Herunterladen"
 msgid "Download Export"
 msgstr "Download Export"
 
-#: src/Model/Booking.php:1023
-#: src/Service/TimeframeExport.php:536
-#: src/Service/TimeframeExport.php:546
-#: src/Service/TimeframeExport.php:552
-#: src/Service/TimeframeExport.php:564
-#: src/Service/TimeframeExport.php:577
+#: src/Model/Booking.php:1020
+#: src/Service/TimeframeExport.php:537
+#: src/Service/TimeframeExport.php:547
+#: src/Service/TimeframeExport.php:553
+#: src/Service/TimeframeExport.php:565
+#: src/Service/TimeframeExport.php:578
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -3221,11 +3221,11 @@ msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 msgid "It is not possible to access this timeframe on frontend. Please edit timeframe in backend. If you want to check the result of your timeframe settings visit the item or location in frontend to see the booking calender"
 msgstr "Es ist nicht möglich, diesen Zeitrahmen im Frontend abzurufen. Bitte bearbeite den Zeitrahmen im Backend. Wenn du das Ergebnis deiner Zeitrahmeneinstellungen überprüfen möchtest, rufe den Artikel oder Standort im Frontend auf, um den Buchungskalender zu sehen"
 
-#: src/Model/Booking.php:1021
+#: src/Model/Booking.php:1018
 msgid "Cancelled"
 msgstr "Storniert"
 
-#: src/Model/Timeframe.php:637
+#: src/Model/Timeframe.php:634
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
@@ -3313,25 +3313,25 @@ msgid "If selected, days that are overbooked will be counted towards the maximum
 msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:698
+#: src/Model/Timeframe.php:695
 #, php-format
 msgid "See overlapping timeframe ID: %1$s %2$s"
 msgstr "Sich überschneidende Zeitrahmen ID: %1$s %2$s"
 
-#: src/Model/Timeframe.php:797
+#: src/Model/Timeframe.php:794
 msgid "Overlapping bookable timeframes are only allowed to have the same grid."
 msgstr "Sich überschneidende buchbare Zeiträume müssen das gleiche Raster haben."
 
-#: src/Model/Timeframe.php:827
+#: src/Model/Timeframe.php:824
 msgid "Overlapping bookable timeframes are not allowed to have the same weekdays."
 msgstr "Mehrere buchbare Zeiträume überschneiden sich in den definierten Wochentagen."
 
-#: src/Model/Timeframe.php:839
+#: src/Model/Timeframe.php:836
 msgid "Overlapping bookable timeframes are not allowed to have the same dates."
 msgstr "Mehrere buchbare Zeiträume überschneiden sich in dem definierten Datumsbereich."
 
-#: src/Model/Timeframe.php:846
-#: src/Model/Timeframe.php:853
+#: src/Model/Timeframe.php:843
+#: src/Model/Timeframe.php:850
 msgid "The other timeframe is overlapping with your weekly configuration."
 msgstr "Der andere Zeitrahmen überschneidet sich mit einer wöchentlichen Konfiguration."
 
@@ -3371,7 +3371,7 @@ msgstr "Feiertage importieren"
 msgid "Select the year and state to import holidays for (as of now only German holidays are supported)"
 msgstr "Wählen Sie das Jahr und das Bundesland, für das Sie Feiertage importieren möchten (derzeit werden Feiertage in Deutschland unterstützt)"
 
-#: src/Model/Timeframe.php:813
+#: src/Model/Timeframe.php:810
 msgid "Daily repeated time periods are not allowed to overlap."
 msgstr "Täglich wiederholende Zeiträume dürfen sich nicht überschneiden."
 
@@ -3455,15 +3455,15 @@ msgstr "iCalendar-Datei an eine E-Mail mit Buchungscodes anhängen"
 msgid "Will attach an iCalendar compatible file with booking codes per day to import in their respective calendar application."
 msgstr "Fügt eine iCalendar-kompatible Datei mit Buchungscodes für die einzelnen Tage bei, um sie in die jeweilige Kalenderanwendung zu importieren."
 
-#: src/Messages/BookingCodesMessage.php:51
+#: src/Messages/BookingCodesMessage.php:56
 msgid "Unable to send Emails. No location email(s) configured, check location"
 msgstr "Emails können nicht gesendet werden. Keine Standort-E-Mail(s) konfiguriert, bitte Standort prüfen"
 
-#: src/Messages/BookingCodesMessage.php:57
+#: src/Messages/BookingCodesMessage.php:62
 msgid "Could not find booking codes for this timeframe/period"
 msgstr "Es konnten keine Buchungscodes für diesen Zeitrahmen/Zeitraum gefunden werden"
 
-#: src/Messages/BookingCodesMessage.php:217
+#: src/Messages/BookingCodesMessage.php:222
 #, php-format
 msgid "booking code for item \"%1$s\": %2$s"
 msgstr "Buchungscodes für Artikel \"%1$s\": %2$s"
@@ -3871,11 +3871,11 @@ msgstr "Buchungsregeln: Parameter müssen eine Zahl sein."
 msgid "Booking rules: Select parameter has not been properly set."
 msgstr "Buchungsregeln: Auswahl-Parameter wurde nicht richtig gesetzt."
 
-#: src/Service/BookingRuleApplied.php:168
+#: src/Service/BookingRuleApplied.php:165
 msgid "This affects the following bookings:"
 msgstr "Das betrifft folgende Buchungen:"
 
-#: src/Service/BookingRuleApplied.php:249
+#: src/Service/BookingRuleApplied.php:246
 msgid "Booking rules: No rule type specified."
 msgstr "Buchungsregeln: Kein Regeltyp festgelegt."
 
@@ -4055,20 +4055,20 @@ msgstr "Ungültiges Enddatum"
 msgid "Start date must not be after the end date."
 msgstr "Das Startdatum darf nicht nach dem Enddatum liegen."
 
-#: src/Service/TimeframeExport.php:171
+#: src/Service/TimeframeExport.php:172
 #: src/View/TimeframeExport.php:39
 msgid "Export finished"
 msgstr "Export beendet"
 
-#: src/Service/TimeframeExport.php:264
+#: src/Service/TimeframeExport.php:265
 msgid "Export data is not complete. Please complete the process before trying to export."
 msgstr "Exportdaten konnten nicht vollständig gesammelt werden. Bitte den Vorgang abschließen, bevor der Export versucht wird."
 
-#: src/Service/TimeframeExport.php:268
+#: src/Service/TimeframeExport.php:269
 msgid "No data was found for the selected time period"
 msgstr "Es wurden keine Daten für den gewählten Zeitraum gefunden"
 
-#: src/Service/TimeframeExport.php:273
+#: src/Service/TimeframeExport.php:274
 msgid "You need to set an export path to execute the export"
 msgstr "Es muss ein Exportpfad angegeben werden, um den Export ausführen zu können"
 
@@ -4113,27 +4113,27 @@ msgstr "Bitte passe das Start- oder Enddatum an."
 msgid "Affected Bookings: %s"
 msgstr "Betroffene Buchungen: %s"
 
-#: src/Model/Timeframe.php:562
+#: src/Model/Timeframe.php:559
 msgid "Could not get item or location. Please set a valid item and location."
 msgstr "Artikel oder Standort konnte nicht gefunden werden. Bitte wähle einen gültigen Artikel oder Standort."
 
-#: src/Model/Timeframe.php:571
+#: src/Model/Timeframe.php:568
 msgid "Item or location is missing. Please set item and location."
 msgstr "Artikel oder Standort fehlen. Bitte Artikel und Standort festlegen."
 
-#: src/Model/Timeframe.php:584
+#: src/Model/Timeframe.php:581
 msgid "No dates selected. Please select at least one date."
 msgstr "Kein Datum ausgewählt. Bitte mindestens ein Datum auswählen."
 
-#: src/Model/Timeframe.php:594
+#: src/Model/Timeframe.php:591
 msgid "The same date was selected multiple times. Please select each date only once."
 msgstr "Das gleiche Datum wurde mehrere Male ausgewählt. Bitte ein Datum nur einmal auswählen."
 
-#: src/Model/Timeframe.php:603
+#: src/Model/Timeframe.php:600
 msgid "Startdate is missing. Please enter a start date to publish this timeframe."
 msgstr "Das Startdatum fehlt. Ein Startdatum muss eingegeben werden, damit der Zeitrahmen veröffentlicht werden kann."
 
-#: src/View/Booking.php:551
+#: src/View/Booking.php:552
 #: src/Wordpress/CustomPostType/Booking.php:858
 msgid "Submit booking"
 msgstr "Buchung abschicken"
@@ -4392,15 +4392,15 @@ msgstr "Beim Umziehen der Buchungen ist ein Fehler aufgetreten."
 msgid "There is already a booking on the new location during the timeframe of booking with ID %s."
 msgstr "Es existiert bereits eine Buchung für den Standort in dem Zeitraum der existierenden Buchung mit der ID %s."
 
-#: src/Service/TimeframeExport.php:377
+#: src/Service/TimeframeExport.php:378
 #, php-format
 msgid "Processed %1$d of %2$d bookings"
 msgstr "%1$d von %2$d Buchungen verarbeitet"
 
-#: src/Model/Booking.php:1019
+#: src/Model/Booking.php:1016
 #~ msgid "Unconfirmed"
 #~ msgstr "Unbestätigt"
 
-#: src/Model/Booking.php:1017
+#: src/Model/Booking.php:1014
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
