@@ -11,7 +11,7 @@ class Item extends BookablePost {
 	 *
 	 * @param $locationId
 	 *
-	 * @param bool       $bookable
+	 * @param bool $bookable
 	 *
 	 * @return array
 	 * @throws Exception

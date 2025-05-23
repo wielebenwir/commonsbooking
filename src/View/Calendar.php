@@ -599,7 +599,7 @@ class Calendar {
 	/**
 	 * Processes day for calendar view of json.
 	 *
-	 * @param Day              $day
+	 * @param Day $day
 	 * @param $lastBookableDate
 	 * @param $endDate
 	 * @param $jsonResponse

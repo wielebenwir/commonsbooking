@@ -271,7 +271,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $postId
 	 * @param $originType
 	 * @param $relatedType
-	 * @param bool        $bookable
+	 * @param bool $bookable
 	 *
 	 * @return int[] Array of post ids
 	 * @throws Exception
