@@ -76,7 +76,7 @@ class BookingCodes {
 		$dtTo               = $dtCurrentCronEvent->modify( 'midnight last day of next month +' . ( $cronEmailCodes['cron-email-booking-code-nummonth'] - 1 ) . ' month' );
 
 		$dtInitial = new DateTimeImmutable( '@' . $cronEmailCodes['cron-email-booking-code-start'] );
-		$daydiff   = $dtTo->format( 'j' ) - $dtInitial->format( 'j' );
+		$daydiff   = (int) $dtTo->format( 'j' ) - (int) $dtInitial->format( 'j' );
 		if ( $daydiff > 0 ) {
 			$dtNextCronEvent = $dtTo->modify( '-' . $daydiff . ' days' );
 		} else {
