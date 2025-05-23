@@ -631,7 +631,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$this->ID
 		);
 
-		if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+		if ( count( $overlappingBookings ) >= 1 ) {
 			foreach ( $overlappingBookings as $overlappingBooking ) {
 				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
 			}
@@ -654,7 +654,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
 	 *
-	 * @param null $linktext
+	 * @param string|null $linktext
 	 *
 	 * @return string
 	 */
@@ -783,10 +783,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// Booking has no valid status
 			return 0;
 		}
-		if ( $interval === null ) {
-			// no interval created
-			return 0;
-		}
+
 		$days = $interval->d;
 		// when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
 		if ( $interval->h > 0 ) {

@@ -133,7 +133,6 @@ abstract class View {
 						$addRange = false;
 
 						if (
-							! $range['start_date'] ||
 							$range['start_date'] > $timeframeStartDate
 						) {
 							$cptData[ $item->ID ]['ranges'][ $key ]['start_date'] = $timeframeStartDate;
@@ -210,7 +209,7 @@ abstract class View {
 		$result  = $compiler->compileString( $content );
 		$css     = $result->getCss();
 
-		if ( ! empty( $css ) && is_string( $css ) ) {
+		if ( ! empty( $css ) ) {
 			return $css;
 		} else {
 			return false;

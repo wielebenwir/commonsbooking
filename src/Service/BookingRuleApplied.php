@@ -157,9 +157,6 @@ class BookingRuleApplied extends BookingRule {
 		}
 
 		foreach ( $ruleset as $rule ) {
-			if ( ! ( $rule instanceof BookingRuleApplied ) ) {
-				continue; // skip invalid rules during booking validation
-			}
 			$conflictingBookings = $rule->checkBookingCompliance( $booking );
 			if ( $conflictingBookings ) {
 				$errorMessage =

@@ -19,12 +19,12 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns only bookable timeframes.
 	 *
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param string|null  $date
-	 * @param bool         $returnAsModel
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param string|null $date
+	 * @param bool        $returnAsModel
 	 * @param $minTimestamp
-	 * @param array        $postStatus
+	 * @param array       $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -51,12 +51,12 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns only bookable timeframes for current user.
 	 *
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param string|null  $date
-	 * @param bool         $returnAsModel
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param string|null $date
+	 * @param bool        $returnAsModel
 	 * @param $minTimestamp
-	 * @param array        $postStatus
+	 * @param array       $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -134,7 +134,7 @@ class Timeframe extends PostRepository {
 			// Get Post-IDs considering types, items and locations
 			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
-			if ( $postIds && count( $postIds ) ) {
+			if ( $postIds ) {
 				$posts = self::getPostsByBaseParams(
 					$date,
 					$minTimestamp,
@@ -144,7 +144,7 @@ class Timeframe extends PostRepository {
 				);
 			}
 
-			if ( $posts && count( $posts ) ) {
+			if ( $posts ) {
 				$posts = self::filterTimeframes( $posts, $date );
 			}
 
@@ -329,7 +329,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
-	 * @return mixed
+	 * @return string[]|int[]
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
@@ -835,11 +835,11 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param array        $types
-	 * @param false        $returnAsModel
-	 * @param string[]     $postStatus
+	 * @param array    $locations
+	 * @param array    $items
+	 * @param array    $types
+	 * @param bool     $returnAsModel
+	 * @param string[] $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -873,7 +873,7 @@ class Timeframe extends PostRepository {
 			// Get Post-IDs considering types, items and locations
 			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
-			if ( $postIds && count( $postIds ) ) {
+			if ( $postIds ) {
 				$posts = self::getPostsByBaseParams(
 					null,
 					$minTimestamp,
@@ -905,11 +905,11 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param array        $types
-	 * @param false        $returnAsModel
-	 * @param string[]     $postStatus
+	 * @param array    $locations
+	 * @param array    $items
+	 * @param array    $types
+	 * @param false    $returnAsModel
+	 * @param string[] $postStatus
 	 *
 	 * @return array
 	 * @throws Exception

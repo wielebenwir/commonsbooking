@@ -150,8 +150,8 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
-	 * @param $userId
-	 * @param false  $asModel - Wether the posts should be returned as their respective model class or as WP_Post
+	 * @param mixed $userId
+	 * @param bool  $asModel - Whether the posts should be returned as their respective model class or as WP_Post
 	 *
 	 * @return array
 	 */
@@ -271,7 +271,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $postId
 	 * @param $originType
 	 * @param $relatedType
-	 * @param bool        $bookable
+	 * @param bool $bookable
 	 *
 	 * @return int[] Array of post ids
 	 * @throws Exception

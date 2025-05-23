@@ -21,11 +21,13 @@ class CB {
 	/**
 	 * Returns property of (custom) post by class key and property.
 	 *
-	 * @param mixed            $key
-	 * @param mixed            $property
-	 * @param \WP_Post|WP_User $wpObject
-	 * @param mixed            $args
-	 * @param callable         $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
+	 * @param string                                $key
+	 * @param string                                $property
+	 * @param mixed|CustomPost|WP_Post|WP_User|null $wpObject
+	 * @param mixed|null                            $args
+	 * @param callable                              $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
+	 *
+	 * @since 2.10.5 parameters in doc are correctly typed.
 	 *
 	 * @return null|string property of (custom) post (sanitized) or null if not found
 	 * @throws Exception

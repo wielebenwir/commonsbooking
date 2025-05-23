@@ -17,8 +17,6 @@ class MapData {
 			while ( $check_capacity ) {
 				if ( $attempts > 10 ) {
 					wp_send_json_error( [ 'error' => 5 ], 408 );
-
-					wp_die();
 				}
 
 				++$attempts;
@@ -71,8 +69,6 @@ class MapData {
 		} else {
 			wp_send_json_error( [ 'error' => 1 ], 400 );
 		}
-
-		wp_die();
 	}
 
 	/**
@@ -90,13 +86,9 @@ class MapData {
 				$map       = new Map( $cb_map_id );
 			} else {
 				wp_send_json_error( [ 'error' => 2 ], 400 );
-
-				wp_die();
 			}
 		} else {
 			wp_send_json_error( [ 'error' => 3 ], 400 );
-
-			wp_die();
 		}
 
 		if ( $post->post_status == 'publish' ) {

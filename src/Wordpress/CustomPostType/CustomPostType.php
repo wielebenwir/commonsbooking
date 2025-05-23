@@ -28,12 +28,12 @@ abstract class CustomPostType {
 	protected $menuPosition;
 
 	/**
-	 * @var array<string, string>
+	 * @var array<string, string>|null
 	 */
 	protected $listColumns = null;
 
 	/**
-	 * @var array
+	 * @var array|null
 	 */
 	protected $types = null;
 
