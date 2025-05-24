@@ -300,8 +300,8 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ): bool {
  * It is, however used as a helper function for commonsbooking_isCurrentUserAllowedToEdit.
  * We apply the logic, that only something that is allowed to be seen may be edited.
  *
- * @param \CommonsBooking\Model\Booking|WP_Post|int $post
- * @param WP_User                                   $user
+ * @param \CommonsBooking\Model\CustomPost|WP_Post|int $post
+ * @param WP_User                                      $user
  *
  * @return bool
  */
