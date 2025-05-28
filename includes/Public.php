@@ -55,42 +55,29 @@ function commonsbooking_public() {
 		COMMONSBOOKING_VERSION
 	);
 
-	// Daterangepicker
-	wp_enqueue_style(
-		'cb-styles-daterangepicker',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/daterangepicker/daterangepicker.css',
-		array(),
-		COMMONSBOOKING_VERSION
-	);
-
-	wp_enqueue_script(
-		'cb-scripts-daterangepicker',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/daterangepicker.min.js',
-		array(),
-		'1.0.0'
-	);
+	$versions = \CommonsBooking\Plugin::getManagedDepsVersions();
 
 	// Select 2
 	wp_enqueue_style(
 		'cb-styles-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/select2/select2.min.css',
+		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/select2/css/select2.min.css',
 		array(),
-		COMMONSBOOKING_VERSION
+		$versions['select2']
 	);
 
 	wp_enqueue_script(
 		'cb-scripts-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/select2.min.js',
+		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/select2/js/select2.min.js',
 		array( 'jquery' ),
-		'1.0.0'
+		$versions['select2']
 	);
 
 	// Moment.js
 	wp_enqueue_script(
 		'cb-scripts-moment',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/moment.min.js',
+		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/moment/moment.min.js',
 		array(),
-		'1.0.1',
+		$versions['moment'],
 		true
 	);
 
