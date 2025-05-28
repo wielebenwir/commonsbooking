@@ -55,6 +55,10 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 > This might fail, if you don't have the PHP extension [uopz](https://www.php.net/manual/en/book.uopz.php) installed. Try running `composer install --no-dev && npm install && npm run dist`  if you just quickly want to test a specific branch without installing the extension.
 5. Activate the plugin in the plugins dashboard
 
+## Usage
+
+Apart from the documentation mentioned above, we document the WordPress action and filter hooks in the following file: [docs/examples/filters.md](https://github.com/wielebenwir/commonsbooking/blob/master/docs/examples/filters.md)
+
 ## Contribute
 
 Either through translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/)) or through developing and testing new versions of the application.
