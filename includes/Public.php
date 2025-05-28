@@ -39,7 +39,7 @@ function commonsbooking_public() {
 	}
 
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-datepicker', '', array( 'jquery' ) );
 
 	wp_enqueue_script(
 		'cb-scripts-vendor',
@@ -102,7 +102,7 @@ function commonsbooking_public() {
 			'cb-scripts-public',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/public.js',
 			array( 'jquery' ),
-			time(),
+			(string) time(),
 			true
 		);
 	} else {

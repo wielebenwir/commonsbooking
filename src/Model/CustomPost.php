@@ -72,13 +72,28 @@ class CustomPost {
 	/**
 	 * Returns meta-field value.
 	 *
-	 * @param string $field
+	 * @param string $field key of post_meta field for this post
 	 *
 	 * @return string|array The value of the meta field. An empty string if the field doesn't exist.
 	 */
 	public function getMeta( $field ) {
 		return get_post_meta( $this->post->ID, $field, true );
 	}
+
+	/**
+	 * @param string $key of post_meta field for this post
+	 *
+	 * @return int|null int if meta field yields integer value
+	 */
+	public function getMetaInt( string $key ): ?int {
+		$val = $this->getMeta( $key );
+
+		if ( filter_var( $val, FILTER_VALIDATE_INT ) !== false ) {
+			return (int) $val;
+		}
+		return null;
+	}
+
 
 	/**
 	 * When getting a value from a Model Object, we can use this magic method to get the value from the WP_Post object instead.
