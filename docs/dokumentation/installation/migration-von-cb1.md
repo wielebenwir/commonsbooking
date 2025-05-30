@@ -22,17 +22,17 @@ erledigen. Die Migration importiert folgende Daten:
 
 ##  1\. Vorbereitung der Migration
 
-  * Erstelle ein **Backup der aktuellen Seite** (wir empfehlen das Plugin „ [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus/) “) 
+  * Erstelle ein **Backup der aktuellen Seite** (wir empfehlen das Plugin „ [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus) “) 
   * Aktualisiere dein bestehendes Commons Booking auf die neueste Version 
-  * Gehe unter Einstellungen -> Commons Booking zum Tab “E-Mails” und kopiere dir dort die Vorlagen-Texte in einen Texteditor auf deinem Rechner (Notepad oder ähnliches). Bei der Migration können die Templates nicht übernommen werden, da das neue CommonsBooking mit anderen [ Template-Tags ](/dokumentation/einstellungen/template-tags/) arbeitet. Nach der Migration sind im neuen CommonsBooking dann neue Standardvorlagen aktiviert. Diese kannst du dann manuell an deine Bedürfnisse anpassen. Bitte nicht die gespeicherten Vorlagen einfach in das neue CB kopieren, da sonst die Platzhalter (Template-Tags) nicht mehr funktionieren. 
-  * Auf unserer [ Doku-Seite der Template-Tags ](/dokumentation/einstellungen/template-tags/) findest du die Namen der neuen Template-Tags und kannst mit diesen dann die Templates entsprechend anpassen. 
-  * [ Installiere dir CommonsBooking 2 ](/dokumentation/installation/neuinstallation/) und aktiviere das Plugin. Du kannst die Version 2 parallel zu deiner bestehenden CommonsBooking-Installation betreiben. 
-  * Wir empfehlen, währen der Migration deine Seite in einen Wartungsmodus zu versetzen, damit während der Migrations- und Testzeit keine Buchungen möglich sind, die dann evtl. in der neuen Version nicht zur Verfügung sind. Ihr könnt dazu z.B. das Plugin [ WP Maintenance Mode ](https://de.wordpress.org/plugins/wp-maintenance-mode/) nutzen. Im Wartungsmodus könnt ihr selbst als Administratoren natürlich auf die Seite zugreifen und so alles testen. 
+  * Gehe unter Einstellungen -> Commons Booking zum Tab “E-Mails” und kopiere dir dort die Vorlagen-Texte in einen Texteditor auf deinem Rechner (Notepad oder ähnliches). Bei der Migration können die Templates nicht übernommen werden, da das neue CommonsBooking mit anderen [ Template-Tags ](/dokumentation/einstellungen/template-tags) arbeitet. Nach der Migration sind im neuen CommonsBooking dann neue Standardvorlagen aktiviert. Diese kannst du dann manuell an deine Bedürfnisse anpassen. Bitte nicht die gespeicherten Vorlagen einfach in das neue CB kopieren, da sonst die Platzhalter (Template-Tags) nicht mehr funktionieren. 
+  * Auf unserer [ Doku-Seite der Template-Tags ](/dokumentation/einstellungen/template-tags) findest du die Namen der neuen Template-Tags und kannst mit diesen dann die Templates entsprechend anpassen. 
+  * [ Installiere dir CommonsBooking 2 ](/dokumentation/installation/neuinstallation) und aktiviere das Plugin. Du kannst die Version 2 parallel zu deiner bestehenden CommonsBooking-Installation betreiben. 
+  * Wir empfehlen, währen der Migration deine Seite in einen Wartungsmodus zu versetzen, damit während der Migrations- und Testzeit keine Buchungen möglich sind, die dann evtl. in der neuen Version nicht zur Verfügung sind. Ihr könnt dazu z.B. das Plugin [ WP Maintenance Mode ](https://de.wordpress.org/plugins/wp-maintenance-mode) nutzen. Im Wartungsmodus könnt ihr selbst als Administratoren natürlich auf die Seite zugreifen und so alles testen. 
 
 ##  2\. Migration durchführen Daten migrieren
 
 Erstelle vor der Migration **ein Backup eurer Seite** (wir empfehlen das
-Plugin „ [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus/) “)
+Plugin „ [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus) “)
 
   1. Klicke in den Einstellungen -> CommonsBooking im Reiter “ **Migration** ” auf “ **Migration starten** ” und warte einen Moment, bis alle Daten migriert sind. Die Übernahme der Datensätze erfolgt einzelnen Schritten, um nicht eure Server zu überlasten. Bei vielen Datensätzen (z.B. vielen Buchungen und Buchungscodes) kann der Vorgang mehrere Minuten dauern. Bitte habe Geduld 🙂   
 Während des Imports aktualisiert sich die Anzahl der importierten Datensätze.
@@ -64,7 +64,7 @@ Klicke in den Einstellungen im Reiter “ **Migration** ”
 
 Mehr Infos zum Thema Registrierungsfelder findest du auf der Seite [
 Registrierungs-Seiten und -Felder anpassen
-](/dokumentation/einstellungen/registrierungs-seiten-und-benutzerfelder-anpassen/)
+](/dokumentation/einstellungen/registrierungs-seiten-und-benutzerfelder-anpassen)
 
 * * *
 

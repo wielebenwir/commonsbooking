@@ -8,9 +8,9 @@ zur gemeinschaftlichen Verwendung bereit zu stellen.
 CommonsBooking ist ein WordPress-Plugin und lässt sich so einfach in
 bestehende Webseiten integrieren.
 
-[ installieren ](/dokumentation/installation/installieren/)
+[ installieren ](/dokumentation/installation/installieren)
 
-[ Dokumentation ](/dokumentation/)
+[ Dokumentation ](/dokumentation)
 
 * * *
 
@@ -53,15 +53,15 @@ sind Teil der geplanten Weiterentwicklung:
   * Erweiterte Meta-Daten
   * Implementierung der CommonsAPI
 
-[ installieren ](/dokumentation/installation/installieren/)
+[ installieren ](/dokumentation/installation/installieren)
 
-[ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap/)
+[ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap)
 
 * * *
 
 ##  Anwendungsbereiche
 
-Entwickelt wurde das WordPress-Plugin ursprünglich für die Bedürfnisse der [„Freies Lastenrad“-Bewegung](http://www.dein-lastenrad.de/),
+Entwickelt wurde das WordPress-Plugin ursprünglich für die Bedürfnisse der [„Freies Lastenrad“-Bewegung](http://www.dein-lastenrad.de),
 es kann aber für den Verleih beliebiger Dinge verwendet werden.
 
   * Du/deine Organisation besitzt Werkzeuge, die nicht täglich genutzt werden, und ihr möchtet sie verfügbar machen für lokale Gruppen.

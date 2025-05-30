@@ -2,13 +2,13 @@
 
 ####  CommonsBooking **** wird unterstützt durch:
 
-  * [ Anstiftung ](https://anstiftung.de/)
-  * [ ADFC Essen ](https://www.adfc-nrw.de/kreisverbaende/kv-essen/kreisverband-essen.html) / [ Essener Lastenräder ](https://essener-lastenrad.de/)
-  * [ ADFC Bundesverband ](https://www.adfc.de/)
-  * [ Bonn im Wandel / Bolle Bonn ](https://bonnimwandel.de/)
-  * [ F ](https://freie-lasten.org/) [ reie Lasten – Dein Lastenrad in Marburg ](https://freie-lasten.org/)
+  * [ Anstiftung ](https://anstiftung.de)
+  * [ ADFC Essen ](https://www.adfc-nrw.de/kreisverbaende/kv-essen/kreisverband-essen.html) / [ Essener Lastenräder ](https://essener-lastenrad.de)
+  * [ ADFC Bundesverband ](https://www.adfc.de)
+  * [ Bonn im Wandel / Bolle Bonn ](https://bonnimwandel.de)
+  * [ F ](https://freie-lasten.org) [ reie Lasten – Dein Lastenrad in Marburg ](https://freie-lasten.org)
   * [ Deutsche Postcode Lotterie ](https://www.postcode-lotterie.de/projekte)
-  * [ Das Commons-Institut – Commons entstehen durch Commoning ](https://commons-institut.org/)
+  * [ Das Commons-Institut – Commons entstehen durch Commoning ](https://commons-institut.org)
   * [ Initiative Mobilitätskultur ](https://www.phineo.org/projekte/initiative-mobilit%C3%A4tskultur)
 
 ####  Entwicklungsteam
@@ -16,7 +16,7 @@
   * Hannes Wöhrle
   * [ m ](https://github.com/markus-mw) [ arkus-mw ](https://github.com/markus-mw)
   * [ Christian Wenzel ](https://github.com/chriwen)
-  * [ Hans Morbach ](http://github.com/hansmorb/)
+  * [ Hans Morbach ](http://github.com/hansmorb)
   * [ Florian Egermann ](https://github.com/flegfleg)
 
 **Support und weitere Unterstützung**

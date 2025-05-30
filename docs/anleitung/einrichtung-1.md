@@ -23,7 +23,7 @@ Die restlichen Felder sind optional und du kannst sie hier auch erstmal vernachl
 
 ::: info
 * Was ist ein Shortcode? Kurz, eine Möglichkeit Inhalte aus der Datenbank auf der Website anzuzeigen.
-  Nachzulesen in der [Wordpress-Dokumentation zu Shortcodes](https://en.support.wordpress.com/shortcodes/).
+  Nachzulesen in der [Wordpress-Dokumentation zu Shortcodes](https://en.support.wordpress.com/shortcodes).
 * [Hier findest du eine Liste aller Shortcodes die CommonsBooking](/dokumentation/shortcodes) zur Anzeige von Artikeln und Standorten anbietet.
 :::
 

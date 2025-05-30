@@ -1,6 +1,6 @@
 # Über uns
 
-Commonsbooking ist ein quelloffenes [Wordpress-Plugin](https://wordpress.org/documentation/article/introduction-to-plugins/) welches vom Verein [wieLebenWir e.V.](https://www.wielebenwir.de/) ca. 2014 initiiert wurde.
+Commonsbooking ist ein quelloffenes [Wordpress-Plugin](https://wordpress.org/documentation/article/introduction-to-plugins) welches vom Verein [wieLebenWir e.V.](https://www.wielebenwir.de) ca. 2014 initiiert wurde.
 Es startete mit der Ausleihe von Lastenrädern im Rahmen der sog. Freien Lastenräder in Köln in Deutschland.
 Dieser Rahmen ist zu einem deutschlandweiten Verband herangewachsen der heute mehr als 100 gelistete, freie Lastenrad-Initiave zählt.
 Der Rahmenverband heißt [Forum freie Lastenräder](https://freieslastenrad.org) (FFL) und trifft sich einmal im Jahr am Ort einer beliebigen

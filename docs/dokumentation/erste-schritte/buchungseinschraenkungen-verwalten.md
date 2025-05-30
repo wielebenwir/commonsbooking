@@ -36,5 +36,5 @@ Folgende Einstellungen stehen nun zur Verfügung:
   * **Benachrichtigung senden**
     * Bei Klick auf diesen Button sendest Du eine Info-Nachricht an alle Nutzenden. Je nach Typ (Totalausfall oder Einschränkung) wird eine unterschiedliche Nachricht versendet. 
     * Wenn du den Status “Problem gelöst” gesetzt hast und anschließend den Senden-Button klickst wird eine Infomail mit einem entsprechenden Hinweis gesendet. 
-    * Die Vorlagen für diese E-Mails kannst du unter [ Einstellungen -> Commonsbooking -> Einschränkungen ](/dokumentation/einstellungen-2/einschraenkungen/) konfigurieren. 
+    * Die Vorlagen für diese E-Mails kannst du unter [ Einstellungen -> Commonsbooking -> Einschränkungen ](/dokumentation/einstellungen-2/einschraenkungen) konfigurieren. 
 

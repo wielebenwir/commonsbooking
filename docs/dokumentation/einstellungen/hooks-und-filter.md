@@ -7,14 +7,14 @@ __
 Ab Version 2.7
 
 Mit Hooks ( [ [ https://developer.wordpress.org/plugins/hooks/
-](https://developer.wordpress.org/plugins/hooks/)
-](https://developer.wordpress.org/plugins/hooks/) ) kannst du deine eigenen
+](https://developer.wordpress.org/plugins/hooks)
+](https://developer.wordpress.org/plugins/hooks) ) kannst du deine eigenen
 Code-Schnipsel an bestimmten Stellen in den CommonsBooking Vorlagen einbinden.
 So kannst du deinen eigenen Code in die Templates einfügen, ohne die
 entsprechenden Template Dateien ersetzen zu müssen.
 
 Code Schnipsel sind meist sehr kurzer Code in PHP und kann über ein [ Child
-Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes/)
+Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes)
 eingebunden werden oder über spezielle Plugins für Code Schnipsel (z.B. Code
 Snippets). Dafür musst du nicht sonderlich viel PHP können, es ist aber auch
 möglich mit diesen Snippets etwas fundamentales an der Funktion der Webseite
@@ -61,20 +61,20 @@ Funktion integrieren. Beispiel:
 
 Filter Hooks ( [ [ [ [ [ [ [ [ [ [ [ [ [ [
 https://developer.wordpress.org/plugins/hooks/filters/
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/)
-](https://developer.wordpress.org/plugins/hooks/filters/) ) funktionieren
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters)
+](https://developer.wordpress.org/plugins/hooks/filters) ) funktionieren
 ähnlich wie Action Hooks jedoch mit dem Unterschied, dass die Callback
 Funktion einen Wert übergeben bekommt, diesen modifiziert und ihn dann wieder
 zurückgibt.
@@ -104,12 +104,12 @@ Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu hier:
 [ [ [ [ [ https://commonsbooking.org/dokumentation/erweiterte-
 funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern/
 ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-
-aendern/) ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-
-zeitrahmenerstellung-aendern/) ](/dokumentation/erweiterte-
-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern/)
+aendern) ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-
+zeitrahmenerstellung-aendern) ](/dokumentation/erweiterte-
+funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern)
 ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-
-aendern/) ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-
-zeitrahmenerstellung-aendern/)
+aendern) ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-
+zeitrahmenerstellung-aendern)
 
 ###  Filter Hook: commonsbooking_tag_$key_$property
 

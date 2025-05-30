@@ -16,17 +16,17 @@ Plugins, die sich speziell um die Anpassung der Registrierung und Login
 kümmern.
 
 Hierfür könnt ihr z.B. das Plugin " [ Theme my Login
-](https://wordpress.org/plugins/theme-my-login/) " verwenden, die kostenlose
+](https://wordpress.org/plugins/theme-my-login) " verwenden, die kostenlose
 Version reicht aus um Registrierung und Anmeldungsseiten in eurem Website-Stil
 zu zeigen. Bei Problemen mit Spam könnt ihr ein Captach-Plugin installieren.
 
 Um komplett eigene zusätzliche Felder zu erstellen, könnt ihr die Plugins " [
-WP Members ](https://wordpress.org/plugins/wp-members/) " oder " [ Ultimate
-Member ](https://wordpress.org/plugins/ultimate-member/) " benutzen, diese
+WP Members ](https://wordpress.org/plugins/wp-members) " oder " [ Ultimate
+Member ](https://wordpress.org/plugins/ultimate-member) " benutzen, diese
 bieten auch noch weitere EInstellungen zur Zugangskontrolle, Emails, usw.
 
 Das einzige uns bekannte _kostenlose_ Plugin, das auch die Profil/Kontoseite
-anpasst, ist [ UsersWP ](https://wordpress.org/plugins/userswp/) .
+anpasst, ist [ UsersWP ](https://wordpress.org/plugins/userswp) .
 
 ##  Tips für die Konfiguration von UsersWP für CommonsBooking-Seiten
 
@@ -53,7 +53,7 @@ UsersWP hat leider einige unnötige Elemente auf der Profil-Seite (etwa:
 ](https://gist.github.com/flegfleg/8b4fc52dd3f2eed7fc489b55c8137872) . Er muss
 entweder in die Datei " **functions.php** " in deinem Theme-Verzeichnis
 kopiert werden, _oder_ ihr verwendet das Plugin " [ Code Snippets
-](https://wordpress.org/plugins/code-snippets/) ".
+](https://wordpress.org/plugins/code-snippets) ".
 
 ####  Mehr Tips
 

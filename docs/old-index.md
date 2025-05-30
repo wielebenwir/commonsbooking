@@ -46,13 +46,13 @@ gemeinsam nutzen?
 
 <!-- ![](img/4c19cd7e3da47c3d129a8264b287f968.png) -->
 
-[ Installieren ](/dokumentation/installation/installieren/)
+[ Installieren ](/dokumentation/installation/installieren)
 
-[ Alle Funktionen ](/funktionen/)
+[ Alle Funktionen ](/funktionen)
 
 ##  Umfassende Hilfe erhalten
 
-Neben unserer [ Dokumentation ](/dokumentation/) unterstützt euch das
+Neben unserer [ Dokumentation ](/dokumentation) unterstützt euch das
 CommonsBooking-Team **persönlich** bei allen Fragen zu CommonsBooking per
 **Online-Support** und **Telefon-Hotline** :
 
@@ -82,7 +82,7 @@ _
 
 Über eine offene Schnittstelle können weitere Plattformen an CommonsBooking
 angebunden werden. Erfahre hier mehr über die [ CommonsAPI und den CommonsHUB
-](/dokumentation/schnittstellen-api/was-ist-die-commonsapi/)
+](/dokumentation/schnittstellen-api/was-ist-die-commonsapi)
 
 ##  Community
 
@@ -92,7 +92,7 @@ von bereits existierende Initiativen die CommonsBooking in ihrer Arbeit
 unterstützt:
 
 * Lastenradverleihe in einer [ interaktiven Karte auf Dein-Lastenrad.de ](http://dein-lastenrad.de/wiki/Bestehende_Initiativen_freier_Lastenräder)
-* Leihläden auf [ Leihläden-Vernetzung.de ](https://leihladen-vernetzung.de/liste/)
+* Leihläden auf [ Leihläden-Vernetzung.de ](https://leihladen-vernetzung.de/liste)
 
 Bitte dieses Feld leer lassen
 

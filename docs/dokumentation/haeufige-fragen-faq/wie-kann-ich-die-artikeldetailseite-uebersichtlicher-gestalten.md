@@ -8,7 +8,7 @@ Lange Artikelseiten bedeuten, dass Menschen lange bis zum Buchungskalender
 scrollen müssen.
 
 Hier empfiehlt sich ein Plugin wie [ Show-Hide/Collapse-Expand
-](https://de.wordpress.org/plugins/show-hidecollapse-expand/) zu nutzen, mit
+](https://de.wordpress.org/plugins/show-hidecollapse-expand) zu nutzen, mit
 dem Informationen eingeklappt werden können.
 
 ![](/img/1679e519f777223c25d253511b3fb377.png)

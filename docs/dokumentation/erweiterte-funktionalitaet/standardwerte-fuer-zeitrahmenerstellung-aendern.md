@@ -6,7 +6,7 @@ Es ist möglich mithilfe von kleinen Codeschnipseln die Standardwerte, die bei
 jeder Erstellung eines Zeitrahmens schon ausgefüllt sind, zu ändern.
 
 Code Schnipsel sind meist sehr kurzer Code in PHP und können über ein [ Child
-Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes/)
+Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes)
 eingebunden werden oder über spezielle Plugins für Code Schnipsel (z.B. Code
 Snippets). Dafür musst du nicht sonderlich viel PHP können, es ist aber auch
 möglich mit diesen Snippets etwas fundamentales an der Funktion der Webseite

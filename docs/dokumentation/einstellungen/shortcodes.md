@@ -5,7 +5,7 @@ __
 Um die CommonsBooking-Inhalte (z.B. die automatisch generierten Artikellisten)
 auf der Website anzuzeigen werden Shortcodes verwendet. Shortcodes können in
 jede WordPress Seite eingefügt werden. [ Offizielle WordPress Dokumentation
-](https://en.support.wordpress.com/shortcodes/) .
+](https://en.support.wordpress.com/shortcodes) .
 
 Die Ergebnis-Liste der Shortcodes kann dabei über einige Parameter beeinflusst
 werden. Beispielsweise:
@@ -53,7 +53,7 @@ Zeigt einen einzelnen Artikel in der Listenansicht (s.o.) an.
 Zeigt eine Karte aller veröffentlichen Artikel an. Eine Karte muss dafür
 zunächst unter "CommonsBooking -> Karten" eingerichtet werden. [ Mehr zur
 Einrichtung und Konfiguration von Karten ](/dokumentation/einstellungen/karte-
-einbinden/) .
+einbinden) .
 
   * Shortcode: ` [cb_map] `
   * Argumente ( **erforderlich!** ): ` id `
@@ -77,7 +77,7 @@ danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 ![](/img/2696a4fc55baa66953d159e08e26f871.png)
 
 [ Weitere Argumente und ausführliche Dokumentation
-](/dokumentation/einstellungen/neues-frontend-beta/)
+](/dokumentation/einstellungen/neues-frontend-beta)
 
 * * *
 
@@ -115,7 +115,7 @@ content/uploads/2021/05/screenshot-8.png) [cb_locations]: Liste von Stationen
   * Shortcode: ` [cb_bookings] `
   * Liste aller Buchungen (eigene Buchungen des eingeloggten Nutzenden)
   * Administrator*innen sehen hier alle Buchungen
-  * [ cb_manager ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager/) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
+  * [ cb_manager ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
 
 [ ![](/img/23ebefac587e513e2ff69e5f4d59fc00.png) ](/wp-
 content/uploads/2021/05/Bildschirmfoto-2021-12-16-um-13.57.46.png)

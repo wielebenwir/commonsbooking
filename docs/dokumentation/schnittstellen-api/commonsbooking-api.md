@@ -3,12 +3,12 @@
 __
 
 CommonsBooking verfügt über eine eigene API [ (Was ist die CommonsBooking
-API), ](/dokumentation/schnittstellen-api/was-ist-die-commonsapi/) über die ihr bequem
+API), ](/dokumentation/schnittstellen-api/was-ist-die-commonsapi) über die ihr bequem
 auf entsprechende Daten zugreifen könnt oder die Daten für andere Plattformen
 oder Dienste zur Verfügung stellen könnt.
 
 Die API basiert auf der in [ WordPress implementierten REST-API
-](https://developer.wordpress.org/rest-api/)
+](https://developer.wordpress.org/rest-api)
 
 ##  **Aktivierung der API**
 

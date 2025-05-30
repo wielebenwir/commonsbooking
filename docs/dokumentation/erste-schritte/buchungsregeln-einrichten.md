@@ -70,7 +70,7 @@ die maximal buchbaren Tage für die Buchungsregeln. Dabei gilt:
 ###  Bestimmte Rollen grundsätzlich von allen Buchungsregeln ausnehmen
 
 Mit einem kleinen Codeschnipsel ( [ mehr dazu ](/dokumentation/einstellungen/hooks-und-
-filter/) ) kannst du eine Rolle definieren, die grundsätzlich nicht von
+filter) ) kannst du eine Rolle definieren, die grundsätzlich nicht von
 Buchungsregeln betroffen ist. Dafür musst du die Rolle nicht manuell bei jeder
 Regel hinzufügen.
 
@@ -87,5 +87,5 @@ als "privilegierte" Rolle hinzu.
 Darüber hinaus sind auch alle Administratoren und CB-Manager, denen der
 betroffene Artikel / Standort zugewiesen ist immer ausgenommen. [ Mehr zu
 manueller Vergabe von Berechtigungen. ](/dokumentation/grundlagen/rechte-des-
-commonsbooking-manager/)
+commonsbooking-manager)
 
