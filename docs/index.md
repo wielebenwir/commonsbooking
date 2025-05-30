@@ -4,28 +4,34 @@ layout: home
 
 hero:
   name: "CommonsBooking"
-  text: "Benutzerhandbuch und Dokumentation"
-  tagline: CommonsBooking organisiert den Verleih eurer Gemeingüter
+  text: "Wordpress-Plugin"
+  tagline: Organisiert den Verleih eurer Gemeingüter
   actions:
     - theme: brand
-      text: Schritt-für-Schritt Anleitung
-      link: /anleitung/
-    - theme: alt
       text: Dokumentation
       link: /dokumentation/
     - theme: alt
-      text: Über
-      link: /über/
+      text: Funktionen
+      link: /funktionen/
+    - theme: alt
+      text: Spenden
+      link: /spenden/
   image:
     src: /logo-big.png
     alt: CommonsBooking Logo
 
 features:
   - title: Artikel und Standorte flexibel organisieren
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Karte aller Standorte
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Asynchrones E-Mail-Buchungssystem
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
----
+    icon: 🧰
+    details: In CommonsBooking verwaltet ihr einfach und übersichtlich eure Verleih- Stationen und Lastenräder – oder alle anderen Gemeingüter. Ob stundenweise Ausleihe , Berücksichtigung von Öffnungszeiten oder Ferien.
+  - title: Schnittstellen & API
+    icon: 🧩
+    details: Über eine offene Schnittstelle können weitere Plattformen an CommonsBooking angebunden werden. Erfahre hier mehr über die CommonsAPI und den CommonsHUB.
+  - title: Community
+    icon: 🚀
+    details: CommonsBooking wird jetzt schon von dutzenden gemeinnützigen Initiativen genutzt. Auf diesen Seiten findest du einen Überblick über verschiedene Arten von bereits existierende Initiativen die CommonsBooking in ihrer Arbeit unterstützt.
+  - title: Umfassende Hilfe erhalten
+    icon: 🛟
+    details: Neben unserer Dokumentation unterstützt euch das CommonsBooking-Team persönlich bei allen Fragen zu CommonsBooking per Online-Support und Telefon-Hotline.
 
+---

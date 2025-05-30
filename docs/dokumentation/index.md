@@ -1,9 +1,8 @@
 # Dokumentation
 
-Sofern nicht anders beschrieben gilt dieser Teil für das CommonsBooking Plugin in der Version 2.8.5.
+Die folgende Dokumentation gilt, wenn nicht anders beschrieben, für die neue Version von CommonsBooking (ab Version 2.x.x).
 
-Die [Benutzer-Dokumentation](/dokumentation/user) beschreibt jede der einzelnen Komponenten und ihre Nutzung im Detail. 
-Der Fokus liegt dabei darauf, welche Funktionen sie haben. 
-Die [Entwickler-Dokumentation](/dokumentation/dev) beschreibt die technische Perspektive auf die Komponenten.
+### Habt ihr Fragen oder einen Fehler entdeckt?
 
-In der [Anleitung](/anleitung/) findest du eine Schritt-für-Schritt Beschreibung für die einzelen Funktionalitäten.
+Schreibt uns eine [Support-Anfrage über unser Support-System](https://support.commonsbooking.org/).
+Dort findet ihr auch eine FAQ mit häufigen Fragen und Antworten.

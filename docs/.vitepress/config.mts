@@ -27,15 +27,17 @@ export default defineConfig({
     logo: { src: '/logo.png', width: 24, height: 24 },
 
     nav: [
-      { text: 'Anleitung',      link: '/anleitung/',       activeMatch: '/anleitung/' }
-    , { text: 'Dokumentation',  link: '/dokumentation/',    activeMatch: '/dokumentation/' }
-    , { text: 'Doku2', link: '/docs/', activeMatch: '/docs/' }
+    { text: 'Merkmale & Funktionen', link: '/funktionen/' }
+  , { text: 'Dokumentation', link: '/dokumentation/', activeMatch: '/dokumentation/' }
+  , { text: 'Unterstützende', link: '/supported-by/' }
+  , { text: 'Support und Kontakt', link: '/kontakt/' }
+  , { text: 'Jetzt Spenden!', link: '/spenden/' }
     , {
-      text: pkg.version,
+      text: '2.9.4',
       items: [
         {
           text: 'Changelog',
-          link: 'https://github.com/wielebenwir/commonsbooking/blob/master/CHANGELOG.md'
+          link: 'https://wordpress.org/plugins/commonsbooking/#developers'
         },
         {
           text: 'Contributing',
@@ -46,19 +48,17 @@ export default defineConfig({
     ],
 
     sidebar: {
-      '/anleitung/':     { base: '/anleitung/',     items: sidebarAnleitung() },
-      '/dokumentation/': { base: '/dokumentation/', items: sidebarDokumentation() },
-      '/docs/': { base: '/docs/', items: sidebarDocs() }
+      '/dokumentation/': { base: '/dokumentation/', items: sidebarDocs() },
     },
 
     editLink: {
-      pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/docs/:path',
+      pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/dokumentation/:path',
       text: 'Bearbeite die Seite auf Github'
     },
 
     footer: {
       message: 'Released under the GNU v2 License.',
-      copyright: 'Copyright © 2019-present Wie Leben Wir e.V.'
+      copyright: 'Copyright © 2019-present Wie Leben Wir e.V.',
     },
 
     search: {
@@ -66,7 +66,8 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/wielebenwir/commonsbooking' },
+        { icon: 'wordpress', link: 'https://wordpress.org/plugins/commonsbooking' }
     ]
   }
 })
@@ -74,7 +75,7 @@ export default defineConfig({
 export function sidebarDocs(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: 'Grundlagen', base: '/docs/grundlagen/',
+      text: 'Grundlagen', base: '/dokumentation/grundlagen/',
       items: [
         { text: 'Begriffe', link: 'begriffe' },
         { text: 'Buchungs-Codes', link: 'buchungs-codes' },
@@ -83,7 +84,7 @@ export function sidebarDocs(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'Erste Schritte', base: '/docs/erste-schritte/',
+      text: 'Erste Schritte', base: '/dokumentation/erste-schritte/',
       items: [
         { text: 'Artikel anlegen', link: 'artikel-anlegen' },
         { text: 'Stationen anlegen', link: 'stationen-anlegen' },
@@ -93,7 +94,7 @@ export function sidebarDocs(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'Buchungen verwalten', base: '/docs/buchungen-verwalten/',
+      text: 'Buchungen verwalten', base: '/dokumentation/buchungen-verwalten/',
       items: [
         { text: 'Buchungen anlegen', link: 'buchungen-anlegen' },
         { text: 'Buchung stornieren', link: 'buchung-stornieren' },
@@ -101,7 +102,7 @@ export function sidebarDocs(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'Einstellungen', base: '/docs/einstellungen/',
+      text: 'Einstellungen', base: '/dokumentation/einstellungen/',
       items: [
         { text: 'Buchungsliste', link: 'buchungsliste' },
         { text: 'Hooks und Filter', link: 'hooks-und-filter' },
@@ -115,7 +116,7 @@ export function sidebarDocs(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'Weitere Einstellungen', base: '/docs/einstellungen-2/',
+      text: 'Weitere Einstellungen', base: '/dokumentation/einstellungen-2/',
       items: [
         { text: 'Allgemeine Einstellungen', link: 'allgemeine-einstellungen' },
         { text: 'Buchungscodes', link: 'buchungscodes' },
@@ -127,30 +128,31 @@ export function sidebarDocs(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'Erweiterte Funktionalität', base: '/docs/erweiterte-funktionalitaet/',
+      text: 'Erweiterte Funktionalität', base: '/dokumentation/erweiterte-funktionalitaet/',
       items: [
         { text: 'Standardwerte für Zeitrahmen-Erstellung ändern', link: 'standardwerte-fuer-zeitrahmenerstellung-aendern' }
       ]
     },
     {
-      text: 'Schnittstellen / API', base: '/docs/schnittstellen-api/',
+      text: 'Schnittstellen / API', base: '/dokumentation/schnittstellen-api/',
       items: [
         { text: 'CommonsBooking API', link: 'commonsbooking-api' },
         { text: 'Was ist die CommonsAPI?', link: 'was-ist-die-commonsapi' }
       ]
     },
     {
-      text: 'Häufige Fragen (FAQ)', base: '/docs/haeufige-fragen-faq/',
+      text: 'Häufige Fragen (FAQ)', base: '/dokumentation/haeufige-fragen-faq/',
       items: [
         { text: 'Die Seite ist sehr langsam', link: 'die-seite-ist-sehr-langsam' },
         { text: 'Probleme und Antworten', link: 'probleme-und-antworten' },
         { text: 'Wie bekomme ich den Buchungskommentar ...', link: 'wie-bekomme-ich-den-buchungskommentar-auf-die-webseite-zu-den-buchungsinformationen-etc-sowohl-als-auch-in-die-email' },
         { text: 'Kann ich Zahlenschloss-Codes in E-Mails einfügen?', link: 'kann-ich-zahlenschloss-codes-in-e-mails-einfuegen' },
-        { text: 'Artikeldetailseite übersichtlicher gestalten', link: 'wie-kann-ich-die-artikeldetailseite-uebersichtlicher-gestalten' }
+        { text: 'Artikeldetailseite übersichtlicher gestalten', link: 'wie-kann-ich-die-artikeldetailseite-uebersichtlicher-gestalten' },
+          { text: 'Wie verhindere ich Spam Registrierungen', link: 'wie-verhindere-ich-spam-registrierungen'}
       ]
     },
     {
-      text: 'Installation', base: '/docs/installation/',
+      text: 'Installation', base: '/dokumentation/installation/',
       items: [
         { text: 'Installieren', link: 'installieren' },
         { text: 'Migration von CB1', link: 'migration-von-cb1' },
@@ -159,13 +161,13 @@ export function sidebarDocs(): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: 'Roadmap', base: '/docs/roadmap/',
+      text: 'Roadmap', base: '/dokumentation/roadmap/',
       items: [
         { text: 'Übersicht über die Releases', link: 'uebersicht-ueber-die-releases' }
       ]
     },
     {
-      text: 'Informationen zur alten Version 0.9', base: '/docs/informationen-zur-alten-version-0-9/',
+      text: 'Informationen zur alten Version 0.9', base: '/dokumentation/informationen-zur-alten-version-0-9/',
       items: [
         { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-verson-0-9' },
         { text: 'Einstellungen v0.9', link: 'einstellungen-version-0-9' },
@@ -178,71 +180,5 @@ export function sidebarDocs(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-
-function sidebarAnleitung(): DefaultTheme.SidebarItem[] {
-    return [
-      {
-        text: 'Grundlagen', base: '/anleitung/',
-        items: [
-          { text: 'Installation',  link: 'installation' }
-        , { text: 'Einrichtung',   link: 'einrichtung-1' }
-        , { text: 'Erste Buchung', link: 'einrichtung-2' }
-        ]
-      },
-      {
-        text: 'Erweitert', base: '/anleitung/use-cases/',
-        items: [
-          { text: 'Buchungscodes erstellen',  link: 'buchungscodes-erstellen' }
-        , { text: 'E-Mail Template anpassen',   link: 'email-template-anpassen' }
-        , { text: 'Karten einbinden', link: 'karten-anbinden' }
-        ]
-      },
-      {
-        text: 'Anwendungsfälle', base: '/anleitung/use-cases/',
-        items: [
-          { text: 'Anbindung Schloßsystem',  link: 'externes-schloss-system' }
-        , { text: 'Einrichtung',   link: 'einrichtung-1' }
-        , { text: 'Erste Buchung', link: 'einrichtung-2' }
-        ]
-      }
-
-    ]
-}
-
-function sidebarDokumentation(): DefaultTheme.SidebarItem[] {
-    return [
-      {
-        text: 'Benutzer-Dokumentation', link: 'user',
-        items: [
-          { text: 'Artikel',  link: 'artikel' }
-        , { text: 'Standorte',   link: 'standorte' }
-        , { text: 'Zeitrahmen', link: 'zeitrahmen' }
-        , { text: 'Einschränkungen', link: 'einschränkungen' }
-        , { text: 'Karte', link: 'karte' }
-        , { text: 'Erweitert', link: 'erweitert',
-            items: [
-              { text: 'Shortcodes', link: 'shortcodes' }
-            , { text: 'Hooks und Filter', link: 'hooks-und-filter' }
-            ]
-          }
-        , { text: 'Administration',
-            items: [
-              { text: 'Rollen', link: 'rollen' }
-            , { text: 'Plugins', link: 'plugins' }
-            , { text: 'Buchungs-Codes', link: 'buchungs-codes' }
-            ]
-          }
-        ]
-      },
-      {
-        text: 'Entwickler-Dokumentation', link: 'dev',
-        items: [
-          { text: 'Überblick', link: 'dev-überblick' }
-        , { text: 'API-Design', link: 'api-design' }
-        , { text: 'Roadmap', 'link': 'roadmap' }
-        ]
-      }
-]
-}
 
 
