@@ -24,8 +24,7 @@ Du kannst sie an jeder beliebige Stelle in den Vorlagen verwenden.
 Du kannst weitere Template-Tags verwenden, wenn dir die standardmäßig
 enthaltenen nicht ausreichen.
 
-Eine Übersicht zur Verwendung der [ Template-Tags findest du hier
-](/docs/einstellungen/template-tags/)
+Eine Übersicht zur Verwendung der [Template-Tags findest du hier](/docs/einstellungen/template-tags/)
 
 ##  iCalendar Dateien
 
@@ -37,10 +36,8 @@ hier, genau wie in den E-Mail Vorlagen, die entsprechenden Template Tags
 verwenden. Die resultierende Kalenderdatei wird an die E-Mail angehängt und
 die Nutzenden können sie in ihren digitalen Kalender importieren. Die meisten
 E-Mail Programme unterstützen diesen Import mit einem Klick. Aktuell löscht
-die Stornierung einer Buchung noch nicht den erzeugten Kalendereintrag
-
-. Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr
-dazu : [ iCalendar Feed ](/docs/buchungen-verwalten/icalendar-feed/) .
+die Stornierung einer Buchung noch nicht den erzeugten Kalendereintrag.
+Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr dazu : [iCalendar Feed](/docs/buchungen-verwalten/icalendar-feed/) .
 
 ##  Template und Buchungsprozess-Vorlagen
 
@@ -48,20 +45,22 @@ In diesem Abschnitt findest du verschiedene Textbausteine, die an
 unterschiedlichen Stellen ausgegeben werden. Die Felder enthalten jeweils eine
 Beschreibung über die Verwendung der Textbausteine.
 
-###  Benutzer*innen-Details auf der Buchungsseite
+###  Benutzer\*innen-Details auf der Buchungsseite
 
-In diesem Abschnitt definierst du, welche Benutzer _innen Daten in der
+In diesem Abschnitt definierst du, welche Benutzer\*innen Daten in der
 Buchungsdetailansicht angezeigt werden. Hier ist es z.B. möglich, Adressdaten
 (Straße), Telefonnummer hinzuzufügen. Da jede CommonsBooking-Installation die
 Verwaltung der Nutzendendaten selbst organisiert, können wir hier keine
 vordefinierten Felder anbieten. Bitte prüft deshalb, wie die Feldnamen in
 eurer Nutzer_ innen-Verwaltung heißen und fügt diese dann entsprechend hinzu.
 In der Vorlage könnt ihr auch einfache HTML-Formatierungen z.B. für
-Zeilenumbrüche (<br>) verwenden.  
+Zeilenumbrüche (`<br>`) verwenden.
 Beispiel, um das Feld "phone" und das Feld "address" aus den Userdaten
-anzuzeigen:  
-{{[Telefon: ]user: _phone_ }} <br>  
+anzuzeigen:
+```
+{{[Telefon: ]user: _phone_ }} <br>
 {{[Adresse: ]user: _address_ }}
+```
 
 In den eckigen Klammern steht die Bezeichnung, die vor dem jeweiligen Wert
 angezeigt werden soll.
