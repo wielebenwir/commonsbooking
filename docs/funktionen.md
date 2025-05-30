@@ -55,7 +55,7 @@ sind Teil der geplanten Weiterentwicklung:
 
 [ installieren ](/dokumentation/installation/installieren/)
 
-[ Roadmap der geplanten Weiterentwicklung ](/docs/roadmap/)
+[ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap/)
 
 * * *
 

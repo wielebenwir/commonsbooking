@@ -122,7 +122,7 @@ zu stornieren.
 Es ist mit einem kleinen Codeschnipsel möglich, auch eine weitere Rolle zu
 definieren die einem Artikel / Standort zugewiesen werden kann und diesen dann
 entsprechend ihrer / seiner Berechtigung bearbeiten darf. Das funktioniert mit
-einem [ Filter ](/docs/einstellungen/hooks-und-filter/) (Dort findest du auch
+einem [ Filter ](/dokumentation/einstellungen/hooks-und-filter/) (Dort findest du auch
 mehr Infos zu Codeschnipseln). Dieser heißt _commonsbooking_manager_roles_ und
 kann zum Beispiel wie folgt benutzt werden:
 

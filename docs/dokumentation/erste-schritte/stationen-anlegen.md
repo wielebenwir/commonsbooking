@@ -21,7 +21,7 @@ Beitragsbild wird rechts unter dem Button “publizieren” definiert.
 
 **Überbuchen von geblockten Tagen erlauben**
 
-Wenn du einen Buchungszeitraum anlegst (siehe [Buchungszeiträume anlegen](/docs/erste-schritte/buchungszeitraeume-verwalten/) ) kannst du auswählen,
+Wenn du einen Buchungszeitraum anlegst (siehe [Buchungszeiträume anlegen](/dokumentation/erste-schritte/buchungszeitraeume-verwalten/) ) kannst du auswählen,
 ob Buchungen nur an bestimmten Wochentagen möglich sind. So kannst du z.B.
 definieren, dass Buchungen nur Montags – Freitags möglich sind. Dies bedeutet
 dann, dass eine Abholung und Rückgabe nur an diesen Tagen erfolgt. Um
@@ -62,5 +62,5 @@ usw. wann angezeigt werden:
   * Abhol-Informationen (Öffnungszeiten, Abholprozess usw.) werden auf der Artikelseite und im gesamtem Buchungsprozess angezeigt.
   * Standort-E-Mail: E-Mail-Adresse, an die die Buchungsbestätigungs-E-Mail geschickt wird. Mehrere Adressen können mit einem Komma getrennt werden.
   * Kontaktinformationen (E-Mail und Telefonnummer) werden erst auf der Bestätigungsseite nach der Buchung angezeigt
-  * Stations-Verwaltende: Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, diesen bestimmten Standort zu bearbeiten und zu verwalten. Mehr dazu: [ Zugriffsrechte vergeben ](/docs/grundlagen/rechte-des-commonsbooking-manager/)
+  * Stations-Verwaltende: Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, diesen bestimmten Standort zu bearbeiten und zu verwalten. Mehr dazu: [ Zugriffsrechte vergeben ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager/)
 

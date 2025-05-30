@@ -24,7 +24,7 @@ Du kannst sie an jeder beliebige Stelle in den Vorlagen verwenden.
 Du kannst weitere Template-Tags verwenden, wenn dir die standardmäßig
 enthaltenen nicht ausreichen.
 
-Eine Übersicht zur Verwendung der [Template-Tags findest du hier](/docs/einstellungen/template-tags)
+Eine Übersicht zur Verwendung der [Template-Tags findest du hier](/dokumentation/einstellungen/template-tags)
 
 ##  iCalendar Dateien
 
@@ -37,7 +37,7 @@ verwenden. Die resultierende Kalenderdatei wird an die E-Mail angehängt und
 die Nutzenden können sie in ihren digitalen Kalender importieren. Die meisten
 E-Mail Programme unterstützen diesen Import mit einem Klick. Aktuell löscht
 die Stornierung einer Buchung noch nicht den erzeugten Kalendereintrag.
-Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr dazu : [iCalendar Feed](/docs/buchungen-verwalten/icalendar-feed/) .
+Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr dazu : [iCalendar Feed](/dokumentation/buchungen-verwalten/icalendar-feed/) .
 
 ##  Template und Buchungsprozess-Vorlagen
 

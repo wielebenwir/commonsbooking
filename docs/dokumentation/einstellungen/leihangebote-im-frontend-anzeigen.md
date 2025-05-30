@@ -4,7 +4,7 @@ __
 
 Um die Liste der Artikel anzuzeigen musst du einen **Shortcode** in den
 WordPress-Editor einfügen. CommonsBooking bietet [ diverse Shortcodes für
-Karten, Tabellen und Listen ](/docs/einstellungen/shortcodes/) .
+Karten, Tabellen und Listen ](/dokumentation/einstellungen/shortcodes/) .
 
   *     * Lege dazu zuerst eine Seite an, etwa “ **Meine Räder** “. 
     * Kopiere nun folgenden Shortcode in den Editor (inklusive der eckigen Klammern): ` [cb_items] `
@@ -25,5 +25,5 @@ aktuell nicht buchbar sind.
 Weitere Möglichkeiten zur Darstellung der ausleihbaren Artikel wie zum
 Beispiel Standort-Listen, eine Karte oder eine Verfügbarkeitstabelle findest
 ihr im Artikel [ Shortcodes für Frontend-Darstellung
-](/docs/einstellungen/shortcodes/)
+](/dokumentation/einstellungen/shortcodes/)
 

@@ -10,10 +10,10 @@ durch das Anlegen der Zeitrahmen und der sog. Einschränkungen beeinflusst.
 
 ###  Artikel
 
-  * [ Station anlegen ](/docs/erste-schritte/stationen-anlegen/)
-  * [ Artikel anlegen ](/docs/erste-schritte/artikel-anlegen/)
-  * [ Zeitrahmen: Buchungszeiträume verwalten ](/docs/erste-schritte/buchungszeitraeume-verwalten/)
-  * [ Buchungseinschränkungen verwalten ](/docs/erste-schritte/buchungseinschraenkungen-verwalten/)
-  * [ Buchungsregeln einrichten (Ab 2.9) ](/docs/erste-schritte/buchungsregeln-einrichten/)
-  * [ Zeitrahmen: Feiertage definieren ](/docs/erste-schritte/zeitrahmen-feiertage-definieren/)
+  * [ Station anlegen ](/dokumentation/erste-schritte/stationen-anlegen/)
+  * [ Artikel anlegen ](/dokumentation/erste-schritte/artikel-anlegen/)
+  * [ Zeitrahmen: Buchungszeiträume verwalten ](/dokumentation/erste-schritte/buchungszeitraeume-verwalten/)
+  * [ Buchungseinschränkungen verwalten ](/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten/)
+  * [ Buchungsregeln einrichten (Ab 2.9) ](/dokumentation/erste-schritte/buchungsregeln-einrichten/)
+  * [ Zeitrahmen: Feiertage definieren ](/dokumentation/erste-schritte/zeitrahmen-feiertage-definieren/)
 

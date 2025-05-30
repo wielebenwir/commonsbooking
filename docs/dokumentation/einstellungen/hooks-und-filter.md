@@ -95,20 +95,20 @@ zurückgibt.
 Es gibt auch Filter Hooks, mit denen du zusätzliche Benutzerrollen, die
 zusätzlich zum CB Manager Artikel und Standorte administrieren können,
 hinzufügen kannst.  
-Mehr dazu: [ Zugriffsrechte vergeben (CB-Manager) ](/docs/grundlagen/rechte-
+Mehr dazu: [ Zugriffsrechte vergeben (CB-Manager) ](/dokumentation/grundlagen/rechte-
 des-commonsbooking-manager/#andere-rollen-einem-artikel-standort-zuweisen-
 ab-2-8-2)
 
 Darüber hinaus gibt es Filter Hooks, mit denen du die voreingestellten
 Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu hier:  
-[ [ [ [ [ https://commonsbooking.org/docs/erweiterte-
+[ [ [ [ [ https://commonsbooking.org/dokumentation/erweiterte-
 funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern/
-](/docs/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-
-aendern/) ](/docs/erweiterte-funktionalitaet/standardwerte-fuer-
-zeitrahmenerstellung-aendern/) ](/docs/erweiterte-
+](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-
+aendern/) ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-
+zeitrahmenerstellung-aendern/) ](/dokumentation/erweiterte-
 funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern/)
-](/docs/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-
-aendern/) ](/docs/erweiterte-funktionalitaet/standardwerte-fuer-
+](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-
+aendern/) ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-
 zeitrahmenerstellung-aendern/)
 
 ###  Filter Hook: commonsbooking_tag_$key_$property

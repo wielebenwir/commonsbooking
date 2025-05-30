@@ -8,7 +8,7 @@ zur gemeinschaftlichen Verwendung bereit zu stellen.
 CommonsBooking ist ein WordPress-Plugin und lässt sich so einfach in
 bestehende Webseiten integrieren.
 
-[ installieren ](/docs/installation/installieren/)
+[ installieren ](/dokumentation/installation/installieren/)
 
 [ Dokumentation ](/dokumentation/)
 
@@ -53,9 +53,9 @@ sind Teil der geplanten Weiterentwicklung:
   * Erweiterte Meta-Daten
   * Implementierung der CommonsAPI
 
-[ installieren ](/docs/installation/installieren/)
+[ installieren ](/dokumentation/installation/installieren/)
 
-[ Roadmap der geplanten Weiterentwicklung ](/docs/roadmap/)
+[ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap/)
 
 * * *
 

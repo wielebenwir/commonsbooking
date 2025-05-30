@@ -22,7 +22,7 @@ Stationsbetreibenden.
 > Auf dieser Seite erfährst du, wie du einen Zeitrahmen im Backend anlegst.
 > Wenn du wissen willst, wie du nach dem Veröffentlichen deine Zeiträume auf
 > den Frontend-Seiten mit Hilfe von Shortcodes darstellen kannst,  [ klicke
-> hier. ](/docs/erste-schritte/shortcodes/) **Achtung** : Zeitrahmen können
+> hier. ](/dokumentation/erste-schritte/shortcodes/) **Achtung** : Zeitrahmen können
 > nicht direkt über die Backend-Seite “Beitrag anzeigen” aufgerufen werden,
 > sondern müssen über die o.g. Shortcodes eingebunden werden.
 
@@ -47,7 +47,7 @@ dann dort angezeigt.
 
 **Typ:**
 
-  * Wähle hier den Typ “ **Buchbar** ” aus. Du kannst für weitere Fälle (z.B. eintragen eines Urlaubs, Reparatur) auch andere Typen auswählen. Diese verhindern dann z.B. dass zu den definierten Zeiten eine Ausleihe oder Nutzung erfolgen kann. Mehr dazu findest du unter der [ Doku zu den Zeitrahmen-Typen ](/docs/grundlagen/zeitrahmen-konfigurieren/) . 
+  * Wähle hier den Typ “ **Buchbar** ” aus. Du kannst für weitere Fälle (z.B. eintragen eines Urlaubs, Reparatur) auch andere Typen auswählen. Diese verhindern dann z.B. dass zu den definierten Zeiten eine Ausleihe oder Nutzung erfolgen kann. Mehr dazu findest du unter der [ Doku zu den Zeitrahmen-Typen ](/dokumentation/grundlagen/zeitrahmen-konfigurieren/) . 
 
 **Standort:**
 

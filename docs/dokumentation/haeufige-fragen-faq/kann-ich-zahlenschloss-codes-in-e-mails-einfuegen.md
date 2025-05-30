@@ -11,5 +11,5 @@ werden. Diese Felder können dann auch in den E-Mail Templates verwendet
 werden.
 
 [ Dieser Aritkel der Dokumentation enthält eine Ausführliche Anleitung.
-](/docs/einstellungen/template-tags/)
+](/dokumentation/einstellungen/template-tags/)
 

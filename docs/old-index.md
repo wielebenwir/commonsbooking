@@ -46,7 +46,7 @@ gemeinsam nutzen?
 
 <!-- ![](img/4c19cd7e3da47c3d129a8264b287f968.png) -->
 
-[ Installieren ](/docs/installation/installieren/)
+[ Installieren ](/dokumentation/installation/installieren/)
 
 [ Alle Funktionen ](/funktionen/)
 
@@ -82,7 +82,7 @@ _
 
 Über eine offene Schnittstelle können weitere Plattformen an CommonsBooking
 angebunden werden. Erfahre hier mehr über die [ CommonsAPI und den CommonsHUB
-](/docs/schnittstellen-api/was-ist-die-commonsapi/)
+](/dokumentation/schnittstellen-api/was-ist-die-commonsapi/)
 
 ##  Community
 

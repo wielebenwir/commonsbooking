@@ -6,7 +6,7 @@ Wähle hier mindestens 20 – 30 Wörter aus. Diese werden per Zufallsprinzip da
 den einzelnen Tagen zugeordnet.
 
 Die Buchungs-Codes können beim tageweisen Verleih je Tag im Rahmen der
-Erstellung eines [ Zeitrahmens ](/docs/erste-schritte/buchungszeitraeume-
+Erstellung eines [ Zeitrahmens ](/dokumentation/erste-schritte/buchungszeitraeume-
 anlegen/) generiert werden. Die Codes selbst werden dann auch am Ende der
 Detailseite des Zeitrahmens aufgelistet. Über einen CSV-Download kannst du die
 Buchungscodes auch runterladen und bei Bedarf weiterbearbeiten.
