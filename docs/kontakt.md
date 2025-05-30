@@ -4,15 +4,15 @@
 
 Bei allen neuen Fragen und Problemen unterstützen wir euch gerne!
 
-  * Bitte prüft vorab in unserer [ Dokumentation ](/dokumentation/) , ob das Thema dort schon beschrieben wird. 
-  * Schreibt uns eine [ Support-Anfrage über unser Support-System ](https://support.commonsbooking.org) . Dort findet ihr auch eine FAQ mit häufigen Fragen und Antworten (nur in deutscher Sprache) 
-  * Oder per Mail an [ mail@commonsbooking.org ](mailto:mail@commonsbooking.org)   
+  * Bitte prüft vorab in unserer [ Dokumentation ](/dokumentation/) , ob das Thema dort schon beschrieben wird.
+  * Schreibt uns eine [ Support-Anfrage über unser Support-System ](https://support.commonsbooking.org) . Dort findet ihr auch eine FAQ mit häufigen Fragen und Antworten (nur in deutscher Sprache)
+  * Oder per Mail an [ mail@commonsbooking.org ](mailto:mail@commonsbooking.org)
 (deutsch und englisch willkommen)
 
-  * Wollt ihr die Menschen hinter CommonsBooking kontaktieren   
+  * Wollt ihr die Menschen hinter CommonsBooking kontaktieren
 Dann ruft uns einfach an unter +49221-98650801
 
-![](ec333c384615b2947cb19cf8b3547846.png)
+![](/img/ec333c384615b2947cb19cf8b3547846.png)
 
 ##  Auf dem Laufenden bleiben?
 

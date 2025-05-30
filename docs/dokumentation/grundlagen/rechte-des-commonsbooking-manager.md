@@ -17,11 +17,11 @@ Artikel stationiert ist.
 
 Folgende Dinge darf der CommonsBooking Manager:
 
-  * Artikel, Stationen und Zeitrahmen anlegen 
-  * Wenn zugewiesen oder selbst angelegt: Bearbeiten von Artikel, Stationen und Zeitrahmen 
-  * Selbst angelegte Zeitrahmen können in den Papierkorb gelegt werden 
-  * Keine Rechte für Löschen bzw. in den Papierkorb legen von Artikeln und Stationen 
-  * Buchungen stornieren, die zu Artikel gehören die sie administrieren. 
+  * Artikel, Stationen und Zeitrahmen anlegen
+  * Wenn zugewiesen oder selbst angelegt: Bearbeiten von Artikel, Stationen und Zeitrahmen
+  * Selbst angelegte Zeitrahmen können in den Papierkorb gelegt werden
+  * Keine Rechte für Löschen bzw. in den Papierkorb legen von Artikeln und Stationen
+  * Buchungen stornieren, die zu Artikel gehören die sie administrieren.
 
 Auf den Artikel- und Stationsseiten können die Rechte zum Verwalten der
 Artikel, Stationen und Buchungen vergeben werden. Hierfür können Personen, mit
@@ -42,10 +42,10 @@ erhalten.
 
 Folgende Dinge darf der CommonsBooking Manager nicht:
 
-  * Allgemeine Seiten bearbeiten 
-  * Plugins ändern 
-  * Das Design der Seite ändern 
-  * usw. 
+  * Allgemeine Seiten bearbeiten
+  * Plugins ändern
+  * Das Design der Seite ändern
+  * usw.
 
 ##  Zugriffsrechte anpassen
 
@@ -58,37 +58,37 @@ Zur Referenz: Hier werden oft die internen Namen für Artikel / Standorte /
 Zeitrahmen / Buchungen etc. verwendet. Deshalb hier eine Übersichtstabelle zu
 den internen Namen und deren Bedeutung
 
-**Externer Name** |  **Interner Name**  
----|---  
-Artikel  |  cb_items   
-Standorte  |  cb_locations   
-Zeitrahmen  |  cb_timeframes   
-Karten  |  cb_maps   
-Buchungen  |  cb_bookings   
-Einschränkungen  |  cb_restrictions   
-  
-  
-  
+**Externer Name** |  **Interner Name**
+---|---
+Artikel  |  cb_items
+Standorte  |  cb_locations
+Zeitrahmen  |  cb_timeframes
+Karten  |  cb_maps
+Buchungen  |  cb_bookings
+Einschränkungen  |  cb_restrictions
+
+
+
 Hier sind die Namen der verschiedenen Berechtigungen, die einer Rolle gegeben
 werden kann:
 
 ###  Management Berechtigungen
 
-**Berechtigung** |  **Bewirkt**  
----|---  
-manage_commonsbooking  |  CommonsBooking Menüpunkt im Backend anklickbar (Vorraussetzung für alle anderen Berechtigungen)   
-  
-manage_commonsbooking_cb_booking  |  Buchungen-Menüpunkt im Backend anzeigen   
-  
-manage_commonsbooking_cb_item  |  Artikel-Menüpunkt im Backend anzeigen   
-  
-manage_commonsbooking_cb_location  |  Standorte-Menüpunkt im Backend anzeigen   
-  
-manage_commonsbooking_cb_map  |  Karten-Menüpunkt im Backend anzeigen   
-  
-manage_commonsbooking_cb_restriction  |  Einschränkungen-Menüpunkt im Backend anzeigen   
-  
-manage_commonsbooking_cb_timeframe  |  Zeitrahmen-Menüpunkt im Backend anzeigen   
+**Berechtigung** |  **Bewirkt**
+---|---
+manage_commonsbooking  |  CommonsBooking Menüpunkt im Backend anklickbar (Vorraussetzung für alle anderen Berechtigungen)
+
+manage_commonsbooking_cb_booking  |  Buchungen-Menüpunkt im Backend anzeigen
+
+manage_commonsbooking_cb_item  |  Artikel-Menüpunkt im Backend anzeigen
+
+manage_commonsbooking_cb_location  |  Standorte-Menüpunkt im Backend anzeigen
+
+manage_commonsbooking_cb_map  |  Karten-Menüpunkt im Backend anzeigen
+
+manage_commonsbooking_cb_restriction  |  Einschränkungen-Menüpunkt im Backend anzeigen
+
+manage_commonsbooking_cb_timeframe  |  Zeitrahmen-Menüpunkt im Backend anzeigen
 Diese Berechtigungen definieren erstmal NUR, ob der Menüpunkt im Backend für
 die Administrierenden angezeigt wird. Das heißt noch nicht, dass die Rollen
 auch die Artikel bearbeiten dürfen.
@@ -103,16 +103,16 @@ entsprechende Rolle zwar den Menüpunkt, kann aber nicht darauf zugreifen.
 Jede Art von Post (also Artikel / Standorte / Zeitrahmen / Karten /
 Einschränkungen) hat eigenen Berechtigungen, die nach einem festen Schema
 funktionieren. Da die Namen selbsterklärend sind, werden sie hier nicht näher
-beschrieben, hier nur ein Screenshot von den Berechtigungen für einen Artikel.  
+beschrieben, hier nur ein Screenshot von den Berechtigungen für einen Artikel.
 
-![](2d6feefe59ddd3bb9e59ea4a0789488f.png)
+![](/img/2d6feefe59ddd3bb9e59ea4a0789488f.png)
 
 Nur wenn die entsprechende Rolle auch die Berechtigung für eine Aktion
 bekommen hat, kann sie auch diese durchführen. Das heißt also, dass z.B. die
 manage_commonsbooking_cb_item Berechtigung zu verleihen wenig Sinn ergibt,
 wenn nicht zumindest auch die edit_cb_items Berechtigung oder eine andere
-Berechtigung für Artikel verliehen wird.  
-  
+Berechtigung für Artikel verliehen wird.
+
 Hier auch besonders relevant ist die Berechtigung **edit_other_cb_bookings** .
 Diese bestimmt, ob ein Manager in der Lage ist Buchungen von anderen Nutzenden
 zu stornieren.
@@ -126,13 +126,13 @@ einem [ Filter ](/docs/einstellungen/hooks-und-filter/) (Dort findest du auch
 mehr Infos zu Codeschnipseln). Dieser heißt _commonsbooking_manager_roles_ und
 kann zum Beispiel wie folgt benutzt werden:
 
-    
-    
+```php
     add_filter('commonsbooking_manager_roles', 'add_manager' );
     function add_manager( $array ){
         $array[]='editor';
         return $array;
     }
+```
 
 Dieser Codeschnipsel würde die Rolle mit dem Namen ‘editor’ zu den Rollen
 hinzufügen, die einem Artikel hinzugefügt werden können. Dabei ist es wichtig

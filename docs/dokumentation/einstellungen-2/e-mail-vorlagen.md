@@ -24,7 +24,7 @@ Du kannst sie an jeder beliebige Stelle in den Vorlagen verwenden.
 Du kannst weitere Template-Tags verwenden, wenn dir die standardmäßig
 enthaltenen nicht ausreichen.
 
-Eine Übersicht zur Verwendung der [Template-Tags findest du hier](/docs/einstellungen/template-tags/)
+Eine Übersicht zur Verwendung der [Template-Tags findest du hier](/docs/einstellungen/template-tags)
 
 ##  iCalendar Dateien
 

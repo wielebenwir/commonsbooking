@@ -13,7 +13,7 @@
 
 ####  Entwicklungsteam
 
-  * Hannes Wöhrle 
+  * Hannes Wöhrle
   * [ m ](https://github.com/markus-mw) [ arkus-mw ](https://github.com/markus-mw)
   * [ Christian Wenzel ](https://github.com/chriwen)
   * [ Hans Morbach ](http://github.com/hansmorb/)
@@ -25,7 +25,7 @@
   * [ C ](https://github.com/christianvoigt) [ hristian Voigt ](https://github.com/christianvoigt)
   * [ Markus Voge ](https://github.com/sgrubsmyon)
 
-####  
+####
 Übersetzungen
 
   * [ Johannes Thies ](https://roesrath-velocity.de)
@@ -33,7 +33,7 @@
 CommonsBooking integriert Module entwickelt vom Team [ flotte Berlin
 ](https://github.com/flotte-berlin) .
 
-![](d46c40d87227720d73fe7b62dc197d17.png)
+![](/img/d46c40d87227720d73fe7b62dc197d17.png)
 
 Bitte dieses Feld leer lassen
 

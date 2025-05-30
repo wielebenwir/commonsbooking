@@ -34,13 +34,13 @@ anpasst, ist [ UsersWP ](https://wordpress.org/plugins/userswp/) .
 
 Fügt "Datenschutz" und "AGB" hinzu.
 
-![](aea2d81bb65f4f3efcb1dd4c4e44d433.jpg)
+![](/img/aea2d81bb65f4f3efcb1dd4c4e44d433.jpg)
 
 Fügt ein Text-Feld " **Adresse** " hinzu, klickt auf "Erweitert anzeigen" und
 tragt unter **Feldkennung** " **address** " ein (dies ist insbesondere wichtig
 falls ihr CB1 verwendet habt, da der Feldname dort "address" ist).
 
-![](1ad031dd9429633c2b6f0be5bda1cad3.jpg)
+![](/img/1ad031dd9429633c2b6f0be5bda1cad3.jpg)
 
 Ebenso solltest du das Feld "Telefon" hinzufügen. Nutze dafür nicht das
 Telefonfeld, sondern ein einfaches Textfeld (wie bei Adresse), und setze die
@@ -57,10 +57,10 @@ kopiert werden, _oder_ ihr verwendet das Plugin " [ Code Snippets
 
 ####  Mehr Tips
 
-  * Oft verstecken sich wichtige Einstellungen unter dem Knopf “Erweitert anzeigen” rechts oben (Etwa die Email-Templates!) 
-  * Weitere Einstellungen 
-    * **Profil- > Meta-Tags ** deaktivieren 
-    * **Profil - > “Headerbereich auf dem Profil” & “Inhaltsbereich auf dem Profil” ** deaktiveren 
-    * **Autoren-Box - > Autorenbox ** deaktivieren 
-    * Setzt unter **Registrieren - > Passwort-Höchstlänge ** auf 30 
+  * Oft verstecken sich wichtige Einstellungen unter dem Knopf “Erweitert anzeigen” rechts oben (Etwa die Email-Templates!)
+  * Weitere Einstellungen
+    * **Profil- > Meta-Tags ** deaktivieren
+    * **Profil - > “Headerbereich auf dem Profil” & “Inhaltsbereich auf dem Profil” ** deaktiveren
+    * **Autoren-Box - > Autorenbox ** deaktivieren
+    * Setzt unter **Registrieren - > Passwort-Höchstlänge ** auf 30
 

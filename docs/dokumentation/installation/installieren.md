@@ -6,8 +6,8 @@ Installieren der aktuellen Version des neuen CommonsBooking (Version 2.x.x)
 
 ###  ComonsBooking installieren
 
-  * Gehe zu **WordPress** -> **Plugins** -> **Installieren** und Suche nach “ **CommonsBooking** “. 
-  * Nach Klick auf “ **Installieren** ” und “ **Aktivieren** ” ist es einsatzbereit. 
+  * Gehe zu **WordPress** -> **Plugins** -> **Installieren** und Suche nach “ **CommonsBooking** “.
+  * Nach Klick auf “ **Installieren** ” und “ **Aktivieren** ” ist es einsatzbereit.
 
 ###  WordPress-Einstellungen für Datum und Zeit prüfen
 
@@ -30,20 +30,20 @@ Informationen zur [ Konfiguration ](/docs/einstellungen-2/) .
 
 ###  Standorte, Artikel und Zeitrahmen anlegen
 
-  * **Artikel** unter “CommonsBooking -> Artikel” anlegen 
-  * **Standorte** unter “CommonsBooking -> Standorte” anlegen 
-  * Anschließend kannst du im Menüpunkt “ **Zeitrahmen** ” festlegen, wann ein Artikel an einem bestimmten Standort für die Ausleihe verfügbar sein soll. 
+  * **Artikel** unter “CommonsBooking -> Artikel” anlegen
+  * **Standorte** unter “CommonsBooking -> Standorte” anlegen
+  * Anschließend kannst du im Menüpunkt “ **Zeitrahmen** ” festlegen, wann ein Artikel an einem bestimmten Standort für die Ausleihe verfügbar sein soll.
 
 Detailliierte Informationen dazu findest du unter “ [ Erste Schritte
 ](/docs/erste-schritte/) “.
 
 ###  Inhalte auf der Website einbinden
 
-  * Eine Seite anlegen, auf der deine Artikel erscheinen sollen Den Textbaustein (Shortocde) ` [cb_items] ` in die Seite einbinden. 
-  * Mit dem klassischen WordPress-Editor fügst du [cb_items] inklusive der Klammern einfach in das Textfeld ein. 
-  * Mit dem neuen Editor klickst du auf das schwarze **\+ Plus im Kasten** , wählst “Shortcode” und fügst [cb_items] inklusive der Klammern ein. 
-  * Weitere [ Shortcodes für Karten, Tabellen, etc ](/docs/einstellungen/shortcodes/) . Fertig! 
-  * im Frontend stehen die Artikel nun zur Buchung zur Verfügung. 
+  * Eine Seite anlegen, auf der deine Artikel erscheinen sollen Den Textbaustein (Shortocde) ` [cb_items] ` in die Seite einbinden.
+  * Mit dem klassischen WordPress-Editor fügst du [cb_items] inklusive der Klammern einfach in das Textfeld ein.
+  * Mit dem neuen Editor klickst du auf das schwarze **\+ Plus im Kasten** , wählst “Shortcode” und fügst [cb_items] inklusive der Klammern ein.
+  * Weitere [ Shortcodes für Karten, Tabellen, etc ](/dokumentation/einstellungen/shortcodes) . Fertig!
+  * im Frontend stehen die Artikel nun zur Buchung zur Verfügung.
 
 ###  **Hinweis** :
 

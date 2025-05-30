@@ -2,7 +2,7 @@
 
 __
 
-Ab 2.8.  
+Ab 2.8.
 Diese Feature ist noch experimentell.
 
 In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
@@ -16,7 +16,7 @@ auswirken.
 Nachdem diese Funktion aktiviert ist, findest du die individuelle Kalender URL
 in dem Menü in der Übersicht "Meine Buchungen".
 
-![](ae5ebfd25102729e8765f80692355cd9.png)
+![](/img/ae5ebfd25102729e8765f80692355cd9.png)
 
 **ACHTUNG** : Dieser digitale Kalender listet nicht nur deine eigenen
 Buchungen auf sondern alle Buchungen, die du einsehen darfst. Dies hat
