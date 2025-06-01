@@ -17,7 +17,7 @@ hero:
       text: Spenden
       link: /spenden/
   image:
-    src: /logo-big.png
+    src: /img/logo-big.png
     alt: CommonsBooking Logo
 
 features:
