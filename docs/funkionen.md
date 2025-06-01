@@ -10,7 +10,7 @@ bestehende Webseiten integrieren.
 
 [ installieren ](/dokumentation/installation/installieren)
 
-[ Dokumentation ](/dokumentation)
+[ Dokumentation ](/dokumentation/)
 
 * * *
 
@@ -55,7 +55,7 @@ sind Teil der geplanten Weiterentwicklung:
 
 [ installieren ](/dokumentation/installation/installieren)
 
-[ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap)
+[ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap/)
 
 * * *
 

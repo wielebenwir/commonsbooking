@@ -52,7 +52,7 @@ gemeinsam nutzen?
 
 ##  Umfassende Hilfe erhalten
 
-Neben unserer [ Dokumentation ](/dokumentation) unterstützt euch das
+Neben unserer [ Dokumentation ](/dokumentation/) unterstützt euch das
 CommonsBooking-Team **persönlich** bei allen Fragen zu CommonsBooking per
 **Online-Support** und **Telefon-Hotline** :
 
