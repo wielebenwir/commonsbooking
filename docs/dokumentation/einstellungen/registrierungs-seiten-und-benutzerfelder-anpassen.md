@@ -32,13 +32,13 @@ anpasst, ist [UsersWP](https://wordpress.org/plugins/userswp).
 
 Fügt "Datenschutz" und "AGB" hinzu.
 
-![](/img/aea2d81bb65f4f3efcb1dd4c4e44d433.jpg)
+![](/img/UsersWP-add-fields.jpg)
 
 Fügt ein Text-Feld "**Adresse**" hinzu, klickt auf **"Erweitert anzeigen"** und
 tragt unter **Feldkennung** `address` ein (dies ist insbesondere wichtig
 falls ihr CB1 verwendet habt, da der Feldname dort "address" ist).
 
-![](/img/1ad031dd9429633c2b6f0be5bda1cad3.jpg)
+![](/img/UsersWP-adress-field.jpg)
 
 Ebenso solltest du das Feld "Telefon" hinzufügen. Nutze dafür nicht das
 Telefonfeld, sondern ein einfaches Textfeld (wie bei Adresse), und setze die

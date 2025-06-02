@@ -5,7 +5,7 @@ __
 Das User-Widget beinhaltet die Links zu den persönlichen Buchungen und zur
 Login- bzw. Logout-Seite.
 
-![](/img/afbbb7637885ef1cab4b7241aa3f5dd2.png)
+![](/img/user-widget.png)
 
 Mit den folgenden Schritten integrierst du das Widget in deine Seite:
 

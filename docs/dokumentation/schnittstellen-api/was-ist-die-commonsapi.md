@@ -12,11 +12,11 @@ natürlich individuell eingestellt werden.
 
 ##  So funktioniert CommonsAPI und CommonsHUB
 
-![](/img/823b7b4f9819e39dbc38e64276eb2744.png) Initiativen verleihen über
+![](/img/logo-api-items.png) Initiativen verleihen über
 CommonsBooking (oder andere Software) Gemeingüter.
 
-![](/img/47a2dbde379884ce983320f5b785d557.png) Das CommonsBooking-Plugin veröffentlicht
-(pushed) Daten im CommonsAPI Format.  ![](/img/3d4c64768d32d977b1512c83aa403715.png)
+![](/img/logo-api-connects.png) Das CommonsBooking-Plugin veröffentlicht
+(pushed) Daten im CommonsAPI Format.  ![](/img/logo-api-commonshub.png)
 Externe Portale, wir nennen Sie CommonsHub, stellen die Gemeingüter
 plattformübergreifend da, z.B. auf einer Karte.
 

@@ -42,18 +42,18 @@ als maximale Buchungsdauer immer 3 Tage eingestellt.
 _Überbuchung aktiviert ohne Zählung der Tage_
 
 
-![](/img/57e7b4d7d8d41001564b69edb5079e5a.png)
+![](/img/overbooking-nocount.png)
 
 _Überbuchung aktiviert mit Zählung jedes einzelnen Tages (das Wochenende ist
 nicht überbuchbar, weil das eine Buchung von mehr als drei Tagen bedeuten
 würde_ )
 
-![](/img/2ad4258f5073b8b13f135e70ad216426.png)
+![](/img/overbooking-countall.png)
 
 _Nur der erste Tag wird bei der Überbuchung gezählt: Das Wochenende ist somit
 überbuchbar aber es kann nicht bis Dienstag gebucht werden._
 
-![](/img/bcca6dc3036f659f291ddde85a3d9caa.png)
+![](/img/overbooking-countone.png)
 
 **Allgemeine Standortinformationen**
 

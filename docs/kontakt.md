@@ -12,7 +12,7 @@ Bei allen neuen Fragen und Problemen unterstützen wir euch gerne!
   * Wollt ihr die Menschen hinter CommonsBooking kontaktieren
 Dann ruft uns einfach an unter +49221-98650801
 
-![](/img/ec333c384615b2947cb19cf8b3547846.png)
+![](/img/icons-support-together.png)
 
 ##  Auf dem Laufenden bleiben?
 

@@ -22,12 +22,12 @@ Zeigt eine Liste aller veröffentlichen Artikel an mit den Stationen, an denen
 sie sich befinden.
 
   * Shortcode: ` [cb_items] `
-  * Argumente: ` `
+  * Argumente:
     * ` Kategorie-Filter: category_slug `
     * Nur einzelnen Artikel anzeigen: [cb_items p=PostID]
-    * Nur Artikel von einer Station anzeigen: [cb_items location-id=PostIDVonDemStandort]
+    * Nur Artikel von einer Station anzeigen: `[cb_items location-id=PostIDVonDemStandort]`
 
-[ ![](/img/292707e882d420dc3e0c637577caccff.png) ](/wp-content/uploads/2021/01/screenshot-1.png) [cb_items]: Liste von Artikeln
+![](/img/shortcode-cb-items.png)
 
 **Nur eine bestimmte Kategorie anzeigen?**
 
@@ -36,7 +36,7 @@ nur Artikel einer bestimmten Kategorie anzeigen. Dazu sucht ihr zunächst die
 Titelform / Slug der Kategorie über das Kategorie-Menü aus und setzt diese
 dann folgendermaßen ein:
 
-  * ` [cb_items category_slug= _titelform_ ] `
+  * `[cb_items category_slug= _titelform_ ]`
 
 * * *
 
@@ -44,7 +44,7 @@ dann folgendermaßen ein:
 
 Zeigt einen einzelnen Artikel in der Listenansicht (s.o.) an.
 
-* Shortcode: ` [cb_items p= _postID_ ] `
+* Shortcode: `[cb_items p= _postID_ ]`
 
 * * *
 
@@ -58,8 +58,7 @@ einbinden) .
   * Shortcode: ` [cb_map] `
   * Argumente ( **erforderlich!** ): ` id `
 
-[ ![](/img/717949d584aa5b1d4aef255e90bc4d31.png) ](/wp-
-content/uploads/2021/05/screenshot-5.png) [cb_map]: Karte mit Filter
+![](/img/shortcode-cb-map.png)
 
 * * *
 
@@ -74,7 +73,7 @@ danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
   * Shortcode: ` [cb_search] `
   * Argumente ( **erforderlich!** : ` id `
 
-![](/img/2696a4fc55baa66953d159e08e26f871.png)
+![](/img/shortcode-cb-search-map.png)
 
 [ Weitere Argumente und ausführliche Dokumentation
 ](/dokumentation/einstellungen/neues-frontend-beta)
@@ -93,8 +92,7 @@ sie sich befinden und der aktuellen Verfügbarkeit.
     * Filter nach Artikel-Kategorien: itemcat (Beispiel: ` [cb_items_table itemcat=itemcategoryslug] `
     * Filter nach Standort-Kategorien: locationcat (Beispiel: ` [cb_items_table locationcat=locationcategoryslug] `
 
-[ ![](/img/f9d1d3c10d913f60eed3247c9257d48e.png) ](/wp-
-content/uploads/2021/05/screenshot-7.png)
+![](/img/shortcode-cb-items-table.png)
 
 * * *
 
@@ -103,20 +101,18 @@ content/uploads/2021/05/screenshot-7.png)
 Zeigt eine Liste aller veröffentlichen Stationen an mit den Artikeln, die sich
 dort befinden
 
-  * Shortcode: ` [cb_locations] `
+  * Shortcode: `[cb_locations]`
 
-[ ![](/img/c4609501dfa4cd496f7d0fa1ee36064a.png) ](/wp-
-content/uploads/2021/05/screenshot-8.png) [cb_locations]: Liste von Stationen
+![](/img/shortcode-cb-locations.png)
 
 * * *
 
 ##  Liste aller Buchungen
 
-  * Shortcode: ` [cb_bookings] `
+  * Shortcode: `[cb_bookings]`
   * Liste aller Buchungen (eigene Buchungen des eingeloggten Nutzenden)
   * Administrator*innen sehen hier alle Buchungen
   * [ cb_manager ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
 
-[ ![](/img/23ebefac587e513e2ff69e5f4d59fc00.png) ](/wp-
-content/uploads/2021/05/Bildschirmfoto-2021-12-16-um-13.57.46.png)
+![](/img/shortcode-cb-bookings.png)
 

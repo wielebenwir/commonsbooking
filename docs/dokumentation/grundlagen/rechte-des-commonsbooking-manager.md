@@ -105,7 +105,7 @@ Einschränkungen) hat eigenen Berechtigungen, die nach einem festen Schema
 funktionieren. Da die Namen selbsterklärend sind, werden sie hier nicht näher
 beschrieben, hier nur ein Screenshot von den Berechtigungen für einen Artikel.
 
-![](/img/2d6feefe59ddd3bb9e59ea4a0789488f.png)
+![](/img/cb-manager-permissions.png)
 
 Nur wenn die entsprechende Rolle auch die Berechtigung für eine Aktion
 bekommen hat, kann sie auch diese durchführen. Das heißt also, dass z.B. die

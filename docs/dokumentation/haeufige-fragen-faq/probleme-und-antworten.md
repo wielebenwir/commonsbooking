@@ -14,7 +14,7 @@ Problem tritt nicht mehr auf, wenn eine Neuinstallation von Lightstart
 vorgenommen wurde. Mehr dazu auf [ Github im CommonsBooking Quellcode-
 Repository ](https://github.com/wielebenwir/commonsbooking/issues/1646) .
 
-![](/img/9d454a14d7f335ae0909fa5249ce0078.png)
+![](/img/backend-booking-list-bug.png)
 
 ###  Inkompatibles Theme Gridbulletin
 

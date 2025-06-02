@@ -1,6 +1,6 @@
 #  Merkmale & Funktionen
 
-![](/img/1c5bf06e4c530b0d3aa7147cfc378b78.png)
+![](/img/banner-772x250-1.png)
 
 CommonsBooking gibt euch die Möglichkeit, Dinge (etwa: Lastenräder, Werkzeuge)
 zur gemeinschaftlichen Verwendung bereit zu stellen.
@@ -24,23 +24,23 @@ bestehende Webseiten integrieren.
   * Bestätigungs-Mails an Ausleihende und Stationen
   * Kartendarstellung im Frontend mit Filtermöglichkeiten
 
-![](/img/93886182dae0e9faef4c323dfb982751.png)
+![](/img/hourly-booking.png)
 
 ###  Einfache Administration
 
   * ****Neu** : ** Benutzer*innen können zugeordnete Artikel, Stationen und Zeiträume selbst verwalten.
   * Automatische Buchungsannahme: Nutzende können Gegenstände buchen, ohne dass Administration nötig ist.
 
-![](/img/6bc7feedcaeccf83a1021dc69e9b1636.png)
+![](/img/cb-managers.png)
 
 * * *
 
 ##  Screenshots
 
-![](/img/160e9a301abbce7eecf9edca3f4029d0.png) Buchungskalender mit stundenweiser
-Ausleihe  ![](img/bad82d32d45161172b3f942689b74056.png) Buchungsstrecke in
-CommonsBooking  ![](img/a81db78ccbda38f053d028f1d951be57.png) Kartendarstellung
-mit Verfügbarkeit  ![](img/54b7a4fd3010bf92af89b13c4649ba3d.png) Übersichtliche
+![](/img/booking-calendar.png) Buchungskalender mit stundenweiser
+Ausleihe  ![](img/booking-confirm.png) Buchungsstrecke in
+CommonsBooking  ![](img/shortcode-cb-map-filtergroups.png) Kartendarstellung
+mit Verfügbarkeit  ![](img/shortcode-cb-items.png) Übersichtliche
 Artikelliste
 
 * * *
@@ -53,7 +53,7 @@ sind Teil der geplanten Weiterentwicklung:
   * Erweiterte Meta-Daten
   * Implementierung der CommonsAPI
 
-[ installieren ](/dokumentation/installation/installieren)
+[ Installieren ](/dokumentation/installation/installieren)
 
 [ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap/)
 
