@@ -58,7 +58,7 @@ export default defineConfig({
 
     footer: {
       message: 'Released under the GNU v2 License.',
-      copyright: 'Copyright © 2019-present Wie Leben Wir e.V.',
+      copyright: 'Copyright © 2019-present wielebenwir e.V.',
     },
 
     search: {

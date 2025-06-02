@@ -29,8 +29,9 @@ Nutzenden aber eine Buchung auch über Zeiträume hinweg zu erlauben, an denen
 keine Abholung oder Rückgabe möglich ist, kannst du das Überbuchen von
 geblockten Tagen erlauben.
 
-**Zählung der überbuchten Tage (seit 2.8.5)
-** Unter Umständen kann es mit der Überbuchung sinnvoll sein den Nutzenden zu
+**Zählung der überbuchten Tage (seit 2.8.5)**
+
+Unter Umständen kann es mit der Überbuchung sinnvoll sein den Nutzenden zu
 ermöglichen über einen längeren Zeitraum als den Buchungszeitraum zu buchen.
 So ist z.B. eine Abholung von Freitag bis Montag bei 3 maximalen Buchungstagen
 nur möglich, wenn von diesen überbuchten Tagen nicht alle gezählt werden. Im

@@ -2,8 +2,7 @@
 
 __
 
-**Beschreibung des Artikels  
-**
+**Beschreibung des Artikels**
 
 Nutze den großen Texteditor oben auf der Stationsseite nur für die
 Detailbeschreibung deines Artikels (Ausstattung, Maße, Eigenschaften,

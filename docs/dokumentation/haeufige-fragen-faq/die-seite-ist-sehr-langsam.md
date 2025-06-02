@@ -8,7 +8,7 @@ gestellte Anfragen in einem Zwischenspeicher zurückhalten, um
 Serverkapazitäten einzusparen.  
 Das Caching kann unter Umständen nicht funktionieren, wenn:
 
-  * [ WP_DEBUG ](https://wordpress.org/documentation/article/debugging-in-wordpress) aktiviert ist, dafür musst du deine wp-config.php bearbeiten 
+  * [WP_DEBUG](https://wordpress.org/documentation/article/debugging-in-wordpress) aktiviert ist, dafür musst du deine wp-config.php bearbeiten 
   * Der Ordner /tmp/ auf deinem Server nicht beschreibbar ist. Falls dies der Fall sein sollte, dann kontaktiere bitte deinen Webhoster und bitte ihn darum den Ordner beschreibbar zu machen. 
     * Falls das nicht möglich sein sollte, kannst du in den CommonsBooking Einstellungen unter “Erweiterte Optionen” den Pfad für den Dateisystem-Cache einstellen. Bitte frage bei deinem Webhoster nach, welche Ordner auf dem Server für temporäre Dateien verfügbar sind. 
     * Falls das auch nicht möglich sein sollte: Gehe zu deiner Webseiten-Info unter (http://DEINE-URL/wp-admin/site-health.php?tab=debug ) Dort findest du unter **Verzeichnisse** den Pfad deines WordPress-Verzeichnisses. Wähle alternativ einen Ordner im Format ` DEIN_VERZEICHNIS/symfony ` als Cache-Ziel. **Achtung:** Dies kann dazu führen, dass dein WordPress-Verzeichnis sehr groß wird. 

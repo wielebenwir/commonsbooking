@@ -2,19 +2,18 @@
 
 __
 
-(Erst mit Version 2.9, Release ~März 2024)
 
 Zeitrahmen können nicht nur Artikel an Standorten verfügbar machen, sondern
 auch bestimmte Schließtage der Standorte bestimmen. CommonsBooking hat seit
 Version 2.9 die Möglichkeit automatisch gesetzliche Feiertage auf eine oder
-mehrere Standorte anzuwenden.  
-  
+mehrere Standorte anzuwenden.
+
 Erstelle dazu einen Zeitrahmen mit dem Typ "Feiertage oder Station
-geschlossen".  
+geschlossen".
 Anschließend kannst du bei Standort auswählen, für welche Standorte diese
 Regel gelten soll. Entweder für eine "Manuelle Auswahl", für alle Standorte
-die einer "Standortkategorie" angehören oder für alle Standorte.  
-  
+die einer "Standortkategorie" angehören oder für alle Standorte.
+
 Das gleiche kannst du jetzt bei den Artikeln machen. Bitte beachte, dass wenn
 du "Alle" auswählst, damit Alle Artikel an den oben definierten Standorten
 gemeint sind und nicht alle Artikel in der gesamten Installation. Um alle
