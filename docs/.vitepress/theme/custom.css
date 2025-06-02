@@ -1,6 +1,57 @@
 :root {
-    /* --vp-c-brand-1: #436cb3;*/ 
+    /* --vp-c-brand-1: #436cb3;*/
     --vp-c-brand-1: #67b32a;
     --vp-c-brand-2: #87d34a;
     --vp-button-brand-bg: #67b32a;
+}
+.feature-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding: 2rem 1rem;
+}
+
+.feature-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+}
+
+.feature-row.reverse {
+    flex-direction: row-reverse;
+}
+
+.feature-image {
+    flex: 1 1 300px;
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+}
+
+.feature-text {
+    flex: 1 1 300px;
+    max-width: 600px;
+}
+
+@media (max-width: 768px) {
+    .feature-row,
+    .feature-row.reverse {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .feature-text {
+        text-align: center;
+    }
+}
+
+
+.cbdoc-button {
+    background: #fff;
+    color: #1b1b1f;
+    padding: 3px 5px;
+    border: 1px solid black;
+    border-radius: 5px;
 }
