@@ -9,9 +9,11 @@ Unter Einstellungen -> CommonsBooking findest du den Reiter **Vorlagen**
 In den Vorlagen kannst du die Inhalte der Buchungsmails und die Absender-
 Adresse der Buchungs-Mails festlegen.
 
-**Tipp:** Möchtest du den Standard wieder herstellen, so lösche einfach alle
+::: tip
+Möchtest du den Standard wieder herstellen, so lösche einfach alle
 Einträge und speicher die Seite, die Standard-Vorlagen werden dann wieder
 geladen.
+:::
 
 Um Daten aus der Buchung (wie Artikel, Buchungszeitraum etc.) in die Mail zu
 integrieren, verwendet CommosBooking so genannte TemplateTags. Dies sind
