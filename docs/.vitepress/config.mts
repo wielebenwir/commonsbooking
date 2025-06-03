@@ -79,7 +79,7 @@ export default defineConfig({
             '/en/documentation/': { base: '/en/documentation/', items: sidebarDocs_en() },
           },
           footer: {
-            message: 'Licensed under the GNU v2 License.',
+            message: 'Licensed under the GNU v2 License. <br> <a href="/en/imprint/">Imprint</a> | <a href="/en/privacy-policy/">Privacy Policy</a>',
             copyright: 'Copyright © 2019-present wielebenwir e.V.',
           }
         }

@@ -1,5 +1,7 @@
 #  Datenschutzerklärung
 
+THIS IS NOT YET TRANSLATED.
+
 #  1\. Datenschutz auf einen Blick
 
 ###  Allgemeine Hinweise
