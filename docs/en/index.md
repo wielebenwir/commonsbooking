@@ -58,16 +58,7 @@ hero:
       <p>Other platforms can be connected to CommonsBooking via an open interface. Learn more about the CommonsAPI and the CommonsHUB here.</p>
     </div>
   </div>
-
 <div class="feature-row reverse">
-    <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
-    <div class="feature-text">
-        <h1>Newsletter</h1>
-        <p>We will keep you posted. Subscribe to our newsletter</p>
-    </div>
-</div>
-
-<div class="feature-row">
     <img src="/img/icon-support-chat.png" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
         <h1>Community</h1>
@@ -78,4 +69,13 @@ hero:
         </ul>
     </div>
 </div>
+</div>
+
+<div class="feature-row reverse">
+    <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
+    <div class="feature-text">
+        <h1>Newsletter</h1>
+        <p>We will keep you posted. Subscribe to our newsletter</p>
+        <iframe width="540" height="610" src="https://sibforms.com/serve/MUIFAN-ggWbnYjZwWLwTCNSupEK396T5SJ4QYHaN1S1jncaJWvKtgbOBFMy4uKUWjejpBpFTyg5GsMlq1LygOyDb7ST419kyHFfM8TXk4-OgVOzihli0gcmPymdodU-4SMzBNhr4Q0zpNYEf5BD7iiWBVYHK5GnphuL7tYpBhx6LUci9Y1mi_PHe2XnwNEXSQ6qRYxn6wvZ53AkG" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+    </div>
 </div>
