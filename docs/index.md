@@ -28,7 +28,7 @@ hero:
 <div class="feature-section">
 
   <div class="feature-row">
-    <img src="/img/logo-with-objects.png" alt="Feature 1" class="feature-image" />
+    <img src="/img/icon-buchung.png" alt="Feature 1" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
       <h1>Artikel und Stationen flexibel organisieren</h1>
         <p>
