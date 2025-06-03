@@ -75,10 +75,10 @@ Regel hinzufügen.
 
 
 ```php
-    add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
-        $privileged_roles[] = 'editor';
-        return $privileged_roles;
-    });
+add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
+    $privileged_roles[] = 'editor';
+    return $privileged_roles;
+});
 ```
 
 Dieser Schnipsel fügt zum Beispiel die Rolle "Redakteur" mit dem slug editor

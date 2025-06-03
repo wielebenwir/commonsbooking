@@ -25,19 +25,17 @@ wir das Problem besser nachvollziehen.
 
 Die Action Hooks sind nach dem Prinzip
 
-
-
-    commonsbooking_(before/after)_(template-file)
+`commonsbooking_(before/after)_(template-file)`
 
 strukturiert. Mit der Funktion _add_action_ kannst du deine eigene Callback
 Funktion integrieren. Beispiel:
 
 
 ```php
-    function itemsingle_callback() {
-        // dein code hier
-    }
-    add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
+function itemsingle_callback() {
+    // dein code hier
+}
+add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
 ```
 
 ###  Alle Action Hooks im Überblick:
@@ -79,9 +77,7 @@ zurückgibt.
 Es gibt auch Filter Hooks, mit denen du zusätzliche Benutzerrollen, die
 zusätzlich zum CB Manager Artikel und Standorte administrieren können,
 hinzufügen kannst.
-Mehr dazu: [ Zugriffsrechte vergeben (CB-Manager) ](/dokumentation/grundlagen/rechte-
-des-commonsbooking-manager/#andere-rollen-einem-artikel-standort-zuweisen-
-ab-2-8-2)
+Mehr dazu: [Zugriffsrechte vergeben (CB-Manager)](/dokumentation/grundlagen/rechte-des-commonsbooking-manager#andere-rollen-einem-artikel-standort-zuweisen-ab-2-8-2)
 
 Darüber hinaus gibt es Filter Hooks, mit denen du die voreingestellten
 Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu [hier](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern):
@@ -98,11 +94,11 @@ Snippet (gleichnamiges Plugin) oder Theme-/Plugin-Datei-Editor erreichen:
 
 
 ```php
-    /**
-     * This adds a filter to send all booking confirmations to one email adress.
-     */
-    function mywebsite_cb_return_location_mail( $value ){
-        return 'yourname@example.com';
-    }
-    add_filter('commonsbooking_tag_cb_location__cb_location_email', 'mywebsite_cb_return_location_mail' );
+/**
+ * This adds a filter to send all booking confirmations to one email adress.
+ */
+function mywebsite_cb_return_location_mail( $value ){
+    return 'yourname@example.com';
+}
+add_filter('commonsbooking_tag_cb_location__cb_location_email', 'mywebsite_cb_return_location_mail' );
 ```

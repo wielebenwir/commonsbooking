@@ -145,7 +145,7 @@ add_filter( 'commonsbooking_defaults_end-time', 'change_defaults_end_time' );
 ###  Wiederholung
 
 ```php
-function change_defaults_timeframe_repetition( $repitition ) {
+function change_defaults_timeframe_repetition( $repetition ) {
     //$repetition = "norep"; //no repetition
     //$repetition = "d"; //daily
     //$repetition = "w"; //weekly

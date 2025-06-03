@@ -6,9 +6,9 @@ Um die Liste der Artikel anzuzeigen musst du einen **Shortcode** in den
 WordPress-Editor einfügen. CommonsBooking bietet [ diverse Shortcodes für
 Karten, Tabellen und Listen ](/dokumentation/einstellungen/shortcodes) .
 
-  *     * Lege dazu zuerst eine Seite an, etwa “ **Meine Räder** “.
-    * Kopiere nun folgenden Shortcode in den Editor (inklusive der eckigen Klammern): ` [cb_items] `
-    * Wenn du den Gutenberg-Editor verwendest, musst du zunächst den Block “Shortcode” einfügen.
+  * Lege dazu zuerst eine Seite an, etwa “ **Meine Räder** “.
+  * Kopiere nun folgenden Shortcode in den Editor (inklusive der eckigen Klammern): ` [cb_items] `
+  * Wenn du den Gutenberg-Editor verwendest, musst du zunächst den Block “Shortcode” einfügen.
 
 ##  Über die Artikel-Liste
 

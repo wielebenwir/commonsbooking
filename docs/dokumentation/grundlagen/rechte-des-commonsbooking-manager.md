@@ -77,18 +77,13 @@ werden kann:
 **Berechtigung** |  **Bewirkt**
 ---|---
 manage_commonsbooking  |  CommonsBooking Menüpunkt im Backend anklickbar (Vorraussetzung für alle anderen Berechtigungen)
-
 manage_commonsbooking_cb_booking  |  Buchungen-Menüpunkt im Backend anzeigen
-
 manage_commonsbooking_cb_item  |  Artikel-Menüpunkt im Backend anzeigen
-
 manage_commonsbooking_cb_location  |  Standorte-Menüpunkt im Backend anzeigen
-
 manage_commonsbooking_cb_map  |  Karten-Menüpunkt im Backend anzeigen
-
 manage_commonsbooking_cb_restriction  |  Einschränkungen-Menüpunkt im Backend anzeigen
-
 manage_commonsbooking_cb_timeframe  |  Zeitrahmen-Menüpunkt im Backend anzeigen
+
 Diese Berechtigungen definieren erstmal NUR, ob der Menüpunkt im Backend für
 die Administrierenden angezeigt wird. Das heißt noch nicht, dass die Rollen
 auch die Artikel bearbeiten dürfen.
@@ -109,7 +104,7 @@ beschrieben, hier nur ein Screenshot von den Berechtigungen für einen Artikel.
 
 Nur wenn die entsprechende Rolle auch die Berechtigung für eine Aktion
 bekommen hat, kann sie auch diese durchführen. Das heißt also, dass z.B. die
-manage_commonsbooking_cb_item Berechtigung zu verleihen wenig Sinn ergibt,
+`manage_commonsbooking_cb_item` Berechtigung zu verleihen wenig Sinn ergibt,
 wenn nicht zumindest auch die edit_cb_items Berechtigung oder eine andere
 Berechtigung für Artikel verliehen wird.
 
@@ -122,16 +117,16 @@ zu stornieren.
 Es ist mit einem kleinen Codeschnipsel möglich, auch eine weitere Rolle zu
 definieren die einem Artikel / Standort zugewiesen werden kann und diesen dann
 entsprechend ihrer / seiner Berechtigung bearbeiten darf. Das funktioniert mit
-einem [ Filter ](/dokumentation/einstellungen/hooks-und-filter) (Dort findest du auch
-mehr Infos zu Codeschnipseln). Dieser heißt _commonsbooking_manager_roles_ und
+einem [Filter](/dokumentation/einstellungen/hooks-und-filter) (Dort findest du auch
+mehr Infos zu Codeschnipseln). Dieser heißt `commonsbooking_manager_roles` und
 kann zum Beispiel wie folgt benutzt werden:
 
 ```php
-    add_filter('commonsbooking_manager_roles', 'add_manager' );
-    function add_manager( $array ){
-        $array[]='editor';
-        return $array;
-    }
+add_filter('commonsbooking_manager_roles', 'add_manager' );
+function add_manager( $array ){
+    $array[]='editor';
+    return $array;
+}
 ```
 
 Dieser Codeschnipsel würde die Rolle mit dem Namen ‘editor’ zu den Rollen

@@ -20,11 +20,11 @@ Folgende Felder könnt ihr selbst in den jeweiligen Abschnitten (Artikel,
 Standorte, Benutzende) hinzufügen:
 
   * **Standorte**
-    * Name des Standorts: post_title 
+    * Name des Standorts: `post_title`
   * **Artikel**
-    * Name des Artikels: post_title 
+    * Name des Artikels: `post_title`
   * **Benutzende**
-    * Vorname: user_firstname 
-    * Nachname: user_lastname 
-    * Login: user_login 
+    * Vorname: `user_firstname`
+    * Nachname: `user_lastname`
+    * Login: `user_login`
 

@@ -321,33 +321,6 @@ abgeschlossener Bearbeitung Ihres Anliegens). Zwingende gesetzliche
 Bestimmungen – insbesondere gesetzliche Aufbewahrungsfristen – bleiben
 unberührt.
 
-###  Kommentarfunktion auf dieser Website
-
-Für die Kommentarfunktion auf dieser Seite werden neben Ihrem Kommentar auch
-Angaben zum Zeitpunkt der Erstellung des Kommentars, Ihre E-Mail-Adresse und,
-wenn Sie nicht anonym posten, der von Ihnen gewählte Nutzername gespeichert.
-
-**Speicherung der IP-Adresse**
-
-Unsere Kommentarfunktion speichert die IP-Adressen der Nutzer, die Kommentare
-verfassen. Da wir Kommentare auf dieser Website nicht vor der Freischaltung
-prüfen, benötigen wir diese Daten, um im Falle von Rechtsverletzungen wie
-Beleidigungen oder Propaganda gegen den Verfasser vorgehen zu können.
-
-**Speicherdauer der Kommentare**
-
-Die Kommentare und die damit verbundenen Daten (z. B. IP-Adresse) werden
-gespeichert und verbleiben auf dieser Website, bis der kommentierte Inhalt
-vollständig gelöscht wurde oder die Kommentare aus rechtlichen Gründen
-gelöscht werden müssen (z. B. beleidigende Kommentare).
-
-**Rechtsgrundlage**
-
-Die Speicherung der Kommentare erfolgt auf Grundlage Ihrer Einwilligung (Art.
-6 Abs. 1 lit. a DSGVO). Sie können eine von Ihnen erteilte Einwilligung
-jederzeit widerrufen. Dazu reicht eine formlose Mitteilung per E-Mail an uns.
-Die Rechtmäßigkeit der bereits erfolgten Datenverarbeitungsvorgänge bleibt vom
-Widerruf unberührt.
 
 ##  5\. Newsletter
 
@@ -429,32 +402,6 @@ Weitere Informationen über Datenschutz bei YouTube finden Sie in deren
 Datenschutzerklärung unter: [ https://policies.google.com/privacy?hl=de
 ](https://policies.google.com/privacy?hl=de) .
 
-###  Vimeo
-
-Diese Website nutzt Plugins des Videoportals Vimeo. Anbieter ist die Vimeo
-Inc., 555 West 18th Street, New York, New York 10011, USA.
-
-Wenn Sie eine unserer mit einem Vimeo-Plugin ausgestatteten Seiten besuchen,
-wird eine Verbindung zu den Servern von Vimeo hergestellt. Dabei wird dem
-Vimeo-Server mitgeteilt, welche unserer Seiten Sie besucht haben. Zudem
-erlangt Vimeo Ihre IP-Adresse. Dies gilt auch dann, wenn Sie nicht bei Vimeo
-eingeloggt sind oder keinen Account bei Vimeo besitzen. Die von Vimeo
-erfassten Informationen werden an den Vimeo-Server in den USA übermittelt.
-
-Wenn Sie in Ihrem Vimeo-Account eingeloggt sind, ermöglichen Sie Vimeo, Ihr
-Surfverhalten direkt Ihrem persönlichen Profil zuzuordnen. Dies können Sie
-verhindern, indem Sie sich aus Ihrem Vimeo-Account ausloggen.
-
-Die Nutzung von Vimeo erfolgt im Interesse einer ansprechenden Darstellung
-unserer Online-Angebote. Dies stellt ein berechtigtes Interesse im Sinne des
-Art. 6 Abs. 1 lit. f DSGVO dar. Sofern eine entsprechende Einwilligung
-abgefragt wurde, erfolgt die Verarbeitung ausschließlich auf Grundlage von
-Art. 6 Abs. 1 lit. a DSGVO; die Einwilligung ist jederzeit widerrufbar.
-
-Weitere Informationen zum Umgang mit Nutzerdaten finden Sie in der
-Datenschutzerklärung von Vimeo unter: [ https://vimeo.com/privacy
-](https://vimeo.com/privacy) .
-
 ###  Google Web Fonts
 
 Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten so genannte
@@ -481,75 +428,8 @@ https://developers.google.com/fonts/faq
 Google: [ https://policies.google.com/privacy?hl=de
 ](https://policies.google.com/privacy?hl=de) .
 
-###  OpenStreetMap
-
-Wir nutzen den Kartendienst von OpenStreetMap (OSM). Anbieterin ist die Open-
-Street-Map Foundation (OSMF), 132 Maney Hill Road, Sutton Coldfield, West
-Midlands, B72 1JU, United Kingdom.
-
-Wenn Sie eine Website besuchen, auf der OpenStreetMap eingebunden ist, werden
-u. a. Ihre IP-Adresse und weitere Informationen über Ihr Verhalten auf dieser
-Website an die OSMF weitergeleitet. OpenStreetMap speichert hierzu unter
-Umständen Cookies in Ihrem Browser. Das sind Textdateien, die auf Ihrem
-Computer gespeichert werden und die eine Analyse der Benutzung der Website
-durch Sie ermöglichen. Sie können die Speicherung der Cookies durch eine
-entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie
-jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche
-Funktionen dieser Website vollumfänglich werden nutzen können.
-
-Ferner kann Ihr Standort erfasst werden, wenn Sie dies in Ihren
-Geräteeinstellungen – z. B. auf Ihrem Handy – zugelassen haben. Der Anbieter
-dieser Seite hat keinen Einfluss auf diese Datenübertragung. Details entnehmen
-Sie der Datenschutzerklärung von OpenStreetMap unter folgendem Link: [
-https://wiki.osmfoundation.org/wiki/Privacy_Policy
-](https://wiki.osmfoundation.org/wiki/Privacy_Policy) .
-
-Die Nutzung von OpenStreetMap erfolgt im Interesse einer ansprechenden
-Darstellung unserer Online-Angebote und einer leichten Auffindbarkeit der von
-uns auf der Website angegebenen Orte. Dies stellt ein berechtigtes Interesse
-im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar. Sofern eine entsprechende
-Einwilligung abgefragt wurde (z. B. eine Einwilligung zur Speicherung von
-Cookies), erfolgt die Verarbeitung ausschließlich auf Grundlage von Art. 6
-Abs. 1 lit. a DSGVO; die Einwilligung ist jederzeit widerrufbar.
-
-###  Google reCAPTCHA
-
-Wir nutzen „Google reCAPTCHA“ (im Folgenden „reCAPTCHA“) auf dieser Website.
-Anbieter ist die Google Ireland Limited („Google“), Gordon House, Barrow
-Street, Dublin 4, Irland.
-
-Mit reCAPTCHA soll überprüft werden, ob die Dateneingabe auf dieser Website
-(z. B. in einem Kontaktformular) durch einen Menschen oder durch ein
-automatisiertes Programm erfolgt. Hierzu analysiert reCAPTCHA das Verhalten
-des Websitebesuchers anhand verschiedener Merkmale. Diese Analyse beginnt
-automatisch, sobald der Websitebesucher die Website betritt. Zur Analyse
-wertet reCAPTCHA verschiedene Informationen aus (z. B. IP-Adresse,
-Verweildauer des Websitebesuchers auf der Website oder vom Nutzer getätigte
-Mausbewegungen). Die bei der Analyse erfassten Daten werden an Google
-weitergeleitet.
-
-Die reCAPTCHA-Analysen laufen vollständig im Hintergrund. Websitebesucher
-werden nicht darauf hingewiesen, dass eine Analyse stattfindet.
-
-Die Speicherung und Analyse der Daten erfolgt auf Grundlage von Art. 6 Abs. 1
-lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse daran, seine
-Webangebote vor missbräuchlicher automatisierter Ausspähung und vor SPAM zu
-schützen. Sofern eine entsprechende Einwilligung abgefragt wurde (z. B. eine
-Einwilligung zur Speicherung von Cookies), erfolgt die Verarbeitung
-ausschließlich auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO; die Einwilligung
-ist jederzeit widerrufbar.
-
-Weitere Informationen zu Google reCAPTCHA entnehmen Sie den Google-
-Datenschutzbestimmungen und den Google Nutzungsbedingungen unter folgenden
-Links: [ https://policies.google.com/privacy?hl=de
-](https://policies.google.com/privacy?hl=de) und [
-https://policies.google.com/terms?hl=de
-](https://policies.google.com/terms?hl=de) .
-
 Quelle: [ https://www.e-recht24.de/muster-datenschutzerklaerung.html
 ](https://www.e-recht24.de/muster-datenschutzerklaerung.html)
-
-Bitte dieses Feld leer lassen
 
 ###  Newsletter abonnieren für Update-Infos
 

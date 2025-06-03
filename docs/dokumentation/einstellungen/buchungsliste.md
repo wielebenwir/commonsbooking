@@ -2,7 +2,7 @@
 
 __
 
-Über den Shortcode [cb_bookings] kannst Du auf einer beliebigen Seite die
+Über den Shortcode `[cb_bookings]` kannst Du auf einer beliebigen Seite die
 Buchungsliste anzeigen.
 
 Es empfiehlt sich eine Seite mit dem Titel "Buchungen" anzulegen und dort dann
