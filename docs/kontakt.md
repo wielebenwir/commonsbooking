@@ -19,8 +19,6 @@ Dann ruft uns einfach an unter +49221-98650801
 Ihr wollt regelmäßig über Neuigkeiten zu CommonsBooking informiert werden?
 Dann abonniert doch unseren Newsletter:
 
-Bitte dieses Feld leer lassen
-
 ###  Newsletter abonnieren für Update-Infos
 
 Prüfe deinen Posteingang oder Spam-Ordner, um dein Abonnement zu bestätigen.
