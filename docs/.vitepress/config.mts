@@ -18,13 +18,13 @@ export default defineConfig({
   },
 
   head: [
-    ['link', { 'rel': 'icon', type: 'image/png', href: '/logo.png' }]
+    ['link', { 'rel': 'icon', type: 'image/png', href: 'img/logo.png' }]
   ],
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
 
-    logo: { src: '/logo.png', width: 24, height: 24 },
+    logo: { src: 'img/logo.png', width: 24, height: 24 },
 
     nav: [
     { text: 'Merkmale & Funktionen', link: '/funktionen/' }

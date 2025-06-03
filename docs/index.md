@@ -17,7 +17,7 @@ hero:
       text: Spenden
       link: /spenden/
   image:
-    src: /img/logo-big.png
+    src: /img/logo-with-objects.png
     alt: CommonsBooking Logo
 ---
 
@@ -28,7 +28,7 @@ hero:
 <div class="feature-section">
 
   <div class="feature-row">
-    <img src="/img/logo-big.png" alt="Feature 1" class="feature-image" />
+    <img src="/img/logo-with-objects.png" alt="Feature 1" class="feature-image" />
     <div class="feature-text">
       <h1>Artikel und Stationen flexibel organisieren</h1>
         <p>
@@ -44,7 +44,7 @@ hero:
   </div>
 
   <div class="feature-row reverse">
-    <img src="/img/icon-help-alt.png" alt="Feature 2" class="feature-image" />
+    <img src="/img/icon-help-alt.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
       <h1>Umfassende Hilfe erhalten</h1>
       <p>Neben unserer Dokumentation unterstützt euch das CommonsBooking-Team <b>persönlich</b> bei allen Fragen zu CommonsBooking per <b>Online-Support</b> und <b>Telefon-Hotline</b>: </p>
