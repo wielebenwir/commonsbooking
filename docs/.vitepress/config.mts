@@ -242,12 +242,12 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
               { text: 'Install', link: 'install' },
-              { text: 'Migration from CB1', link: 'migration-from-cb1' },
-              { text: 'Theme', link: 'theme' },
-              { text: 'Update-News', link: 'update-news' }
+              //{ text: 'Migration from CB1', link: 'migration-from-cb1' },
+              //{ text: 'Theme', link: 'theme' },
+              //{ text: 'Update-News', link: 'update-news' }
           ]
       },
-      {
+      /*{
           text: 'First steps', base: '/en/documentation/first-steps/',
           collapsed: true,
           items: [
@@ -332,6 +332,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         { text: 'Release overview', link: 'release-overview' }
       ]
     },
+    */
     /* Won't be added to English version
     {
       text: 'Informationen zur alten Version 0.9', base: '/dokumentation/informationen-zur-alten-version-0-9/',
@@ -346,6 +347,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
       ]
     },
     */
+   /*
       {
           text: 'Frequently Asked Questions (FAQ)', base: '/en/documentation/faq/',
           collapsed: true,
@@ -358,6 +360,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'How to avoid spam registrations', link: 'avoid-spam-registrations'}
           ]
       },
+      */
   ]
 }
 
