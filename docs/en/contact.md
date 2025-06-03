@@ -1,6 +1,6 @@
 # Support & Contact
 
-## **You have questions or need help with the installation?
+## You have questions or need help with the installation?
 
 We will be happy to help you with any new questions or problems!
 
