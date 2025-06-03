@@ -33,11 +33,12 @@ strukturiert. Mit der Funktion _add_action_ kannst du deine eigene Callback
 Funktion integrieren. Beispiel:
 
 
-
+```php
     function itemsingle_callback() {
         // dein code hier
     }
     add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
+```
 
 ###  Alle Action Hooks im Überblick:
 
@@ -96,7 +97,7 @@ verschicken. Dann kannst das mit folgendem Filter-Hook via eingebundem Code-
 Snippet (gleichnamiges Plugin) oder Theme-/Plugin-Datei-Editor erreichen:
 
 
-
+```php
     /**
      * This adds a filter to send all booking confirmations to one email adress.
      */
@@ -104,4 +105,4 @@ Snippet (gleichnamiges Plugin) oder Theme-/Plugin-Datei-Editor erreichen:
         return 'yourname@example.com';
     }
     add_filter('commonsbooking_tag_cb_location__cb_location_email', 'mywebsite_cb_return_location_mail' );
-
+```
