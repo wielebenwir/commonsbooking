@@ -70,6 +70,7 @@ hero:
 </div>
 
 <div class="feature-row">
+    <img src="/img/icon-support-chat.png" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
         <h1>Community</h1>
         <p>CommonsBooking wird jetzt schon von dutzenden gemeinnützigen Initiativen genutzt. Auf diesen Seiten findest du einen Überblick über verschiedene Arten von bereits existierende Initiativen die CommonsBooking in ihrer Arbeit unterstützt:</p>
