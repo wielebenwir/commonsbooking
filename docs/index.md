@@ -66,6 +66,7 @@ hero:
     <div class="feature-text">
         <h1>Newsletter</h1>
         <p>Wir halten dich auf dem Laufenden. Abonniere unseren CommonsBooking Newsletter.</p>
+        <!-- TODO Newsletter -->
     </div>
 </div>
 
@@ -80,8 +81,5 @@ hero:
         </ul>
     </div>
 </div>
-
-
-  <!-- Weitere Sektionen nach Bedarf -->
 
 </div>

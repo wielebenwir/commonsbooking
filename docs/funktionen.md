@@ -69,22 +69,4 @@ es kann aber für den Verleih beliebiger Dinge verwendet werden.
 
 * * *
 
-##  Newsletter abonnieren
-
-Wir halten dich auf dem Laufenden. Abonniere unseren CommonsBooking Newsletter
-_
-
-Bitte dieses Feld leer lassen
-
-###  Newsletter abonnieren für Update-Infos
-
-Prüfe deinen Posteingang oder Spam-Ordner, um dein Abonnement zu bestätigen.
-
-_
-
-Bitte dieses Feld leer lassen
-
-###  Newsletter abonnieren für Update-Infos
-
-Prüfe deinen Posteingang oder Spam-Ordner, um dein Abonnement zu bestätigen.
-
+<!-- TODO Newsletter -->
