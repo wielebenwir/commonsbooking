@@ -218,8 +218,8 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           text: 'Schnittstellen / API', base: '/dokumentation/schnittstellen-api/',
           collapsed: true,
           items: [
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' },
-              { text: 'Was ist die CommonsAPI?', link: 'was-ist-die-commonsapi' }
+              { text: 'Was ist die CommonsAPI?', link: 'was-ist-die-commonsapi' },
+              { text: 'CommonsBooking API', link: 'commonsbooking-api' }
           ]
       },
 
@@ -342,8 +342,8 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           text: 'Extensions / API', base: '/en/documentation/api/',
           collapsed: true,
           items: [
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' },
-              { text: 'What is the CommonsAPI?', link: 'what-is-the-commonsapi' }
+              { text: 'What is the CommonsAPI?', link: 'what-is-the-commonsapi' },
+              { text: 'CommonsBooking API', link: 'commonsbooking-api' }
           ]
       },
 
