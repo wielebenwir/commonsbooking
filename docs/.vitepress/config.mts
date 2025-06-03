@@ -125,6 +125,7 @@ export default defineConfig({
                     closeKeyAriaLabel: 'Taste zum Schließen',
                 }
               }
+              }
             }
           }
         }
