@@ -2,9 +2,7 @@
 
 __
 
-Detaillierte Release-Informationen findest du auf der [ **CommonsBooking
-WordPress-Seite**
-](https://de.wordpress.org/plugins/commonsbooking/#developers)
+Detaillierte Release-Informationen findest du auf der [CommonsBooking WordPress-Seite](https://de.wordpress.org/plugins/commonsbooking/#developers)
 
 ##  Hinweise zum Update auf Version > 2.6
 
