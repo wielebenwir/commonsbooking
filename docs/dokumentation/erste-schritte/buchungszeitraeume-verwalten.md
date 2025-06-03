@@ -19,12 +19,14 @@ Stationsbetreibenden.
 
   * **Eine mehrtägige Abwesehenheit durch Urlaub:** Typ=”Feiertage oder Station geschlossen”, Ganzer Tag= [ ✔️ ](https://emojiterra.com/de/kraftiges-hakchen/ "✔️ kräftiges Häkchen") , Zeitrahmenwiederholung=”Keine Wiederholung”
 
-> Auf dieser Seite erfährst du, wie du einen Zeitrahmen im Backend anlegst.
-> Wenn du wissen willst, wie du nach dem Veröffentlichen deine Zeiträume auf
-> den Frontend-Seiten mit Hilfe von Shortcodes darstellen kannst,  [ klicke
-> hier. ](/dokumentation/einstellungen/shortcodes) **Achtung** : Zeitrahmen können
-> nicht direkt über die Backend-Seite “Beitrag anzeigen” aufgerufen werden,
-> sondern müssen über die o.g. Shortcodes eingebunden werden.
+::: info Los legen!
+Auf dieser Seite erfährst du, wie du einen Zeitrahmen im Backend anlegst.
+Wenn du wissen willst, wie du nach dem Veröffentlichen deine Zeiträume auf
+den Frontend-Seiten mit Hilfe von Shortcodes darstellen kannst,  [klicke hier.](/dokumentation/einstellungen/shortcodes)
+
+**Achtung** : Zeitrahmen können nicht direkt über die Backend-Seite “Beitrag anzeigen” aufgerufen werden,
+sondern müssen über die o.g. Shortcodes eingebunden werden.
+:::
 
 ##  Eingabfelder Schritt für Schritt
 
@@ -68,8 +70,9 @@ dann dort angezeigt.
   * Dies hat den Vorteil, dass du nicht immer wieder neue Zeitrahmen anlegen musst, sondern die buchbaren Tage eines Zeitrahmens ohne Enddatum täglich neu freigeschaltet werden.
   * Standard-Wert sind 365 Tage.
 
-**Zeitrahmenwiederholung:
-** Wähle aus, welche Arten von Wiederholungen du gerne möchtest.
+**Zeitrahmenwiederholung:**
+
+* Wähle aus, welche Arten von Wiederholungen du gerne möchtest.
 
   * **keine Wiederholung**
     * Bei Zeitrahmen vom Typ “buchbar” diese Option nur verwenden, du wirklich nur einen Tag buchbar machen möchtest. Möchtest du mehrere Tage als buchbare Tage anbieten (was der häufigste Fall sein wird), dann bitte einen der anderen Wiederholungs-Arten auswählen.
@@ -83,8 +86,8 @@ dann dort angezeigt.
     * Bei dieser Option wird ausgehend vom Start-Datum die gewählte Einstellung jeden Monat am gleichen Datum bis zum End-Datum wiederholt
     * Beachte, dass du bei längeren Zeitdauern die Tage in der Einstellung “maximale Buchungstage im Voraus” entsprechend hoch setzt.
   * **jährlich**
-    *       * Bei dieser Option wird ausgehend vom Start-Datum die gewählte Einstellung jedes Jahr am gleichen Datum bis zum End-Datum wiederholt.
-      * Beachte, dass du bei längeren Zeitdauern die Tage in der Einstellung “maximale Buchungstage im Voraus” entsprechend hoch setzt
+    * Bei dieser Option wird ausgehend vom Start-Datum die gewählte Einstellung jedes Jahr am gleichen Datum bis zum End-Datum wiederholt.
+    * Beachte, dass du bei längeren Zeitdauern die Tage in der Einstellung “maximale Buchungstage im Voraus” entsprechend hoch setzt
 
 **Ganzer Tag:**
 
