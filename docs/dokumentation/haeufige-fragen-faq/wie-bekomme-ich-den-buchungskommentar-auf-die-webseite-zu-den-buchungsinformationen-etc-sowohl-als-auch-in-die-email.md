@@ -3,5 +3,5 @@
 __
 
 In den Einstellungen kannst du die Buchungskommentare aktivieren. In den email
-Vorlagen musst du dann folgenden Code einfügen: <div v-pre>`{{booking:returnComment}}`</div>
+Vorlagen musst du dann folgenden Code einfügen: <span v-pre>`{{booking:returnComment}}`</span>
 
