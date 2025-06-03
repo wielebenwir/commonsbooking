@@ -1,53 +1,45 @@
-#  Installieren
+# Install
 
 __
 
-Installieren der aktuellen Version des neuen CommonsBooking (Version 2.x.x)
+Installing the current version of the new CommonsBooking (Version 2.x.x)
 
-###  ComonsBooking installieren
+### Install CommonsBooking
 
-  * Gehe zu **WordPress** -> **Plugins** -> **Installieren** und Suche nach “ **CommonsBooking** “.
-  * Nach Klick auf “ **Installieren** ” und “ **Aktivieren** ” ist es einsatzbereit.
+  * Go to **WordPress** -> **Plugins** -> **Install** and search for ‘ **CommonsBooking** ’.
+  * After clicking on ‘ **Install** “ and ” **Activate** ’ it is ready to use.
 
-###  WordPress-Einstellungen für Datum und Zeit prüfen
+### Check WordPress settings for date and time
 
-CommonsBooking arbeitet mit den Zeit- und Datumseinstellungen, die du in
-WordPress unter “Einstellungen -> Allgemein -> Zeitzone” eingestellt hast.
-Auch die Formatierungen für die Zeitanzeige (24h-Format etc.) und die
-Datumsformatierung übernimmt CommonsBooking aus den allgemein WordPress-
-Einstellungen.
+CommonsBooking works with the time and date settings set in
+WordPress under ‘Settings -> General -> Time zone’.
+The formatting for the time display (24h format etc.) and the date formatting settings set in the general WordPress settings are also valid for CommonsBooking.
 
-Daher prüfe bitte, dass du die richtige Zeitzone in WordPress konfiguriert
-hast. Wenn du das noch nicht getan hast hole unter “Einstellungen / Allgemein
-/ Zeitzone” nach.
+Therefore, please check that you have configured the correct time zone in WordPress. If you have not yet done so, go to ‘Settings / General/ Timezone’.
 
-###  CommonsBooking konfigurieren
+### Configure CommonsBooking
 
-in den WordPress-Einstellungen findest Du nun einen neuen Punkt
-“CommonsBooking”. Hier kannst Du einige Voreinstellungen vornehmen.  Bitte
-mindestens den Absender-Namen und E-Mail im Tab “Vorlagen” eintragen  Weitere
-Informationen zur [ Konfiguration ](/dokumentation/einstellungen-2/) .
+In the WordPress settings you will now find a new list item ‘CommonsBooking’. Here you can do perform the initial configuration.  Please
+enter at least the sender name and e-mail in the ‘Templates’ tab to get started. More information can be found under [ Configuration ](/en/documentation/settings) .
 
-###  Standorte, Artikel und Zeitrahmen anlegen
+### Create locations, articles and time frames
 
-  * **Artikel** unter “CommonsBooking -> Artikel” anlegen
-  * **Standorte** unter “CommonsBooking -> Standorte” anlegen
-  * Anschließend kannst du im Menüpunkt “ **Zeitrahmen** ” festlegen, wann ein Artikel an einem bestimmten Standort für die Ausleihe verfügbar sein soll.
+  * Create **articles** under ‘CommonsBooking -> Articles’
+  * **Create locations** under ‘CommonsBooking -> Locations’
+  * You can then specify when an item should be available for lending at a specific location under the menu item ‘**Time frame**’.
 
-Detailliierte Informationen dazu findest du unter [Erste Schritte](/dokumentation/erste-schritte/).
+You can find detailed information on this under [first steps](/en/documentation/first-steps/).
 
-###  Inhalte auf der Website einbinden
+### Show content on the website
 
-  * Eine Seite anlegen, auf der deine Artikel erscheinen sollen Den Textbaustein (Shortocde) ` [cb_items] ` in die Seite einbinden.
-  * Mit dem klassischen WordPress-Editor fügst du [cb_items] inklusive der Klammern einfach in das Textfeld ein.
-  * Mit dem neuen Editor klickst du auf das schwarze **\+ Plus im Kasten** , wählst “Shortcode” und fügst [cb_items] inklusive der Klammern ein.
-  * Weitere [ Shortcodes für Karten, Tabellen, etc ](/dokumentation/einstellungen/shortcodes) . Fertig!
-  * im Frontend stehen die Artikel nun zur Buchung zur Verfügung.
+  * Create a page on which your articles should appear: Include the text module (shortcode) `[cb_items]` in the page.
+  * With the classic WordPress editor, simply insert `[cb_items]` including the brackets into the text field.
+  * With the new editor, click on the black **\+ plus in the box**, select ‘Shortcode’ and insert `[cb_items]` including the brackets.
+  * More [ shortcodes for maps, tables, etc ](/en/documentation/administration/shortcodes) . Done!
+  * The items are now available to book in the frontend.
 
-###  **Hinweis** :
+### **Note** :
 
-Wenn auf der Artikel- oder Standortliste (die Seiten mit dem cb_items oder
-cb_locations-Shortcode) nach Klick auf “Jetzt Buchen” keine gültige Seite
-angezeigt wird, müsst ihr einmal in den WordPress Einstellungen auf die Seite
-“Permalinks” gehen und dort auf speichern klicken.
+If the item or location list (the pages with the cb_items or
+cb_locations shortcode) show an invalid page after clicking on ‘Book now’, you have to go to the WordPress settings on the ‘Permalinks’ page and click on "Save".
 
