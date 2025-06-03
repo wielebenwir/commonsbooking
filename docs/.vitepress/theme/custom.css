@@ -4,7 +4,7 @@
     --vp-c-brand-2: #87d34a;
     --vp-button-brand-bg: #67b32a;
 
-    --cp-button-brand-bg: blue;
+    --cp-button-brand-bg: #2f5aae;
     --cp-button-alt-bg: white;
     --cp-c-brand: white;
     --cp-c-alt: black;
@@ -58,7 +58,7 @@
 
 
 a.cbdoc-button {
-    padding: 5px 9px;
+    padding: 8px 12px;
     border: 1px solid black;
     border-radius: 5px;
     text-decoration: none;
