@@ -8,7 +8,7 @@ z.B. deutschlandweite Verzeichnisse von freien Lastenrädern oder ggf.
 übergreifende Portale) verbunden werden. Die [Aktivierung](/dokumentation/schnittstellen-api/commonsbooking-api) und Freigaben können von euch
 natürlich individuell eingestellt werden.
 
-[Technische Details findet ihr hier](/dokumentation/schnittstellen-api/commonsbooking-api) .
+[Technische Details findet ihr hier](/dokumentation/schnittstellen-api/commonsbooking-api).
 
 ##  So funktioniert CommonsAPI und CommonsHUB
 
