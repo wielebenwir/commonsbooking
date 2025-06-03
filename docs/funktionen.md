@@ -28,7 +28,7 @@ bestehende Webseiten integrieren.
 
 ###  Einfache Administration
 
-  * ****Neu** : ** Benutzer*innen können zugeordnete Artikel, Stationen und Zeiträume selbst verwalten.
+  * **Neu** : Benutzer*innen können zugeordnete Artikel, Stationen und Zeiträume selbst verwalten.
   * Automatische Buchungsannahme: Nutzende können Gegenstände buchen, ohne dass Administration nötig ist.
 
 ![](/img/cb-managers.png)

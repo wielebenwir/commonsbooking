@@ -4,12 +4,10 @@ Um CommonsBooking regelmäßig upzudaten, Support leisten zu können und neue
 Features zu entwickeln sind wir auf Spenden und Förderungen angewiesen.
 
 Unterstütze die Weiterentwicklung von CommonsBooking. Idealerweise mit einer
-**regelmäßigen Spende** , die sich nach den Möglichkeiten eurer Initiative
-richtet.
-Nutze dazu das folgende Spendenformular, welches von betterplace.de
-bereitgestellt wird. Die Spende geht an den wielebenwir e.V. Das ist der
-gemeinnützige Verein hinter CommonsBooking. Eine Spendenbescheinigung erhältst
-du automatisch von Betterplace am Anfang des folgenden Jahres.
+**regelmäßigen Spende**, die sich nach den Möglichkeiten eurer Initiative richtet.
+Nutze dazu das folgende Spendenformular, welches von betterplace.de bereitgestellt wird.
+Die Spende geht an den wielebenwir e.V. Das ist der gemeinnützige Verein hinter CommonsBooking.
+Eine Spendenbescheinigung erhältst du automatisch von Betterplace am Anfang des folgenden Jahres.
 
 Ganz herzlichen Dank für deine Unterstützung vom CommonsBooking-Team.
 Christian, Hannes, Hans
