@@ -1,35 +1,33 @@
-#  Merkmale & Funktionen
+#  Functions and features
 
 ![](/img/banner-772x250-1.png)
 
-CommonsBooking gibt euch die Möglichkeit, Dinge (etwa: Lastenräder, Werkzeuge)
-zur gemeinschaftlichen Verwendung bereit zu stellen.
+CommonsBooking gives you the opportunity to offer items (e.g. cargo bikes, tools) for communal use.
 
-CommonsBooking ist ein WordPress-Plugin und lässt sich so einfach in
-bestehende Webseiten integrieren.
+CommonsBooking is a WordPress plugin and can therefore be easily integrated into existing websites.
 
-[ installieren ](/dokumentation/installation/installieren)
+[ Install ](/en/documentation/setup/install)
 
-[ Dokumentation ](/dokumentation/)
+[ Documentation ](/en/documentation/)
 
 * * *
 
-##  Die wichtigsten Features
+##  Key features
 
-###  Flexible Buchung
+###  Book flexibly
 
-  * **Neu:** Mehrere Buchungen pro Tag (etwa: Stundenweise Buchung)
-  * Vollständige Buchungsstrecke (Checkout) mit Buchungscodes
-  * Einstellbare maximale Buchungsdauer
-  * Bestätigungs-Mails an Ausleihende und Stationen
-  * Kartendarstellung im Frontend mit Filtermöglichkeiten
+  * **New:** Multiple bookings per day (for example: booking by the hour)
+  * Complete booking process (checkout) with booking codes
+  * Configurable booking limits
+  * Confirmation emails to clients and stations
+  * Front-end map with filter options
 
 ![](/img/hourly-booking.png)
 
-###  Einfache Administration
+###  Easy administration
 
-  * ****Neu** : ** Benutzer*innen können zugeordnete Artikel, Stationen und Zeiträume selbst verwalten.
-  * Automatische Buchungsannahme: Nutzende können Gegenstände buchen, ohne dass Administration nötig ist.
+  * **New** : Designated managers can manage items assigned by admins
+  * Automatic booking confirmation: Users can book items without the need for administration.
 
 ![](/img/cb-managers.png)
 
@@ -37,54 +35,34 @@ bestehende Webseiten integrieren.
 
 ##  Screenshots
 
-![](/img/booking-calendar.png) Buchungskalender mit stundenweiser
-Ausleihe  ![](img/booking-confirm.png) Buchungsstrecke in
-CommonsBooking  ![](img/shortcode-cb-map-filtergroups.png) Kartendarstellung
-mit Verfügbarkeit  ![](img/shortcode-cb-items.png) Übersichtliche
-Artikelliste
+![](/img/booking-calendar.png) The booking calendar with hourly booking  ![](img/booking-confirm.png) The booking process  ![](img/shortcode-cb-map-filtergroups.png) The map with displayed item availability  ![](img/shortcode-cb-items.png) Well organized item list
 
 * * *
 
-##  Weiterentwicklung
+##  Development
 
-CommonsBooking wird aktuell ständig weiterentwickelt. Folgende Meilensteine
-sind Teil der geplanten Weiterentwicklung:
+CommonsBooking is continuously under development. The following milestones are part of the planned further development:
 
-  * Erweiterte Meta-Daten
-  * Implementierung der CommonsAPI
+  * Improved Metadata
+  * Implementing the Commons API
 
-[ Installieren ](/dokumentation/installation/installieren)
+[ Install ](/en/documentation/setup/install)
 
-[ Roadmap der geplanten Weiterentwicklung ](/dokumentation/roadmap/)
-
-* * *
-
-##  Anwendungsbereiche
-
-Entwickelt wurde das WordPress-Plugin ursprünglich für die Bedürfnisse der [„Freies Lastenrad“-Bewegung](http://www.dein-lastenrad.de),
-es kann aber für den Verleih beliebiger Dinge verwendet werden.
-
-  * Du/deine Organisation besitzt Werkzeuge, die nicht täglich genutzt werden, und ihr möchtet sie verfügbar machen für lokale Gruppen.
-  * Du besitzt eine Lastenrad und willst es mit der Gemeinschaft teilen, es soll über das Jahr hinweg an verschiedenen Standorten stationiert sein.
+[ Roadmap of upcoming development milestone ](/en/documentation/roadmap/)
 
 * * *
 
-##  Newsletter abonnieren
+##  Application areas
 
-Wir halten dich auf dem Laufenden. Abonniere unseren CommonsBooking Newsletter
+The WordPress plugin was originally developed for the needs of the [„Free cargo bike movement"](http://www.dein-lastenrad.de),
+ but it can be used for the rental of any item.
+
+  * You or your organization have tools that are not used on a daily basis and you want to make them available to local groups.
+  * You own a cargo bike and want to share it with the community, it should be stationed at different locations throughout the year.
+
+* * *
+
+##  Subscribe to our newsletter
+
+We will keep you posted. Subscribe to our newsletter.
 _
-
-Bitte dieses Feld leer lassen
-
-###  Newsletter abonnieren für Update-Infos
-
-Prüfe deinen Posteingang oder Spam-Ordner, um dein Abonnement zu bestätigen.
-
-_
-
-Bitte dieses Feld leer lassen
-
-###  Newsletter abonnieren für Update-Infos
-
-Prüfe deinen Posteingang oder Spam-Ordner, um dein Abonnement zu bestätigen.
-

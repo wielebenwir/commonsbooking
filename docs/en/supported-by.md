@@ -1,6 +1,6 @@
-#  Unterstützende und Team
+#  Supporters and team
 
-####  CommonsBooking wird unterstützt durch:
+####  CommonsBooking is being supported by:
 
   * [ Anstiftung ](https://anstiftung.de)
   * [ ADFC Essen ](https://www.adfc-nrw.de/kreisverbaende/kv-essen/kreisverband-essen.html) / [ Essener Lastenräder ](https://essener-lastenrad.de)
@@ -11,7 +11,7 @@
   * [ Das Commons-Institut – Commons entstehen durch Commoning ](https://commons-institut.org)
   * [ Initiative Mobilitätskultur ](https://www.phineo.org/projekte/initiative-mobilit%C3%A4tskultur)
 
-####  Entwicklungsteam
+####  Development team
 
   * Hannes Wöhrle
   * [ markus-mw ](https://github.com/markus-mw)
@@ -19,18 +19,18 @@
   * [ Hans Morbach ](http://github.com/hansmorb)
   * [ Florian Egermann ](https://github.com/flegfleg)
 
-**Support und weitere Unterstützung**
+**Support and additional help**
 
   * [ fLotte Berlin ](https://github.com/flotte-berlin)
   * [ Christian Voigt ](https://github.com/christianvoigt)
   * [ Markus Voge ](https://github.com/sgrubsmyon)
 
 ####
-Übersetzungen
+Translations
 
   * [ Johannes Thies ](https://roesrath-velocity.de)
 
-CommonsBooking integriert Module entwickelt vom Team [ flotte Berlin
+CommonsBooking uses modules developed by the team of [ flotte Berlin
 ](https://github.com/flotte-berlin) .
 
 ![](/img/logos-supporter.png)
