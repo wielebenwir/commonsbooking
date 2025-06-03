@@ -64,28 +64,26 @@ nach der gegebenen Buchung als Zeitraum berücksichtigt.
 Wenn diese Option aktiviert ist, dann zählen stornierte Buchungen auch mit in
 die maximal buchbaren Tage für die Buchungsregeln. Dabei gilt:
 
-  * Buchung vor Beginn des Buchungszeitraums storniert: Zählt **nicht** mit in die Quote 
-  * Buchung während des Buchungszeitraums storniert: Buchung zählt die Tage von Beginn des Buchungszeitraums bis zu der Stornierung. Wenn also eine Buchung von Montag bis Mittwoch geht, und diese am Dienstag storniert wird dann zählt diese für 2 Tage und nicht für 3. 
+  * Buchung vor Beginn des Buchungszeitraums storniert: Zählt **nicht** mit in die Quote
+  * Buchung während des Buchungszeitraums storniert: Buchung zählt die Tage von Beginn des Buchungszeitraums bis zu der Stornierung. Wenn also eine Buchung von Montag bis Mittwoch geht, und diese am Dienstag storniert wird dann zählt diese für 2 Tage und nicht für 3.
 
 ###  Bestimmte Rollen grundsätzlich von allen Buchungsregeln ausnehmen
 
-Mit einem kleinen Codeschnipsel ( [ mehr dazu ](/dokumentation/einstellungen/hooks-und-
-filter) ) kannst du eine Rolle definieren, die grundsätzlich nicht von
-Buchungsregeln betroffen ist. Dafür musst du die Rolle nicht manuell bei jeder
+Mit einem kleinen Codeschnipsel ([mehr dazu hier](/dokumentation/einstellungen/hooks-und-filter)) kannst du eine Rolle
+definieren, die grundsätzlich nicht von Buchungsregeln betroffen ist. Dafür musst du die Rolle nicht manuell bei jeder
 Regel hinzufügen.
 
-    
-    
+
+```php
     add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
         $privileged_roles[] = 'editor';
         return $privileged_roles;
     });
+```
 
 Dieser Schnipsel fügt zum Beispiel die Rolle "Redakteur" mit dem slug editor
 als "privilegierte" Rolle hinzu.
 
 Darüber hinaus sind auch alle Administratoren und CB-Manager, denen der
-betroffene Artikel / Standort zugewiesen ist immer ausgenommen. [ Mehr zu
-manueller Vergabe von Berechtigungen. ](/dokumentation/grundlagen/rechte-des-
-commonsbooking-manager)
+betroffene Artikel / Standort zugewiesen ist immer ausgenommen. [Mehr zu manueller Vergabe von Berechtigungen.](/dokumentation/grundlagen/rechte-des-commonsbooking-manager)
 
