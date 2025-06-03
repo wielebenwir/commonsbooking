@@ -10,7 +10,7 @@ Dieses Update bringt einige neue Funktionen und Verbesserungen. Hier die
 wichtigsten Änderungen im Überblick. Nutzt gerne auch die Doku, um euch über
 die neuen Funktionen zu informieren.
 
-**Wichtiger Hinweis:**  
+**Wichtiger Hinweis:**
 Wenn ihr buchbare Zeitrahmen definiert hattet, die folgendermaßen eingestellt
 sind  
 _– Ganztägig = aktiviert  
@@ -65,9 +65,5 @@ API erweitert (einzelne API-Freigaben möglich).
   * Bei fehlerhaft konfigurierten Servern konnte es zu einem Fehler im Zusammenhang mit der Geo-Kodierung kommen, der das Speichern von Standorten verhinderte. Durch Umstellung auf eine andere Software-Bibliothek sollte dieser Fehler behoben sein. 
   * Kleinere Anpassungen um Kompatibilität mit WordPress 5.9 und PHP 8 zu garantieren. 
 
-Alle Changelog-Infos auch unter:  
-[ ](https://de.wordpress.org/plugins/commonsbooking/#developers) [ [
-https://de.wordpress.org/plugins/commonsbooking/#developers
-](https://de.wordpress.org/plugins/commonsbooking/#developers)
-](https://de.wordpress.org/plugins/commonsbooking/#developers)
+Alle Changelog-Infos auch unter: https://de.wordpress.org/plugins/commonsbooking/#developers
 
