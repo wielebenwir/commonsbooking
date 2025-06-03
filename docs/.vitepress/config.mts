@@ -101,7 +101,33 @@ export default defineConfig({
     logo: { src: '/img/logo.png', width: 24, height: 24 },
 
     search: {
-        provider: 'local'
+        provider: 'local',
+        options: {
+          locales: {
+            root: {
+              translations: {
+                button: {
+                  buttonText: 'Durchsuchen',
+                  buttonAriaLabel: 'Suche',
+                },
+                modal: {
+                  displayDetails: 'Details anzeigen',
+                  resetButtonTitle: 'Zurücksetzen',
+                  backButtonTitle: 'Zurück',
+                  noResultsText: 'Keine Ergebnisse gefunden',
+                  footer: {
+                    selectText: 'Auswählen',
+                    selectKeyAriaLabel: 'Taste zum Auswählen',
+                    navigateText: 'Hierhin navigieren',
+                    navigateUpKeyAriaLabel: 'Taste zum Navigieren nach oben',
+                    navigateDownKeyAriaLabel: 'Taste zum Navigieren nach unten',
+                    closeText: 'Schließen',
+                    closeKeyAriaLabel: 'Taste zum Schließen',
+                }
+              }
+            }
+          }
+        }
     },
 
     socialLinks: [
