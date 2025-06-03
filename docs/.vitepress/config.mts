@@ -36,7 +36,7 @@ export default defineConfig({
             text: 'Zuletzt aktualisiert',
         },
         editLink: {
-          pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/dokumentation/:path',
+          pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/docs/:path',
           text: 'Bearbeite diese Seite auf Github'
         },
         sidebar: {
@@ -75,7 +75,7 @@ export default defineConfig({
           }
           ],
           editLink: {
-            pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/dokumentation/:path',
+            pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/docs/:path',
             text: 'Edit this page on Github'
           },
           sidebar: {
