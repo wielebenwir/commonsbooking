@@ -61,7 +61,7 @@ hero:
     </div>
   </div>
 
-<div class="feature-row">
+<div class="feature-row reverse">
     <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
         <h1>Newsletter</h1>
