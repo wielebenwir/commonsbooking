@@ -54,7 +54,7 @@ hero:
 
 
   <div class="feature-row">
-    <img src="/img/icon-api-1-150x150.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
+    <img src="/img/icon-api-1.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
       <h1>Schnittstellen</h1>
       <p>Über eine offene Schnittstelle können weitere Plattformen an CommonsBooking angebunden werden. Erfahre hier mehr über die CommonsAPI und den CommonsHUB</p>
