@@ -32,6 +32,9 @@ export default defineConfig({
           ]
         }
         ],
+        lastUpdated: {
+            text: 'Zuletzt aktualisiert',
+        },
         editLink: {
           pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/dokumentation/:path',
           text: 'Bearbeite diese Seite auf Github'
