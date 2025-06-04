@@ -11,8 +11,7 @@ mögliche Lösung sein, das [ Plugin "Lightstart" (wp-maintenance-mode)
 entfernen und neu zu installieren. Das Problem ist eine Inkompatibilität von
 Lightstart mit CommonsBooking und kein Fehler im Code von CommonsBooking. Das
 Problem tritt nicht mehr auf, wenn eine Neuinstallation von Lightstart
-vorgenommen wurde. Mehr dazu auf [ Github im CommonsBooking Quellcode-
-Repository ](https://github.com/wielebenwir/commonsbooking/issues/1646) .
+vorgenommen wurde. Mehr dazu auf [ Github im CommonsBooking Quellcode-Repository ](https://github.com/wielebenwir/commonsbooking/issues/1646).
 
 ![](/img/backend-booking-list-bug.png)
 
