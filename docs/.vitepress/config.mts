@@ -136,7 +136,7 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/wielebenwir/commonsbooking' },
-        { icon: 'wordpress', link: 'https://wordpress.org/plugins/commonsbooking' }
+      { icon: 'wordpress', link: 'https://wordpress.org/plugins/commonsbooking' }
     ]
   }
 })
