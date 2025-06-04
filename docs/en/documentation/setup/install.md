@@ -20,7 +20,7 @@ Therefore, please check that you have configured the correct time zone in WordPr
 ### Configure CommonsBooking
 
 In the WordPress settings you will now find a new list item ‘CommonsBooking’. Here you can do perform the initial configuration.  Please
-enter at least the sender name and e-mail in the ‘Templates’ tab to get started. More information can be found under [ Configuration ](/en/documentation/settings) .
+enter at least the sender name and e-mail in the ‘Templates’ tab to get started. More information can be found under \[Configuration](/en/documentation/settings) (Not translated yet).
 
 ### Create locations, articles and time frames
 
@@ -28,14 +28,14 @@ enter at least the sender name and e-mail in the ‘Templates’ tab to get star
   * **Create locations** under ‘CommonsBooking -> Locations’
   * You can then specify when an item should be available for lending at a specific location under the menu item ‘**Time frame**’.
 
-You can find detailed information on this under [first steps](/en/documentation/first-steps/).
+You can find detailed information on this under \[first steps](/en/documentation/first-steps/) (Not translated yet).
 
 ### Show content on the website
 
   * Create a page on which your articles should appear: Include the text module (shortcode) `[cb_items]` in the page.
   * With the classic WordPress editor, simply insert `[cb_items]` including the brackets into the text field.
   * With the new editor, click on the black **\+ plus in the box**, select ‘Shortcode’ and insert `[cb_items]` including the brackets.
-  * More [ shortcodes for maps, tables, etc ](/en/documentation/administration/shortcodes) . Done!
+  * More \[shortcodes for maps, tables, etc](/en/documentation/administration/shortcodes) (Not translated yet).
   * The items are now available to book in the frontend.
 
 ### **Note** :
