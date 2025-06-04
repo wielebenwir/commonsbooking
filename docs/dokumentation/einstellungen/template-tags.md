@@ -70,3 +70,4 @@ Ihr könnt weitere Felder für Standorte oder Artikel anlegen.
   * Beispiel: <span v-pre>`{{ [Der Code für das Zahlenschloss lautet:] item:ItemKeyCode}}`</span>
   * Der Text in den eckigen Klammern `[ ]` dient als Beschreibungstext, der vor dem eigentlichen Metafeld ausgegeben wird. Der Vorteil hier ist, dass der Beschreibungstext inklusive des Werts nur ausgegeben wird, wenn das dynamische Feld einen Wert enthält. In diesem Beschreibungstext sind auch einfache HTML-Codes erlaubt (z.B. br, strong, etc.)
 
+<iframe width="972" height="547" src="https://www.youtube.com/embed/f4rr77GpB9o" title="CommonsBooking Tutorial Metafelder" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
