@@ -35,7 +35,7 @@ CommonsBooking is a WordPress plugin and can therefore be easily integrated into
 
 ##  Screenshots
 
-![](/img/booking-calendar.png) The booking calendar with hourly booking  ![](img/booking-confirm.png) The booking process  ![](img/shortcode-cb-map-filtergroups.png) The map with displayed item availability  ![](img/shortcode-cb-items.png) Well organized item list
+![](/img/booking-calendar.png) The booking calendar with hourly booking  ![](/img/booking-confirm.png) The booking process  ![](/img/shortcode-cb-map-filtergroups.png) The map with displayed item availability  ![](/img/shortcode-cb-items.png) Well organized item list
 
 * * *
 
