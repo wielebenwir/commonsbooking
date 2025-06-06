@@ -9,7 +9,7 @@ CommonsBooking verfügt über eine eigene API, über diese ihr bequem via Websch
 Die API basiert auf der in [WordPress implementierten REST-API](https://developer.wordpress.org/rest-api).
 
 
-::: danger Aktivierung der API
+::: tip Aktivierung der API
 Die API ist standardmäßig deaktiviert und es gibt keine Verbindungen zu externen Services oder Plattformen.
 Die API aktivierst du über die Einstellungen (s.u.) und die Checkbox "API aktivieren".
 :::
