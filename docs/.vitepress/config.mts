@@ -216,10 +216,12 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       },
       {
           text: 'Schnittstellen / API', base: '/dokumentation/schnittstellen-api/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'Was ist die CommonsAPI?', link: 'was-ist-die-commonsapi' },
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' }
+              { text: 'CommonsBooking API', link: 'commonsbooking-api' },
+              { text: 'GBFS', link: 'gbfs'}
           ]
       },
 
