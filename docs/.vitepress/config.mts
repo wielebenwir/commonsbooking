@@ -4,8 +4,30 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
+const replacements = {
+    latestVersion: '2.10.4',
+    authorName: 'Alice',
+}
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  markdown: {
+    config(md) {
+      md.use(function plugin(md) {
+        const defaultRender = md.renderer.render.bind(md.renderer)
+
+
+
+          md.renderer.render = (tokens, options, env) => {
+              let html = defaultRender(tokens, options, env)
+              for (const [key, value] of Object.entries(replacements)) {
+                  html = html.replace(new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`, 'g'), value)
+              }
+              return html
+          }
+      })
+    }
+  },
   locales: {
     root: {
       label: 'Deutsch',
@@ -19,7 +41,7 @@ export default defineConfig({
         , { text: 'Support und Kontakt', link: '/kontakt/' }
         , { text: 'Jetzt Spenden!', link: '/spenden/' }
         , {
-          text: pkg.version,
+          text: replacements.latestVersion,
           items: [
             {
               text: 'Changelog',

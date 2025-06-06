@@ -2,7 +2,7 @@
 
 __
 
-Installieren der aktuellen Version des neuen CommonsBooking (Version 2.x.x)
+Installieren der aktuellen Version des neuen CommonsBooking (Version {{ latestVersion }})
 
 ###  ComonsBooking installieren
 
