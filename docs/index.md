@@ -21,6 +21,10 @@ hero:
     alt: CommonsBooking Logo
 ---
 
+<script setup>
+import Newsletter from '.vitepress/components/Newsletter.vue'
+</script>
+
 <div class="cb-infobox">
 <strong>CommonsBooking</strong> ist die Buchungsplattform für WordPress, die Euch optimal dabei unterstützt einen kostenlosen Verleih von Lastenrädern oder anderen Gegenständen anzubieten.
 </div>
@@ -61,12 +65,14 @@ hero:
     </div>
   </div>
 
+
+
 <div class="feature-row reverse">
     <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
         <h1>Newsletter</h1>
         <p>Wir halten dich auf dem Laufenden. Abonniere unseren CommonsBooking Newsletter.</p>
-        <iframe width="540" height="605" src="https://sibforms.com/serve/MUIFAJJcQRg87wNIyaoxg0Wxl_gTP12mZjftbtJ8vCrQvxQDjQVjC5x_18TI8HcvvO4LR23dlxNx2eIF9okOX1oadhgZyTysJeGR1hrwIgsHtjUYzbkSY6iiEwHdkz3ivi95EsumxxaFzZn3t6SenZvdu-An9dZQ1sLtC11NXh5I7NHkogWZavWQmvnuNJYs9N6NAmql5wRG_ro-" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+        <Newsletter />
     </div>
 </div>
 
