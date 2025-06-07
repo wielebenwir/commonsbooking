@@ -68,13 +68,15 @@ class Item extends View {
 				$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
 			}
 
-			$calendarData          = Calendar::getCalendarDataArray(
+			$calendarData                           = Calendar::getCalendarDataArray(
 				$item,
 				array_key_exists( 'location', $args ) ? $args['location'] : null,
 				date( 'Y-m-d', strtotime( 'first day of this month', time() ) ),
 				date( 'Y-m-d', strtotime( '+3 months', time() ) )
 			);
-			$args['calendar_data'] = wp_json_encode( $calendarData );
+			$calendarData['i18n.buttonText.apply']  = __( 'Book', 'commonsbooking' );
+			$calendarData['i18n.buttonText.cancel'] = __( 'Cancel', 'commonsbooking' );
+			$args['calendar_data']                  = wp_json_encode( $calendarData );
 
 			Plugin::setCacheItem( $args, [ 'misc' ], $customId );
 
