@@ -41,9 +41,9 @@ bestehende Webseiten integrieren.
 ##  Screenshots
 
 ![](/img/booking-calendar.png) Buchungskalender mit stundenweiser
-Ausleihe  ![](img/booking-confirm.png) Buchungsstrecke in
-CommonsBooking  ![](img/shortcode-cb-map-filtergroups.png) Kartendarstellung
-mit Verfügbarkeit  ![](img/shortcode-cb-items.png) Übersichtliche
+Ausleihe  ![](/img/booking-confirm.png) Buchungsstrecke in
+CommonsBooking  ![](/img/shortcode-cb-map-filtergroups.png) Kartendarstellung
+mit Verfügbarkeit  ![](/img/shortcode-cb-items.png) Übersichtliche
 Artikelliste
 
 * * *
