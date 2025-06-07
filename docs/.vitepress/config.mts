@@ -246,7 +246,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       text: 'Informationen zur alten Version 0.9', base: '/dokumentation/informationen-zur-alten-version-0-9/',
         collapsed: true,
       items: [
-        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-verson-0-9' },
+        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-version-0-9' },
         { text: 'Einstellungen v0.9', link: 'einstellungen-version-0-9' },
         { text: 'Erste Schritte v0.9', link: 'erste-schritte' },
         { text: 'FAQ v0.9', link: 'haeufige-fragen-version-0-9' },
@@ -372,7 +372,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
       text: 'Informationen zur alten Version 0.9', base: '/dokumentation/informationen-zur-alten-version-0-9/',
         collapsed: true,
       items: [
-        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-verson-0-9' },
+        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-version-0-9' },
         { text: 'Einstellungen v0.9', link: 'einstellungen-version-0-9' },
         { text: 'Erste Schritte v0.9', link: 'erste-schritte' },
         { text: 'FAQ v0.9', link: 'haeufige-fragen-version-0-9' },

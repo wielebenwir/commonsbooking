@@ -4,10 +4,7 @@ __
 
 #  **Widgets**
 
-Allgemeine Informationen zur Nutzung von Widgets: [ [ http://www.win-win-
-webseite.com/portfolio/widgets-teil1/ ](http://www.win-win-
-webseite.com/portfolio/widgets-teil1) ](http://www.win-win-
-webseite.com/portfolio/widgets-teil1)
+Allgemeine Informationen zur Nutzung von Widgets: [http://www.win-win-webseite.com/portfolio/widgets-teil1/ ](http://www.win-win-webseite.com/portfolio/widgets-teil1)
 
 Es stehen 2 Widgets zur Verfügung:
 

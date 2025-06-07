@@ -13,12 +13,12 @@ Grundsätzlich funktionieren Template-Tags folgendermaßen:
     * Ein Beispiel: Du hast für den Typ Artikel noch ein ein weiteres Feld in postmeta angelegt, um z.B. eine Auskunft
       über den Zustand des Artikels zu geben. Du legst also im WordPress-Editor ein weiteres benutzerdefiniertes Feld an, z.B. mit den Namen `condition`.
       Auf dieses Feld kannst du folgendermaßen zugreifen:
-      - in E-Mail-Template: über <span v-pre><span v-pre>`{{item:condition}}`</span></span>
+      - in E-Mail-Template: über <span v-pre>`{{item:condition}}`</span>
       - in Frontend-Templates (im Ordner `/template`) über folgende Funktion:
         ```php
         <?php echo CB::get('item', 'condition'); ?>
         ```
-  * Für User funktioniert dies nach dem gleichen Prinzip. Hast du z.b. über ein User-Profil-Plugin wie WP Members etc. weitere user_meta Felder (z.B. Straße, Telefonnummer) angelegt, kannst du auf diese Felder über <span v-pre><span v-pre>`{{user:feldname}}`</span></span> bzw. über
+  * Für User funktioniert dies nach dem gleichen Prinzip. Hast du z.b. über ein User-Profil-Plugin wie WP Members etc. weitere user_meta Felder (z.B. Straße, Telefonnummer) angelegt, kannst du auf diese Felder über <span v-pre>`{{user:feldname}}`</span> bzw. über
     ```php
     <?php echo CB::get(‘user’, ‘feldname’); ?>
     ```
