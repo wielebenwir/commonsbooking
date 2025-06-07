@@ -3,15 +3,7 @@
 name: Build and deploy VitePress site
 
 on:
-  # Runs on pushes targeting the `main` branch. Change this to `master` if you're
-  # using the `master` branch as the default branch.
   push:
-    branches: [master]
-    paths:
-      - 'docs/**'
-      - 'package.json'
-      - 'package-lock.json'
-  pull_request:
     branches: [master]
     paths:
       - 'docs/**'
