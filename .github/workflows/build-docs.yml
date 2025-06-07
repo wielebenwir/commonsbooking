@@ -50,14 +50,12 @@ jobs:
       - name: Build with VitePress
         run: npm run docs:build # or pnpm docs:build / yarn docs:build / bun run docs:build
 
-
-      - name: Upload zip
+      - name: Upload documentation
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.CBPAGE_SERVER }}
           username: ${{ secrets.CBPAGE_USER }}
           password: ${{ secrets.CBPAGE_KEY }}
           local-dir: ./docs/.vitepress/dist/
-          server-dir: commonsbooking.org-vite/
-          dangerous-clean-slate: true
+          server-dir: /
           protocol: ftps
