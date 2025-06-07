@@ -6,11 +6,14 @@ on:
       - 'master'
       - 'release/**'
     paths-ignore:
+      - 'docs'
       - '**.md'
       - '**.txt'
   pull_request:
     branches:
       - 'master'
+    paths-ignore:
+      - 'docs'
 
 
 env:
