@@ -1,5 +1,9 @@
 # Support & Contact
 
+<script setup>
+import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
+</script>
+
 ## You have questions or need help with the installation?
 
 We will be happy to help you with any new questions or problems!
@@ -22,4 +26,4 @@ Then subscribe to our newsletter:
 
 Check your inbox or spam folder to confirm your subscription.
 
-<iframe width="540" height="610" src="https://sibforms.com/serve/MUIFAN-ggWbnYjZwWLwTCNSupEK396T5SJ4QYHaN1S1jncaJWvKtgbOBFMy4uKUWjejpBpFTyg5GsMlq1LygOyDb7ST419kyHFfM8TXk4-OgVOzihli0gcmPymdodU-4SMzBNhr4Q0zpNYEf5BD7iiWBVYHK5GnphuL7tYpBhx6LUci9Y1mi_PHe2XnwNEXSQ6qRYxn6wvZ53AkG" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+<Newsletter />

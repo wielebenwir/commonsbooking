@@ -56,12 +56,4 @@ Link zu unserer [ Datenschutzerklärung ](/datenschutzerklaerung)
   * hour by fajar hasyim from the Noun Project 
   * Calendar by iconsphere from the Noun Project 
   * help by popcornarts from the Noun Project 
-  * help by Icons Producer from the Noun Project 
-
-Bitte dieses Feld leer lassen
-
-###  Newsletter abonnieren für Update-Infos
-
-Prüfe deinen Posteingang oder Spam-Ordner, um dein Abonnement zu bestätigen.
-
-<iframe width="540" height="605" src="https://sibforms.com/serve/MUIFAJJcQRg87wNIyaoxg0Wxl_gTP12mZjftbtJ8vCrQvxQDjQVjC5x_18TI8HcvvO4LR23dlxNx2eIF9okOX1oadhgZyTysJeGR1hrwIgsHtjUYzbkSY6iiEwHdkz3ivi95EsumxxaFzZn3t6SenZvdu-An9dZQ1sLtC11NXh5I7NHkogWZavWQmvnuNJYs9N6NAmql5wRG_ro-" frameborder="0" scrolling="auto" allowfullscreen style="display: block;margin-left: auto;margin-right: auto;max-width: 100%;"></iframe>
+  * help by Icons Producer from the Noun Project
