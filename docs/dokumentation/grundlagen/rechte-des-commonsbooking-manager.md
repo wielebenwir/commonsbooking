@@ -112,7 +112,10 @@ Hier auch besonders relevant ist die Berechtigung **edit_other_cb_bookings** .
 Diese bestimmt, ob ein Manager in der Lage ist Buchungen von anderen Nutzenden
 zu stornieren.
 
-###  Andere Rollen einem Artikel / Standort zuweisen (Ab 2.8.2)
+###  Andere Rollen einem Artikel / Standort zuweisen
+
+::: tip Ab Version 2.8.2
+:::
 
 Es ist mit einem kleinen Codeschnipsel möglich, auch eine weitere Rolle zu
 definieren die einem Artikel / Standort zugewiesen werden kann und diesen dann
