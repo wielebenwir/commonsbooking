@@ -4,6 +4,8 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
+const COMMONSBOOKING_VERSION_STRING = '2.10.4';
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   locales: {
@@ -19,7 +21,7 @@ export default defineConfig({
         , { text: 'Support und Kontakt', link: '/kontakt/' }
         , { text: 'Jetzt Spenden!', link: '/spenden/' }
         , {
-          text: pkg.version,
+          text: COMMONSBOOKING_VERSION_STRING,
           items: [
             {
               text: 'Changelog',
@@ -63,7 +65,7 @@ export default defineConfig({
           { text: 'Support & Contact', link: '/en/contact/' },
           { text: 'Donate Now!', link: '/en/donate/' },
           {
-            text: pkg.version,
+            text: COMMONSBOOKING_VERSION_STRING,
             items: [
               {
                 text: 'Changelog',
