@@ -27,3 +27,4 @@ cb-local-1.code-workspace
 commonsbookingdocker.code-workspace
 wp-core
 tests/cypress/screenshots
+docs/.vitepress/dist
