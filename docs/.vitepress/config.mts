@@ -207,15 +207,15 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           text: 'Administration', base: '/dokumentation/einstellungen/',
           collapsed: true,
           items: [
-              { text: 'Buchungsliste', link: 'buchungsliste' },
-              { text: 'Hooks und Filter', link: 'hooks-und-filter' },
-              { text: 'Karte einbinden', link: 'karte-einbinden' },
               { text: 'Leihangebote im Frontend anzeigen', link: 'leihangebote-im-frontend-anzeigen' },
-              { text: 'Neues Frontend (Beta)', link: 'neues-frontend-beta' },
-              { text: 'Registrierungsseiten & Benutzerfelder anpassen', link: 'registrierungs-seiten-und-benutzerfelder-anpassen' },
+              { text: 'Buchungsliste', link: 'buchungsliste' },
+              { text: 'Karte einbinden', link: 'karte-einbinden' },
+              { text: 'Neue Karte', link: 'neues-frontend-beta' },
               { text: 'Shortcodes', link: 'shortcodes' },
               { text: 'Template Tags', link: 'template-tags' },
-              { text: 'Widget', link: 'widget' }
+              { text: 'Widget', link: 'widget' },
+              { text: 'Registrierungsseiten & Benutzerfelder anpassen', link: 'registrierungs-seiten-und-benutzerfelder-anpassen' },
+              { text: 'Hooks und Filter', link: 'hooks-und-filter' },
           ]
       },
       {
@@ -248,12 +248,12 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       text: 'Informationen zur alten Version 0.9', base: '/dokumentation/informationen-zur-alten-version-0-9/',
         collapsed: true,
       items: [
+        { text: 'Installation', link: 'installation' },
+        { text: 'Erste Schritte v0.9', link: 'erste-schritte' },
         { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-version-0-9' },
         { text: 'Einstellungen v0.9', link: 'einstellungen-version-0-9' },
-        { text: 'Erste Schritte v0.9', link: 'erste-schritte' },
-        { text: 'FAQ v0.9', link: 'haeufige-fragen-version-0-9' },
-        { text: 'Installation', link: 'installation' },
-        { text: 'Widgets & Themes v0.9', link: 'widgets-themes-version-0-9' }
+        { text: 'Widgets & Themes v0.9', link: 'widgets-themes-version-0-9' },
+        { text: 'FAQ v0.9', link: 'haeufige-fragen-version-0-9' }
       ]
     },
       {
