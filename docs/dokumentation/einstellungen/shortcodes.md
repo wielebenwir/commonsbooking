@@ -2,29 +2,26 @@
 
 __
 
-Um die CommonsBooking-Inhalte (z.B. die automatisch generierten Artikellisten)
-auf der Website anzuzeigen werden Shortcodes verwendet. Shortcodes können in
-jede WordPress Seite eingefügt werden. [ Offizielle WordPress Dokumentation
-](https://en.support.wordpress.com/shortcodes) .
+Die CommonsBooking-Inhalte (z.B. Artikellisten oder Verfügbarkeiten) kannst du auf der Website anzuzeigen, indem du sogenannte Shortcodes verwendest.
+Shortcodes können in jede WordPress Seite eingefügt werden. [Offizielle WordPress Dokumentation](https://en.support.wordpress.com/shortcodes).
 
-Die Ergebnis-Liste der Shortcodes kann dabei über einige Parameter beeinflusst
-werden. Beispielsweise:
+Die Anzeige eines Shortcodes kann dabei über Parameter beeinflusst werden.
+Beispielsweise:
 
   * ` orderby ` : Bestimmt das Attribut nachdem sortiert werden soll z.B. ` orderby=post_title ` für eine Sortierung nach dem Namen eines Posts.
   * ` order ` : Bestimmt die Sortierreihenfolge. Aufsteigend ` ASC ` und absteigend ` DESC ` .
 
-Das gilt für die folgenden Shortcodes, welche über das CommonsBooking Plugin
-verfügbar sind:
+Diese Paramter sind für die folgenden Shortcodes gültig, welche über das CommonsBooking Plugin verfügbar sind:
 
 ##  Artikel-Liste
 
 Zeigt eine Liste aller veröffentlichen Artikel an mit den Stationen, an denen
 sie sich befinden.
 
-  * Shortcode: ` [cb_items] `
+  * Shortcode: `[cb_items]`
   * Argumente:
-    * ` Kategorie-Filter: category_slug `
-    * Nur einzelnen Artikel anzeigen: [cb_items p=PostID]
+    * Kategorie-Filter: `category_slug`
+    * Nur einzelnen Artikel anzeigen: `[cb_items p=PostID]`
     * Nur Artikel von einer Station anzeigen: `[cb_items location-id=PostIDVonDemStandort]`
 
 ![](/img/shortcode-cb-items.png)
@@ -36,49 +33,51 @@ nur Artikel einer bestimmten Kategorie anzeigen. Dazu sucht ihr zunächst die
 Titelform / Slug der Kategorie über das Kategorie-Menü aus und setzt diese
 dann folgendermaßen ein:
 
-  * `[cb_items category_slug= _titelform_ ]`
+```
+[cb_items category_slug=titelform]
+```
 
-* * *
 
 ##  Einzelner Artikel
 
 Zeigt einen einzelnen Artikel in der Listenansicht (s.o.) an.
 
-* Shortcode: `[cb_items p= _postID_ ]`
+* Shortcode: `[cb_items]`
+* Argumente: `p` die Post-ID von deinem Artikel
 
-* * *
+Beispiel:
+```
+[cb_items p=1234]
+```
 
 ##  Karte mit Filter-Möglichkeit
 
-Zeigt eine Karte aller veröffentlichen Artikel an. Eine Karte muss dafür
-zunächst unter "CommonsBooking -> Karten" eingerichtet werden. [ Mehr zur
-Einrichtung und Konfiguration von Karten ](/dokumentation/einstellungen/karte-
-einbinden) .
+Zeigt eine Karte aller veröffentlichen Artikel an.
+Dafür muss zuerst eine Karte unter "CommonsBooking -> Karten" eingerichtet werden.
+
+[Mehr zur Einrichtung und Konfiguration von Karten](/dokumentation/einstellungen/karte-einbinden).
 
   * Shortcode: ` [cb_map] `
   * Argumente ( **erforderlich!** ): ` id `
 
 ![](/img/shortcode-cb-map.png)
 
-* * *
+##  Karte mit Artikelliste
 
-##  Karte mit Artikelliste (BETA)
-
-Erst ab Version 2.9
+::: tip Ab Version 2.9
+:::
 
 Bisher war jeder Shortcode nur unabhängig voneinander verwendbar, dh. ein
 Filter der auf der Karte angewendet wurde hatte keine Auswirkungen auf die
 danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 
   * Shortcode: ` [cb_search] `
-  * Argumente ( **erforderlich!** : ` id `
+  * Argumente (**erforderlich!**): ` id `
 
 ![](/img/shortcode-cb-search-map.png)
 
 [ Weitere Argumente und ausführliche Dokumentation
 ](/dokumentation/einstellungen/neues-frontend-beta)
-
-* * *
 
 ##  Artikel-Tabelle mit Verfügbarkeit
 
@@ -94,8 +93,6 @@ sie sich befinden und der aktuellen Verfügbarkeit.
 
 ![](/img/shortcode-cb-items-table.png)
 
-* * *
-
 ##  Stationen-Liste
 
 Zeigt eine Liste aller veröffentlichen Stationen an mit den Artikeln, die sich
@@ -105,14 +102,12 @@ dort befinden
 
 ![](/img/shortcode-cb-locations.png)
 
-* * *
-
 ##  Liste aller Buchungen
 
   * Shortcode: `[cb_bookings]`
   * Liste aller Buchungen (eigene Buchungen des eingeloggten Nutzenden)
   * Administrator*innen sehen hier alle Buchungen
-  * [ cb_manager ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
+  * [User mit der Rolle cb_manager](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
 
 ![](/img/shortcode-cb-bookings.png)
 
