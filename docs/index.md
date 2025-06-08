@@ -32,7 +32,7 @@ import Newsletter from '.vitepress/components/Newsletter.vue'
 <div class="feature-section">
 
   <div class="feature-row">
-    <img src="/img/icon-buchung.png" alt="Feature 1" class="feature-image" style="max-width: 150px" />
+    <img src="/img/icon-buchung.png" alt="Feature 1" class="feature-image" />
     <div class="feature-text">
       <h1>Artikel und Stationen flexibel organisieren</h1>
         <p>
@@ -48,7 +48,7 @@ import Newsletter from '.vitepress/components/Newsletter.vue'
   </div>
 
   <div class="feature-row reverse">
-    <img src="/img/icon-help-alt.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
+    <img src="/img/icon-help-alt.png" alt="Feature 2" class="feature-image" />
     <div class="feature-text">
       <h1>Umfassende Hilfe erhalten</h1>
       <p>Neben unserer Dokumentation unterstützt euch das CommonsBooking-Team <b>persönlich</b> bei allen Fragen zu CommonsBooking per <b>Online-Support</b> und <b>Telefon-Hotline</b>: </p>
@@ -58,7 +58,7 @@ import Newsletter from '.vitepress/components/Newsletter.vue'
 
 
   <div class="feature-row">
-    <img src="/img/icon-api-1.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
+    <img src="/img/icon-api-1.png" alt="Feature 2" class="feature-image" />
     <div class="feature-text">
       <h1>Schnittstellen</h1>
       <p>Über eine offene Schnittstelle können weitere Plattformen an CommonsBooking angebunden werden. Erfahre hier mehr über die CommonsAPI und den CommonsHUB</p>
@@ -68,7 +68,7 @@ import Newsletter from '.vitepress/components/Newsletter.vue'
 
 
 <div class="feature-row reverse">
-    <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
+    <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" />
     <div class="feature-text">
         <h1>Newsletter</h1>
         <p>Wir halten dich auf dem Laufenden. Abonniere unseren CommonsBooking Newsletter.</p>
@@ -77,7 +77,7 @@ import Newsletter from '.vitepress/components/Newsletter.vue'
 </div>
 
 <div class="feature-row">
-    <img src="/img/icon-support-chat.png" class="feature-image" style="max-width: 150px" />
+    <img src="/img/icon-support-chat.png" class="feature-image" />
     <div class="feature-text">
         <h1>Community</h1>
         <p>CommonsBooking wird jetzt schon von dutzenden gemeinnützigen Initiativen genutzt. Auf diesen Seiten findest du einen Überblick über verschiedene Arten von bereits existierende Initiativen die CommonsBooking in ihrer Arbeit unterstützt:</p>

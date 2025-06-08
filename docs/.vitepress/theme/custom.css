@@ -33,7 +33,7 @@
 
 .feature-image {
     flex: 1 1 300px;
-    max-width: 400px;
+    max-width: 150px;
     width: 100%;
     height: auto;
     border-radius: 1rem;
@@ -53,6 +53,11 @@
 
     .feature-text {
         text-align: center;
+    }
+
+    .feature-image {
+        max-width: 150px;
+        max-height: 150px;
     }
 }
 
