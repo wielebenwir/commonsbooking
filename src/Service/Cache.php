@@ -7,7 +7,6 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
@@ -27,10 +26,10 @@ trait Cache {
 	/**
 	 * Returns cache item based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return mixed
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
@@ -38,8 +37,8 @@ trait Cache {
 		}
 
 		try {
+			$cacheKey = self::getCacheId( $custom_id );
 			/** @var CacheItem $cacheItem */
-			$cacheKey  = self::getCacheId( $custom_id );
 			$cacheItem = self::getCache()->getItem( $cacheKey );
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
@@ -53,7 +52,7 @@ trait Cache {
 	/**
 	 * Returns cache id, based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return string
 	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
@@ -117,7 +116,7 @@ trait Cache {
 				$directory = $customCachePath;
 			}
 			// Since this is the default cache path by Symfony we'd rather set it to null so that Symfony can take over with it's own default value.
-			elseif ( $customCachePath == '/tmp/symfony-cache/' ) {
+			if ( $customCachePath === '/tmp/symfony-cache/' ) {
 				$directory = null;
 			}
 		}
@@ -146,11 +145,11 @@ trait Cache {
 	 *
 	 * @param $value
 	 * @param array       $tags
-	 * @param null        $custom_id
+	 * @param mixed|null  $custom_id
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
@@ -171,9 +170,9 @@ trait Cache {
 			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
 		}
 
-		$cache = self::getCache( '', intval( $expiration ) );
+		$cache    = self::getCache( '', intval( $expiration ) );
+		$cacheKey = self::getCacheId( $custom_id );
 		/** @var CacheItem $cacheItem */
-		$cacheKey  = self::getCacheId( $custom_id );
 		$cacheItem = $cache->getItem( $cacheKey );
 		$cacheItem->tag( $tags );
 		$cacheItem->set( $value );
@@ -187,7 +186,7 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
 		if ( ! count( $tags ) ) {
@@ -273,9 +272,9 @@ trait Cache {
 					$attributesString = isset( $match[3] ) ? $match[3] : ''; // e.g., " id=123"
 
 					$shortCodeCalls[] = [
-						'shortcode' => $shortCode,
-						'attributes'         => self::getShortcodeAndAttributes( $shortCode . $attributesString )[1],
-						'body' => isset( $match[5] ) ? trim( $match[5] ) : '',
+						'shortcode'  => $shortCode,
+						'attributes' => self::getShortcodeAndAttributes( $shortCode . $attributesString )[1],
+						'body'       => isset( $match[5] ) ? trim( $match[5] ) : '',
 					];
 				}
 			}
@@ -374,7 +373,7 @@ trait Cache {
 	/**
 	 * Iterates through array and statically executes given functions.
 	 *
-	 * @param string[] $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
+	 * @param array{shortcode: string, attributes: array, body: string} $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
 	 *
 	 * @return void
 	 */

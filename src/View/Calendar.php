@@ -115,7 +115,7 @@ class Calendar {
 		foreach ( $items as $item ) {
 			// Check for category term
 			if ( $itemCategory ) {
-				if ( ! has_term( $itemCategory, Item::$postType . 's_category', $item->ID ) ) {
+				if ( ! has_term( $itemCategory, Item::getTaxonomyName(), $item->ID ) ) {
 					continue;
 				}
 			}
@@ -149,7 +149,7 @@ class Calendar {
 					} else {
 						// Check for category term
 						if ( $locationCategory ) {
-							if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
+							if ( ! has_term( $locationCategory, Location::getTaxonomyName(), $locationId ) ) {
 								continue;
 							}
 						}
@@ -479,12 +479,33 @@ class Calendar {
 	 * Returns Last day of month after next as default for calendar view,
 	 * based on $startDate param.
 	 *
-	 * @param $startDate
+	 * @param Day $startDate
 	 *
-	 * @return false|int
+	 * @return int
 	 */
 	private static function getDefaultCalendarEnddateTimestamp( $startDate ) {
 		return strtotime( 'last day of +3 months', $startDate->getDateObject()->getTimestamp() );
+	}
+
+	/**
+	 * The value for the amount of months shown in the Litepicker mobile view portrait mode.
+	 * Fixes #1103, an issue where one instance has issues with switching the months on mobile.
+	 * This value is configurable through a filter hook only.
+	 *
+	 * Default value is 1.
+	 *
+	 * @return int
+	 */
+	private static function getMobileCalendarMonthCount(): int {
+		$month = 1;
+		/**
+		 * Default amount of months shown in the Litepicker mobile view portrait mode.
+		 *
+		 * @since 2.10.5
+		 *
+		 * @param int $month defaults is 1
+		 */
+		return apply_filters( 'commonsbooking_mobile_calendar_month_count', $month );
 	}
 
 	/**
@@ -544,6 +565,7 @@ class Calendar {
 				'disallowLockDaysInRange' => true,
 				'countLockDaysInRange' => true,
 				'advanceBookingDays'      => $advanceBookingDays,
+				'mobileCalendarMonthCount' => self::getMobileCalendarMonthCount(),
 			];
 
 			if ( count( $locations ) === 1 ) {
@@ -599,7 +621,7 @@ class Calendar {
 	/**
 	 * Processes day for calendar view of json.
 	 *
-	 * @param Day              $day
+	 * @param Day $day
 	 * @param $lastBookableDate
 	 * @param $endDate
 	 * @param $jsonResponse

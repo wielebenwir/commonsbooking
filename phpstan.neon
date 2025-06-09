@@ -4,17 +4,27 @@ parameters:
   phpVersion: 70400
   scanFiles:
     - commonsbooking.php
-    - vendor/cmb2/cmb2/includes/helper-functions.php
-    - vendor/cmb2/cmb2/includes/CMB2_Utils.php
-    - vendor/cmb2/cmb2/includes/CMB2_Field.php
+  scanDirectories:
+    - vendor/cmb2/cmb2/includes
   paths:
     - commonsbooking.php
     - src/
     - includes/
-  level: 1
+  level: 4
   ignoreErrors:
     - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
 #    - '#Instantiated class (CommonsBooking.*CB_Data) not found.#'
     - '#Function cb_object_to_array not found.#'
     - 
       identifier: requireOnce.fileNotFound # https://github.com/szepeviktor/phpstan-wordpress/issues/239
+    # As long as symfony exceptions do not extend from throwable
+    - '#Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
+    - '#Psr\\Cache\\CacheException is not subtype of Throwable#'
+# Maybe this will be useful in the next phpstan level (because we have a very unusual way of dealing with psr/cache exceptions, bc we throw them all the way up, but the seem to be unchecked exceptions)
+#  exceptions:
+#    uncheckedExceptionRegexes:
+#      - '#Psr\Cache\#'
+#      - '#CacheException#'
+#    uncheckedExceptionClasses:
+#      - 'CacheException'
+#      - 'Psr\Cache\CacheException'

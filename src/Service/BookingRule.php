@@ -718,11 +718,11 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the range.
 	 * Cancelled bookings will be considered when they were cancelled after the start of the range.
 	 *
-	 * @param DateTime     $startOfRange
-	 * @param DateTime     $endOfRange
-	 * @param Booking      $booking
+	 * @param DateTime $startOfRange
+	 * @param DateTime $endOfRange
+	 * @param Booking  $booking
 	 * @param $appliedTerms
-	 * @param int          $allowedTotalBookings
+	 * @param int      $allowedTotalBookings
 	 *
 	 * @return Booking[]|null
 	 * @throws Exception

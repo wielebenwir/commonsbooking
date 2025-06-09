@@ -25,7 +25,7 @@ class CB1UserFields {
 	/**
 	 * @var array|string[]
 	 */
-	private array $registration_fields_required;
+	private array $registration_fields_required; // @phpstan-ignore property.onlyWritten
 	/**
 	 * @var array|array[]
 	 */
@@ -33,7 +33,7 @@ class CB1UserFields {
 	/**
 	 * @var array|mixed
 	 */
-	private $user_vars;
+	private $user_vars; // @phpstan-ignore property.onlyWritten
 
 	public function __construct() {
 

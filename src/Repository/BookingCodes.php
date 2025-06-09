@@ -86,7 +86,7 @@ class BookingCodes {
 				// set $endGenerationPeriod's time > 00:00:00 such that $endDate is included in DatePeriod iteration
 				// and code is generated for $endDate
 				$endGenerationPeriod->setTime( 0, 0, 1 );
-				static::generatePeriod(
+				self::generatePeriod(
 					$timeframe,
 					new DatePeriod(
 						$startGenerationPeriod,
@@ -236,7 +236,7 @@ class BookingCodes {
 			return $cacheItem;
 		} else {
 			// timeframeid and locationid are only for backward compatibility with database entries from old cb
-			$bookingCodeObject = static::lookupCode( $itemId, $date, $timeframe->ID, $locationId );
+			$bookingCodeObject = self::lookupCode( $itemId, $date, $timeframe->ID, $locationId );
 
 			if ( ! $bookingCodeObject ) {
 				// when we have a timeframe without end-date we generate as many codes as we need
@@ -249,8 +249,8 @@ class BookingCodes {
 					$endDate->setTime( 0, 0, 1 );
 					$interval = DateInterval::createFromDateString( '1 day' );
 					$period   = new DatePeriod( $begin, $interval, $endDate );
-					static::generatePeriod( $timeframe, $period );
-					$bookingCodeObject = static::lookupCode( $itemId, $date, $timeframe->ID, $locationId );
+					self::generatePeriod( $timeframe, $period );
+					$bookingCodeObject = self::lookupCode( $itemId, $date, $timeframe->ID, $locationId );
 				}
 			}
 
@@ -318,7 +318,7 @@ class BookingCodes {
 		$interval = DateInterval::createFromDateString( '1 day' );
 		$period   = new DatePeriod( $begin, $interval, $end );
 
-		return static::generatePeriod( $timeframe, $period );
+		return self::generatePeriod( $timeframe, $period );
 	}
 
 	/**
@@ -332,7 +332,7 @@ class BookingCodes {
 	 */
 	private static function generatePeriod( Timeframe $timeframe, DatePeriod $period ): bool {
 
-		$bookingCodesArray = static::getCodesArray();
+		$bookingCodesArray = self::getCodesArray();
 		if ( ! $bookingCodesArray ) {
 			throw new BookingCodeException( __( 'No booking codes could be created because there were no booking codes to choose from. Please set some booking codes in the CommonsBooking settings.', 'commonsbooking' ) );
 		}
@@ -363,7 +363,7 @@ class BookingCodes {
 
 				// Check if a code already exists, if so DO NOT generate new
 				// timeframeid and locationid are only for backward compatibility with database entries from old cb
-				if ( static::lookupCode( $item->ID, $dt->format( 'Y-m-d' ), $timeframe->ID, $location->ID ) ) {
+				if ( self::lookupCode( $item->ID, $dt->format( 'Y-m-d' ), $timeframe->ID, $location->ID ) ) {
 					continue;
 				}
 
@@ -386,11 +386,13 @@ class BookingCodes {
 	/**
 	 * Stores a booking code in database without checking if code already exists (please check before)
 	 *
-	 * @param BookingCode                                                                                  $bookingCode
-	 * @param timeframeId deprecated (only necessary to make database compatible to former versions of cb)
-	 * @param locationId deprecated (only necessary to make database compatible to former versions of cb)
+	 * @since 2.10 $timeframeId and $locationId are deprecated to indicate only use for legacy support
 	 *
-	 * @return mixed
+	 * @param BookingCode $bookingCode
+	 * @param int         $timeframeId deprecated (only necessary to make database compatible to former versions of cb)
+	 * @param int         $locationId deprecated (only necessary to make database compatible to former versions of cb)
+	 *
+	 * @return false|int
 	 */
 	public static function persist( BookingCode $bookingCode, $timeframeId = 0, $locationId = 0 ) {
 		global $wpdb;

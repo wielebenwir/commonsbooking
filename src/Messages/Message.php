@@ -22,42 +22,42 @@ abstract class Message {
 	/**
 	 * The action that is used for this message. Needs to be contained in $validActions
 	 *
-	 * @var
+	 * @var string
 	 */
 	protected $action;
 
 	/**
 	 * The post that this message is about
 	 *
-	 * @var
+	 * @var \WP_Post|null
 	 */
 	protected $post;
 
 	/**
 	 * The recipient(s) of this message
 	 *
-	 * @var
+	 * @var string
 	 */
 	protected $to;
 
 	/**
 	 * The e-mail headers
 	 *
-	 * @var
+	 * @var string[]
 	 */
 	protected $headers;
 
 	/**
 	 * The subject text of this message
 	 *
-	 * @var
+	 * @var string
 	 */
 	protected $subject;
 
 	/**
 	 * The body text of this message
 	 *
-	 * @var
+	 * @var string
 	 */
 	protected $body;
 
@@ -72,6 +72,9 @@ abstract class Message {
 	 * @var array
 	 */
 	protected $attachment = [];
+	/**
+	 * @var int
+	 */
 	private $postId;
 
 	/**
@@ -271,7 +274,7 @@ abstract class Message {
 	}
 
 	/**
-	 * @return mixed
+	 * @return \WP_Post
 	 */
 	public function getPost() {
 		if ( $this->post == null ) {
@@ -282,7 +285,7 @@ abstract class Message {
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getPostId() {
 		return $this->postId;
@@ -325,7 +328,7 @@ abstract class Message {
 		if ( ! empty( $atts['attachments'] ) ) {
 			$attachments = $atts['attachments'];
 			if ( is_array( $attachments ) ) {
-				// Is the $attachments array a single array of attachment data, or an array containing multiple arrays of 
+				// Is the $attachments array a single array of attachment data, or an array containing multiple arrays of
 				// attachment data? (note that the array may also be a one-dimensional array of file paths, as-per default usage).
 				$is_multidimensional_array = count( $attachments ) == count( $attachments, COUNT_RECURSIVE ) ? false : true;
 				if ( ! $is_multidimensional_array ) {

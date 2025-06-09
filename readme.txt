@@ -3,8 +3,8 @@ Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
-Tested up to: 6.7
-Stable Tag: 2.10.3
+Tested up to: 6.8
+Stable Tag: 2.10.4
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,11 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.4 (25.04.2025)
+FIXED: cb_bookings shortcode crashing when location was deleted
+FIXED: CB Manager can no longer create holiday timeframe for all items in instance
+FIXED: HTML field attributes (thx @janschoenherr)
 
 ### 2.10.3 (19.03.2025)
 FIXED: Cache not warming up correctly (thx @nelarsen)

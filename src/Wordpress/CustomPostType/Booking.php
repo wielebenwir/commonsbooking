@@ -302,7 +302,7 @@ class Booking extends Timeframe {
 			// checks if it's an edit, but ignores exact start/end time
 			$isEdit = count( $existingBookings ) === 1 &&
 						array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostName &&
-						array_values( $existingBookings )[0]->getPost()->post_author === get_current_user_id();
+						intval( array_values( $existingBookings )[0]->getPost()->post_author ) === get_current_user_id();
 
 			if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status !== 'canceled' ) {
 				if ( $booking ) {
@@ -385,7 +385,7 @@ class Booking extends Timeframe {
 		if ( $postId instanceof \WP_Error ) {
 			throw new BookingDeniedException(
 				__( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
-												PHP_EOL . $postId->get_error_messages()
+												PHP_EOL . implode( ', ', $postId->get_error_messages() )
 			);
 		}
 
@@ -1006,7 +1006,7 @@ class Booking extends Timeframe {
 	/**
 	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
 	 *
-	 * @param string                                                                                                         $emailAddress The email address
+	 * @param string $emailAddress The email address
 	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
 	 *
 	 * @return array

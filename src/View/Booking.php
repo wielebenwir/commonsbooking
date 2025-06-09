@@ -108,6 +108,7 @@ class Booking extends View {
 				'location' => [],
 				'status'   => [],
 			];
+			$bookingDataArray['data']     = [];
 
 			$posts = \CommonsBooking\Repository\Booking::getForUser(
 				$user,
@@ -179,9 +180,9 @@ class Booking extends View {
 					'endDateFormatted'   => date( 'd.m.Y H:i', $booking->getEndDate() ),
 					'item'               => $itemTitle,
 					'location'           => $locationTitle,
-					'locationAddr'       => $location->formattedAddressOneLine(),
-					'locationLat'        => $location->getMeta( 'geo_latitude' ),
-					'locationLong'       => $location->getMeta( 'geo_longitude' ),
+					'locationAddr'       => $location ? $location->formattedAddressOneLine() : '',
+					'locationLat'        => $location ? $location->getMeta( 'geo_latitude' ) : 0,
+					'locationLong'       => $location ? $location->getMeta( 'geo_longitude' ) : 0,
 					'bookingDate'        => date( 'd.m.Y H:i', strtotime( $booking->post_date ) ),
 					'user'               => $userInfo->user_login,
 					'status'             => $booking->post_status,
@@ -232,7 +233,7 @@ class Booking extends View {
 
 				// If search term was submitted, filter for it.
 				if ( ! $search || count( preg_grep( '/.*' . $search . '.*/i', $rowData ) ) > 0 ) {
-					$rowData['actions']         = $actions;
+					$rowData['actions'] = $actions;
 
 					/**
 					 * Default assoc array of row data and the booking object, which gets added to the booking list data result.
@@ -256,7 +257,7 @@ class Booking extends View {
 			}
 
 			// TODO remove null values from $bookingDataArray['data'] to not break pagination logic
-			if ( array_key_exists( 'data', $bookingDataArray ) && count( $bookingDataArray['data'] ) ) {
+			if ( count( $bookingDataArray['data'] ) ) {
 				$totalCount                      = count( $bookingDataArray['data'] );
 				$bookingDataArray['total']       = $totalCount;
 				$bookingDataArray['total_pages'] = ceil( $totalCount / $postsPerPage );
@@ -480,10 +481,10 @@ class Booking extends View {
 	 *
 	 * @param $user
 	 *
-	 * @return String
+	 * @return string|false
 	 * @throws Exception
 	 */
-	public static function getBookingListiCal( $user = null ): string {
+	public static function getBookingListiCal( $user = null ) {
 		$eventTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
 		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 

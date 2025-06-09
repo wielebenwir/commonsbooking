@@ -42,7 +42,7 @@ class Item extends CustomPostType {
 	 * @return void
 	 */
 	public static function termChange( $term_id, $tt_id, $taxonomy ) {
-		if ( $taxonomy == self::$postType . 's_category' ) {
+		if ( $taxonomy == self::getTaxonomyName() ) {
 			// update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
 		}
@@ -93,7 +93,7 @@ class Item extends CustomPostType {
 			) {
 				$query->query_vars['tax_query'] = array(
 					array(
-						'taxonomy'  => self::$postType . 's_category',
+						'taxonomy'  => self::getTaxonomyName(),
 						'field'     => 'term_id',
 						'terms'     => $_GET['admin_filter_post_category'],
 					),
@@ -186,7 +186,7 @@ class Item extends CustomPostType {
 			),
 
 			// Soll der Post Type Kategorien haben?
-			'taxonomies'          => array( self::$postType . 's_category' ),
+			'taxonomies'          => array( self::getTaxonomyName() ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
@@ -299,7 +299,7 @@ class Item extends CustomPostType {
 
 		// we store registered metaboxes to options table to be able to retrieve it in export function
 		$metabox_fields = [];
-		foreach ( $cmb->meta_box['fields'] as $metabox_field ) {
+		foreach ( $cmb->prop( 'fields' ) as $metabox_field ) {
 			$metabox_fields[ $metabox_field['id'] ] = $metabox_field['name'];
 		}
 		Settings::updateOption( 'commonsbooking_settings_metaboxfields', static::getPostType(), $metabox_fields );

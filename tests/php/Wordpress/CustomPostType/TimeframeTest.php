@@ -47,9 +47,9 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->createCBManager();
 		$this->createAdministrator();
 		wp_set_current_user( $this->adminUserID );
-		$this->assertCount(3,  Timeframe::getSelectionOptions() );
+		$this->assertCount( 3, Timeframe::getSelectionOptions() );
 		wp_set_current_user( $this->cbManagerUserID );
-		$this->assertCount(1,  Timeframe::getSelectionOptions() );
+		$this->assertCount( 1, Timeframe::getSelectionOptions() );
 	}
 
 	public function testGetGridOptions() {

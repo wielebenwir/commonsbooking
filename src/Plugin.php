@@ -106,7 +106,7 @@ class Plugin {
 	/**
 	 * Returns needed roles and caps for specific roles
 	 *
-	 * @return \bool[][]
+	 * @return bool[][]
 	 */
 	public static function getRoleCapMapping( $roleName = null ) {
 		if ( $roleName === null ) {
@@ -369,7 +369,7 @@ class Plugin {
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName(),
 				''
 			);
 
@@ -379,7 +379,7 @@ class Plugin {
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName(),
 				''
 			);
 
@@ -444,8 +444,8 @@ class Plugin {
 		}
 
 		switch ( $current_screen->taxonomy ) {
-			case 'cb_items_category':
-			case 'cb_locations_category':
+			case Item::getTaxonomyName():
+			case Location::getTaxonomyName():
 				return $classes . ' ' . $cssClass;
 		}
 
@@ -922,8 +922,8 @@ class Plugin {
 				$current_screen->taxonomy && in_array(
 					$current_screen->taxonomy,
 					[
-						Location::$postType . 's_category',
-						Item::$postType . 's_category',
+						Location::getTaxonomyName(),
+						Item::getTaxonomyName(),
 					]
 				)
 			) {

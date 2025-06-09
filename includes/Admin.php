@@ -245,7 +245,8 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 /**
  * Only return default value if we don't have a post ID (in the 'post' query variable)
  *
- * @param  bool $default On/Off (true/false)
+ * @since 2.10.3 removed non-existent param from phpdoc
+ *
  * @return mixed          Returns true or '', the blank default
  */
 function cmb2_set_checkbox_default_for_new_post() {
@@ -259,10 +260,10 @@ function cmb2_set_checkbox_default_for_new_post() {
 /**
  * Recursive sanitation for text or array
  *
- * @param mixed  array_or_string (array|string)
- * @param string                                $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
+ * @param array|string $data
+ * @param string       $sanitizeFunction name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
  *
- *                                See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ *       See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
  *
  * @return array|string
  */

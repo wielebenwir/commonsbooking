@@ -8,6 +8,7 @@ use stdClass;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_User;
 
 /**
  * Endpoint for item/location owners data
@@ -51,7 +52,13 @@ class OwnersRoute extends BaseRoute {
 		return $data;
 	}
 
-	public function prepare_item_for_response( $owner, $request ): stdClass {
+	/**
+	 * @param WP_User         $owner
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function prepare_item_for_response( $owner, $request ): WP_REST_Response {
 		$ownerObject       = new stdClass();
 		$ownerObject->id   = '' . $owner->ID;
 		$ownerObject->name = get_user_meta( $owner->ID, 'first_name', true ) . ' ' . get_user_meta( $owner->ID, 'last_name', true );
@@ -72,7 +79,7 @@ class OwnersRoute extends BaseRoute {
 		// $ownerObject->locations[] = $locationsRoute->prepare_item_for_response($location, new \WP_REST_Request());
 		// }
 		// }
-		return $ownerObject;
+		return new WP_REST_Response( $ownerObject );
 	}
 
 
@@ -103,7 +110,10 @@ class OwnersRoute extends BaseRoute {
 		return new WP_REST_Response( $data, 200 );
 	}
 
+	/**
+	 * TODO investigate why we overwrite this method
+	 */
 	public function prepare_response_for_collection( $itemdata ) {
-		return $itemdata;
+		return $itemdata; // @phpstan-ignore return.type
 	}
 }

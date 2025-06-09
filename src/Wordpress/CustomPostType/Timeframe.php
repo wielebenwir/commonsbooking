@@ -93,11 +93,6 @@ class Timeframe extends CustomPostType {
 	public function __construct() {
 		$this->types = self::getTypes();
 
-		/**
-		 * Backend listing columns.
-		 *
-		 * @var string[]
-		 */
 		$this->listColumns = [
 			'timeframe-author'                                                   => esc_html__( 'User', 'commonsbooking' ),
 			'type'                                                               => esc_html__( 'Type', 'commonsbooking' ),
@@ -228,9 +223,7 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns view-class.
-	 *
-	 * @return null
+	 * @inheritDoc
 	 */
 	public static function getView() {
 		// @TODO implement view.
@@ -575,7 +568,7 @@ class Timeframe extends CustomPostType {
 					'type' => 'number',
 					'min'  => '1',
 				),
-				'default_value'    => 3,
+				'default_value'    => \CommonsBooking\Model\Timeframe::MAX_DAYS_DEFAULT,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
@@ -633,7 +626,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Grid', 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
 				'id'      => 'grid',
 				'type'    => 'select',
 				'options' => self::getGridOptions(),
@@ -753,7 +746,7 @@ class Timeframe extends CustomPostType {
 						'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
 				- Timeframe is bookable</br>
-				<a href="https://commonsbooking.org/?p=437" target="_blank">More Information in the documentation</a>
+				<a href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/" target="_blank">More Information in the documentation</a>
 				',
 						'commonsbooking'
 					)
@@ -1065,7 +1058,7 @@ class Timeframe extends CustomPostType {
 			$taxQuery              = array(
 				'tax_query' => array(
 					array(
-						'taxonomy' => Item::getPostType() . 's_category',
+						'taxonomy' => Item::getTaxonomyName(),
 						'field' => 'term_id',
 						'terms' => $itemCategorySelection,
 					),
@@ -1097,7 +1090,7 @@ class Timeframe extends CustomPostType {
 			$taxQuery                  = array(
 				'tax_query' => array(
 					array(
-						'taxonomy' => Location::getPostType() . 's_category',
+						'taxonomy' => Location::getTaxonomyName(),
 						'field' => 'term_id',
 						'terms' => $locationCategorySelection,
 					),
