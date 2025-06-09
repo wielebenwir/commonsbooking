@@ -23,19 +23,28 @@ abstract class CustomPostType {
 	public static $postType;
 
 	/**
-	 * @var
+	 * @var int
 	 */
 	protected $menuPosition;
 
 	/**
-	 * @var array
+	 * @var array<string, string>|null
 	 */
 	protected $listColumns = null;
 
 	/**
-	 * @var array
+	 * @var array|null
 	 */
 	protected $types = null;
+
+	/**
+	 * Returns the default taxonomy name
+	 *
+	 * @return string
+	 */
+	public static function getTaxonomyName(): string {
+		return static::$postType . 's_category';
+	}
 
 	/**
 	 * @return string
@@ -120,7 +129,13 @@ abstract class CustomPostType {
 			}
 		}
 
-		// allows to programmatically add custom metaboxes
+		/**
+		 * Default list of cmb2 meta boxes definitions.
+		 *
+		 * @since 2.9.2
+		 *
+		 * @param array $metaDataFields of arrays with [id, name, type, desc] keys.
+		 */
 		$metaDataFields = apply_filters( 'commonsbooking_custom_metadata', $metaDataFields );
 
 		if ( array_key_exists( $type, $metaDataFields ) ) {
@@ -155,6 +170,8 @@ abstract class CustomPostType {
 	}
 
 	/**
+	 * Returns view-class.
+	 *
 	 * @return mixed
 	 */
 	abstract public static function getView();
@@ -320,7 +337,7 @@ abstract class CustomPostType {
 		$values = [];
 		$terms  = get_terms(
 			array(
-				'taxonomy'  => static::$postType . 's_category',
+				'taxonomy'  => static::getTaxonomyName(),
 			)
 		);
 		foreach ( $terms as $term ) {
@@ -354,7 +371,7 @@ abstract class CustomPostType {
 	 *
 	 * @param int|WP_Post|CustomPost $post - Post ID or Post Object
 	 *
-	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|\CommonsBooking\Model\Restriction|\CommonsBooking\Model\Timeframe|\CommonsBooking\Model\Map
+	 * @return CustomPost
 	 * @throws PostException
 	 */
 	public static function getModel( $post ) {

@@ -243,6 +243,8 @@
                 settings: settings,
                 progress: progress
             };
+            doneSpan.hide();
+            failedSpan.hide();
             inProgress.show();
             const runExport = data => {
                 $.post(cb_ajax_export_timeframes.ajax_url, {

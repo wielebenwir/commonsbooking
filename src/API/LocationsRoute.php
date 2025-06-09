@@ -108,10 +108,10 @@ class LocationsRoute extends BaseRoute {
 	 * @param $item Location
 	 * @param $request
 	 *
-	 * @return stdClass
+	 * @return WP_REST_Response
 	 * @throws \Geocoder\Exception\Exception
 	 */
-	public function prepare_item_for_response( $item, $request ) {
+	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem             = new stdClass();
 		$preparedItem->type       = 'Feature';
 		$preparedItem->properties = new stdClass();
@@ -157,6 +157,6 @@ class LocationsRoute extends BaseRoute {
 			}
 		}
 
-		return $preparedItem;
+		return new WP_REST_Response( $preparedItem );
 	}
 }

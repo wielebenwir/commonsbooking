@@ -1,0 +1,41 @@
+name: PHP Code Beautifier Check
+
+on:
+  push:
+    paths:
+      - '**/*.php'
+  pull_request:
+    paths:
+      - '**/*.php'
+  workflow_dispatch:
+
+
+jobs:
+  phpcbf-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'  # Adjust this to your PHP version
+          extensions: uopz
+
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+      - name: Run phpcbf
+        run: ./vendor/bin/phpcbf -q --parallel=1 src templates includes tests commonsbooking.php
+
+      - name: Verify code style is unchanged
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "ERROR: phpcbf made changes. Please run phpcbf locally and commit the fixes."
+            exit 1
+          else
+            echo "Code style is compliant."
+          fi

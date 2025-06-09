@@ -8,6 +8,7 @@ use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Repository\Item;
 use stdClass;
+use WP_REST_Response;
 
 class StationStatus extends BaseRoute {
 
@@ -29,10 +30,10 @@ class StationStatus extends BaseRoute {
 	 * @param Location $item
 	 * @param $request
 	 *
-	 * @return stdClass
+	 * @return WP_REST_Response
 	 * @throws \Exception
 	 */
-	public function prepare_item_for_response( $item, $request ): stdClass {
+	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem                      = new stdClass();
 		$preparedItem->station_id          = $item->ID . '';
 		$preparedItem->num_bikes_available = $this->getItemCountAtLocation( $item->ID );
@@ -41,7 +42,7 @@ class StationStatus extends BaseRoute {
 		$preparedItem->is_returning        = true;
 		$preparedItem->last_reported       = time();
 
-		return $preparedItem;
+		return new WP_REST_Response( $preparedItem );
 	}
 
 	/**
@@ -51,12 +52,12 @@ class StationStatus extends BaseRoute {
 	 * or can only be booked through overbooking.
 	 * This is because the GBFS spec only accounts for items available in that instant.
 	 *
-	 * @param $locationId
+	 * @param int $locationId
 	 *
-	 * @return int|null
+	 * @return int
 	 * @throws \Exception
 	 */
-	private function getItemCountAtLocation( $locationId ) {
+	private function getItemCountAtLocation( $locationId ): int {
 		$items            = Item::getByLocation( $locationId, true );
 		$nowDT            = new \DateTime();
 		$availableCounter = 0;

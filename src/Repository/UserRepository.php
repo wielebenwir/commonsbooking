@@ -5,6 +5,7 @@ namespace CommonsBooking\Repository;
 
 use CommonsBooking\Plugin;
 use WP_Query;
+use WP_User;
 
 class UserRepository {
 
@@ -17,23 +18,44 @@ class UserRepository {
 		return get_users( [ 'role__in' => self::getManagerRoles() ] );
 	}
 
+	/**
+	 * Returns all valid roles that are considered by CommonsBooking as "Manager" roles.
+	 *
+	 * @return string[]
+	 */
 	public static function getManagerRoles(): array {
-		return apply_filters( 'commonsbooking_manager_roles', [ Plugin::$CB_MANAGER_ID ] );
+		$managerRoles = [ Plugin::$CB_MANAGER_ID ];
+		/**
+		 * Default list of manager roles
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param string[] $managerRoles list of allowed manager roles that is returned by {@see UserRepository::getManagerRoles()}
+		 */
+		return apply_filters( 'commonsbooking_manager_roles', $managerRoles );
 	}
 
 	/**
-	 * Will get all roles that are considered by CommonsBooking as "Administrator" roles
+	 * Returns all roles that are considered by CommonsBooking as "Administrator" roles.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public static function getAdminRoles(): array {
-		return apply_filters( 'commonsbooking_admin_roles', [ 'administrator' ] );
+		$adminRoles = [ 'administrator' ];
+		/**
+		 * Default list of admin roles
+		 *
+		 * @since 2.8.3
+		 *
+		 * @param string[] $adminRoles list of allowed admin roles that are returned by {@see UserRepository::getAdminRoles()}
+		 */
+		return apply_filters( 'commonsbooking_admin_roles', $adminRoles );
 	}
 
 	/**
 	 * Returns all users with items/locations.
 	 *
-	 * @return array
+	 * @return WP_User[]
 	 */
 	public static function getOwners(): array {
 		$owners   = [];

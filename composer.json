@@ -41,6 +41,7 @@
     "opis/json-schema": "^2.3.0",
     "scssphp/scssphp": "^1.11.1",
     "ext-json": "*",
+    "ext-curl": "*",
     "symfony/cache": "^5.4.30",
     "symfony/service-contracts": "^v2.5.2",
     "eluceo/ical": "~2.14.0",
@@ -58,6 +59,8 @@
     "myclabs/deep-copy": "^1.12.0",
     "phpstan/phpstan": "^2.1",
     "szepeviktor/phpstan-wordpress": "^2.0",
-    "phpstan/extension-installer": "^1.4"
+    "phpstan/extension-installer": "^1.4",
+    "ext-libxml": "*",
+    "ext-dom": "*"
   }
 }

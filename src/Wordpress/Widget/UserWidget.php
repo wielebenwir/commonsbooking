@@ -38,7 +38,17 @@ class UserWidget extends WP_Widget {
 		echo commonsbooking_sanitizeHTML( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
-			echo commonsbooking_sanitizeHTML( $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'] );
+			$unfilteredTitle = $instance['title'];
+			/**
+			 * Default widget title
+			 *
+			 * @since 2.10.0 uses commonsbooking prefix
+			 * @since 2.4.0
+			 *
+			 * @param string $unfilteredTitle of the widget
+			 */
+			$title = apply_filters( 'commonsbooking_widget_title', $unfilteredTitle );
+			echo commonsbooking_sanitizeHTML( $args['before_title'] . $title . $args['after_title'] );
 		}
 
 		echo '<div class="textwidget">';
@@ -111,7 +121,7 @@ class UserWidget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'Text' ) ); ?>"><?php echo esc_html__( 'Text:', 'commonsbooking' ); ?></label>
 			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"
-						name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="text" cols="30"
+						name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" cols="30"
 						rows="10"><?php echo esc_attr( $text ); ?></textarea>
 		</p>
 		<?php

@@ -24,7 +24,7 @@ class PostStatus {
 	 *
 	 * @param $name
 	 * @param $label
-	 * @param bool  $public
+	 * @param bool $public
 	 */
 	public function __construct( $name, $label, bool $public = true ) {
 		$this->name   = $name;

@@ -6,7 +6,8 @@ on:
 
 jobs:
   zip-pr:
-    runs-on: ubuntu-20.04
+    if: github.repository == 'wielebenwir/commonsbooking'
+    runs-on: ubuntu-24.04
     steps:
     
      - uses: actions/checkout@v4
@@ -30,7 +31,7 @@ jobs:
          username: ${{ secrets.CBZIPUPLOAD_USER }}
          password: ${{ secrets.CBZIPUPLOAD_KEY }}
          server-dir: ${{ github.event.number }}/
-         dangerous-clean-slate: true
+         dangerous-clean-slate: true # We only set this because we create a fresh directory and the action fails otherwise
          protocol: ftps
              
      - name: Find Comment

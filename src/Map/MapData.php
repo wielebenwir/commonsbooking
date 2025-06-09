@@ -17,13 +17,11 @@ class MapData {
 			while ( $check_capacity ) {
 				if ( $attempts > 10 ) {
 					wp_send_json_error( [ 'error' => 5 ], 408 );
-
-					wp_die();
 				}
 
 				++$attempts;
 
-				$last_call_timestamp = commonsbooking_sanitizeHTML( get_option( 'cb_map_last_nominatim_call', 0 ) );
+				$last_call_timestamp = intval( commonsbooking_sanitizeHTML( get_option( 'cb_map_last_nominatim_call', 0 ) ) );
 				$current_timestamp   = time();
 
 				if ( $current_timestamp > $last_call_timestamp + 1 ) {
@@ -71,8 +69,6 @@ class MapData {
 		} else {
 			wp_send_json_error( [ 'error' => 1 ], 400 );
 		}
-
-		wp_die();
 	}
 
 	/**
@@ -90,13 +86,9 @@ class MapData {
 				$map       = new Map( $cb_map_id );
 			} else {
 				wp_send_json_error( [ 'error' => 2 ], 400 );
-
-				wp_die();
 			}
 		} else {
 			wp_send_json_error( [ 'error' => 3 ], 400 );
-
-			wp_die();
 		}
 
 		if ( $post->post_status == 'publish' ) {
@@ -265,24 +257,27 @@ class MapData {
 		if ( $map->getMeta( 'cb_items_available_categories' ) ) {
 			$settings['filter_cb_item_categories'] = [];
 
-			foreach ( $map->getMeta( 'filtergroups' ) as $groupID => $group ) {
-				$elements = [];
-				foreach ( $group['categories'] as $termID ) {
-					$term         = get_term( $termID );
-					$customMarkup = get_term_meta( $termID, COMMONSBOOKING_METABOX_PREFIX . 'markup', true );
-					$termName     = empty( $customMarkup ) ? $term->name : $customMarkup;
+			$filterGroups = $map->getMeta( 'filtergroups' );
+			if ( is_array( $filterGroups ) ) {
+				foreach ( $filterGroups as $groupID => $group ) {
+					$elements = [];
+					foreach ( $group['categories'] as $termID ) {
+						$term         = get_term( $termID );
+						$customMarkup = get_term_meta( $termID, COMMONSBOOKING_METABOX_PREFIX . 'markup', true );
+						$termName     = empty( $customMarkup ) ? $term->name : $customMarkup;
 
-					$elements[] = [
-						'cat_id' => intval( $termID ),
-						'markup' => $termName,
+						$elements[] = [
+							'cat_id' => intval( $termID ),
+							'markup' => $termName,
+						];
+					}
+					$isExclusive                                       = $group['isExclusive'] ?? 'off';
+					$settings['filter_cb_item_categories'][ $groupID ] = [
+						'name'        => $group['name'] ?? '',
+						'elements'    => $elements,
+						'isExclusive' => $isExclusive == 'on',
 					];
 				}
-				$isExclusive                                       = $group['isExclusive'] ?? 'off';
-				$settings['filter_cb_item_categories'][ $groupID ] = [
-					'name'        => $group['name'] ?? '',
-					'elements'    => $elements,
-					'isExclusive' => $isExclusive == 'on',
-				];
 			}
 		}
 		return $settings;

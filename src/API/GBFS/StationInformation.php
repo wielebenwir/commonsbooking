@@ -7,6 +7,7 @@ use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use Exception;
 use stdClass;
+use WP_REST_Response;
 
 class StationInformation extends BaseRoute {
 
@@ -28,11 +29,11 @@ class StationInformation extends BaseRoute {
 	 * @param $item Location
 	 * @param $request
 	 *
-	 * @return stdClass
+	 * @return WP_REST_Response
 	 * @throws \Geocoder\Exception\Exception
 	 * @throws Exception
 	 */
-	public function prepare_item_for_response( $item, $request ): stdClass {
+	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem                   = new stdClass();
 		$preparedItem->station_id       = $item->ID . '';
 		$preparedItem->name             = $item->post_title;
@@ -82,6 +83,6 @@ class StationInformation extends BaseRoute {
 			}
 		}
 
-		return $preparedItem;
+		return new WP_REST_Response( $preparedItem );
 	}
 }

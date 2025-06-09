@@ -29,6 +29,9 @@
                 settings: settings, progress: progress
             };
 
+            // Initialize visibility
+            doneSpan.hide();
+            failedSpan.hide();
             inProgress.show();
 
 

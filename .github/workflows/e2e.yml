@@ -6,12 +6,14 @@ on:
       - 'master'
       - 'release/**'
     paths-ignore:
+      - 'docs'
       - '**.md'
       - '**.txt'
   pull_request:
     branches:
       - 'master'
-
+    paths-ignore:
+      - 'docs'
 
 env:
   DB_DATABASE: wordpress_test
@@ -21,7 +23,7 @@ env:
 jobs:
   e2e:
     name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:

@@ -5,6 +5,7 @@ on:
   # Prevent the build from running when there are only irrelevant changes.
   push:
     paths-ignore:
+      - 'docs'
       - '**.md'
       - '**.txt'
       - '**.yml'
@@ -17,7 +18,7 @@ jobs:
   phpstan:
     name: 'WP latest on PHP 8.3'
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v4

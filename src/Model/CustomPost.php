@@ -11,15 +11,17 @@ use WP_Post;
  * Pseudo extends WP_Post class.
  *
  * All the public methods are available as template tags.
- * * In using magic methods you can retrieve data from model objects, when the model object class derive from this class.
+ * * In using magic methods you can retrieve data from model objects, when the model object class derive from this class. Using identifiers as per https://developer.wordpress.org/reference/classes/wp_post/#Member_Variables_of_WP_Post.
  * * All the public methods are available as template tags.
  *
  * @package CommonsBooking\Model
  *
- * @property int $post_author identifier of the WordPress user.
- * @property string $post_status describes whether the post is published.
- * @property int $ID of the WordPress post.
- * @property string $post_title
+ * @property int|string $post_author {@see WP_Post::$post_author}
+ * @property string $post_status {@see WP_Post::$post_status}
+ * @property int $ID {@see WP_Post::$ID}
+ * @property string $post_title {@see WP_Post::$post_title}
+ * @property string $post_date {@see WP_Post::$post_date}
+ * @property string $post_name {@see WP_Post::$post_name}
  */
 class CustomPost {
 	/**
@@ -28,7 +30,7 @@ class CustomPost {
 	protected $post;
 
 	/**
-	 * @var
+	 * @var string
 	 */
 	protected $date;
 
@@ -70,9 +72,9 @@ class CustomPost {
 	/**
 	 * Returns meta-field value.
 	 *
-	 * @param $field
+	 * @param string $field
 	 *
-	 * @return string The value of the meta field. An empty string if the field doesn't exist.
+	 * @return string|array The value of the meta field. An empty string if the field doesn't exist.
 	 */
 	public function getMeta( $field ) {
 		return get_post_meta( $this->post->ID, $field, true );
