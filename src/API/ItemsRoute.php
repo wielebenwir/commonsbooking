@@ -33,7 +33,7 @@ class ItemsRoute extends BaseRoute {
 	/**
 	 * Returns raw data collection.
 	 *
-	 * @param $request
+	 * @param WP_REST_Request $request inbound request object.
 	 *
 	 * @return stdClass
 	 */
@@ -49,8 +49,34 @@ class ItemsRoute extends BaseRoute {
 			];
 		}
 
+		/**
+		 * Lets you customize the database query.
+		 *
+		 * Example: add_filter( '...', function( array $args ) {
+		 *      $args['category_slug'] = 'my_category';
+		 * })
+		 *
+		 * @param array $args from the {@see Item::get} args.
+		 */
+		$args = apply_filters( 'commonsbooking_commonsapi_itemsroute_getargs', $args );
+
+		/** @var \CommonsBooking\Model\Item[] $items */
 		$items = Item::get( $args );
 		foreach ( $items as $item ) {
+
+			/**
+			 * You can compute if an item should be skipped or not for the api response, based on $item data.
+			 *
+			 * Example: add_filter( '...', function ( Item $item ) {
+			 *      return 'my_category' in $item->term;
+			 * })
+			 *
+			 * @param \CommonsBooking\Model\Item $item bookable post type.
+			 */
+			if ( true === apply_filters( 'commonsbooking_commonsapi_itemsroute_skipitem', $item ) ) {
+				continue;
+			}
+
 			$itemdata      = $this->prepare_item_for_response( $item, $request );
 			$data->items[] = $this->prepare_response_for_collection( $itemdata );
 		}
