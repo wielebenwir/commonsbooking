@@ -191,7 +191,7 @@ trait Cache {
 	 * @param $identifier
 	 * @param $namespace
 	 * @param $defaultLifetime
-	 * @param null            $cacheLocation
+	 * @param null $cacheLocation
 	 * @return TagAwareAdapterInterface
 	 * @throws CacheException
 	 */

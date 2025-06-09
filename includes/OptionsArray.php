@@ -1547,7 +1547,7 @@ Return date: {{booking:returnDatetime}}
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Location of cache', 'commonsbooking' ) ),
-						'desc'          => commonsbooking_sanitizeHTML( __( 'The location of the cache. A directory for the filesystem cache, a REDIS DNS, ...', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'The location of the cache. A directory for the filesystem cache, a REDIS DSN, ...', 'commonsbooking' ) ),
 						'id'            => 'cache_location',
 						'type'          => 'text',
 						'default'       => sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache',

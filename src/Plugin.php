@@ -310,8 +310,8 @@ class Plugin {
 	public static function admin_init() {
 		// check if we have a new version and run tasks
 		Upgrade::runTasksAfterUpdate();
-		Upgrade::migrateCacheSettings(); //TODO TESTING ONLY, REMOVE!!!!
-		AdminOptions::setOptionsDefaultValues(); //TODO TESTING ONLY, REMOVE!!!!
+		Upgrade::migrateCacheSettings(); // TODO TESTING ONLY, REMOVE!!!!
+		AdminOptions::setOptionsDefaultValues(); // TODO TESTING ONLY, REMOVE!!!!
 
 		// Check if we need to run post options updated actions
 		if ( get_transient( 'commonsbooking_options_saved' ) == 1 ) {
