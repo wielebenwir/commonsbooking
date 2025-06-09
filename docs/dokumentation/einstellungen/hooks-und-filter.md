@@ -83,16 +83,6 @@ Darüber hinaus gibt es Filter Hooks, mit denen du die voreingestellten
 Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu [hier](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern):
 ###  Filter Hook: commonsbooking_tag_$key_$property
 
-### Filter `commonsbooking_mobile_calendar_month_count`
-
-Wie viel Monate standardmäßig in der mobilen Ansicht auf einer Seite angezeigt werden sollen (Standard: 2)
-Nutzungs-Beispiel:
-
-```php
-// Sets the mobile calendar view to display 2 month
-add_filter('commonsbooking_mobile_calendar_month_count', fn(): int => 2);
-```
-
 ####  Beispiel: Stations-Betreibende als E-Mail Empfänger der Buchungs-Mails überschreiben
 
 Ein Anwendungsfall für diesen Hook, stellt z.B. die Verwendung innerhalb einer
@@ -111,4 +101,17 @@ function mywebsite_cb_return_location_mail( $value ){
     return 'yourname@example.com';
 }
 add_filter('commonsbooking_tag_cb_location__cb_location_email', 'mywebsite_cb_return_location_mail' );
+```
+
+### Filter `commonsbooking_mobile_calendar_month_count`
+
+::: tip Ab Version 2.10.5
+:::
+
+Wie viel Monate standardmäßig in der mobilen Ansicht auf einer Seite angezeigt werden sollen (Standard: 2)
+Nutzungs-Beispiel:
+
+```php
+// Sets the mobile calendar view to display 2 month
+add_filter('commonsbooking_mobile_calendar_month_count', fn(): int => 2);
 ```
