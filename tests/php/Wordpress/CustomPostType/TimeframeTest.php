@@ -134,10 +134,10 @@ class TimeframeTest extends CustomPostTypeTest {
 		\CommonsBooking\Wordpress\CustomPostType\Item::registerPostTypeTaxonomy();
 
 		// Let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
-		$term = wp_create_term( 'Test Category', Item::getPostType() . 's_category' );
-		wp_set_post_terms( $secondItemId, [ $term['term_id'] ], Item::getPostType() . 's_category' );
+		$term = wp_create_term( 'Test Category', Item::getTaxonomyName() );
+		wp_set_post_terms( $secondItemId, [ $term['term_id'] ], Item::getTaxonomyName() );
 		// check, if our item is assigned to the category
-		$terms = wp_get_post_terms( $secondItemId, Item::getPostType() . 's_category' );
+		$terms = wp_get_post_terms( $secondItemId, Item::getTaxonomyName() );
 		$this->assertEquals( 1, count( $terms ) );
 		$this->assertEquals( $term['term_id'], $terms[0]->term_id );
 
@@ -195,10 +195,10 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// Let's assign our location to a category, that timeframe also to the same category and check if we can
 		// still get the timeframe
-		$term = wp_create_term( 'Location Test Category', Location::getPostType() . 's_category' );
-		wp_set_post_terms( $secondLocationId, [ $term['term_id'] ], Location::getPostType() . 's_category' );
+		$term = wp_create_term( 'Location Test Category', Location::getTaxonomyName() );
+		wp_set_post_terms( $secondLocationId, [ $term['term_id'] ], Location::getTaxonomyName() );
 		// check, if our location is assigned to the category
-		$terms = wp_get_post_terms( $secondLocationId, Location::getPostType() . 's_category' );
+		$terms = wp_get_post_terms( $secondLocationId, Location::getTaxonomyName() );
 		$this->assertEquals( 1, count( $terms ) );
 		$this->assertEquals( $term['term_id'], $terms[0]->term_id );
 

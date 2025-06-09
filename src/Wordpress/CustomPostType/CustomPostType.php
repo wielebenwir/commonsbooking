@@ -78,7 +78,7 @@ abstract class CustomPostType {
 	public static function registerPostTypeTaxonomy() {
 
 		$customPostType = static::getPostType();
-		$taxonomy       = static::getPostType() . 's_category';
+		$taxonomy       = static::getTaxonomyName();
 
 		$result = register_taxonomy(
 			$taxonomy,

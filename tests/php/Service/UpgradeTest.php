@@ -200,16 +200,16 @@ class UpgradeTest extends CustomPostTypeTest {
 	}
 
 	public function testMigrateMapSettings() {
-
+		$itemsTaxonomy = \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName();
 		// create taxonomies for test
-		$twowheelsCat      = wp_insert_term( '2 Räder', 'cb_items_category' )['term_id'];
-		$threewheelsCat    = wp_insert_term( '3 Räder', 'cb_items_category' )['term_id'];
-		$comboCat          = wp_insert_term( 'Gespann', 'cb_items_category' )['term_id'];
-		$childTransportCat = wp_insert_term( 'Kindertransport', 'cb_items_category' )['term_id'];
-		$chestCat          = wp_insert_term( 'Kiste mit Schloss', 'cb_items_category' )['term_id'];
-		$rainCoverCat      = wp_insert_term( 'Regenverdeck', 'cb_items_category' )['term_id'];
-		$withMotorCat      = wp_insert_term( 'mit Elektro', 'cb_items_category' )['term_id'];
-		$manualPowerCat    = wp_insert_term( 'Reine Muskelkraft', 'cb_items_category' )['term_id'];
+		$twowheelsCat      = wp_insert_term( '2 Räder', $itemsTaxonomy )['term_id'];
+		$threewheelsCat    = wp_insert_term( '3 Räder', $itemsTaxonomy )['term_id'];
+		$comboCat          = wp_insert_term( 'Gespann', $itemsTaxonomy )['term_id'];
+		$childTransportCat = wp_insert_term( 'Kindertransport', $itemsTaxonomy )['term_id'];
+		$chestCat          = wp_insert_term( 'Kiste mit Schloss', $itemsTaxonomy )['term_id'];
+		$rainCoverCat      = wp_insert_term( 'Regenverdeck', $itemsTaxonomy )['term_id'];
+		$withMotorCat      = wp_insert_term( 'mit Elektro', $itemsTaxonomy )['term_id'];
+		$manualPowerCat    = wp_insert_term( 'Reine Muskelkraft', $itemsTaxonomy )['term_id'];
 		$mapOptions        = array(
 			'base_map'                              => 1,
 			'show_scale'                            => true,
@@ -340,14 +340,14 @@ class UpgradeTest extends CustomPostTypeTest {
 		$this->assertEquals( $expectedMarkup, get_term_meta( $manualPowerCat, COMMONSBOOKING_METABOX_PREFIX . 'markup', true ) );
 
 		wp_delete_post( $oldMapId, true );
-		wp_delete_term( $twowheelsCat, 'cb_items_category' );
-		wp_delete_term( $threewheelsCat, 'cb_items_category' );
-		wp_delete_term( $comboCat, 'cb_items_category' );
-		wp_delete_term( $childTransportCat, 'cb_items_category' );
-		wp_delete_term( $chestCat, 'cb_items_category' );
-		wp_delete_term( $rainCoverCat, 'cb_items_category' );
-		wp_delete_term( $withMotorCat, 'cb_items_category' );
-		wp_delete_term( $manualPowerCat, 'cb_items_category' );
+		wp_delete_term( $twowheelsCat, $itemsTaxonomy );
+		wp_delete_term( $threewheelsCat, $itemsTaxonomy );
+		wp_delete_term( $comboCat, $itemsTaxonomy );
+		wp_delete_term( $childTransportCat, $itemsTaxonomy );
+		wp_delete_term( $chestCat, $itemsTaxonomy );
+		wp_delete_term( $rainCoverCat, $itemsTaxonomy );
+		wp_delete_term( $withMotorCat, $itemsTaxonomy );
+		wp_delete_term( $manualPowerCat, $itemsTaxonomy );
 	}
 
 	protected function setUp(): void {

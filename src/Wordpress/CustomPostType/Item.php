@@ -329,7 +329,7 @@ class Item extends CustomPostType {
 	 * @return void
 	 */
 	public static function registerTaxonomyMetaboxes() {
-		$taxonomy = self::getPostType() . 's_category';
+		$taxonomy = self::getTaxonomyName();
 
 		$cmb_taxonomy = new_cmb2_box(
 			array(
