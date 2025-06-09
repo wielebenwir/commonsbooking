@@ -39,11 +39,6 @@ class Calendar {
 	protected $types;
 
 	/**
-	 * @var
-	 */
-	protected $weeks;
-
-	/**
 	 * The timeframes that are relevant for this calendar.
 	 *
 	 * @var Timeframe[]
@@ -71,7 +66,15 @@ class Calendar {
 		$this->locations = $locations;
 		$this->types     = $types;
 
-		$this->timeframes = $this->getTimeframes();
+		$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+			$this->startDate->getStartTimestamp(),
+			$this->endDate->getEndTimestamp(),
+			$this->locations,
+			$this->items,
+			$this->types,
+			true,
+			[ 'confirmed', 'publish' ]
+		);
 	}
 
 	/**
@@ -179,23 +182,5 @@ class Calendar {
 			}
 		}
 		return $slots;
-	}
-
-	private function getTimeframes(): array {
-		if ( ! isset( $this->timeframes ) ) {
-			$this->timeframes = [];
-			$timeframes       = \CommonsBooking\Repository\Timeframe::getInRange(
-				$this->startDate->getStartTimestamp(),
-				$this->endDate->getEndTimestamp(),
-				$this->locations,
-				$this->items,
-				$this->types,
-				true,
-				[ 'confirmed', 'publish' ]
-			);
-			$this->timeframes = $timeframes;
-		}
-
-		return $this->timeframes;
 	}
 }

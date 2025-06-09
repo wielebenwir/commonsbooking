@@ -11,6 +11,7 @@ use CommonsBooking\Service\iCalendar;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use DateTimeImmutable;
+use WP_User;
 
 /**
  * A message that contains booking codes to be sent by mail to the location admins.
@@ -23,13 +24,17 @@ class BookingCodesMessage extends Message {
 	protected $to;
 	private ?int $tsFrom;
 	private ?int $tsTo;
-	private ?array $locationAdmins;
 
 	/**
-	 * @param int /post $postId     ID or Post of timeframe
-	 * @param string    $action        Message action
-	 * @param int|null  $tsFrom           Timestamp of first Booking Code
-	 * @param int|null  $tsTo             Timestamp of last Booking Code
+	 * @var WP_User[]|null
+	 */
+	private ?array $locationAdmins = null; // TODO remove nullable, never is set to null anyway
+
+	/**
+	 * @param int      $postId       ID or Post of timeframe
+	 * @param string   $action    Message action
+	 * @param int|null $tsFrom  Timestamp of first Booking Code
+	 * @param int|null $tsTo    Timestamp of last Booking Code
 	 */
 	public function __construct( $postId, string $action, int $tsFrom = null, int $tsTo = null ) {
 		parent::__construct( $postId, $action );

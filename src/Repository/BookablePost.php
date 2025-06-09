@@ -124,7 +124,7 @@ abstract class BookablePost extends PostRepository {
 	public static function getTerms() {
 		$terms = get_terms(
 			array(
-				'taxonomy'   => static::getPostType() . 's_category',
+				'taxonomy'   => static::getTaxonomyName(),
 				'hide_empty' => false,
 			)
 		);
@@ -141,12 +141,17 @@ abstract class BookablePost extends PostRepository {
 	abstract protected static function getPostType();
 
 	/**
+	 * @return string
+	 */
+	abstract protected static function getTaxonomyName();
+
+	/**
 	 * Returns cb-posts for a user (respects author and assigned admins).
 	 *
 	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
-	 * @param $userId
-	 * @param false  $asModel - Wether the posts should be returned as their respective model class or as WP_Post
+	 * @param mixed $userId
+	 * @param bool  $asModel - Whether the posts should be returned as their respective model class or as WP_Post
 	 *
 	 * @return array
 	 */
@@ -221,7 +226,7 @@ abstract class BookablePost extends PostRepository {
 
 		// Add custom taxonomy filter
 		if ( array_key_exists( 'category_slug', $args ) ) {
-			$args['taxonomy'] = static::getPostType() . 's_category';
+			$args['taxonomy'] = static::getTaxonomyName();
 			$args['term']     = $args['category_slug'];
 			unset( $args['category_slug'] );
 		}
@@ -266,7 +271,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $postId
 	 * @param $originType
 	 * @param $relatedType
-	 * @param bool        $bookable
+	 * @param bool $bookable
 	 *
 	 * @return int[] Array of post ids
 	 * @throws Exception

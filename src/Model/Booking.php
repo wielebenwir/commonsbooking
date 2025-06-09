@@ -381,11 +381,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public function setOverbookedDays( int $rawDaysOverbooked ): int {
 		$location             = $this->getLocation();
 		$countLockdaysInRange = $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range' ) === 'on';
-		$countLockdaysMaximum = $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum' );
+		// Evaluate to 0 even if getMeta returns '' (valid but non-existent meta-key for the post) or false (post-id invalid)
+		$countLockdaysMaximum = intval( $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum' ) );
 
 		if ( ! $countLockdaysInRange ) {
 			$days = $rawDaysOverbooked;
-		} elseif ( $countLockdaysMaximum == 0 ) {
+		} elseif ( $countLockdaysMaximum === 0 ) {
 			$days = 0;
 		} else {
 			$days = max( 0, $rawDaysOverbooked - $countLockdaysMaximum );
@@ -469,7 +470,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
-			if ( $timeframeGridSize ) {
+			if ( is_numeric( $timeframeGridSize ) ) {
 				$grid = $timeframeGridSize;
 			}
 		}
@@ -505,7 +506,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
-			if ( $timeframeGridSize ) {
+			if ( is_numeric( $timeframeGridSize ) ) {
 				$grid = $timeframeGridSize;
 			}
 		}
@@ -525,7 +526,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * TODO: Clarify why this implementation is different from the one in the parent class.
 	 *
-	 * @return mixed|string
+	 * @return int
 	 */
 	public function getStartDate(): int {
 		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
@@ -538,7 +539,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * TODO: Clarify why this implementation is different from the one in the parent class.
 	 *
-	 * @return mixed|string
+	 * @return int
 	 */
 	public function getEndDate(): int {
 		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
@@ -630,7 +631,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$this->ID
 		);
 
-		if ( $overlappingBookings && count( $overlappingBookings ) >= 1 ) {
+		if ( count( $overlappingBookings ) >= 1 ) {
 			foreach ( $overlappingBookings as $overlappingBooking ) {
 				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
 			}
@@ -653,7 +654,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
 	 *
-	 * @param null $linktext
+	 * @param string|null $linktext
 	 *
 	 * @return string
 	 */
@@ -749,8 +750,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// terms are not applicable if either location or item is not found
 			return false;
 		}
-		$isInItemCat     = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category', $item->getPost() );
-		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::$postType . 's_category', $location->getPost() );
+		$isInItemCat     = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName(), $item->getPost() );
+		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName(), $location->getPost() );
 		return ( $isInItemCat || $isInLocationCat );
 	}
 
@@ -782,10 +783,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// Booking has no valid status
 			return 0;
 		}
-		if ( $interval === null ) {
-			// no interval created
-			return 0;
-		}
+
 		$days = $interval->d;
 		// when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
 		if ( $interval->h > 0 ) {
@@ -949,8 +947,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param   \CommonsBooking\Model\Booking[] $bookings
-	 * @return void
+	 * @param \CommonsBooking\Model\Booking[] $bookings
+	 * @return int
 	 */
 	public static function getTotalDuration( array $bookings ): int {
 		$totalDurationOfDays = 0;

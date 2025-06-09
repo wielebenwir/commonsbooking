@@ -189,7 +189,7 @@ return array(
 					commonsbooking_sanitizeHTML(
 						__(
 							'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking codes</a>',
+                <br>More information in the documentation: <a href="https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/" target="_blank">Booking codes</a>',
 							'commonsbooking'
 						)
 					),

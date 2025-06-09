@@ -11,7 +11,7 @@ class Location extends BookablePost {
 	 *
 	 * @param $itemId
 	 *
-	 * @param bool   $bookable
+	 * @param bool $bookable
 	 *
 	 * @return array
 	 * @throws Exception
@@ -25,6 +25,13 @@ class Location extends BookablePost {
 	 */
 	protected static function getPostType(): string {
 		return \CommonsBooking\Wordpress\CustomPostType\Location::getPostType();
+	}
+
+	/**
+	 * @return string
+	 */
+	protected static function getTaxonomyName() {
+		return \CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName();
 	}
 
 	/**

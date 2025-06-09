@@ -121,7 +121,7 @@ class UserWidget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'Text' ) ); ?>"><?php echo esc_html__( 'Text:', 'commonsbooking' ); ?></label>
 			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'text' ) ); ?>"
-						name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" type="text" cols="30"
+						name="<?php echo esc_attr( $this->get_field_name( 'text' ) ); ?>" cols="30"
 						rows="10"><?php echo esc_attr( $text ); ?></textarea>
 		</p>
 		<?php
