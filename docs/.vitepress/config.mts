@@ -39,7 +39,7 @@ export default defineConfig({
             text: 'Zuletzt aktualisiert',
         },
         outlineTitle: 'Auf dieser Seite',
-          
+
         editLink: {
           pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/docs/:path',
           text: 'Bearbeite diese Seite auf Github'
@@ -234,7 +234,8 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       text: 'Erweiterte Funktionalität', base: '/dokumentation/erweiterte-funktionalitaet/',
         collapsed: true,
       items: [
-        { text: 'Standardwerte für Zeitrahmen-Erstellung ändern', link: 'standardwerte-fuer-zeitrahmenerstellung-aendern' }
+          { text: 'Caching', link: 'cache' },
+          { text: 'Standardwerte für Zeitrahmen-Erstellung ändern', link: 'standardwerte-fuer-zeitrahmenerstellung-aendern' },
       ]
     },
 
@@ -353,15 +354,16 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'CommonsBooking API', link: 'commonsbooking-api' }
           ]
       },
-
+*/
     {
       text: 'Advanced functionality', base: '/en/documentation/advanced-functionality/',
         collapsed: true,
       items: [
-        { text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' }
+            { text: 'Caching', link: 'cache' },
+        //{ text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' }
       ]
     },
-
+/*
     {
       text: 'Roadmap', base: '/en/documentation/roadmap/',
         collapsed: true,
