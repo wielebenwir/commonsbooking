@@ -585,6 +585,7 @@ class Upgrade {
 				'cache_location',
 				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' )
 			);
+			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter', 'filesystem' );
 		}
 	}
 }
