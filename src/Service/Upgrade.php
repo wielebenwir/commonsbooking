@@ -574,14 +574,14 @@ class Upgrade {
 	public static function migrateCacheSettings(): void {
 		if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on' ) {
 			Settings::updateOption(
-				COMMONSBOOKING_PLUGIN_SLUG . '_options-advanced-options',
+				COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options',
 				'cache_location',
 				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' )
 			);
-			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options-advanced-options', 'cache_adapter', 'redis' );
+			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter', 'redis' );
 		} else {
 			Settings::updateOption(
-				COMMONSBOOKING_PLUGIN_SLUG . '_options-advanced-options',
+				COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options',
 				'cache_location',
 				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' )
 			);
