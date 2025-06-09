@@ -14,6 +14,7 @@ export default defineConfig({
       lang: 'de-DE',
       description: "Benutzerhandbuch und Dokumentation",
       themeConfig: {
+        returnToTopLabel: 'An den Anfang',
         nav: [
           { text: 'Merkmale & Funktionen', link: '/funktionen/' }
         , { text: 'Dokumentation', link: '/dokumentation/', activeMatch: '/dokumentation/' }
