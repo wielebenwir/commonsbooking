@@ -1,7 +1,6 @@
 <?php
 
 
-use CommonsBooking\Helper;
 use CommonsBooking\Service\BookingRule;
 use CommonsBooking\View\Migration;
 use CommonsBooking\Helper\Wordpress;
@@ -15,11 +14,11 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 // We need static types, because german month names don't work for datepicker
 $dateFormat = 'd/m/Y';
-if ( strpos( get_locale(), 'de_' ) !== false ) {
+if ( str_starts_with( get_locale(), 'de_' ) ) {
 	$dateFormat = 'd.m.Y';
 }
 
-if ( strpos( get_locale(), 'en_' ) !== false ) {
+if ( str_starts_with( get_locale(), 'en_' ) ) {
 	$dateFormat = 'm/d/Y';
 }
 
@@ -190,7 +189,7 @@ return array(
 					commonsbooking_sanitizeHTML(
 						__(
 							'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking codes</a>',
+                <br>More information in the documentation: <a href="https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/" target="_blank">Booking codes</a>',
 							'commonsbooking'
 						)
 					),

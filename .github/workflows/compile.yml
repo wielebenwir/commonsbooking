@@ -5,12 +5,13 @@ on:
       - master
       - 'release/**'
     paths-ignore:
+      - 'docs'
       - '**.md'
       - '**.txt'
-    
+
 jobs:
   i18n-coverage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     name: Check i18n coverage
     steps:
       - uses: actions/checkout@v4
@@ -41,7 +42,7 @@ jobs:
           ignore-languages: 'en'
 
   grunt:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     name: Run grunt and commit changes
     needs: i18n-coverage
     steps:

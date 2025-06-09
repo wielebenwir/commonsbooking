@@ -47,7 +47,16 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 			$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
 		}
 
-		// Allow 3rd party plugin filter template file from their plugin
+		/**
+		 * Allow 3rd party plugin filter template file from their plugin
+		 *
+		 * @since 2.2.4
+		 *
+		 * @param string $template template path
+		 * @param string $slug slug
+		 * @param string $name name
+		 * @param string $plugin_slug plugin slug
+		 */
 		$template = apply_filters( 'commonsbooking_get_template_part', $template, $slug, $name, $plugin_slug );
 
 		$has_post_thumbnail = ( has_post_thumbnail() ) ? 'has-post-thumbnail' : 'no-post-thumbnail'; // @TODO this feils because we have no global post anymore
@@ -74,13 +83,17 @@ if ( ! function_exists( 'commonsbooking_get_template_part' ) ) {
 			}
 		}
 
-		if ( $template && $include === true ) {
-			echo( commonsbooking_sanitizeHTML( $before_html ) );
-			load_template( $template, false );
-			echo( commonsbooking_sanitizeHTML( $after_html ) );
-		} elseif ( $template && $include === false ) {
-			return $before_html . $template . $after_html;
+		if ( ! $template ) {
+			return '';
 		}
-		return '';
+
+		if ( $include ) {
+			echo commonsbooking_sanitizeHTML( $before_html );
+			load_template( $template, false );
+			echo commonsbooking_sanitizeHTML( $after_html );
+			return '';
+		}
+
+		return $before_html . $template . $after_html;
 	}
 }

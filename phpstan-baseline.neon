@@ -1,6 +1,103 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Action callback returns bool but should not return anything\\.$#"
+			message: '#^Access to an undefined property WP_User\:\:\$codeTable\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Messages/BookingCodesMessage.php
+
+		-
+			message: '#^Access to an undefined property WP_User\:\:\$formatDateRange\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Messages/BookingCodesMessage.php
+
+		-
+			message: '#^Call to function array_key_exists\(\) with ''migrationFunction'' and array\{repoFunction\: ''getBookingCodes'', migrationFunction\: ''migrateBookingCode''\}\|array\{repoFunction\: ''getBookings'', migrationFunction\: ''migrateBooking''\}\|array\{repoFunction\: ''getCB1Taxonomies'', migrationFunction\: ''migrateTaxonomy''\}\|array\{repoFunction\: ''getItems'', migrationFunction\: ''migrateItem''\}\|array\{repoFunction\: ''getLocations'', migrationFunction\: ''migrateLocation''\}\|array\{repoFunction\: ''getTimeframes'', migrationFunction\: ''migrateTimeframe''\}\|array\{repoFunction\: false, migrationFunction\: ''migrateCB1Options''\|''migrateUserAgreemen…''\} will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Comparison operation "\>\=" between int\<0, 39\> and 40 is always false\.$#'
+			identifier: greaterOrEqual.alwaysFalse
+			count: 2
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateBooking\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateBookingCode\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateCB1Options\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateItem\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateLocation\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateTaxonomy\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateTimeframe\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateUserAgreementUrl\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$locked\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Model/Day.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$locked\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/View/Calendar.php
+
+		-
+			message: '#^Action callback returns bool but should not return anything\.$#'
+			identifier: return.void
 			count: 1
 			path: src/Wordpress/CustomPostType/CustomPostType.php

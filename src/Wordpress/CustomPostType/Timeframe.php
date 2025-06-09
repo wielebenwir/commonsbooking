@@ -7,7 +7,6 @@ use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\BookingCode;
 use WP_Post;
 use Exception;
-use CommonsBooking\CB\CB;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\View\Admin\Filter;
 use CommonsBooking\Repository\BookingCodes;
@@ -94,11 +93,6 @@ class Timeframe extends CustomPostType {
 	public function __construct() {
 		$this->types = self::getTypes();
 
-		/**
-		 * Backend listing columns.
-		 *
-		 * @var string[]
-		 */
 		$this->listColumns = [
 			'timeframe-author'                                                   => esc_html__( 'User', 'commonsbooking' ),
 			'type'                                                               => esc_html__( 'Type', 'commonsbooking' ),
@@ -229,9 +223,7 @@ class Timeframe extends CustomPostType {
 	}
 
 	/**
-	 * Returns view-class.
-	 *
-	 * @return null
+	 * @inheritDoc
 	 */
 	public static function getView() {
 		// @TODO implement view.
@@ -475,11 +467,11 @@ class Timeframe extends CustomPostType {
 	protected function getCustomFields() {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = 'd/m/Y';
-		if ( strpos( get_locale(), 'de_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
 			$dateFormat = 'd.m.Y';
 		}
 
-		if ( strpos( get_locale(), 'en_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'en_' ) ) {
 			$dateFormat = 'm/d/Y';
 		}
 
@@ -576,7 +568,7 @@ class Timeframe extends CustomPostType {
 					'type' => 'number',
 					'min'  => '1',
 				),
-				'default_value'    => 3,
+				'default_value'    => \CommonsBooking\Model\Timeframe::MAX_DAYS_DEFAULT,
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
@@ -634,7 +626,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Grid', 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/?p=437">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
 				'id'      => 'grid',
 				'type'    => 'select',
 				'options' => self::getGridOptions(),
@@ -754,7 +746,7 @@ class Timeframe extends CustomPostType {
 						'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
 				- Timeframe is bookable</br>
-				<a href="https://commonsbooking.org/?p=437" target="_blank">More Information in the documentation</a>
+				<a href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/" target="_blank">More Information in the documentation</a>
 				',
 						'commonsbooking'
 					)
@@ -838,12 +830,13 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return array
 	 */
-	public static function getSelectionOptions() {
-		return [
-			\CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID => esc_html__( 'Manual selection', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID  => esc_html__( 'Select by category', 'commonsbooking' ),
-			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID  => esc_html__( 'All', 'commonsbooking' ),
-		];
+	public static function getSelectionOptions(): array {
+		$selection = [ \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID => esc_html__( 'Manual selection', 'commonsbooking' ) ];
+		if ( commonsbooking_isCurrentUserAdmin() ) {
+			$selection[ \CommonsBooking\Model\Timeframe::SELECTION_CATEGORY_ID ] = esc_html__( 'Select by category', 'commonsbooking' );
+			$selection[ \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID ]      = esc_html__( 'All', 'commonsbooking' );
+		}
+		return $selection;
 	}
 
 	/**
@@ -1065,7 +1058,7 @@ class Timeframe extends CustomPostType {
 			$taxQuery              = array(
 				'tax_query' => array(
 					array(
-						'taxonomy' => Item::getPostType() . 's_category',
+						'taxonomy' => Item::getTaxonomyName(),
 						'field' => 'term_id',
 						'terms' => $itemCategorySelection,
 					),
@@ -1097,7 +1090,7 @@ class Timeframe extends CustomPostType {
 			$taxQuery                  = array(
 				'tax_query' => array(
 					array(
-						'taxonomy' => Location::getPostType() . 's_category',
+						'taxonomy' => Location::getTaxonomyName(),
 						'field' => 'term_id',
 						'terms' => $locationCategorySelection,
 					),
@@ -1410,7 +1403,6 @@ class Timeframe extends CustomPostType {
 		// Add custom cmb2 type for email booking codes by cron
 		add_action( 'cmb2_render_booking_codes_email_fields', [ '\CommonsBooking\View\BookingCodes','renderCronEmailFields' ], 10, 5 );
 		add_action( 'cmb2_save_field_' . \CommonsBooking\View\BookingCodes::CRON_EMAIL_CODES, [ '\CommonsBooking\View\BookingCodes','cronEmailCodesSaved' ], 10, 3 );
-
 		// Add Meta Boxes
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
@@ -1418,7 +1410,6 @@ class Timeframe extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 
 		add_action( 'updated_post_meta', array( $this, 'updatedPostMeta' ), 11, 4 );
-
 		// Add type filter to backend list view
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminTypeFilter' ) );
 		add_action( 'restrict_manage_posts', array( self::class, 'addAdminItemFilter' ) );

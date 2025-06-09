@@ -3,13 +3,11 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingDeniedException;
-use CommonsBooking\Exception\BookingRuleException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\iCalendar;
-use CommonsBooking\Settings\Settings;
 use Exception;
 use function wp_verify_nonce;
 
@@ -84,7 +82,7 @@ class Booking extends Timeframe {
 		global $pagenow;
 
 		$post            = $post ?? get_post( $post_id );
-		$is_trash_action = str_contains( ( $_REQUEST ?? array() )['action'] ?? '', 'trash' );
+		$is_trash_action = str_contains( $_REQUEST['action'] ?? '', 'trash' );
 
 		// we check if it's a new created post - TODO: This is not the case
 		if (
@@ -273,7 +271,7 @@ class Booking extends Timeframe {
 			);
 		}
 
-		/** @var \CommonsBooking\Model\Booking $booking */
+		/** @var \CommonsBooking\Model\Booking|null $booking */
 		$booking = \CommonsBooking\Repository\Booking::getByDate(
 			$repetitionStart,
 			$repetitionEnd,
@@ -304,7 +302,7 @@ class Booking extends Timeframe {
 			// checks if it's an edit, but ignores exact start/end time
 			$isEdit = count( $existingBookings ) === 1 &&
 						array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostName &&
-						array_values( $existingBookings )[0]->getPost()->post_author === get_current_user_id();
+						intval( array_values( $existingBookings )[0]->getPost()->post_author ) === get_current_user_id();
 
 			if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status !== 'canceled' ) {
 				if ( $booking ) {
@@ -387,7 +385,7 @@ class Booking extends Timeframe {
 		if ( $postId instanceof \WP_Error ) {
 			throw new BookingDeniedException(
 				__( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
-												PHP_EOL . $postId->get_error_messages()
+												PHP_EOL . implode( ', ', $postId->get_error_messages() )
 			);
 		}
 
@@ -608,7 +606,11 @@ class Booking extends Timeframe {
 		if ( $column == 'booking_user' ) {
 			$post        = get_post( $post_id );
 			$bookingUser = get_user_by( 'id', $post->post_author );
-			echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
+			if ( $bookingUser ) {
+				echo '<a href="' . get_edit_user_link( $bookingUser->ID ) . '">' . commonsbooking_sanitizeHTML( $bookingUser->user_login ) . '</a>';
+			} else {
+				echo '-';
+			}
 		}
 
 		if ( $value = get_post_meta( $post_id, $column, true ) ) {
@@ -719,11 +721,11 @@ class Booking extends Timeframe {
 	protected function getCustomFields() {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = 'd/m/Y';
-		if ( strpos( get_locale(), 'de_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
 			$dateFormat = 'd.m.Y';
 		}
 
-		if ( strpos( get_locale(), 'en_' ) !== false ) {
+		if ( str_starts_with( get_locale(), 'en_' ) ) {
 			$dateFormat = 'm/d/Y';
 		}
 
@@ -903,7 +905,7 @@ class Booking extends Timeframe {
 	public function displayOverlappingBookingNotice( $post ) {
 
 		if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
-			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning' ) );
+			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );
 		}
 	}
 
@@ -1004,7 +1006,7 @@ class Booking extends Timeframe {
 	/**
 	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
 	 *
-	 * @param string                                                                                                         $emailAddress The email address
+	 * @param string $emailAddress The email address
 	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
 	 *
 	 * @return array

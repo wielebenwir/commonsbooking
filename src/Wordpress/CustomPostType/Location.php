@@ -53,7 +53,7 @@ class Location extends CustomPostType {
 	 * @return void
 	 */
 	public static function termChange( $term_id, $tt_id, $taxonomy ) {
-		if ( $taxonomy == self::$postType . 's_category' ) {
+		if ( $taxonomy == self::getTaxonomyName() ) {
 			// update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
 		}
@@ -93,7 +93,7 @@ class Location extends CustomPostType {
 			) {
 				$query->query_vars['tax_query'] = array(
 					array(
-						'taxonomy'  => self::$postType . 's_category',
+						'taxonomy'  => self::getTaxonomyName(),
 						'field'     => 'term_id',
 						'terms'     => $_GET['admin_filter_post_category'],
 					),
@@ -191,7 +191,7 @@ class Location extends CustomPostType {
 			),
 
 			// Soll der Post Type Kategien haben?
-			'taxonomies'          => array( self::$postType . 's_category' ),
+			'taxonomies'          => array( self::getTaxonomyName() ),
 
 			// Soll der Post Type Archiv-Seiten haben?
 			'has_archive'         => false,
@@ -483,10 +483,10 @@ class Location extends CustomPostType {
 
 		// we store registered metaboxes to options table to be able to retrieve it in export function
 		$metabox_fields = [];
-		foreach ( $cmb->meta_box['fields'] as $metabox_field ) {
+		foreach ( $cmb->prop( 'fields' ) as $metabox_field ) {
 			$metabox_fields[ $metabox_field['id'] ] = $metabox_field['name'];
 		}
-		Settings::updateOption( 'commonsbooking_settings_metaboxfields', $this->getPostType(), $metabox_fields );
+		Settings::updateOption( 'commonsbooking_settings_metaboxfields', static::getPostType(), $metabox_fields );
 	}
 
 	/**
@@ -499,7 +499,7 @@ class Location extends CustomPostType {
 		return [
 			array(
 				'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),
-				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/?p=435">Create Locations</a> for more information.', 'commonsbooking' ) ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/">Create Locations</a> for more information.', 'commonsbooking' ) ),
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
 				'type' => 'checkbox',
 			),

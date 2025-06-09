@@ -1,12 +1,7 @@
 <?php
 
 use CommonsBooking\Plugin;
-use CommonsBooking\Wordpress\CustomPostType\Booking;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
-use CommonsBooking\Wordpress\CustomPostType\Item;
-use CommonsBooking\Wordpress\CustomPostType\Location;
-use CommonsBooking\Wordpress\CustomPostType\Restriction;
-use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
 
 /**
@@ -115,10 +110,7 @@ add_filter(
 			}
 
 			// Save posts to global variable for later use -> fix of counts in admin lists
-			if (
-				array_key_exists( 'post_type', $_GET ) &&
-				is_array( $query->query ) && array_key_exists( 'post_type', $query->query )
-			) {
+			if ( array_key_exists( 'post_type', $_GET ) ) {
 				global ${'posts' . $query->query['post_type']};
 				${'posts' . $query->query['post_type']} = $posts;
 			}
@@ -132,7 +124,7 @@ add_filter(
 
 // Add filter to change post counts in admin lists for custom post types.
 foreach ( Plugin::getCustomPostTypes() as $custom_post_type ) {
-	add_filter( 'views_edit-' . $custom_post_type::getPostType(), 'commonsbooking_custom_view_count', 10, 1 );
+	add_filter( 'views_edit-' . $custom_post_type, 'commonsbooking_custom_view_count', 10, 1 );
 }
 
 // Filter function for fix of counts in admin lists for custom post types.
@@ -179,7 +171,17 @@ function commonsbooking_isCurrentUserAdmin() {
 		return false; }
 	$user = wp_get_current_user();
 
-	return apply_filters( 'commonsbooking_isCurrentUserAdmin', commonsbooking_isUserAdmin( $user ) );
+	$isAdmin = commonsbooking_isUserAdmin( $user );
+	/**
+	 * Default value if current user is admin.
+	 *
+	 * @since 2.10.0 add $user param
+	 * @since 2.4.3
+	 *
+	 * @param bool         $isAdmin true or false, if current user is admin
+	 * @param null|WP_User $user current user
+	 */
+	return apply_filters( 'commonsbooking_isCurrentUserAdmin', $isAdmin, $user );
 }
 
 /**
@@ -210,24 +212,42 @@ function commonsbooking_isUserAdmin( \WP_User $user ) {
  * @return bool
  */
 function commonsbooking_isUserCBManager( \WP_User $user ): bool {
-	return apply_filters( 'commonsbooking_isCurrentUserCBManager', in_array( Plugin::$CB_MANAGER_ID, $user->roles ), $user );
+	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
+
+	/**
+	 * Default value if current user is cb manager.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param bool    $isManager true or false, if current user is cb manager
+	 * @param WP_User $user current user
+	 */
+	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
 }
 
 // Check if current user has subscriber role
 function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
 
-	return apply_filters( 'commonsbooking_isCurrentUserSubscriber', in_array( 'subscriber', $user->roles ), $user );
+	$isSubscriber = in_array( 'subscriber', $user->roles );
+	/**
+	 * Default value if current user is subscriber.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param bool    $isSubscriber true or false, if current user is subscriber
+	 * @param WP_User $user current user
+	 */
+	return apply_filters( 'commonsbooking_isCurrentUserSubscriber', $isSubscriber, $user );
 }
 
-// check if current user has CBManager role
+/**
+ * check if current user has CBManager role
+ *
+ * @return bool if is allowed
+ */
 function commonsbooking_isCurrentUserCBManager() {
-
-	$user = wp_get_current_user();
-
-	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
-
-	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
+	return commonsbooking_isUserCBManager( wp_get_current_user() );
 }
 
 /**
@@ -257,9 +277,9 @@ function commonsbooking_isCurrentUserAllowedToBook( $timeframeID ): bool {
  *
  * It only makes sense to check this with booking posts as all CPTs are / should be public.
  *
- * @param $booking - A booking of the cb_booking type
+ * @param \CommonsBooking\Model\Booking|int|WP_Post $booking - A booking of the cb_booking type
  *
- * @return void
+ * @return bool
  */
 function commonsbooking_isCurrentUserAllowedToSee( $booking ): bool {
 	if ( ! is_user_logged_in() ) {
@@ -270,11 +290,7 @@ function commonsbooking_isCurrentUserAllowedToSee( $booking ): bool {
 
 	$user = wp_get_current_user();
 
-	if ( $user ) {
-		return commonsbooking_isUserAllowedToSee( $booking, $user );
-	} else {
-		return false;
-	}
+	return commonsbooking_isUserAllowedToSee( $booking, $user );
 }
 
 /**
@@ -309,7 +325,7 @@ function commonsbooking_isUserAllowedToSee( $post, WP_User $user ): bool {
 	$isAdmin   = commonsbooking_isUserAdmin( $user );
 	$isAllowed = $isAdmin || $isAuthor;
 
-	if ( ! $isAllowed ) {
+	if ( ! $isAllowed && method_exists( $postModel, 'getAdmins' ) ) {
 		$admins    = $postModel->getAdmins();
 		$isAllowed = ( is_string( $admins ) && $user->ID == $admins ) ||
 					( is_array( $admins ) && in_array( $user->ID, $admins, true ) );

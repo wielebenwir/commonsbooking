@@ -11,6 +11,7 @@ use CommonsBooking\Service\iCalendar;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use DateTimeImmutable;
+use WP_User;
 
 /**
  * A message that contains booking codes to be sent by mail to the location admins.
@@ -23,13 +24,17 @@ class BookingCodesMessage extends Message {
 	protected $to;
 	private ?int $tsFrom;
 	private ?int $tsTo;
-	private ?array $locationAdmins;
 
 	/**
-	 * @param int /post $postId     ID or Post of timeframe
-	 * @param string    $action        Message action
-	 * @param int|null  $tsFrom           Timestamp of first Booking Code
-	 * @param int|null  $tsTo             Timestamp of last Booking Code
+	 * @var WP_User[]|null
+	 */
+	private ?array $locationAdmins = null; // TODO remove nullable, never is set to null anyway
+
+	/**
+	 * @param int      $postId       ID or Post of timeframe
+	 * @param string   $action    Message action
+	 * @param int|null $tsFrom  Timestamp of first Booking Code
+	 * @param int|null $tsTo    Timestamp of last Booking Code
 	 */
 	public function __construct( $postId, string $action, int $tsFrom = null, int $tsTo = null ) {
 		parent::__construct( $postId, $action );
@@ -57,16 +62,20 @@ class BookingCodesMessage extends Message {
 			return $this->raiseError( __( 'Could not find booking codes for this timeframe/period', 'commonsbooking' ) );
 		}
 
-		$bookingTable = apply_filters(
-			'commonsbooking_emailcodes_rendertable',
-			\CommonsBooking\View\BookingCodes::renderBookingCodesTable( $bookingCodes ),
-			$bookingCodes,
-			'email'
-		);
+		$bookingTable = \CommonsBooking\View\BookingCodes::renderTableFor( 'email', $bookingCodes );
 
+		$cbSettingsOption = Settings::getOption( 'commonsbooking_options_bookingcodes', 'mail-booking-' . $this->action . '-attach-ical' );
+		/**
+		 * Default value (from option settings) whether adding the ical attachment to booking codes email.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param bool $cbSettingsOption
+		 * @param \CommonsBooking\Model\Timeframe $timeframe for which the booking codes are sent
+		 */
 		$bAddIcal   = apply_filters(
 			'commonsbooking_emailcodes_addical',
-			Settings::getOption( 'commonsbooking_options_bookingcodes', 'mail-booking-' . $this->action . '-attach-ical' ),
+			$cbSettingsOption,
 			$timeframe
 		);
 		$attachment = $bAddIcal ? $this->getIcalAttachment( $bookingCodes ) : null;
@@ -198,14 +207,33 @@ class BookingCodesMessage extends Message {
 		$calendar = new iCalendar();
 
 		foreach ( $bookingCodes as $bookingCode ) {
-			$title = apply_filters(
-				'commonsbooking_emailcodes_icalevent_title',
-				$bookingCode->getItemName() . ' (' . $bookingCode->getCode() . ')',
-				$bookingCode
+			$unfilteredTitle = $bookingCode->getItemName() . ' (' . $bookingCode->getCode() . ')';
+			/**
+			 * Default title of booking codes ical event
+			 *
+			 * @since 2.9.0
+			 *
+			 * @param string      $unfilteredTitle default title
+			 * @param BookingCode $bookingCode object
+			 */
+			$title = apply_filters( 'commonsbooking_emailcodes_icalevent_title', $unfilteredTitle, $bookingCode );
+
+			$unfilteredDesc = sprintf(
+				__( 'booking code for item "%1$s": %2$s', 'commonsbooking' ),
+				$bookingCode->getItemName(),
+				$bookingCode->getCode()
 			);
-			$desc  = apply_filters(
+			/**
+			 * Default description of booking codes ical event
+			 *
+			 * @since 2.9.0
+			 *
+			 * @param string      $unfilteredDesc default description
+			 * @param BookingCode $bookingCode object
+			*/
+			$desc = apply_filters(
 				'commonsbooking_emailcodes_icalevent_desc',
-				sprintf( __( 'booking code for item "%1$s": %2$s', 'commonsbooking' ), $bookingCode->getItemName(), $bookingCode->getCode() ),
+				$unfilteredDesc,
 				$bookingCode
 			);
 

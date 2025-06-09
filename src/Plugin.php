@@ -91,14 +91,14 @@ class Plugin {
 		$CBManagerAllowedCPT = self::getCBManagerCustomPostTypes();
 		// Add capabilities for user roles
 		foreach ( $adminAllowedCPT as $customPostType ) {
-			self::addRoleCaps( $customPostType::$postType, 'administrator' );
+			self::addRoleCaps( $customPostType, 'administrator' );
 			// assign all capabilities of admin to CB-Manager (see comment above)
 			// We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
-			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
+			self::addRoleCaps( $customPostType, self::$CB_MANAGER_ID );
 		}
 		/*
 		foreach ( $CBManagerAllowedCPT as $customPostType ) {
-			self::addRoleCaps( $customPostType::$postType, self::$CB_MANAGER_ID );
+			self::addRoleCaps( $customPostType, self::$CB_MANAGER_ID );
 		}
 		*/
 	}
@@ -106,7 +106,7 @@ class Plugin {
 	/**
 	 * Returns needed roles and caps for specific roles
 	 *
-	 * @return \bool[][]
+	 * @return bool[][]
 	 */
 	public static function getRoleCapMapping( $roleName = null ) {
 		if ( $roleName === null ) {
@@ -157,17 +157,75 @@ class Plugin {
 	 * When defining a CustomPostType, you must also define a model for it, which extends the CustomPost class.
 	 * The existence of a model is checked in the @see PluginTest::testGetCustomPostTypes() test.
 	 *
-	 * @return CustomPostType[]
+	 * @see Plugin::getCustomPostTypeClasses()
+	 *
+	 * @since 2.10.3 only returns custom post type enum string
+	 *
+	 * @return string[] enum array
 	 */
 	public static function getCustomPostTypes(): array {
+
+		return array_map(
+			function ( $type ) {
+				return ( $type )::getPostType();
+			},
+			self::getCustomPostTypeClasses()
+		);
+	}
+
+	/**
+	 * @return class-string<CustomPostType>[] class array
+	 */
+	private static function getCustomPostTypeClasses() {
 		return [
-			new Item(),
-			new Location(),
-			new Timeframe(),
-			new Map(),
-			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
-			new Restriction(),
+			\CommonsBooking\Wordpress\CustomPostType\Item::class,
+			\CommonsBooking\Wordpress\CustomPostType\Location::class,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::class,
+			\CommonsBooking\Wordpress\CustomPostType\Map::class,
+			\CommonsBooking\Wordpress\CustomPostType\Booking::class,
+			\CommonsBooking\Wordpress\CustomPostType\Restriction::class,
 		];
+	}
+
+	/**
+	 * @return CustomPostType[] instantiated objects
+	 */
+	public static function getCustomPostTypeObjects() {
+		return array_map(
+			function ( $type ) {
+				return new $type();
+			},
+			self::getCustomPostTypeClasses()
+		);
+	}
+
+
+	/**
+	 * Same as {@see Plugin::getCustomPostTypes()}
+	 *
+	 * @return string[] enum array
+	 */
+	public static function getCBManagerCustomPostTypes() {
+		return array_map(
+			function ( $type ) {
+				return $type::getPostType();
+			},
+			self::getCBManagerCustomPostTypeClasses()
+		);
+	}
+
+	/**
+	 * Instantiated custom post type objects
+	 *
+	 * @return CustomPostType[]
+	 */
+	public static function getCBManagerCustomPostTypesObjects() {
+		return array_map(
+			function ( $type ) {
+				return new $type();
+			},
+			self::getCBManagerCustomPostTypeClasses()
+		);
 	}
 
 	/**
@@ -193,15 +251,15 @@ class Plugin {
 	/**
 	 * Returns only custom post types, which are allowed for cb manager
 	 *
-	 * @return array
+	 * @return class-string<CustomPostType>[] array of classes
 	 */
-	public static function getCBManagerCustomPostTypes(): array {
+	private static function getCBManagerCustomPostTypeClasses(): array {
 		return [
-			new Item(),
-			new Location(),
-			new Timeframe(),
-			new \CommonsBooking\Wordpress\CustomPostType\Booking(),
-			new Restriction(),
+			\CommonsBooking\Wordpress\CustomPostType\Item::class,
+			\CommonsBooking\Wordpress\CustomPostType\Location::class,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::class,
+			\CommonsBooking\Wordpress\CustomPostType\Booking::class,
+			\CommonsBooking\Wordpress\CustomPostType\Restriction::class,
 		];
 	}
 
@@ -289,7 +347,7 @@ class Plugin {
 		);
 
 		// Custom post types
-		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypes() : self::getCBManagerCustomPostTypes();
+		$customPostTypes = commonsbooking_isCurrentUserAdmin() ? self::getCustomPostTypeObjects() : self::getCBManagerCustomPostTypesObjects();
 		foreach ( $customPostTypes as $cbCustomPostType ) {
 			$params = $cbCustomPostType->getMenuParams();
 			add_submenu_page(
@@ -311,7 +369,7 @@ class Plugin {
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::$postType . 's_category',
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName(),
 				''
 			);
 
@@ -321,7 +379,7 @@ class Plugin {
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::$postType . 's_category',
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName(),
 				''
 			);
 
@@ -386,8 +444,8 @@ class Plugin {
 		}
 
 		switch ( $current_screen->taxonomy ) {
-			case 'cb_items_category':
-			case 'cb_locations_category':
+			case Item::getTaxonomyName():
+			case Location::getTaxonomyName():
 				return $classes . ' ' . $cssClass;
 		}
 
@@ -398,7 +456,7 @@ class Plugin {
 	 * Registers custom post types.
 	 */
 	public static function registerCustomPostTypes() {
-		foreach ( self::getCustomPostTypes() as $customPostType ) {
+		foreach ( self::getCustomPostTypeObjects() as $customPostType ) {
 			$cptArgs = $customPostType->getArgs();
 			// make export possible when using WP_DEBUG, this allows us to use the export feature for creating new E2E tests
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -428,7 +486,7 @@ class Plugin {
 	 */
 	public static function registerItemTaxonomy() {
 		$customPostType = Item::getPostType();
-		$taxonomy       = $customPostType . 's_category';
+		$taxonomy       = Item::getTaxonomyName();
 
 		$result = register_taxonomy(
 			$taxonomy,
@@ -462,7 +520,7 @@ class Plugin {
 	 * @return void
 	 */
 	public static function registerItemTaxonomyMetaboxes() {
-		$taxonomy = Item::getPostType() . 's_category';
+		$taxonomy = Item::getTaxonomyName();
 
 		$cmb_taxonomy = new_cmb2_box(
 			array(
@@ -491,7 +549,7 @@ class Plugin {
 	 */
 	public static function registerLocationTaxonomy() {
 		$customPostType = Location::getPostType();
-		$taxonomy       = $customPostType . 's_category';
+		$taxonomy       = Location::getTaxonomyName();
 
 		$result = register_taxonomy(
 			$taxonomy,
@@ -948,7 +1006,7 @@ class Plugin {
 		// Set 'cb-dashboard' as parent for cb post types
 		if ( in_array( $current_screen->base, array( 'post', 'edit' ) ) ) {
 			foreach ( self::getCustomPostTypes() as $customPostType ) {
-				if ( $customPostType::getPostType() === $current_screen->post_type ) {
+				if ( $customPostType === $current_screen->post_type ) {
 					return 'cb-dashboard';
 				}
 			}
@@ -960,8 +1018,8 @@ class Plugin {
 				$current_screen->taxonomy && in_array(
 					$current_screen->taxonomy,
 					[
-						Location::$postType . 's_category',
-						Item::$postType . 's_category',
+						Location::getTaxonomyName(),
+						Item::getTaxonomyName(),
 					]
 				)
 			) {
@@ -983,7 +1041,7 @@ class Plugin {
 		// Check if we're inside the main loop in a single post page.
 		if ( is_single() && in_the_loop() && is_main_query() ) {
 			global $post;
-			foreach ( self::getCustomPostTypes() as $customPostType ) {
+			foreach ( self::getCustomPostTypeClasses() as $customPostType ) {
 				if ( $customPostType::getPostType() === $post->post_type ) {
 					return $content . $customPostType::getView()::content( $post );
 				}

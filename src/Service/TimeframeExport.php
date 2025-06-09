@@ -24,7 +24,7 @@ class TimeframeExport {
 	 * This corresponds to the return of @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes()
 	 * The all option is corresponding to 0.
 	 *
-	 * @var string
+	 * @var int
 	 */
 	private int $exportType;
 	private ?array $locationFields = null;
@@ -38,7 +38,10 @@ class TimeframeExport {
 	private bool $exportDataComplete = false;
 	private bool $isCron             = false;
 
-	private ?string $lastProcessedPage = null;
+	/**
+	 * @var int|null
+	 */
+	private $lastProcessedPage = null;
 	private ?string $totalPosts;
 	/**
 	 * @var int[]|null Array of timeframe post IDs that are relevant for the export
@@ -102,12 +105,17 @@ class TimeframeExport {
 		$this->locationFields     = $locationFields;
 		$this->itemFields         = $itemFields;
 		$this->userFields         = $userFields;
-		$this->lastProcessedPage  = $lastProcessedPage;
+		$this->lastProcessedPage  = $lastProcessedPage ? intval( $lastProcessedPage ) : null;
 		$this->totalPosts         = $totalPosts;
 		$this->relevantTimeframes = $relevantTimeframes;
 	}
 
 
+	/**
+	 * @return void
+	 * @throws CacheException
+	 * @throws InvalidArgumentException
+	 */
 	public static function ajaxExportCsv() {
 		// verify nonce
 		check_ajax_referer( 'cb_export_timeframes', 'nonce' );
@@ -142,10 +150,8 @@ class TimeframeExport {
 					'message' => $e->getMessage(),
 				)
 			);
-
-			return;
 		}
-		$nextPage = $exportObject->lastProcessedPage ? intval( $exportObject->lastProcessedPage ) + 1 : 1;
+		$nextPage = $exportObject->lastProcessedPage ? $exportObject->lastProcessedPage + 1 : 1;
 		$exportObject->getExportData( $nextPage );
 		if ( $exportObject->exportDataComplete ) {
 			try {
@@ -158,8 +164,6 @@ class TimeframeExport {
 						'message' => $e->getMessage(),
 					)
 				);
-
-				return;
 			}
 			wp_send_json(
 				array(
@@ -350,11 +354,11 @@ class TimeframeExport {
 	/**
 	 * Gets export fields array from the comma separated string in the settings.
 	 *
-	 * @param $inputString
+	 * @param string|null $inputString
 	 *
-	 * @return false|string[]
+	 * @return string[] returns an empty array when non-string or empty-string input
 	 */
-	private static function convertInputFields( $inputString ) {
+	private static function convertInputFields( $inputString ): array {
 		return array_filter( explode( ',', sanitize_text_field( $inputString ) ) );
 	}
 

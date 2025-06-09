@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\View;
 
-use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\CustomPost;
@@ -14,7 +13,6 @@ use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
-use DateInterval;
 use DateTime;
 use Exception;
 use WP_Post;
@@ -117,7 +115,7 @@ class Calendar {
 		foreach ( $items as $item ) {
 			// Check for category term
 			if ( $itemCategory ) {
-				if ( ! has_term( $itemCategory, Item::$postType . 's_category', $item->ID ) ) {
+				if ( ! has_term( $itemCategory, Item::getTaxonomyName(), $item->ID ) ) {
 					continue;
 				}
 			}
@@ -151,7 +149,7 @@ class Calendar {
 					} else {
 						// Check for category term
 						if ( $locationCategory ) {
-							if ( ! has_term( $locationCategory, Location::$postType . 's_category', $locationId ) ) {
+							if ( ! has_term( $locationCategory, Location::getTaxonomyName(), $locationId ) ) {
 								continue;
 							}
 						}
@@ -481,9 +479,9 @@ class Calendar {
 	 * Returns Last day of month after next as default for calendar view,
 	 * based on $startDate param.
 	 *
-	 * @param $startDate
+	 * @param Day $startDate
 	 *
-	 * @return false|int
+	 * @return int
 	 */
 	private static function getDefaultCalendarEnddateTimestamp( $startDate ) {
 		return strtotime( 'last day of +3 months', $startDate->getDateObject()->getTimestamp() );
@@ -623,7 +621,7 @@ class Calendar {
 	/**
 	 * Processes day for calendar view of json.
 	 *
-	 * @param Day              $day
+	 * @param Day $day
 	 * @param $lastBookableDate
 	 * @param $endDate
 	 * @param $jsonResponse

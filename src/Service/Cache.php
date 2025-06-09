@@ -7,7 +7,6 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
@@ -27,10 +26,10 @@ trait Cache {
 	/**
 	 * Returns cache item based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return mixed
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
@@ -38,8 +37,8 @@ trait Cache {
 		}
 
 		try {
+			$cacheKey = self::getCacheId( $custom_id );
 			/** @var CacheItem $cacheItem */
-			$cacheKey  = self::getCacheId( $custom_id );
 			$cacheItem = self::getCache()->getItem( $cacheKey );
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
@@ -53,7 +52,7 @@ trait Cache {
 	/**
 	 * Returns cache id, based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return string
 	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
@@ -117,7 +116,7 @@ trait Cache {
 				$directory = $customCachePath;
 			}
 			// Since this is the default cache path by Symfony we'd rather set it to null so that Symfony can take over with it's own default value.
-			elseif ( $customCachePath == '/tmp/symfony-cache/' ) {
+			if ( $customCachePath === '/tmp/symfony-cache/' ) {
 				$directory = null;
 			}
 		}
@@ -146,11 +145,11 @@ trait Cache {
 	 *
 	 * @param $value
 	 * @param array       $tags
-	 * @param null        $custom_id
+	 * @param mixed|null  $custom_id
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
@@ -171,9 +170,9 @@ trait Cache {
 			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
 		}
 
-		$cache = self::getCache( '', intval( $expiration ) );
+		$cache    = self::getCache( '', intval( $expiration ) );
+		$cacheKey = self::getCacheId( $custom_id );
 		/** @var CacheItem $cacheItem */
-		$cacheKey  = self::getCacheId( $custom_id );
 		$cacheItem = $cache->getItem( $cacheKey );
 		$cacheItem->tag( $tags );
 		$cacheItem->set( $value );
@@ -187,7 +186,7 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
 		if ( ! count( $tags ) ) {
@@ -253,36 +252,35 @@ trait Cache {
 
 			// First get all pages with cb shortcodes
 			$sql   = "SELECT post_content FROM $table_posts WHERE 
-		      post_content LIKE '%cb_items%' OR
-			  post_content LIKE '%cb_locations%' OR
-		      post_content LIKE '%cb_map%' OR
-			  post_content LIKE '%cb_items_table%' OR
-			  post_content LIKE '%cb_bookings%'";
+			  post_content LIKE '%[cb_%]%' AND
+			  post_type = 'page' AND
+			  post_status = 'publish'";
 			$pages = $wpdb->get_results( $sql );
 
-			// Now extract shortcode calles incl. attributes
+			$shortcodeNamesToCache = array_keys( self::$cbShortCodeFunctions );
+
+			$regex = get_shortcode_regex( $shortcodeNamesToCache ); // robust shortcode-regex generator from WordPress
+
+			// Now extract shortcode calls including attributes and bodies
 			$shortCodeCalls = [];
 			foreach ( $pages as $page ) {
-				// Get cb_ shortcodes
-				preg_match_all( '/\[.*(cb\_.*)\]/i', $page->post_content, $cbShortCodes );
+				preg_match_all( "/$regex/", $page->post_content, $shortcodeMatches, PREG_SET_ORDER );
 
-				// If there was found something between the brackets we continue
-				if ( count( $cbShortCodes ) > 1 ) {
-					$cbShortCodes = $cbShortCodes[1];
+				// Process each matched shortcode
+				foreach ( $shortcodeMatches as $match ) {
+					$shortCode        = $match[2]; // shortcode name e.g., "cb_search"
+					$attributesString = isset( $match[3] ) ? $match[3] : ''; // e.g., " id=123"
 
-					// each result will be prepared and added as shortcode call
-					foreach ( $cbShortCodes as $shortCode ) {
-						list($shortCode, $args)         = self::getShortcodeAndAttributes( $shortCode );
-						$shortCodeCalls[][ $shortCode ] = $args;
-					}
+					$shortCodeCalls[] = [
+						'shortcode'  => $shortCode,
+						'attributes' => self::getShortcodeAndAttributes( $shortCode . $attributesString )[1],
+						'body'       => isset( $match[5] ) ? trim( $match[5] ) : '',
+					];
 				}
 			}
 
 			// Filter duplicate calls
-			$shortCodeCalls = array_intersect_key(
-				$shortCodeCalls,
-				array_unique( array_map( 'serialize', $shortCodeCalls ) )
-			);
+			$shortCodeCalls = array_unique( $shortCodeCalls, SORT_REGULAR );
 
 			self::runShortcodeCalls( $shortCodeCalls );
 
@@ -375,20 +373,21 @@ trait Cache {
 	/**
 	 * Iterates through array and statically executes given functions.
 	 *
-	 * @param string[] $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
+	 * @param array{shortcode: string, attributes: array, body: string} $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
 	 *
 	 * @return void
 	 */
 	private static function runShortcodeCalls( array $shortCodeCalls ): void {
-		foreach ( $shortCodeCalls as $shortcode ) {
-			$shortcodeFunction = array_keys( $shortcode )[0];
-			$attributes        = $shortcode[ $shortcodeFunction ];
+		foreach ( $shortCodeCalls as $shortCodeCall ) {
+			$shortcodeFunction = $shortCodeCall['shortcode'];
+			$attributes        = $shortCodeCall['attributes'];
+			$shortcodeBody     = $shortCodeCall['body'];
 
 			if ( array_key_exists( $shortcodeFunction, self::$cbShortCodeFunctions ) ) {
 				list($class, $function) = self::$cbShortCodeFunctions[ $shortcodeFunction ];
 
 				try {
-					$class::$function( $attributes );
+					$class::$function( $attributes, $shortcodeBody );
 				} catch ( Exception $e ) {
 					// Writes error to log anyway
 					error_log( (string) $e ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -440,6 +439,7 @@ trait Cache {
 		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
 		'cb_locations' => array( \CommonsBooking\View\Location::class, 'shortcode' ),
 		'cb_map' => array( MapShortcode::class, 'execute' ),
+		'cb_search' => array( \CommonsBooking\Map\SearchShortcode::class, 'execute' ),
 		'cb_items_table' => array( Calendar::class, 'renderTable' ),
 	];
 }

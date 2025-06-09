@@ -64,49 +64,59 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$repetitionStart,
 		$repetitionEnd,
 		$type = Timeframe::BOOKABLE_ID,
-		$fullday = "on",
+		$fullday = 'on',
 		$repetition = 'w',
 		$grid = 0,
 		$startTime = '8:00 AM',
 		$endTime = '12:00 PM',
 		$postStatus = 'publish',
-		$weekdays = [ "1", "2", "3", "4", "5", "6", "7" ],
-		$manualSelectionDays = "",
+		$weekdays = [ '1', '2', '3', '4', '5', '6', '7' ],
+		$manualSelectionDays = '',
 		$postAuthor = self::USER_ID,
 		$maxDays = 3,
 		$advanceBookingDays = 30,
 		$bookingStartdayOffset = 0,
-		$showBookingCodes = "on",
-		$createBookingCodes = "on",
+		$showBookingCodes = 'on',
+		$createBookingCodes = 'on',
 		$postTitle = 'TestTimeframe'
 	) {
 		// Create Timeframe
-		$timeframeId = wp_insert_post( [
-			'post_title'  => $postTitle,
-			'post_type'   => Timeframe::$postType,
-			'post_status' => $postStatus,
-			'post_author' => $postAuthor
-		] );
+		$timeframeId = wp_insert_post(
+			[
+				'post_title'  => $postTitle,
+				'post_type'   => Timeframe::$postType,
+				'post_status' => $postStatus,
+				'post_author' => $postAuthor,
+			]
+		);
 
 		update_post_meta( $timeframeId, 'type', $type );
 		// we need to map the multi-location array and multi-item array on a string array because that is the way it is also saved from the WP-backend
 		if ( is_array( $locationId ) ) {
-			update_post_meta( $timeframeId,
+			update_post_meta(
+				$timeframeId,
 				\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
-				array_map( 'strval', $locationId ) );
+				array_map( 'strval', $locationId )
+			);
 		} else {
-			update_post_meta( $timeframeId,
+			update_post_meta(
+				$timeframeId,
 				\CommonsBooking\Model\Timeframe::META_LOCATION_ID,
-				$locationId );
+				$locationId
+			);
 		}
 		if ( is_array( $itemId ) ) {
-			update_post_meta( $timeframeId,
+			update_post_meta(
+				$timeframeId,
 				\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
-				array_map( 'strval', $itemId ) );
+				array_map( 'strval', $itemId )
+			);
 		} else {
-			update_post_meta( $timeframeId,
+			update_post_meta(
+				$timeframeId,
 				\CommonsBooking\Model\Timeframe::META_ITEM_ID,
-				$itemId );
+				$itemId
+			);
 		}
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
@@ -126,7 +136,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_MANUAL_SELECTION, $manualSelectionDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES, $showBookingCodes );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
-		//TODO: Make this value configurable
+		// TODO: Make this value configurable
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
 
 		$this->timeframeIds[] = $timeframeId;
@@ -140,19 +150,21 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$itemId,
 		$start,
 		$end,
-		$state = "active",
-		$hint = "Hint",
+		$state = 'active',
+		$hint = 'Hint',
 		$postAuthor = self::USER_ID,
-		$postTitle = "Restriction",
-		$postStatus = "publish"
+		$postTitle = 'Restriction',
+		$postStatus = 'publish'
 	) {
-		//	create restriction
-		$restrictionId = wp_insert_post( [
-			'post_title'  => $postTitle,
-			'post_type'   => Restriction::$postType,
-			'post_status' => $postStatus,
-			'post_author' => $postAuthor
-		] );
+		// create restriction
+		$restrictionId = wp_insert_post(
+			[
+				'post_title'  => $postTitle,
+				'post_type'   => Restriction::$postType,
+				'post_status' => $postStatus,
+				'post_author' => $postAuthor,
+			]
+		);
 
 		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_TYPE, $restrictionType );
 		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_LOCATION_ID, $locationId );
@@ -211,15 +223,17 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$timeframeMaxDays = 3,
 		$postTitle = 'Booking',
 		$grid = 0,
-		$weekdays = [ "1", "2", "3", "4", "5", "6", "7" ]
+		$weekdays = [ '1', '2', '3', '4', '5', '6', '7' ]
 	) {
 		// Create booking
-		$bookingId = wp_insert_post( [
-			'post_title'  => $postTitle,
-			'post_type'   => Booking::$postType,
-			'post_status' => $postStatus,
-			'post_author' => $postAuthor
-		] );
+		$bookingId = wp_insert_post(
+			[
+				'post_title'  => $postTitle,
+				'post_type'   => Booking::$postType,
+				'post_status' => $postStatus,
+				'post_author' => $postAuthor,
+			]
+		);
 
 		update_post_meta( $bookingId, 'type', Timeframe::BOOKING_ID );
 		update_post_meta( $bookingId, 'timeframe-repetition', $timeframeRepetition );
@@ -247,7 +261,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	 */
 	protected function cancelBooking( \CommonsBooking\Model\Booking $b ) {
 		$b->cancel();
-		//flush cache to reflect updated post
+		// flush cache to reflect updated post
 		wp_cache_flush();
 	}
 
@@ -306,22 +320,24 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	protected function createHolidayTimeframeForAllItemsAndLocations() {
 		$timeframe = $this->createTimeframe(
 			$this->locationId,
-			"",
+			'',
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			Timeframe::HOLIDAYS_ID,
 		);
 
-		//now, let's set our timeframe to be assigned to all items
-		update_post_meta( $timeframe,
+		// now, let's set our timeframe to be assigned to all items
+		update_post_meta(
+			$timeframe,
 			\CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
 			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
 		);
-		update_post_meta( $timeframe,
+		update_post_meta(
+			$timeframe,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
 			\CommonsBooking\Model\Timeframe::SELECTION_ALL_ID
 		);
-		//and run our function to update the information
+		// and run our function to update the information
 		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta( $timeframe );
 
 		return $timeframe;
@@ -355,7 +371,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 			0,
 			'10:00',
 			'15:00',
-			"publish",
+			'publish',
 			'',
 		);
 		$tf2 = $this->createTimeframe(
@@ -369,7 +385,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 			0,
 			'15:00',
 			'18:00',
-			"publish",
+			'publish',
 			'',
 		);
 
@@ -402,12 +418,14 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 	// Create Item
 	protected function createItem( $title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID ) {
-		$itemId = wp_insert_post( [
-			'post_title'  => $title,
-			'post_type'   => Item::$postType,
-			'post_status' => $postStatus,
-			'post_author' => $postAuthor
-		] );
+		$itemId = wp_insert_post(
+			[
+				'post_title'  => $title,
+				'post_type'   => Item::$postType,
+				'post_status' => $postStatus,
+				'post_author' => $postAuthor,
+			]
+		);
 
 		$this->itemIds[] = $itemId;
 
@@ -420,12 +438,14 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 	// Create Location
 	protected function createLocation( $title, $postStatus = 'publish', $admins = [], $postAuthor = self::USER_ID ) {
-		$locationId = wp_insert_post( [
-			'post_title'  => $title,
-			'post_type'   => Location::$postType,
-			'post_status' => $postStatus,
-			'post_author' => $postAuthor
-		] );
+		$locationId = wp_insert_post(
+			[
+				'post_title'  => $title,
+				'post_type'   => Location::$postType,
+				'post_status' => $postStatus,
+				'post_author' => $postAuthor,
+			]
+		);
 
 		$this->locationIds[] = $locationId;
 
@@ -437,13 +457,15 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	}
 
 	protected function createMap() {
-		$mapId = wp_insert_post( [
-			'post_title'  => 'Map',
-			'post_type'   => Map::$postType,
-			'post_status' => 'publish'
-		] );
+		$mapId = wp_insert_post(
+			[
+				'post_title'  => 'Map',
+				'post_type'   => Map::$postType,
+				'post_status' => 'publish',
+			]
+		);
 
-		//setup map in new format
+		// setup map in new format
 		$defaultValues = array_reduce(
 			Map::getCustomFields(),
 			function ( $result, $option ) {
@@ -469,9 +491,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	 * @return void
 	 */
 	protected function createSubscriber() {
-		$wp_user = get_user_by( 'email', "a@a.de" );
+		$wp_user = get_user_by( 'email', 'a@a.de' );
 		if ( ! $wp_user ) {
-			$this->subscriberId = wp_create_user( "normaluser", "normal", "a@a.de" );
+			$this->subscriberId = wp_create_user( 'normaluser', 'normal', 'a@a.de' );
 		} else {
 			$this->subscriberId = $wp_user->ID;
 		}
@@ -483,9 +505,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	 * @return void
 	 */
 	public function createAdministrator() {
-		$wp_user = get_user_by( 'email', "admin@admin.de" );
+		$wp_user = get_user_by( 'email', 'admin@admin.de' );
 		if ( ! $wp_user ) {
-			$this->adminUserID = wp_create_user( "adminuser", "admin", "admin@admin.de" );
+			$this->adminUserID = wp_create_user( 'adminuser', 'admin', 'admin@admin.de' );
 			$user              = new \WP_User( $this->adminUserID );
 			$user->set_role( 'administrator' );
 		} else {
@@ -498,9 +520,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	 * @return void
 	 */
 	protected function createEditor() {
-		$wp_user = get_user_by( 'email', "editor@editor.de" );
+		$wp_user = get_user_by( 'email', 'editor@editor.de' );
 		if ( ! $wp_user ) {
-			$this->editorUserID = wp_create_user( "editoruser", "editor", "editor@editor.de" );
+			$this->editorUserID = wp_create_user( 'editoruser', 'editor', 'editor@editor.de' );
 			$user               = new \WP_User( $this->editorUserID );
 			$user->set_role( 'editor' );
 		} else {
@@ -509,13 +531,13 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	}
 
 	public function createCBManager() {
-		//we need to run the functions that add the custom user role and assign it to the user
+		// we need to run the functions that add the custom user role and assign it to the user
 		Plugin::addCustomUserRoles();
-		//and add the caps for each of our custom post types
+		// and add the caps for each of our custom post types
 		Plugin::addCPTRoleCaps();
-		$wp_user = get_user_by( 'email', "cbmanager@cbmanager.de" );
+		$wp_user = get_user_by( 'email', 'cbmanager@cbmanager.de' );
 		if ( ! $wp_user ) {
-			$this->cbManagerUserID = wp_create_user( "cbmanager", "cbmanager", "cbmanager@cbmanager.de" );
+			$this->cbManagerUserID = wp_create_user( 'cbmanager', 'cbmanager', 'cbmanager@cbmanager.de' );
 			$user                  = new \WP_User( $this->cbManagerUserID );
 			$user->set_role( Plugin::$CB_MANAGER_ID );
 		} else {
@@ -527,7 +549,6 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		parent::setUp();
 
 		$this->dateFormatted = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
-
 
 		$this->setUpBookingCodesTable();
 
@@ -611,5 +632,4 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$sql        = "DROP TABLE $table_name";
 		$wpdb->query( $sql );
 	}
-
 }

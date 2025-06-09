@@ -121,9 +121,9 @@ class ItemsRoute extends BaseRoute {
 	 * @param mixed           $item
 	 * @param WP_REST_Request $request
 	 *
-	 * @return stdClass
+	 * @return WP_REST_Response
 	 */
-	public function prepare_item_for_response( $item, $request ): stdClass {
+	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem              = new stdClass();
 		$preparedItem->id          = $item->ID . '';
 		$preparedItem->name        = $item->post_title;
@@ -142,6 +142,6 @@ class ItemsRoute extends BaseRoute {
 			];
 		}
 
-		return $preparedItem;
+		return new WP_REST_Response( $preparedItem );
 	}
 }
