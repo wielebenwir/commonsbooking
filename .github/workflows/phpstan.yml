@@ -5,7 +5,7 @@ on:
   # Prevent the build from running when there are only irrelevant changes.
   push:
     paths-ignore:
-      - 'docs'
+      - 'docs/**'
       - '**.md'
       - '**.txt'
       - '**.yml'
