@@ -86,14 +86,14 @@ class iCalendar {
 	 * This should be relatively secure, since the hash is salted.
 	 * Returns false when user is not logged in
 	 *
-	 * @return string | bool - false when user is not logged in
+	 * @return string | false - false when user is not logged in
 	 */
 	public static function getCurrentUserCalendarLink() {
 		if ( ! is_user_logged_in() ) {
 			return false;}
 
 		$user_id         = wp_get_current_user()->ID;
-		$user_hash       = wp_hash( $user_id );
+		$user_hash       = wp_hash( (string) $user_id );
 		$script_location = get_site_url() . '/';
 
 		return add_query_arg(
@@ -272,7 +272,7 @@ class iCalendar {
 			if ( $isTimeSpan ) {
 				$occurence = new TimeSpan( new DateTime( $eventDate[0], false ), new DateTime( $eventDate[1], false ) );
 			} else {
-				$occurence = new MultiDay( $eventDate[0], $eventDate[1] );
+				$occurence = new MultiDay( new Date( $eventDate[0] ), new Date( $eventDate[1] ) );
 			}
 		} else {
 			$occurence = new SingleDay( new Date( $eventDate ) );

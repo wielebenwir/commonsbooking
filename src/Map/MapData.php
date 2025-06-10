@@ -216,38 +216,38 @@ class MapData {
 
 		if ( $map->getMeta( 'custom_marker_media_id' ) ) {
 			$settings['custom_marker_icon'] = [
-				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'custom_marker_media_id' ) ),
+				'iconUrl'    => wp_get_attachment_url( $map->getMetaInt( 'custom_marker_media_id' ) ),
 				'iconSize'   => [
-					intval( $map->getMeta( 'marker_icon_width' ) ),
-					intval( $map->getMeta( 'marker_icon_height' ) ),
+					$map->getMetaInt( 'marker_icon_width' ),
+					$map->getMetaInt( 'marker_icon_height' ),
 				],
 				'iconAnchor' => [
-					intval( $map->getMeta( 'marker_icon_anchor_x' ) ),
-					intval( $map->getMeta( 'marker_icon_anchor_y' ) ),
+					$map->getMetaInt( 'marker_icon_anchor_x' ),
+					$map->getMetaInt( 'marker_icon_anchor_y' ),
 				],
 			];
 		}
 
 		if ( $map->getMeta( 'marker_item_draft_media_id' ) ) {
 			$settings['item_draft_marker_icon'] = [
-				'iconUrl'    => wp_get_attachment_url( $map->getMeta( 'marker_item_draft_media_id' ) ),
+				'iconUrl'    => wp_get_attachment_url( $map->getMetaInt( 'marker_item_draft_media_id' ) ),
 				'iconSize'   => [
-					intval( $map->getMeta( 'marker_item_draft_icon_width' ) ),
-					intval( $map->getMeta( 'marker_item_draft_icon_height' ) ),
+					$map->getMetaInt( 'marker_item_draft_icon_width' ),
+					$map->getMetaInt( 'marker_item_draft_icon_height' ),
 				],
 				'iconAnchor' => [
-					intval( $map->getMeta( 'marker_item_draft_icon_anchor_x' ) ),
-					intval( $map->getMeta( 'marker_item_draft_icon_anchor_y' ) ),
+					$map->getMetaInt( 'marker_item_draft_icon_anchor_x' ),
+					$map->getMetaInt( 'marker_item_draft_icon_anchor_y' ),
 				],
 			];
 		}
 
 		if ( $map->getMeta( 'custom_marker_cluster_media_id' ) ) {
 			$settings['marker_cluster_icon'] = [
-				'url'  => wp_get_attachment_url( $map->getMeta( 'custom_marker_cluster_media_id' ) ),
+				'url'  => wp_get_attachment_url( $map->getMetaInt( 'custom_marker_cluster_media_id' ) ),
 				'size' => [
-					'width'  => intval( $map->getMeta( 'marker_cluster_icon_width' ) ),
-					'height' => intval( $map->getMeta( 'marker_cluster_icon_height' ) ),
+					'width'  => $map->getMetaInt( 'marker_cluster_icon_width' ),
+					'height' => $map->getMetaInt( 'marker_cluster_icon_height' ),
 				],
 			];
 		}

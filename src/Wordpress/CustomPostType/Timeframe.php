@@ -991,7 +991,8 @@ class Timeframe extends CustomPostType {
 			$post = $timeframe->getPost();
 			if ( $post->post_status !== 'draft' ) {
 				$post->post_status = 'draft';
-				wp_update_post( $post );
+				$postArr           = get_object_vars( $post );
+				wp_update_post( $postArr );
 			}
 			return false;
 		}
