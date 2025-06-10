@@ -198,7 +198,7 @@ trait Cache {
 	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = null ): TagAwareAdapterInterface {
 		$adapters = self::getAdapters();
 		if ( ! array_key_exists( $identifier, $adapters ) ) {
-			throw new CacheException( 'Adapter not found' ); // Not translated bc this is a developer error
+			throw new CacheException( sprintf( 'Adapter %s not found', $identifier ) ); // Not translated bc this is a developer error
 		}
 		try {
 			return $adapters[ $identifier ]['factory'](
