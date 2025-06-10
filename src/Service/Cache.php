@@ -209,7 +209,7 @@ trait Cache {
 				]
 			);
 		} catch ( Exception $e ) { // Symfony adapters do not always throw CacheException, for example the REDIS adapter can throw InvalidArgumentException
-			throw new CacheException( $e->getMessage() );
+			throw new CacheException( $e->getMessage() . $e->getTraceAsString() );
 		}
 	}
 
