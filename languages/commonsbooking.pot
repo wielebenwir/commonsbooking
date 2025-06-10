@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-08T11:48:23+00:00\n"
+"POT-Creation-Date: 2025-06-10T06:41:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -2142,7 +2142,15 @@ msgstr ""
 msgid "at"
 msgstr ""
 
-#: src/View/Item.php:123
+#: src/View/Item.php:77
+msgid "Book"
+msgstr ""
+
+#: src/View/Item.php:78
+msgid "Cancel"
+msgstr ""
+
+#: src/View/Item.php:125
 msgid "No bookable items found."
 msgstr ""
 
@@ -4027,12 +4035,12 @@ msgid "Login to your account"
 msgstr ""
 
 #: templates/booking-single.php:45
-#: templates/timeframe-calendar.php:49
+#: templates/timeframe-calendar.php:51
 msgid "Pickup"
 msgstr ""
 
 #: templates/booking-single.php:49
-#: templates/timeframe-calendar.php:60
+#: templates/timeframe-calendar.php:62
 msgid "Return"
 msgstr ""
 
@@ -4199,46 +4207,46 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
-#: templates/timeframe-calendar.php:45
+#: templates/timeframe-calendar.php:47
 msgid "Reset date selection"
 msgstr ""
 
-#: templates/timeframe-calendar.php:52
+#: templates/timeframe-calendar.php:54
 msgid "Please select the pickup date in the calendar"
 msgstr ""
 
-#: templates/timeframe-calendar.php:63
+#: templates/timeframe-calendar.php:65
 msgid "Please select the return date in the calendar"
 msgstr ""
 
-#: templates/timeframe-calendar.php:73
+#: templates/timeframe-calendar.php:75
 msgid "Usage Restrictions"
 msgstr ""
 
 #. translators: %1$s = Start date and time formatted
-#: templates/timeframe-calendar.php:84
+#: templates/timeframe-calendar.php:86
 #, php-format
 msgid "From %1$s"
 msgstr ""
 
 #. translators: %1$s = End date and time formatted
-#: templates/timeframe-calendar.php:94
+#: templates/timeframe-calendar.php:96
 #, php-format
 msgid "until probably %1$s:"
 msgstr ""
 
-#: templates/timeframe-calendar.php:120
+#: templates/timeframe-calendar.php:122
 msgid "Continue to booking confirmation"
 msgstr ""
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:130
+#: templates/timeframe-calendar.php:132
 #, php-format
 msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
 msgstr ""
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:135
+#: templates/timeframe-calendar.php:137
 #, php-format
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr ""

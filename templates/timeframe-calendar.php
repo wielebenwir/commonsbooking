@@ -5,6 +5,8 @@
  * The variable $templateData is set by the files item-single.php or location-single.php
  * This file is loaded as sub-template in the files files item-single.php and location-single.php
  * We recommend not to edit this file as it might be modified and enhancend during updates
+ *
+ * @see $templateData['calendar_data'] / calendarData -- src/View/Item.php
  */
 
 	global $templateData;

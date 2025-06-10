@@ -1511,7 +1511,7 @@ msgstr "Standort"
 msgid "at"
 msgstr "bei"
 
-#: src/View/Item.php:123
+#: src/View/Item.php:125
 msgid "No bookable items found."
 msgstr "Keine Buchungen im Papierkorb gefunden."
 
@@ -2681,12 +2681,12 @@ msgid "Login to your account"
 msgstr "Login zu deinem Nutzerkonto"
 
 #: templates/booking-single.php:45
-#: templates/timeframe-calendar.php:49
+#: templates/timeframe-calendar.php:51
 msgid "Pickup"
 msgstr "Abholung"
 
 #: templates/booking-single.php:49
-#: templates/timeframe-calendar.php:60
+#: templates/timeframe-calendar.php:62
 msgid "Return"
 msgstr "Rückgabe"
 
@@ -3153,46 +3153,46 @@ msgstr "Filter zurücksetzen"
 msgid "Filter"
 msgstr "Filter"
 
-#: templates/timeframe-calendar.php:45
+#: templates/timeframe-calendar.php:47
 msgid "Reset date selection"
 msgstr "Datumsauswahl zurücksetzen"
 
-#: templates/timeframe-calendar.php:52
+#: templates/timeframe-calendar.php:54
 msgid "Please select the pickup date in the calendar"
 msgstr "Bitte wähle das Abholdatum im Kalender"
 
-#: templates/timeframe-calendar.php:63
+#: templates/timeframe-calendar.php:65
 msgid "Please select the return date in the calendar"
 msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 
-#: templates/timeframe-calendar.php:73
+#: templates/timeframe-calendar.php:75
 msgid "Usage Restrictions"
 msgstr "Nutzungs-Einschränkungen"
 
 #. translators: %1$s = Start date and time formatted
-#: templates/timeframe-calendar.php:84
+#: templates/timeframe-calendar.php:86
 #, php-format
 msgid "From %1$s"
 msgstr "Von %s"
 
 #. translators: %1$s = End date and time formatted
-#: templates/timeframe-calendar.php:94
+#: templates/timeframe-calendar.php:96
 #, php-format
 msgid "until probably %1$s:"
 msgstr "bis voraussichtlich %1$s:"
 
-#: templates/timeframe-calendar.php:120
+#: templates/timeframe-calendar.php:122
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:130
+#: templates/timeframe-calendar.php:132
 #, php-format
 msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
 msgstr "Maximal %1$s Tage hintereinander buchbar. Je nach Einstellung ist es auch möglich, über einen grauen Bereich (z.B. Wochenende) zu buchen."
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:135
+#: templates/timeframe-calendar.php:137
 #, php-format
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
@@ -4398,4 +4398,12 @@ msgid ""
 "\t\t\t\t- Timeframe is bookable</br>\n"
 "\t\t\t\t<a href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/\" target=\"_blank\">More Information in the documentation</a>\n"
 "\t\t\t\t"
+msgstr ""
+
+#: src/View/Item.php:77
+msgid "Book"
+msgstr ""
+
+#: src/View/Item.php:78
+msgid "Cancel"
 msgstr ""
