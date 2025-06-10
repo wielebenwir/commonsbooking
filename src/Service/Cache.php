@@ -111,9 +111,9 @@ trait Cache {
 	 *
 	 * @return TagAwareAdapterInterface
 	 */
-	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $location = null ): TagAwareAdapterInterface {
+	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $location = "" ): TagAwareAdapterInterface {
 
-		if ( $location === null ) {
+		if ( $location === "" ) {
 			$location = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_location' ) );
 		}
 		$identifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' ) ?: 'filesystem';
