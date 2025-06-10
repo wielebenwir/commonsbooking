@@ -107,7 +107,7 @@ trait Cache {
 	 *
 	 * @param string      $namespace
 	 * @param int         $defaultLifetime
-	 * @param string|null $location
+	 * @param string      $location
 	 *
 	 * @return TagAwareAdapterInterface
 	 */
@@ -191,11 +191,11 @@ trait Cache {
 	 * @param $identifier
 	 * @param $namespace
 	 * @param $defaultLifetime
-	 * @param null $cacheLocation
+	 * @param string $cacheLocation
 	 * @return TagAwareAdapterInterface
 	 * @throws CacheException
 	 */
-	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = null ): TagAwareAdapterInterface {
+	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = "" ): TagAwareAdapterInterface {
 		$adapters = self::getAdapters();
 		if ( ! array_key_exists( $identifier, $adapters ) ) {
 			throw new CacheException( sprintf( 'Adapter %s not found', $identifier ) ); // Not translated bc this is a developer error
