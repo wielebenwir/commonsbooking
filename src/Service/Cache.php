@@ -105,15 +105,15 @@ trait Cache {
 	 *
 	 * At the moment filesystem and redis cache are supported.
 	 *
-	 * @param string      $namespace
-	 * @param int         $defaultLifetime
-	 * @param string      $location
+	 * @param string $namespace
+	 * @param int    $defaultLifetime
+	 * @param string $location
 	 *
 	 * @return TagAwareAdapterInterface
 	 */
-	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $location = "" ): TagAwareAdapterInterface {
+	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $location = '' ): TagAwareAdapterInterface {
 
-		if ( $location === "" ) {
+		if ( $location === '' ) {
 			$location = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_location' ) );
 		}
 		$identifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' ) ?: 'filesystem';
@@ -195,7 +195,7 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 * @throws CacheException
 	 */
-	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = "" ): TagAwareAdapterInterface {
+	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
 		$adapters = self::getAdapters();
 		if ( ! array_key_exists( $identifier, $adapters ) ) {
 			throw new CacheException( sprintf( 'Adapter %s not found', $identifier ) ); // Not translated bc this is a developer error
