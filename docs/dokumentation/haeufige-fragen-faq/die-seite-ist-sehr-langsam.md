@@ -2,10 +2,10 @@
 
 __
 
-Wenn deine CommonsBooking Seite sehr langsam ist, kann das verschiedene Gründe
-haben. Wir nutzen eine Technologie namens Caching, mit der wir häufig
-gestellte Anfragen in einem Zwischenspeicher zurückhalten, um
-Serverkapazitäten einzusparen.
+Wenn deine CommonsBooking Seite sehr langsam ist, kann das verschiedene Gründe haben.
+Wir nutzen eine Technologie namens Caching, mit der wir häufig gestellte Anfragen in einem Zwischenspeicher
+zurückhalten, um Serverkapazitäten einzusparen.
+
 Das Caching kann unter Umständen nicht funktionieren, wenn:
 
   * [WP_DEBUG](https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/) aktiviert ist, dafür musst du deine wp-config.php bearbeiten
@@ -17,7 +17,14 @@ Das Caching kann unter Umständen nicht funktionieren, wenn:
       Dies kann dazu führen, dass dein WordPress-Verzeichnis sehr groß wird.
       :::
 
-Alternativ kannst du auch [REDIS](https://redis.io) auf deinem Server
-installieren und den Cache durch REDIS verwalten lassen. Da REDIS den Cache im
-RAM speichert, statt im Dateisystem, ist das meistens etwas schneller.
+Alternativ kannst du auch [REDIS](https://redis.io) auf deinem Server installieren und den Cache durch REDIS verwalten lassen.
+Da REDIS den Cache im RAM speichert, statt im Dateisystem, ist das meistens etwas schneller.
+
+## Troubleshooting
+
+::: warning Technische Expertise nötig!
+:::
+
+Mit dem Plugin `query-monitor` kannst du Anfragen deiner Seite live überwachen. Damit es es z.B. möglich ein
+falsch konfigurierten Cache schnell zu identifizieren.
 
