@@ -183,20 +183,6 @@ msgstr "E-Mail-Signatur"
 msgid "E-Mail signature that will appear wherever you put {{booking:getEmailSignature}}"
 msgstr "E-Mail-Signatur, die überall dort erscheint, wo Du {{booking:getEmailSignature}} eingibst."
 
-#: includes/OptionsArray.php:293
-msgid ""
-"\n"
-"<p>\n"
-"Thanks and all the best, \n"
-"the Team.\n"
-"</p>\t\t\t\t\t"
-msgstr ""
-"\n"
-"<p>\n"
-"Danke und alles Gute, \n"
-"das Team.\n"
-"</p>\t\t\t\t\t"
-
 #: includes/OptionsArray.php:304
 msgid "Booking confirmed email subject"
 msgstr "E-Mail-Betreff für bestätigte Buchungen"
@@ -316,24 +302,6 @@ msgstr "Buchung storniert: {{item:post_title}} am Standort {{location:post_title
 #: includes/OptionsArray.php:392
 msgid "Booking canceled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
-
-#: includes/OptionsArray.php:396
-msgid ""
-"\n"
-"Hi {{user:first_name}},<br>\n"
-"<br>\n"
-"your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\n"
-"<br>          \n"
-"{{booking:getEmailSignature}}\n"
-"                            "
-msgstr ""
-"\n"
-"Hallo {{user:first_name}},<br>\n"
-"<br>\n"
-"Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} {{booking:formattedBookingDate}} wurde storniert.<br>\n"
-"<br>          \n"
-"{{booking:getEmailSignature}}\n"
-"                            "
 
 #: includes/OptionsArray.php:414
 msgid "Template and booking process messages"
@@ -1110,26 +1078,9 @@ msgstr "Erweiterte Cachingoptionen"
 msgid "Allows you to change options regarding the caching system"
 msgstr "Erlaubt die Anpassung der Optionen für das Caching-System"
 
-#: includes/OptionsArray.php:1542
-msgid "Filesystem cache path"
-msgstr "Dateisystem-Cache Pfad"
-
-#: includes/OptionsArray.php:1543
-msgid "Where the filesystem cache should be created. Only change when filesystem caching is not working."
-msgstr "Wo der Dateisystem-Cache angelegt werden soll. Nur ändern, wenn das Dateisystem-Caching nicht funktioniert."
-
-#: includes/OptionsArray.php:1549
-#: includes/OptionsArray.php:1566
+#: includes/OptionsArray.php:1556
 msgid "Current connection status"
 msgstr "Aktueller Verbindungsstatus"
-
-#: includes/OptionsArray.php:1555
-msgid "Enable REDIS Caching (experimental)"
-msgstr "REDIS-Caching aktivieren (experimentell)"
-
-#: includes/OptionsArray.php:1560
-msgid "REDIS DSN (REDIS Server URL)"
-msgstr "REDIS DSN (REDIS-Server-URL)"
 
 #: src/CB/CB1UserFields.php:69
 msgid "First Name"
@@ -1397,24 +1348,11 @@ msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht ge
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:303
+#: src/Service/Cache.php:404
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
-#: src/Service/Cache.php:310
-msgid "Successfully connected to REDIS database!"
-msgstr "Erfolgreich mit REDIS-Datenbank verbunden!"
-
-#: src/Service/Cache.php:319
-msgid "REDIS database not enabled"
-msgstr "REDIS-Datenbank nicht aktiviert"
-
-#: src/Service/Cache.php:344
-#, php-format
-msgid "Directory %s is writeable."
-msgstr "Der Ordner %s ist beschreibbar."
-
-#: src/Service/Cache.php:348
+#: src/Service/Cache.php:161
 #, php-format
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
@@ -3243,11 +3181,11 @@ msgstr "Storniert am"
 msgid "Admin booking by"
 msgstr "Adminbuchung von"
 
-#: src/Service/Upgrade.php:302
+#: src/Service/Upgrade.php:305
 msgid "New features and changes: Please backup your site before upgrading!"
 msgstr "Neue Funktionen und Änderungen: Bitte die Website vor dem Upgrade sichern!"
 
-#: src/Service/Upgrade.php:309
+#: src/Service/Upgrade.php:312
 #, php-format
 msgid ""
 "\n"
@@ -3388,28 +3326,6 @@ msgstr "Buchungscodes für {{codes:formatDateRange}} {{item:post_title}}"
 #: includes/OptionsArray.php:228
 msgid "Body for booking codes email"
 msgstr "Nachricht für Buchungscodes E-Mail"
-
-#: includes/OptionsArray.php:232
-msgid ""
-"\n"
-"<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
-"\n"
-"<p>Booking codes Table:</p>\n"
-"<br>   \n"
-"{{codes:codeTable}}\n"
-"<br>          \n"
-"<p>Thanks, the Team.</p>\n"
-"                            "
-msgstr ""
-"\n"
-"<h1>Buchungscodes für {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
-"\n"
-"<p>Buchungscode Tabelle:</p>\n"
-"<br>   \n"
-"{{codes:codeTable}}\n"
-"<br>          \n"
-"<p>Danke, das Team.</p>\n"
-"                            "
 
 #: includes/OptionsArray.php:247
 msgid "Backup E-Mail for booking codes email"
@@ -3567,11 +3483,11 @@ msgid "(not planned)"
 msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1536
-#: src/Service/Cache.php:366
+#: src/Service/Cache.php:435
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:361
+#: src/Service/Cache.php:430
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
@@ -3995,11 +3911,11 @@ msgstr "Hier klicken, um das Upgrade auf die neueste Version fertig zu stellen. 
 msgid "Finish upgrade"
 msgstr "Upgrade fertigstellen"
 
-#: src/Service/Upgrade.php:138
+#: src/Service/Upgrade.php:141
 msgid "There are some tasks that need to be run to complete the update process. <br> This needs to be done so that the plugin can function correctly."
 msgstr "Es gibt einige Aufgaben, die ausgeführt werden müssen, um den Aktualisierungsprozess abzuschließen. <br> Das ist notwendig, um die korrekte Funktionsweise des Plugins zu gewährleisten."
 
-#: src/Service/Upgrade.php:141
+#: src/Service/Upgrade.php:144
 msgid "Click here to run the upgrade tasks."
 msgstr "Hier klicken, um die Upgrade-Aufgaben auszuführen."
 
@@ -4406,4 +4322,69 @@ msgstr ""
 
 #: src/View/Item.php:78
 msgid "Cancel"
+msgstr ""
+
+#: includes/OptionsArray.php:232
+msgid ""
+"\n"
+"<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
+"\n"
+"<p>Booking codes Table:</p>\n"
+"<br>\n"
+"{{codes:codeTable}}\n"
+"<br>\n"
+"<p>Thanks, the Team.</p>\n"
+"                            "
+msgstr ""
+
+#: includes/OptionsArray.php:293
+msgid ""
+"\n"
+"<p>\n"
+"Thanks and all the best,\n"
+"the Team.\n"
+"</p>\t\t\t\t\t"
+msgstr ""
+
+#: includes/OptionsArray.php:396
+msgid ""
+"\n"
+"Hi {{user:first_name}},<br>\n"
+"<br>\n"
+"your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\n"
+"<br>\n"
+"{{booking:getEmailSignature}}\n"
+"                            "
+msgstr ""
+
+#: includes/OptionsArray.php:1542
+msgid "Cache Adapter"
+msgstr ""
+
+#: includes/OptionsArray.php:1549
+msgid "Location of cache"
+msgstr ""
+
+#: includes/OptionsArray.php:1550
+msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
+msgstr ""
+
+#: src/Service/Cache.php:156
+msgid "Filesystem"
+msgstr ""
+
+#: src/Service/Cache.php:172
+msgid "Redis"
+msgstr ""
+
+#: src/Service/Cache.php:182
+msgid "Disabled"
+msgstr ""
+
+#: src/Service/Cache.php:410
+msgid "Cache is disabled."
+msgstr ""
+
+#: src/Service/Cache.php:413
+msgid "Cache adapter successfully connected."
 msgstr ""
