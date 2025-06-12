@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Service;
 
+use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 
 /**
@@ -200,6 +201,19 @@ class Scheduler {
 			array( 'commonsbooking_options_export', 'export-cron' ),
 			'update_option_commonsbooking_options_export'
 		);
+
+		// Init cache warmup job
+		$cacheWarmupSetting = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'warmup_cron' );
+		if ( $cacheWarmupSetting ) {
+			new Scheduler(
+				'cache_warmup',
+				array( Plugin::class, 'warmupCache' ),
+				$cacheWarmupSetting,
+				'',
+				array(), // We don't have a checkbox, if the field is empty, the job will not be scheduled
+				'update_option_' . COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options'
+			);
+		}
 	}
 
 	/**
