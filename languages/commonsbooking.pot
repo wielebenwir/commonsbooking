@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-10T19:48:14+00:00\n"
+"POT-Creation-Date: 2025-06-12T15:09:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -188,9 +188,9 @@ msgid ""
 "<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
 "\n"
 "<p>Booking codes Table:</p>\n"
-"<br>   \n"
+"<br>\n"
 "{{codes:codeTable}}\n"
-"<br>          \n"
+"<br>\n"
 "<p>Thanks, the Team.</p>\n"
 "                            "
 msgstr ""
@@ -250,7 +250,7 @@ msgstr ""
 msgid ""
 "\n"
 "<p>\n"
-"Thanks and all the best, \n"
+"Thanks and all the best,\n"
 "the Team.\n"
 "</p>\t\t\t\t\t"
 msgstr ""
@@ -352,7 +352,7 @@ msgid ""
 "Hi {{user:first_name}},<br>\n"
 "<br>\n"
 "your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\n"
-"<br>          \n"
+"<br>\n"
 "{{booking:getEmailSignature}}\n"
 "                            "
 msgstr ""
@@ -1235,29 +1235,24 @@ msgid "Allows you to change options regarding the caching system"
 msgstr ""
 
 #: includes/OptionsArray.php:1536
-#: src/Service/Cache.php:366
+#: src/Service/Cache.php:435
 msgid "Clear Cache"
 msgstr ""
 
 #: includes/OptionsArray.php:1542
-msgid "Filesystem cache path"
-msgstr ""
-
-#: includes/OptionsArray.php:1543
-msgid "Where the filesystem cache should be created. Only change when filesystem caching is not working."
+msgid "Cache Adapter"
 msgstr ""
 
 #: includes/OptionsArray.php:1549
-#: includes/OptionsArray.php:1566
+msgid "Location of cache"
+msgstr ""
+
+#: includes/OptionsArray.php:1550
+msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
+msgstr ""
+
+#: includes/OptionsArray.php:1556
 msgid "Current connection status"
-msgstr ""
-
-#: includes/OptionsArray.php:1555
-msgid "Enable REDIS Caching (experimental)"
-msgstr ""
-
-#: includes/OptionsArray.php:1560
-msgid "REDIS DSN (REDIS Server URL)"
 msgstr ""
 
 #: src/CB/CB1UserFields.php:69
@@ -1834,29 +1829,36 @@ msgstr ""
 msgid "Booking rules: No rule type specified."
 msgstr ""
 
-#: src/Service/Cache.php:303
-msgid "Connection status:"
+#: src/Service/Cache.php:156
+msgid "Filesystem"
 msgstr ""
 
-#: src/Service/Cache.php:310
-msgid "Successfully connected to REDIS database!"
-msgstr ""
-
-#: src/Service/Cache.php:319
-msgid "REDIS database not enabled"
-msgstr ""
-
-#: src/Service/Cache.php:344
-#, php-format
-msgid "Directory %s is writeable."
-msgstr ""
-
-#: src/Service/Cache.php:348
+#: src/Service/Cache.php:161
 #, php-format
 msgid "Directory %s could not be written to."
 msgstr ""
 
-#: src/Service/Cache.php:361
+#: src/Service/Cache.php:172
+msgid "Redis"
+msgstr ""
+
+#: src/Service/Cache.php:182
+msgid "Disabled"
+msgstr ""
+
+#: src/Service/Cache.php:404
+msgid "Connection status:"
+msgstr ""
+
+#: src/Service/Cache.php:410
+msgid "Cache is disabled."
+msgstr ""
+
+#: src/Service/Cache.php:413
+msgid "Cache adapter successfully connected."
+msgstr ""
+
+#: src/Service/Cache.php:430
 msgid "Clear all cache items"
 msgstr ""
 
@@ -1930,19 +1932,19 @@ msgstr ""
 msgid "Processed %1$d of %2$d bookings"
 msgstr ""
 
-#: src/Service/Upgrade.php:138
+#: src/Service/Upgrade.php:141
 msgid "There are some tasks that need to be run to complete the update process. <br> This needs to be done so that the plugin can function correctly."
 msgstr ""
 
-#: src/Service/Upgrade.php:141
+#: src/Service/Upgrade.php:144
 msgid "Click here to run the upgrade tasks."
 msgstr ""
 
-#: src/Service/Upgrade.php:302
+#: src/Service/Upgrade.php:305
 msgid "New features and changes: Please backup your site before upgrading!"
 msgstr ""
 
-#: src/Service/Upgrade.php:309
+#: src/Service/Upgrade.php:312
 #, php-format
 msgid ""
 "\n"

@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\Service;
 
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Service\Upgrade;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use SlopeIt\ClockMock\ClockMock;
@@ -16,19 +17,19 @@ class UpgradeTest extends CustomPostTypeTest {
 	private $ajaxTasks;
 
 	public function testFixBrokenICalTitle() {
-		\CommonsBooking\Settings\Settings::updateOption(
+		Settings::updateOption(
 			'commonsbooking_options_templates',
 			'emailtemplates_mail-booking_ics_event-title',
 			'Booking for {{item:post_name}}'
 		);
-		\CommonsBooking\Settings\Settings::updateOption(
+		Settings::updateOption(
 			COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options',
 			'event_title',
 			'Booking for {{item:post_name}}'
 		);
 		Upgrade::fixBrokenICalTitle();
-		$this->assertEquals( 'Booking for {{item:post_title}}', \CommonsBooking\Settings\Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' ) );
-		$this->assertEquals( 'Booking for {{item:post_title}}', \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' ) );
+		$this->assertEquals( 'Booking for {{item:post_title}}', Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' ) );
+		$this->assertEquals( 'Booking for {{item:post_title}}', Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' ) );
 	}
 
 	public function testIsMajorUpdate() {
@@ -348,6 +349,20 @@ class UpgradeTest extends CustomPostTypeTest {
 		wp_delete_term( $rainCoverCat, 'cb_items_category' );
 		wp_delete_term( $withMotorCat, 'cb_items_category' );
 		wp_delete_term( $manualPowerCat, 'cb_items_category' );
+	}
+
+	public function testMigrateCacheSettings() {
+		// redis enabled
+		Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled', 'on' );
+		Upgrade::migrateCacheSettings();
+		$this->assertEquals( 'redis', Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' ) );
+
+		// redis disabled, custom filesystem path
+		Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled', 'off' );
+		Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path', '/tmp/commonsbooking-cache' );
+		Upgrade::migrateCacheSettings();
+		$this->assertEquals( '/tmp/commonsbooking-cache', Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_location' ) );
+		$this->assertEquals( 'filesystem', Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' ) );
 	}
 
 	protected function setUp(): void {

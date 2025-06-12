@@ -234,9 +234,9 @@ return array(
 <h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>
 
 <p>Booking codes Table:</p>
-<br>   
+<br>
 {{codes:codeTable}}
-<br>          
+<br>
 <p>Thanks, the Team.</p>
                             ',
 								'commonsbooking'
@@ -293,7 +293,7 @@ return array(
 							__(
 								'
 <p>
-Thanks and all the best, 
+Thanks and all the best,
 the Team.
 </p>					',
 								'commonsbooking'
@@ -398,7 +398,7 @@ Return date: {{booking:returnDatetime}}
 Hi {{user:first_name}},<br>
 <br>
 your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>
-<br>          
+<br>
 {{booking:getEmailSignature}}
                             ',
 								'commonsbooking'
@@ -1539,34 +1539,24 @@ Return date: {{booking:returnDatetime}}
 						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' ),
 					),
 					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
-						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
-						'id'            => 'cache_path',
+						'name'          => commonsbooking_sanitizeHTML( __( 'Cache Adapter', 'commonsbooking' ) ),
+						'id'            => 'cache_adapter',
+						'type'          => 'select',
+						'options'       => \CommonsBooking\Plugin::getAdapters( true ),
+						'default'       => 'filesystem',
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Location of cache', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'The location of the cache. A directory for the filesystem cache, a REDIS DSN, ...', 'commonsbooking' ) ),
+						'id'            => 'cache_location',
 						'type'          => 'text',
-						'default'       => '/tmp/symfony-cache/',
+						'default'       => sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache',
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
-						'id'            => 'filesystem-status',
+						'id'            => 'cache_status',
 						'type'          => 'text',
-						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderFilesystemStatus' ),
-					),
-					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
-						'id'   => 'redis_enabled',
-						'type' => 'checkbox',
-					),
-					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
-						'id'   => 'redis_dsn',
-						'type' => 'text',
-						'default' => 'redis://localhost:6379',
-					),
-					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
-						'id'            => 'redis_connection-status',
-						'type'          => 'text',
-						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderREDISConnectionStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderCacheStatus' ),
 					),
 				),
 			),
