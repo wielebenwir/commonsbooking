@@ -1,50 +1,50 @@
-#  Buchungsregeln einrichten (Ab 2.9)
+#  Configure booking rules (Since 2.9)
 
 __
 
-Mithilfe von Buchungsregeln kannst du die Nutzung von Artikeln von Nutzenden
-projektweit einschränken. Wenn du also zum Beispiel verhindern willst, dass
-ein Nutzender für einen Tag mehrere Artikel gleichzeitig bucht oder übermäßige
-Nutzung einschränken willst kannst du das mit dieser Funktion erreichen.  
-  
-Die meisten Regeln gelten projektweit. Wenn du also z.B. die Regel "Maximal
-gebuchte Tage pro Woche" verwendest und die Regel auf Alle Artikel anwendest,
-dann können Nutzende projektweit nur x Tage pro Woche buchen. Aus diesem Grund
-kannst du die Regel auch nur für Artikel bestimmter Kategorien verwenden.
-Damit könntest du zum Beispiel definieren, dass eine bestimmte Kategorie
-Artikel 2 Tage pro Woche und eine andere 3 Tage pro Woche gebucht werden darf.
+Using booking rules, you can restrict the use of items by users across the instance.
+For instance, if you want to prevent a user from booking multiple items on the same day
+or limit excessive use, you can achieve this using booking rules.
 
-##  Buchungsregeln definieren
+Most rules apply instance-wide. So, for example when you use the rule "Maximum booked days per week"
+and apply it to all items, users can only book x days per week across the entire instance.
+For this reason, it is also possible to apply the rule only to items of certain categories.
+Using this feature, you could define that a specific category of items can only be booked for 2 days per week
+and another category for 3 days per week.
 
-Die Einstellungen für die Buchungsregeln findest du unter
-"Einstellungen"->"CommonsBooking" unter dem Reiter "Einschränkungen" ganz
-unten. Dort kannst du Regeln hinzufügen oder löschen.
+## Difference to the "Maximum" setting in the timeframe
+In the [Timeframe settings](/en/documentation/first-steps/booking-timeframes-manage) it is possible to set
+the maximum amount of days an item can be booked in a row (single booking). So users could create multiple bookings which then exceed the maximum value.
+Booking rules, on the other hand, define how many days a user can book in total per week, month, or within a specific time period.
+They allow you to restrict the use of items by users and prevent them from creating excessive bookings.
+Additionally, booking rules can be applied to multiple items. So if you have several items, users can only book them for as many days as defined in the booking rule.
 
-##  Regelübersicht
+## Setting up booking rules
 
-###  Gleichzeitige Buchungen verbieten
+The settings for booking rules can be found under "Settings" -> "CommonsBooking" ->
+in the "Restrictions" tab. Scroll down all the way to the bottom. There you can add or delete rules.
 
-Verhindert, dass Nutzende am selben Tag mehr als einen Artikel buchen können.
-Wenn eine Artikelkategorie festgelegt ist, gilt diese Regel nur für Artikel,
-die sich die gleiche Kategorie teilen.
+##  Types of rules
 
-###  Kettenbuchungen verhindern
+###  Forbid simultaneous bookings
 
-Verhindert, dass Nutzende das maximale Buchungslimit (Standard 3 Tage)
-umgehen, indem sie einfach zwei Buchungen für den gleichen Artikel
-hintereinander tätigen. Wenn diese Regel aktiviert ist, müssen Nutzende
-mindestens einen Tag zwischen den Buchungen lassen.
+Prevents users from booking more than one item on the same day.
+When a specific item category is set, this rule only applies to items that share the same category.
 
-###  Maximal gebuchte Tage pro Woche
+###  Prohibit chain-bookings
 
-Legt fest, wie viele Tage ein Nutzer maximal pro Woche buchen darf (entweder
-für alle Artikel oder für Artikel von bestimmten Kategorien). Ab dem Tag, der
-als Resettag gesetzt ist, beginnt dann nach der Definition die neue Woche.
-Wenn also z.B. der Montag als Resettag gesetzt ist und nur ein Tag pro Woche
-gebucht werden darf, dürfte die Person sowohl am Sonntag als auch am Montag
-buchen.
+Prevents users from circumventing the maximum booking limit (default 3 days)
+in a way that they create two consecutive bookings for the same item.
+When this rule is activated, users must leave at least one day between bookings.
 
-###  Maximal gebuchte Tage pro Monat
+###  Maximum booked days per week
+
+Defines how many days a user can book per week (either for all items or for items of specific categories).
+Starting from the day set as the reset day, the new week will start.
+So for example, if Monday is set as the reset day and only one day per week
+can be booked, the user can book on both Sunday and Monday.
+
+###  Maximum booked days per month
 
 Legt fest, wie viele Tage ein Nutzer maximal pro Monat buchen darf (entweder
 für alle Artikel oder für Artikel von bestimmten Kategorien). Ab dem Tag, der
@@ -64,8 +64,8 @@ nach der gegebenen Buchung als Zeitraum berücksichtigt.
 Wenn diese Option aktiviert ist, dann zählen stornierte Buchungen auch mit in
 die maximal buchbaren Tage für die Buchungsregeln. Dabei gilt:
 
-  * Buchung vor Beginn des Buchungszeitraums storniert: Zählt **nicht** mit in die Quote 
-  * Buchung während des Buchungszeitraums storniert: Buchung zählt die Tage von Beginn des Buchungszeitraums bis zu der Stornierung. Wenn also eine Buchung von Montag bis Mittwoch geht, und diese am Dienstag storniert wird dann zählt diese für 2 Tage und nicht für 3. 
+  * Buchung vor Beginn des Buchungszeitraums storniert: Zählt **nicht** mit in die Quote
+  * Buchung während des Buchungszeitraums storniert: Buchung zählt die Tage von Beginn des Buchungszeitraums bis zu der Stornierung. Wenn also eine Buchung von Montag bis Mittwoch geht, und diese am Dienstag storniert wird dann zählt diese für 2 Tage und nicht für 3.
 
 ###  Bestimmte Rollen grundsätzlich von allen Buchungsregeln ausnehmen
 
@@ -74,8 +74,8 @@ filter) ) kannst du eine Rolle definieren, die grundsätzlich nicht von
 Buchungsregeln betroffen ist. Dafür musst du die Rolle nicht manuell bei jeder
 Regel hinzufügen.
 
-    
-    
+
+
     add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
         $privileged_roles[] = 'editor';
         return $privileged_roles;
