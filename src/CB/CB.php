@@ -21,13 +21,15 @@ class CB {
 	/**
 	 * Returns property of (custom) post by class key and property.
 	 *
-	 * @param mixed            $key
-	 * @param mixed            $property
-	 * @param \WP_Post|WP_User $wpObject
-	 * @param mixed            $args
-	 * @param callable         $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
+	 * @param string                                $key
+	 * @param string                                $property
+	 * @param mixed|CustomPost|WP_Post|WP_User|null $wpObject
+	 * @param mixed|null                            $args
+	 * @param callable                              $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
 	 *
-	 * @return Property of (custom) post (sanitized) or null if not found
+	 * @since 2.10.5 parameters in doc are correctly typed.
+	 *
+	 * @return null|string property of (custom) post (sanitized) or null if not found
 	 * @throws Exception
 	 */
 	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
@@ -50,10 +52,21 @@ class CB {
 		// If possible cast to CB Custom Post Type Model to get additional functions
 		$wpObject = Helper::castToCBCustomType( $wpObject, $key );
 
-		$result     = self::lookUp( $key, $property, $wpObject, $args, $sanitizeFunction );  // Find matching methods, properties or metadata
-		$filterName = sprintf( 'commonsbooking_tag_%s_%s', $key, $property );
+		// Find matching methods, properties or metadata
+		$result = self::lookUp( $key, $property, $wpObject, $args, $sanitizeFunction );
 
-		return apply_filters( $filterName, $result );
+		/**
+		 * Default value for post type properties.
+		 *
+		 * The dynamic part of the hook $key is the name of the post type and the $property is the name of the meta
+		 * field.
+		 *
+		 * @since 2.7.1 refactored filter name from cb_tag_* to its current form
+		 * @since 2.1.1
+		 *
+		 * @param string|null $result from property lookup
+		 */
+		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result );
 	}
 
 	/**

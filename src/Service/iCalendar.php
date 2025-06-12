@@ -30,7 +30,10 @@ use DateInterval;
  */
 class iCalendar {
 
-	private ?Calendar $calendar;
+	/**
+	 * @var Calendar
+	 */
+	private Calendar $calendar;
 
 	public const URL_SLUG       = COMMONSBOOKING_PLUGIN_SLUG . '_ical_download';
 	public const QUERY_USER     = COMMONSBOOKING_PLUGIN_SLUG . '_user';
@@ -83,14 +86,14 @@ class iCalendar {
 	 * This should be relatively secure, since the hash is salted.
 	 * Returns false when user is not logged in
 	 *
-	 * @return string | bool - false when user is not logged in
+	 * @return string | false - false when user is not logged in
 	 */
 	public static function getCurrentUserCalendarLink() {
 		if ( ! is_user_logged_in() ) {
 			return false;}
 
 		$user_id         = wp_get_current_user()->ID;
-		$user_hash       = wp_hash( $user_id );
+		$user_hash       = wp_hash( (string) $user_id );
 		$script_location = get_site_url() . '/';
 
 		return add_query_arg(
@@ -109,7 +112,7 @@ class iCalendar {
 	 * @param $bookingID
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public static function downloadICS( $bookingID ): void {
 		$postID           = $bookingID;
@@ -248,10 +251,10 @@ class iCalendar {
 	/**
 	 * Adds a generic event to Calendar
 	 *
-	 * @param array|DateTimeImmutable $eventDate
-	 * @param string                  $eventTitle
-	 * @param string                  $eventDescription
-	 * @param bool                    $isTimeSpan
+	 * @param DateTimeImmutable[]|DateTimeImmutable $eventDate
+	 * @param string                                $eventTitle
+	 * @param string                                $eventDescription
+	 * @param bool                                  $isTimeSpan
 	 *
 	 * @return Event|false
 	 */
@@ -260,21 +263,19 @@ class iCalendar {
 		string $eventTitle,
 		string $eventDescription,
 		bool $isTimeSpan = false
-	): Event {
+	) {
 
 		if ( is_array( $eventDate ) ) {
-			if ( count( $eventDate ) < 2 || ! ( $eventDate[0] instanceof DateTimeImmutable ) || ! ( $eventDate[1] instanceof DateTimeImmutable ) || $eventDate[0] > $eventDate[1] ) {
-				return false;
+			if ( count( $eventDate ) < 2 || $eventDate[0] > $eventDate[1] ) {
+				return false; // FIXME Why fail siltenly?
 			}
 			if ( $isTimeSpan ) {
 				$occurence = new TimeSpan( new DateTime( $eventDate[0], false ), new DateTime( $eventDate[1], false ) );
 			} else {
-				$occurence = new MultiDay( $eventDate[0], $eventDate[1] );
+				$occurence = new MultiDay( new Date( $eventDate[0] ), new Date( $eventDate[1] ) );
 			}
-		} elseif ( $eventDate instanceof DateTimeImmutable ) {
-			$occurence = new SingleDay( new Date( $eventDate ) );
 		} else {
-			return false;
+			$occurence = new SingleDay( new Date( $eventDate ) );
 		}
 
 		// Create Event domain entity.

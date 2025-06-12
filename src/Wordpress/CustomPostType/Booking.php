@@ -82,7 +82,7 @@ class Booking extends Timeframe {
 		global $pagenow;
 
 		$post            = $post ?? get_post( $post_id );
-		$is_trash_action = str_contains( ( $_REQUEST ?? array() )['action'] ?? '', 'trash' );
+		$is_trash_action = str_contains( $_REQUEST['action'] ?? '', 'trash' );
 
 		// we check if it's a new created post - TODO: This is not the case
 		if (
@@ -102,7 +102,7 @@ class Booking extends Timeframe {
 
 			$postarr = array(
 				'post_title'  => esc_html__( 'Admin-Booking', 'commonsbooking' ),
-				'post_author' => $booking_user,
+				'post_author' => (int) $booking_user,
 				'post_status' => $post_status,
 				'meta_input'  => [
 					'admin_booking_id' => get_current_user_id(),
@@ -251,11 +251,12 @@ class Booking extends Timeframe {
 			exit;
 		}
 
-		if ( $itemId === null || ! get_post( $itemId ) ) {
+		if ( $itemId === null || ! filter_var( $itemId, FILTER_VALIDATE_INT ) || ! get_post( (int) $itemId ) ) {
 			// translators: $s = id of the item
 			throw new BookingDeniedException( sprintf( __( 'Item does not exist. (%s)', 'commonsbooking' ), $itemId ) );
 		}
-		if ( $locationId === null || ! get_post( $locationId ) ) {
+
+		if ( $locationId === null || ! filter_var( $locationId, FILTER_VALIDATE_INT ) || ! get_post( (int) $locationId ) ) {
 			// translators: $s = id of the location
 			throw new BookingDeniedException( sprintf( __( 'Location does not exist. (%s)', 'commonsbooking' ), $locationId ) );
 		}
@@ -264,6 +265,12 @@ class Booking extends Timeframe {
 			throw new BookingDeniedException( __( 'Start- and/or end-date is missing.', 'commonsbooking' ) );
 		}
 
+		// Validation end, set correctly typed params
+		$itemId          = (int) $itemId;
+		$locationId      = (int) $locationId;
+		$repetitionStart = (int) $repetitionStart;
+		$repetitionEnd   = (int) $repetitionEnd;
+
 		if ( $post_ID != null && ! get_post( $post_ID ) ) {
 			throw new BookingDeniedException(
 				__( 'Your reservation has expired, please try to book again', 'commonsbooking' ),
@@ -271,7 +278,7 @@ class Booking extends Timeframe {
 			);
 		}
 
-		/** @var \CommonsBooking\Model\Booking $booking */
+		/** @var \CommonsBooking\Model\Booking|null $booking */
 		$booking = \CommonsBooking\Repository\Booking::getByDate(
 			$repetitionStart,
 			$repetitionEnd,
@@ -302,7 +309,7 @@ class Booking extends Timeframe {
 			// checks if it's an edit, but ignores exact start/end time
 			$isEdit = count( $existingBookings ) === 1 &&
 						array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostName &&
-						array_values( $existingBookings )[0]->getPost()->post_author === get_current_user_id();
+						intval( array_values( $existingBookings )[0]->getPost()->post_author ) === get_current_user_id();
 
 			if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status !== 'canceled' ) {
 				if ( $booking ) {
@@ -385,7 +392,7 @@ class Booking extends Timeframe {
 		if ( $postId instanceof \WP_Error ) {
 			throw new BookingDeniedException(
 				__( 'There was an error while saving the booking. Please try again. Resulting WP_ERROR: ', 'commonsbooking' ) .
-												PHP_EOL . $postId->get_error_messages()
+												PHP_EOL . implode( ', ', $postId->get_error_messages() )
 			);
 		}
 
@@ -905,7 +912,7 @@ class Booking extends Timeframe {
 	public function displayOverlappingBookingNotice( $post ) {
 
 		if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
-			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID, 'warning' ) );
+			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );
 		}
 	}
 
@@ -1006,7 +1013,7 @@ class Booking extends Timeframe {
 	/**
 	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
 	 *
-	 * @param string                                                                                                         $emailAddress The email address
+	 * @param string $emailAddress The email address
 	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
 	 *
 	 * @return array

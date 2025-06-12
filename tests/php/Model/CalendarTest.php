@@ -50,32 +50,31 @@ class CalendarTest extends CustomPostTypeTest {
 		);
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
 
-
 		$this->assertEquals( 2, count( $availabilitySlots ) );
 		$expectedSlotObject = [
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( self::CURRENT_DATE ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', $todayEnd ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
-			]
+				'locationId' => $this->locationId,
+			],
 		];
 		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
 
-		//now let's book the current day and check, that only tomorrow is available
+		// now let's book the current day and check, that only tomorrow is available
 		$this->createBooking(
 			$this->locationId,
 			$this->itemId,
 			strtotime( $today ),
 			$todayEnd
 		);
-		//recreate the calendar object to get the updated availability
+		// recreate the calendar object to get the updated availability
 		$this->calendar    = new Calendar(
 			new Day( $today, [ $this->locationId ], [ $this->itemId ] ),
 			new Day( $tomorrow, [ $this->locationId ], [ $this->itemId ] ),
@@ -89,8 +88,8 @@ class CalendarTest extends CustomPostTypeTest {
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
-			]
+				'locationId' => $this->locationId,
+			],
 		];
 		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
 	}
@@ -103,7 +102,7 @@ class CalendarTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			Timeframe::BOOKABLE_ID,
 			'off',
-			"d",
+			'd',
 			1,
 			'8:00 AM',
 			'12:00 PM'
@@ -112,14 +111,14 @@ class CalendarTest extends CustomPostTypeTest {
 		$start->setTime( 8, 0, 0 );
 		$end = new \DateTime( self::CURRENT_DATE );
 		$end->setTime( 24, 0, 0 );
-		$expectedPeriod    = new \DatePeriod(
+		$expectedPeriod = new \DatePeriod(
 			$start,
 			new \DateInterval( 'PT1H' ),
 			$end
 		);
-		$this->calendar    = new Calendar(
+		$this->calendar = new Calendar(
 			new Day( $start->format( 'Y-m-d' ), [ $this->locationId ], [ $this->itemId ] ),
-			//we do this because the calendar needs to span at least one day
+			// we do this because the calendar needs to span at least one day
 			new Day( date( 'Y-m-d', strtotime( '+1 day', $end->getTimestamp() ) ), [ $this->locationId ], [ $this->itemId ] ),
 			[ $this->locationId ],
 			[ $this->itemId ]
@@ -127,7 +126,7 @@ class CalendarTest extends CustomPostTypeTest {
 		$availabilitySlots = $this->calendar->getAvailabilitySlots();
 		$this->assertEquals( iterator_count( $expectedPeriod ), count( $availabilitySlots ) );
 
-		//book two hours and check that the slots are not available
+		// book two hours and check that the slots are not available
 		$this->createBooking(
 			$this->locationId,
 			$this->itemId,
@@ -136,7 +135,7 @@ class CalendarTest extends CustomPostTypeTest {
 			'10:00 AM',
 			'01:00 PM'
 		);
-		//re-create calendar object to reflect changes
+		// re-create calendar object to reflect changes
 		$this->calendar    = new Calendar(
 			new Day( $start->format( 'Y-m-d' ), [ $this->locationId ], [ $this->itemId ] ),
 			new Day( date( 'Y-m-d', strtotime( '+1 day', $end->getTimestamp() ) ), [ $this->locationId ], [ $this->itemId ] ),
@@ -148,21 +147,21 @@ class CalendarTest extends CustomPostTypeTest {
 	}
 
 	public function testGetAvailabilitySlotsWithOffset() {
-		//check with offset, first two days should not be marked as bookable
+		// check with offset, first two days should not be marked as bookable
 		$offsetTF            = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 week', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
-			"on",
+			'on',
 			'd',
 			0,
 			'8:00 AM',
 			'12:00 PM',
 			'publish',
 			[],
-			"",
+			'',
 			self::USER_ID,
 			3,
 			30,
@@ -180,38 +179,38 @@ class CalendarTest extends CustomPostTypeTest {
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+5 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+6 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+7 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
-			]
+				'locationId' => $this->locationId,
+			],
 		];
 		$this->assertEquals( $expectedSlotsObject, $availabilitySlots );
 	}
@@ -242,20 +241,20 @@ class CalendarTest extends CustomPostTypeTest {
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+2 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+3 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
+				'locationId' => $this->locationId,
 			],
 			(object) [
 				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days', $this->now->getTimestamp() ) ),
 				'end'        => date( 'Y-m-d\TH:i:sP', strtotime( '+4 days 23:59:59', $this->now->getTimestamp() ) ),
 				'itemId'     => $this->itemId,
-				'locationId' => $this->locationId
-			]
+				'locationId' => $this->locationId,
+			],
 		];
 		$this->assertEquals( $expectedSlotsObject, $availabilitySlots );
 	}

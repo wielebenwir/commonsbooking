@@ -328,6 +328,14 @@ class BookingRule {
 			),
 		];
 
+		/**
+		 * Default list of booking rules that get applied before booking confirmation
+		 *
+		 * @param BookingRule[] $defaultRuleSet list of booking rule objects
+		 *
+		 * @since 2.9 bigger refactoring # TODO
+		 * @since 2.7.4
+		 */
 		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules', $defaultRuleSet );
 	}
 
@@ -710,11 +718,11 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the range.
 	 * Cancelled bookings will be considered when they were cancelled after the start of the range.
 	 *
-	 * @param DateTime     $startOfRange
-	 * @param DateTime     $endOfRange
-	 * @param Booking      $booking
+	 * @param DateTime $startOfRange
+	 * @param DateTime $endOfRange
+	 * @param Booking  $booking
 	 * @param $appliedTerms
-	 * @param int          $allowedTotalBookings
+	 * @param int      $allowedTotalBookings
 	 *
 	 * @return Booking[]|null
 	 * @throws Exception

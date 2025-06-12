@@ -25,7 +25,7 @@ class CB1UserFields {
 	/**
 	 * @var array|string[]
 	 */
-	private array $registration_fields_required;
+	private array $registration_fields_required; // @phpstan-ignore property.onlyWritten
 	/**
 	 * @var array|array[]
 	 */
@@ -33,7 +33,7 @@ class CB1UserFields {
 	/**
 	 * @var array|mixed
 	 */
-	private $user_vars;
+	private $user_vars; // @phpstan-ignore property.onlyWritten
 
 	public function __construct() {
 
@@ -147,7 +147,7 @@ class CB1UserFields {
 													?>
 						<br/>
 						<input type="checkbox" name="<?php esc_attr_e( $field['field_name'] ); ?>"
-								id="<?php esc_attr_e( $field['field_name'] ); ?>" value="yes" 
+								id="<?php esc_attr_e( $field['field_name'] ); ?>" value="yes"
 													<?php
 													if ( $row == 'yes' ) {
 														echo 'checked';
@@ -202,11 +202,10 @@ class CB1UserFields {
 				if ( ! isset( $_POST[ $field['field_name'] ] ) ) {
 					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 				}
-			} elseif (
-					empty( $_POST[ $field['field_name'] ] ) ||
-					! empty( $_POST[ $field['field_name'] ] ) &&
-					sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) == '' ) ) {
-					$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
+			} elseif ( empty( $_POST[ $field['field_name'] ] ) ||
+						! empty( $_POST[ $field['field_name'] ] ) &&
+						sanitize_text_field( $_POST[ $field['field_name'] ] ) === '' ) {
+				$errors->add( $field['field_name'] . '_error', $field['errormessage'] );
 			}
 		}
 
@@ -279,7 +278,7 @@ class CB1UserFields {
 			<tr>
 				<th><label for="address"><?php esc_html_e( 'Address', 'commonsbooking' ); ?></label></th>
 				<td>
-					<input type="textarea" name="address" id="address"
+					<input type="text" name="address" id="address"
 							value="<?php echo esc_attr( get_the_author_meta( 'address', $user->ID ) ); ?>"
 							class="regular-text"/><br/>
 				</td>
@@ -289,7 +288,7 @@ class CB1UserFields {
 				</th>
 				<td>
 					<input type="checkbox" name="terms_accepted" id=" terms_accepted " disabled
-							value="yes" 
+							value="yes"
 							<?php
 							if ( esc_attr( get_the_author_meta( 'terms_accepted', $user->ID ) ) == 'yes' ) {
 								echo 'checked';

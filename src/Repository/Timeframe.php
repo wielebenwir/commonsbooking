@@ -19,12 +19,12 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns only bookable timeframes.
 	 *
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param string|null  $date
-	 * @param bool         $returnAsModel
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param string|null $date
+	 * @param bool        $returnAsModel
 	 * @param $minTimestamp
-	 * @param array        $postStatus
+	 * @param array       $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -51,12 +51,12 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns only bookable timeframes for current user.
 	 *
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param string|null  $date
-	 * @param bool         $returnAsModel
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param string|null $date
+	 * @param bool        $returnAsModel
 	 * @param $minTimestamp
-	 * @param array        $postStatus
+	 * @param array       $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -97,11 +97,11 @@ class Timeframe extends PostRepository {
 	 * @param array       $items
 	 * @param array       $types
 	 * @param string|null $date Date-String in format YYYY-mm-dd
-	 * @param bool        $returnAsModel
+	 * @param bool        $returnAsModel if true, returns as custom wp-post model, if false, return wp-post or int array (defaults to false)
 	 * @param int|null    $minTimestamp
 	 * @param string[]    $postStatus
 	 *
-	 * @return array
+	 * @return int[]|\WP_Post[]|\CommonsBooking\Model\Timeframe[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 * @throws \Psr\Cache\InvalidArgumentException|\Psr\Cache\CacheException
 	 */
@@ -134,7 +134,7 @@ class Timeframe extends PostRepository {
 			// Get Post-IDs considering types, items and locations
 			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
-			if ( $postIds && count( $postIds ) ) {
+			if ( $postIds ) {
 				$posts = self::getPostsByBaseParams(
 					$date,
 					$minTimestamp,
@@ -144,7 +144,7 @@ class Timeframe extends PostRepository {
 				);
 			}
 
-			if ( $posts && count( $posts ) ) {
+			if ( $posts ) {
 				$posts = self::filterTimeframes( $posts, $date );
 			}
 
@@ -329,7 +329,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
-	 * @return mixed
+	 * @return string[]|int[]
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
@@ -766,7 +766,7 @@ class Timeframe extends PostRepository {
 	 * Why? In some cases we need more than WP_Post methods and for this case we have Models, that enrich WP_Post
 	 *      objects with useful additional functions.
 	 *
-	 * @param $posts
+	 * @param int[]|\WP_Post[] $posts
 	 *
 	 * @throws Exception
 	 */
@@ -835,11 +835,11 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param array        $types
-	 * @param false        $returnAsModel
-	 * @param string[]     $postStatus
+	 * @param array    $locations
+	 * @param array    $items
+	 * @param array    $types
+	 * @param bool     $returnAsModel
+	 * @param string[] $postStatus
 	 *
 	 * @return array
 	 * @throws Exception
@@ -873,7 +873,7 @@ class Timeframe extends PostRepository {
 			// Get Post-IDs considering types, items and locations
 			$postIds = self::getPostIdsByType( $types, $items, $locations );
 
-			if ( $postIds && count( $postIds ) ) {
+			if ( $postIds ) {
 				$posts = self::getPostsByBaseParams(
 					null,
 					$minTimestamp,
@@ -905,11 +905,11 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param array        $types
-	 * @param false        $returnAsModel
-	 * @param string[]     $postStatus
+	 * @param array    $locations
+	 * @param array    $items
+	 * @param array    $types
+	 * @param bool     $returnAsModel
+	 * @param string[] $postStatus
 	 *
 	 * @return array
 	 * @throws Exception

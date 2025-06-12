@@ -6,7 +6,7 @@ use CommonsBooking\Plugin;
 use PHPUnit\Framework\TestCase;
 
 class CacheTest extends TestCase {
-	private array $posts = [];
+	private array $posts                       = [];
 	private static array $fakeShortcodeACalled = [];
 	private static array $fakeShortcodeBCalled = [];
 
@@ -20,7 +20,7 @@ class CacheTest extends TestCase {
 
 
 	public function testWarmupCache() {
-		//one with args, one without
+		// one with args, one without
 		$shortcodes = [ '[cb_items]', '[cb_locations id=123]' ];
 		$this->createPages( $shortcodes );
 		Plugin::warmupCache();
@@ -30,7 +30,7 @@ class CacheTest extends TestCase {
 		$this->assertEmpty( self::$fakeShortcodeACalled[0] );
 		$this->assertEmpty( self::$fakeShortcodeACalled[1] );
 
-		$this->assertEquals( [ "id" => "123" ], self::$fakeShortcodeBCalled[0] );
+		$this->assertEquals( [ 'id' => '123' ], self::$fakeShortcodeBCalled[0] );
 		$this->assertEmpty( self::$fakeShortcodeBCalled[1] );
 	}
 
@@ -38,7 +38,7 @@ class CacheTest extends TestCase {
 		$jsonBody   = '{<br>  "map": {<br>    "markerIcon": {<br>      "renderers": [{ "type": "traditional-icon" }]<br>    }<br>  }<br>}';
 		$shortcodes = [
 			'[cb_items id=123]' . $jsonBody . '[/cb_items]',
-			'[cb_locations id=123 layouts=Map]'
+			'[cb_locations id=123 layouts=Map]',
 		];
 		$this->createPages( $shortcodes );
 
@@ -47,27 +47,33 @@ class CacheTest extends TestCase {
 		$this->assertNotEmpty( self::$fakeShortcodeACalled );
 		$this->assertNotEmpty( self::$fakeShortcodeBCalled );
 
-		$this->assertEquals( [ "id" => "123" ], self::$fakeShortcodeACalled[0] );
+		$this->assertEquals( [ 'id' => '123' ], self::$fakeShortcodeACalled[0] );
 		$this->assertEquals( $jsonBody, self::$fakeShortcodeACalled[1] );
 
-        $this->assertEquals( [ "id" => "123", "layouts" => "Map" ], self::$fakeShortcodeBCalled[0] );
-        $this->assertEmpty( self::$fakeShortcodeBCalled[1] );
+		$this->assertEquals(
+			[
+				'id' => '123',
+				'layouts' => 'Map',
+			],
+			self::$fakeShortcodeBCalled[0]
+		);
+		$this->assertEmpty( self::$fakeShortcodeBCalled[1] );
 	}
 
-    public function testWarmupCache_twoOnSamePage() {
-        $this->createPages( [ '[cb_items id=123] [cb_locations id=456]' ] );
+	public function testWarmupCache_twoOnSamePage() {
+		$this->createPages( [ '[cb_items id=123] [cb_locations id=456]' ] );
 
-        Plugin::warmupCache();
+		Plugin::warmupCache();
 
-        $this->assertNotEmpty( self::$fakeShortcodeACalled );
-        $this->assertNotEmpty( self::$fakeShortcodeBCalled );
+		$this->assertNotEmpty( self::$fakeShortcodeACalled );
+		$this->assertNotEmpty( self::$fakeShortcodeBCalled );
 
-        $this->assertEquals( [ "id" => "123" ], self::$fakeShortcodeACalled[0] );
-        $this->assertEmpty( self::$fakeShortcodeACalled[1] );
+		$this->assertEquals( [ 'id' => '123' ], self::$fakeShortcodeACalled[0] );
+		$this->assertEmpty( self::$fakeShortcodeACalled[1] );
 
-        $this->assertEquals( [ "id" => "456" ], self::$fakeShortcodeBCalled[0] );
-        $this->assertEmpty( self::$fakeShortcodeBCalled[1] );
-    }
+		$this->assertEquals( [ 'id' => '456' ], self::$fakeShortcodeBCalled[0] );
+		$this->assertEmpty( self::$fakeShortcodeBCalled[1] );
+	}
 
 	/**
 	 * Test for #1723 (warmup crashing)
@@ -76,25 +82,42 @@ class CacheTest extends TestCase {
 	 */
 	public function testWarmupCache_1723() {
 		Plugin::warmupCache();
-		//because it just checks for crashes
+		// because it just checks for crashes
 		$this->expectNotToPerformAssertions();
 	}
 
-    /**
-     * Test for #1725 (ran on all post types)
-     * @return void
-     */
-    public function  testWarmupCache_1725()
-    {
-        //Create a draft page
-        $this->posts[] = wp_insert_post([
-            'post_type' => 'page',
-            'post_content' => '[cb_items]'
-        ]);
+	/**
+	 * Test for #1725 (ran on all post types)
+	 * @return void
+	 */
+	public function testWarmupCache_1725() {
+		// Create a draft page
+		$this->posts[] = wp_insert_post(
+			[
+				'post_type' => 'page',
+				'post_content' => '[cb_items]',
+			]
+		);
 
-        Plugin::warmupCache();
-        $this->assertEmpty(self::$fakeShortcodeACalled);
-    }
+		Plugin::warmupCache();
+		$this->assertEmpty( self::$fakeShortcodeACalled );
+	}
+
+	public function testGetAdapters() {
+		// check, if the adapters exist
+		$adapters = Plugin::getAdapters();
+		foreach ( $adapters as $adapter ) {
+			$this->assertInstanceOf( \Closure::class, $adapter['factory'] );
+		}
+
+		// check, if the labels are correctly returned
+		$adapterLabels = Plugin::getAdapters( true );
+		$this->assertIsArray( $adapterLabels );
+		foreach ( $adapterLabels as $labelKey => $labelText ) {
+			$this->assertIsString( $labelKey );
+			$this->assertIsString( $labelText );
+		}
+	}
 
 	protected function tearDown(): void {
 		foreach ( $this->posts as $post ) {
@@ -104,7 +127,7 @@ class CacheTest extends TestCase {
 	}
 
 	protected function setUp(): void {
-        //overwrite the existing shortcodes with dummy functions
+		// overwrite the existing shortcodes with dummy functions
 		$shortcodes = new \ReflectionProperty( '\CommonsBooking\Plugin', 'cbShortCodeFunctions' );
 		$shortcodes->setAccessible( true );
 		$shortcodes->setValue(
@@ -123,7 +146,7 @@ class CacheTest extends TestCase {
 			$postArray     = [
 				'post_type'    => 'page',
 				'post_content' => $pageContent,
-				'post_status'  => 'publish'
+				'post_status'  => 'publish',
 			];
 			$this->posts[] = wp_insert_post( $postArray );
 		}

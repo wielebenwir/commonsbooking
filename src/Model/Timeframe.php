@@ -19,6 +19,8 @@ use Exception;
  * Additionally, all the public functions in this class can be called using Template Tags.
  *
  * @package CommonsBooking\Model
+ *
+ * @property bool $locked {@see \CommonsBooking\Wordpress\CustomPostType\Timeframe::isLocked()}
  */
 class Timeframe extends CustomPost {
 	/**
@@ -73,6 +75,7 @@ class Timeframe extends CustomPost {
 	 * Example: 2020-01-01,2020-01-02,2020-01-03
 	 */
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
+	const MAX_DAYS_DEFAULT             = 3;
 
 	/**
 	 * null means the data is not fetched yet
@@ -113,7 +116,7 @@ class Timeframe extends CustomPost {
 
 		$startDate = $this->getMeta( self::REPETITION_START );
 
-		if ( (string) intval( $startDate ) !== $startDate ) {
+		if ( ! is_numeric( $startDate ) ) {
 			$startDate = strtotime( $startDate );
 		} else {
 			$startDate = intval( $startDate );
@@ -142,7 +145,7 @@ class Timeframe extends CustomPost {
 
 		$endDate = $this->getMeta( self::REPETITION_END );
 
-		if ( (string) intval( $endDate ) != $endDate ) {
+		if ( ! is_numeric( $endDate ) ) {
 			$endDate = strtotime( $endDate );
 		} else {
 			$endDate = intval( $endDate );
@@ -192,13 +195,17 @@ class Timeframe extends CustomPost {
 		if ( ! $user ) {
 			$user = wp_get_current_user();
 		}
-		if ( ! $user ) {
-			return false;
-		}
 
 		// these roles are always allowed to book
-		$privilegedRoles = [ 'administrator' ];
-		apply_filters( 'commonsbooking_privileged_roles', $privilegedRoles );
+		$privilegedRolesDefaults = [ 'administrator' ];
+		/**
+		 * Default list of privilege roles
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param string[] $privilegedRolesDefaults list of roles as strings that are privileged roles
+		 */
+		$privilegedRoles = apply_filters( 'commonsbooking_privileged_roles', $privilegedRolesDefaults );
 		if ( ! empty( array_intersect( $privilegedRoles, $user->roles ) ) ) {
 			return true;
 		}
@@ -521,7 +528,7 @@ class Timeframe extends CustomPost {
 	 * Timeframe::BOOKING_ID
 	 * Timeframe::BOOKING_CANCELLED_ID
 	 *
-	 * @return mixed
+	 * @return int
 	 */
 	public function getType(): int {
 		return intval( $this->getMeta( 'type' ) );
@@ -612,7 +619,7 @@ class Timeframe extends CustomPost {
 				}
 
 				// check if end date is before start date
-				if ( ( $this->getStartDate() && $this->getEndDate() ) && ( $this->getStartDate() > $this->getTimeframeEndDate() ) ) {
+				if ( $this->getEndDate() && ( $this->getStartDate() > $this->getTimeframeEndDate() ) ) {
 					throw new TimeframeInvalidException(
 						__(
 							'End date is before start date. Please set a valid end date.',
@@ -898,7 +905,7 @@ class Timeframe extends CustomPost {
 	 * 0 = slot
 	 * 1 = hourly
 	 *
-	 * @return mixed
+	 * @return int
 	 */
 	public function getGrid(): int {
 		return intval( $this->getMeta( 'grid' ) );
@@ -1059,7 +1066,7 @@ class Timeframe extends CustomPost {
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
-		return Wordpress::convertTimestampToUTCDatetime( $startDateString );
+		return Wordpress::convertTimestampToUTCDatetime( intval( $startDateString ) );
 	}
 
 	/**
@@ -1080,7 +1087,7 @@ class Timeframe extends CustomPost {
 		$startDate = Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		if ( $startTimeString ) {
 			$startTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $startTimeString ) );
-			$startDate->setTime( $startTime->format( 'H' ), $startTime->format( 'i' ) );
+			$startDate->setTime( (int) $startTime->format( 'H' ), (int) $startTime->format( 'i' ) );
 		}
 
 		return $startDate;
@@ -1130,7 +1137,7 @@ class Timeframe extends CustomPost {
 	 *
 	 * TODO: Clarify what the exact difference between endTime and endDate is.
 	 *
-	 * @param null $endDateString
+	 * @param string|int|null $endDateString
 	 *
 	 * @return DateTime
 	 * @throws Exception
@@ -1141,7 +1148,7 @@ class Timeframe extends CustomPost {
 
 		if ( $endTimeString ) {
 			$endTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $endTimeString ) );
-			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+			$endDate->setTime( (int) $endTime->format( 'H' ), (int) $endTime->format( 'i' ) );
 		} else {
 			$endDate = Wordpress::getUTCDateTimeByTimestamp( $endDateString );
 		}
@@ -1179,6 +1186,10 @@ class Timeframe extends CustomPost {
 	 * @throws Exception
 	 */
 	public function getAdmins(): array {
+
+		$itemAdminIds     = [];
+		$locationAdminIds = [];
+
 		$location = $this->getLocation();
 		if ( ! empty( $location ) ) {
 			$locationAdminIds = $location->getAdmins();
@@ -1228,7 +1239,14 @@ class Timeframe extends CustomPost {
 		return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getMaxDays(): int {
-		return $this->getMeta( self::META_MAX_DAYS );
+		$meta = $this->getMeta( self::META_MAX_DAYS );
+		if ( is_numeric( $meta ) ) {
+			return (int) $meta;
+		}
+		return self::MAX_DAYS_DEFAULT;
 	}
 }

@@ -701,6 +701,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             lockDaysFormat: "YYYY-MM-DD",
                             lockDays: [],
                             lockDaysInclusivity: "[]",
+                            mobileCalendarMonthCount: 1,
                             disallowLockDaysInRange: !0,
                             countLockedDays: !1,
                             countLockedDaysMax: 0,
@@ -1456,7 +1457,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         window.addEventListener("orientationchange", function(e) {
                             var i = function() {
                                 if (p.isMobile() && t.isShowning() && ("landscape" === p.getOrientation() ? (t.options.numberOfMonths = 2, 
-                                t.options.numberOfColumns = 2) : (t.options.numberOfMonths = 1, 
+                                t.options.numberOfColumns = 2) : (t.options.numberOfMonths = t.options.mobileCalendarMonthCount, 
                                 t.options.numberOfColumns = 1), t.render(), !t.options.inlineMode)) {
                                     var e = t.picker.getBoundingClientRect();
                                     t.picker.style.top = "calc(50% - " + e.height / 2 + "px)", 
@@ -2042,12 +2043,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 disallowLockDaysInRange: globalCalendarData["disallowLockDaysInRange"],
                 disallowHolidaysInRange: globalCalendarData["disallowLockDaysInRange"],
                 mobileFriendly: true,
+                mobileCalendarMonthCount: globalCalendarData["mobileCalendarMonthCount"],
                 selectForward: true,
                 useResetBtn: true,
                 maxDays: globalCalendarData["maxDays"],
                 buttonText: {
-                    apply: "Buchen",
-                    cancel: "Abbrechen"
+                    apply: globalCalendarData["i18n.buttonText.apply"],
+                    cancel: globalCalendarData["i18n.buttonText.cancel"]
                 },
                 onAutoApply: datePicked => {
                     if (datePicked) {

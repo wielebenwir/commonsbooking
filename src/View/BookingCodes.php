@@ -29,7 +29,7 @@ class BookingCodes {
 	 * @param int $tsInitial - Timestamp of the inital date
 	 * @param int $periodMonths
 	 *
-	 * @return DateTime   Datetime of nex Cron Event.
+	 * @return DateTimeImmutable   Datetime of nex Cron Event.
 	 */
 	public static function initialCronEmailEvent( int $tsInitial, int $periodMonths ): DateTimeImmutable {
 		$start = new DateTimeImmutable();
@@ -49,7 +49,7 @@ class BookingCodes {
 
 		$dtTo = $start->modify( 'midnight last day of next month +' . ( $fullMonth - 1 ) . ' month' );
 
-		$daydiff = $dtTo->format( 'j' ) - $start->format( 'j' );
+		$daydiff = (int) $dtTo->format( 'j' ) - (int) $start->format( 'j' );
 		if ( $daydiff > 0 ) {
 			$dtNextCronEvent = $dtTo->modify( '-' . $daydiff . ' days' );
 		} else {
@@ -62,9 +62,9 @@ class BookingCodes {
 	/**
 	 * CMB2 callback on field saved
 	 *
-	 * @param bool              $updated Whether the metadata update action occurred.
-	 * @param string            $action  Action performed. Could be "repeatable", "updated", or "removed".
-	 * @param CMB2_Field object $field   This field object
+	 * @param bool        $updated Whether the metadata update action occurred.
+	 * @param string      $action  Action performed. Could be "repeatable", "updated", or "removed".
+	 * @param \CMB2_Field $field   This field object
 	 */
 	public static function cronEmailCodesSaved( $updated, $action, $field ): void {
 		$postID = $field->object_id();
@@ -97,9 +97,9 @@ class BookingCodes {
 	 * CMB2 sanitize field callback
 	 * Will take the entered start date and saves it as a timestamp.
 	 *
-	 * @param  mixed      $value      The unsanitized value from the form.
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object
+	 * @param  mixed       $value      The unsanitized value from the form.
+	 * @param  array       $field_args Array of field arguments.
+	 * @param  \CMB2_Field $field      The field object
 	 *
 	 * @return ?array                  Sanitized value to be stored.
 	 */
@@ -128,9 +128,9 @@ class BookingCodes {
 	/**
 	 * CMB2 escape field callback
 	 *
-	 * @param  mixed      $value      The unescaped value from the database.
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object
+	 * @param  mixed       $value      The unescaped value from the database.
+	 * @param  array       $field_args Array of field arguments.
+	 * @param  \CMB2_Field $field      The field object
 	 *
 	 * @return array                  Escaped value to be displayed.
 	 */
@@ -263,8 +263,8 @@ HTML;
 	/**
 	 * renders CMB2 field row
 	 *
-	 * @param  array      $field_args Array of field arguments.
-	 * @param  CMB2_Field $field      The field object
+	 * @param  array       $field_args Array of field arguments.
+	 * @param  \CMB2_Field $field      The field object
 	 */
 	public static function renderDirectEmailRow( $field_args, $field ) {
 
@@ -408,12 +408,8 @@ HTML;
                 </div>
                 <div class="cmb-td">';
 			if ( $timeframe->hasBookingCodes() ) {
-				echo apply_filters(
-					'commonsbooking_emailcodes_rendertable',
-					self::renderBookingCodesTable( $bookingCodes ),
-					$bookingCodes,
-					'timeframe_form'
-				);
+				echo self::renderTableFor( 'timeframe_form', $bookingCodes );
+
 				echo '<br>';
 				echo '<p  class="cmb2-metabox-description">';
 					printf( __( 'Only showing booking codes for the next %s days.', 'commonsbooking' ), $bcToShow );
@@ -432,7 +428,7 @@ HTML;
 	/**
 	 * Renders HTML table of bookingCodes List.
 	 *
-	 * @param $bookingCodes array : CommonsBooking\Model\BookingCode
+	 * @param BookingCode[] $bookingCodes list of booking codes
 	 *
 	 * @return string HTML table
 	 */
@@ -451,7 +447,7 @@ HTML;
 		if ( count( $lines ) % 2 != 0 ) {
 			array_push( $lines, '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>' );
 		}
-		$parts = array_chunk( $lines, ceil( count( $lines ) / 2 ) );
+		$parts = array_chunk( $lines, intval( ceil( count( $lines ) / 2 ) ) );
 
 		return "<table  cellspacing='0' cellpadding='20' class='cmb2-codes-outer-table' ><tbody><tr><td><table class='cmb2-codes-column' cellspacing=\"0\" cellpadding=\"8\" border=\"1\"><tbody>" .
 						implode( '', $parts[0] ) .
@@ -463,7 +459,7 @@ HTML;
 	/**
 	 * Renders CVS file (txt-format) with booking codes for download
 	 *
-	 * @param $timeframeId
+	 * @param int|null $timeframeId
 	 */
 	public static function renderCSV( $timeframeId = null ) {
 		if ( $timeframeId == null ) {
@@ -555,6 +551,31 @@ HTML;
 			commonsbooking_sanitizeHTML( __( 'An unknown error occured', 'commonsbooking' ) ),
 			commonsbooking_sanitizeHTML( __( 'Email booking codes', 'commonsbooking' ) ),
 			[ 'back_link' => true ]
+		);
+	}
+
+	/**
+	 * @param string        $renderTarget code where email is rendered (email|timeframe_form)
+	 * @param BookingCode[] $bookingCodes array of string booking codes
+	 *
+	 * @return string|null
+	 */
+	public static function renderTableFor( $renderTarget, $bookingCodes ) {
+		$renderedTable = self::renderBookingCodesTable( $bookingCodes );
+		/**
+		 * Default rendering of the booking code table in the specified target.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param string        $renderedTable rendering of booking codes list as html string
+		 * @param BookingCode[] $bookingCodes list of booking codes
+		 * @param string        $renderTarget where email is rendered (email|timeframe_form)
+		 */
+		return apply_filters(
+			'commonsbooking_emailcodes_rendertable',
+			$renderedTable,
+			$bookingCodes,
+			$renderTarget
 		);
 	}
 }

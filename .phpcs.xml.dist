@@ -79,6 +79,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
 
+        <!-- Exclude namespace -->
+        <exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.namespaceFound" />
+
         <!-- Too much false positives in our codebase, but please reactivate if necessary -->
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.LongIndexSpaceBeforeDoubleArrow" />
@@ -86,8 +89,70 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
         <exclude name="Squiz.Commenting.FileComment" />
         <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
-        
-        <exclude-pattern>tests/</exclude-pattern>
+
+        <exclude name="Squiz.Commenting.FunctionComment.EmptyThrows" />
+    </rule>
+
+
+
+
+    <!--
+    #############################################################################
+    Global exclusions for tests.
+    Copied from https://github.com/polylang/polylang/blob/master/phpcs.xml.dist
+    #############################################################################
+    -->
+
+    <rule ref="Generic.Commenting.Fixme.CommentFound">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.Files.OneObjectStructurePerFile.MultipleFound">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Generic.PHP.NoSilencedErrors.Forbidden">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Commenting.ClassComment.Missing">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Commenting.FileComment">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Commenting.FunctionComment.Missing">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Commenting.FunctionComment.MissingParamComment">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Commenting.VariableComment.Missing">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.PHP.CommentedOutCode.Found">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+        <exclude-pattern>*/tests/phpunit/includes/testcase-trait.php</exclude-pattern>
+    </rule>
+
+    <rule ref="WordPress.NamingConventions.ValidHookName.UseUnderscores">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="WordPress.PHP.NoSilencedErrors.Discouraged">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <rule ref="WordPress.Security">
+        <exclude-pattern>*/tests/*</exclude-pattern>
     </rule>
 
     <!-- Adds commonsbooking specific wrappers around wp_kses ... -->

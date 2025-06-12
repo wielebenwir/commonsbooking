@@ -189,7 +189,7 @@ return array(
 					commonsbooking_sanitizeHTML(
 						__(
 							'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/?p=870" target="_blank">Booking codes</a>',
+                <br>More information in the documentation: <a href="https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/" target="_blank">Booking codes</a>',
 							'commonsbooking'
 						)
 					),
@@ -234,9 +234,9 @@ return array(
 <h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>
 
 <p>Booking codes Table:</p>
-<br>   
+<br>
 {{codes:codeTable}}
-<br>          
+<br>
 <p>Thanks, the Team.</p>
                             ',
 								'commonsbooking'
@@ -293,7 +293,7 @@ return array(
 							__(
 								'
 <p>
-Thanks and all the best, 
+Thanks and all the best,
 the Team.
 </p>					',
 								'commonsbooking'
@@ -398,7 +398,7 @@ Return date: {{booking:returnDatetime}}
 Hi {{user:first_name}},<br>
 <br>
 your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>
-<br>          
+<br>
 {{booking:getEmailSignature}}
                             ',
 								'commonsbooking'
@@ -1539,48 +1539,26 @@ Return date: {{booking:returnDatetime}}
 						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderClearCacheButton' ),
 					),
 					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Filesystem cache path', 'commonsbooking' ) ),
-						'desc'          => commonsbooking_sanitizeHTML( __( 'Where the filesystem cache should be created. Only change when filesystem caching is not working.', 'commonsbooking' ) ),
-						'id'            => 'cache_path',
+						'name'          => commonsbooking_sanitizeHTML( __( 'Cache Adapter', 'commonsbooking' ) ),
+						'id'            => 'cache_adapter',
+						'type'          => 'select',
+						'options'       => \CommonsBooking\Plugin::getAdapters( true ),
+						'default'       => 'filesystem',
+					),
+					array(
+						'name'          => commonsbooking_sanitizeHTML( __( 'Location of cache', 'commonsbooking' ) ),
+						'desc'          => commonsbooking_sanitizeHTML( __( 'The location of the cache. A directory for the filesystem cache, a REDIS DSN, ...', 'commonsbooking' ) ),
+						'id'            => 'cache_location',
 						'type'          => 'text',
-						'default'       => '/tmp/symfony-cache/',
+						'default'       => sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache',
 					),
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
-						'id'            => 'filesystem-status',
+						'id'            => 'cache_status',
 						'type'          => 'text',
-						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderFilesystemStatus' ),
+						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderCacheStatus' ),
 					),
-					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Periodical warmup through cronjob', 'commonsbooking' ) ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'Will periodically warm up the cache through a cronjob. This can be useful, when you have a lot of timeframes / bookings but your site is rarely accessed. <br> You NEED to hook WP-Cron Into the System Task Scheduler for this to have any positive effect. <b> You probably don\'t want this. </b>', 'commonsbooking' ) ),
-						'id'   => 'warmup_cron',
-						'show_option_none' => true,
-						'type' => 'select',
-						'options' => array(
-							'ten_minutes' => esc_html__( 'Every 10 minutes', 'commonsbooking' ),
-							'thirty_minutes' => esc_html__( 'Every 30 minutes', 'commonsbooking' ),
-							'hourly' => esc_html__( 'Every hour', 'commonsbooking' ),
-							'daily' => esc_html__( 'Every day', 'commonsbooking' ),
-						),
-					),
-					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'Enable REDIS Caching (experimental)', 'commonsbooking' ) ),
-						'id'   => 'redis_enabled',
-						'type' => 'checkbox',
-					),
-					array(
-						'name' => commonsbooking_sanitizeHTML( __( 'REDIS DSN (REDIS Server URL)', 'commonsbooking' ) ),
-						'id'   => 'redis_dsn',
-						'type' => 'text',
-						'default' => 'redis://localhost:6379',
-					),
-					array(
-						'name'          => commonsbooking_sanitizeHTML( __( 'Current connection status', 'commonsbooking' ) ),
-						'id'            => 'redis_connection-status',
-						'type'          => 'text',
-						'render_row_cb' => array( \CommonsBooking\Plugin::class, 'renderREDISConnectionStatus' ),
-					),
+
 				),
 			),
 		),

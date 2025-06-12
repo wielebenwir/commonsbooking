@@ -94,7 +94,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns start-time \DateTime.
 	 *
-	 * @param null $endDateString
+	 * @param int|string|null $endDateString numeric string
 	 *
 	 * @return DateTime
 	 */
@@ -104,10 +104,10 @@ class Restriction extends CustomPost {
 
 		if ( $endTimeString ) {
 			$endTime = Wordpress::getUTCDateTime();
-			$endTime->setTimestamp( $endTimeString );
-			$endDate->setTime( $endTime->format( 'H' ), $endTime->format( 'i' ) );
+			$endTime->setTimestamp( (int) $endTimeString );
+			$endDate->setTime( (int) $endTime->format( 'H' ), (int) $endTime->format( 'i' ) );
 		} else {
-			$endDate->setTimestamp( $endDateString );
+			$endDate->setTimestamp( (int) $endDateString );
 		}
 
 		return $endDate;
@@ -189,7 +189,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns nicely formatted start datetime.
 	 *
-	 * @return string, if META_START is not null.
+	 * @return string if META_START is not null.
 	 */
 	public function getFormattedStartDateTime() {
 		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() );
@@ -204,7 +204,7 @@ class Restriction extends CustomPost {
 	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::META_START );
 		$startDate       = Wordpress::getUTCDateTime();
-		$startDate->setTimestamp( $startDateString );
+		$startDate->setTimestamp( (int) $startDateString );
 
 		return $startDate;
 	}
@@ -212,7 +212,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns nicely formatted end datetime.
 	 *
-	 * @return string, if META_END is not null.
+	 * @return string if META_END is not null.
 	 */
 	public function getFormattedEndDateTime() {
 		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );
@@ -294,7 +294,8 @@ class Restriction extends CustomPost {
 
 				$userDisabledBookingCancellationOnTotalBreakdown = \CommonsBooking\Settings\Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-no-cancel-on-total-breakdown' ) == 'on';
 				// cancel all affected booking
-				if ( ! $userDisabledBookingCancellationOnTotalBreakdown && $this->isActive() && $this->getType() == self::TYPE_REPAIR ) {
+				if ( ! $userDisabledBookingCancellationOnTotalBreakdown
+					&& $this->getType() === self::TYPE_REPAIR ) {
 					$this->cancelBookings( $bookings );
 				}
 			}

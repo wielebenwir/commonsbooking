@@ -12,6 +12,13 @@ class Restriction extends PostRepository {
 	/**
 	 * Returns active restrictions.
 	 *
+	 * @param array       $locations one or more location ids to filter
+	 * @param array       $items     one or more item ids to filter
+	 * @param string|null $date if provided, filters restrictions to be valid on the given date
+	 * @param bool        $returnAsModel returns array of models instead of ids, default false (returns ids)
+	 * @param int         $minTimestamp if provided, returns restrictions where rep-end > min-timestamp. default null
+	 * @param string[]    $postStatus filters for given list of status, defaults to all WordPress post status enums
+	 *
 	 * @return \CommonsBooking\Model\Restriction[]
 	 * @throws Exception
 	 */
@@ -35,7 +42,7 @@ class Restriction extends PostRepository {
 				$posts = Wordpress::flattenWpdbResult( $posts );
 
 				// If there are locations or items to be filtered, we iterate through
-				// query result because wp_query is to slow for meta-querying them.
+				// query result because wp_query is too slow for meta-querying them.
 				if ( count( $locations ) || count( $items ) ) {
 					$posts = self::filterPosts( $posts, $locations, $items );
 				}
@@ -54,10 +61,11 @@ class Restriction extends PostRepository {
 	}
 
 	/**
-	 * Queries posts from db.
+	 * Queries restriction posts from db.
+	 * Only queries active restrictions.
 	 *
 	 * @param $date
-	 * @param $minTimestamp
+	 * @param $minTimestamp int checks if rep-end > minTimestamp (0:00)
 	 * @param $postStatus
 	 *
 	 * @return array|object|null

@@ -5,10 +5,10 @@ function commonsbooking_admin() {
 	wp_enqueue_script( 'jquery' );
 
 	// Datepicker extension
-	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-datepicker', '', array( 'jquery' ) );
 
 	// Tooltip extension
-	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-tooltip', '', array( 'jquery' ) );
 
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 
@@ -18,7 +18,7 @@ function commonsbooking_admin() {
 			'cb-scripts-admin',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js',
 			array(),
-			time()
+			(string) time()
 		);
 	} else {
 		wp_enqueue_script(
@@ -228,6 +228,16 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 	} else {
 		$filterName    = sprintf( 'commonsbooking_defaults_%s', $field_args['id'] );
 		$default_value = array_key_exists( 'default_value', $field_args ) ? $field_args['default_value'] : '';
+
+		/**
+		 * Default value for cmb2 fields.
+		 *
+		 * The last part of the filter is the cmb2 field id.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param mixed $default_value default value for the field.
+		 */
 		return apply_filters( $filterName, $default_value );
 	}
 }
@@ -235,7 +245,8 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 /**
  * Only return default value if we don't have a post ID (in the 'post' query variable)
  *
- * @param  bool $default On/Off (true/false)
+ * @since 2.10.3 removed non-existent param from phpdoc
+ *
  * @return mixed          Returns true or '', the blank default
  */
 function cmb2_set_checkbox_default_for_new_post() {
@@ -249,10 +260,10 @@ function cmb2_set_checkbox_default_for_new_post() {
 /**
  * Recursive sanitation for text or array
  *
- * @param mixed  array_or_string (array|string)
- * @param string                                $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
+ * @param array|string $data
+ * @param string       $sanitizeFunction name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
  *
- *                                See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ *       See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
  *
  * @return array|string
  */

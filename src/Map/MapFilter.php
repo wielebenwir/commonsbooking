@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\Map;
 
-
 class MapFilter {
 
 	protected static function check_item_terms_against_categories( $item_terms, $category_groups ): bool {
