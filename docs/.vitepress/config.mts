@@ -336,7 +336,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
               { text: 'Booking list', link: 'booking-list' },
-              { text: 'Hooks and Filter', link: 'hooks-and-filter' },
+              { text: 'Hooks and Filter', link: 'hooks-and-filters' },
               { text: 'Embed map', link: 'map-embed' },
               { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
               { text: 'New Frontend(Beta)', link: 'new-frontend' },
