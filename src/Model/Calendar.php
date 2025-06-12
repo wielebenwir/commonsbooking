@@ -35,8 +35,10 @@ class Calendar {
 
 	/**
 	 * @var array
+	 *
+	 * TODO seems unused in php-code, always empty list, maybe remove
 	 */
-	protected $types;
+	protected array $types; // @phpstan-ignore missingType.iterableValue
 
 	/**
 	 * The timeframes that are relevant for this calendar.
@@ -52,7 +54,7 @@ class Calendar {
 	 * @param Day   $endDate
 	 * @param int[] $locations
 	 * @param int[] $items
-	 * @param array $types
+	 * @param array $types // @phpstan-ignore missingType.iterableValue
 	 */
 	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
 		// check, that it spans at least two days
