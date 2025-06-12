@@ -57,7 +57,7 @@ class AvailabilityRoute extends BaseRoute {
 	/**
 	 * Get one item from the collection
 	 *
-	 * @param $request WP_REST_Request
+	 * @param WP_REST_Request $request
 	 *
 	 * @return WP_REST_Response|WP_Error
 	 */
@@ -84,7 +84,7 @@ class AvailabilityRoute extends BaseRoute {
 	/**
 	 * Get a collection of items
 	 *
-	 * @param $request WP_REST_Request full data about the request.
+	 * @param WP_REST_Request $request full data about the request.
 	 *
 	 * @return WP_REST_Response
 	 */
