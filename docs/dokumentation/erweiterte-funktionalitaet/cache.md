@@ -37,4 +37,5 @@ Aus diesem Grund raten wir von der Nutzung solcher Plugins ab.
 
 Technisch nutzt CommonsBooking aktuell die Symfony-Cache Interfaces.
 
-Eine Diskussion über die Performance von CommonsBooking findest du hier: https://github.com/wielebenwir/commonsbooking/discussions/1465 . Wir sind uns der Performance Probleme bei Instanzen mit sehr vielen Artikeln und Buchungen bewusst und arbeiten daran diese zu verbessern.
+Eine Diskussion über die Performance von CommonsBooking findest du hier: https://github.com/wielebenwir/commonsbooking/discussions/1465.
+Wir sind uns der Performance Probleme bei Instanzen mit sehr vielen Artikeln und Buchungen bewusst und arbeiten daran diese zu verbessern.
