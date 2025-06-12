@@ -40,7 +40,7 @@ class AvailabilityRoute extends BaseRoute {
 	 *
 	 * @param bool $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
 	 *
-	 * @return array
+	 * @return stdClass[]
 	 * @throws Exception
 	 */
 	public function getItemData( $id = false ): array {
