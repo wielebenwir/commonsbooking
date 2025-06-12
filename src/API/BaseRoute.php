@@ -29,12 +29,17 @@ class BaseRoute extends WP_REST_Controller {
 
 	const API_KEY_PARAM = 'apikey';
 
-	protected $schemaUrl;
+	/**
+	 * @var string
+	 */
+	protected string $schemaUrl;
 
 	/**
 	 * Register the routes for the objects of the controller.
+	 *
+	 * @return void
 	 */
-	public function register_routes() {
+	public function register_routes(): void {
 		$version   = '1';
 		$namespace = COMMONSBOOKING_PLUGIN_SLUG . '/v' . $version;
 		register_rest_route(
