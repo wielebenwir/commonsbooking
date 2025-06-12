@@ -15,6 +15,12 @@ use Symfony\Component\Cache\Adapter\NullAdapter;
 use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\Cache\Exception\CacheException;
 
+/**
+ * Cache service wrapper around Symfony Cache Adapters.
+ * Fails silently on exceptions during read or write operations.
+ *
+ * Use via {@see Cache::getCache()}, {@see Cache::getCacheItem()} and {@see Cache::setCacheItem()}.
+ */
 trait Cache {
 
 
@@ -31,7 +37,6 @@ trait Cache {
 	 * @param mixed|null $custom_id
 	 *
 	 * @return mixed
-	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
@@ -45,7 +50,10 @@ trait Cache {
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
 			}
-		} catch ( \Exception $exception ) {
+		} catch ( \Psr\Cache\CacheException $exception ) {
+			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
+		} catch ( Exception $exception ) {
+			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
 		}
 
 		return false;
@@ -101,13 +109,16 @@ trait Cache {
 	}
 
 	/**
-	 * Creates cache based on user settings or defaults.
+	 * Returns an opinionated cache instance based on user settings or defaults.
+	 * Falls back to filebased cache with default settings on {@see \Psr\Cache\CacheException}.
 	 *
-	 * At the moment filesystem and redis cache are supported.
+	 * Cache location and cache adapter can be configured via user {@see Settings}.
 	 *
 	 * @param string $namespace
 	 * @param int    $defaultLifetime
 	 * @param string $location
+	 *
+	 * @throws Exception
 	 *
 	 * @return TagAwareAdapterInterface
 	 */
@@ -124,8 +135,9 @@ trait Cache {
 				$defaultLifetime,
 				$location
 			);
-		} catch ( CacheException $e ) {
+		} catch ( \Psr\Cache\CacheException $e ) {
 			// fall back to generic filesystem adapter, if it fails
+			// TODO: this can throw Exception or CacheException
 			$adapter = new FilesystemTagAwareAdapter( $namespace, $defaultLifetime );
 			commonsbooking_write_log( $e->getMessage() . '\n' . 'Falling back to Filesystem adapter' );
 		}
@@ -222,36 +234,40 @@ trait Cache {
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
-	 * @throws \Psr\Cache\InvalidArgumentException
-	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
-		// Set a default expiration to make sure, that we get rid of stale items, if there are some
-		// too much space
-		$expiration = 604800;
+		try {
+			// Set a default expiration to make sure, that we get rid of stale items, if there are some
+			// too much space
+			$expiration = 604800;
 
-		$tags = array_map( 'strval', $tags );
-		$tags = array_filter( $tags );
+			$tags = array_map( 'strval', $tags );
+			$tags = array_filter( $tags );
 
-		if ( ! count( $tags ) ) {
-			$tags = [ 'misc' ];
+			if ( ! count( $tags ) ) {
+				$tags = [ 'misc' ];
+			}
+
+			// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
+			if ( $expirationString == 'midnight' ) {
+				$datetime   = current_time( 'timestamp' );
+				$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
+			}
+
+			$cache     = self::getCache( '', intval( $expiration ) );
+			$cacheKey  = self::getCacheId( $custom_id );
+			$cacheItem = $cache->getItem( $cacheKey );
+			$cacheItem->tag( $tags );
+			$cacheItem->set( $value );
+			$cacheItem->expiresAfter( intval( $expiration ) );
+
+			return $cache->save( $cacheItem );
+		} catch ( \Psr\Cache\CacheException $e ) {
+			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
+		} catch ( Exception $e ) {
+			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
 		}
-
-		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
-		if ( $expirationString == 'midnight' ) {
-			$datetime   = current_time( 'timestamp' );
-			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
-		}
-
-		$cache    = self::getCache( '', intval( $expiration ) );
-		$cacheKey = self::getCacheId( $custom_id );
-		/** @var CacheItem $cacheItem */
-		$cacheItem = $cache->getItem( $cacheKey );
-		$cacheItem->tag( $tags );
-		$cacheItem->set( $value );
-		$cacheItem->expiresAfter( intval( $expiration ) );
-
-		return $cache->save( $cacheItem );
+		return false;
 	}
 
 	/**
