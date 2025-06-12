@@ -82,7 +82,7 @@ class Calendar {
 	/**
 	 * Returns weeks for calendar time range.
 	 *
-	 * @return array
+	 * @return Week[]
 	 */
 	public function getWeeks(): array {
 		$startDate = strtotime( $this->startDate->getDate() ) + 1;
@@ -129,7 +129,9 @@ class Calendar {
 	 * Because we process the calendar by weeks, at least two days are needed to get a valid calendar.
 	 * The calendar does not consider the individual boundaries set by $startDate and $endDate but will always return a full week.
 	 *
-	 * @return array
+	 * TODO add proper type for returning availability slots
+	 *
+	 * @return stdClass[]
 	 * @throws \Exception
 	 */
 	public function getAvailabilitySlots(): array {
