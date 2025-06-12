@@ -12,7 +12,6 @@ use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\Adapter\NullAdapter;
-use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\Cache\Exception\CacheException;
 
 /**
@@ -44,8 +43,7 @@ trait Cache {
 		}
 
 		try {
-			$cacheKey = self::getCacheId( $custom_id );
-			/** @var CacheItem $cacheItem */
+			$cacheKey  = self::getCacheId( $custom_id );
 			$cacheItem = self::getCache()->getItem( $cacheKey );
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
@@ -205,7 +203,7 @@ trait Cache {
 	 * @param $defaultLifetime
 	 * @param string $cacheLocation
 	 * @return TagAwareAdapterInterface
-	 * @throws CacheException
+	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
 		$adapters = self::getAdapters();
@@ -380,7 +378,7 @@ trait Cache {
 	}
 
 	/**
-	 * Renders little connections status information for the cache adapter
+	 * Renders connection status information for the cache adapter settings view.
 	 *
 	 * @param array      $field_args
 	 * @param CMB2_Field $field
