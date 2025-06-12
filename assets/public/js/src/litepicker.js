@@ -261,12 +261,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 "disallowLockDaysInRange": globalCalendarData['disallowLockDaysInRange'],
                 "disallowHolidaysInRange": globalCalendarData['disallowLockDaysInRange'], //we treat holidays as locked days
                 "mobileFriendly": true,
+                "mobileCalendarMonthCount": globalCalendarData['mobileCalendarMonthCount'],
                 "selectForward": true,
                 "useResetBtn": true,
                 "maxDays": globalCalendarData['maxDays'],
                 "buttonText": {
-                    apply: 'Buchen',
-                    cancel: 'Abbrechen',
+                    apply: globalCalendarData['i18n.buttonText.apply'],
+                    cancel: globalCalendarData['i18n.buttonText.cancel'],
                 },
                 onAutoApply: (datePicked) => {
                     if (datePicked) {

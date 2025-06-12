@@ -209,12 +209,12 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * @param int        $startDate
-	 * @param int        $endDate
+	 * @param int   $startDate
+	 * @param int   $endDate
 	 * @param $locationId
 	 * @param $itemId
-	 * @param array      $customArgs
-	 * @param array      $postStatus
+	 * @param array $customArgs
+	 * @param array $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -226,7 +226,7 @@ class Booking extends PostRepository {
 		$itemId = null,
 		array $customArgs = [],
 		array $postStatus = [ 'confirmed', 'unconfirmed' ]
-	): ?array {
+	): array {
 		// Default query
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
@@ -351,12 +351,12 @@ class Booking extends PostRepository {
 	 * Returns bookings. This uses the CommonsBooking\Repository\Timeframe::get() method which
 	 * is not based on the WP_Query class but will perform its own SQL query.
 	 *
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param string|null  $date Date-String in format YYYY-mm-dd
-	 * @param bool         $returnAsModel if true, returns booking model, if false return int array (defaults to false)
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param string|null $date Date-String in format YYYY-mm-dd
+	 * @param bool        $returnAsModel if true, returns booking model, if false return int array (defaults to false)
 	 * @param $minTimestamp
-	 * @param array        $postStatus
+	 * @param array       $postStatus
 	 *
 	 * @return int[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -447,13 +447,13 @@ class Booking extends PostRepository {
 	 *
 	 * @param $itemId
 	 * @param $locationId
-	 * @param int        $startDate
-	 * @param int        $endDate
-	 * @param int|null   $postId
+	 * @param int      $startDate
+	 * @param int      $endDate
+	 * @param int|null $postId
 	 *
-	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @return \CommonsBooking\Model\Booking[] empty array if none are found
 	 */
-	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): ?array {
+	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): array {
 
 		// Get existing bookings for defined parameters
 		$existingBookingsInRange = self::getByTimerange(

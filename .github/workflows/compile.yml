@@ -5,9 +5,10 @@ on:
       - master
       - 'release/**'
     paths-ignore:
+      - 'docs/**'
       - '**.md'
       - '**.txt'
-    
+
 jobs:
   i18n-coverage:
     runs-on: ubuntu-24.04

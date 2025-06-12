@@ -43,6 +43,54 @@ parameters:
 			path: src/Migration/Migration.php
 
 		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateBooking\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateBookingCode\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateCB1Options\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateItem\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateLocation\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateTaxonomy\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateTimeframe\(\) invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
+			message: '#^Static method CommonsBooking\\Migration\\Migration\:\:migrateUserAgreementUrl\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Migration/Migration.php
+
+		-
 			message: '#^Access to an undefined property WP_Post\:\:\$locked\.$#'
 			identifier: property.notFound
 			count: 2

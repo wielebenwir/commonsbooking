@@ -49,7 +49,7 @@ class BookingCodes {
 
 		$dtTo = $start->modify( 'midnight last day of next month +' . ( $fullMonth - 1 ) . ' month' );
 
-		$daydiff = $dtTo->format( 'j' ) - $start->format( 'j' );
+		$daydiff = (int) $dtTo->format( 'j' ) - (int) $start->format( 'j' );
 		if ( $daydiff > 0 ) {
 			$dtNextCronEvent = $dtTo->modify( '-' . $daydiff . ' days' );
 		} else {

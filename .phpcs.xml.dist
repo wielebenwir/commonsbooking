@@ -79,6 +79,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
 
+        <!-- Exclude namespace -->
+        <exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.namespaceFound" />
+
         <!-- Too much false positives in our codebase, but please reactivate if necessary -->
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.LongIndexSpaceBeforeDoubleArrow" />
@@ -86,7 +89,11 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
         <exclude name="Squiz.Commenting.FileComment" />
         <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+
+        <exclude name="Squiz.Commenting.FunctionComment.EmptyThrows" />
     </rule>
+
+
 
 
     <!--
