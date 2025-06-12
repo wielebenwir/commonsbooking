@@ -4,7 +4,7 @@ __
 
 **Beschreibung des Artikels**
 
-Nutze den großen Texteditor oben auf der Stationsseite nur für die
+Nutze den großen Texteditor oben auf der Artikelseite nur für die
 Detailbeschreibung deines Artikels (Ausstattung, Maße, Eigenschaften,
 Einsatzzwecke). Diese Beschreibung wird auf der Artikeldetailseite angezeigt.
 
@@ -19,10 +19,10 @@ Artikelliste sowie im Buchungsprozess angezeigt.
 
 Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben,
 diesen bestimmten Artikel zu bearbeiten und zu verwalten. Hier können nur
-Benutzer mit der Rolle cb_manager ausgewählt werden
+Benutzer mit der Rolle cb_manager ausgewählt werden.
+[Mehr zur Rolle cb_manager lesen](/dokumentation/grundlagen/rechte-des-commonsbooking-manager).
 
 **Textauszug**
 
-Ergänze hier die Kurzversion der Artikelbeschreibung, diese wird z.B. in der
-Artikel-Liste angezeigt.
+Ergänze hier die Kurzversion der Artikelbeschreibung, diese wird in der Artikelliste, der Stationenliste und im Karten-Popup angezeigt.
 
