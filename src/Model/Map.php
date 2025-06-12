@@ -51,7 +51,7 @@ class Map extends CustomPost {
 
 		/** @var \CommonsBooking\Model\Location $post */
 		foreach ( $locationObjects as $post ) {
-			$location_meta = get_post_meta( $post->ID, null, true );
+			$location_meta = get_post_meta( $post->ID, '', true );
 
 			// set serialized empty array if not set
 			// THIS FUNCTIONALITY IS DEPRECATED, closing days were a feature of 0.9.X

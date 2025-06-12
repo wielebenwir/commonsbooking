@@ -5,7 +5,7 @@ on:
       - master
       - 'release/**'
     paths-ignore:
-      - 'docs'
+      - 'docs/**'
       - '**.md'
       - '**.txt'
 

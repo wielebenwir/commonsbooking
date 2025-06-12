@@ -282,7 +282,7 @@ class Wordpress {
 	 * The problem is, that the timestamp is in the local timezone of the server.
 	 * If we convert it to UTC, we get the wrong date and everything breaks.
 	 *
-	 * @param $timestamp
+	 * @param int|string $timestamp numeric value
 	 *
 	 * @return DateTime
 	 * @throws \Exception
