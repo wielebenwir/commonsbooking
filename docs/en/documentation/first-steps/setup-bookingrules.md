@@ -46,46 +46,37 @@ can be booked, the user can book on both Sunday and Monday.
 
 ###  Maximum booked days per month
 
-Legt fest, wie viele Tage ein Nutzer maximal pro Monat buchen darf (entweder
-für alle Artikel oder für Artikel von bestimmten Kategorien). Ab dem Tag, der
-als Resettag gesetzt ist, beginnt dann nach der Definition der neue Monat.
-Wenn also z.B. der 15. als Resettag gesetzt ist und nur ein Tag pro Monat
-gebucht werden darf, dürfte die Person sowohl am 14. als auch am 15. buchen.
+Defines how many days a user can book per month (either for all items or for items of specific categories).
+Starting from the day set as the reset day, the new month will begin.
+So for example, if the 15th is set as the reset day and only one day per month
+is bookable, the user can book on both the 14th and the 15th.
 
-###  Maximal gebuchte Tage in Zeitraum
+###  Maximum of bookable days in time period
 
-Legt fest, wie viele Tage ein Nutzer über einen bestimmten Zeitraum von Tagen
-hinweg einen Artikel buchen darf. Die Zählung des Zeitraums beginnt immer von
-der Mitte aus. Wenn also 30 Tage gesetzt sind, dann werden die 15 Tage vor und
-nach der gegebenen Buchung als Zeitraum berücksichtigt.
+Defines how many days a user can book an item over a specific period of days.
+Counting starts from the middle of the period so when, for instance, 30 days are set,
+the 15 days before and after the given booking are considered as the period to look at.
 
-##  Stornierte Buchungen auf Quote anrechnen
+##  Count canceled bookings towards quota
 
-Wenn diese Option aktiviert ist, dann zählen stornierte Buchungen auch mit in
-die maximal buchbaren Tage für die Buchungsregeln. Dabei gilt:
+When this option is enabled, canceled bookings also count towards the maximum bookable days for booking rules. The following applies:
 
-  * Buchung vor Beginn des Buchungszeitraums storniert: Zählt **nicht** mit in die Quote
-  * Buchung während des Buchungszeitraums storniert: Buchung zählt die Tage von Beginn des Buchungszeitraums bis zu der Stornierung. Wenn also eine Buchung von Montag bis Mittwoch geht, und diese am Dienstag storniert wird dann zählt diese für 2 Tage und nicht für 3.
+  * Booking canceled before the start of the booking period **do not** count towards the quota
+  * For bookings canceled during the booking period the days from the start of the booking period until the cancellation are counted. For example, if a booking is made from Monday to Wednesday and canceled on Tuesday, it counts for 2 days and not for 3.
 
-###  Bestimmte Rollen grundsätzlich von allen Buchungsregeln ausnehmen
+###  Exempt groups from all booking rules
 
-Mit einem kleinen Codeschnipsel ( [ mehr dazu ](/dokumentation/einstellungen/hooks-und-
-filter) ) kannst du eine Rolle definieren, die grundsätzlich nicht von
-Buchungsregeln betroffen ist. Dafür musst du die Rolle nicht manuell bei jeder
-Regel hinzufügen.
+Using a [small code snippet](/en/documentation/administration/hooks-and-filters) you can set
+a role to be permanently exempt from all booking rules. This way, you do not have to manually add the role to each rule.
 
+```php
+add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
+    $privileged_roles[] = 'editor';
+    return $privileged_roles;
+});
+```
 
+The above snippet would add the role "Editor" with the slug `editor` as a "privileged" role.
 
-    add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
-        $privileged_roles[] = 'editor';
-        return $privileged_roles;
-    });
-
-Dieser Schnipsel fügt zum Beispiel die Rolle "Redakteur" mit dem slug editor
-als "privilegierte" Rolle hinzu.
-
-Darüber hinaus sind auch alle Administratoren und CB-Manager, denen der
-betroffene Artikel / Standort zugewiesen ist immer ausgenommen. [ Mehr zu
-manueller Vergabe von Berechtigungen. ](/dokumentation/grundlagen/rechte-des-
-commonsbooking-manager)
-
+In addition to that, all administrators and CB managers assigned to the affected item/location are always exempted.
+[Learn more about permission management](/en/documentation/basics/permission-management)
