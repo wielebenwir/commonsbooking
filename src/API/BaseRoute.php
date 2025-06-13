@@ -168,8 +168,8 @@ class BaseRoute extends WP_REST_Controller {
 	/**
 	 * Adds schema-fields for output to current route.
 	 *
-	 * @param array $schema Assoc array of schema json object.
-	 * @return array
+	 * @param array<string, mixed> $schema Assoc array of schema json object.
+	 * @return array<string, mixed>
 	 */
 	public function add_additional_fields_schema( $schema ): array {
 		$schemaArray = json_decode( $this->getSchemaJson(), true );
