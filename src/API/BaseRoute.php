@@ -29,12 +29,17 @@ class BaseRoute extends WP_REST_Controller {
 
 	const API_KEY_PARAM = 'apikey';
 
-	protected $schemaUrl;
+	/**
+	 * @var string
+	 */
+	protected string $schemaUrl;
 
 	/**
 	 * Register the routes for the objects of the controller.
+	 *
+	 * @return void
 	 */
-	public function register_routes() {
+	public function register_routes(): void {
 		$version   = '1';
 		$namespace = COMMONSBOOKING_PLUGIN_SLUG . '/v' . $version;
 		register_rest_route(
@@ -89,8 +94,10 @@ class BaseRoute extends WP_REST_Controller {
 	 * If WP_DEBUG is enabled, prints schema errors or any exceptions that may occur to error_log.
 	 *
 	 * @param object $data instance of stdclass or object to validate.
+	 *
+	 * @return void
 	 */
-	public function validateData( $data ) {
+	public function validateData( $data ): void {
 		$validator = new Validator();
 
 		try {
@@ -161,8 +168,8 @@ class BaseRoute extends WP_REST_Controller {
 	/**
 	 * Adds schema-fields for output to current route.
 	 *
-	 * @param array $schema Assoc array of schema json object.
-	 * @return array
+	 * @param array<string, mixed> $schema Assoc array of schema json object.
+	 * @return array<string, mixed>
 	 */
 	public function add_additional_fields_schema( $schema ): array {
 		$schemaArray = json_decode( $this->getSchemaJson(), true );
@@ -173,12 +180,12 @@ class BaseRoute extends WP_REST_Controller {
 	/**
 	 * Escapes JSON String for output.
 	 *
-	 * @param $string
+	 * @param string $s
 	 *
-	 * @return false|string
+	 * @return string
 	 */
-	public function escapeJsonString( $string ) {
-		return substr( wp_json_encode( $string ), 1, - 1 ) ? : '';
+	public function escapeJsonString( $s ): string {
+		return substr( wp_json_encode( $s ), 1, - 1 ) ? : '';
 	}
 
 	/**

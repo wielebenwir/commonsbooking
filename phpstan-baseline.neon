@@ -1,61 +1,133 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to an undefined property WP_User\:\:\$codeTable\.$#'
-			identifier: property.notFound
+			message: '#^Function commonsbooking_public\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
-			path: src/Messages/BookingCodesMessage.php
+			path: includes/Public.php
 
 		-
-			message: '#^Access to an undefined property WP_User\:\:\$formatDateRange\.$#'
-			identifier: property.notFound
+			message: '#^Function commonsbooking_query_vars\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
-			path: src/Messages/BookingCodesMessage.php
+			path: includes/Public.php
 
 		-
-			message: '#^Call to function array_key_exists\(\) with ''migrationFunction'' and array\{repoFunction\: ''getBookingCodes'', migrationFunction\: ''migrateBookingCode''\}\|array\{repoFunction\: ''getBookings'', migrationFunction\: ''migrateBooking''\}\|array\{repoFunction\: ''getCB1Taxonomies'', migrationFunction\: ''migrateTaxonomy''\}\|array\{repoFunction\: ''getItems'', migrationFunction\: ''migrateItem''\}\|array\{repoFunction\: ''getLocations'', migrationFunction\: ''migrateLocation''\}\|array\{repoFunction\: ''getTimeframes'', migrationFunction\: ''migrateTimeframe''\}\|array\{repoFunction\: false, migrationFunction\: ''migrateCB1Options''\|''migrateUserAgreemen…''\} will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
+			message: '#^Function commonsbooking_query_vars\(\) has parameter \$qvars with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
-			path: src/Migration/Migration.php
+			path: includes/Public.php
 
 		-
-			message: '#^Comparison operation "\>\=" between int\<0, 39\> and 40 is always false\.$#'
-			identifier: greaterOrEqual.alwaysFalse
-			count: 2
-			path: src/Migration/Migration.php
-
-		-
-			message: '#^If condition is always false\.$#'
-			identifier: if.alwaysFalse
+			message: '#^Function commonsbooking_tag\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
-			path: src/Migration/Migration.php
+			path: includes/Shortcodes.php
 
 		-
-			message: '#^Parameter \#3 \$timeframe_type of static method CommonsBooking\\Migration\\Migration\:\:getExistingPost\(\) expects null, int given\.$#'
-			identifier: argument.type
+			message: '#^Function commonsbooking_tag\(\) has parameter \$atts with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
-			path: src/Migration/Migration.php
+			path: includes/Shortcodes.php
 
 		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
+			message: '#^Function commonsbooking_parse_shortcode\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
-			path: src/Migration/Migration.php
+			path: includes/TemplateParser.php
 
 		-
-			message: '#^Access to an undefined property WP_Post\:\:\$locked\.$#'
-			identifier: property.notFound
-			count: 2
-			path: src/Model/Day.php
-
-		-
-			message: '#^Access to an undefined property WP_Post\:\:\$locked\.$#'
-			identifier: property.notFound
+			message: '#^Function commonsbooking_parse_shortcode\(\) has parameter \$tag with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
-			path: src/View/Calendar.php
+			path: includes/TemplateParser.php
 
 		-
-			message: '#^Action callback returns bool but should not return anything\.$#'
-			identifier: return.void
+			message: '#^Function commonsbooking_parse_template\(\) has parameter \$objects with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
-			path: src/Wordpress/CustomPostType/CustomPostType.php
+			path: includes/TemplateParser.php
+
+		-
+			message: '#^Function commonsbooking_parse_template_callback\(\) has parameter \$objects with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: includes/TemplateParser.php
+
+		-
+			message: '#^Function commonsbooking_custom_view_count\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_custom_view_count\(\) has parameter \$views with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_fix_view_counts\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_fix_view_counts\(\) has parameter \$postType with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_fix_view_counts\(\) has parameter \$views with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_isCurrentUserAdmin\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_isCurrentUserAllowedToEdit\(\) has parameter \$post with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_isCurrentUserSubscriber\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_isUIDHashComboCorrect\(\) has parameter \$user_hash with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_isUIDHashComboCorrect\(\) has parameter \$user_id with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_isUserAllowedToEdit\(\) has parameter \$post with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_validate_user_on_edit\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: includes/Users.php
+
+		-
+			message: '#^Function commonsbooking_validate_user_on_edit\(\) has parameter \$current_screen with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: includes/Users.php
