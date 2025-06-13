@@ -180,12 +180,12 @@ class BaseRoute extends WP_REST_Controller {
 	/**
 	 * Escapes JSON String for output.
 	 *
-	 * @param $string
+	 * @param string $s
 	 *
-	 * @return false|string
+	 * @return string
 	 */
-	public function escapeJsonString( $string ) {
-		return substr( wp_json_encode( $string ), 1, - 1 ) ? : '';
+	public function escapeJsonString( $s ): string {
+		return substr( wp_json_encode( $s ), 1, - 1 ) ? : '';
 	}
 
 	/**
