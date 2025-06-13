@@ -94,8 +94,10 @@ class BaseRoute extends WP_REST_Controller {
 	 * If WP_DEBUG is enabled, prints schema errors or any exceptions that may occur to error_log.
 	 *
 	 * @param object $data instance of stdclass or object to validate.
+	 *
+	 * @return void
 	 */
-	public function validateData( $data ) {
+	public function validateData( $data ): void {
 		$validator = new Validator();
 
 		try {
