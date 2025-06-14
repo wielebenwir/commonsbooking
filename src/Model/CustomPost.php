@@ -22,6 +22,7 @@ use WP_Post;
  * @property string $post_title {@see WP_Post::$post_title}
  * @property string $post_date {@see WP_Post::$post_date}
  * @property string $post_name {@see WP_Post::$post_name}
+ * @property string $post_content {@see WP_Post::$post_content}
  */
 class CustomPost {
 	/**

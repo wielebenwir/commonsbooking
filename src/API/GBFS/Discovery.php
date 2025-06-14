@@ -6,6 +6,7 @@ namespace CommonsBooking\API\GBFS;
 use Exception;
 use stdClass;
 use WP_REST_Response;
+use WP_REST_Request;
 
 /**
  * Assembles feed urls for different gbfs endpoints and it's purpose is service discovery.

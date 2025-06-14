@@ -8,6 +8,7 @@ use stdClass;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_Post;
 
 /**
  * Endpoint for published items, that are bookable.
@@ -28,12 +29,12 @@ class ItemsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.items.schema.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.items.schema.json';
 
 	/**
 	 * Returns raw data collection.
 	 *
-	 * @param $request
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return stdClass
 	 */
@@ -61,7 +62,7 @@ class ItemsRoute extends BaseRoute {
 	/**
 	 * Get a collection of items
 	 *
-	 * @param $request - Full data about the request.
+	 * @param WP_REST_Request<array<string, mixed>> $request - Full data about the request.
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -108,7 +109,7 @@ class ItemsRoute extends BaseRoute {
 	/**
 	 * Get one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param WP_REST_Request<array<string, mixed>> $request Full data about the request.
 	 *
 	 * @return WP_REST_Response
 	 */
@@ -118,8 +119,8 @@ class ItemsRoute extends BaseRoute {
 	}
 
 	/**
-	 * @param mixed           $item
-	 * @param WP_REST_Request $request
+	 * @param \CommonsBooking\Model\Item            $item
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response
 	 */
