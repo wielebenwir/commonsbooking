@@ -4,6 +4,8 @@ namespace CommonsBooking\Repository;
 
 use Exception;
 
+use WP_Post;
+
 class Item extends BookablePost {
 
 	/**
