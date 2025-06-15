@@ -98,3 +98,11 @@ a.cb-alt, a.cb-alt:hover {
 .vp-doc ul { list-style: disc; }
 .vp-doc ul ul { list-style: circle; }
 .vp-doc ul ul ul { list-style: square; }
+
+.medium-zoom-overlay {
+  z-index: 20;
+}
+
+.medium-zoom-image {
+  z-index: 25;
+}

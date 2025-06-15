@@ -26,7 +26,8 @@
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
 		"sass": "^1.85.1",
-		"vitepress": "^1.6.3"
+		"vitepress": "^1.6.3",
+		"medium-zoom": "^1.1.0"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
