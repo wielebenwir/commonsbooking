@@ -750,7 +750,7 @@ class Booking extends Timeframe {
                     <li>Click on the <strong>Submit booking</strong> button at the end of the page to submit a new booking.</li>
                 </ul>
 				<strong>Please note</strong>: Only a few basic checks against existing bookings are performed. Please be wary of overlapping bookings.
-                </p> 
+                </p>
 				',
 						'commonsbooking'
 					) . '</p></div>'
@@ -890,7 +890,7 @@ class Booking extends Timeframe {
 		As an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated
 		and checked. Use this function with care.<br>
 		Click on preview to show booking details in frontend<br>
-		To search and filter bookings please integrate the frontend booking list via shortcode. 
+		To search and filter bookings please integrate the frontend booking list via shortcode.
 		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>',
 				'commonsbooking'
 			)
