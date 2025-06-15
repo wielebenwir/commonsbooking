@@ -1,4 +1,4 @@
-#  Shortcodes für Frontend-Darstellung
+#  Shortcodes
 
 __
 
