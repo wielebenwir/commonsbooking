@@ -5,14 +5,24 @@ __
 Mithilfe von Buchungsregeln kannst du die Nutzung von Artikeln von Nutzenden
 projektweit einschränken. Wenn du also zum Beispiel verhindern willst, dass
 ein Nutzender für einen Tag mehrere Artikel gleichzeitig bucht oder übermäßige
-Nutzung einschränken willst kannst du das mit dieser Funktion erreichen.  
-  
+Nutzung einschränken willst, kannst du das mit dieser Funktion erreichen.
+
 Die meisten Regeln gelten projektweit. Wenn du also z.B. die Regel "Maximal
 gebuchte Tage pro Woche" verwendest und die Regel auf Alle Artikel anwendest,
 dann können Nutzende projektweit nur x Tage pro Woche buchen. Aus diesem Grund
 kannst du die Regel auch nur für Artikel bestimmter Kategorien verwenden.
 Damit könntest du zum Beispiel definieren, dass eine bestimmte Kategorie
 Artikel 2 Tage pro Woche und eine andere 3 Tage pro Woche gebucht werden darf.
+
+## Unterschied zur Einstellung "Maximale Buchungsdauer"
+
+In den [Einstellungen für die Zeitrahmen](/dokumentation/erste-schritte/buchungszeitraeume-verwalten) ist es
+möglich die maximale Buchungsdauer für eine Buchung eines Artikels festzulegen. Das definiert nur
+das Maximum für eine einzelne Buchung. Nutzende könnten also mehrere Buchungen anlegen, die dann über den Maximalwert hinausgehen.
+Die Buchungsregeln hingegen definieren, wie viele Tage ein Nutzer insgesamt pro Woche, Monat oder in einem bestimmten Zeitraum buchen darf.
+Damit kannst du die Nutzung von Artikeln durch Nutzende einschränken und verhindern, dass sie übermäßig viele Buchungen anlegen.
+Darüber hinaus lassen sich Buchungsregeln auch auf mehrere Artikel anwenden. Falls du also mehrere Artikel hast, können Nutzende insgesamt
+nur so viele Tage die Artikel buchen, wie du es in der Buchungsregel definiert hast.
 
 ##  Buchungsregeln definieren
 
