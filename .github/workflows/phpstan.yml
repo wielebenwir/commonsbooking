@@ -8,9 +8,13 @@ on:
       - 'docs/**'
       - '**.md'
       - '**.txt'
-      - '**.yml'
       - '**.xml'
   pull_request:
+      paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '**.txt'
+      - '**.xml'
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
