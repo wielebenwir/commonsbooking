@@ -99,7 +99,7 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		$this->assertEquals( $expected, CustomPostType::sanitizeOptions( $itemArray ) );
 
 		// test the sanitization for terms
-		$term     = wp_insert_term( 'test-item-term', \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category' );
+		$term     = wp_insert_term( 'test-item-term', \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName() );
 		$term     = get_term( $term['term_id'] );
 		$expected = array(
 			$term->term_id => 'test-item-term (' . $term->slug . ')',

@@ -70,9 +70,9 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 
 	public function testCheckTermsApplied() {
 		// set up the term named test
-		$term         = wp_insert_term( 'test-item', Item::$postType . 's_category' );
+		$term         = wp_insert_term( 'test-item', Item::getTaxonomyName() );
 		$itemWithTerm = $this->createItem( 'Test item with test-item term', 'publish' );
-		wp_set_post_terms( $itemWithTerm, array( $term['term_id'] ), Item::$postType . 's_category' );
+		wp_set_post_terms( $itemWithTerm, array( $term['term_id'] ), Item::getTaxonomyName() );
 		$newLocation   = $this->createLocation( 'Test Location', 'publish' );
 		$termTimeframe = $this->createBookableTimeFrameIncludingCurrentDay( $newLocation, $itemWithTerm );
 		$termBooking   = new Booking(
