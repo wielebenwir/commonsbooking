@@ -1,10 +1,12 @@
-#  Template Tags & Shortcodes (Version 0.9.x)
+#  Frontend-Einbindung (Version 0.9.x)
 
 __
 
-#  Bookings Template Tags
+##  Bookings Template Tags
 
+::: warning
 Please note: USER_NAME has been deprecated. Please use FIRST_NAME / LAST_NAME
+:::
 
 Die folgenden Template-Tags können in Nachrichten und E-Mails benutzt werden.
 Usage:
@@ -59,7 +61,7 @@ A full Example: [Confirmation email example](https://dein-lastenrad.de/wiki/Conf
 
 <span v-pre>{{SITE_EMAIL}}</span> – The email address the confirmation email will be sent from.
 
-#  **Registration Mail Template Tags**
+##  **Registration Mail Template Tags**
 
 The following template tags can be used in the registration confirmation email
 settings. Example: [ Registration Email Example ](https://dein-lastenrad.de/wiki/Registration_Email_Example)
@@ -86,31 +88,31 @@ Hi <span v-pre>{{USER_LOGIN}}</span>, here is your account information
 
 <span v-pre>{{PASSWORD}}</span> – The password – Deprecated! See discussion here: [https://bitbucket.org/wielebenwir/commons-booking/issues/125/password-can-not-be-sent-in-registration ](https://bitbucket.org/wielebenwir/commons-booking/issues/125/password-can-not-be-sent-in-registration)
 
-#  **Shortcodes**
+##  **Shortcodes**
 
 Commons Booking bietet 2 shortcodes:
 
-  * **cb_items** (Liste der Artikel) 
-  * **cb_item_categories** (Liste der Artikel-Kategorien) – ab Version 0.9 
+  * **cb_items** (Liste der Artikel)
+  * **cb_item_categories** (Liste der Artikel-Kategorien) – ab Version 0.9
 
-##  **Nutzung**
+###  **Nutzung**
 
-###  **Artikel-Liste**
+####  **Artikel-Liste**
 
 In a WordPress editor field, enter the following to show all items, sorted
 alphabetically by title
 
 `[cb_items]`
 
-###  **Kategorien-Liste**
+####  **Kategorien-Liste**
 
 `[cb_item_categories]`
 
-##  **Artikel-Liste – Parameter**
+###  **Artikel-Liste – Parameter**
 
 The parameters are a subset of the wordpress WP_QUERY params.
 
-###  **p: item id**
+####  **p: item id**
 
 Get one single item by item id
 
@@ -119,13 +121,13 @@ Get one single item by item id
 (How to find the item id: Edit the item and look at the URL: "?post= **17**
 &action=edit )
 
-###  **cat: category id**
+####  **cat: category id**
 
 Get all items from a category
 
 `[cb_items cat=4]`
 
-###  **orderby: set sort order**
+####  **orderby: set sort order**
 
 title, date, rand, menu_order
 
