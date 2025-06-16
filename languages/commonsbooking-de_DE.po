@@ -4388,3 +4388,27 @@ msgstr ""
 #: src/Service/Cache.php:413
 msgid "Cache adapter successfully connected."
 msgstr ""
+
+#: includes/OptionsArray.php:1562
+msgid "Periodical warmup through cronjob"
+msgstr ""
+
+#: includes/OptionsArray.php:1563
+msgid "Will periodically warm up the cache through a cronjob. This can be useful, when you have a lot of timeframes / bookings but your site is rarely accessed. <br> You NEED to hook WP-Cron Into the System Task Scheduler for this to have any positive effect. <b> You probably don't want this. </b>"
+msgstr ""
+
+#: includes/OptionsArray.php:1568
+msgid "Every 10 minutes"
+msgstr ""
+
+#: includes/OptionsArray.php:1569
+msgid "Every 30 minutes"
+msgstr ""
+
+#: includes/OptionsArray.php:1570
+msgid "Every hour"
+msgstr ""
+
+#: includes/OptionsArray.php:1571
+msgid "Every day"
+msgstr ""

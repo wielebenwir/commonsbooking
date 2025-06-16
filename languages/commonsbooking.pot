@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-12T15:09:38+00:00\n"
+"POT-Creation-Date: 2025-06-16T20:08:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -1253,6 +1253,30 @@ msgstr ""
 
 #: includes/OptionsArray.php:1556
 msgid "Current connection status"
+msgstr ""
+
+#: includes/OptionsArray.php:1562
+msgid "Periodical warmup through cronjob"
+msgstr ""
+
+#: includes/OptionsArray.php:1563
+msgid "Will periodically warm up the cache through a cronjob. This can be useful, when you have a lot of timeframes / bookings but your site is rarely accessed. <br> You NEED to hook WP-Cron Into the System Task Scheduler for this to have any positive effect. <b> You probably don't want this. </b>"
+msgstr ""
+
+#: includes/OptionsArray.php:1568
+msgid "Every 10 minutes"
+msgstr ""
+
+#: includes/OptionsArray.php:1569
+msgid "Every 30 minutes"
+msgstr ""
+
+#: includes/OptionsArray.php:1570
+msgid "Every hour"
+msgstr ""
+
+#: includes/OptionsArray.php:1571
+msgid "Every day"
 msgstr ""
 
 #: src/CB/CB1UserFields.php:69
