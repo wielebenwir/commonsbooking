@@ -29,11 +29,11 @@ A misconfigured cache can slow down your site!
 
 * **Periodical cache warmup through cronjob**:
   :::warning
-  This setting was developed for some very specific edge cases and probably does not apply to you.
+  This setting was developed for some very specific edge cases and probably does not apply to you. It is also experimental and may lead to unintended consequences. For instance, we were not able to determine if the cache will be cleared on time after a booking. You should probably set the cronjob to run fairly frequently if you want to use this feature.
   :::
   If your site is rarely accessed but contains many items or bookings, it may be that the first access to the site is very slow.
   If this becomes a problem, you can have the cache warmed up regularly. You can do this by enabling the "Periodical warmup through cronjob" option.
-  You can configure how often the cache should be warmed up automatically. This can lead to higher server load if the cache is warmed up very frequently.
+  After the option is enabled, you can configure how often the cache should be warmed up automatically. This can lead to higher server load if the cache is warmed up very frequently.
   In order for this to work, WP-Cron must be hooked into the system task scheduler. See here: [Hooking WP-Cron Into the System Task Scheduler](https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/)
 
 ## Known problems
