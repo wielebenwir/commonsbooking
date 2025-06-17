@@ -39,21 +39,16 @@ folgenden siehst du einige Screenshots mit Einstellungen für die Überbuchung
 und deren Auswirkungen auf den Kalender. Der dazugehörige Zeitrahmen hat dabei
 als maximale Buchungsdauer immer 3 Tage eingestellt.
 
+![](/img/overbooking-nocount.png){data-zoomable}
 _Überbuchung aktiviert ohne Zählung der Tage_
-
-
-![](/img/overbooking-nocount.png)
-
+![](/img/overbooking-countall.png){data-zoomable}
 _Überbuchung aktiviert mit Zählung jedes einzelnen Tages (das Wochenende ist
 nicht überbuchbar, weil das eine Buchung von mehr als drei Tagen bedeuten
 würde_ )
-
-![](/img/overbooking-countall.png)
-
+![](/img/overbooking-countone.png){data-zoomable}
 _Nur der erste Tag wird bei der Überbuchung gezählt: Das Wochenende ist somit
 überbuchbar aber es kann nicht bis Dienstag gebucht werden._
 
-![](/img/overbooking-countone.png)
 
 **Allgemeine Standortinformationen**
 
