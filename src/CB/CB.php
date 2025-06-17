@@ -12,8 +12,14 @@ use function get_user_by;
 
 class CB {
 
-	protected static $INTERNAL_DATE_FORMAT = 'd.m.Y';
+	/**
+	 * @var string
+	 */
+	protected static string $INTERNAL_DATE_FORMAT = 'd.m.Y';
 
+	/**
+	 * @return string
+	 */
 	public static function getInternalDateFormat(): string {
 		return static::$INTERNAL_DATE_FORMAT;
 	}
@@ -112,11 +118,11 @@ class CB {
 	}
 
 	/**
-	 * @param string   $key
-	 * @param string   $property
-	 * @param $post
-	 * @param $args
-	 * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
+	 * @param string               $key
+	 * @param string               $property
+	 * @param WP_Post|WP_User|null $post
+	 * @param mixed|null           $args
+	 * @param callable             $sanitizeFunction The callable used to remove unwanted tags/characters
 	 *
 	 * @return string|null
 	 * @throws Exception
@@ -144,9 +150,9 @@ class CB {
 	/**
 	 * Tries to get a property of a post with different approaches.
 	 *
-	 * @param $post
-	 * @param $property
-	 * @param $args
+	 * @param int|WP_Post|CustomPost $post
+	 * @param string                 $property
+	 * @param mixed|null             $args
 	 *
 	 * @return mixed|null
 	 */
@@ -180,7 +186,7 @@ class CB {
 	 *
 	 * @param WP_Post|WP_User $post
 	 * @param string          $property
-	 * @param $args
+	 * @param mixed|null      $args
 	 *
 	 * @return int|mixed|null
 	 * @throws Exception
@@ -206,7 +212,7 @@ class CB {
 	}
 
 	/**
-	 * @param $object
+	 * @param WP_Post|WP_User $object
 	 *
 	 * @return false|WP_User
 	 * @throws Exception
