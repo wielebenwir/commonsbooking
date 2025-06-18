@@ -407,38 +407,6 @@ class Timeframe extends CustomPostType {
 					'compare' => '<=',
 				);
 			}
-
-			// Check if current user is allowed to see posts
-			if ( ! commonsbooking_isCurrentUserAdmin() ) {
-				$locations = \CommonsBooking\Repository\Location::getByCurrentUser();
-				array_walk(
-					$locations,
-					function ( &$item, $key ) {
-						$item = $item->ID;
-					}
-				);
-				$items = \CommonsBooking\Repository\Item::getByCurrentUser();
-				array_walk(
-					$items,
-					function ( &$item, $key ) {
-						$item = $item->ID;
-					}
-				);
-
-				$query->query_vars['meta_query'][] = array(
-					'relation' => 'OR',
-					array(
-						'key'     => \CommonsBooking\Model\Timeframe::META_LOCATION_ID,
-						'value'   => $locations,
-						'compare' => 'IN',
-					),
-					array(
-						'key'     => \CommonsBooking\Model\Timeframe::META_ITEM_ID,
-						'value'   => $items,
-						'compare' => 'IN',
-					),
-				);
-			}
 		}
 	}
 
