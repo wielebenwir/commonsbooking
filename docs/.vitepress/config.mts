@@ -162,6 +162,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           text: 'Erste Schritte', base: '/dokumentation/erste-schritte/',
           collapsed: true,
           items: [
+              { text: 'Erste Schritte', link: 'index' },
               { text: 'Artikel anlegen', link: 'artikel-anlegen' },
               { text: 'Stationen anlegen', link: 'stationen-anlegen' },
               { text: 'Buchungszeiträume verwalten', link: 'buchungszeitraeume-verwalten'},
@@ -285,10 +286,11 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               //{ text: 'Update-News', link: 'update-news' }
           ]
       },
-      /*{
+      {
           text: 'First steps', base: '/en/documentation/first-steps/',
           collapsed: true,
           items: [
+              { text: 'First steps', link: 'index' },
               { text: 'Create item', link: 'create-item' },
               { text: 'Create location', link: 'create-location' },
               { text: 'Manage booking timeframes', link: 'booking-timeframes-manage'},
@@ -297,6 +299,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Import national holidays', link: 'timeframes-holidays' }
           ]
       },
+      /*
       {
           text: 'Settings', base: '/en/documentation/settings/',
           collapsed: true,
