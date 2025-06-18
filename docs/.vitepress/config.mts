@@ -39,6 +39,10 @@ export default defineConfig({
             text: 'Zuletzt aktualisiert',
         },
         outlineTitle: 'Auf dieser Seite',
+        docFooter: {
+            prev: 'Vorherige Seite',
+            next: 'Nächste Seite'
+        },
 
         editLink: {
           pattern: 'https://github.com/wielebenwir/commonsbooking/edit/master/docs/:path',
