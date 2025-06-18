@@ -9,7 +9,7 @@
 		"url": "https://github.com/wielebenwir/cb"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.26.9",
+		"@babel/preset-env": "^7.27.2",
 		"@wordpress/env": "^10.25.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"cypress": "^14.4.1",
