@@ -2,7 +2,12 @@
 
 __
 
-Installieren der aktuellen Version des neuen CommonsBooking (Version 2.x.x)
+Installieren der aktuellen Version des neuen CommonsBooking (Version 2.x.x).
+
+::: warning Migration?
+**Du hast bereits CommonsBooking 0.9.x installiert?**
+Hier gelangst du zur [Migration](dokumentation/installation/migration-von-cb1)
+:::
 
 ###  ComonsBooking installieren
 

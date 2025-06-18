@@ -45,7 +45,7 @@ export default defineConfig({
           text: 'Bearbeite diese Seite auf Github'
         },
         sidebar: {
-          '/dokumentation/': { base: '/dokumentation/', items: sidebarDocs_de() },
+          '/dokumentation/': { items: sidebarDocs_de() },
         },
         footer: {
           message: 'Lizensiert unter der GNU v2 Lizenz. <br> <a href="/impressum/">Impressum</a> | <a href="/datenschutzerklaerung/">Datenschutzerklärung</a>',
@@ -84,7 +84,7 @@ export default defineConfig({
             text: 'Edit this page on Github'
           },
           sidebar: {
-            '/en/documentation/': { base: '/en/documentation/', items: sidebarDocs_en() },
+            '/en/documentation/': { items: sidebarDocs_en() },
           },
           footer: {
             message: 'Licensed under the GNU v2 License. <br> <a href="/en/imprint/">Imprint</a> | <a href="/en/privacy-policy/">Privacy Policy</a>',
@@ -159,15 +159,16 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           ]
       },
       {
-          text: 'Erste Schritte', base: '/dokumentation/erste-schritte/',
+          text: 'Erste Schritte',
           collapsed: true,
           items: [
-              { text: 'Artikel anlegen', link: 'artikel-anlegen' },
-              { text: 'Stationen anlegen', link: 'stationen-anlegen' },
-              { text: 'Buchungszeiträume verwalten', link: 'buchungszeitraeume-verwalten'},
-              { text: 'Buchungsregeln einrichten', link: 'buchungsregeln-einrichten' },
-              { text: 'Buchungseinschränkungen verwalten', link: 'buchungseinschraenkungen-verwalten' },
-              { text: 'Zeitrahmen & Feiertage definieren', link: 'zeitrahmen-feiertage-definieren' }
+              { text: 'Los gehts', link: '/dokumentation/erste-schritte/'},
+              { text: 'Artikel anlegen', link: '/dokumentation/erste-schritte/artikel-anlegen' },
+              { text: 'Stationen anlegen', link: '/dokumentation/erste-schritte/stationen-anlegen' },
+              { text: 'Buchungszeiträume verwalten', link: '/dokumentation/erste-schritte/buchungszeitraeume-verwalten'},
+              { text: 'Buchungsregeln einrichten', link: '/dokumentation/erste-schritte/buchungsregeln-einrichten' },
+              { text: 'Buchungseinschränkungen verwalten', link: '/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten' },
+              { text: 'Zeitrahmen & Feiertage definieren', link: '/dokumentation/erste-schritte/zeitrahmen-feiertage-definieren' }
           ]
       },
       {
@@ -220,12 +221,12 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           ]
       },
       {
-          text: 'Schnittstellen / API', base: '/dokumentation/schnittstellen-api/',
-          link: '/',
+          text: 'Schnittstellen / API',
           collapsed: true,
           items: [
-              { text: 'Was ist die CommonsAPI?', link: 'was-ist-die-commonsapi' },
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' },
+              { text: 'Übersicht', link: '/dokumentation/schnittstellen-api/'},
+              { text: 'Was ist die CommonsAPI?', link: '/dokumentation/schnittstellen-api/was-ist-die-commonsapi' },
+              { text: 'CommonsBooking API', link: '/dokumentation/schnittstellen-api/commonsbooking-api' },
               { text: 'GBFS', link: 'gbfs'}
           ]
       },
