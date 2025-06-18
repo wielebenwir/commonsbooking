@@ -2,7 +2,7 @@
 
 __
 
-Using booking rules, you can restrict the use of items by users across the instance.
+Using booking rules, you can restrict the use of items by users across the installation.
 For instance, if you want to prevent a user from booking multiple items on the same day
 or limit excessive use, you can achieve this using booking rules.
 
