@@ -66,7 +66,7 @@ trait Cache {
 	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 * @since 2.9.4 added support for multisite caches
 	 */
-	public static function getCacheId( $custom_id = null ): string {
+	private static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
 		$namespace     = COMMONSBOOKING_PLUGIN_DIR; // To account for multiple instances on same server
@@ -205,7 +205,7 @@ trait Cache {
 	 * @return TagAwareAdapterInterface
 	 * @throws \Psr\Cache\CacheException
 	 */
-	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
+	private static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
 		$adapters = self::getAdapters();
 		if ( ! array_key_exists( $identifier, $adapters ) ) {
 			throw new CacheException( sprintf( 'Adapter %s not found', $identifier ) ); // Not translated bc this is a developer error
