@@ -859,12 +859,12 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if timeframes are overlapping in weekly slot and slot with manual repetition.
 	 *
-	 * @param $weeklyTimeframe
-	 * @param $manualTimeframe
+	 * @param Timeframe $weeklyTimeframe
+	 * @param Timeframe $manualTimeframe
 	 *
 	 * @return bool
 	 */
-	private static function hasWeeklyManualOverlap( $weeklyTimeframe, $manualTimeframe ): bool {
+	private static function hasWeeklyManualOverlap( Timeframe $weeklyTimeframe, Timeframe $manualTimeframe ): bool {
 		$manualSelectionWeekdays = array_unique(
 			array_map(
 				fn ( $date ) => date( 'w', strtotime( $date ) ),
