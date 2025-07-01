@@ -20,12 +20,15 @@ class Booking extends View {
 	/**
 	 * Returns template data for frontend.
 	 *
+	 * @since 2.10.5 wp_json_encode does not contain any bitmap option (before it was true => inferred to JSON_HEX_TAG)
+	 *        which is not needed, since it's not embedded into html.
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public static function getTemplateData(): void {
 		header( 'Content-Type: application/json' );
-		echo wp_json_encode( self::getBookingListData(), true );
+		echo wp_json_encode( self::getBookingListData() );
 		wp_die(); // All ajax handlers die when finished
 	}
 

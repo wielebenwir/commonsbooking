@@ -478,102 +478,6 @@ class Plugin {
 	}
 
 	/**
-	 * Registers category taxonomy for Custom Post Type Item
-	 *
-	 * TODO: This can probably be re-factored to the more generic CustomPostType
-	 *
-	 * @return void
-	 */
-	public static function registerItemTaxonomy() {
-		$customPostType = Item::getPostType();
-		$taxonomy       = Item::getTaxonomyName();
-
-		$result = register_taxonomy(
-			$taxonomy,
-			$customPostType,
-			array(
-				'label'             => esc_html__( 'Item Category', 'commonsbooking' ),
-				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical'      => true,
-				'show_in_rest'      => true,
-				'public'            => true,
-				'show_admin_column' => true,
-			)
-		);
-
-		// If error, yell about it.
-		if ( is_wp_error( $result ) ) {
-			wp_die( $result->get_error_message() );
-		}
-
-		// hook the term updates to the item post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
-		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
-		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Item', 'termChange' ), 10, 3 );
-
-		// hook this for later, if we run it now, it would fail
-		add_action( 'cmb2_admin_init', array( self::class, 'registerItemTaxonomyMetaboxes' ) );
-	}
-
-	/**
-	 * Add custom label for item categories that will be displayed in the map filter groups.
-	 *
-	 * @return void
-	 */
-	public static function registerItemTaxonomyMetaboxes() {
-		$taxonomy = Item::getTaxonomyName();
-
-		$cmb_taxonomy = new_cmb2_box(
-			array(
-				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'edit',
-				'title'        => esc_html__( 'Item Category', 'commonsbooking' ),
-				'object_types' => array( 'term' ),
-				'taxonomies'   => array( 'category', $taxonomy ),
-				'context'      => 'side',
-			)
-		);
-
-		$cmb_taxonomy->add_field(
-			array(
-				'name' => __( 'Add custom title for filter', 'commonsbooking' ),
-				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'markup',
-				'type' => 'textarea_small',
-				'desc' => __( 'Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used.', 'commonsbooking' ),
-			)
-		);
-	}
-
-	/**
-	 * Registers category taxonomy for Custom Post Type Location
-	 *
-	 * @return void
-	 */
-	public static function registerLocationTaxonomy() {
-		$customPostType = Location::getPostType();
-		$taxonomy       = Location::getTaxonomyName();
-
-		$result = register_taxonomy(
-			$taxonomy,
-			$customPostType,
-			array(
-				'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
-				'rewrite'           => array( 'slug' => $customPostType . '-cat' ),
-				'hierarchical'      => true,
-				'show_in_rest'      => true,
-				'show_admin_column' => true,
-			)
-		);
-
-		// If error, yell about it.
-		if ( is_wp_error( $result ) ) {
-			wp_die( $result->get_error_message() );
-		}
-
-		// hook the term updates to the location post type function. This only runs when a term is updated but that is enough. When a term is added, the post is saved and therefore the other hook is triggered which also runs the same function.
-		add_action( 'saved_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
-		add_action( 'delete_' . $taxonomy, array( 'CommonsBooking\Wordpress\CustomPostType\Location', 'termChange' ), 10, 3 );
-	}
-
-	/**
 	 * Renders error for backend_notice.
 	 * TODO refactor this using the AdminMessage type
 	 */
@@ -803,10 +707,10 @@ class Plugin {
 		add_action( 'init', array( self::class, 'registerPostStates' ), 0 );
 
 		// Register custom post types taxonomy / categories
-		add_action( 'init', array( self::class, 'registerItemTaxonomy' ), 30 );
+		add_action( 'init', array( Item::class, 'registerPostTypeTaxonomy' ), 30 );
 
 		// Register custom post types taxonomy / categories
-		add_action( 'init', array( self::class, 'registerLocationTaxonomy' ), 30 );
+		add_action( 'init', array( Location::class, 'registerPostTypeTaxonomy' ), 30 );
 
 		// register admin options page
 		add_action( 'init', array( self::class, 'registerAdminOptions' ), 40 );

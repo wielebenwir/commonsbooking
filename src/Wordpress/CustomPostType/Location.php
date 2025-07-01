@@ -30,6 +30,16 @@ class Location extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
+	protected static function getTaxonomyArgs() {
+		return array(
+			'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
+			'rewrite'           => array( 'slug' => self::getPostType() . '-cat' ),
+			'hierarchical'      => true,
+			'show_in_rest'      => true,
+			'show_admin_column' => true,
+		);
+	}
+
 	/**
 	 * Handles save-Request for location.
 	 */

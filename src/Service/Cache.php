@@ -442,7 +442,7 @@ trait Cache {
 	/**
 	 * Iterates through array and statically executes given functions.
 	 *
-	 * @param array{shortcode: string, attributes: array, body: string} $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
+	 * @param array<array{shortcode: string, attributes: array, body: string}> $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
 	 *
 	 * @return void
 	 */

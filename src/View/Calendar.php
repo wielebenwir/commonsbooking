@@ -501,7 +501,7 @@ class Calendar {
 		/**
 		 * Default amount of months shown in the Litepicker mobile view portrait mode.
 		 *
-		 * @since 2.10.3
+		 * @since 2.10.5
 		 *
 		 * @param int $month defaults is 1
 		 */

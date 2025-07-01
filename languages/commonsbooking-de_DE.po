@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/commonsbooking\n"
+"POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
+"PO-Revision-Date: 2025-06-18 14:51+0200\n"
 "Last-Translator: Christian Wenzel <christian@wielebenwir.de>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2025-03-14 19:16+0000\n"
-"Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 #. Plugin Name of the plugin
 #: commonsbooking.php
@@ -41,8 +41,7 @@ msgstr "Alle Zeitrahmen-Typen"
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: includes/OptionsArray.php:44
-#: templates/dashboard-index.php:8
+#: includes/OptionsArray.php:44 templates/dashboard-index.php:8
 msgid "Welcome to CommonsBooking"
 msgstr "Willkommen bei CommonsBooking"
 
@@ -109,8 +108,7 @@ msgstr "Buchungsseite"
 msgid "The page where you included the [cb_bookings] shortcode. This is used in the Users Widget"
 msgstr "Die Seite, auf der Du den [cb_bookings]-Kurzcode eingefügt hast. Dies wird im Benutzer*in Widget verwendet"
 
-#: includes/OptionsArray.php:145
-#: includes/OptionsArray.php:159
+#: includes/OptionsArray.php:145 includes/OptionsArray.php:159
 msgid "Booking comment"
 msgstr "Buchungskommentar"
 
@@ -156,8 +154,7 @@ msgstr "Vorlagen"
 msgid "Email templates"
 msgstr "E-Mail Vorlagen"
 
-#: includes/OptionsArray.php:274
-#: includes/OptionsArray.php:644
+#: includes/OptionsArray.php:274 includes/OptionsArray.php:644
 msgid "Mail-Header from E-Mail"
 msgstr "Absender E-Mail Mail-Adresse"
 
@@ -165,13 +162,11 @@ msgstr "Absender E-Mail Mail-Adresse"
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr "E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
-#: includes/OptionsArray.php:281
-#: includes/OptionsArray.php:651
+#: includes/OptionsArray.php:281 includes/OptionsArray.php:651
 msgid "Mail-Header from Name"
 msgstr "Absender E-Mail Name"
 
-#: includes/OptionsArray.php:282
-#: includes/OptionsArray.php:652
+#: includes/OptionsArray.php:282 includes/OptionsArray.php:652
 msgid "Name that will be shown as sender in generated emails"
 msgstr "Name, der als Absender in automatisch versendeten E-Mails angezeigt wird"
 
@@ -182,20 +177,6 @@ msgstr "E-Mail-Signatur"
 #: includes/OptionsArray.php:289
 msgid "E-Mail signature that will appear wherever you put {{booking:getEmailSignature}}"
 msgstr "E-Mail-Signatur, die überall dort erscheint, wo Du {{booking:getEmailSignature}} eingibst."
-
-#: includes/OptionsArray.php:293
-msgid ""
-"\n"
-"<p>\n"
-"Thanks and all the best, \n"
-"the Team.\n"
-"</p>\t\t\t\t\t"
-msgstr ""
-"\n"
-"<p>\n"
-"Danke und alles Gute, \n"
-"das Team.\n"
-"</p>\t\t\t\t\t"
 
 #: includes/OptionsArray.php:304
 msgid "Booking confirmed email subject"
@@ -280,8 +261,7 @@ msgstr "iCalendar Termin Titel"
 msgid "The title of the attached event"
 msgstr "Der Titel des angehängten Termins"
 
-#: includes/OptionsArray.php:364
-#: includes/OptionsArray.php:1503
+#: includes/OptionsArray.php:364 includes/OptionsArray.php:1503
 msgid "{{item:post_title}} at {{location:post_title}}"
 msgstr "{{item:post_title}} am Standort {{location:post_title}}."
 
@@ -316,24 +296,6 @@ msgstr "Buchung storniert: {{item:post_title}} am Standort {{location:post_title
 #: includes/OptionsArray.php:392
 msgid "Booking canceled email body"
 msgstr "E-Mail-Text für stornierte Buchungen"
-
-#: includes/OptionsArray.php:396
-msgid ""
-"\n"
-"Hi {{user:first_name}},<br>\n"
-"<br>\n"
-"your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\n"
-"<br>          \n"
-"{{booking:getEmailSignature}}\n"
-"                            "
-msgstr ""
-"\n"
-"Hallo {{user:first_name}},<br>\n"
-"<br>\n"
-"Deine Buchung von {{item:post_title}} am Standort {{location:post_title}} {{booking:formattedBookingDate}} wurde storniert.<br>\n"
-"<br>          \n"
-"{{booking:getEmailSignature}}\n"
-"                            "
 
 #: includes/OptionsArray.php:414
 msgid "Template and booking process messages"
@@ -726,29 +688,22 @@ msgstr "Buchungserinnerung"
 msgid "You can set here whether users should receive a reminder email before the start of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">More Information in the documentation</a>"
 msgstr "Hier kannst du einstellen, ob Nutzende vor Beginn einer Buchung eine Erinnerungs-E-Mail erhalten sollen.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
 
-#: includes/OptionsArray.php:880
-#: includes/OptionsArray.php:991
-#: includes/OptionsArray.php:1035
-#: includes/OptionsArray.php:1118
+#: includes/OptionsArray.php:880 includes/OptionsArray.php:991
+#: includes/OptionsArray.php:1035 includes/OptionsArray.php:1118
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: includes/OptionsArray.php:886
-#: includes/OptionsArray.php:997
-#: includes/OptionsArray.php:1042
-#: includes/OptionsArray.php:1125
+#: includes/OptionsArray.php:886 includes/OptionsArray.php:997
+#: includes/OptionsArray.php:1042 includes/OptionsArray.php:1125
 msgid "E-mail subject"
 msgstr "E-Mail Betreff"
 
-#: includes/OptionsArray.php:889
-#: includes/OptionsArray.php:1045
+#: includes/OptionsArray.php:889 includes/OptionsArray.php:1045
 msgid "Upcoming booking of {{item:post_title}} {{booking:formattedBookingDate}}"
 msgstr "Bevorstehende Buchung von {{item:post_title}} {{booking:formattedBookingDate}}"
 
-#: includes/OptionsArray.php:892
-#: includes/OptionsArray.php:1003
-#: includes/OptionsArray.php:1048
-#: includes/OptionsArray.php:1131
+#: includes/OptionsArray.php:892 includes/OptionsArray.php:1003
+#: includes/OptionsArray.php:1048 includes/OptionsArray.php:1131
 msgid "email body"
 msgstr "E-Mail-Text"
 
@@ -783,14 +738,12 @@ msgstr "Sende eine Erinnerung x Tage vor Buchungsbeginn"
 msgid "This reminder email will be sent to users x days before the start of the booking. If the booking is made less days before the specified days, no reminder email will be sent"
 msgstr "Diese Erinnerungs-E-Mail wird x Tage vor Beginn der Buchung an Benutzende gesendet. Wenn die Buchung in weniger als den angegebenen Tagen erfolgt, wird keine Erinnerungs-E-Mail gesendet"
 
-#: includes/OptionsArray.php:933
-#: includes/OptionsArray.php:1065
+#: includes/OptionsArray.php:933 includes/OptionsArray.php:1065
 #: includes/OptionsArray.php:1149
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: includes/OptionsArray.php:936
-#: includes/OptionsArray.php:1068
+#: includes/OptionsArray.php:936 includes/OptionsArray.php:1068
 #: includes/OptionsArray.php:1152
 msgid "Define when the reminder should be sent. The actual sending may differ from the defined value by a few hours, depending on how your WordPress is configured."
 msgstr "Lege fest, wann die Erinnerung gesendet werden soll. Der tatsächliche Versand kann um einige Stunden vom definierten Wert abweichen, je nachdem, wie dein WordPress konfiguriert ist."
@@ -836,8 +789,7 @@ msgstr "Migriere von Commons Booking Version 0.X"
 msgid "Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style=\"color:red\">If you have clicked \"Migrate\" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=434\">How to migrate from version 0.9.x to 2.x.x </a> before you start migration."
 msgstr "Migriere Daten aus CommonsBooking Version 0.X. <br>Die Migration umfasst: Standorte, Artikel, Zeitrahmen und Buchungen. <br><span style=\"color:red\">Wenn du bereits zuvor \"Migrieren\" geklickt hast, startet die Migration erneut und wird alle Änderungen an Standorten, Artikeln, Zeitrahmen oder Buchungen, die du in der Zwischenzeit gemacht hast, überschreiben.</span><br>Bitte lies die Dokumentation auf <a  target=\"_blank\" href=\"https://commonsbooking.org/?p=434\">Migration von Version 0.9.x auf 2.x.x.,</a> bevor Du mit der Migration beginnst."
 
-#: includes/OptionsArray.php:1219
-#: src/View/Migration.php:77
+#: includes/OptionsArray.php:1219 src/View/Migration.php:77
 msgid "Start Migration"
 msgstr "Migration starten"
 
@@ -865,14 +817,12 @@ msgstr "Buchungen auf neue Version migrieren"
 msgid "Migrate bookings to new format so that they are listed at bookings menu item. <br><strong>This function is only for special cases during migration. Please use it only in case of problems with migration.</strong>"
 msgstr "Migriere Buchungen in ein neues Format, sodass diese unter dem Menüpunkt Buchungen aufgelistet werden. <br><strong>Diese Funktion gilt nur für Sonderfälle während der Migration. Bitte nur bei Problemen währen der Migration verwenden. </strong>"
 
-#: includes/OptionsArray.php:1254
-#: src/View/MassOperations.php:109
+#: includes/OptionsArray.php:1254 src/View/MassOperations.php:109
 #: src/View/Migration.php:112
 msgid "Migrate bookings"
 msgstr "Buchungen migrieren"
 
-#: includes/OptionsArray.php:1267
-#: includes/OptionsArray.php:1325
+#: includes/OptionsArray.php:1267 includes/OptionsArray.php:1325
 msgid "Export"
 msgstr "Export"
 
@@ -880,8 +830,7 @@ msgstr "Export"
 msgid "Download timeframes export"
 msgstr "Zeitrahmen-Export herunterladen"
 
-#: includes/OptionsArray.php:1275
-#: src/Wordpress/CustomPostType/Map.php:557
+#: includes/OptionsArray.php:1275 src/Wordpress/CustomPostType/Map.php:557
 #: src/Wordpress/CustomPostType/Restriction.php:47
 #: src/Wordpress/CustomPostType/Restriction.php:415
 #: src/Wordpress/CustomPostType/Timeframe.php:98
@@ -897,8 +846,7 @@ msgstr "Wähle den Typ dieses Zeitrahmens (z.B. buchbar, Reparatur, Urlaub, Buch
 msgid "Location-Fields"
 msgstr "Standort-Felder"
 
-#: includes/OptionsArray.php:1284
-#: includes/OptionsArray.php:1293
+#: includes/OptionsArray.php:1284 includes/OptionsArray.php:1293
 #, php-format
 msgid "Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s"
 msgstr "Fügen weitere Feldnamen hinzu, egal ob es sich um ein Post- oder ein Metafelder handelt. Kommagetrennte Liste. Neben den Standard-Postfeldern und Standard-Postmeta-Feldern stehen die folgenden benutzerdefinierten Metafelder zur Verfügung. Kopieren nur die Werte in [] in das Feld ohne die Klammern. %s"
@@ -935,8 +883,7 @@ msgstr "Als Cronjob anlegen"
 msgid "Export interval"
 msgstr "Exportintervall"
 
-#: includes/OptionsArray.php:1346
-#: includes/OptionsArray.php:1347
+#: includes/OptionsArray.php:1346 includes/OptionsArray.php:1347
 msgid "minutes"
 msgstr "Minuten"
 
@@ -960,8 +907,7 @@ msgstr "Dateipfad"
 msgid "Absolute path on your webserver (including trailing slash) where export file will be saved to."
 msgstr "Absoluter Pfad auf deinem Webserver (einschließlich abschließender Schrägstrich), in dem die Exportdatei gespeichert wird."
 
-#: includes/OptionsArray.php:1375
-#: includes/OptionsArray.php:1403
+#: includes/OptionsArray.php:1375 includes/OptionsArray.php:1403
 msgid "API"
 msgstr "Schnittstelle"
 
@@ -1079,8 +1025,7 @@ msgstr "iCalendar Feed aktivieren"
 msgid "Event title"
 msgstr "Termin Titel"
 
-#: includes/OptionsArray.php:1501
-#: includes/OptionsArray.php:1513
+#: includes/OptionsArray.php:1501 includes/OptionsArray.php:1513
 msgid "You can use template tags here as well"
 msgstr "Hier können auch Template Tags verwendet werden"
 
@@ -1110,26 +1055,9 @@ msgstr "Erweiterte Cachingoptionen"
 msgid "Allows you to change options regarding the caching system"
 msgstr "Erlaubt die Anpassung der Optionen für das Caching-System"
 
-#: includes/OptionsArray.php:1542
-msgid "Filesystem cache path"
-msgstr "Dateisystem-Cache Pfad"
-
-#: includes/OptionsArray.php:1543
-msgid "Where the filesystem cache should be created. Only change when filesystem caching is not working."
-msgstr "Wo der Dateisystem-Cache angelegt werden soll. Nur ändern, wenn das Dateisystem-Caching nicht funktioniert."
-
-#: includes/OptionsArray.php:1549
-#: includes/OptionsArray.php:1566
+#: includes/OptionsArray.php:1556
 msgid "Current connection status"
 msgstr "Aktueller Verbindungsstatus"
-
-#: includes/OptionsArray.php:1555
-msgid "Enable REDIS Caching (experimental)"
-msgstr "REDIS-Caching aktivieren (experimentell)"
-
-#: includes/OptionsArray.php:1560
-msgid "REDIS DSN (REDIS Server URL)"
-msgstr "REDIS DSN (REDIS-Server-URL)"
 
 #: src/CB/CB1UserFields.php:69
 msgid "First Name"
@@ -1155,9 +1083,8 @@ msgstr "Telefonnummer"
 msgid "Please enter your phone number"
 msgstr "Bitte gib Deine Telefonnummer ein"
 
-#: src/CB/CB1UserFields.php:90
-#: src/CB/CB1UserFields.php:280
-#: src/Wordpress/CustomPostType/Location.php:221
+#: src/CB/CB1UserFields.php:90 src/CB/CB1UserFields.php:279
+#: src/Wordpress/CustomPostType/Location.php:231
 #: templates/booking-single.php:77
 msgid "Address"
 msgstr "Adresse"
@@ -1184,19 +1111,19 @@ msgstr "Bitte akzeptiere die Nutzungsbedingungen"
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr "<a href=\"%s\" target=\"_blank\">Lies die Nutzungsbedingungen</a>"
 
-#: src/CB/CB1UserFields.php:268
+#: src/CB/CB1UserFields.php:267
 msgid "Extra Fields"
 msgstr "Zusatzfelder"
 
-#: src/CB/CB1UserFields.php:272
+#: src/CB/CB1UserFields.php:271
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: src/CB/CB1UserFields.php:288
+#: src/CB/CB1UserFields.php:287
 msgid "Terms and conditions"
 msgstr "Nutzungsbedingungen"
 
-#: src/CB/CB1UserFields.php:298
+#: src/CB/CB1UserFields.php:297
 msgid "Accepted Terms & Conditions"
 msgstr "Nutzungsbedingungen akzeptiert"
 
@@ -1204,8 +1131,7 @@ msgstr "Nutzungsbedingungen akzeptiert"
 msgid "map is not published"
 msgstr "Karte ist nicht veröffentlicht"
 
-#: src/Map/BaseShortcode.php:26
-#: src/Map/BaseShortcode.php:32
+#: src/Map/BaseShortcode.php:26 src/Map/BaseShortcode.php:32
 msgid "no valid map id provided"
 msgstr "keine gültige Karten-ID angegeben"
 
@@ -1237,23 +1163,19 @@ msgstr "Tag(e)"
 msgid "Sorry, no locations found."
 msgstr "Leider wurden keine Standorte gefunden."
 
-#: src/Map/MapShortcode.php:58
-#: src/Wordpress/CustomPostType/Map.php:533
+#: src/Map/MapShortcode.php:58 src/Wordpress/CustomPostType/Map.php:533
 msgid "filter"
 msgstr "Filter"
 
-#: src/Map/MapShortcode.php:59
-#: src/Wordpress/CustomPostType/Map.php:515
+#: src/Map/MapShortcode.php:59 src/Wordpress/CustomPostType/Map.php:515
 msgid "availability"
 msgstr "Verfügbarkeit"
 
-#: src/Map/MapShortcode.php:60
-#: src/Wordpress/CustomPostType/Map.php:524
+#: src/Map/MapShortcode.php:60 src/Wordpress/CustomPostType/Map.php:524
 msgid "categories"
 msgstr "Kategorien"
 
-#: src/Map/MapShortcode.php:61
-#: src/Wordpress/CustomPostType/Map.php:476
+#: src/Map/MapShortcode.php:61 src/Wordpress/CustomPostType/Map.php:476
 msgid "distance"
 msgstr "Entfernung"
 
@@ -1316,8 +1238,7 @@ msgstr "Link zu deiner Buchung"
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr "Bitte kontaktiere die Kontaktpersonen vor Ort direkt, wenn du Fragen zur Abholung oder Rückgabe hast:"
 
-#: src/Model/Restriction.php:241
-#: src/Model/Restriction.php:265
+#: src/Model/Restriction.php:241 src/Model/Restriction.php:265
 msgid "Not set"
 msgstr "Nicht gesetzt"
 
@@ -1366,22 +1287,20 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:369
-#: src/Plugin.php:370
+#: src/Plugin.php:369 src/Plugin.php:370
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:379
-#: src/Plugin.php:380
+#: src/Plugin.php:379 src/Plugin.php:380
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Plugin.php:495
-#: src/Plugin.php:528
+#: src/Wordpress/CustomPostType/Item.php:317
+#: src/Wordpress/CustomPostType/Item.php:337
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
-#: src/Plugin.php:558
+#: src/Wordpress/CustomPostType/Location.php:35
 msgid "Location Category"
 msgstr "Standort-Kategorie"
 
@@ -1397,75 +1316,57 @@ msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht ge
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:303
+#: src/Service/Cache.php:404
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
-#: src/Service/Cache.php:310
-msgid "Successfully connected to REDIS database!"
-msgstr "Erfolgreich mit REDIS-Datenbank verbunden!"
-
-#: src/Service/Cache.php:319
-msgid "REDIS database not enabled"
-msgstr "REDIS-Datenbank nicht aktiviert"
-
-#: src/Service/Cache.php:344
-#, php-format
-msgid "Directory %s is writeable."
-msgstr "Der Ordner %s ist beschreibbar."
-
-#: src/Service/Cache.php:348
+#: src/Service/Cache.php:161
 #, php-format
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
 
-#: src/View/Admin/Filter.php:58
-#: src/Wordpress/CustomPostType/Booking.php:773
+#: src/View/Admin/Filter.php:58 src/Wordpress/CustomPostType/Booking.php:780
 #: src/Wordpress/CustomPostType/Restriction.php:449
 #: src/Wordpress/CustomPostType/Timeframe.php:704
 msgid "Start date"
 msgstr "Startdatum"
 
-#: src/View/Admin/Filter.php:62
-#: src/Wordpress/CustomPostType/Booking.php:790
+#: src/View/Admin/Filter.php:62 src/Wordpress/CustomPostType/Booking.php:797
 #: src/Wordpress/CustomPostType/Restriction.php:459
 #: src/Wordpress/CustomPostType/Timeframe.php:728
 msgid "End date"
 msgstr "Enddatum"
 
-#: src/View/Booking.php:155
+#: src/View/Booking.php:158
 msgid "Details"
 msgstr "Details"
 
-#: src/View/Booking.php:161
+#: src/View/Booking.php:164
 msgid "Use this link to import the data into your own calendar. Usually you just need to provide the URL as an external source and the calendar will figure it out. Do not try to download this file."
 msgstr "Benutze diesen Link um die Buchungsdaten automatisch in deinem Kalender zu abonnieren. Bitte gib die URL in deinem Kalenderprogramm an und versuche nicht die Datei herunterzuladen."
 
-#: src/View/Booking.php:162
+#: src/View/Booking.php:165
 msgid "iCalendar Link:"
 msgstr "iCalendar Link:"
 
-#: src/View/Booking.php:168
-#: src/View/Booking.php:170
+#: src/View/Booking.php:171 src/View/Booking.php:173
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: src/View/Booking.php:193
-#: src/View/MassOperations.php:38
-#: src/Wordpress/CustomPostType/Booking.php:441
+#: src/View/Booking.php:196 src/View/MassOperations.php:38
+#: src/Wordpress/CustomPostType/Booking.php:448
 #: src/Wordpress/CustomPostType/Timeframe.php:97
 #: templates/shortcode-bookings.php:73
 msgid "User"
 msgstr "Nutzende*r"
 
-#: src/View/Booking.php:197
-#: src/View/MassOperations.php:42
-#: src/Wordpress/CustomPostType/Booking.php:963
+#: src/View/Booking.php:200 src/View/MassOperations.php:42
+#: src/Wordpress/CustomPostType/Booking.php:970
 #: src/Wordpress/CustomPostType/Restriction.php:475
 msgid "Status"
 msgstr "Status"
 
-#: src/View/Booking.php:206
+#: src/View/Booking.php:209
 msgid "Code"
 msgstr "Code"
 
@@ -1477,10 +1378,9 @@ msgstr "Die Datei wird als .txt Datei durch Tabstopp getrennt exportiert, sodass
 msgid "Booking codes list"
 msgstr "Liste der Buchungscodes"
 
-#: src/View/Calendar.php:223
-#: src/Wordpress/CustomPostType/Booking.php:442
-#: src/Wordpress/CustomPostType/Booking.php:755
-#: src/Wordpress/CustomPostType/Booking.php:979
+#: src/View/Calendar.php:223 src/Wordpress/CustomPostType/Booking.php:449
+#: src/Wordpress/CustomPostType/Booking.php:762
+#: src/Wordpress/CustomPostType/Booking.php:986
 #: src/Wordpress/CustomPostType/Item.php:117
 #: src/Wordpress/CustomPostType/Restriction.php:48
 #: src/Wordpress/CustomPostType/Restriction.php:437
@@ -1493,11 +1393,10 @@ msgstr "Artikel"
 msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
-#: src/View/Calendar.php:224
-#: src/Wordpress/CustomPostType/Booking.php:443
-#: src/Wordpress/CustomPostType/Booking.php:761
-#: src/Wordpress/CustomPostType/Booking.php:975
-#: src/Wordpress/CustomPostType/Location.php:123
+#: src/View/Calendar.php:224 src/Wordpress/CustomPostType/Booking.php:450
+#: src/Wordpress/CustomPostType/Booking.php:768
+#: src/Wordpress/CustomPostType/Booking.php:982
+#: src/Wordpress/CustomPostType/Location.php:133
 #: src/Wordpress/CustomPostType/Restriction.php:49
 #: src/Wordpress/CustomPostType/Restriction.php:431
 #: src/Wordpress/CustomPostType/Timeframe.php:100
@@ -1506,12 +1405,11 @@ msgstr "Keine Artikel gefunden."
 msgid "Location"
 msgstr "Standort"
 
-#: src/View/Dashboard.php:48
-#: src/View/Dashboard.php:94
+#: src/View/Dashboard.php:48 src/View/Dashboard.php:94
 msgid "at"
 msgstr "bei"
 
-#: src/View/Item.php:123
+#: src/View/Item.php:125
 msgid "No bookable items found."
 msgstr "Keine Buchungen im Papierkorb gefunden."
 
@@ -1579,8 +1477,7 @@ msgstr " Optionen aktualisiert / gespeichert"
 msgid "migration in process .. please wait ... <br>This could take several minutes. Do not close this browser tab"
 msgstr "Migration wird durchgeführt .. Bitte warten... <br>Dies kann einige Minuten dauern. Browserfenster bitte nicht schließen"
 
-#: src/View/MassOperations.php:99
-#: src/View/Migration.php:57
+#: src/View/MassOperations.php:99 src/View/Migration.php:57
 #: src/View/Migration.php:103
 msgid "Migration finished"
 msgstr "Migration beendet"
@@ -1593,13 +1490,11 @@ msgstr "Abrufen von Standort-Geokoordinaten."
 msgid "If this option is enabled, CommonsBooking will try to derive the matching geo-coordinates from the address data of the locations during import. We use an interface to a GeoCoder service (Nominatim) for this task. This service allows only one query per second, so the runtime of the migration is increased by 1 second per location. The geo-coordinates are needed to use the location map integrated in CommonsBooking."
 msgstr "Wenn diese Option aktiviert ist, versucht CommonsBooking beim Import die passenden Geo-Koordinaten aus den Adressdaten der Standorte abzuleiten. Für diese Aufgabe verwenden wir eine Schnittstelle zu einem GeoCoder-Dienst (Nominatim). Dieser Dienst erlaubt nur eine Abfrage pro Sekunde, so dass sich die Laufzeit der Migration um 1 Sekunde pro Standort erhöht. Die Geokoordinaten werden benötigt, um die in CommonsBooking integrierte Standortkarte zu nutzen."
 
-#: src/View/MassOperations.php:94
-#: src/View/Migration.php:98
+#: src/View/MassOperations.php:94 src/View/Migration.php:98
 msgid "migration in process .. please wait ..."
 msgstr "Migration wird durchgeführt … bitte warten ..."
 
-#: src/View/MassOperations.php:104
-#: src/View/Migration.php:108
+#: src/View/MassOperations.php:104 src/View/Migration.php:108
 msgid "Migration failed"
 msgstr "Migration fehlgeschlagen"
 
@@ -1619,12 +1514,9 @@ msgstr "CSV Herunterladen"
 msgid "Download Export"
 msgstr "Download Export"
 
-#: src/Model/Booking.php:1020
-#: src/Service/TimeframeExport.php:537
-#: src/Service/TimeframeExport.php:547
-#: src/Service/TimeframeExport.php:553
-#: src/Service/TimeframeExport.php:565
-#: src/Service/TimeframeExport.php:578
+#: src/Model/Booking.php:1020 src/Service/TimeframeExport.php:537
+#: src/Service/TimeframeExport.php:547 src/Service/TimeframeExport.php:553
+#: src/Service/TimeframeExport.php:565 src/Service/TimeframeExport.php:578
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1639,205 +1531,204 @@ msgid "Item does not exist. (%s)"
 msgstr "Artikel existiert nicht. (%s)"
 
 #. translators: $s = id of the location
-#: src/Wordpress/CustomPostType/Booking.php:260
+#: src/Wordpress/CustomPostType/Booking.php:261
 #, php-format
 msgid "Location does not exist. (%s)"
 msgstr "Standort existiert nicht. (%s)"
 
-#: src/Wordpress/CustomPostType/Booking.php:264
+#: src/Wordpress/CustomPostType/Booking.php:265
 msgid "Start- and/or end-date is missing."
 msgstr "Das Start- und/oder Enddatum fehlt."
 
-#: src/Wordpress/CustomPostType/Booking.php:295
+#: src/Wordpress/CustomPostType/Booking.php:302
 msgid "Booking canceled."
 msgstr "Buchung storniert."
 
-#: src/Wordpress/CustomPostType/Booking.php:311
+#: src/Wordpress/CustomPostType/Booking.php:318
 msgid "There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes."
 msgstr "Es gibt bereits eine Buchung in diesem Zeitraum. Dieser Hinweis kann auch erscheinen, wenn es eine unbestätigte Buchung in dem gewünschten Zeitraum gibt. Unbestätigte Buchungen werden nach etwa 10 Minuten gelöscht. Bitte versuche es in ein paar Minuten erneut."
 
-#: src/Wordpress/CustomPostType/Booking.php:319
+#: src/Wordpress/CustomPostType/Booking.php:326
 msgid "status changed by admin user via frontend. New status: "
 msgstr "Status wurde vom Administrierenden über das Frontend geändert. Neuer Status: "
 
-#: src/Wordpress/CustomPostType/Booking.php:326
-#: src/Wordpress/CustomPostType/Booking.php:518
-#: src/Wordpress/CustomPostType/Booking.php:706
+#: src/Wordpress/CustomPostType/Booking.php:333
+#: src/Wordpress/CustomPostType/Booking.php:525
+#: src/Wordpress/CustomPostType/Booking.php:713
 #: src/Wordpress/CustomPostType/Timeframe.php:132
 msgid "Booking"
 msgstr "Buchung"
 
-#: src/Wordpress/CustomPostType/Booking.php:370
+#: src/Wordpress/CustomPostType/Booking.php:377
 msgid "There was an error while saving the booking. Please try again. Thrown error:"
 msgstr "Es gab einen Fehler während der Buchung. Geworfener Fehler:"
 
-#: src/Wordpress/CustomPostType/Booking.php:387
+#: src/Wordpress/CustomPostType/Booking.php:394
 msgid "There was an error while saving the booking. Please try again. Resulting WP_ERROR: "
 msgstr "Es gab einen Fehler während der Buchung. WP_ERROR: "
 
-#: src/Wordpress/CustomPostType/Booking.php:444
+#: src/Wordpress/CustomPostType/Booking.php:451
 msgid "Bookingdate"
 msgstr "Buchungsdatum"
 
-#: src/Wordpress/CustomPostType/Booking.php:445
+#: src/Wordpress/CustomPostType/Booking.php:452
 #: src/Wordpress/CustomPostType/Restriction.php:50
 #: src/Wordpress/CustomPostType/Timeframe.php:101
 #: src/Wordpress/CustomPostType/Timeframe.php:780
 msgid "Start Date"
 msgstr "Startdatum"
 
-#: src/Wordpress/CustomPostType/Booking.php:446
+#: src/Wordpress/CustomPostType/Booking.php:453
 #: src/Wordpress/CustomPostType/Restriction.php:51
 #: src/Wordpress/CustomPostType/Timeframe.php:102
 msgid "End Date"
 msgstr "Enddatum"
 
-#: src/Wordpress/CustomPostType/Booking.php:447
+#: src/Wordpress/CustomPostType/Booking.php:454
 msgid "Booking Status"
 msgstr "Buchungsstatus"
 
-#: src/Wordpress/CustomPostType/Booking.php:448
-#: src/Wordpress/CustomPostType/Booking.php:971
+#: src/Wordpress/CustomPostType/Booking.php:455
+#: src/Wordpress/CustomPostType/Booking.php:978
 #: src/Wordpress/CustomPostType/Timeframe.php:480
 msgid "Comment"
 msgstr "Kommentar"
 
-#: src/Wordpress/CustomPostType/Booking.php:517
+#: src/Wordpress/CustomPostType/Booking.php:524
 #: templates/dashboard-index.php:45
 msgid "Bookings"
 msgstr "Buchungen"
 
-#: src/Wordpress/CustomPostType/Booking.php:519
+#: src/Wordpress/CustomPostType/Booking.php:526
 #: src/Wordpress/CustomPostType/Item.php:118
-#: src/Wordpress/CustomPostType/Location.php:124
+#: src/Wordpress/CustomPostType/Location.php:134
 #: src/Wordpress/CustomPostType/Restriction.php:307
-#: src/Wordpress/CustomPostType/Timeframe.php:1173
+#: src/Wordpress/CustomPostType/Timeframe.php:1174
 msgid "Add new"
 msgstr "Neu hinzufügen"
 
-#: src/Wordpress/CustomPostType/Booking.php:520
-#: src/Wordpress/CustomPostType/Booking.php:522
+#: src/Wordpress/CustomPostType/Booking.php:527
+#: src/Wordpress/CustomPostType/Booking.php:529
 msgid "Add new booking"
 msgstr "Neue Buchung hinzufügen"
 
-#: src/Wordpress/CustomPostType/Booking.php:521
-#: src/Wordpress/CustomPostType/Booking.php:737
+#: src/Wordpress/CustomPostType/Booking.php:528
+#: src/Wordpress/CustomPostType/Booking.php:744
 msgid "Edit booking"
 msgstr "Buchung bearbeiten"
 
-#: src/Wordpress/CustomPostType/Booking.php:523
+#: src/Wordpress/CustomPostType/Booking.php:530
 msgid "Show booking"
 msgstr "Buchung anzeigen"
 
-#: src/Wordpress/CustomPostType/Booking.php:524
+#: src/Wordpress/CustomPostType/Booking.php:531
 msgid "Show bookings"
 msgstr "Buchungen anzeigen"
 
-#: src/Wordpress/CustomPostType/Booking.php:525
+#: src/Wordpress/CustomPostType/Booking.php:532
 msgid "Search bookings"
 msgstr "Buchungen suchen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1180
+#: src/Wordpress/CustomPostType/Timeframe.php:1181
 msgid "Timeframes not found"
 msgstr "Zeitrahmen wurden nicht gefunden"
 
-#: src/Wordpress/CustomPostType/Booking.php:527
+#: src/Wordpress/CustomPostType/Booking.php:534
 msgid "No bookings found in trash"
 msgstr "Keine Buchungen im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Booking.php:528
+#: src/Wordpress/CustomPostType/Booking.php:535
 msgid "Parent bookings:"
 msgstr "Übergeordnete Buchungen:"
 
-#: src/Wordpress/CustomPostType/Booking.php:529
+#: src/Wordpress/CustomPostType/Booking.php:536
 msgid "All bookings"
 msgstr "Alle Buchungen"
 
-#: src/Wordpress/CustomPostType/Booking.php:530
-#: src/Wordpress/CustomPostType/Timeframe.php:1184
+#: src/Wordpress/CustomPostType/Booking.php:537
+#: src/Wordpress/CustomPostType/Timeframe.php:1185
 msgid "Timeframe archive"
 msgstr "Zeitrahmenarchiv"
 
-#: src/Wordpress/CustomPostType/Booking.php:531
-#: src/Wordpress/CustomPostType/Timeframe.php:1185
+#: src/Wordpress/CustomPostType/Booking.php:538
+#: src/Wordpress/CustomPostType/Timeframe.php:1186
 msgid "Timeframe attributes"
 msgstr "Zeitrahmenattribute"
 
-#: src/Wordpress/CustomPostType/Booking.php:532
+#: src/Wordpress/CustomPostType/Booking.php:539
 msgid "Add to booking"
 msgstr "Der Buchung hinzufügen"
 
-#: src/Wordpress/CustomPostType/Booking.php:533
+#: src/Wordpress/CustomPostType/Booking.php:540
 msgid "Added to booking"
 msgstr "Zur Buchung hinzugefügt"
 
-#: src/Wordpress/CustomPostType/Booking.php:534
-#: src/Wordpress/CustomPostType/Timeframe.php:1188
+#: src/Wordpress/CustomPostType/Booking.php:541
+#: src/Wordpress/CustomPostType/Timeframe.php:1189
 msgid "Timeframe image"
 msgstr "Zeitrahmenbild"
 
-#: src/Wordpress/CustomPostType/Booking.php:535
+#: src/Wordpress/CustomPostType/Booking.php:542
 msgid "set booking image"
 msgstr "Buchungsbild festlegen"
 
-#: src/Wordpress/CustomPostType/Booking.php:536
+#: src/Wordpress/CustomPostType/Booking.php:543
 msgid "remove booking image"
 msgstr "Buchungsbild entfernen"
 
-#: src/Wordpress/CustomPostType/Booking.php:537
+#: src/Wordpress/CustomPostType/Booking.php:544
 msgid "use as booking image"
 msgstr "als Buchungsbild verwenden"
 
-#: src/Wordpress/CustomPostType/Booking.php:538
-#: src/Wordpress/CustomPostType/Timeframe.php:1171
-#: src/Wordpress/CustomPostType/Timeframe.php:1192
+#: src/Wordpress/CustomPostType/Booking.php:545
+#: src/Wordpress/CustomPostType/Timeframe.php:1172
+#: src/Wordpress/CustomPostType/Timeframe.php:1193
 #: templates/dashboard-index.php:37
 msgid "Timeframes"
 msgstr "Zeitrahmen"
 
-#: src/Wordpress/CustomPostType/Booking.php:846
+#: src/Wordpress/CustomPostType/Booking.php:853
 msgid "External comment"
 msgstr "Öffentlicher Kommentar"
 
-#: src/Wordpress/CustomPostType/Booking.php:847
+#: src/Wordpress/CustomPostType/Booking.php:854
 msgid "This comment can be seen by users in booking details. It can be set by users during the booking confirmation process if comments are enabled in settings."
 msgstr "Dieser Kommentar ist intern für Zeitrahmen wie buchbar, Reparatur, Urlaub. Wenn es sich um eine Buchung handelt, kann dieser Kommentar von den Benutzenden während des Buchungsbestätigungsprozesses eingegeben werden."
 
-#: src/Wordpress/CustomPostType/Booking.php:852
+#: src/Wordpress/CustomPostType/Booking.php:859
 #: templates/booking-single.php:131
 msgid "Internal comment"
 msgstr "Interner Kommentar"
 
-#: src/Wordpress/CustomPostType/Booking.php:853
+#: src/Wordpress/CustomPostType/Booking.php:860
 msgid "This internal comment can only be seen in the backend by privileged users like admins or cb-managers"
 msgstr "Dieser interne Kommentar kann im Backend nur von autorisierten Nutzenden wie Admins oder CB-Managern gesehen werden"
 
-#: src/Wordpress/CustomPostType/Booking.php:774
+#: src/Wordpress/CustomPostType/Booking.php:781
 msgid "Set the start date. You must set the time to 00:00 if you want to book the full day "
 msgstr "Lege das Startdatum fest. Setze die Uhrzeit auf 00:00, wenn du den ganzen Tag buchen willst "
 
-#: src/Wordpress/CustomPostType/Booking.php:791
+#: src/Wordpress/CustomPostType/Booking.php:798
 msgid "Set the end date. You must set time to 23:59 if you want to book the full day"
 msgstr "Lege das Enddatum fest. Setze die Zeit auf 23:59 Uhr, wenn du den ganzen Tag buchen willst"
 
-#: src/Wordpress/CustomPostType/Booking.php:807
-#: templates/booking-single.php:59
+#: src/Wordpress/CustomPostType/Booking.php:814 templates/booking-single.php:59
 msgid "Booking Code"
 msgstr "Buchungscode"
 
-#: src/Wordpress/CustomPostType/Booking.php:813
+#: src/Wordpress/CustomPostType/Booking.php:820
 msgid "Booking User"
 msgstr "Buchende Person"
 
-#: src/Wordpress/CustomPostType/Booking.php:828
+#: src/Wordpress/CustomPostType/Booking.php:835
 msgid "Admin Booking User"
 msgstr "Admin Booking Konto"
 
-#: src/Wordpress/CustomPostType/Booking.php:839
+#: src/Wordpress/CustomPostType/Booking.php:846
 msgid "This is the admin user who created or modified this booking."
 msgstr "Dies ist der/die Admin-Nutzende, der diese Buchung erstellt oder geändert hat."
 
-#: src/Wordpress/CustomPostType/Booking.php:881
+#: src/Wordpress/CustomPostType/Booking.php:888
 msgid ""
 "Bookings should be created via frontend booking calendar. <br>\n"
 "\t\tAs an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated\n"
@@ -1850,13 +1741,12 @@ msgstr ""
 "\t\tund überprüft werden. Verwende diese Funktion mit Vorsicht.<br>Klicke auf Vorschau, um Buchungsdetails im Frontend anzuzeigen<br>Zur Suche und Filterung von Buchungen binde bitte die Frontend-Buchungsliste per Shortcode ein. \r\n"
 "\t\tMehr dazu: <a target=\"_blank\" href=\"https://commonsbooking.org/?p=1433\">Buchungsliste anzeigen</a>"
 
-#: src/Wordpress/CustomPostType/CustomPostType.php:348
+#: src/Wordpress/CustomPostType/CustomPostType.php:377
 msgid "Filter By Category "
 msgstr "Nach Kategorie filtern "
 
 #: src/Wordpress/CustomPostType/Item.php:116
-#: src/Wordpress/CustomPostType/Item.php:137
-#: templates/dashboard-index.php:33
+#: src/Wordpress/CustomPostType/Item.php:137 templates/dashboard-index.php:33
 msgid "Items"
 msgstr "Artikel"
 
@@ -1957,177 +1847,175 @@ msgstr "E-Mail-Adressen die benachrichtigt werden soll, wenn eine Nutzungseinsch
 msgid "Item Meta-Data"
 msgstr "Artikel Metadaten"
 
-#: src/Wordpress/CustomPostType/Location.php:122
-#: src/Wordpress/CustomPostType/Location.php:143
+#: src/Wordpress/CustomPostType/Location.php:132
+#: src/Wordpress/CustomPostType/Location.php:153
 #: templates/dashboard-index.php:35
 msgid "Locations"
 msgstr "Standorte"
 
-#: src/Wordpress/CustomPostType/Location.php:125
-#: src/Wordpress/CustomPostType/Location.php:127
+#: src/Wordpress/CustomPostType/Location.php:135
+#: src/Wordpress/CustomPostType/Location.php:137
 msgid "Add new location"
 msgstr "Neuen Standort hinzufügen"
 
-#: src/Wordpress/CustomPostType/Location.php:126
+#: src/Wordpress/CustomPostType/Location.php:136
 msgid "Edit location"
 msgstr "Standort bearbeiten"
 
-#: src/Wordpress/CustomPostType/Location.php:128
+#: src/Wordpress/CustomPostType/Location.php:138
 msgid "Show location"
 msgstr "Standort anzeigen"
 
-#: src/Wordpress/CustomPostType/Location.php:129
+#: src/Wordpress/CustomPostType/Location.php:139
 msgid "Show locations"
 msgstr "Standorte anzeigen"
 
-#: src/Wordpress/CustomPostType/Location.php:130
+#: src/Wordpress/CustomPostType/Location.php:140
 msgid "Search locations"
 msgstr "Standorte suchen"
 
-#: src/Wordpress/CustomPostType/Location.php:131
+#: src/Wordpress/CustomPostType/Location.php:141
 msgid "location not found"
 msgstr "Standort nicht gefunden"
 
-#: src/Wordpress/CustomPostType/Location.php:132
+#: src/Wordpress/CustomPostType/Location.php:142
 msgid "No locations found in trash"
 msgstr "Keine Standorte im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Location.php:133
+#: src/Wordpress/CustomPostType/Location.php:143
 msgid "Parent location:"
 msgstr "Übergeordneter Standort:"
 
-#: src/Wordpress/CustomPostType/Location.php:134
+#: src/Wordpress/CustomPostType/Location.php:144
 msgid "All locations"
 msgstr "Alle Standorte"
 
-#: src/Wordpress/CustomPostType/Location.php:135
+#: src/Wordpress/CustomPostType/Location.php:145
 msgid "Location archive"
 msgstr "Standortarchiv"
 
-#: src/Wordpress/CustomPostType/Location.php:136
+#: src/Wordpress/CustomPostType/Location.php:146
 msgid "Location attributes"
 msgstr "Standort-Attribute"
 
-#: src/Wordpress/CustomPostType/Location.php:137
+#: src/Wordpress/CustomPostType/Location.php:147
 msgid "Add to location"
 msgstr "Hinzufügen zum Standort"
 
-#: src/Wordpress/CustomPostType/Location.php:138
+#: src/Wordpress/CustomPostType/Location.php:148
 msgid "Added to location"
 msgstr "Zum Standort hinzugefügt"
 
-#: src/Wordpress/CustomPostType/Location.php:139
+#: src/Wordpress/CustomPostType/Location.php:149
 msgid "Location image"
 msgstr "Standort Bild"
 
-#: src/Wordpress/CustomPostType/Location.php:140
+#: src/Wordpress/CustomPostType/Location.php:150
 msgid "set location image"
 msgstr "Standortbild festlegen"
 
-#: src/Wordpress/CustomPostType/Location.php:141
+#: src/Wordpress/CustomPostType/Location.php:151
 msgid "remove location image"
 msgstr "Standortbild entfernen"
 
-#: src/Wordpress/CustomPostType/Location.php:142
+#: src/Wordpress/CustomPostType/Location.php:152
 msgid "use as location image"
 msgstr "Verwendung als Standortbild"
 
-#: src/Wordpress/CustomPostType/Location.php:232
+#: src/Wordpress/CustomPostType/Location.php:242
 msgid "Street / No."
 msgstr "Straße / Nr."
 
-#: src/Wordpress/CustomPostType/Location.php:245
+#: src/Wordpress/CustomPostType/Location.php:255
 msgid "Postcode"
 msgstr "Postleitzahl"
 
-#: src/Wordpress/CustomPostType/Location.php:258
+#: src/Wordpress/CustomPostType/Location.php:268
 msgid "City"
 msgstr "Stadt"
 
-#: src/Wordpress/CustomPostType/Location.php:271
+#: src/Wordpress/CustomPostType/Location.php:281
 msgid "Country"
 msgstr "Land"
 
-#: src/Wordpress/CustomPostType/Location.php:282
+#: src/Wordpress/CustomPostType/Location.php:292
 msgid "Set / Update GPS and map"
 msgstr "GPS und Karte einstellen / aktualisieren"
 
-#: src/Wordpress/CustomPostType/Location.php:294
+#: src/Wordpress/CustomPostType/Location.php:304
 msgid "Latitude"
 msgstr "Breitengrad"
 
-#: src/Wordpress/CustomPostType/Location.php:295
+#: src/Wordpress/CustomPostType/Location.php:305
 msgid "The latitude is calculated automatically when you click the \"set / update GPS\" button after entering the street, postal code and city."
 msgstr "Der Breitengrad wird automatisch berechnet, wenn du nach Eingabe von Straße, Postleitzahl und Ort auf <strong>GPS-Koordinaten abrufen / aktualisieren</strong> klickst."
 
-#: src/Wordpress/CustomPostType/Location.php:305
+#: src/Wordpress/CustomPostType/Location.php:315
 msgid "Longitude"
 msgstr "Längengrad"
 
-#: src/Wordpress/CustomPostType/Location.php:306
+#: src/Wordpress/CustomPostType/Location.php:316
 msgid "The longitude is calculated automatically when you click the \"set / update GPS\" button after entering the street, postal code and city."
 msgstr "Der Längengrad wird automatisch berechnet, wenn du nach Eingabe von Straße, Postleitzahl und Ort auf <strong>GPS-Koordinaten abrufen / aktualisieren</strong> klickst."
 
-#: src/Wordpress/CustomPostType/Location.php:316
+#: src/Wordpress/CustomPostType/Location.php:326
 msgid "Position"
 msgstr "Position"
 
-#: src/Wordpress/CustomPostType/Location.php:327
+#: src/Wordpress/CustomPostType/Location.php:337
 msgid "Show location map on item view"
 msgstr "Positionskarte in der Artikelansicht anzeigen"
 
-#: src/Wordpress/CustomPostType/Location.php:328
+#: src/Wordpress/CustomPostType/Location.php:338
 msgid "If enabled, a map showing the location will be displayed on the location details page."
 msgstr "Wenn diese Option aktiviert ist, wird auf der Seite mit den Standortdetails eine Karte mit dem Standort angezeigt."
 
-#: src/Wordpress/CustomPostType/Location.php:339
+#: src/Wordpress/CustomPostType/Location.php:349
 msgid "General Location information"
 msgstr "Allgemeine Standortinformationen"
 
-#: src/Wordpress/CustomPostType/Location.php:350
+#: src/Wordpress/CustomPostType/Location.php:360
 msgid "Location email"
 msgstr "Standort E-Mail"
 
-#: src/Wordpress/CustomPostType/Location.php:379
-#: templates/booking-single.php:86
-#: templates/location-single-meta.php:53
+#: src/Wordpress/CustomPostType/Location.php:389
+#: templates/booking-single.php:86 templates/location-single-meta.php:53
 msgid "Pickup instructions"
 msgstr "Abhol-Hinweise"
 
-#: src/Wordpress/CustomPostType/Location.php:380
+#: src/Wordpress/CustomPostType/Location.php:390
 msgid "Type in information about the pickup process (e.g. detailed route description, opening hours, etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr "Gib hier Informationen über den Abholvorgang ein (z.B. detaillierte Routenbeschreibung, Öffnungszeiten usw.). Dies wird dem Benutzenden im Buchungsprozess und in der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:394
+#: src/Wordpress/CustomPostType/Location.php:404
 msgid "Location contact information"
 msgstr "Standortkontaktinformationen"
 
-#: src/Wordpress/CustomPostType/Location.php:395
+#: src/Wordpress/CustomPostType/Location.php:405
 msgid "information about how to contact the location (e.g. contact person, phone number, e-mail etc.). This will be shown to user in booking process and booking confirmation mail"
 msgstr "Informationen zur Kontaktaufnahme mit dem Standort (z. B. Ansprechpartner, Telefonnummer, E-Mail usw.). Dies wird dem Nutzenden im Buchungsprozess und bei der Buchungsbestätigungs-Email angezeigt"
 
-#: src/Wordpress/CustomPostType/Location.php:415
+#: src/Wordpress/CustomPostType/Location.php:425
 msgid "Location Admin(s)"
 msgstr "Standort-Administrator(en)"
 
-#: src/Wordpress/CustomPostType/Location.php:416
+#: src/Wordpress/CustomPostType/Location.php:426
 msgid "choose one or more users to give them the permisssion to edit and manage this specific location. Only users with the role CommonsBooking Manager can be selected here."
 msgstr "Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, diesen bestimmten Standort zu bearbeiten und zu verwalten. Hier können nur Benutzer mit der Rolle CommonsBooking Manager ausgewählt werden."
 
-#: src/Wordpress/CustomPostType/Location.php:424
+#: src/Wordpress/CustomPostType/Location.php:434
 msgid "Select location admins."
 msgstr "Wähle Standort-Admins."
 
-#: src/Wordpress/CustomPostType/Location.php:501
+#: src/Wordpress/CustomPostType/Location.php:511
 msgid "Allow locked day overbooking"
 msgstr "Überbuchen von geblockten Tagen erlauben"
 
-#: src/Wordpress/CustomPostType/Location.php:470
+#: src/Wordpress/CustomPostType/Location.php:480
 msgid "Location Meta-Data"
 msgstr "Standort-Metadaten"
 
-#: src/Wordpress/CustomPostType/Map.php:616
-#: templates/dashboard-index.php:55
+#: src/Wordpress/CustomPostType/Map.php:616 templates/dashboard-index.php:55
 msgid "Maps"
 msgstr "Karten"
 
@@ -2359,7 +2247,7 @@ msgid "Blocked (not overbookable)"
 msgstr "Geblockt (nicht überbuchbar)"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:452
-#: src/Wordpress/CustomPostType/Timeframe.php:1172
+#: src/Wordpress/CustomPostType/Timeframe.php:1173
 msgid "Timeframe"
 msgstr "Zeitrahmen"
 
@@ -2538,56 +2426,56 @@ msgstr "Monatlich"
 msgid "Yearly"
 msgstr "Jährlich"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1174
-#: src/Wordpress/CustomPostType/Timeframe.php:1176
+#: src/Wordpress/CustomPostType/Timeframe.php:1175
+#: src/Wordpress/CustomPostType/Timeframe.php:1177
 msgid "Add new timeframe"
 msgstr "Hinzufügen eines neuen Zeitrahmens"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1175
+#: src/Wordpress/CustomPostType/Timeframe.php:1176
 msgid "Edit timeframe"
 msgstr "Zeitrahmen bearbeiten"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1177
+#: src/Wordpress/CustomPostType/Timeframe.php:1178
 msgid "Show timeframe"
 msgstr "Zeitrahmen anzeigen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1178
+#: src/Wordpress/CustomPostType/Timeframe.php:1179
 msgid "Show timeframes"
 msgstr "Zeitrahmen anzeigen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1179
+#: src/Wordpress/CustomPostType/Timeframe.php:1180
 msgid "Search timeframes"
 msgstr "Zeitrahmen suchen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1181
+#: src/Wordpress/CustomPostType/Timeframe.php:1182
 msgid "No timeframes found in trash"
 msgstr "Keine Zeitrahmen im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1182
+#: src/Wordpress/CustomPostType/Timeframe.php:1183
 msgid "Parent timeframes:"
 msgstr "Übergeordnete Zeitrahmen:"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1183
+#: src/Wordpress/CustomPostType/Timeframe.php:1184
 msgid "All timeframes"
 msgstr "Alle Zeitrahmen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1186
+#: src/Wordpress/CustomPostType/Timeframe.php:1187
 msgid "Add to timeframe"
 msgstr "Zum Zeitrahmen hinzufügen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1187
+#: src/Wordpress/CustomPostType/Timeframe.php:1188
 msgid "Added to timeframe"
 msgstr "Zum Zeitrahmen hinzugefügt"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1189
+#: src/Wordpress/CustomPostType/Timeframe.php:1190
 msgid "set timeframe image"
 msgstr "Festlegen des Zeitrahmenbilds"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1190
+#: src/Wordpress/CustomPostType/Timeframe.php:1191
 msgid "remove timeframe image"
 msgstr "Zeitrahmenbild entfernen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1191
+#: src/Wordpress/CustomPostType/Timeframe.php:1192
 msgid "use as timeframe image"
 msgstr "Verwendung als Zeitrahmenbild"
 
@@ -2680,13 +2568,11 @@ msgstr "Du darfst nicht auf diese Buchung zugreifen."
 msgid "Login to your account"
 msgstr "Login zu deinem Nutzerkonto"
 
-#: templates/booking-single.php:45
-#: templates/timeframe-calendar.php:49
+#: templates/booking-single.php:45 templates/timeframe-calendar.php:51
 msgid "Pickup"
 msgstr "Abholung"
 
-#: templates/booking-single.php:49
-#: templates/timeframe-calendar.php:60
+#: templates/booking-single.php:49 templates/timeframe-calendar.php:62
 msgid "Return"
 msgstr "Rückgabe"
 
@@ -2694,8 +2580,7 @@ msgstr "Rückgabe"
 msgid "Location: "
 msgstr "Standort: "
 
-#: templates/booking-single.php:95
-#: templates/booking-single.php:103
+#: templates/booking-single.php:95 templates/booking-single.php:103
 msgid "Contact"
 msgstr "Kontakt"
 
@@ -2784,8 +2669,7 @@ msgid "No returns today"
 msgstr "Keine Rückgaben heute"
 
 #. translators: %1$s: wp_login_url, 1$s: wp_registration_url
-#: templates/item-single.php:44
-#: templates/location-single.php:43
+#: templates/item-single.php:44 templates/location-single.php:43
 #, php-format
 msgid "To be able to book, you must first <a href=\"%1$s\">login</a> or <a href=\"%2$s\">register</a>."
 msgstr "Um buchen zu können, musst du dich zuerst <a href=\"%1$s\">anmelden</a> oder <a href=\"%2$s\">registrieren</a>."
@@ -3119,13 +3003,11 @@ msgstr "Vorfiltern nach Standort-Kategorien"
 msgid "No bookings available."
 msgstr "Keine Buchungen vorhanden."
 
-#: templates/shortcode-bookings.php:34
-#: templates/shortcode-bookings.php:70
+#: templates/shortcode-bookings.php:34 templates/shortcode-bookings.php:70
 msgid "Startdate"
 msgstr "Startdatum"
 
-#: templates/shortcode-bookings.php:41
-#: templates/shortcode-bookings.php:71
+#: templates/shortcode-bookings.php:41 templates/shortcode-bookings.php:71
 msgid "Enddate"
 msgstr "Enddatum"
 
@@ -3153,46 +3035,46 @@ msgstr "Filter zurücksetzen"
 msgid "Filter"
 msgstr "Filter"
 
-#: templates/timeframe-calendar.php:45
+#: templates/timeframe-calendar.php:47
 msgid "Reset date selection"
 msgstr "Datumsauswahl zurücksetzen"
 
-#: templates/timeframe-calendar.php:52
+#: templates/timeframe-calendar.php:54
 msgid "Please select the pickup date in the calendar"
 msgstr "Bitte wähle das Abholdatum im Kalender"
 
-#: templates/timeframe-calendar.php:63
+#: templates/timeframe-calendar.php:65
 msgid "Please select the return date in the calendar"
 msgstr "Bitte wähle das Rückgabedatum im Kalender aus"
 
-#: templates/timeframe-calendar.php:73
+#: templates/timeframe-calendar.php:75
 msgid "Usage Restrictions"
 msgstr "Nutzungs-Einschränkungen"
 
 #. translators: %1$s = Start date and time formatted
-#: templates/timeframe-calendar.php:84
+#: templates/timeframe-calendar.php:86
 #, php-format
 msgid "From %1$s"
 msgstr "Von %s"
 
 #. translators: %1$s = End date and time formatted
-#: templates/timeframe-calendar.php:94
+#: templates/timeframe-calendar.php:96
 #, php-format
 msgid "until probably %1$s:"
 msgstr "bis voraussichtlich %1$s:"
 
-#: templates/timeframe-calendar.php:120
+#: templates/timeframe-calendar.php:122
 msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:130
+#: templates/timeframe-calendar.php:132
 #, php-format
 msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
 msgstr "Maximal %1$s Tage hintereinander buchbar. Je nach Einstellung ist es auch möglich, über einen grauen Bereich (z.B. Wochenende) zu buchen."
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:135
+#: templates/timeframe-calendar.php:137
 #, php-format
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
@@ -3209,45 +3091,44 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:771
-#: src/Plugin.php:786
-#: src/Wordpress/CustomPostType/Booking.php:926
+#: src/Plugin.php:675 src/Plugin.php:690
+#: src/Wordpress/CustomPostType/Booking.php:933
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
 
-#: src/Wordpress/CustomPostType/Booking.php:526
+#: src/Wordpress/CustomPostType/Booking.php:533
 msgid "Bookings not found"
 msgstr "Keine Buchungen gefunden"
 
-#: src/Wordpress/CustomPostType/Booking.php:951
+#: src/Wordpress/CustomPostType/Booking.php:958
 msgid "Booking start"
 msgstr "Buchungsbeginn"
 
-#: src/Wordpress/CustomPostType/Booking.php:955
+#: src/Wordpress/CustomPostType/Booking.php:962
 msgid "Booking end"
 msgstr "Buchungsende"
 
-#: src/Wordpress/CustomPostType/Booking.php:959
+#: src/Wordpress/CustomPostType/Booking.php:966
 msgid "Time of booking"
 msgstr "Buchungszeit"
 
-#: src/Wordpress/CustomPostType/Booking.php:967
+#: src/Wordpress/CustomPostType/Booking.php:974
 msgid "Booking code"
 msgstr "Buchungscode"
 
-#: src/Wordpress/CustomPostType/Booking.php:983
+#: src/Wordpress/CustomPostType/Booking.php:990
 msgid "Time of cancellation"
 msgstr "Storniert am"
 
-#: src/Wordpress/CustomPostType/Booking.php:987
+#: src/Wordpress/CustomPostType/Booking.php:994
 msgid "Admin booking by"
 msgstr "Adminbuchung von"
 
-#: src/Service/Upgrade.php:302
+#: src/Service/Upgrade.php:305
 msgid "New features and changes: Please backup your site before upgrading!"
 msgstr "Neue Funktionen und Änderungen: Bitte die Website vor dem Upgrade sichern!"
 
-#: src/Service/Upgrade.php:309
+#: src/Service/Upgrade.php:312
 #, php-format
 msgid ""
 "\n"
@@ -3268,27 +3149,27 @@ msgstr "Globale Standorteinstellungen"
 msgid "These settings are used for all locations. You can overwrite these settings for each location in the location settings."
 msgstr "Diese Einstellungen werden für alle Standorte verwendet. Die Einstellungen können Sie für jeden Standort individuell in den Standorteinstellungen überschreiben werden."
 
-#: src/Wordpress/CustomPostType/Location.php:432
+#: src/Wordpress/CustomPostType/Location.php:442
 msgid "Use global location settings"
 msgstr "Globale Standorteinstellungen nutzen"
 
-#: src/Wordpress/CustomPostType/Location.php:433
+#: src/Wordpress/CustomPostType/Location.php:443
 msgid "If selected, the global location settings (under the \"General\" tab) will be used for this location. If not selected, the settings below will be used."
 msgstr "Wenn diese Option ausgewählt ist, werden die globalen Standorteinstellungen ( im Reiter \"Allgemein\") für diesen Standort verwendet. Wenn sie nicht ausgewählt ist, werden die Einstellungen unten verwendet."
 
-#: src/Wordpress/CustomPostType/Location.php:507
+#: src/Wordpress/CustomPostType/Location.php:517
 msgid "Count locked days when overbooking"
 msgstr "Gesperrte Tage bei Überbuchung zählen"
 
-#: src/Wordpress/CustomPostType/Location.php:513
+#: src/Wordpress/CustomPostType/Location.php:523
 msgid "Count connected locked days as one"
 msgstr "Zusammenhängende gesperrte Tage werden als Einheit gezählt"
 
-#: src/Wordpress/CustomPostType/Location.php:514
+#: src/Wordpress/CustomPostType/Location.php:524
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
 msgstr "Hier kann festgelegt werden, ob eine zusammenhängende Spanne von überbuchten Tagen einzeln gezählt werden soll oder ob nur x Tage des maximalen Kontingents, das der Benutzer buchen darf, verbraucht werden sollen. Wenn dieses Feld auf 0 gesetzt wird, wird jeder Tag einzeln gezählt. Wenn dieses Feld auf 1 gesetzt wird, werden alle überbuchten Tage, egal wie viele, immer nur als 1 Tag gezählt. Wenn dieses Feld auf 2 gesetzt wird, werden maximal zwei Tage gezählt und so weiter."
 
-#: src/Wordpress/CustomPostType/Location.php:508
+#: src/Wordpress/CustomPostType/Location.php:518
 msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
 
@@ -3310,8 +3191,7 @@ msgstr "Mehrere buchbare Zeiträume überschneiden sich in den definierten Woche
 msgid "Overlapping bookable timeframes are not allowed to have the same dates."
 msgstr "Mehrere buchbare Zeiträume überschneiden sich in dem definierten Datumsbereich."
 
-#: src/Model/Timeframe.php:843
-#: src/Model/Timeframe.php:850
+#: src/Model/Timeframe.php:843 src/Model/Timeframe.php:850
 msgid "The other timeframe is overlapping with your weekly configuration."
 msgstr "Der andere Zeitrahmen überschneidet sich mit einer wöchentlichen Konfiguration."
 
@@ -3355,8 +3235,7 @@ msgstr "Wählen Sie das Jahr und das Bundesland, für das Sie Feiertage importie
 msgid "Daily repeated time periods are not allowed to overlap."
 msgstr "Täglich wiederholende Zeiträume dürfen sich nicht überschneiden."
 
-#: includes/OptionsArray.php:182
-#: includes/OptionsArray.php:186
+#: includes/OptionsArray.php:182 includes/OptionsArray.php:186
 #: includes/OptionsArray.php:198
 msgid "Booking codes"
 msgstr "Buchungscodes"
@@ -3388,28 +3267,6 @@ msgstr "Buchungscodes für {{codes:formatDateRange}} {{item:post_title}}"
 #: includes/OptionsArray.php:228
 msgid "Body for booking codes email"
 msgstr "Nachricht für Buchungscodes E-Mail"
-
-#: includes/OptionsArray.php:232
-msgid ""
-"\n"
-"<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
-"\n"
-"<p>Booking codes Table:</p>\n"
-"<br>   \n"
-"{{codes:codeTable}}\n"
-"<br>          \n"
-"<p>Thanks, the Team.</p>\n"
-"                            "
-msgstr ""
-"\n"
-"<h1>Buchungscodes für {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
-"\n"
-"<p>Buchungscode Tabelle:</p>\n"
-"<br>   \n"
-"{{codes:codeTable}}\n"
-"<br>          \n"
-"<p>Danke, das Team.</p>\n"
-"                            "
 
 #: includes/OptionsArray.php:247
 msgid "Backup E-Mail for booking codes email"
@@ -3444,8 +3301,7 @@ msgstr "Buchungscodes für Artikel \"%1$s\": %2$s"
 msgid "Error sending booking codes by E-mail for Timeframe "
 msgstr "Fehler beim Senden von Buchungscodes per E-Mail für Zeitrahmen "
 
-#: src/View/BookingCodes.php:178
-#: src/View/BookingCodes.php:287
+#: src/View/BookingCodes.php:178 src/View/BookingCodes.php:287
 msgid "No location configured for this timeframe"
 msgstr "Kein Standort für diesen Zeitraum konfiguriert"
 
@@ -3453,10 +3309,8 @@ msgstr "Kein Standort für diesen Zeitraum konfiguriert"
 msgid "Unable to send emails. No location email configured, check location"
 msgstr "E-Mails konnten nicht gesendet werden. Keine Standort-E-Mail konfiguriert, bitte Standort prüfen"
 
-#: src/View/BookingCodes.php:185
-#: src/View/BookingCodes.php:294
-#: src/View/BookingCodes.php:394
-#: src/View/BookingCodes.php:420
+#: src/View/BookingCodes.php:185 src/View/BookingCodes.php:294
+#: src/View/BookingCodes.php:394 src/View/BookingCodes.php:420
 msgid "This timeframe has no booking codes. To generate booking codes you need to save the timeframe."
 msgstr "Dieser Zeitrahmen hat keine Buchungscodes. Um Buchungscodes zu generieren, muss der Zeitrahmen gespeichert werden."
 
@@ -3566,12 +3420,11 @@ msgstr "Nächste E-Mail geplant am: "
 msgid "(not planned)"
 msgstr "(nichts geplant)"
 
-#: includes/OptionsArray.php:1536
-#: src/Service/Cache.php:366
+#: includes/OptionsArray.php:1536 src/Service/Cache.php:435
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:361
+#: src/Service/Cache.php:430
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
@@ -3704,16 +3557,13 @@ msgstr "Kettenbuchungen verhindern"
 msgid "Users can no longer work around the maximum booking limit by chaining two bookings directly after one another."
 msgstr "Nutzende können nicht mehr das maximale Buchungslimit umgehen indem sie zwei Buchungen direkt aneinanderhängen."
 
-#: src/Service/BookingRule.php:235
-#: src/Service/BookingRule.php:242
-#: src/Service/BookingRule.php:260
-#: src/Service/BookingRule.php:297
+#: src/Service/BookingRule.php:235 src/Service/BookingRule.php:242
+#: src/Service/BookingRule.php:260 src/Service/BookingRule.php:297
 #: src/Service/BookingRule.php:315
 msgid "You have reached your booking limit. Please leave some time in between bookings."
 msgstr "Du hast dein maximales Buchungslimit erreicht. Bitte lasse etwas Zeit zwischen deinen Buchungen."
 
-#: src/Service/BookingRule.php:240
-#: src/Service/BookingRule.php:246
+#: src/Service/BookingRule.php:240 src/Service/BookingRule.php:246
 msgid "Maximum booked days per week"
 msgstr "Maximal buchbare Tage pro Woche"
 
@@ -3725,13 +3575,11 @@ msgstr "Nutzende können nur eine begrenzte Anzahl an Tagen pro Woche buchen."
 msgid "Number of days each user is allowed to book per week"
 msgstr "Anzahl der Tage, die jeder Nutzende pro Woche buchen darf"
 
-#: src/Service/BookingRule.php:251
-#: src/Service/BookingRule.php:306
+#: src/Service/BookingRule.php:251 src/Service/BookingRule.php:306
 msgid "At what day of the week should the counter be reset?"
 msgstr "An welchem Wochentag soll der Zähler zurückgesetzt werden?"
 
-#: src/Service/BookingRule.php:258
-#: src/Service/BookingRule.php:264
+#: src/Service/BookingRule.php:258 src/Service/BookingRule.php:264
 msgid "Maximum booked days per month"
 msgstr "Maximal buchbare Tage pro Monat"
 
@@ -3743,8 +3591,7 @@ msgstr "Nutzende können nur eine begrenzte Anzahl an Tagen pro Monat buchen."
 msgid "Number of days each user is allowed to book per month"
 msgstr "Anzahl der Tage, die jeder Nutzende pro Monat buchen darf"
 
-#: src/Service/BookingRule.php:269
-#: src/Service/BookingRule.php:324
+#: src/Service/BookingRule.php:269 src/Service/BookingRule.php:324
 msgid "At what day of the month should the counter be reset?"
 msgstr "An welchem Tag im Monat soll der Zähler zurückgesetzt werden?"
 
@@ -3776,8 +3623,7 @@ msgstr "Über den Zeitraum von Y Tagen"
 msgid "The length of the period for which the booking is limited. This period always lies in the middle, so if you define 30 days, the 15 days before and after will count towards the maximum quota."
 msgstr "Die Länger der Periode in denen die Buchungen eingeschränkt werden. Die Periode liegt immer in der Mitte, wenn du also 30 Tage definierst werden 15 Tage davor und 15 Tage danach in die Buchungsperiode mit eingerechnet."
 
-#: src/Service/BookingRule.php:295
-#: src/Service/BookingRule.php:301
+#: src/Service/BookingRule.php:295 src/Service/BookingRule.php:301
 msgid "Maximum number of bookings per week"
 msgstr "Maximale Anzahl an Buchungen pro Woche"
 
@@ -3789,8 +3635,7 @@ msgstr "Nutzende dürfen nur so viele Buchungen pro Woche tätigen (die Länge d
 msgid "Number of bookings each user is allowed to make per week"
 msgstr "Anzahl der Buchungen die jeder Nutzende pro Woche tätigen darf"
 
-#: src/Service/BookingRule.php:313
-#: src/Service/BookingRule.php:319
+#: src/Service/BookingRule.php:313 src/Service/BookingRule.php:319
 msgid "Maximum number of bookings per month"
 msgstr "Maximale Anzahl an Buchungen pro Monat"
 
@@ -3863,8 +3708,7 @@ msgstr "Erinnerung für Standorte vor Buchungsbeginn"
 msgid "You can set here whether locations should receive a reminder email before the start of a booking.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">More Information in the documentation</a>"
 msgstr "Hier kannst du einstellen, ob Standorte vor Beginn einer Buchung eine Erinnerungsmail erhalten sollen.<br><a href=\"https://commonsbooking.org/?p=1763\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
 
-#: includes/OptionsArray.php:1038
-#: includes/OptionsArray.php:1121
+#: includes/OptionsArray.php:1038 includes/OptionsArray.php:1121
 msgid "The reminders need to be enabled for all locations individually. This is only the main on/off switch."
 msgstr "Die Erinnerungsfunktion muss für alle Standorte einzeln aktiviert werden. Dies ist nur der Hauptschalter zum Ein- und Ausschalten."
 
@@ -3884,8 +3728,7 @@ msgstr ""
 "\n"
 "{{booking:getEmailSignature}}"
 
-#: includes/OptionsArray.php:1085
-#: includes/OptionsArray.php:1170
+#: includes/OptionsArray.php:1085 includes/OptionsArray.php:1170
 msgid "Bookings of"
 msgstr "Buchungen von"
 
@@ -3893,13 +3736,11 @@ msgstr "Buchungen von"
 msgid "Define for which booking start day the notifications should be sent"
 msgstr "Definiert an welchem Tag nach vor Buchungsbeginn die Benachrichtigungen gesendet werden sollen"
 
-#: includes/OptionsArray.php:1097
-#: includes/OptionsArray.php:1182
+#: includes/OptionsArray.php:1097 includes/OptionsArray.php:1182
 msgid "current day"
 msgstr "Gleicher Tag"
 
-#: includes/OptionsArray.php:1098
-#: includes/OptionsArray.php:1183
+#: includes/OptionsArray.php:1098 includes/OptionsArray.php:1183
 msgid "next day"
 msgstr "Nächstem Tag"
 
@@ -3937,31 +3778,31 @@ msgstr ""
 msgid "Define for which booking end day the notifications should be sent"
 msgstr "Definiert an welchem Tag nach Buchungsendes die Benachrichtigungen gesendet werden sollen"
 
-#: src/Wordpress/CustomPostType/Location.php:446
+#: src/Wordpress/CustomPostType/Location.php:456
 msgid "Receive booking start reminder"
 msgstr "Erinnerungsmail zum Buchungsstart erhalten"
 
-#: src/Wordpress/CustomPostType/Location.php:447
+#: src/Wordpress/CustomPostType/Location.php:457
 msgid "If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
 msgstr "Wenn diese Option ausgewählt ist, erhält dieser Standort Erinnerungs-E-Mails über startende Buchungen. Die Benachrichtigungen werden an alle in der E-Mail-Liste des Standorts angegebenen Adressen gesendet (zuerst als Empfänger, alle folgenden als BCC). Diese Art der Erinnerung muss in den <a href=\"admin.php?page=commonsbooking_options_reminder\">CommonsBooking Einstellungen</a>  aktiviert werden."
 
-#: src/Wordpress/CustomPostType/Location.php:455
+#: src/Wordpress/CustomPostType/Location.php:465
 msgid "Receive booking end reminder"
 msgstr "Erinnerungsmail zum Buchungsende erhalten"
 
-#: src/Wordpress/CustomPostType/Location.php:456
+#: src/Wordpress/CustomPostType/Location.php:466
 msgid "If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
 msgstr "Wenn diese Option ausgewählt ist, erhält dieser Standort Erinnerungs-E-Mails über bald endende Buchungen. Die Benachrichtigungen werden an alle in der E-Mail-Liste des Standorts angegebenen Adressen gesendet (zuerst als Empfänger, alle folgenden als BCC). Diese Art der Erinnerung muss in den <a href=\"admin.php?page=commonsbooking_options_reminder\">CommonsBooking Einstellungen</a>  aktiviert werden."
 
-#: src/Wordpress/CustomPostType/Location.php:351
+#: src/Wordpress/CustomPostType/Location.php:361
 msgid "Email addresses of the owner of the station. Can be reminded about bookings / cancellations and will receive the booking codes (when configured in the timeframe). You can enter multiple addresses separated by commas."
 msgstr "E-Mail-Adressen des Eigentümers der Station. Kann an Buchungen / Stornierungen erinnert werden und erhält die Buchungscodes (wenn im Zeitrahmen konfiguriert). Du kannst mehrere Adressen durch Kommas getrennt eingeben."
 
-#: src/Wordpress/CustomPostType/Location.php:368
+#: src/Wordpress/CustomPostType/Location.php:378
 msgid "Send copy of bookings / cancellations to location email"
 msgstr "Kopie der Buchungen/Stornierungen per E-Mail an den Standort senden"
 
-#: src/Wordpress/CustomPostType/Location.php:369
+#: src/Wordpress/CustomPostType/Location.php:379
 msgid "If enabled, the location email will receive a copy of all booking and cancellation notifications."
 msgstr "Wenn die Option aktiviert ist, erhält der Standort eine Blindkopie aller Buchungs- und Stornierungsbenachrichtigungen."
 
@@ -3979,7 +3820,7 @@ msgstr "Bitte <a href=\\\"%s\\\">melde dich an </a> , um deine Buchungen zu sehe
 msgid "A WordPress plugin for the management and booking of common goods."
 msgstr "Ein WordPress-Plugin für die Verwaltung und Buchung von Gemeingütern."
 
-#: src/Wordpress/CustomPostType/Booking.php:269
+#: src/Wordpress/CustomPostType/Booking.php:276
 msgid "Your reservation has expired, please try to book again"
 msgstr "Deine Reservierung ist abgelaufen, bitte versuche erneut zu buchen"
 
@@ -3995,11 +3836,11 @@ msgstr "Hier klicken, um das Upgrade auf die neueste Version fertig zu stellen. 
 msgid "Finish upgrade"
 msgstr "Upgrade fertigstellen"
 
-#: src/Service/Upgrade.php:138
+#: src/Service/Upgrade.php:141
 msgid "There are some tasks that need to be run to complete the update process. <br> This needs to be done so that the plugin can function correctly."
 msgstr "Es gibt einige Aufgaben, die ausgeführt werden müssen, um den Aktualisierungsprozess abzuschließen. <br> Das ist notwendig, um die korrekte Funktionsweise des Plugins zu gewährleisten."
 
-#: src/Service/Upgrade.php:141
+#: src/Service/Upgrade.php:144
 msgid "Click here to run the upgrade tasks."
 msgstr "Hier klicken, um die Upgrade-Aufgaben auszuführen."
 
@@ -4027,8 +3868,7 @@ msgstr "Ungültiges Enddatum"
 msgid "Start date must not be after the end date."
 msgstr "Das Startdatum darf nicht nach dem Enddatum liegen."
 
-#: src/Service/TimeframeExport.php:172
-#: src/View/TimeframeExport.php:39
+#: src/Service/TimeframeExport.php:172 src/View/TimeframeExport.php:39
 msgid "Export finished"
 msgstr "Export beendet"
 
@@ -4105,12 +3945,11 @@ msgstr "Das gleiche Datum wurde mehrere Male ausgewählt. Bitte ein Datum nur ei
 msgid "Startdate is missing. Please enter a start date to publish this timeframe."
 msgstr "Das Startdatum fehlt. Ein Startdatum muss eingegeben werden, damit der Zeitrahmen veröffentlicht werden kann."
 
-#: src/View/Booking.php:552
-#: src/Wordpress/CustomPostType/Booking.php:858
+#: src/View/Booking.php:555 src/Wordpress/CustomPostType/Booking.php:865
 msgid "Submit booking"
 msgstr "Buchung abschicken"
 
-#: src/Wordpress/CustomPostType/Booking.php:739
+#: src/Wordpress/CustomPostType/Booking.php:746
 msgid ""
 "<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>\n"
 "\t\t\t\t<ul>\n"
@@ -4130,19 +3969,19 @@ msgstr ""
 "                </p> \n"
 "\t\t\t\t"
 
-#: src/Wordpress/CustomPostType/Booking.php:767
+#: src/Wordpress/CustomPostType/Booking.php:774
 msgid "Book full day"
 msgstr "Ganztägig buchen"
 
-#: src/Wordpress/CustomPostType/Booking.php:770
+#: src/Wordpress/CustomPostType/Booking.php:777
 msgid "The booking should apply to the entire day(s)"
 msgstr "Die Buchung soll auf den gesamten Tag / die gesamten Tage angewendet werden"
 
-#: src/Wordpress/CustomPostType/Booking.php:810
+#: src/Wordpress/CustomPostType/Booking.php:817
 msgid "Valid booking code will be automatically retrieved for bookings that apply to the full day."
 msgstr "Ein gültiger Buchungscode wird automatisch für Buchungen, die sich auf den ganzen Tag beziehen, generiert."
 
-#: src/Wordpress/CustomPostType/Booking.php:819
+#: src/Wordpress/CustomPostType/Booking.php:826
 msgid ""
 "Here you must select the user for whom the booking is made.<br>\n"
 "                        If the booking was made by a user via frontend booking process, the user will be shown in this field.\n"
@@ -4152,12 +3991,11 @@ msgstr ""
 "                        Wenn die Buchung von einem/einer Nutzenden über den Frontend-Buchungsprozess vorgenommen wurde, wird der/die Nutzende in diesem Feld angezeigt.\n"
 "                        <br><strong>Hinweis: </strong>Der/die Nutzende erhält eine Buchungsbestätigung, sobald die Buchung abgeschickt wurde."
 
-#: src/Wordpress/CustomPostType/Booking.php:859
+#: src/Wordpress/CustomPostType/Booking.php:866
 msgid "This will create the specified booking and send out the booking confirmation email."
 msgstr "Dadurch wird die angegebene Buchung erstellt und die Buchungsbestätigung per E-Mail verschickt."
 
-#: src/Plugin.php:389
-#: src/Plugin.php:390
+#: src/Plugin.php:389 src/Plugin.php:390
 msgid "Mass Operations"
 msgstr "Massenverarbeitung"
 
@@ -4201,8 +4039,7 @@ msgstr "Verwaiste Buchungen gefunden, können migriert werden. <a href=\"admin.p
 msgid "Migrate orphaned bookings"
 msgstr "Verwaiste Buchungen migrieren"
 
-#: src/Service/MassOperations.php:64
-#: src/Service/MassOperations.php:67
+#: src/Service/MassOperations.php:64 src/Service/MassOperations.php:67
 #, php-format
 msgid "New location not found for booking with ID %s"
 msgstr "Neuer Standort für Buchung mit ID %s konnte nicht gefunden werden"
@@ -4227,11 +4064,11 @@ msgstr "Buchungen bei Totalausfall nicht stornieren"
 msgid "If checked, bookings will not be cancelled if the item has broken down. The user will be notified and once the item becomes available again, the old bookings are still valid."
 msgstr "Wenn ausgewählt, werden Buchungen nicht storniert, wenn ein Totalausfall für den Artikel gesetzt ist. Der / die Benutzer*in wird benachrichtigt und sobald der Artikel wieder verfügbar ist, sind die alten Buchungen weiterhin gültig."
 
-#: src/Plugin.php:537
+#: src/Wordpress/CustomPostType/Item.php:346
 msgid "Add custom title for filter"
 msgstr "Benutzerdefinierten Titel für Filtergruppe hinzufügen"
 
-#: src/Plugin.php:540
+#: src/Wordpress/CustomPostType/Item.php:349
 msgid "Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used."
 msgstr "Legt den Namen fest, der für die Kategorie verwendet werden soll, wenn sie in der Karte als Teil der Filtergruppe angezeigt wird. Hier kann auch benutzerdefinierter HTML-Code zum Kategorienamen hinzugefügt werden. Bleibt der Eintrag leer, wird der Standard Name der Kategorie verwendet."
 
@@ -4369,27 +4206,21 @@ msgstr "Es existiert bereits eine Buchung für den Standort in dem Zeitraum der 
 msgid "Processed %1$d of %2$d bookings"
 msgstr "%1$d von %2$d Buchungen verarbeitet"
 
-#: src/Model/Booking.php:1016
-#~ msgid "Unconfirmed"
-#~ msgstr "Unbestätigt"
-
-#: src/Model/Booking.php:1014
-#~ msgid "Confirmed"
-#~ msgstr "Bestätigt"
-
 #: includes/OptionsArray.php:190
 msgid ""
 "Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4\n"
 "                <br>More information in the documentation: <a href=\"https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/\" target=\"_blank\">Booking codes</a>"
 msgstr ""
+"Geben Sie die Buchungscodes ein, die für Buchungen mit ganztägigen Buchungszeiträumen im Voraus generiert werden sollen.  Geben Sie die Buchungscodes als kommagetrennte Liste ein, z.B.: Code1,Code2,Code3,Code4\n"
+"                <br>Mehr Informationen dazu in der Dokumentation: <a href=\"https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/\" target=\"_blank\">Buchungscodes</a>"
 
-#: src/Wordpress/CustomPostType/Location.php:502
+#: src/Wordpress/CustomPostType/Location.php:512
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/\">Create Locations</a> for more information."
-msgstr ""
+msgstr "Wenn ausgewählt, können nicht aktivierte Tage bei der Buchung überbucht werden. Dies gilt für alle Zeitrahmen vom Typ „buchbar“, die mit diesem Standort verknüpft sind. Lies die Dokumentation unter <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/\">Standorte anlegen</a> für mehr Informationen."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:629
 msgid "Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/\">Manage Booking Timeframes</a>"
-msgstr ""
+msgstr "Wähle aus, ob Nutzende bei der Buchung nur den gesamten Zeitraum (gesamter Slot) auswählen oder innerhalb des Zeitraums in einem stündlichen Raster buchen können. Weitere Informationen findest Du in der Dokumentation: <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/\">Buchungszeiträume verwalten</a>"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:745
 msgid ""
@@ -4399,3 +4230,132 @@ msgid ""
 "\t\t\t\t<a href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/\" target=\"_blank\">More Information in the documentation</a>\n"
 "\t\t\t\t"
 msgstr ""
+"Du kannst Buchungscodes automatisch generieren. Codes können nur mit den folgenden Einstellungen generiert werden:</br>\r\n"
+"\t\t\t\t- Der ganze Tag ist aktiviert</br>\r\n"
+"\t\t\t\t- Zeitrahmen ist buchbar</br>\r\n"
+"\t\t\t\t<a href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>\r\n"
+"\t\t\t\t"
+
+#: src/View/Item.php:77
+msgid "Book"
+msgstr "Buchen"
+
+#: src/View/Item.php:78
+msgid "Cancel"
+msgstr "Stornieren"
+
+#: includes/OptionsArray.php:232
+msgid ""
+"\n"
+"<h1>Booking codes for {{item:post_title}} : {{codes:formatDateRange}}</h1>\n"
+"\n"
+"<p>Booking codes Table:</p>\n"
+"<br>\n"
+"{{codes:codeTable}}\n"
+"<br>\n"
+"<p>Thanks, the Team.</p>\n"
+"                            "
+msgstr ""
+"\n"
+"<h1>Buchungscodes für {{item:post_title}} : {{codes:formatDateRange}}</h1>\r\n"
+"\n"
+"<p>Tabelle mit Buchungscodes:</p>\n"
+"<br>\n"
+"{{codes:codeTable}}\n"
+"<br>\n"
+"<p>Danke, das Team.</p>\n"
+"                            "
+
+#: includes/OptionsArray.php:293
+msgid ""
+"\n"
+"<p>\n"
+"Thanks and all the best,\n"
+"the Team.\n"
+"</p>\t\t\t\t\t"
+msgstr ""
+"\n"
+"<p>\n"
+"Danke und alles gute,\n"
+"das Team.\n"
+"</p>\t\t\t\t\t"
+
+#: includes/OptionsArray.php:396
+msgid ""
+"\n"
+"Hi {{user:first_name}},<br>\n"
+"<br>\n"
+"your booking of {{item:post_title}} at {{location:post_title}} {{booking:formattedBookingDate}} has been canceled.<br>\n"
+"<br>\n"
+"{{booking:getEmailSignature}}\n"
+"                            "
+msgstr ""
+"\n"
+"Hi {{user:first_name}},<br>\n"
+"<br>\n"
+"deine Buchung von {{item:post_title}} am Standort {{location:post_title}} {{booking:formattedBookingDate}} wurde storniert.<br>\n"
+"<br>\n"
+"{{booking:getEmailSignature}}\n"
+"                            "
+
+#: includes/OptionsArray.php:1542
+msgid "Cache Adapter"
+msgstr "Cache Adapter"
+
+#: includes/OptionsArray.php:1549
+msgid "Location of cache"
+msgstr "Cache Pfad"
+
+#: includes/OptionsArray.php:1550
+msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
+msgstr "Der Pfad zu dem Cache. Kann ein Ordner sein für den Dateisystem-Cache, eine REDIS DSN, ..."
+
+#: src/Service/Cache.php:156
+msgid "Filesystem"
+msgstr "Dateisystem"
+
+#: src/Service/Cache.php:172
+msgid "Redis"
+msgstr "REDIS"
+
+#: src/Service/Cache.php:182
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: src/Service/Cache.php:410
+msgid "Cache is disabled."
+msgstr "Cache ist deaktiviert."
+
+#: src/Service/Cache.php:413
+msgid "Cache adapter successfully connected."
+msgstr "Cache Adapter erfolgreich verbunden."
+
+#: includes/OptionsArray.php:1562
+msgid "Periodical warmup through cronjob"
+msgstr "Regelmäßiges Aufwärmen durch einen Cronjob"
+
+#: includes/OptionsArray.php:1563
+msgid "Will periodically warm up the cache through a cronjob. This can be useful, when you have a lot of timeframes / bookings but your site is rarely accessed. <br> You NEED to hook WP-Cron Into the System Task Scheduler for this to have any positive effect. <b> You probably don't want this. </b>"
+msgstr "Wärmt den Cache regelmäßig über einen Cronjob auf. Das kann praktisch sein, wenn du viele Zeitrahmen / Buchungen in deiner Instanz hast, die Seite aber selten aufgerufen wird. <br> Damit dieses Feature funktioniert, muss WP-Cron in den System Task Scheduler eingebunden sein. <b> Höchstwahrscheinlich ist diese Einstellung nicht für deine Instanz geeignet. </b>"
+
+#: includes/OptionsArray.php:1568
+msgid "Every 10 minutes"
+msgstr "Alle 10 Minuten"
+
+#: includes/OptionsArray.php:1569
+msgid "Every 30 minutes"
+msgstr "Alle 30 Minuten"
+
+#: includes/OptionsArray.php:1570
+msgid "Every hour"
+msgstr "Jede Stunde"
+
+#: includes/OptionsArray.php:1571
+msgid "Every day"
+msgstr "Jeden Tag"
+
+#~ msgid "Unconfirmed"
+#~ msgstr "Unbestätigt"
+
+#~ msgid "Confirmed"
+#~ msgstr "Bestätigt"

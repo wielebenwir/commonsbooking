@@ -1,12 +1,13 @@
-#  Shortcodes für Frontend-Darstellung
+#  Shortcodes
 
 __
 
 Die CommonsBooking-Inhalte (z.B. Artikellisten oder Verfügbarkeiten) kannst du auf der Website anzuzeigen, indem du sogenannte Shortcodes verwendest.
 Shortcodes können in jede WordPress Seite eingefügt werden. [Offizielle WordPress Dokumentation](https://en.support.wordpress.com/shortcodes).
 
-Die Anzeige eines Shortcodes kann dabei über Parameter beeinflusst werden.
-Beispielsweise:
+Die Anzeige eines Shortcodes kann dabei über bestimmte Argumente beeinflusst werden.
+
+Beispiel-Argumente:
 
   * ` orderby ` : Bestimmt das Attribut nachdem sortiert werden soll z.B. ` orderby=post_title ` für eine Sortierung nach dem Namen eines Posts.
   * ` order ` : Bestimmt die Sortierreihenfolge. Aufsteigend ` ASC ` und absteigend ` DESC ` .
@@ -20,9 +21,15 @@ sie sich befinden.
 
   * Shortcode: `[cb_items]`
   * Argumente:
-    * Kategorie-Filter: `category_slug`
-    * Nur einzelnen Artikel anzeigen: `[cb_items p=PostID]`
-    * Nur Artikel von einer Station anzeigen: `[cb_items location-id=PostIDVonDemStandort]`
+    * `category_slug`: Kategorie-Filter
+    * `p`: Nur einzelnen Artikel anzeigen, wobei 1234 die numerische ID von dem Artikel ist.
+      ```
+      [cb_items p=1234]
+      ```
+    * `location-id`: Nur Artikel von einer Station anzeigen, wobei 1234 die numerische ID von dem Standort Post ist.
+      ```
+      [cb_items location-id=1234]
+      ```
 
 ![](/img/shortcode-cb-items.png)
 
@@ -31,8 +38,9 @@ sie sich befinden.
 Wenn ihr Artikel Kategorien zugeordnet habt, könnt ihr über einen Parameter
 nur Artikel einer bestimmten Kategorie anzeigen. Dazu sucht ihr zunächst die
 Titelform / Slug der Kategorie über das Kategorie-Menü aus und setzt diese
-dann folgendermaßen ein:
+dann folgendermaßen ein.
 
+Beispiel:
 ```
 [cb_items category_slug=titelform]
 ```
@@ -85,11 +93,31 @@ Zeigt eine Tabelle aller veröffentlichen Artikel an mit Stationen, an denen
 sie sich befinden und der aktuellen Verfügbarkeit.
 
   * Shortcode: ` [cb_items_table] `
-  * Die Anzahl der anzuzeigende Tage ist standardmäßig auf 31 gesetzt. Über das Attribut days kann dieser Wert angepasst werden. Beispiel, um nur 10 Tage anzuzeigen: ` [cb_items_table days=10] `
-  * Zusätzlich kann oberhalb der Tabelle eine kurze Beschreibung mit dem Attribut desc eingefügt werden. ` [cb_items_table desc=Lastenräder] `
-  * Die Liste der Einträge kann mit folgenden Attributen weiter gefiltert werden
-    * Filter nach Artikel-Kategorien: itemcat (Beispiel: ` [cb_items_table itemcat=itemcategoryslug] `
-    * Filter nach Standort-Kategorien: locationcat (Beispiel: ` [cb_items_table locationcat=locationcategoryslug] `
+  * Argumente
+    * `days`: Die Anzahl der anzuzeigende Tage ist standardmäßig auf 31 gesetzt. Über das Attribut days kann dieser Wert angepasst werden. Beispiel, um nur 10 Tage anzuzeigen.
+
+      Beispiel:
+      ```
+      [cb_items_table days=10]
+      ```
+    * `desc`: Zusätzlich kann oberhalb der Tabelle eine kurze Beschreibung mit dem Attribut desc eingefügt werden.
+
+      Beispiel:
+      ```
+      [cb_items_table desc=Lastenräder]
+      ```
+    * `itemcat`: Filter nach Artikel-Kategorien
+
+      Beispiel:
+      ```
+      ` [cb_items_table itemcat=itemcategoryslug] `
+      ```
+    * `locationcat`: Filter nach Standort-Kategorien
+
+      Beispiel:
+      ```
+      [cb_items_table locationcat=locationcategoryslug]
+      ```
 
 ![](/img/shortcode-cb-items-table.png)
 
