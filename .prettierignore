@@ -1,0 +1,11 @@
+/*
+!/assets
+!/tests
+/tests/*
+!/tests/cypress
+
+!**/*.js
+**/*.min.js
+!**/*.scss
+**/*.json
+**/*.css

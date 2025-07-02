@@ -25,6 +25,7 @@
 		"grunt-contrib-watch": "^1.1.0",
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
+		"prettier": "^3.3.3",
 		"sass": "^1.89.2",
 		"vitepress": "^1.6.3"
 	},
