@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.8
-Stable Tag: 2.10.4
+Stable Tag: 2.10.5
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,14 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.5 (03.07.2025)
+ADDED: Filter Hook to change pages displayed in mobile calendar
+ENHANCED: Cache can now be disabled (not recommended)
+ENHANCED: Cache can now be configured to warm up regularly via cronjob
+FIXED: CB Manager not able to access timeframes of type "blocked"
+FIXED: Calendar now using translated text instead of German text
+UPDATED: Dependencies
 
 ### 2.10.4 (25.04.2025)
 FIXED: cb_bookings shortcode crashing when location was deleted
