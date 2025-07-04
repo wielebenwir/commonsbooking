@@ -90,7 +90,7 @@ class UserRepository {
 	/**
 	 * Returns an array of all User Roles as roleID => translated role name
 	 *
-	 * @return array
+	 * @return array<int|string, string>
 	 */
 	public static function getUserRoles(): array {
 		global $wp_roles;
@@ -115,8 +115,8 @@ class UserRepository {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param int          $userID
-	 * @param string|array $roles
+	 * @param int             $userID
+	 * @param string|string[] $roles
 	 * @return bool
 	 */
 	public static function userHasRoles( int $userID, $roles ): bool {

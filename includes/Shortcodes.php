@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @param array $atts
+ * @return string
+ */
 function commonsbooking_tag( $atts ) {
 	$atts = shortcode_atts(
 		array(
