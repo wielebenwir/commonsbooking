@@ -12,7 +12,7 @@ abstract class PostRepository {
 	 * Returns post by id as CB-CPT if possible.
 	 * Will try to return a model class if possible.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|mixed|WP_Post
 	 * @throws \Psr\Cache\CacheException
