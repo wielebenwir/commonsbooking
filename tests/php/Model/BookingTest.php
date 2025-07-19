@@ -248,7 +248,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testReturnDatetime() {
 		// TODO 12:01? correct
-		$this->assertEquals( 'July 3, 2021 8:00 am - 12:01 am', $this->testBookingTomorrow->returnDatetime() );
+		$this->assertEquals( 'July 3, 2021 12:00 am - 12:01 am', $this->testBookingTomorrow->returnDatetime() );
 
 		// Test Return for Slot Timeframes (#1342)
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 3:00 pm - 6:00 pm', $this->testBookingSpanningOverTwoSlots->returnDatetime() );

@@ -495,7 +495,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_end   = date_i18n( $date_format, $this->getRawEndDate() );
 		$time_end   = date_i18n( $time_format, $this->getRawEndDate() + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
-		$time_start = date_i18n( $time_format, strtotime( $this->getStartTime() ) );
+		$time_start = date_i18n( $time_format, $this->getStartDate() );
 
 		if ( $this->isFullDay() ) {
 			return $date_end;
