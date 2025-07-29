@@ -7,7 +7,7 @@ use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 /**
  * Checks if current user is allowed to edit custom post.
  *
- * @param $post
+ * @param int|WP_Post $post
  *
  * @return bool
  * @throws Exception
@@ -24,8 +24,8 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 /**
  * Checks if user is allowed to edit custom post.
  *
- * @param $post
- * @param $user
+ * @param int|WP_Post $post
+ * @param WP_User     $user
  *
  * @return bool
  * @throws Exception
@@ -53,6 +53,8 @@ function commonsbooking_isUserAllowedToEdit( $post, WP_User $user ): bool {
  * Validates if current user is allowed to edit current post in admin.
  *
  * @param $current_screen
+ *
+ * @return void
  */
 function commonsbooking_validate_user_on_edit( $current_screen ) {
 	if ( $current_screen->base == 'post' && in_array( $current_screen->id, Plugin::getCustomPostTypesLabels() ) ) {
@@ -165,7 +167,11 @@ function commonsbooking_fix_view_counts( $postType, $views ) {
 	return array_intersect_key( $views, $counts );
 }
 
-// Check if current user has admin role
+/**
+ * Check if current user has admin role
+ *
+ * @return bool
+ */
 function commonsbooking_isCurrentUserAdmin() {
 	if ( ! is_user_logged_in() ) {
 		return false; }
@@ -190,11 +196,11 @@ function commonsbooking_isCurrentUserAdmin() {
  *
  * An admin is allowed to edit and see all posts.
  *
- * @param   \WP_User $user
+ * @param WP_User $user
  *
  * @return bool
  */
-function commonsbooking_isUserAdmin( \WP_User $user ) {
+function commonsbooking_isUserAdmin( WP_User $user ) {
 	foreach ( \CommonsBooking\Repository\UserRepository::getAdminRoles() as $adminRole ) {
 		if ( in_array( $adminRole, $user->roles ) ) {
 			return true;
@@ -211,7 +217,7 @@ function commonsbooking_isUserAdmin( \WP_User $user ) {
  * @param WP_User $user
  * @return bool
  */
-function commonsbooking_isUserCBManager( \WP_User $user ): bool {
+function commonsbooking_isUserCBManager( WP_User $user ): bool {
 	$isManager = ! empty( array_intersect( \CommonsBooking\Repository\UserRepository::getManagerRoles(), $user->roles ) );
 
 	/**
@@ -225,7 +231,11 @@ function commonsbooking_isUserCBManager( \WP_User $user ): bool {
 	return apply_filters( 'commonsbooking_isCurrentUserCBManager', $isManager, $user );
 }
 
-// Check if current user has subscriber role
+/**
+ * Check if current user has subscriber role
+ *
+ * @return bool
+ */
 function commonsbooking_isCurrentUserSubscriber() {
 	$user = wp_get_current_user();
 
@@ -253,7 +263,7 @@ function commonsbooking_isCurrentUserCBManager() {
 /**
  * Returns true if user is allowed to book based on the timeframe configuration (user role)
  *
- * @param mixed $timeframeID
+ * @param int|string $timeframeID
  *
  * @return bool
  */
@@ -340,8 +350,8 @@ function commonsbooking_isUserAllowedToSee( $post, WP_User $user ): bool {
  *
  * Used by Service\iCalendar for authentication.
  *
- * @param $user_id
- * @param $user_hash
+ * @param int|string   $user_id
+ * @param false|string $user_hash
  *
  * @return bool
  */
