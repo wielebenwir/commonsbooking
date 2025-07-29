@@ -13,7 +13,7 @@
 		"@wordpress/env": "^10.26.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"cypress": "^14.5.3",
-		"editorconfig": "^3.0.0",
+		"editorconfig": "^3.0.1",
 		"grunt": "^1.6.1",
 		"grunt-babel": "^8.0.0",
 		"grunt-cli": "^1.5.0",
