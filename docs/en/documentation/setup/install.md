@@ -24,11 +24,11 @@ enter at least the sender name and e-mail in the ‘Templates’ tab to get star
 
 ### Create locations, articles and time frames
 
-  * Create **articles** under ‘CommonsBooking -> Articles’
-  * **Create locations** under ‘CommonsBooking -> Locations’
-  * You can then specify when an item should be available for lending at a specific location under the menu item ‘**Time frame**’.
+  * [Create **items**](/en/documentation/first-steps/create-item) under ‘CommonsBooking -> Items’
+  * [**Create locations**](/en/documentation/first-steps/create-location) under ‘CommonsBooking -> Locations’
+  * You can then specify when an item should be available for lending at a specific location under the menu item ‘[**Timeframe**](/en/documentation/first-steps/booking-timeframes-manage)’.
 
-You can find detailed information on this under \[first steps](/en/documentation/first-steps/) (Not translated yet).
+You can find detailed information on this under [first steps](/en/documentation/first-steps/).
 
 ### Show content on the website
 

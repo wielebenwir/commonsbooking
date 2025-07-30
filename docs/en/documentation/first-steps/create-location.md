@@ -1,67 +1,88 @@
-#  Station anlegen
+#  Create location
 
 __
 
-**Stationsbeschreibung**
+## Location description
+Use the large text editor at the top of the location page to describe
+your location in detail (type of location, association with the project, ...).
+This description will be shown on the location detail page.
 
-Nutze den großen Texteditor oben auf der Stationsseite nur für die
-Detailbeschreibung deiner Station (Art der Station, Projekthintergründe,
-Verlinkung zur Webseite usw.). Diese Beschreibung wird auf der
-Stationsdetailseite angezeigt.
+## Location image
 
-**Adressdaten**
+You can display an image of the location in the frontend. The featured image
+can be set on the right side under the "Publish" button.
 
-Ergänze die Adressdaten mit Straße, Hausnummer, Postleitzahl und Ort in den
-dafür vorgesehen Feldern.
+## Address
 
-**Stations-Bild**
+Fill out the address to this location using the form fields provided.
 
-Auf Wunsch kann bei der Station im Frontend ein Bild angezeigt werden. Das
-Beitragsbild wird rechts unter dem Button “publizieren” definiert.
+## Set / Update GPS and map
 
-**Überbuchen von geblockten Tagen erlauben**
+When saving the location, GPS coordinates are usually retrieved automatically
+for the address provided. In case that didn't work, coordinates can also be
+retrieved manually after saving the location by clicking the button below.
+You can also enter the coordinates manually.
 
-Wenn du einen Buchungszeitraum anlegst (siehe [Buchungszeiträume anlegen](/dokumentation/erste-schritte/buchungszeitraeume-verwalten) ) kannst du auswählen,
-ob Buchungen nur an bestimmten Wochentagen möglich sind. So kannst du z.B.
-definieren, dass Buchungen nur Montags – Freitags möglich sind. Dies bedeutet
-dann, dass eine Abholung und Rückgabe nur an diesen Tagen erfolgt. Um
-Nutzenden aber eine Buchung auch über Zeiträume hinweg zu erlauben, an denen
-keine Abholung oder Rückgabe möglich ist, kannst du das Überbuchen von
-geblockten Tagen erlauben.
+## Show location map on item view
 
-**Zählung der überbuchten Tage (seit 2.8.5)**
+If enabled, a map with the location of the item will be displayed on the item detail page,
+alongside the booking calendar.
 
-Unter Umständen kann es mit der Überbuchung sinnvoll sein den Nutzenden zu
-ermöglichen über einen längeren Zeitraum als den Buchungszeitraum zu buchen.
-So ist z.B. eine Abholung von Freitag bis Montag bei 3 maximalen Buchungstagen
-nur möglich, wenn von diesen überbuchten Tagen nicht alle gezählt werden. Im
-folgenden siehst du einige Screenshots mit Einstellungen für die Überbuchung
-und deren Auswirkungen auf den Kalender. Der dazugehörige Zeitrahmen hat dabei
-als maximale Buchungsdauer immer 3 Tage eingestellt.
+![](/img/item-locationmap.png){width="400"}
+_The page of an item with the location map enabled, address and location image._
 
-_Überbuchung aktiviert ohne Zählung der Tage_
+## General location information
 
+In the location information, you can define the information that will be
+provided to the user regarding pickup and contact to the location:
 
-![](/img/overbooking-nocount.png)
+* **Location email**: Email addresses that should receive important emails about activities at the location (e.g. bookings, booking restrictions, booking codes). Multiple addresses can be entered, separated by commas.
+* **Send copy of bookings / cancellations to location email**: Enabling this option will send a copy of the booking and cancellation emails to the email addresses specified above.
+* **Pickup instructions** (opening hours, pickup process, etc.) will be displayed on the item page and throughout the booking process. The information provided here is public and visible even without a booking or registration.
+* **Location contact information** (email and phone number) will only be displayed on the confirmation page after booking. If you want users to see some information only after booking, you can enter it here.
+* **Location admin(s)**: Select one or more users to allow them to edit and manage this specific location. More about this: [Permission management](/en/documentation/basics/permission-management) (not translated yet)
 
-_Überbuchung aktiviert mit Zählung jedes einzelnen Tages (das Wochenende ist
-nicht überbuchbar, weil das eine Buchung von mehr als drei Tagen bedeuten
-würde_ )
+## Overbooking settings {#overbooking}
 
-![](/img/overbooking-countall.png)
+::: info
+In the following, we will use the term "Overbooking" to describe a booking period that spans over days where an item can neither be picked up or dropped off. This term is misleading and there is an [ongoing discussion on how to fix this issue.](https://github.com/wielebenwir/commonsbooking/issues/1858)
+:::
 
-_Nur der erste Tag wird bei der Überbuchung gezählt: Das Wochenende ist somit
-überbuchbar aber es kann nicht bis Dienstag gebucht werden._
+When creating a timeframe (see [Timeframes](/en/documentation/first-steps/booking-timeframes-manage) ),
+you can choose whether bookings are only possible on certain days of the week.
+This way, you can configure items that are only available for booking on weekdays, for example.
+This also means, that pickup and drop-off can only occur on these days. If you want
+to allow users to book items over periods where no pickup or drop-off is possible,
+for example over the weekend, you can allow the overbooking of blocked days.
 
-![](/img/overbooking-countone.png)
+**Use global location settings**
 
-**Allgemeine Standortinformationen**
+By default, the overbooking settings are defined in the CommonsBooking settings
+under the General tab. If this checkbox is not checked, the location will use the settings defined below.
 
-In den Standortinformationen definierst du, welche Informationen zur Abholung
-usw. wann angezeigt werden:
+**Allow locked day overbooking**
 
-  * Abhol-Informationen (Öffnungszeiten, Abholprozess usw.) werden auf der Artikelseite und im gesamtem Buchungsprozess angezeigt.
-  * Standort-E-Mail: E-Mail-Adresse, an die die Buchungsbestätigungs-E-Mail geschickt wird. Mehrere Adressen können mit einem Komma getrennt werden.
-  * Kontaktinformationen (E-Mail und Telefonnummer) werden erst auf der Bestätigungsseite nach der Buchung angezeigt
-  * Stations-Verwaltende: Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, diesen bestimmten Standort zu bearbeiten und zu verwalten. Mehr dazu: [ Zugriffsrechte vergeben ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager)
+Enables or disables the overbooking of blocked days.
 
+**Count locked days when overbooking**
+
+Under certain conditions, it can be useful to allow users to book
+an item longer than usually possible when they are overbooking.
+If, for instance, a user would like to book an an item at a location
+that is closed on weekends, they might want to pick it up on Friday
+and return it on Monday. When the maximum booking duration is set to 3 days,
+they would not be able to make that booking unless the overbooked days are
+not counted towards the maximum booking duration. Below, you can see some screenshots
+further illustrating the overbooking settings and their effects on the calendar.
+The timeframe in the examples has a maximum booking duration of 3 days.
+
+![](/img/overbooking-nocount.png){data-zoomable}
+_Overbooking enabled without counting any of the overbooked days_
+
+![](/img/overbooking-countall.png){data-zoomable}
+_Overbooking enabled while counting every overbooked day (the weekend is not bookable by the user,
+because that would exceed the maximum booking duration of three days)_
+
+![](/img/overbooking-countone.png){data-zoomable}
+_Only the first day is counted towards the quota. The rest is ignored. The user can therefore book an item over the weekend but has
+to return it on Monday._

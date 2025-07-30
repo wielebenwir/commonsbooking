@@ -1,28 +1,25 @@
-#  Artikel anlegen
+#  Create item
 
 __
 
-**Beschreibung des Artikels**
+**Item description**
 
-Nutze den großen Texteditor oben auf der Stationsseite nur für die
-Detailbeschreibung deines Artikels (Ausstattung, Maße, Eigenschaften,
-Einsatzzwecke). Diese Beschreibung wird auf der Artikeldetailseite angezeigt.
+Use the text editor on the page only for the detailed description of your item (equipment, dimensions, features, use-cases).
+This description will be displayed on the item detail page.
 
-**Artikel-Bild**
+**Item image**
 
-Ergänze bitte unbedingt ein Bild des Artikels. Das Beitragsbild wird nicht im
-Texteditor integriert, sondern rechts unter dem Button "publizieren"
-definiert. Das Bild wird in der Frontend-Karte, in der Stationen- und
-Artikelliste sowie im Buchungsprozess angezeigt.
+Please make sure to include an image of the item.
+The image has to be added not in the text editor, but on the right side under the "Publish" button.
+The image will be displayed in the frontend map, in the location and item list, as well as during the booking process.
 
-**Artikel-Administrierende**
+**Item Admin(s)**
 
-Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben,
-diesen bestimmten Artikel zu bearbeiten und zu verwalten. Hier können nur
-Benutzer mit der Rolle cb_manager ausgewählt werden
+Select one or more users to allow them to edit and manage this specific item.
+Only users with the role cb_manager can be selected here.
+[Read more about the cb_manager role](/en/documentation/basics/permission-management)
 
-**Textauszug**
+**Excerpt**
 
-Ergänze hier die Kurzversion der Artikelbeschreibung, diese wird z.B. in der
-Artikel-Liste angezeigt.
+Add a short version of the item description here; this will be displayed in the item list, the location list and in the map popup.
 
