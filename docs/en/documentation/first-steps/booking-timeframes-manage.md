@@ -7,14 +7,15 @@ The timeframe defines a time window (start and end date) and the booking conditi
 which items can be booked. The timeframe type specifies whether we define a period in which the item is available (bookable) or not (holiday/repair).
 
 A bookable timeframe can only be created for one item and one location at a time.
-A timeframe which blocks the item (holiday / repair) on the other hand can be linked to multiple items or locations.
+A timeframe which blocks the item (holiday / repair), on the other hand, can be linked to multiple items or locations.
 
-A commmon approach to timeframe creation is to create a timeframe for when you want the item
+A common approach to timeframe creation is to create a timeframe for when you want the item
 to be bookable and another one for the holidays of the location operators.
 
-::: info Getting started
+:::info Getting started
 On this page you will learn how to create a timeframe in the backend to make an item bookable.
 If you want to know how to display the bookings that are on offer (using shortcodes), after you have published your timeframes, [click here.](/en/documentation/administration/shortcodes)
+:::
 
 **Caution**: Timeframes cannot be directly accessed in the frontend using the backend link "View Post" but must be embedded using the shortcodes mentioned above.
 
@@ -36,7 +37,7 @@ and click on "Add new timeframe". From there on fill out the form:
 
 ### **Type:**
 
-* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](/en/documentation/basics/timeframes-config).
+* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](/en/documentation/basics/timeframes-config). (Not translated yet)
 
 ### **Location:**
 
@@ -46,7 +47,7 @@ and click on "Add new timeframe". From there on fill out the form:
 
 * Select the item that should be available at the location.
 
-### ** Configure bookings:**
+### **Configure bookings:**
 * **Maximum**: How many days can be booked in a row. (Note: If there are multiple timeframes for the same item and location, the value of the first valid timeframe will be used.)
 * **Lead time:**: How many days in advance the location should have between booking and pickup. For example, if 2 days are set, then the item can only be booked for pickup two days from now. Leave empty to allow immediate bookings.
 * **Calendar shows as bookable:**: How many days the item can be booked in advance. For example, if 7 days are set, then users can only book the item in the span of next week.
@@ -57,7 +58,7 @@ and click on "Add new timeframe". From there on fill out the form:
 * **Grid:** Irrelevant for full-day timeframes. If "Full slot" is selected, the item can only be booked from the start and end time of the timeframe. If "Hourly" is selected, each hour between the start and end time can be booked individually.
 * **Start time / End time:** Irrelevant for full-day timeframes. Defines when the booking window starts and ends each day.
 
-### **Zeitrahmenwiederholung:**
+### **Timeframe repetition:**
 
 _Select how the bookable timeframe should be repeated within the specified start and end dates._
 * **No repetition**

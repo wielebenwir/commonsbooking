@@ -296,7 +296,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Manage booking timeframes', link: 'booking-timeframes-manage'},
               { text: 'Set up booking rules', link: 'setup-bookingrules' },
               { text: 'Manage booking restrictions', link: 'manage-booking-restrictions' },
-              { text: 'Import national holidays', link: 'timeframes-holidays' }
+              { text: 'Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
       },
       /*
