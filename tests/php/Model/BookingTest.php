@@ -61,9 +61,9 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testTermsApply() {
-		\CommonsBooking\Plugin::registerItemTaxonomy();
+		\CommonsBooking\Wordpress\CustomPostType\Item::registerPostTypeTaxonomy();
 		// now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
-		$taxonomy  = \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() . 's_category';
+		$taxonomy  = \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName();
 		$term      = wp_create_term( 'Test Category', $taxonomy );
 		$otherTerm = wp_create_term( 'Other Category', $taxonomy );
 		wp_set_post_terms( $this->itemId, [ $term['term_id'] ], $taxonomy );
@@ -72,9 +72,9 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testFilterTermsApply() {
-		\CommonsBooking\Plugin::registerItemTaxonomy();
+		\CommonsBooking\Wordpress\CustomPostType\Item::registerPostTypeTaxonomy();
 		// now let's assign our item to a category, that timeframe also to the same category and check if we can still get the timeframe
-		$taxonomy       = \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() . 's_category';
+		$taxonomy       = \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName();
 		$term           = wp_create_term( 'Test Category', $taxonomy );
 		$otherItem      = $this->createItem( 'Other Item', 'publish' );
 		$otherLocation  = $this->createLocation( 'Other Location', 'publish' );

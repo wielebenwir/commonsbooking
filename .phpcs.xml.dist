@@ -78,6 +78,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https:
         <!-- Excludes Short Array Syntax sniffs entirely -->
         <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Generic.Commenting.DocComment.MissingShort" />
 
         <!-- Exclude namespace -->
         <exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.namespaceFound" />
