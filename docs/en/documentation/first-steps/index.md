@@ -8,7 +8,7 @@ The following pages will guide you step by step through the setup process. Begin
 
 CommonsBooking is a highly flexible tool, which can feel a bit overwhelming at first. These guides are here to help you get started and to familiarize yourself with the basic concepts of CommonsBooking.
 
-If this is your first time using CommonsBooking, be sure to check out the [Basics](/en/documentation/basics)(not translated yet) section as well.
+If this is your first time using CommonsBooking, be sure to check out the [Basics](/en/documentation/basics/)(not translated yet) section as well.
 
 :::info
 All of the guides in this section assume that you are logged in to the WordPress backend with administrator rights, and that the "CommonsBooking" menu item is selected on the left-hand side.

@@ -10,7 +10,7 @@ Fange am besten damit an einen [Artikel](/dokumentation/erste-schritte/artikel-a
 Anschließend kannst du dich, wenn nötig, dich mit [Einschränkungen](/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten) und [Buchungsregeln](/dokumentation/erste-schritte/buchungsregeln-einrichten) auseinandersetzen. CommonsBooking
 ist ein sehr flexibles Werkzeug, was am Anfang etwas überwältigend sein kann. Die folgenden Anleitungen helfen dir dabei, dich zurechtzufinden und dich mit den Grundlegenden Konzepten von CommonsBooking vertraut zu machen.
 
-Falls das dein erster Kontakt mit CommonsBooking ist, schau dir auch die [Artikel zu den Grundlagen](/dokumentation/grundlagen) an.
+Falls das dein erster Kontakt mit CommonsBooking ist, schau dir auch die [Artikel zu den Grundlagen](/dokumentation/grundlagen/) an.
 
 :::info 
 Alle Anleitungen in diesem Abschnitt gehen davon aus, dass du im WordPress Backend als Administrator eingeloggt bist und
