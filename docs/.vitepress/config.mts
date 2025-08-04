@@ -49,7 +49,7 @@ export default defineConfig({
           text: 'Bearbeite diese Seite auf Github'
         },
         sidebar: {
-          '/dokumentation/': { base: '/dokumentation/', items: sidebarDocs_de() },
+          '/dokumentation/': { items: sidebarDocs_de() },
         },
         footer: {
           message: 'Lizensiert unter der GNU v2 Lizenz. <br> <a href="/impressum/">Impressum</a> | <a href="/datenschutzerklaerung/">Datenschutzerklärung</a>',
@@ -88,7 +88,7 @@ export default defineConfig({
             text: 'Edit this page on Github'
           },
           sidebar: {
-            '/en/documentation/': { base: '/en/documentation/', items: sidebarDocs_en() },
+            '/en/documentation/': {  items: sidebarDocs_en() },
           },
           footer: {
             message: 'Licensed under the GNU v2 License. <br> <a href="/en/imprint/">Imprint</a> | <a href="/en/privacy-policy/">Privacy Policy</a>',
