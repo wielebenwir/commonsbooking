@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-02T09:09:29+00:00\n"
+"POT-Creation-Date: 2025-08-04T10:21:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -2890,55 +2890,63 @@ msgstr ""
 msgid "Select location admins."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:442
+#: src/Wordpress/CustomPostType/Location.php:443
+msgid "Overbooking settings"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:452
 msgid "Use global location settings"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:443
-msgid "If selected, the global location settings (under the \"General\" tab) will be used for this location. If not selected, the settings below will be used."
+#: src/Wordpress/CustomPostType/Location.php:453
+msgid "If selected, the global location settings (under the \"General\" tab) will be used to define overbookings for this location. If not selected, the settings below will be used."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:456
+#: src/Wordpress/CustomPostType/Location.php:467
+msgid "Reminders"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:476
 msgid "Receive booking start reminder"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:457
+#: src/Wordpress/CustomPostType/Location.php:477
 msgid "If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:465
+#: src/Wordpress/CustomPostType/Location.php:485
 msgid "Receive booking end reminder"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:466
+#: src/Wordpress/CustomPostType/Location.php:486
 msgid "If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:480
+#: src/Wordpress/CustomPostType/Location.php:500
 msgid "Location Meta-Data"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:511
+#: src/Wordpress/CustomPostType/Location.php:531
 msgid "Allow locked day overbooking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:512
+#: src/Wordpress/CustomPostType/Location.php:532
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/\">Create Locations</a> for more information."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:517
+#: src/Wordpress/CustomPostType/Location.php:537
 msgid "Count locked days when overbooking"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:518
+#: src/Wordpress/CustomPostType/Location.php:538
 msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:523
+#: src/Wordpress/CustomPostType/Location.php:543
 msgid "Count connected locked days as one"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Location.php:524
+#: src/Wordpress/CustomPostType/Location.php:544
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
 msgstr ""
 

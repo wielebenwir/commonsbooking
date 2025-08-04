@@ -2056,11 +2056,11 @@ msgstr "Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geb
 msgid "Select location admins."
 msgstr "Wähle Standort-Admins."
 
-#: src/Wordpress/CustomPostType/Location.php:511
+#: src/Wordpress/CustomPostType/Location.php:531
 msgid "Allow locked day overbooking"
 msgstr "Überbuchen von geblockten Tagen erlauben"
 
-#: src/Wordpress/CustomPostType/Location.php:480
+#: src/Wordpress/CustomPostType/Location.php:500
 msgid "Location Meta-Data"
 msgstr "Standort-Metadaten"
 
@@ -3206,27 +3206,23 @@ msgstr "Globale Standorteinstellungen"
 msgid "These settings are used for all locations. You can overwrite these settings for each location in the location settings."
 msgstr "Diese Einstellungen werden für alle Standorte verwendet. Die Einstellungen können Sie für jeden Standort individuell in den Standorteinstellungen überschreiben werden."
 
-#: src/Wordpress/CustomPostType/Location.php:442
+#: src/Wordpress/CustomPostType/Location.php:452
 msgid "Use global location settings"
 msgstr "Globale Standorteinstellungen nutzen"
 
-#: src/Wordpress/CustomPostType/Location.php:443
-msgid "If selected, the global location settings (under the \"General\" tab) will be used for this location. If not selected, the settings below will be used."
-msgstr "Wenn diese Option ausgewählt ist, werden die globalen Standorteinstellungen ( im Reiter \"Allgemein\") für diesen Standort verwendet. Wenn sie nicht ausgewählt ist, werden die Einstellungen unten verwendet."
-
-#: src/Wordpress/CustomPostType/Location.php:517
+#: src/Wordpress/CustomPostType/Location.php:537
 msgid "Count locked days when overbooking"
 msgstr "Gesperrte Tage bei Überbuchung zählen"
 
-#: src/Wordpress/CustomPostType/Location.php:523
+#: src/Wordpress/CustomPostType/Location.php:543
 msgid "Count connected locked days as one"
 msgstr "Zusammenhängende gesperrte Tage werden als Einheit gezählt"
 
-#: src/Wordpress/CustomPostType/Location.php:524
+#: src/Wordpress/CustomPostType/Location.php:544
 msgid "Here you can specify, if a connected span of locked days should be counted individually or just use up x amount of the maximum quota the user is allowed to book. If you set this field to 0, every day will be counted individually. If you set this field to 1, all overbooked days, no matter how many, will always count for 1 day. If you set this to 2, they will count a maximum of two days and so on."
 msgstr "Hier kann festgelegt werden, ob eine zusammenhängende Spanne von überbuchten Tagen einzeln gezählt werden soll oder ob nur x Tage des maximalen Kontingents, das der Benutzer buchen darf, verbraucht werden sollen. Wenn dieses Feld auf 0 gesetzt wird, wird jeder Tag einzeln gezählt. Wenn dieses Feld auf 1 gesetzt wird, werden alle überbuchten Tage, egal wie viele, immer nur als 1 Tag gezählt. Wenn dieses Feld auf 2 gesetzt wird, werden maximal zwei Tage gezählt und so weiter."
 
-#: src/Wordpress/CustomPostType/Location.php:518
+#: src/Wordpress/CustomPostType/Location.php:538
 msgid "If selected, days that are overbooked will be counted towards the maximum number of bookable days. If this option is disabled, locked days that are overbooked will allow for bookings that are longer than the maximum number of bookable days configured for the timeframe."
 msgstr "Ist diese Option aktiviert, werden überbuchte Tage auf die maximale Anzahl buchbarer Tage angerechnet. Wenn diese Option deaktiviert ist, dann werden überbuchte Tage nicht zusätzlich gezählt und ermöglichen Buchungszeiträume die länger sind als die im Zeitrahmen konfigurierte maximale Anzahl an gebuchten Tagen."
 
@@ -3853,19 +3849,19 @@ msgstr ""
 msgid "Define for which booking end day the notifications should be sent"
 msgstr "Definiert an welchem Tag nach Buchungsendes die Benachrichtigungen gesendet werden sollen"
 
-#: src/Wordpress/CustomPostType/Location.php:456
+#: src/Wordpress/CustomPostType/Location.php:476
 msgid "Receive booking start reminder"
 msgstr "Erinnerungsmail zum Buchungsstart erhalten"
 
-#: src/Wordpress/CustomPostType/Location.php:457
+#: src/Wordpress/CustomPostType/Location.php:477
 msgid "If selected, this location receives reminder emails of bookings starting soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
 msgstr "Wenn diese Option ausgewählt ist, erhält dieser Standort Erinnerungs-E-Mails über startende Buchungen. Die Benachrichtigungen werden an alle in der E-Mail-Liste des Standorts angegebenen Adressen gesendet (zuerst als Empfänger, alle folgenden als BCC). Diese Art der Erinnerung muss in den <a href=\"admin.php?page=commonsbooking_options_reminder\">CommonsBooking Einstellungen</a>  aktiviert werden."
 
-#: src/Wordpress/CustomPostType/Location.php:465
+#: src/Wordpress/CustomPostType/Location.php:485
 msgid "Receive booking end reminder"
 msgstr "Erinnerungsmail zum Buchungsende erhalten"
 
-#: src/Wordpress/CustomPostType/Location.php:466
+#: src/Wordpress/CustomPostType/Location.php:486
 msgid "If selected, this location receives reminder emails of bookings ending soon. The notifications are sent to all addresses specified in the location email list (first as receiver, all following as BCC). This type of reminder needs to be activated in the <a href=\"admin.php?page=commonsbooking_options_reminder\"> general CommonsBooking settings</a>."
 msgstr "Wenn diese Option ausgewählt ist, erhält dieser Standort Erinnerungs-E-Mails über bald endende Buchungen. Die Benachrichtigungen werden an alle in der E-Mail-Liste des Standorts angegebenen Adressen gesendet (zuerst als Empfänger, alle folgenden als BCC). Diese Art der Erinnerung muss in den <a href=\"admin.php?page=commonsbooking_options_reminder\">CommonsBooking Einstellungen</a>  aktiviert werden."
 
@@ -4293,7 +4289,7 @@ msgstr ""
 "Geben Sie die Buchungscodes ein, die für Buchungen mit ganztägigen Buchungszeiträumen im Voraus generiert werden sollen.  Geben Sie die Buchungscodes als kommagetrennte Liste ein, z.B.: Code1,Code2,Code3,Code4\n"
 "                <br>Mehr Informationen dazu in der Dokumentation: <a href=\"https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/\" target=\"_blank\">Buchungscodes</a>"
 
-#: src/Wordpress/CustomPostType/Location.php:512
+#: src/Wordpress/CustomPostType/Location.php:532
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/\">Create Locations</a> for more information."
 msgstr "Wenn ausgewählt, können nicht aktivierte Tage bei der Buchung überbucht werden. Dies gilt für alle Zeitrahmen vom Typ „buchbar“, die mit diesem Standort verknüpft sind. Lies die Dokumentation unter <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/\">Standorte anlegen</a> für mehr Informationen."
 
@@ -4440,3 +4436,15 @@ msgstr "Jeden Tag"
 #: src/Model/Booking.php:1014
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
+
+#: src/Wordpress/CustomPostType/Location.php:443
+msgid "Overbooking settings"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:453
+msgid "If selected, the global location settings (under the \"General\" tab) will be used to define overbookings for this location. If not selected, the settings below will be used."
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Location.php:467
+msgid "Reminders"
+msgstr ""
