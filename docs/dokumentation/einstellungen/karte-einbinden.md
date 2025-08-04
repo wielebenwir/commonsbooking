@@ -21,7 +21,7 @@ unterschiedlichen Parametern (z.B. Filtern) eingebunden werden können.
 Unter "Kartendarstellung" erhaltet Ihr den [ Shortcode
 ](/dokumentation/einstellungen/shortcodes) zur Einbindung in Eure Website.
 
-![](/img/shortcode-cb-map-settings.png)
+![](/img/shortcode-cb-map-settings.png){data-zoomable}
 
 Im Beispiel lautet der Shortcode: `[cb_map id=7269]`
 

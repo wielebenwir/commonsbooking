@@ -49,7 +49,7 @@ export default defineConfig({
           text: 'Bearbeite diese Seite auf Github'
         },
         sidebar: {
-          '/dokumentation/': { base: '/dokumentation/', items: sidebarDocs_de() },
+          '/dokumentation/': { items: sidebarDocs_de() },
         },
         footer: {
           message: 'Lizensiert unter der GNU v2 Lizenz. <br> <a href="/impressum/">Impressum</a> | <a href="/datenschutzerklaerung/">Datenschutzerklärung</a>',
@@ -88,7 +88,7 @@ export default defineConfig({
             text: 'Edit this page on Github'
           },
           sidebar: {
-            '/en/documentation/': { base: '/en/documentation/', items: sidebarDocs_en() },
+            '/en/documentation/': {  items: sidebarDocs_en() },
           },
           footer: {
             message: 'Licensed under the GNU v2 License. <br> <a href="/en/imprint/">Imprint</a> | <a href="/en/privacy-policy/">Privacy Policy</a>',
@@ -166,6 +166,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           text: 'Erste Schritte', base: '/dokumentation/erste-schritte/',
           collapsed: true,
           items: [
+              { text: 'Erste Schritte', link: 'index' },
               { text: 'Artikel anlegen', link: 'artikel-anlegen' },
               { text: 'Stationen anlegen', link: 'stationen-anlegen' },
               { text: 'Buchungszeiträume verwalten', link: 'buchungszeitraeume-verwalten'},
@@ -289,18 +290,20 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               //{ text: 'Update-News', link: 'update-news' }
           ]
       },
-      /*{
+      {
           text: 'First steps', base: '/en/documentation/first-steps/',
           collapsed: true,
           items: [
+              { text: 'First steps', link: 'index' },
               { text: 'Create item', link: 'create-item' },
               { text: 'Create location', link: 'create-location' },
               { text: 'Manage booking timeframes', link: 'booking-timeframes-manage'},
               { text: 'Set up booking rules', link: 'setup-bookingrules' },
               { text: 'Manage booking restrictions', link: 'manage-booking-restrictions' },
-              { text: 'Import national holidays', link: 'timeframes-holidays' }
+              { text: 'Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
       },
+      /*
       {
           text: 'Settings', base: '/en/documentation/settings/',
           collapsed: true,
@@ -340,7 +343,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
               { text: 'Booking list', link: 'booking-list' },
-              { text: 'Hooks and Filter', link: 'hooks-and-filter' },
+              { text: 'Hooks and Filter', link: 'hooks-and-filters' },
               { text: 'Embed map', link: 'map-embed' },
               { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
               { text: 'New Frontend(Beta)', link: 'new-frontend' },

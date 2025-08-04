@@ -1,130 +1,152 @@
-#  Zeitrahmen: Buchungszeiträume verwalten
+#  Timeframes: Define when an item can be booked
 
 __
 
-Ein Buchungszeitraum entsteht durch die Verknüpfung von Artikel und Station zu
-einem Zeitrahmen. Der Zeitrahmen definiert für den Buchungszeitraum ein
-Zeitfenster (Start- und End-Datum) und die Buchungsbedingungen (z.B.
-stundenweise Ausleihe) in denen Artikel gebucht werden können. Der Zeitrahmen-
-Typ legt fest ob wir einen Zeitraum definieren in dem der Artikel entweder
-verfügbar ist (buchbar) oder nicht (Urlaub/Reparatur). Ein Zeitrahmen kann
-dabei auch mit mehreren Stationen oder mehreren Artikeln verknüpft sein und so
-für alle diese Artikel den Buchungszeitraum festlegen.
+An item becomes bookable through the connection of an item and a location using a timeframe.
+The timeframe defines a time window (start and end date) and the booking conditions (e.g. hourly rental) under
+which items can be booked. The timeframe type specifies whether we define a period in which the item is available (bookable) or not (holiday/repair).
 
-Eine übliche Vorgehensweise ist es ein Zeitrahmen für die Zeiten, in denen die
-Buchungen möglich sind anzulegen und einen weiterer für den Urlaub der
-Stationsbetreibenden.
+A bookable timeframe can only be created for one item and one location at a time.
+A timeframe which blocks the item (holiday / repair), on the other hand, can be linked to multiple items or locations.
 
-**Beispiel:**
+A common approach to timeframe creation is to create a timeframe for when you want the item
+to be bookable and another one for the holidays of the location operators.
 
-  * **Eine mehrtägige Abwesehenheit durch Urlaub:** Typ=”Feiertage oder Station geschlossen”, Ganzer Tag= [ ✔️ ](https://emojiterra.com/de/kraftiges-hakchen/ "✔️ kräftiges Häkchen") , Zeitrahmenwiederholung=”Keine Wiederholung”
+:::info Getting started
+On this page you will learn how to create a timeframe in the backend to make an item bookable.
+If you want to know how to display the bookings that are on offer (using shortcodes), after you have published your timeframes, [click here.](/en/documentation/administration/shortcodes)
+:::
 
-> Auf dieser Seite erfährst du, wie du einen Zeitrahmen im Backend anlegst.
-> Wenn du wissen willst, wie du nach dem Veröffentlichen deine Zeiträume auf
-> den Frontend-Seiten mit Hilfe von Shortcodes darstellen kannst,  [ klicke
-> hier. ](/dokumentation/einstellungen/shortcodes) **Achtung** : Zeitrahmen können
-> nicht direkt über die Backend-Seite “Beitrag anzeigen” aufgerufen werden,
-> sondern müssen über die o.g. Shortcodes eingebunden werden.
+**Caution**: Timeframes cannot be directly accessed in the frontend using the backend link "View Post" but must be embedded using the shortcodes mentioned above.
 
-##  Eingabfelder Schritt für Schritt
+## Creating a timeframe step by step
 
-Um einen Buchungszeitraum anzulegen, gehe im linken Bereich auf "Zeitrahmen"
--> "Zeitrahmen neu erstellen". Fülle das Formular aus:
+To create a bookable timeframe, go to "Timeframes" from the CommonsBooking menu
+and click on "Add new timeframe". From there on fill out the form:
 
-**Titel**
+### **Add title**
 
-  * Der Titel dient der internen Bezeichnung des Zeitrahmens und wird z.b. in der Listenansicht angezeigt.
-  * Wenn du einen buchbaren Zeitrahmen anlegst, kannst du diesen mit einem aussagekräftigen Titel bezeichnen (z.B. Ausleihe von xx-yy)
+* The title serves as an internal label for the timeframe and is displayed in the backend list view. It is not visible to users.
+* When you create a bookable timeframe, you can give it a descriptive title (e.g. "Lending from xx-yy").
 
-**Kommentar**
+### **Comment**
 
-  * Diese sind primär für den internen Gebrauch z.B. zur Dokumentation und für einen besseren Überblick gedacht.
-Wenn du den Nutzenden erlaubst, einen Buchungskommentar zu einer Buchung
-abzugeben, wird der Kommentar in diesem Feld gespeichert und bei einer Buchung
-dann dort angezeigt.
+* This field is primarily intended for internal use, such as documentation.
+  If users are allowed to leave a booking comment for a booking, the comment will be stored in this field.
+* This field can be left empty.
 
-  * Du kannst die Felder auch gerne leer lassen.
+### **Type:**
 
-**Typ:**
+* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](/en/documentation/basics/timeframes-config). (Not translated yet)
 
-  * Wähle hier den Typ “ **Buchbar** ” aus. Du kannst für weitere Fälle (z.B. eintragen eines Urlaubs, Reparatur) auch andere Typen auswählen. Diese verhindern dann z.B. dass zu den definierten Zeiten eine Ausleihe oder Nutzung erfolgen kann. Mehr dazu findest du unter der [ Doku zu den Zeitrahmen-Typen ](/dokumentation/grundlagen/zeitrahmen-konfigurieren) .
+### **Location:**
 
-**Standort:**
+* Select the location for which you want to create the bookable timeframe.
 
-  * Wähle den Standort aus, für den Du den buchbaren Zeitraum anlegen möchtest.
+### **Item** :
 
-**Artikel** :
+* Select the item that should be available at the location.
 
-  * Wähle den Artikel aus, der an dem Standort verfügbar sein soll.
+### **Configure bookings:**
+* **Maximum**: How many days can be booked in a row. (Note: If there are multiple timeframes for the same item and location, the value of the first valid timeframe will be used.)
+* **Lead time:**: How many days in advance the location should have between booking and pickup. For example, if 2 days are set, then the item can only be booked for pickup two days from now. Leave empty to allow immediate bookings.
+* **Calendar shows as bookable:**: How many days the item can be booked in advance. For example, if 7 days are set, then users can only book the item in the span of next week.
+* **Allowed for:** Which [user roles](https://wordpress.org/documentation/article/roles-and-capabilities/) may book the item. If left empty, all registered users can book the item.
 
-**Maximale Buchungsdauer**
+### **Configure timeframe:**
+* **Full Day:** When enabled, the timeframe applies to the entire day. If this option is disabled, the timeframe must have a start and end time.
+* **Grid:** Irrelevant for full-day timeframes. If "Full slot" is selected, the item can only be booked from the start and end time of the timeframe. If "Hourly" is selected, each hour between the start and end time can be booked individually.
+* **Start time / End time:** Irrelevant for full-day timeframes. Defines when the booking window starts and ends each day.
 
-  * Trage die Anzahl an maximal buchbaren Tagen ein.
-  * Wichtig: Wenn du mehrere Zeitrahmen für die gleiche Kombination von Artikel und Standort verwendest, dann wird für die Berechnung der maximalen Tage im Buchungskalender der Wert des ersten gültigen buchbaren Zeitrahmens verwendet.
+### **Timeframe repetition:**
 
-**Maximale Buchungstage im Voraus**
+_Select how the bookable timeframe should be repeated within the specified start and end dates._
+* **No repetition**
+    * This type of timeframe was originally intended to make items bookable for only one day. This can now be achieved using the "Manual repetition" option.
+* **Manual repetition**
+    * Allows you to select specific dates on which the item should be bookable.
+* **Daily**
+    * Will have the timeframe settings repeat every day from the start to the end date. If no end date is set, the item will be bookable every day indefinitely.
+* **Weekly**
+    * Enable this option if you want to select specific days of the week on which the item should be available for booking.
+    * Example: The item should only be available for booking from Monday to Friday, as the location is open on these days. No bookings should be possible on weekends.
+* **Monthly**
+    * Will make the timeframe repeat every month on the same date from start to end date.
+    * When a timeframe starts on 15.02.2025 and ends on 15.05.2025, the item will be bookable on the 15th of each month for 3 months consecutively.
+    * Keep in mind, that for longer time periods you should set the "Calendar shows as bookable" setting to a higher value.
+* **Yearly**
+    * Will make the timeframe repeat every year on the same date from start to end date.
+    * When a timeframe starts on 15.02.2025 and ends on 15.02.2028, the item will be bookable on the 15th of February each year for 3 years.
+    * Keep in mind, that for longer time periods you should set the "Calendar shows as bookable" setting to a higher value.
 
-  * Trage die Anzahl an Tagen, die maximal im Voraus gebucht werden können, z.B. 31 Tage für einen Monat.
-  * Dies hat den Vorteil, dass du nicht immer wieder neue Zeitrahmen anlegen musst, sondern die buchbaren Tage eines Zeitrahmens ohne Enddatum täglich neu freigeschaltet werden.
-  * Standard-Wert sind 365 Tage.
+### **Configure repetition**
+* **Start date / End date:**
+    * Defines the start and end date during which the timeframe is valid. Leave empty to have the timeframe be valid indefinitely.
+* **Weekdays:**
+    * Only availabe for weekly repetition. Select the days of the week on which the item should be bookable.
+    * When configured, this can also define days on which only a pickup / return is possible but items can still  be  booked. For example, a user could book an item for pickup on Friday and return it on Monday. This behaviour is defined in the [location settings](/en/documentation/first-steps/create-location).
+* **Selected manual dates:**
+    * Only available for manual repetition. Select the specific dates on which the item should be bookable. Enter the dates in the "YYYY-MM-DD" format. Multiple dates need to be comma-separated (e.g. "2023-01-01, 2023-01-02, 2023-01-03"). Clicking on the text field next to "Select dates" will open a calendar. Every day that is selected in the calendar will be appended to the list of dates.
 
-**Zeitrahmenwiederholung:
-** Wähle aus, welche Arten von Wiederholungen du gerne möchtest.
+## **Booking Codes**
 
-  * **keine Wiederholung**
-    * Bei Zeitrahmen vom Typ “buchbar” diese Option nur verwenden, du wirklich nur einen Tag buchbar machen möchtest. Möchtest du mehrere Tage als buchbare Tage anbieten (was der häufigste Fall sein wird), dann bitte einen der anderen Wiederholungs-Arten auswählen.
-    * keine Wiederholung eignet sich vor allem, wenn du Reparaturen oder Urlaube / Feiertage eintragen willst, die einen bestimmten Zeitraum blockieren.
-  * **täglich**
-    * Bitte wählen, wenn sich die Einstellungen jeden Tag wiederholen sollen.
-  * **wöchentlich**
-    * Wenn du den Artikel nur an bestimmten Wochentagen anbieten möchtest, wähle bitte diese Option. Dies dürfte der häufigste Fall sein.
-    * Beispiel: Du möchtest den Gegenstand von Montag – Freitag ausleihbar machen, da an diesen Tagen der Standort geöffnet hat. Am Wochenende soll keine Ausleihe stattfinden.
-  * **monatlich**
-    * Bei dieser Option wird ausgehend vom Start-Datum die gewählte Einstellung jeden Monat am gleichen Datum bis zum End-Datum wiederholt
-    * Beachte, dass du bei längeren Zeitdauern die Tage in der Einstellung “maximale Buchungstage im Voraus” entsprechend hoch setzt.
-  * **jährlich**
-    *       * Bei dieser Option wird ausgehend vom Start-Datum die gewählte Einstellung jedes Jahr am gleichen Datum bis zum End-Datum wiederholt.
-      * Beachte, dass du bei längeren Zeitdauern die Tage in der Einstellung “maximale Buchungstage im Voraus” entsprechend hoch setzt
+After creating the timeframes, you can optionally generate booking codes that will be shown to the user on the booking confirmation page and that can be included in the confirmation email.
+Booking codes can be used like passwords allowing the location to verify the owner of the booking. The user must provide the correct, daily rotating code to prove that they made the booking.
 
-**Ganzer Tag:**
+:::tip
+Booking codes are generated in advance for each day and can be downloaded as a text file. This allows you to provide the codes to the location in advance for on-site verification.
+:::
+Codes can only be generated for timeframes that have the "Full Day" option enabled.
 
-  * Aktiviere die Checkbox “Ganzer Tag”, wenn du keinen bestimmten Abholzeitraum (z.B. 09:00 – 18:00 Uhr) angeben möchtest, sondern die Abstimmung über die konkrete Abhol- und Rückgabezeit dem Nutzenden im Austausch mit dem Standort überlassen möchtest. Du kannst hierfür dann bei den Standorten Informationen zur Abholung- und Rückgabe hinterlegen.
+* **Create booking codes:** When this option is enabled and the timeframe is saved, booking codes will be generated.
+* **Show booking codes:** When enabled, the code will be displayed to users during the booking process.
 
-**Startzeit / Endzeit:**
+### **Send booking codes by email:**
+:::warning
+The timeframe must be saved before booking codes can be sent.
+:::
+This feature allows you to send the generated booking codes manually or automatically to the location via email.
+The links allow you to quickly send the booking codes for the current or next month to the locations.
 
-  * Hier definierst du die Start- und Endzeiten des Buchungszeitrahmens.
+**Automatic sending:**
+For automatic sending, a start date must be configured. Sending will start from this date and future codes will be sent on the same day of the month.
+Defining the number of months determines for how many months in total the codes will be sent. For example, if 6 months are set, the codes for the next 6 months will be sent every half year.
 
-**Stundenweise oder** **Slotweise** (z.B. halbtags, 3-stundenweise o.ä.)
-**Buchung** :
+**Download booking codes:**
+Will download the previously generated booking codes as a text file so that they can be printed or sent out. For timeframes with an end date, this will include all codes from the start to the end date. For timeframes without an end date, it will include all codes from the start date up until one year in the future (from now).
 
-  * Deaktiviere die Checkbox “Ganzer Tag”
-  * Wähle im Raster: “stundenweise” oder “ganzer Slot”
-    * Bei Auswahl stundenweise werden im Buchungskalender von der Start- bis zur Endzeit jeweils Zeiträume von einer Stunde für Abholung oder Rückgabe angezeigt. Eine feinere Aufteilung unterhalb von Stunden ist derzeit nicht möglich. Bei entsprechender Nachfrage könnten dies evtl. noch Implementiert werden, sodass ggf. auch die Start- und Endzeiten freier gewählt werden könnnen.
-    * Slotweise bedeutet, dass Nutzende den Zeitraum von Start- bis Endzeit jeweils nur als kompletten Block buchen können (z.B. nur von 09:00 – 12:00 Uhr). Durch diese Einstellung könnt ihr ein gröberes Ausleihraster ermöglichen, falls ihr keine kleinteiligen 1-Stunden-Raster anbieten möchtet.
+**List of booking codes:**
+This table shows the currently active booking codes for the timeframe. By default, not all codes are displayed in this view. The number of codes displayed can be configured under "Settings" -> "CommonsBooking" -> "Booking Codes".
 
-Bei der stundenweise (oder slotweise Buchung) kann du gerne auch mehrere
-Zeiträume mit dem gleichen Raster kombinieren. So kannst du z.B. Folgendes
-konfigurieren um bei der stundenweisen Buchung die Mittagspause (12 Uhr bis 14
-Uhr) deiner Station zu berücksichtigen:
+**Who will receive the codes?**
+The codes will be sent to the email addresses stored in the "Location Email" field of the respective location. Multiple email addresses can also be stored there.
 
-  * Zeitraum A (buchbar): 9 Uhr bis 12 Uhr
-  * Zeitraum B (buchbar): 14 Uhr bis 18 Uhr
+### Examples
 
-**Buchungs-Codes**
+### **Bookable every day with absence (Holiday)**
+1. **Timeframe making the item bookable:**
+    * Type="Bookable",
+    * Full Day= X
+    * Timeframe Repetition = ”Daily”
+    * Start date: 01.01.2023
+    * End date: None (meaning the timeframe is bookable indefinitely)
+2. **A multi day absence due to holidays:**
+    * Type=”Holidays or location closed”,
+    * Full Day= X
+    * Timeframe Repetition=”Daily”
+    * Start date: 15.07.2023
+    * End date: 22.07.2023
 
-Beim Erstellen der Zeiträume von tageweisen Buchungen werden auf Wunsch auch
-Buchungs-Codes generiert, die dann auf die Buchungsbestätigungsseite und in
-der Bestätigungs-Mail integriert werden.
+### **Hourly or** **slot based booking** (e.g. half-day, every three hours,...)
+* Type: Bookable
+* "Full Day": unchecked
+* Grid: "Hourly" or "Full Slot"
+  * When "hourly" is selected, the booking calendar will show time slots of one hour each from the start to the end time for pickup or return.
+  * When "Full Slot" is selected, users can only book the entire time slot from start to end time (e.g. only from 09:00 to 12:00). This setting allows you to provide a coarser booking grid if you do not want to offer detailed 1-hour slots.
 
-Hinweis: Die Buchungscodes werden für jeden Tag vorab generiert und können als
-Textdatei heruntergeladen werden. So könnt ihr die Codes vorab dem Standort
-zur Verfügung stellen, damit ein Abgleich vor Ort erfolgen kann.
+### **Combining multiple timeframes:**
 
-Die Codes können nur für Zeitrahmen die das Intervall "ganztägig" haben und
-für die ein End-Datum definiert wurde, erzeugt werden.
-
-In einer späteren Version von CommonsBooking werden auch Codes möglich sein,
-die automatisch während der Buchung generiert werden und einen Zufallscode
-enthalten. Diese werden dann nicht vorab generiert und können für alle Arten
-von Zeitrahmen (stundenweise etc.) genutzt werden.
-
+When using hourly or slot-based timeframes, multiple timeframes of the same grid can be combined
+to achieve more complex booking configurations. For example, you can configure the following to account for a lunch break (12:00 to 14:00) at your location:
+* **Timeframe A (bookable):** 09:00 to 12:00
+* **Timeframe B (bookable):** 14:00 to 18:00
