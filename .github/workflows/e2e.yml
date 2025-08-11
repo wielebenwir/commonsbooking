@@ -36,7 +36,7 @@ jobs:
           - {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: ./.github/actions/build-plugin
 
