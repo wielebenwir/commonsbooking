@@ -3,6 +3,8 @@
 
 namespace CommonsBooking\API;
 
+use WP_User;
+
 /**
  * Defines an remote api consumer, where data is pushed to.
  * GBFS feed updates can be send via push actions to remote api consumers.
@@ -12,24 +14,27 @@ namespace CommonsBooking\API;
  */
 class Share {
 
-	private $name;
+	private string $name;
 
-	private $enabled;
+	private bool $enabled;
 
-	private $pushUrl;
+	private string $pushUrl;
 
-	private $key;
+	private string $key;
 
+	/**
+	 * @var WP_User|null
+	 */
 	private $owner;
 
 	/**
 	 * Shares constructor.
 	 *
-	 * @param $name
-	 * @param $enabled
-	 * @param $pushUrl
-	 * @param $key
-	 * @param $owner
+	 * @param string       $name
+	 * @param string       $enabled 'on' or 'off'
+	 * @param string       $pushUrl
+	 * @param string       $key
+	 * @param null|WP_User $owner
 	 */
 	public function __construct( $name, $enabled, $pushUrl, $key, $owner ) {
 		$this->name    = $name;
@@ -40,35 +45,35 @@ class Share {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
 	}
 
 	/**
-	 * @return mixed
+	 * @return bool
 	 */
 	public function isEnabled() {
 		return $this->enabled;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getPushUrl() {
 		return $this->pushUrl;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getKey() {
 		return $this->key;
 	}
 
 	/**
-	 * @return mixed
+	 * @return null|WP_User
 	 */
 	public function getOwner() {
 		return $this->owner;
