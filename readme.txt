@@ -80,6 +80,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
+### 2.10.7
+ADDED: Filter Hook to enable deferred cache warmup for savePost actions
+
 ### 2.10.6 (22.08.2025)
 FIXED: Removed deferred cache clearing in order to avoid double booking
 FIXED: Wrong pickup / return time displayed (thx @janschoenherr)
