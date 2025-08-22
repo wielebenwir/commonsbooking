@@ -224,7 +224,7 @@ class BookingCodes {
 			$nextCronEventFmt = $field->args['msg_email_not_planned'];
 		}
 
-		echo <<< HTML
+		echo <<<HTML
             <input type="checkbox" class="cmb2-option cmb2-list" name="{$field_type->_name( '[cron-booking-codes-enabled]' )}" 
                                         id="{$field_type->_id( '[cron-booking-codes-enabled]' )}" value="on" {$checked} >
             <label id="cron-email-booking-code" for="{$field_type->_id( '[cron-booking-codes-enabled]' )}">
