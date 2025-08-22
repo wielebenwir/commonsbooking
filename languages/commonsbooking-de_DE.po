@@ -1246,20 +1246,20 @@ msgstr " am %s "
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
-#: src/Model/Booking.php:571
+#: src/Model/Booking.php:574
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:577
+#: src/Model/Booking.php:580
 #, php-format
 msgid "Your booking has been canceled at %s."
 msgstr "Die Buchung wurde storniert am %s."
 
-#: src/Model/Booking.php:579
+#: src/Model/Booking.php:582
 msgid "Your booking has been canceled"
 msgstr "Die Buchung wurde storniert"
 
-#: src/Model/Booking.php:665
+#: src/Model/Booking.php:668
 msgid "Link to your booking"
 msgstr "Link zu deiner Buchung"
 
@@ -1557,7 +1557,7 @@ msgstr "CSV Herunterladen"
 msgid "Download Export"
 msgstr "Download Export"
 
-#: src/Model/Booking.php:1020
+#: src/Model/Booking.php:1023
 #: src/Service/TimeframeExport.php:537
 #: src/Service/TimeframeExport.php:547
 #: src/Service/TimeframeExport.php:553
@@ -3139,7 +3139,7 @@ msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 msgid "It is not possible to access this timeframe on frontend. Please edit timeframe in backend. If you want to check the result of your timeframe settings visit the item or location in frontend to see the booking calender"
 msgstr "Es ist nicht möglich, diesen Zeitrahmen im Frontend abzurufen. Bitte bearbeite den Zeitrahmen im Backend. Wenn du das Ergebnis deiner Zeitrahmeneinstellungen überprüfen möchtest, rufe den Artikel oder Standort im Frontend auf, um den Buchungskalender zu sehen"
 
-#: src/Model/Booking.php:1018
+#: src/Model/Booking.php:1021
 msgid "Cancelled"
 msgstr "Storniert"
 
@@ -3972,27 +3972,27 @@ msgstr "Buchung wurde als Entwurf gespeichert."
 msgid "Timeframe is saved as draft."
 msgstr "Zeitrahmen wurde als Entwurf gespeichert."
 
-#: src/Model/Booking.php:608
+#: src/Model/Booking.php:611
 msgid "Item not found"
 msgstr "Artikel nicht gefunden"
 
-#: src/Model/Booking.php:617
+#: src/Model/Booking.php:620
 msgid "Location not found"
 msgstr "Standort nicht gefunden"
 
-#: src/Model/Booking.php:622
+#: src/Model/Booking.php:625
 msgid "There is no timeframe for this booking. Please create a timeframe first."
 msgstr "Es existiert kein Zeitrahmen für diese Buchung. Bitte zuerst einen Zeitrahmen erstellen."
 
-#: src/Model/Booking.php:642
+#: src/Model/Booking.php:645
 msgid "There are one ore more overlapping bookings within the chosen timerange"
 msgstr "Es gibt eine oder mehrere sich überlappende Buchungen innerhalb des gewählten Zeitraums"
 
-#: src/Model/Booking.php:643
+#: src/Model/Booking.php:646
 msgid "Please adjust the start- or end-date."
 msgstr "Bitte passe das Start- oder Enddatum an."
 
-#: src/Model/Booking.php:644
+#: src/Model/Booking.php:647
 #, php-format
 msgid "Affected Bookings: %s"
 msgstr "Betroffene Buchungen: %s"
@@ -4425,11 +4425,11 @@ msgstr "Jede Stunde"
 msgid "Every day"
 msgstr "Jeden Tag"
 
-#: src/Model/Booking.php:1016
+#: src/Model/Booking.php:1019
 #~ msgid "Unconfirmed"
 #~ msgstr "Unbestätigt"
 
-#: src/Model/Booking.php:1014
+#: src/Model/Booking.php:1017
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
 

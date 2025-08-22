@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-09T16:55:51+00:00\n"
+"POT-Creation-Date: 2025-08-22T09:36:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -1464,61 +1464,61 @@ msgstr ""
 msgid " from %1$s until %2$s "
 msgstr ""
 
-#: src/Model/Booking.php:571
+#: src/Model/Booking.php:574
 msgid "Please check your booking and click confirm booking"
 msgstr ""
 
-#: src/Model/Booking.php:577
+#: src/Model/Booking.php:580
 #, php-format
 msgid "Your booking has been canceled at %s."
 msgstr ""
 
-#: src/Model/Booking.php:579
+#: src/Model/Booking.php:582
 msgid "Your booking has been canceled"
 msgstr ""
 
-#: src/Model/Booking.php:608
+#: src/Model/Booking.php:611
 msgid "Item not found"
 msgstr ""
 
-#: src/Model/Booking.php:617
+#: src/Model/Booking.php:620
 msgid "Location not found"
 msgstr ""
 
-#: src/Model/Booking.php:622
+#: src/Model/Booking.php:625
 msgid "There is no timeframe for this booking. Please create a timeframe first."
 msgstr ""
 
-#: src/Model/Booking.php:642
+#: src/Model/Booking.php:645
 msgid "There are one ore more overlapping bookings within the chosen timerange"
 msgstr ""
 
-#: src/Model/Booking.php:643
+#: src/Model/Booking.php:646
 msgid "Please adjust the start- or end-date."
 msgstr ""
 
-#: src/Model/Booking.php:644
+#: src/Model/Booking.php:647
 #, php-format
 msgid "Affected Bookings: %s"
 msgstr ""
 
-#: src/Model/Booking.php:665
+#: src/Model/Booking.php:668
 msgid "Link to your booking"
 msgstr ""
 
-#: src/Model/Booking.php:1014
+#: src/Model/Booking.php:1017
 msgid "Confirmed"
 msgstr ""
 
-#: src/Model/Booking.php:1016
+#: src/Model/Booking.php:1019
 msgid "Unconfirmed"
 msgstr ""
 
-#: src/Model/Booking.php:1018
+#: src/Model/Booking.php:1021
 msgid "Cancelled"
 msgstr ""
 
-#: src/Model/Booking.php:1020
+#: src/Model/Booking.php:1023
 #: src/Service/TimeframeExport.php:537
 #: src/Service/TimeframeExport.php:547
 #: src/Service/TimeframeExport.php:553
