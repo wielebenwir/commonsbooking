@@ -467,11 +467,14 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$grid = $this->getGrid();
 
+		// the pickup and return time is not obvious from the booking. For example, if the
+		// booking spans over two different slot based timeframes we would need to save one start-time and end-time for the pickup and one for the return
+		// this is why we consult the underlying timeframe to get the slot duration. (See #1865)
 		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( is_numeric( $timeframeGridSize ) ) {
-				$grid = $timeframeGridSize;
+				$grid = intval( $timeframeGridSize );
 			}
 		}
 
@@ -495,7 +498,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$date_end   = date_i18n( $date_format, $this->getRawEndDate() );
 		$time_end   = date_i18n( $time_format, $this->getRawEndDate() + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
-		$time_start = date_i18n( $time_format, strtotime( $this->getStartTime() ) );
+		$time_start = date_i18n( $time_format, $this->getStartDate() );
 
 		if ( $this->isFullDay() ) {
 			return $date_end;
@@ -507,7 +510,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( is_numeric( $timeframeGridSize ) ) {
-				$grid = $timeframeGridSize;
+				$grid = intval( $timeframeGridSize );
 			}
 		}
 

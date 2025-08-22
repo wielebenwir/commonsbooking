@@ -223,7 +223,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$timeframeMaxDays = 3,
 		$postTitle = 'Booking',
 		$grid = 0,
-		$weekdays = [ '1', '2', '3', '4', '5', '6', '7' ]
+		$weekdays = [ '1', '2', '3', '4', '5', '6', '7' ],
+		$startGridSize = '', // How long is the timeframe in which the booking starts
+		$endGridSize = '' // How long is the timeframe in which the booking ends
 	) {
 		// Create booking
 		$bookingId = wp_insert_post(
@@ -246,6 +248,13 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $bookingId, 'repetition-start', $repetitionStart );
 		update_post_meta( $bookingId, 'repetition-end', $repetitionEnd );
 		update_post_meta( $bookingId, 'weekdays', $weekdays );
+
+		if ( $startGridSize ) {
+			update_post_meta( $bookingId, \CommonsBooking\Model\Booking::START_TIMEFRAME_GRIDSIZE, $startGridSize );
+		}
+		if ( $endGridSize ) {
+			update_post_meta( $bookingId, \CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE, $endGridSize );
+		}
 
 		$this->bookingIds[] = $bookingId;
 
@@ -569,7 +578,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
             location bigint(20) unsigned NOT NULL,
             item bigint(20) unsigned NOT NULL,
             code varchar(100) NOT NULL,
-            PRIMARY KEY (date, timeframe, location, item, code) 
+            PRIMARY KEY (date, timeframe, location, item, code)
         ) $charset_collate;";
 
 		$wpdb->query( $sql );
