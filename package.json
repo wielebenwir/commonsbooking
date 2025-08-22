@@ -27,7 +27,7 @@
 		"matchdep": "^2.0.0",
 		"vitepress": "^1.6.3",
 		"medium-zoom": "^1.1.0",
-		"sass": "^1.89.2"
+		"sass": "^1.90.0"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
