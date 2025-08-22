@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.8
-Stable Tag: 2.10.5
+Stable Tag: 2.10.6
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.6 (22.08.2025)
+FIXED: Removed deferred cache clearing in order to avoid double booking
+FIXED: Wrong pickup / return time displayed (thx @janschoenherr)
 
 ### 2.10.5 (03.07.2025)
 ADDED: Filter Hook to change pages displayed in mobile calendar
