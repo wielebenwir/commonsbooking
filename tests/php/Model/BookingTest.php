@@ -96,8 +96,9 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testGetDuration() {
-		$this->assertEquals( 1, $this->testBookingTomorrow->getDuration() );
 		$this->assertEquals( 1, $this->testBookingPast->getDuration() );
+
+		$this->assertEquals( 2, $this->testBookingTomorrow->getDuration() ); // Ths makes sense, bc this booking spans over two slots of a slot based timeframe. Both slots for both days are booked, meaning that no-one else can book the item on two days.
 
 		// we now create a booking and cancel it shortly after it ends
 		// this way we can test if all days are counted when it is cancelled shortly before end of the tf
@@ -239,16 +240,14 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	public function testPickupDatetime() {
-		// TODO 12- 12 correct?
-		$this->assertEquals( 'July 2, 2021 12:00 am - 12:00 am', $this->testBookingTomorrow->pickupDatetime() );
+		$this->assertEquals( 'July 2, 2021 8:00 am - 10:00 am', $this->testBookingTomorrow->pickupDatetime() );
 
 		// Test Pickup for Slot Timeframes (#1342)
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 10:00 am - 3:00 pm', $this->testBookingSpanningOverTwoSlots->pickupDatetime() );
 	}
 
 	public function testReturnDatetime() {
-		// TODO 12:01? correct
-		$this->assertEquals( 'July 3, 2021 12:00 am - 12:01 am', $this->testBookingTomorrow->returnDatetime() );
+		$this->assertEquals( 'July 3, 2021 8:00 am - 10:00 am', $this->testBookingTomorrow->returnDatetime() );
 
 		// Test Return for Slot Timeframes (#1342)
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 3:00 pm - 6:00 pm', $this->testBookingSpanningOverTwoSlots->returnDatetime() );
@@ -680,19 +679,29 @@ class BookingTest extends CustomPostTypeTest {
 		$this->testBookingId       = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
-			'08:00 AM',
-			'12:00 PM'
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE . ' 08:00 AM' ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE . ' 09:59:59 AM' ) ),
+			'08:00',
+			'09:59', // end of slot of timeframe,
+			'confirmed',
+			self::USER_ID,
+			'w',
+			3,
+			'Booking',
+			0,
+			'',
+			'2',
+			'2'
 		);
 		$this->testBookingTomorrow = new Booking( $this->testBookingId );
-		$this->testBookingPastId   = $this->createBooking(
+
+		$this->testBookingPastId = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
 		);
-		$this->testBookingPast     = new Booking( get_post( $this->testBookingPastId ) );
+		$this->testBookingPast   = new Booking( get_post( $this->testBookingPastId ) );
 
 		// Create fixed date booking
 		$this->testBookingFixedDate      = new Booking(
@@ -761,11 +770,18 @@ class BookingTest extends CustomPostTypeTest {
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) )
+			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'',
+			'd',
+			'0',
+			'08:00',
+			'10:00',
 		);
-		$this->testItem         = new Item( $this->itemId );
-		$this->testLocation     = new Location( $this->locationId );
-		$this->testTimeFrame    = new Timeframe( $this->firstTimeframeId );
+
+		$this->testItem      = new Item( $this->itemId );
+		$this->testLocation  = new Location( $this->locationId );
+		$this->testTimeFrame = new Timeframe( $this->firstTimeframeId );
 		$this->createSubscriber();
 		$this->createAdministrator();
 		$this->createCBManager();
