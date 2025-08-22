@@ -4,7 +4,7 @@ __
 
 Installieren der aktuellen Version des neuen CommonsBooking (Version 2.x.x)
 
-###  ComonsBooking installieren
+###  CommonsBooking installieren
 
   * Gehe zu **WordPress** -> **Plugins** -> **Installieren** und Suche nach “ **CommonsBooking** “.
   * Nach Klick auf “ **Installieren** ” und “ **Aktivieren** ” ist es einsatzbereit.
@@ -14,18 +14,18 @@ Installieren der aktuellen Version des neuen CommonsBooking (Version 2.x.x)
 CommonsBooking arbeitet mit den Zeit- und Datumseinstellungen, die du in
 WordPress unter “Einstellungen -> Allgemein -> Zeitzone” eingestellt hast.
 Auch die Formatierungen für die Zeitanzeige (24h-Format etc.) und die
-Datumsformatierung übernimmt CommonsBooking aus den allgemein WordPress-
+Datumsformatierung übernimmt CommonsBooking aus den allgemeinen WordPress-
 Einstellungen.
 
 Daher prüfe bitte, dass du die richtige Zeitzone in WordPress konfiguriert
-hast. Wenn du das noch nicht getan hast hole unter “Einstellungen / Allgemein
+hast. Wenn du das noch nicht getan hast, hole unter “Einstellungen / Allgemein
 / Zeitzone” nach.
 
 ###  CommonsBooking konfigurieren
 
-in den WordPress-Einstellungen findest Du nun einen neuen Punkt
-“CommonsBooking”. Hier kannst Du einige Voreinstellungen vornehmen.  Bitte
-mindestens den Absender-Namen und E-Mail im Tab “Vorlagen” eintragen  Weitere
+In den WordPress-Einstellungen findest Du nun einen neuen Punkt
+“CommonsBooking”. Hier kannst Du einige Voreinstellungen vornehmen. Bitte
+mindestens den Absender-Namen und E-Mail im Tab “Vorlagen” eintragen. Weitere
 Informationen zur [ Konfiguration ](/dokumentation/einstellungen-2/) .
 
 ###  Standorte, Artikel und Zeitrahmen anlegen
@@ -38,11 +38,11 @@ Detailliierte Informationen dazu findest du unter [Erste Schritte](/dokumentatio
 
 ###  Inhalte auf der Website einbinden
 
-  * Eine Seite anlegen, auf der deine Artikel erscheinen sollen Den Textbaustein (Shortocde) ` [cb_items] ` in die Seite einbinden.
-  * Mit dem klassischen WordPress-Editor fügst du [cb_items] inklusive der Klammern einfach in das Textfeld ein.
-  * Mit dem neuen Editor klickst du auf das schwarze **\+ Plus im Kasten** , wählst “Shortcode” und fügst [cb_items] inklusive der Klammern ein.
+  * Eine Seite anlegen, auf der deine Artikel erscheinen sollen. Den Textbaustein (Shortocde) ` [cb_items] ` in die Seite einbinden.
+  * Mit dem klassischen WordPress-Editor fügst du `[cb_items]` inklusive der Klammern einfach in das Textfeld ein.
+  * Mit dem neuen Editor klickst du auf das schwarze **\+ Plus im Kasten** , wählst “Shortcode” und fügst `[cb_items]` inklusive der Klammern ein.
   * Weitere [ Shortcodes für Karten, Tabellen, etc ](/dokumentation/einstellungen/shortcodes) . Fertig!
-  * im Frontend stehen die Artikel nun zur Buchung zur Verfügung.
+  * Im Frontend stehen die Artikel nun zur Buchung zur Verfügung.
 
 ###  **Hinweis** :
 
