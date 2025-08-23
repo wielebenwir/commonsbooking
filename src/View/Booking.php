@@ -328,7 +328,7 @@ class Booking extends View {
 		$itemID   = intval( $postData['itemID'] );
 
 		try {
-			$itemModel = new \CommonsBooking\Model\Item( $itemID );
+			$itemModel = \CommonsBooking\Repository\Item::getPostById( $itemID );
 			$location  = \CommonsBooking\Repository\Location::getByItem( $itemID, true );
 			// pick the first location, no matter what
 			$location  = reset( $location );
@@ -507,7 +507,7 @@ class Booking extends View {
 		$calendar = new iCalendar();
 
 		foreach ( $bookingList['data'] as $booking ) {
-			$booking_model = new \CommonsBooking\Model\Booking( $booking['postID'] );
+			$booking_model = \CommonsBooking\Repository\Booking::getPostById( $booking['postID'] );
 			if ( ! $booking_model->isConfirmed() ) {
 				continue;
 			}

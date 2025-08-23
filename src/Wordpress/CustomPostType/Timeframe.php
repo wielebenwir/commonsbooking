@@ -854,7 +854,7 @@ class Timeframe extends CustomPostType {
 
 		// assign the startDate and EndDate for manual repetition (needs to be done before validation in order for validation to work)
 		try {
-			$timeframe = new \CommonsBooking\Model\Timeframe( $post_id );
+			$timeframe = \CommonsBooking\Repository\Timeframe::getPostById( $post_id );
 		} catch ( Exception $e ) {
 			set_transient(
 				\CommonsBooking\Model\Timeframe::ERROR_TYPE,

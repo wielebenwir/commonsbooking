@@ -40,7 +40,7 @@ class Item extends View {
 			$args = [
 				'post'      => $post,
 				'actionUrl' => admin_url( 'admin.php' ),
-				'item'      => new \CommonsBooking\Model\Item( $item ),
+				'item'      => \CommonsBooking\Repository\Item::getPostById( $item ),
 				'postUrl'   => get_permalink( $item ),
 				'type'      => Timeframe::BOOKING_ID,
 				'restrictions' => \CommonsBooking\Repository\Restriction::get(
@@ -65,7 +65,7 @@ class Item extends View {
 					$args['locations'] = [];
 				}
 			} else {
-				$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
+				$args['location'] = \CommonsBooking\Repository\Location::getPostById( $location );
 			}
 
 			$calendarData                           = Calendar::getCalendarDataArray(
