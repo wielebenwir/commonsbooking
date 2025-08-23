@@ -343,7 +343,7 @@ class Booking extends View {
 		$itemID   = intval( $postData['itemID'] );
 
 		try {
-			$itemModel = new \CommonsBooking\Model\Item( $itemID );
+			$itemModel = \CommonsBooking\Repository\Item::getPostById( $itemID );
 			$location  = \CommonsBooking\Repository\Location::getByItem( $itemID, true );
 			// pick the first location, no matter what
 			$location  = reset( $location );
