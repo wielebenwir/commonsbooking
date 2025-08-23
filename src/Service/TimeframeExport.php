@@ -308,7 +308,7 @@ class TimeframeExport {
 			$valueColumns = array_values( $timeframeDataRow );
 
 			// TODO #507
-			$timeframeDataPost = new \CommonsBooking\Model\Timeframe( $timeframeDataRow['ID'] );
+			$timeframeDataPost = \CommonsBooking\Repository\Timeframe::getPostById( $timeframeDataRow['ID'] );
 
 			// Get values for user defined input fields.
 			foreach ( $inputFields as $type => $fields ) {
@@ -525,7 +525,7 @@ class TimeframeExport {
 		$timeframeDataRows = [];
 		foreach ( $timeframeIDs as $timeframeID ) {
 			try {
-				$timeframePost = new \CommonsBooking\Model\Timeframe( $timeframeID );
+				$timeframePost = \CommonsBooking\Repository\Timeframe::getPostById( $timeframeID );
 			} catch ( \Exception $e ) {
 				continue;
 			}
@@ -537,7 +537,7 @@ class TimeframeExport {
 				$timeframeTypes[ $timeframeTypeId ] : __( 'Unknown', 'commonsbooking' );
 
 			if ( $timeframeTypeId == \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID ) {
-				$booking = new \CommonsBooking\Model\Booking( $timeframePost->ID );
+				$booking = \CommonsBooking\Repository\Booking::getPostById( $timeframePost->ID );
 			}
 
 			// Repetition option
