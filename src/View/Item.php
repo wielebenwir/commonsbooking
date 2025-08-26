@@ -3,6 +3,7 @@
 namespace CommonsBooking\View;
 
 use CommonsBooking\Plugin;
+use CommonsBooking\Service\CalendarService;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
 use WP_Post;
@@ -68,7 +69,7 @@ class Item extends View {
 				$args['location'] = new \CommonsBooking\Model\Location( get_post( $location ) );
 			}
 
-			$calendarData                           = Calendar::getCalendarDataArray(
+			$calendarData                           = CalendarService::getCalendarDataArray(
 				$item,
 				array_key_exists( 'location', $args ) ? $args['location'] : null,
 				date( 'Y-m-d', strtotime( 'first day of this month', time() ) ),

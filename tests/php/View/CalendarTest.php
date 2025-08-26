@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\View;
 
 use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Service\CalendarService;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\View\Calendar;
 use DateTime;
@@ -29,7 +30,7 @@ class CalendarTest extends CustomPostTypeTest {
 
 	public function testKeepDateRangeParam() {
 		$startDate    = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
-		$jsonresponse = Calendar::getCalendarDataArray(
+		$jsonresponse = CalendarService::getCalendarDataArray(
 			$this->itemId,
 			$this->locationId,
 			$startDate,
@@ -45,7 +46,7 @@ class CalendarTest extends CustomPostTypeTest {
 	public function testAdvancedBookingDays() {
 		$startDate    = date( 'Y-m-d', strtotime( 'midnight' ) );
 		$endDate      = date( 'Y-m-d', strtotime( '+60 days midnight' ) );
-		$jsonresponse = Calendar::getCalendarDataArray(
+		$jsonresponse = CalendarService::getCalendarDataArray(
 			$this->itemId,
 			$this->locationId,
 			$startDate,
@@ -81,7 +82,7 @@ class CalendarTest extends CustomPostTypeTest {
 		$startDate = date( 'Y-m-d', strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ) );
 		$endDate   = date( 'Y-m-d', strtotime( '+60 days midnight', strtotime( self::CURRENT_DATE ) ) );
 
-		$jsonresponse = Calendar::getCalendarDataArray(
+		$jsonresponse = CalendarService::getCalendarDataArray(
 			$this->itemId,
 			$this->locationId,
 			$startDate,
@@ -97,7 +98,7 @@ class CalendarTest extends CustomPostTypeTest {
 	 */
 	public function testOverbookingDefaultValues() {
 		// the default location has no overbooking values set, overbooking should be disabled
-		$jsonresponse = Calendar::getCalendarDataArray(
+		$jsonresponse = CalendarService::getCalendarDataArray(
 			$this->itemId,
 			$this->locationId,
 			date( 'Y-m-d', strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ) ),
@@ -113,7 +114,7 @@ class CalendarTest extends CustomPostTypeTest {
 		$otherTimeframe  = $this->createBookableTimeFrameIncludingCurrentDay( $oldLocationId, $differentItemId );
 		update_post_meta( $oldLocationId, COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range', 'on' );
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		$jsonresponse = Calendar::getCalendarDataArray(
+		$jsonresponse = CalendarService::getCalendarDataArray(
 			$differentItemId,
 			$oldLocationId,
 			date( 'Y-m-d', strtotime( '-1 days', strtotime( self::CURRENT_DATE ) ) ),
@@ -150,7 +151,7 @@ class CalendarTest extends CustomPostTypeTest {
 			30,
 			2
 		);
-		$jsonresponse    = Calendar::getCalendarDataArray(
+		$jsonresponse    = CalendarService::getCalendarDataArray(
 			$otherItemId,
 			$otherLocationId,
 			$startDate,
@@ -195,7 +196,7 @@ class CalendarTest extends CustomPostTypeTest {
 			[ '1', '2', '3', '4', '5' ]
 		);
 
-		$jsonresponse = Calendar::getCalendarDataArray(
+		$jsonresponse = CalendarService::getCalendarDataArray(
 			$otherItemId,
 			$otherLocationId,
 			$startDate,

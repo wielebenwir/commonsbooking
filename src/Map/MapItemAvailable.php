@@ -4,6 +4,7 @@ namespace CommonsBooking\Map;
 
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Day;
+use CommonsBooking\Service\CalendarService;
 use CommonsBooking\View\Calendar;
 use DateInterval;
 use DatePeriod;
@@ -74,7 +75,7 @@ class MapItemAvailable {
 					];
 				}
 
-				$calendarData = Calendar::getCalendarDataArray(
+				$calendarData = CalendarService::getCalendarDataArray(
 					$item['id'],
 					$location_id,
 					$startDay->getFormattedDate( 'Y-m-d' ),
