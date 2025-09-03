@@ -37,7 +37,7 @@ class AdminOptions {
 					$field_value = Settings::getOption( $option_key, $field_id );
 
 					// we check if there is a default value set in OptionsArray.php and if the field type is not checkbox (cause checkboxes have empty values if unchecked )
-					if ( array_key_exists( 'default', $field ) && $field['default'] != 0 && $field['type'] != 'checkbox' ) {
+					if ( array_key_exists( 'default', $field ) && $field['default'] !== '0' && $field['type'] != 'checkbox' ) {
 						// if field-value is not set already we add the default value to the options array
 						if ( empty( $field_value ) ) {
 							Settings::updateOption( $option_key, $field_id, $field['default'] );
