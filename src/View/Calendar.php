@@ -562,6 +562,7 @@ class Calendar {
 				'holidays'                => [],
 				'highlightedDays'         => [],
 				'maxDays'                 => null,
+				'startDayOffset'                => null,
 				'disallowLockDaysInRange' => true,
 				'countLockDaysInRange' => true,
 				'advanceBookingDays'      => $advanceBookingDays,
@@ -717,6 +718,7 @@ class Calendar {
 	 */
 	protected static function processSlot( $slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots ) {
 		// Add only bookable slots for time select
+		// TODO: This should be refactored to use the methods on the timeframe model.
 		if ( ! empty( $slot['timeframe'] ) && $slot['timeframe'] instanceof WP_Post ) {
 			// We have at least one slot ;)
 			$noSlots = false;
@@ -724,6 +726,7 @@ class Calendar {
 			$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
 
 			if ( ! $timeFrameType ) {
+				// TODO: Can this also be a restriction in the slot?
 				$timeFrameType = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Restriction::META_TYPE, true );
 			}
 
@@ -735,9 +738,15 @@ class Calendar {
 					$dayArray['firstSlotBooked'] = false;
 
 					// Set max-days setting based on first found timeframe
+					// TODO: This behaviour is already better defined in the timeframe model method getMaxDays which should be used here.
 					if ( $jsonResponse['maxDays'] == null ) {
 						$timeframeMaxDays        = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Timeframe::META_MAX_DAYS, true );
 						$jsonResponse['maxDays'] = intval( $timeframeMaxDays ?: 3 );
+					}
+
+					if ( $jsonResponse['startDayOffset'] == null ) {
+						$timeframeBookingStartDayOffset = get_post_meta( $slot['timeframe']->ID, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, true );
+						$jsonResponse['startDayOffset'] = $timeframeBookingStartDayOffset ? intval( $timeframeBookingStartDayOffset ) : null;
 					}
 				} else {
 					$dayArray['firstSlotBooked'] = true;
