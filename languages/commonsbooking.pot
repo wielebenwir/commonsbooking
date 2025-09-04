@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-22T09:56:50+00:00\n"
+"POT-Creation-Date: 2025-09-04T08:45:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -4276,11 +4276,17 @@ msgstr ""
 #. translators: %1$s is a number of days
 #: templates/timeframe-calendar.php:132
 #, php-format
-msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
+msgid "Maximum %1$s days bookable in a row."
 msgstr ""
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:137
+#: templates/timeframe-calendar.php:139
+#, php-format
+msgid "Bookings have to be made at least %1$s days in advance."
+msgstr ""
+
+#. translators: %1$s is a number of days
+#: templates/timeframe-calendar.php:145
 #, php-format
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr ""
