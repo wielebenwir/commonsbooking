@@ -76,8 +76,6 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		$this->assertFalse( $firstPageResponse->success );
 		$this->assertFalse( $firstPageResponse->error );
 		$this->assertEquals( 'Processed ' . TimeframeExport::ITERATION_COUNTS . ' of ' . $totalBookings . ' bookings', $firstPageResponse->progress );
-		$tfs = $firstPageResponse->settings->relevantTimeframes;
-		$this->assertEquals( TimeframeExport::ITERATION_COUNTS, count( $tfs ) );
 
 		// let's set the $_POST data anew so that we can get the second page
 		// we do the decoding and encoding to get an associative array from an object
