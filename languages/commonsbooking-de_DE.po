@@ -1558,11 +1558,11 @@ msgid "Download Export"
 msgstr "Download Export"
 
 #: src/Model/Booking.php:1023
-#: src/Service/TimeframeExport.php:537
-#: src/Service/TimeframeExport.php:547
-#: src/Service/TimeframeExport.php:553
-#: src/Service/TimeframeExport.php:565
-#: src/Service/TimeframeExport.php:578
+#: src/Service/TimeframeExport.php:590
+#: src/Service/TimeframeExport.php:600
+#: src/Service/TimeframeExport.php:606
+#: src/Service/TimeframeExport.php:618
+#: src/Service/TimeframeExport.php:631
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -3921,32 +3921,32 @@ msgstr "Upgrade beendet"
 msgid "Start Upgrade"
 msgstr "Upgrade starten"
 
-#: src/Service/TimeframeExport.php:91
+#: src/Service/TimeframeExport.php:145
 msgid "Invalid start date"
 msgstr "Ungültiges Startdatum"
 
-#: src/Service/TimeframeExport.php:95
+#: src/Service/TimeframeExport.php:149
 msgid "Invalid end date"
 msgstr "Ungültiges Enddatum"
 
-#: src/Service/TimeframeExport.php:98
+#: src/Service/TimeframeExport.php:152
 msgid "Start date must not be after the end date."
 msgstr "Das Startdatum darf nicht nach dem Enddatum liegen."
 
-#: src/Service/TimeframeExport.php:172
+#: src/Service/TimeframeExport.php:223
 #: src/View/TimeframeExport.php:39
 msgid "Export finished"
 msgstr "Export beendet"
 
-#: src/Service/TimeframeExport.php:265
+#: src/Service/TimeframeExport.php:318
 msgid "Export data is not complete. Please complete the process before trying to export."
 msgstr "Exportdaten konnten nicht vollständig gesammelt werden. Bitte den Vorgang abschließen, bevor der Export versucht wird."
 
-#: src/Service/TimeframeExport.php:269
+#: src/Service/TimeframeExport.php:322
 msgid "No data was found for the selected time period"
 msgstr "Es wurden keine Daten für den gewählten Zeitraum gefunden"
 
-#: src/Service/TimeframeExport.php:274
+#: src/Service/TimeframeExport.php:327
 msgid "You need to set an export path to execute the export"
 msgstr "Es muss ein Exportpfad angegeben werden, um den Export ausführen zu können"
 
@@ -4270,7 +4270,7 @@ msgstr "Beim Umziehen der Buchungen ist ein Fehler aufgetreten."
 msgid "There is already a booking on the new location during the timeframe of booking with ID %s."
 msgstr "Es existiert bereits eine Buchung für den Standort in dem Zeitraum der existierenden Buchung mit der ID %s."
 
-#: src/Service/TimeframeExport.php:378
+#: src/Service/TimeframeExport.php:431
 #, php-format
 msgid "Processed %1$d of %2$d bookings"
 msgstr "%1$d von %2$d Buchungen verarbeitet"
