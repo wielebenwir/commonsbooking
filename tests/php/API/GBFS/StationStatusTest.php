@@ -83,7 +83,7 @@ class StationStatusTest extends CustomPostTypeTest {
 			'd',
 			1,
 			'8:00 AM',
-			'12:00 PM'
+			'11:59 PM'
 		);
 		$this->assertEquals( 1, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
 

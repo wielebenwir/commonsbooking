@@ -105,12 +105,12 @@ class CalendarTest extends CustomPostTypeTest {
 			'd',
 			1,
 			'8:00 AM',
-			'12:00 PM'
+			'8:00 PM'
 		);
 		$start = new \DateTime( self::CURRENT_DATE );
 		$start->setTime( 8, 0, 0 );
 		$end = new \DateTime( self::CURRENT_DATE );
-		$end->setTime( 24, 0, 0 );
+		$end->setTime( 20, 0, 0 );
 		$expectedPeriod = new \DatePeriod(
 			$start,
 			new \DateInterval( 'PT1H' ),
