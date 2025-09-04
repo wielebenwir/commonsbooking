@@ -33,6 +33,13 @@ define( 'COMMONSBOOKING_MAP_ASSETS_URL', plugins_url( 'assets/map/', __FILE__ ) 
 define( 'COMMONSBOOKING_MAP_LANG_PATH', dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 define( 'COMMONSBOOKING_MAP_PLUGIN_DATA', get_file_data( __FILE__, array( 'Version' => 'Version' ) ) );
 
+/**
+ * Enables the scheduling of cache-clearing on savePost actions. Defaults to false.
+ *
+ * @since 2.10.7 initial
+ */
+define( 'COMMONSBOOKING_FEATURE_SCHEDULE_CACHE_SAVEPOST', false );
+
 global $cb_db_version;
 $cb_db_version = '1.0';
 
