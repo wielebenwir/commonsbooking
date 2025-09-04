@@ -22,9 +22,16 @@ use Symfony\Component\Cache\Exception\CacheException;
  */
 trait Cache {
 
+	// TODO: #1842 fix this when issue is closed
+	// TODO #1842 fix this when issue is closed
+	// TODO: phpunit/phpunit:>3.0
+	// TODO: php:>3.0
+	// TODO: php:>=6.0
+	// TODO: >2.10 has change after in 2.10
+	// TODO: <3.0.0 do this when still below 3.0
 
 	/**
-	 * TODO: Refactor to constant after PHP 8.2
+	 * TODO: php:>=8.2 Refactor to constant after PHP 8.2
 	 *
 	 * @var string
 	 */
