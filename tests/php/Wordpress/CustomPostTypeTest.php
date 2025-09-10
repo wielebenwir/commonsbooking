@@ -216,7 +216,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$repetitionStart,
 		$repetitionEnd,
 		$startTime = '12:00 AM',
-		$endTime = '23:59 PM',
+		$endTime = '23:59',
 		$postStatus = 'confirmed',
 		$postAuthor = self::USER_ID,
 		$timeframeRepetition = 'w',

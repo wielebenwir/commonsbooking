@@ -272,9 +272,9 @@ class Day {
 		}
 
 		// If we have a overbooked day, we need to mark all slots as booked
-		if ( ! $timeframe->isOverBookable() && ! empty( $endDate ) ) {
+		if ( ! $timeframe->isOverBookable() && ! empty( $endDate ) && $timeframe->getRepetition() == 'norep' ) {
 			// Check if timeframe ends after the current day
-			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
+			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59:59' ) ) < $endDate->getTimestamp() ) {
 				$endSlot = count( $slots );
 			}
 		}
