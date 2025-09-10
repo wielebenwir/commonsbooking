@@ -122,7 +122,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
-		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_REPETITION, $repetition );
 		if ( $repetitionStart ) {
 			update_post_meta( $timeframeId, 'repetition-start', $repetitionStart );
 		}
@@ -238,7 +238,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		);
 
 		update_post_meta( $bookingId, 'type', Timeframe::BOOKING_ID );
-		update_post_meta( $bookingId, 'timeframe-repetition', $timeframeRepetition );
+		update_post_meta( $bookingId, \CommonsBooking\Model\Timeframe::META_REPETITION, $timeframeRepetition );
 		update_post_meta( $bookingId, 'start-time', $startTime );
 		update_post_meta( $bookingId, 'end-time', $endTime );
 		update_post_meta( $bookingId, 'timeframe-max-days', $timeframeMaxDays );
