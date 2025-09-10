@@ -249,7 +249,6 @@ class DayTest extends CustomPostTypeTest {
 		$this->assertCount( 8, $grid );
 
 		// timeframe blocking parts of hourly grid with no end date (related to bug #1553)
-
 		$blockingTimeframe = $this->createTimeframe(
 			$hourlyLocation,
 			$hourlyItem,
@@ -292,5 +291,16 @@ class DayTest extends CustomPostTypeTest {
 		update_post_meta( $blockingTimeframe, 'repetition-end', strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ) );
 		$grid = $instance->getGrid();
 		$assertGridLocked( $grid );
+
+		// but still, if the timeframe does not have a repetition set, the block should span over the whole range
+		update_post_meta( $blockingTimeframe, Timeframe::META_REPETITION, 'norep' );
+		$grid = $instance->getGrid();
+		// blocking grid should extend till end of the day
+		$this->assertCount( 16, $grid );
+		$this->assertArrayHasKey( 8, $grid );
+		$this->assertArrayHasKey( 23, $grid );
+		for ( $i = 8; $i <= 23; $i++ ) {
+			$this->assertTrue( $grid[ $i ]['timeframe']->locked );
+		}
 	}
 }
