@@ -19,6 +19,17 @@ gemeint sind und nicht alle Artikel in der gesamten Installation. Um alle
 Artikel in der gesamten Installation auszuwählen musst du sowohl Standort als
 auch Artikel auf "Alle" stellen.
 
+# Regelmäßiges Blockieren eines Artikels
+
+Um einen Artikel regelmäßig aus dem Verleih zu nehmen, kann der Zeitrahmentyp `Geblockt (nicht überbuchbar)` genutzt werden.
+Wenn ein Artikel z.B. eine Woche lang jeden Tag von 08:00 - 10:00 Uhr blockiert werden soll, müsste dann der Anfang und das Ende der Woche
+als Start- und Enddatum eingetragen werden und die Wiederholung auf `Täglich` gestellt werden. Wenn jedoch der Artikel für eine ganze Woche durchgehend blockiert
+werden soll, muss die Wiederholung auf `Keine Wiederholung` gesetzt werden.
+
+:::tip Tipp
+Für Wartungszeiträume lohnt es sich eher eine [Buchungseinschränkung](/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten) zu erstellen, da diese auch eine Benachrichtigung an die Betroffenen Nutzenden mit Buchung in dem entsprechenden Zeitraum ermöglicht.
+:::
+
 #  Feiertage automatisch importieren
 
 Um einzelne, nicht zusammenhängende Tage für einen Zeitrahmen zu definieren
