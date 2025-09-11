@@ -5,6 +5,7 @@ namespace CommonsBooking\API\GBFS;
 
 use stdClass;
 use WP_REST_Response;
+use WP_REST_Request;
 
 class SystemInformation extends \CommonsBooking\API\BaseRoute {
 
@@ -20,8 +21,13 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/system_information.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/system_information.json';
 
+	/**
+	 * @param WP_REST_Request<array<string, mixed>> $request
+	 *
+	 * @return WP_REST_Response
+	 */
 	public function get_items( $request ): WP_REST_Response {
 		$tz = timezone_name_get( wp_timezone() );
 		if ( preg_match( '/^(\+|\-)0?(\d+)/', $tz, $matches ) ) {
