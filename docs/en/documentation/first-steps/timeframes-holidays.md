@@ -21,6 +21,17 @@ that means that all items at the locations defined above are affected,
 and not all items in the entire instance. To select all items across
 the entire instance, you need to set both location and item to "All".
 
+# Blocking an item regularly
+
+To regularly remove an item from rental, the time frame type `Blocked (not Overbookable)` can be used.
+If, for example, an item is to be blocked every day from 08:00 AM to 10:00 AM for a week, the start and end of the week must be entered
+as the start and end dates and the repetition set to `Daily`. However, if the item is to be blocked continuously for an entire week,
+the repetition must be set to `No repetition`.
+
+:::tip
+For maintenance periods, it is better to create a [booking restriction](/en/documentation/first-steps/manage-booking-restrictions), as this also allows you to notify the users whose bookings are in the affected time range.
+:::
+
 #  Automatically import holidays
 
 To define individual, non-contiguous days for a timeframe, you need to set the
