@@ -830,7 +830,11 @@ class Plugin {
 		if ( ! in_array( $post->post_status, $ignoredStates ) || $update ) {
 			$tags   = Wordpress::getRelatedPostIds( $post_id );
 			$tags[] = 'misc';
-			self::clearCache( $tags );
+			if ( COMMONSBOOKING_FEATURE_SCHEDULE_CACHE_SAVEPOST ) { // @phpstan-ignore if.alwaysFalse
+				self::scheduleClearCache( $tags );
+			} else {
+				self::clearCache( $tags );
+			}
 		}
 	}
 
