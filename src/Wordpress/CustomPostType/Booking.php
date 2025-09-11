@@ -130,7 +130,7 @@ class Booking extends Timeframe {
 			// run validation only on new posts (the submit button is only available on new posts)
 			if ( array_key_exists( self::SUBMIT_BUTTON_ID, $_REQUEST ) ) {
 				try {
-					$booking = new \CommonsBooking\Model\Booking( $post_id );
+					$booking = \CommonsBooking\Repository\Booking::getPostById( $post_id );
 					$booking->isValid();
 					wp_update_post(
 						array(
@@ -503,7 +503,7 @@ class Booking extends Timeframe {
 					)
 				) {
 					if ( $post_after->post_status == 'canceled' ) {
-						$booking = new \CommonsBooking\Model\Booking( $post_ID );
+						$booking = \CommonsBooking\Repository\Booking::getPostById( $post_ID );
 						$booking->cancel();
 					} else {
 						$booking_msg = new BookingMessage( $post_ID, $post_after->post_status );
