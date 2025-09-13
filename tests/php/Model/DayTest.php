@@ -296,11 +296,40 @@ class DayTest extends CustomPostTypeTest {
 		update_post_meta( $blockingTimeframe, Timeframe::META_REPETITION, 'norep' );
 		$grid = $instance->getGrid();
 		// blocking grid should extend till end of the day
-		$this->assertCount( 16, $grid );
+		$assertOverbookLocked = function ( $grid ) {
+			$this->assertCount( 16, $grid );
+			$this->assertArrayHasKey( 8, $grid );
+			$this->assertArrayHasKey( 23, $grid );
+			for ( $i = 8; $i <= 23; $i++ ) {
+				$this->assertTrue( $grid[ $i ]['timeframe']->locked );
+			}
+		};
+		$assertOverbookLocked( $grid );
+
+		// do the same for a booking (bug #1900)
+		wp_delete_post( $blockingTimeframe, true );
+		$booking = $this->createBooking(
+			$hourlyLocation,
+			$hourlyItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ),
+			'9:00 AM',
+			'10:00 AM'
+		);
+		// delete repetition key (also usually not set in the wild)
+		delete_post_meta( $booking, Timeframe::META_REPETITION );
+		// rebuild instance to fetch new booking
+		$instance = new Day(
+			$this->dateFormatted,
+			[ $hourlyLocation ],
+			[ $hourlyItem ]
+		);
+		$grid     = $instance->getGrid();
+		// first hour (8:00-9:00) still free, rest blocked
+		$this->assertCount( 2, $grid );
 		$this->assertArrayHasKey( 8, $grid );
 		$this->assertArrayHasKey( 23, $grid );
-		for ( $i = 8; $i <= 23; $i++ ) {
-			$this->assertTrue( $grid[ $i ]['timeframe']->locked );
-		}
+		$this->assertFalse( $grid[8]['timeframe']->locked );
+		$this->assertTrue( $grid[23]['timeframe']->locked );
 	}
 }
