@@ -5,6 +5,7 @@ namespace CommonsBooking\Wordpress\CustomPostType;
 use CommonsBooking\Exception\BookingCodeException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\TimeframeValidator;
 use WP_Post;
 use Exception;
 use CommonsBooking\View\Calendar;
@@ -948,7 +949,7 @@ class Timeframe extends CustomPostType {
 	 */
 	protected static function validateTimeFrame( $timeframe ): bool {
 		try {
-			$timeframe->isValid();
+			TimeframeValidator::isValid( $timeframe );
 		} catch ( TimeframeInvalidException $e ) {
 			set_transient(
 				\CommonsBooking\Model\Timeframe::ERROR_TYPE,
