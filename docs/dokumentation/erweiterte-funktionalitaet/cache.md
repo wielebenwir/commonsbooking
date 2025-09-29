@@ -4,7 +4,7 @@
 
 ::: warning Technisch!
 Um zu verstehen ob der Cache in deiner Installation korrekt funktioniert benötigst du technisches Verständnis.
-Wir versuchen trotzdem dass der Einsatz des Cache möglichst einfach funkioniert.
+Wir versuchen trotzdem, dir den Einsatz des Caches möglichst einfach zu gestalten.
 :::
 
 
