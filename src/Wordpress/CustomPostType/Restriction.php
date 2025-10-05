@@ -417,7 +417,7 @@ class Restriction extends CustomPostType {
 					__(
 						'Select the type of restriction.<br>
 				Select <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>
-				Select <strong>total breakdown</strong> if the defect means that the item can no longer be used. If you select total breakdown 
+				Select <strong>total breakdown</strong> if the defect means that the item can no longer be used. If you select total breakdown
 				all affected bookings will be automatically canceled after activating this restriction and after clicking send the information email.
 				',
 						'commonsbooking'
@@ -431,12 +431,14 @@ class Restriction extends CustomPostType {
 				'name'             => esc_html__( 'Location', 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_LOCATION_ID,
 				'type'             => 'select',
+				'show_option_none' => commonsbooking_isCurrentUserAdmin() ? esc_html__( 'All', 'commonsbooking' ) : false,
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Location::getByCurrentUser() ),
 			),
 			array(
 				'name'             => esc_html__( 'Item', 'commonsbooking' ),
 				'id'               => \CommonsBooking\Model\Restriction::META_ITEM_ID,
 				'type'             => 'select',
+				'show_option_none' => esc_html__( 'All', 'commonsbooking' ),
 				'options'          => self::sanitizeOptions( \CommonsBooking\Repository\Item::getByCurrentUser() ),
 			),
 			array(
