@@ -209,7 +209,7 @@ class Item extends CustomPostType {
 			ob_start();
 			global $post;
 
-			$item         = new \CommonsBooking\Model\Item( $post );
+			$item         = \CommonsBooking\Repository\Item::getPostById( $post );
 			$errormessage = \CommonsBooking\View\Booking::getError();
 			set_query_var( 'item', $item );
 			commonsbooking_get_template_part( 'item', 'single' );
