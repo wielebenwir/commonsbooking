@@ -3488,8 +3488,6 @@
   display: block;
   margin-top: var(--commonsbooking-spacer-big);
   color: var(--commonsbooking-textcolor-dark);
-  /* headline */
-  /* sub lists wrapper */
 }
 .cb-wrapper .cb-list-content.cb-pickupinstructions div {
   white-space: pre-wrap;
@@ -3499,6 +3497,9 @@
   margin-top: 0;
   border-left: green;
   border-width: 1px;
+}
+.cb-wrapper {
+  /* headline */
 }
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0;
@@ -3515,6 +3516,9 @@
 .cb-wrapper .cb-item-title a {
   color: var(--commonsbooking-color-primary);
   text-decoration: none;
+}
+.cb-wrapper {
+  /* sub lists wrapper */
 }
 .cb-wrapper > .cb-wrapper {
   overflow: hidden;
@@ -4139,7 +4143,6 @@
 */
 .cb-wrapper {
   /* Leaflet Map */
-  /* Popup */
 }
 .cb-wrapper.leaflet-container .cb-map-marker-cluster-icon {
   width: 100% !important;
@@ -4172,6 +4175,9 @@
 }
 .cb-wrapper.leaflet-container .leaflet-bar button {
   font-size: 6.5px;
+}
+.cb-wrapper {
+  /* Popup */
 }
 .cb-wrapper .leaflet-popup-content {
   min-width: 300px;
@@ -4246,9 +4252,6 @@
 /* Filters */
 .cb-map-filters.cb-wrapper {
   margin-top: var(--commonsbooking-spacer);
-  /* layout for filter  availability & distance */
-  /* styles for specific filters */
-  /* layout for filter category */
 }
 .cb-map-filters.cb-wrapper input[type=checkbox] {
   margin: 0 var(--commonsbooking-spacer-small) 0 0;
@@ -4274,6 +4277,12 @@
   color: var(--commonsbooking-color-primary);
   margin-bottom: var(--commonsbooking-spacer-small);
 }
+.cb-map-filters.cb-wrapper {
+  /* layout for filter  availability & distance */
+}
+.cb-map-filters.cb-wrapper {
+  /* styles for specific filters */
+}
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group {
   background: var(--commonsbooking-color-secondary);
   border-radius: var(--commonsbooking-radius);
@@ -4287,6 +4296,9 @@
 .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.undo-geo-search, .cb-map-filters.cb-wrapper .cb-map-distance-filter .cb-map-filter-input-group button.geo-search {
   background: transparent;
   color: #FFF;
+}
+.cb-map-filters.cb-wrapper {
+  /* layout for filter category */
 }
 .cb-map-filters.cb-wrapper .cb-map-category-filter .cb-map-filter-group {
   display: flex;
@@ -4609,10 +4621,6 @@
   padding: 0; /* overwriting cb-box standard behaviour */
   width: 100%;
   border-collapse: separate;
-  /* make first 2 table columns sticky */
-  /* place first col */
-  /* place second col */
-  /* set bg color */
 }
 .cb-items-table td,
 .cb-items-table th {
@@ -4640,6 +4648,9 @@
   text-align: left;
   padding-left: 4px;
 }
+.cb-items-table {
+  /* make first 2 table columns sticky */
+}
 .cb-items-table thead tr:first-child th:first-child,
 .cb-items-table thead tr:nth-child(2) th:first-child,
 .cb-items-table thead tr:nth-child(2) th:nth-child(2),
@@ -4653,13 +4664,22 @@
   max-width: 100px;
   background: #FFF;
 }
+.cb-items-table {
+  /* place first col */
+}
 .cb-items-table thead tr:nth-child(2) th:first-child,
 .cb-items-table tbody tr td:first-child {
   left: 0;
 }
+.cb-items-table {
+  /* place second col */
+}
 .cb-items-table thead tr:nth-child(2) th:nth-child(2),
 .cb-items-table tbody tr td:nth-child(2) {
   left: 100px;
+}
+.cb-items-table {
+  /* set bg color */
 }
 .cb-items-table thead tr:first-child th:first-child,
 .cb-items-table thead tr:nth-child(2) th:first-child,
@@ -4761,12 +4781,14 @@
  */
 .cb-wrapper {
   /* Twenty Nineteen Theme*/
-  /* Twenty Twenty Theme*/
 }
 .cb-wrapper h2::before {
   content: "";
   margin: 0;
   background: transparent;
+}
+.cb-wrapper {
+  /* Twenty Twenty Theme*/
 }
 .cb-wrapper h1, .cb-wrapper h2, .cb-wrapper h3, .cb-wrapper h4 {
   margin: 0 !important;

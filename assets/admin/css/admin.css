@@ -3607,42 +3607,6 @@ a.disabled {
 .cb-admin {
   /* Layout helpers
   ----------------------------------*/
-  /* Interaction Cues
-  ----------------------------------*/
-  /* Icons
-  ----------------------------------*/
-  /* Misc visuals
-  ----------------------------------*/
-  /* Overlays */
-  /* icon support */
-  /* left-aligned */
-  /* right-aligned */
-  /* to make room for the icon, a width needs to be set here */
-  /* no icon support for input elements */
-  /* button icon element(s) */
-  /* workarounds */
-  /* Support: Firefox 5 - 40 */
-  /* Spinner specific style fixes */
-  /* with multiple calendars */
-  /* RTL support */
-  /* Icons */
-  /* support: IE8 - See #6727 */
-  /* more specificity required here to override default borders */
-  /* Component containers
-  ----------------------------------*/
-  /* Interaction states
-  ----------------------------------*/
-  /* Interaction Cues
-  ----------------------------------*/
-  /* Icons
-  ----------------------------------*/
-  /* states and images */
-  /* positioning */
-  /* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead */
-  /* Misc visuals
-  ----------------------------------*/
-  /* Corner radius */
-  /* Overlays */
 }
 .cb-admin .ui-helper-hidden {
   display: none;
@@ -3688,9 +3652,17 @@ a.disabled {
 .cb-admin .ui-front {
   z-index: 100;
 }
+.cb-admin {
+  /* Interaction Cues
+  ----------------------------------*/
+}
 .cb-admin .ui-state-disabled {
   cursor: default !important;
   pointer-events: none;
+}
+.cb-admin {
+  /* Icons
+  ----------------------------------*/
 }
 .cb-admin .ui-icon {
   display: inline-block;
@@ -3705,6 +3677,11 @@ a.disabled {
   left: 50%;
   margin-left: -8px;
   display: block;
+}
+.cb-admin {
+  /* Misc visuals
+  ----------------------------------*/
+  /* Overlays */
 }
 .cb-admin .ui-widget-overlay {
   position: fixed;
@@ -3763,11 +3740,17 @@ a.disabled {
 .cb-admin .ui-menu .ui-state-active {
   margin: -1px;
 }
+.cb-admin {
+  /* icon support */
+}
 .cb-admin .ui-menu-icons {
   position: relative;
 }
 .cb-admin .ui-menu-icons .ui-menu-item-wrapper {
   padding-left: 2em;
+}
+.cb-admin {
+  /* left-aligned */
 }
 .cb-admin .ui-menu .ui-icon {
   position: absolute;
@@ -3775,6 +3758,9 @@ a.disabled {
   bottom: 0;
   left: 0.2em;
   margin: auto 0;
+}
+.cb-admin {
+  /* right-aligned */
 }
 .cb-admin .ui-menu .ui-menu-icon {
   left: auto;
@@ -3803,14 +3789,23 @@ a.disabled {
 .cb-admin .ui-button:active {
   text-decoration: none;
 }
+.cb-admin {
+  /* to make room for the icon, a width needs to be set here */
+}
 .cb-admin .ui-button-icon-only {
   width: 2em;
   box-sizing: border-box;
   text-indent: -9999px;
   white-space: nowrap;
 }
+.cb-admin {
+  /* no icon support for input elements */
+}
 .cb-admin input.ui-button.ui-button-icon-only {
   text-indent: 0;
+}
+.cb-admin {
+  /* button icon element(s) */
 }
 .cb-admin .ui-button-icon-only .ui-icon {
   position: absolute;
@@ -3832,6 +3827,10 @@ a.disabled {
   text-indent: 0;
   white-space: normal;
   padding: 0.4em 1em;
+}
+.cb-admin {
+  /* workarounds */
+  /* Support: Firefox 5 - 40 */
 }
 .cb-admin input.ui-button::-moz-focus-inner,
 .cb-admin button.ui-button::-moz-focus-inner {
@@ -3879,6 +3878,9 @@ a.disabled {
 }
 .cb-admin .ui-controlgroup-vertical .ui-controlgroup-label.ui-widget-content {
   border-bottom: none;
+}
+.cb-admin {
+  /* Spinner specific style fixes */
 }
 .cb-admin .ui-controlgroup-vertical .ui-spinner-input {
   /* Support: IE8 only, Android < 4.4 only */
@@ -4007,6 +4009,9 @@ a.disabled {
 .cb-admin .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
   float: left;
 }
+.cb-admin {
+  /* with multiple calendars */
+}
 .cb-admin .ui-datepicker.ui-datepicker-multi {
   width: auto;
 }
@@ -4037,6 +4042,9 @@ a.disabled {
   clear: both;
   width: 100%;
   font-size: 0;
+}
+.cb-admin {
+  /* RTL support */
 }
 .cb-admin .ui-datepicker-rtl {
   direction: rtl;
@@ -4071,6 +4079,9 @@ a.disabled {
 .cb-admin .ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
   border-right-width: 0;
   border-left-width: 1px;
+}
+.cb-admin {
+  /* Icons */
 }
 .cb-admin .ui-datepicker .ui-icon {
   display: block;
@@ -4333,6 +4344,9 @@ a.disabled {
   border: 0;
   background-position: 0 0;
 }
+.cb-admin {
+  /* support: IE8 - See #6727 */
+}
 .cb-admin .ui-slider.ui-state-disabled .ui-slider-handle,
 .cb-admin .ui-slider.ui-state-disabled .ui-slider-range {
   filter: inherit;
@@ -4407,6 +4421,9 @@ a.disabled {
   overflow: hidden;
   right: 0;
 }
+.cb-admin {
+  /* more specificity required here to override default borders */
+}
 .cb-admin .ui-spinner a.ui-spinner-button {
   border-top-style: none;
   border-bottom-style: none;
@@ -4468,6 +4485,10 @@ a.disabled {
 .cb-admin body .ui-tooltip {
   border-width: 2px;
 }
+.cb-admin {
+  /* Component containers
+  ----------------------------------*/
+}
 .cb-admin .ui-widget {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1em;
@@ -4501,6 +4522,10 @@ a.disabled {
 }
 .cb-admin .ui-widget-header a {
   color: #333333;
+}
+.cb-admin {
+  /* Interaction states
+  ----------------------------------*/
 }
 .cb-admin .ui-state-default,
 .cb-admin .ui-widget-content .ui-state-default,
@@ -4574,6 +4599,10 @@ a.disabled {
   color: #ffffff;
   text-decoration: none;
 }
+.cb-admin {
+  /* Interaction Cues
+  ----------------------------------*/
+}
 .cb-admin .ui-state-highlight,
 .cb-admin .ui-widget-content .ui-state-highlight,
 .cb-admin .ui-widget-header .ui-state-highlight {
@@ -4629,6 +4658,11 @@ a.disabled {
 .cb-admin .ui-state-disabled .ui-icon {
   filter: Alpha(Opacity=35); /* support: IE8 - See #6059 */
 }
+.cb-admin {
+  /* Icons
+  ----------------------------------*/
+  /* states and images */
+}
 .cb-admin .ui-icon {
   width: 16px;
   height: 16px;
@@ -4660,6 +4694,9 @@ a.disabled {
 }
 .cb-admin .ui-button .ui-icon {
   background-image: url("images/ui-icons_777777_256x240.png");
+}
+.cb-admin {
+  /* positioning */
 }
 .cb-admin .ui-icon-blank {
   background-position: 16px 16px;
@@ -5072,6 +5109,9 @@ a.disabled {
 .cb-admin .ui-icon-seek-start {
   background-position: -80px -160px;
 }
+.cb-admin {
+  /* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead */
+}
 .cb-admin .ui-icon-seek-first {
   background-position: -80px -160px;
 }
@@ -5186,6 +5226,11 @@ a.disabled {
 .cb-admin .ui-icon-grip-diagonal-se {
   background-position: -80px -224px;
 }
+.cb-admin {
+  /* Misc visuals
+  ----------------------------------*/
+  /* Corner radius */
+}
 .cb-admin .ui-corner-all,
 .cb-admin .ui-corner-top,
 .cb-admin .ui-corner-left,
@@ -5209,6 +5254,9 @@ a.disabled {
 .cb-admin .ui-corner-right,
 .cb-admin .ui-corner-br {
   border-bottom-right-radius: 3px;
+}
+.cb-admin {
+  /* Overlays */
 }
 .cb-admin .ui-widget-overlay {
   background: #aaaaaa;
