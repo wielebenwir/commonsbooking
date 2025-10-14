@@ -24,7 +24,7 @@ jobs:
          generate_zip: 'true'
 
      - name: Upload zip
-       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+       uses: SamKirkland/FTP-Deploy-Action@v4.3.6
        with:
          exclude: |
           **
