@@ -830,7 +830,18 @@ class Plugin {
 		if ( ! in_array( $post->post_status, $ignoredStates ) || $update ) {
 			$tags   = Wordpress::getRelatedPostIds( $post_id );
 			$tags[] = 'misc';
-			self::clearCache( $tags );
+
+			/**
+			 * Enables the scheduling of cache-clearing on savePost actions. Defaults to false.
+			 *
+			 * @since 2.10.7 initial
+			 */
+			$schedule_cache_enabled = apply_filters( 'commonsbooking_feature_schedule_cache_savepost_enabled', false );
+			if ( $schedule_cache_enabled ) {
+				self::scheduleClearCache( $tags );
+			} else {
+				self::clearCache( $tags );
+			}
 		}
 	}
 
