@@ -1,5 +1,8 @@
 #  Timeframes: Configure a location's holidays
 
+::: tip Since version 2.9
+:::
+
 __
 
 Timeframes can not only make items available at locations, but also determine

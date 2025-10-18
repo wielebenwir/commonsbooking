@@ -1,4 +1,7 @@
-#  Buchungsregeln einrichten (Ab 2.9)
+#  Buchungsregeln einrichten
+
+::: tip Ab Version 2.9
+:::
 
 __
 

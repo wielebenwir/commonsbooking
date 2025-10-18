@@ -1,4 +1,7 @@
-#  Configure booking rules (Since 2.9)
+#  Configure booking rules
+
+::: tip Since version 2.9
+:::
 
 __
 

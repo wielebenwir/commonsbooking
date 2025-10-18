@@ -23,5 +23,5 @@ auf der linken Seite den Menüpunkt "CommonsBooking" ausgewählt hast.
   * [ Artikel anlegen ](/dokumentation/erste-schritte/artikel-anlegen)
   * [ Zeitrahmen: Buchungszeiträume verwalten ](/dokumentation/erste-schritte/buchungszeitraeume-verwalten)
   * [ Buchungseinschränkungen verwalten ](/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten)
-  * [ Buchungsregeln einrichten (Ab 2.9) ](/dokumentation/erste-schritte/buchungsregeln-einrichten)
+  * [ Buchungsregeln einrichten ](/dokumentation/erste-schritte/buchungsregeln-einrichten)
   * [ Zeitrahmen: Feiertage definieren ](/dokumentation/erste-schritte/zeitrahmen-feiertage-definieren)

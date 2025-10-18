@@ -30,7 +30,8 @@ Eine Übersicht zur Verwendung der [Template-Tags findest du hier](/dokumentatio
 
 ##  iCalendar Dateien
 
-Ab 2.8
+::: tip Ab Version 2.8
+:::
 
 CommonsBooking ist in der Lage aus den getätigten Buchungen eine .ics Datei zu
 generieren, die mit den meisten digitalen Kalendern kompatibel ist. Du kannst

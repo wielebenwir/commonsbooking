@@ -2,8 +2,8 @@
 
 __
 
-Ab 2.8.
-Diese Feature ist noch experimentell.
+::: tip Ab Version 2.8
+:::
 
 In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
 aktivieren. iCalendar ist ein sehr geläufiges Format für digitale Kalender.

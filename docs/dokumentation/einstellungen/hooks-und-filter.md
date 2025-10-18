@@ -4,7 +4,8 @@ __
 
 ##  Action Hooks
 
-Ab Version 2.7
+::: tip Ab Version 2.7
+:::
 
 Mit Hooks (https://developer.wordpress.org/plugins/hooks/) kannst du deine eigenen
 Code-Schnipsel an bestimmten Stellen in den CommonsBooking Vorlagen einbinden.

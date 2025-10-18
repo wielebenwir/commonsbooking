@@ -1,10 +1,11 @@
 # GBFS
 
-::: danger Fehler in der API
-Mit [Issue 1388](https://github.com/wielebenwir/commonsbooking/issues/1388) ist ein Fehler in der API dokumentiert. Die zeitliche Verfügbarkeit ist u.U. also nicht korrekt.
+::: Ab Version 2.5
 :::
 
-Seit 2.5
+::: danger Fehler in der API (Stand Oktober 2025)
+Mit [Issue 1388](https://github.com/wielebenwir/commonsbooking/issues/1388) ist ein Fehler in der API dokumentiert. Die zeitliche Verfügbarkeit ist u.U. also nicht korrekt.
+:::
 
 Diese Schnittstelle stellt Daten der [Standorte](/dokumentation/erste-schritte/stationen-anlegen),
 [Artikel](/dokumentation/erste-schritte/artikel-anlegen) und deren Verfügbarkeit über die

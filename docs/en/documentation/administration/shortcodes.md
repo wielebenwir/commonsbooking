@@ -62,13 +62,16 @@ einbinden) .
 
 * * *
 
-##  Karte mit Artikelliste (BETA)
+##  Karte mit Artikelliste
 
-Erst ab Version 2.9
+::: tip Ab Version 2.9
+:::
 
-Bisher war jeder Shortcode nur unabhängig voneinander verwendbar, dh. ein
+Eine interaktive Karte inkl. Suche und verbundener Artikelliste.
+
+Bis (2.9) war jeder Shortcode nur unabhängig voneinander verwendbar, dh. ein
 Filter der auf der Karte angewendet wurde hatte keine Auswirkungen auf die
-danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
+danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode:
 
   * Shortcode: ` [cb_search] `
   * Argumente ( **erforderlich!** : ` id `
