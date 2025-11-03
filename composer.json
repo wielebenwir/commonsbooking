@@ -20,6 +20,32 @@
       "CommonsBooking\\Tests\\": "tests/php/"
     }
   },
+    "scripts": {
+    "prefix-namespaces": [
+        "sh -c 'test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/latest/download/strauss.phar'",
+        "@php bin/strauss.phar",
+        "@composer dump-autoload"
+    ],
+    "post-install-cmd": [
+        "@prefix-namespaces"
+    ],
+    "post-update-cmd": [
+        "@prefix-namespaces"
+    ],
+    "post-autoload-dump": [
+        "@php bin/strauss.phar include-autoloader"
+    ]
+},
+"extra": {
+    "strauss": {
+        "target_directory": "vendor-prefixed",
+        "namespace_prefix": "CommonsBooking\\Composer_Dependencies\\",
+        "classmap_prefix": "CommonsBooking_Composer_Dependencies",
+        "constant_prefix": "CBDP_",
+        "update_call_sites": true,
+        "delete_vendor_files": false
+    }
+},
   "repositories": [
     {
       "type": "vcs",
