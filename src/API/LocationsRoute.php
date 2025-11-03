@@ -1,13 +1,12 @@
 <?php
 
-
 namespace CommonsBooking\API;
 
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use Exception;
-use Geocoder\Geocoder;
-use Geocoder\Provider\Provider;
+use CommonsBooking\Composer_Dependencies\Geocoder\Geocoder;
+use CommonsBooking\Composer_Dependencies\Geocoder\Provider\Provider;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
@@ -40,7 +39,7 @@ class LocationsRoute extends BaseRoute {
 	protected $provider;
 
 	/**
-	 * @var Geocoder
+	 * @var \Geocoder
 	 */
 	protected $geocoder;
 
@@ -109,7 +108,7 @@ class LocationsRoute extends BaseRoute {
 	 * @param $request
 	 *
 	 * @return WP_REST_Response
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Composer_Dependencies\Geocoder\Exception\Exception
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem             = new stdClass();

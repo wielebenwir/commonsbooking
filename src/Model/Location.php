@@ -7,7 +7,7 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
-use Geocoder\Exception\Exception;
+use CommonsBooking\Composer_Dependencies\Geocoder\Exception\Exception;
 
 /**
  * This is the logical wrapper for the location custom post type.

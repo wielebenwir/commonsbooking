@@ -30,7 +30,7 @@ class StationInformation extends BaseRoute {
 	 * @param $request
 	 *
 	 * @return WP_REST_Response
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Composer_Dependencies\Geocoder\Exception\Exception
 	 * @throws Exception
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {

@@ -7,12 +7,12 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
-use Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
-use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
-use Symfony\Component\Cache\Adapter\NullAdapter;
-use Symfony\Component\Cache\Exception\CacheException;
+use CommonsBooking\Composer_Dependencies\Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
+use CommonsBooking\Composer_Dependencies\Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
+use CommonsBooking\Composer_Dependencies\Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use CommonsBooking\Composer_Dependencies\Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
+use CommonsBooking\Composer_Dependencies\Symfony\Component\Cache\Adapter\NullAdapter;
+use CommonsBooking\Composer_Dependencies\Symfony\Component\Cache\Exception\CacheException;
 
 /**
  * Cache service wrapper around Symfony Cache Adapters.
@@ -48,7 +48,7 @@ trait Cache {
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
 			}
-		} catch ( \Psr\Cache\CacheException $exception ) {
+		} catch ( \CommonsBooking\Composer_Dependencies\Psr\Cache\CacheException $exception ) {
 			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
 		} catch ( Exception $exception ) {
 			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
@@ -133,7 +133,7 @@ trait Cache {
 				$defaultLifetime,
 				$location
 			);
-		} catch ( \Psr\Cache\CacheException $e ) {
+		} catch ( \CommonsBooking\Composer_Dependencies\Psr\Cache\CacheException $e ) {
 			// fall back to generic filesystem adapter, if it fails
 			// TODO: this can throw Exception or CacheException
 			$adapter = new FilesystemTagAwareAdapter( $namespace, $defaultLifetime );
@@ -203,7 +203,7 @@ trait Cache {
 	 * @param $defaultLifetime
 	 * @param string $cacheLocation
 	 * @return TagAwareAdapterInterface
-	 * @throws \Psr\Cache\CacheException
+	 * @throws \CommonsBooking\Composer_Dependencies\Psr\Cache\CacheException
 	 */
 	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
 		$adapters = self::getAdapters();
@@ -260,7 +260,7 @@ trait Cache {
 			$cacheItem->expiresAfter( intval( $expiration ) );
 
 			return $cache->save( $cacheItem );
-		} catch ( \Psr\Cache\CacheException $e ) {
+		} catch ( \CommonsBooking\Composer_Dependencies\Psr\Cache\CacheException $e ) {
 			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
 		} catch ( Exception $e ) {
 			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
@@ -273,7 +273,7 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \CommonsBooking\Composer_Dependencies\Psr\Cache\InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
 		if ( ! count( $tags ) ) {
@@ -283,7 +283,7 @@ trait Cache {
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
-		if ( is_a( self::getCache(), 'Symfony\Component\Cache\PruneableInterface' ) ) {
+		if ( is_a( self::getCache(), 'CommonsBooking\Composer_Dependencies\Symfony\Component\Cache\PruneableInterface' ) ) {
 			self::getCache()->prune();
 		}
 

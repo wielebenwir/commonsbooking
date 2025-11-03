@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Helper;
 
-use Geocoder\Location;
+use CommonsBooking\Composer_Dependencies\Geocoder\Location;
 
 interface GeoCodeService {
 
