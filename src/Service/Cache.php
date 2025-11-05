@@ -114,9 +114,7 @@ trait Cache {
 	 *
 	 * @param string $namespace
 	 * @param int    $defaultLifetime
-	 * @param string $location
-	 *
-	 * @throws Exception
+	 * @param string $location Depending on the type of adapter, this can be a filesystem path, a REDIS DSN,...
 	 *
 	 * @return TagAwareAdapterInterface
 	 */
@@ -135,9 +133,13 @@ trait Cache {
 			);
 		} catch ( \Psr\Cache\CacheException $e ) {
 			// fall back to generic filesystem adapter, if it fails
-			// TODO: this can throw Exception or CacheException
-			$adapter = new FilesystemTagAwareAdapter( $namespace, $defaultLifetime );
-			commonsbooking_write_log( $e->getMessage() . '\n' . 'Falling back to Filesystem adapter' );
+			try {
+				commonsbooking_write_log( $e->getMessage() . '\n' . 'Falling back to Filesystem adapter' );
+				$adapter = new FilesystemTagAwareAdapter( $namespace, $defaultLifetime );
+			} catch ( \Exception $e ) {
+				commonsbooking_write_log( 'Falling back to filesystem adapter failed with error message' . '\n' . $e->getMessage() . '\n' . 'Cache has been disabled' );
+				$adapter = new TagAwareAdapter( new NullAdapter() );
+			}
 		}
 		return $adapter;
 	}
