@@ -28,3 +28,18 @@ parameters:
 #    uncheckedExceptionClasses:
 #      - 'CacheException'
 #      - 'Psr\Cache\CacheException'
+  # Plugin to check for closes issue/pr and versions via TODO comments
+  # see https://github.com/staabm/phpstan-todo-by?tab=readme-ov-file
+  todo_by:
+    # see https://github.com/staabm/phpstan-todo-by?tab=readme-ov-file#reference-version
+    referenceVersion: 'nextMinor'
+    # see https://github.com/staabm/phpstan-todo-by?tab=readme-ov-file#issue-tracker-key-support
+    ticket:
+      enabled: true
+      tracker: github
+      github:
+        # The account owner of referenced repositories.
+        defaultOwner: wielebenwir
+
+        # The name of the repository without the .git extension.
+        defaultRepo: commonsbooking
