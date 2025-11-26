@@ -4,8 +4,6 @@ __
 
 ##  Action Hooks
 
-Ab Version 2.7
-
 Mit Hooks (https://developer.wordpress.org/plugins/hooks/) kannst du deine eigenen
 Code-Schnipsel an bestimmten Stellen in den CommonsBooking Vorlagen einbinden.
 So kannst du deinen eigenen Code in die Templates einfügen, ohne die
@@ -15,8 +13,8 @@ Code Schnipsel sind meist sehr kurzer Code in PHP und kann über ein [ Child
 Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes)
 eingebunden werden oder über spezielle Plugins für Code Schnipsel (z.B. Code
 Snippets). Dafür musst du nicht sonderlich viel PHP können, es ist aber auch
-möglich mit diesen Snippets etwas fundamentales an der Funktion der Webseite
-zu ändern oder auch Fehler zu erzeugen, die das Buchungssystem nicht mehr
+möglich mit diesen Snippets tief in die Funktion von CommonsBooking einzugreifen
+oder auch Fehler zu erzeugen, die das Buchungssystem nicht mehr
 nutzbar machen. Wenn du in der Dokumentation Beispiele siehst, dann sind diese
 einigermaßen sicher und getestet. Ein gewisses Restrisiko bleibt aber. Falls
 du Probleme haben solltest, dann kannst du dich gerne an uns wenden. Bitte gib
@@ -33,7 +31,7 @@ Funktion integrieren. Beispiel:
 
 ```php
 function itemsingle_callback() {
-    // dein code hier
+    // wird vor dem item-single template angezeigt
 }
 add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
 ```
@@ -73,6 +71,7 @@ zurückgibt.
   * commonsbooking_mail_subject
   * commonsbooking_mail_body
   * commonsbooking_mail_attachment
+  * commonsbooking_disableCache
 
 Es gibt auch Filter Hooks, mit denen du zusätzliche Benutzerrollen, die
 zusätzlich zum CB Manager Artikel und Standorte administrieren können,

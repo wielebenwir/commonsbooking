@@ -2,20 +2,10 @@
 
 __
 
-Es ist möglich mithilfe von kleinen Codeschnipseln die Standardwerte, die bei
-jeder Erstellung eines Zeitrahmens schon ausgefüllt sind, zu ändern.
+Es ist möglich mit Codeschnipseln, ähnlich zu den [ Hooks und Filtern ](/dokumentation/einstellungen/hooks-und-filter),
+die Standardwerte, die bei der Erstellung eines Zeitrahmens voreingestellt sind, zu ändern.
 
-Code Schnipsel sind meist sehr kurzer Code in PHP und können über ein [ Child
-Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes)
-eingebunden werden oder über spezielle Plugins für Code Schnipsel (z.B. Code
-Snippets). Dafür musst du nicht sonderlich viel PHP können, es ist aber auch
-möglich mit diesen Snippets etwas fundamentales an der Funktion der Webseite
-zu ändern oder auch Fehler zu erzeugen, die das Buchungssystem nicht mehr
-nutzbar machen. Wenn du in der Dokumentation Beispiele siehst, dann sind diese
-einigermaßen sicher und getestet. Ein gewisses Restrisiko bleibt aber. Falls
-du Probleme haben solltest, dann kannst du dich gerne an uns wenden. Bitte gib
-aber auch sämtliche Codeschnipsel mit an, die ihr verwendet. Dadurch können
-wir das Problem besser nachvollziehen.
+Die veränderbaren Standardwerte sind hier mit Beispielschnipseln aufgelistet. Für mehr Informationen zur Anwendung siehe [ Hooks und Filter ](/dokumentation/einstellungen/hooks-und-filter).
 
 ###  Buchungskommentar
 
@@ -27,7 +17,7 @@ function change_defaults_comment( $comment ) {
 }
 add_filter( 'commonsbooking_defaults_comment', 'change_defaults_comment' );
 ```
-###  Buchungstyp
+###  Zeitrahmen Typ
 
 ```php
 function change_defaults_type( $type ) {
@@ -157,7 +147,7 @@ function change_defaults_timeframe_repetition( $repetition ) {
 add_filter( 'commonsbooking_defaults_timeframe-repetition', 'change_defaults_timeframe_repetition' );
 ```
 
-###  Wochentage
+###  Wochentage (für wöchentliche Wiederholung)
 
 ```php
 function change_defaults_weekdays( $weekdays ) {
