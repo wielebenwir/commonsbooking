@@ -21,7 +21,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	/**
 	 * Returns Rest Response with items.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response
 	 */
@@ -43,9 +43,9 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	/**
 	 * Returns item data array.
 	 *
-	 * @param $request
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
-	 * @return array
+	 * @return array<WP_REST_Response>
 	 */
 	public function getItemData( $request ): array {
 		$data      = [];
