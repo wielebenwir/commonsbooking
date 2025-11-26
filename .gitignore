@@ -11,6 +11,7 @@ assets/packaged
 src/Wordpress/.DS_Store
 tests/cypress/screenshots
 /vendor
+/vendor-prefixed
 /build
 src/.DS_Store
 assets/.DS_Store
@@ -28,3 +29,4 @@ commonsbookingdocker.code-workspace
 wp-core
 tests/cypress/screenshots
 docs/.vitepress/dist
+bin/strauss.phar

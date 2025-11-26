@@ -5,19 +5,19 @@ namespace CommonsBooking\Service;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Settings\Settings;
 
-use Eluceo\iCal\Domain\Entity\Calendar;
-use Eluceo\iCal\Domain\ValueObject\MultiDay;
-use Eluceo\iCal\Domain\ValueObject\SingleDay;
-use Eluceo\iCal\Domain\ValueObject\TimeSpan;
-use Eluceo\iCal\Presentation\Factory\CalendarFactory;
-use Eluceo\iCal\Domain\ValueObject\DateTime;
-use Eluceo\iCal\Domain\ValueObject\Timestamp;
-use Eluceo\iCal\Domain\Enum\EventStatus;
-use Eluceo\iCal\Domain\ValueObject\Location;
-use Eluceo\iCal\Domain\ValueObject\UniqueIdentifier;
-use Eluceo\iCal\Domain\Entity\Event;
-use Eluceo\iCal\Domain\ValueObject\Date;
-use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\Entity\Calendar;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\MultiDay;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\SingleDay;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\TimeSpan;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Presentation\Factory\CalendarFactory;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\DateTime;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\Timestamp;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\Enum\EventStatus;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\Location;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\UniqueIdentifier;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\Entity\Event;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\Date;
+use CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\GeographicPosition;
 
 use DateTimeImmutable;
 use DateInterval;
@@ -165,7 +165,7 @@ class iCalendar {
 			$php_date_time_zone = wp_timezone();
 			// will only get timezone object if current timezone has transitions that can be fetched
 		if ( $php_date_time_zone->getTransitions() ) {
-			$timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
+			$timezone = \CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone(
 				$php_date_time_zone,
 				$booking_startDateDateTime,
 				$booking_endDateDateTime
@@ -193,8 +193,8 @@ class iCalendar {
 			$booking_endDateDateTime = $booking_endDateDateTime->add( new DateInterval( 'PT1M' ) );
 
 			$occurrence = new TimeSpan(
-				new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_startDateDateTime, true ),
-				new \Eluceo\iCal\Domain\ValueObject\DateTime( $booking_endDateDateTime, true )
+				new \CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\DateTime( $booking_startDateDateTime, true ),
+				new \CommonsBooking\Composer_Dependencies\Eluceo\iCal\Domain\ValueObject\DateTime( $booking_endDateDateTime, true )
 			);
 		}
 

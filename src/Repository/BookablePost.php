@@ -7,8 +7,8 @@ use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use Exception;
-use Psr\Cache\CacheException;
-use Psr\Cache\InvalidArgumentException;
+use CommonsBooking\Composer_Dependencies\Psr\Cache\CacheException;
+use CommonsBooking\Composer_Dependencies\Psr\Cache\InvalidArgumentException;
 use WP_Post;
 use WP_Query;
 
