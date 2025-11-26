@@ -40,6 +40,10 @@ jobs:
 
       - uses: ./.github/actions/build-plugin
 
+      - name: Install wp-env systemwide
+        shell: bash
+        run: npm -g i @wordpress/env
+        
       - name: Overwrite PHP versions & core for wp-env 
         if: matrix.core.version != 'null'
         run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
