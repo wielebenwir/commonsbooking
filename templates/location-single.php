@@ -9,7 +9,7 @@
 	$noResultText     = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'location-without-items' );
 	$bookThisItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'text_book-this-item' );
 
-	do_action( 'commonsbooking_before_location-single' );
+	do_action( 'commonsbooking_before_location-single', $templateData['location']->ID, $templateData['location'] );
 
 	commonsbooking_get_template_part( 'location', 'single-meta' ); // file: location-single-meta.php
 
@@ -48,4 +48,4 @@ if ( ! is_user_logged_in() ) {
 		</div>
 	<?php
 }
-do_action( 'commonsbooking_after_location-single' );
+do_action( 'commonsbooking_after_location-single', $templateData['location']->ID, $templateData['location'] );
