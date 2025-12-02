@@ -138,7 +138,7 @@ trait Cache {
 				$adapter = new FilesystemTagAwareAdapter( $namespace, $defaultLifetime );
 			} catch ( \Exception $e ) {
 				commonsbooking_write_log( 'Falling back to filesystem adapter failed with error message' . '\n' . $e->getMessage() . '\n' . 'Cache has been disabled' );
-				$adapter = new TagAwareAdapter( new NullAdapter() );
+				$adapter = self::getNullAdapter();
 			}
 		}
 		return $adapter;
@@ -182,7 +182,7 @@ trait Cache {
 			],
 			'disabled' => [
 				'label' => __( 'Disabled', 'commonsbooking' ),
-				'factory' => fn() => new TagAwareAdapter( new NullAdapter() ),
+				'factory' => \Closure::fromCallable( [ self::class, 'getNullAdapter' ] ),
 			],
 		];
 
@@ -208,6 +208,9 @@ trait Cache {
 	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
+		if ( self::isDisabled() ) {
+			return self::getNullAdapter();
+		}
 		$adapters = self::getAdapters();
 		if ( ! array_key_exists( $identifier, $adapters ) ) {
 			throw new CacheException( sprintf( 'Adapter %s not found', $identifier ) ); // Not translated bc this is a developer error
@@ -223,6 +226,16 @@ trait Cache {
 		} catch ( Exception $e ) { // Symfony adapters do not always throw CacheException, for example the REDIS adapter can throw InvalidArgumentException
 			throw new CacheException( $e->getMessage() . $e->getTraceAsString() );
 		}
+	}
+
+	/**
+	 * Returns a NullAdapter wrapped in TagAwareAdapterInterface.
+	 * This is the adapter used when caching is disabled.
+	 *
+	 * @return TagAwareAdapterInterface
+	 */
+	private static function getNullAdapter(): TagAwareAdapterInterface {
+		return new TagAwareAdapter( new NullAdapter() );
 	}
 
 	/**
@@ -407,7 +420,10 @@ trait Cache {
 			</div>
 			<div class="cmb-th">
 				<?php
-				if ( $adapterIdentifier === 'disabled' ) {
+				if ( self::isDisabled() ) {
+					echo '<div style="color:orange">';
+					echo __( 'Cache was disabled through external setting. Please see the documentation for more information.', 'commonsbooking' );
+				} elseif ( $adapterIdentifier === 'disabled' ) {
 					echo '<div style="color:orange">';
 					echo __( 'Cache is disabled.', 'commonsbooking' );
 				} elseif ( $success ) {
@@ -513,4 +529,21 @@ trait Cache {
 		'cb_search' => array( \CommonsBooking\Map\SearchShortcode::class, 'execute' ),
 		'cb_items_table' => array( Calendar::class, 'renderTable' ),
 	];
+
+	/**
+	 * Tells if the cache is disabled externally.
+	 * This is usually the case, when WP_DEBUG is enabled or the commonsbooking_disableCache filter is
+	 * used as an override. This is sometimes necessary when the filesystem adapter,
+	 * which is the default adapter, crashes upon initialization. (Causes fatal error).
+	 *
+	 * When the user has selected "disabled" as cache adapter,
+	 * this will return false bc this function only considers external disablement.
+	 *
+	 * @return bool
+	 */
+	private static function isDisabled(): bool {
+		$isDisabled = WP_DEBUG;
+
+		return apply_filters( 'commonsbooking_disableCache', $isDisabled );
+	}
 }
