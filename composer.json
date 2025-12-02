@@ -34,7 +34,7 @@
   "require": {
     "php": ">=7.4",
     "cmb2/cmb2": "^2.10.1",
-    "mustardbees/cmb-field-select2": "^3.0.4",
+    "mustardbees/cmb-field-select2": "^3.0.5",
     "geocoder-php/nominatim-provider": "^5.7",
     "php-http/curl-client": "^2.3",
     "nyholm/psr7": "^1.8",
@@ -46,7 +46,8 @@
     "symfony/service-contracts": "^v2.5.2",
     "eluceo/ical": "~2.14.0",
     "phpmailer/phpmailer": "^7.0.0",
-    "ed-itsolutions/cmb2-field-ajax-search": "v2.0.1"
+    "ed-itsolutions/cmb2-field-ajax-search": "v2.0.1",
+    "symfony/http-client": "^8.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.6.6",
