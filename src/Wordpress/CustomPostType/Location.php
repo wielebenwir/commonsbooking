@@ -116,9 +116,15 @@ class Location extends CustomPostType {
 		return new \CommonsBooking\View\Location();
 	}
 
+	/**
+	 * @param string $content value of content parameter of `the_content` filter
+	 *
+	 * @return string
+	 */
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) && is_main_query() ) {
+		if ( ! post_password_required() &&
+			is_singular( self::getPostType() ) && is_main_query() ) {
 			ob_start();
 			commonsbooking_get_template_part( 'location', 'single' );
 			$cb_content = ob_get_clean();
