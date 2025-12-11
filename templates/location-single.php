@@ -14,10 +14,8 @@
 	commonsbooking_get_template_part( 'location', 'single-meta' ); // file: location-single-meta.php
 
 	// Single Item View
-if ( array_key_exists( 'item', $templateData ) && $templateData['item'] ) { // item selected, so we display the booking calendar
-	echo '<h2>' . esc_html__( $bookThisItemText, 'commonsbooking' ) . '</h2>';
-	commonsbooking_get_template_part( 'item', 'calendar-header' ); // file: item-calendar-header.php
-	commonsbooking_get_template_part( 'timeframe', 'calendar' ); // file: timeframe-calendar.php
+if ( array_key_exists( 'item', $templateData ) && $templateData['item'] ) { // just one item selected, so we redirect to the item page see #1953
+	wp_redirect( esc_url( get_permalink( $templateData['item']->ID ) ) );
 }
 
 	// Multi item view
