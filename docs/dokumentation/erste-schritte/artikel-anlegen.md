@@ -26,3 +26,7 @@ Benutzer mit der Rolle cb_manager ausgewählt werden.
 
 Ergänze hier die Kurzversion der Artikelbeschreibung, diese wird in der Artikelliste, der Stationenliste und im Karten-Popup angezeigt.
 
+**Passwortschutz (seit 2.10.8)**
+
+Es ist möglich einen Artikel mit einem Passwort zu versehen. Klicke dafür neben "Status" auf der rechten Seite des Artikels und füge ein Passwort hinzu. Jetzt können Nutzende diesen Artikel nur buchen, wenn das korrekte Passwort eingegeben wurde.
+![](/img/item-password.png){width="400"}
