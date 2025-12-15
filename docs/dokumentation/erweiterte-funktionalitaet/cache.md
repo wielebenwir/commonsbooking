@@ -8,7 +8,7 @@ Wir versuchen trotzdem, dir den Einsatz des Caches möglichst einfach zu gestalt
 :::
 
 
-Unter **"Erweiterte Optionen"** befinden sich die Einstellungen für den Cache.
+Unter **"CommonsBooking > Einstellungen > Erweiterte Optionen"** befinden sich die Einstellungen für den Cache.
 Der Cache hält Ausleih-Daten zu häufig gestellten Anfragen vor und soll so die Antwortzeiten optimieren.
 
 * Standardmäßig ist der dateibasierte Cache aktiviert.
