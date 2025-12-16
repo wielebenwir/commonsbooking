@@ -11,7 +11,7 @@ module.exports = defineConfig({
       wpPassword:'password',
   },
   e2e: {
-    baseUrl: 'http://localhost:1001/',
+    baseUrl: 'http://127.0.0.1:1001/',
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
