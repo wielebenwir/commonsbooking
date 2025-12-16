@@ -55,8 +55,12 @@ jobs:
         run: npx wait-on http://127.0.0.1:1001/wp-login.php --timeout 60000
 
       - name: wait for wordpress to boot up reliable part 2
-        run: wp-env run cli wp core is-installed      
-        
+        run: wp-env run cli wp core is-installed
+
+      - name: wait for wordpress to boot up reliable part 3
+        run: |
+          curl -sf http://127.0.0.1:1001/wp-json/wp/v2/types/post > /dev/null
+              
       - name: install test data for e2e test
         run: npm run cypress:setup
 
