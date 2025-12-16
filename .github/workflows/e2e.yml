@@ -56,6 +56,16 @@ jobs:
 
       - name: wait for wordpress to boot up reliable part 2
         run: wp-env run cli wp core is-installed
+
+      - name: wait for wordpress to boot up reliable part 3
+        run: wp-env run cli wp config set DISABLE_WP_CRON true --raw
+
+      - name: wait for wordpress to boot up reliable
+        run: npx wait-on http://127.0.0.1:1001/wp-login.php --timeout 60000
+
+      - name: wait for wordpress to boot up reliable part 2
+        run: wp-env run cli wp core is-installed
+
              
       - name: install test data for e2e test
         run: npm run cypress:setup
