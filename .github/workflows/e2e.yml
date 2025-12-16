@@ -50,6 +50,9 @@ jobs:
 
       - name: setup wp env
         run: npm run env:start
+
+      - name: wait for wordpress to boot up reliable
+        run: npx wait-on http://127.0.0.1:1001 --timeout 60000        
         
       - name: install test data for e2e test
         run: npm run cypress:setup
