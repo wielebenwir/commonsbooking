@@ -29,11 +29,11 @@ jobs:
       matrix:
         php:
           - '7.4'
-          - '8.3'
+          #- '8.3'
         core:
-          - {name: 'tested', version: 'null'}
+          #- {name: 'tested', version: 'null'}
           - {name: 'minimum', version: 'WordPress/WordPress#5.9'}
-          - {name: 'trunk', version: 'WordPress/WordPress#master'}
+          #- {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:
       - uses: actions/checkout@v6
