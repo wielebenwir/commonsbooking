@@ -6,7 +6,7 @@
 Some technical expertise is needed to determine whether caching is working correctly in your installation. That said, we've tried to make using caching as simple as possible.
 :::
 
-You can find the cache settings for your site in the **"Advanced options"** tab.
+You can find the cache settings for your site in the  **"CommonsBooking->Options->Advanced options"** tab.
 The cache stores data of frequently requested queries and optimizes response times of your web server.
 
 * The file-based cache is enabled by default.
