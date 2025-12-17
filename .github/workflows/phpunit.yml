@@ -9,11 +9,13 @@ on:
       - 'docs/**'
       - '**.md'
       - '**.txt'
+      - 'tests/cypress/**'
   pull_request:
     branches:
       - 'master'
     paths-ignore:
       - 'docs/**'
+      - 'tests/cypress/**'
 
 
 env:
