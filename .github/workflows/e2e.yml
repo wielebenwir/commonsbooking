@@ -66,6 +66,8 @@ jobs:
       - name: wait for wordpress to boot up reliable part 2
         run: wp-env run cli wp core is-installed
 
+      - name: wait for 2 minutes
+        run: sleep 120
              
       - name: install test data for e2e test
         run: npm run cypress:setup
