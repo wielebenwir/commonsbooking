@@ -75,6 +75,13 @@ jobs:
         with:
           install: false
           config-file: tests/cypress/cypress.config.js
+      - name: Dump logs
+        if: failure()
+        run: |
+          docker ps -a
+          docker logs wordpress || true
+          docker logs mysql || true
+
 
       - name: Upload Cypress screenshots
         if: ${{ always() }}
