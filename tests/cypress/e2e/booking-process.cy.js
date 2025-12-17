@@ -11,20 +11,19 @@ describe('test booking process', () => {
 
     return dt.getTime();
   }
+    
+    beforeEach(() => {
+      cy.visit('/wp-login.php')
+    
+      cy.get('#user_login').type(Cypress.env('wpSubscriber'))
+      cy.get('#user_pass').type(Cypress.env('wpPassword'))
+      cy.get('#wp-submit').click()
+    
+      cy.url().should('not.include', 'wp-login.php')
+    
+      cy.clock(getTestDate())   // move here
+    })
 
-  beforeEach( function() {
-    cy.clock(getTestDate());
-    cy.visit( '/wp-login.php' );
-    cy.wait( 1000 );
-    cy.get( '#user_login' ).type( Cypress.env( "wpSubscriber" ) );
-    cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
-    cy.screenshot('booking-form_beforeclick_beforeEach');
-    cy.intercept('**').as('all')
-    cy.get( '#wp-submit' ).click();
-    cy.wait( 5000 );
-    cy.screenshot('booking-form_afterclick_beforeEach');
-    cy.visit('/?cb_item=basictest-noadmin&cb-location=32');
-  } );
 
   it('grays out button when no date is selected', () => {
     cy.screenshot('booking-form_no-date-selected');
