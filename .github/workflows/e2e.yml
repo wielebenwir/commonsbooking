@@ -74,6 +74,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           install: false
+          browser: chrome
           config-file: tests/cypress/cypress.config.js
 
       - name: Dump all Docker logs
