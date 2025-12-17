@@ -13,6 +13,9 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: 'http://localhost:1001/',
     pageLoadTimeout: 120000,
+    defaultCommandTimeout: 10000,   // for cy.get() / cy.click() waits
+    requestTimeout: 15000,          // for cy.request()
+    responseTimeout: 15000,
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
