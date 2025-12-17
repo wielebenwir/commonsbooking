@@ -19,6 +19,7 @@ describe('test booking process', () => {
     cy.get( '#user_login' ).type( Cypress.env( "wpSubscriber" ) );
     cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
     cy.screenshot('booking-form_beforeclick_beforeEach');
+    cy.intercept('**').as('all')
     cy.get( '#wp-submit' ).click();
     cy.wait( 5000 );
     cy.screenshot('booking-form_afterclick_beforeEach');
