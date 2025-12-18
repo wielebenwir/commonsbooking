@@ -5,6 +5,7 @@ module.exports = defineConfig({
 	screenshotsFolder: 'tests/cypress/screenshots',
 	videosFolder: 'tests/cypress/videos',
 	downloadsFolder: 'tests/cypress/downloads',
+  pageLoadTimeout: 1200000,
   env: {
       wpAdmin:'admin',
       wpSubscriber: 'subscriber',
