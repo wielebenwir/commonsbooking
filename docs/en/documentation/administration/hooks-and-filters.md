@@ -46,6 +46,31 @@ add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
   * commonsbooking_after_item-single
   * commonsbooking_mail_sent
 
+### Hooks in the context of an object (since 2.10.8)
+
+Some action hooks also additionally pass the post ID of the current object and an instance of the object
+as a \CommonsBooking\Model\<object class> object. Those are:
+
+  * `commonsbooking_before_booking-single` and `commonsbooking_after_booking-single`
+    * Parameters: `int $booking_id`, `\CommonsBooking\Model\Booking $booking`
+  * `commonsbooking_before_location-single` and `commonsbooking_after_location-single`
+    * Parameters: `int $location_id`, `\CommonsBooking\Model\Location $location`
+  * `commonsbooking_before_item-single` and `commonsbooking_after_item-single`
+    * Parameters: `int $item_id`, `\CommonsBooking\Model\Item $item`
+  * `commonsbooking_before_item-calendar-header` and `commonsbooking_after_item-calendar-header`
+    * Parameters: `int $item_id`, `\CommonsBooking\Model\Item $item`
+  * `commonsbooking_before_location-calendar-header` and `commonsbooking_after_location-calendar-header`
+    * Parameters: `int $location_id`, `\CommonsBooking\Model\Location $location`
+
+Example usage:
+```php
+function my_cb_before_booking_single( $booking_id, $booking ) {
+    echo 'Booking ID: ' . $booking_id;
+    echo 'The booking status is ' . $booking->getStatus();
+}
+add_action( 'commonsbooking_before_booking-single', 'my_cb_before_booking_single', 10, 2 );
+```
+
 ##  Filter hooks
 
 Filter hooks (https://developer.wordpress.org/plugins/hooks/filters) work
