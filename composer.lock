@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f4553ecf35c1d6762a8dde07e4e2f2b",
+    "content-hash": "f334cb75df8547b94b53a28afd33e565",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -357,16 +357,16 @@
         },
         {
             "name": "mustardBees/cmb-field-select2",
-            "version": "3.0.4",
+            "version": "3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wielebenwir/cmb-field-select2.git",
-                "reference": "26796c2351832c16a8d37d1ba6860b972f339e4a"
+                "reference": "c05e975c98d59932c678edb5dc3b0844660a7257"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wielebenwir/cmb-field-select2/zipball/26796c2351832c16a8d37d1ba6860b972f339e4a",
-                "reference": "26796c2351832c16a8d37d1ba6860b972f339e4a",
+                "url": "https://api.github.com/repos/wielebenwir/cmb-field-select2/zipball/c05e975c98d59932c678edb5dc3b0844660a7257",
+                "reference": "c05e975c98d59932c678edb5dc3b0844660a7257",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
@@ -386,9 +386,9 @@
                 "wordpress"
             ],
             "support": {
-                "source": "https://github.com/wielebenwir/cmb-field-select2/tree/3.0.4"
+                "source": "https://github.com/wielebenwir/cmb-field-select2/tree/3.0.5"
             },
-            "time": "2022-10-31T09:48:51+00:00"
+            "time": "2025-12-02T11:49:27+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -5048,5 +5048,5 @@
         "ext-libxml": "*",
         "ext-dom": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
