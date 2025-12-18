@@ -99,11 +99,7 @@ describe('test overbooking process', () => {
         cy.fixture('bookableLocations').then( (regLocations) => {
             this.bookableLocations = regLocations.data
         })
-        cy.visit( '/wp-login.php' );
-        cy.wait( 1000 );
-        cy.get( '#user_login' ).type( Cypress.env( "wpSubscriber" ) );
-        cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
-        cy.get( '#wp-submit' ).click();
+        cy.loginAs( 'subscriber' );
     })
 
   it('WeeklyRepetition is not overbookable works', function () {
