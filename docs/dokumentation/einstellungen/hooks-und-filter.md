@@ -4,8 +4,6 @@ __
 
 ##  Action Hooks
 
-Ab Version 2.7
-
 Mit Hooks (https://developer.wordpress.org/plugins/hooks/) kannst du deine eigenen
 Code-Schnipsel an bestimmten Stellen in den CommonsBooking Vorlagen einbinden.
 So kannst du deinen eigenen Code in die Templates einfügen, ohne die
@@ -53,6 +51,30 @@ add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
   * commonsbooking_before_item-single
   * commonsbooking_after_item-single
   * commonsbooking_mail_sent
+
+### Hooks im Objektkontext (seit 2.10.8)
+
+Manche Action Hooks übergeben noch zusätzlich die Post ID des aktuellen Objekts und eine Instanz aus der Klasse \CommonsBooking\Model\<Objektklasse>. Das sind:
+
+  * `commonsbooking_before_booking-single` bzw. `commonsbooking_after_booking-single`
+    * Parameter: `int $booking_id`, `\CommonsBooking\Model\Booking $booking`
+  * `commonsbooking_before_location-single` bzw. `commonsbooking_after_location-single`
+    * Parameter: `int $location_id`, `\CommonsBooking\Model\Location $location`
+  * `commonsbooking_before_item-single` bzw. `commonsbooking_after_item-single`
+    * Parameter: `int $item_id`, `\CommonsBooking\Model\Item $item`
+  * `commonsbooking_before_item-calendar-header` bzw. `commonsbooking_after_item-calendar-header`
+    * Parameter: `int $item_id`, `\CommonsBooking\Model\Item $item`
+  * `commonsbooking_before_location-calendar-header` bzw. `commonsbooking_after_location-calendar-header`
+    * Parameter: `int $location_id`, `\CommonsBooking\Model\Location $location`
+
+Beispielverwendung:
+```php
+function my_cb_before_booking_single( $booking_id, $booking ) {
+    echo 'Buchungs ID: ' . $booking_id;
+    echo 'Der Buchungsstatus ist ' . $booking->getStatus();
+}
+add_action( 'commonsbooking_before_booking-single', 'my_cb_before_booking_single', 10, 2 );
+```
 
 ##  Filter Hooks
 
