@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-06T13:01:48+00:00\n"
+"POT-Creation-Date: 2025-12-18T13:23:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -1235,7 +1235,7 @@ msgid "Allows you to change options regarding the caching system"
 msgstr ""
 
 #: includes/OptionsArray.php:1536
-#: src/Service/Cache.php:437
+#: src/Service/Cache.php:453
 msgid "Clear Cache"
 msgstr ""
 
@@ -1853,19 +1853,23 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: src/Service/Cache.php:406
+#: src/Service/Cache.php:419
 msgid "Connection status:"
 msgstr ""
 
-#: src/Service/Cache.php:412
+#: src/Service/Cache.php:425
+msgid "Cache was disabled through external setting. Please see the documentation for more information."
+msgstr ""
+
+#: src/Service/Cache.php:428
 msgid "Cache is disabled."
 msgstr ""
 
-#: src/Service/Cache.php:415
+#: src/Service/Cache.php:431
 msgid "Cache adapter successfully connected."
 msgstr ""
 
-#: src/Service/Cache.php:432
+#: src/Service/Cache.php:448
 msgid "Clear all cache items"
 msgstr ""
 

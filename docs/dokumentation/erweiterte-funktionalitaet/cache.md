@@ -15,6 +15,16 @@ Der Cache hält Ausleih-Daten zu häufig gestellten Anfragen vor und soll so die
 * Alternativ kann ein Cache basierend auf [REDIS](http://redis.io) konfiguriert werden. Du benötigst dazu die DSN. Frage dazu z.B. deinen Webhoster nach Support.
 * Wir empfehlen es grundsätzlich nicht den Cache zu deaktivieren, sollte das dennoch gewünscht sein, kannst du als Cache Adapter "Cache deaktiviert" auswählen.
 
+Falls CommonsBooking aufgrund eines Problems mit dem Cache nicht aktiviert werden kann, kannst du den Cache standardmäßig
+mit diesem Codeschnipsel deaktivieren. [ Mehr dazu, wie du Codeschnipsel nutzen kannst ](/dokumentation/einstellungen/hooks-und-filter).
+Dies wird nur empfohlen, wenn andere Methoden den Cache zu deaktivieren nicht funktionieren.
+
+```php
+add_filter('commonsbooking_disableCache', function() {
+    return true;
+} );
+```
+
 ## Troubleshooting
 
 ::: danger Experimentell
