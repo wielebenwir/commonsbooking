@@ -8,11 +8,7 @@ export function clickIfExist(element) {
 
 describe('correctly render metaboxes for backend CPT creation', () => {
    beforeEach( function() {
-        cy.visit( '/wp-login.php' );
-        cy.wait( 1000 );
-        cy.get( '#user_login' ).type( Cypress.env( "wpAdmin" ) );
-        cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
-        cy.get( '#wp-submit' ).click();
+        cy.loginAs( 'admin' );
     } );
 
     it('shows item metaboxes', () => {

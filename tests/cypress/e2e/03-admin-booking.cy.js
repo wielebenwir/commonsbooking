@@ -1,10 +1,6 @@
 describe('test backend booking', () => {
     beforeEach( function() {
-        cy.visit( '/wp-login.php' );
-        cy.wait( 1000 );
-        cy.get( '#user_login' ).type( Cypress.env( "wpAdmin" ) );
-        cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
-        cy.get( '#wp-submit' ).click();
+        cy.loginAs( 'admin' );
     } );
   it('can create entirely new admin booking', () => {
     let today = new Date()

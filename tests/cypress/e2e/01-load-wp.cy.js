@@ -1,15 +1,16 @@
 describe( 'Visit backend sites', function() {
-	// Go to WordPress login page and login.
+
+    before(() => {
+        cy.waitForWordPressReady(); //we just do this on the first test since they are run consecutively
+    });
+
 	beforeEach( function() {
-		cy.visit( '/wp-login.php' );
-		cy.wait( 1000 );
-		cy.get( '#user_login' ).type( Cypress.env( "wpAdmin" ) );
-		cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
-		cy.get( '#wp-submit' ).click();
+		cy.loginAs( 'admin' );
 	} );
 	
 	it( 'can open WP dashboard', function() {
-		cy.wait( 2000 );
+		cy.wait( 2000 ); //because this is our first page in our first test, sometimes this would hang
+        cy.visit( '/wp-admin/' );
 		cy.url().should('eq', 'http://localhost:1001/wp-admin/');
         // Assert that the page title contains "Dashboard"
         cy.title().should('include', 'Dashboard');
