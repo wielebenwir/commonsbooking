@@ -12,20 +12,9 @@ describe('check load of CPT frontend pages where available', () => {
       cy.get('#cb_locationview_map').should('be.visible')
       cy.get('#cb_locationview_map').scrollIntoView().screenshot('cb-itemtemplate-locationview-map')
   })
-  it ('loads locations', () => {
+    it ('location page with single item redirects to item page', () => {
       cy.visit('/?cb_location=basictest-koln-dom-locmap-noadmin')
-      //wait so that the tile layer for the location map can load before taking the screenshot
-      cy.wait(2000)
-      cy.screenshot('cb-location-template')
-      cy.get('.entry-title').contains(testName);
-      //check for location map
-      cy.get('#cb_locationview_map').should('be.visible')
-      cy.get('#cb_locationview_map').scrollIntoView().screenshot('cb-locationtemplate-locationview-map')
-      //check address
-      cy.get('.cb-location-address > :nth-child(2)').contains("Domkloster 4, 50667 Köln")
-      //check item
-      cy.get('.cb-title').contains(testName);
-      //timeframe calendar is visible because there is only one assigned location
-      cy.get('.cb-timeframe-calendar').should('be.visible');
+      cy.wait(1000)
+      cy.url().should('include', '?cb_item=basictest-noadmin')
   } )
 })
