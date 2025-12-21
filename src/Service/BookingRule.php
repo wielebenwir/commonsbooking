@@ -361,7 +361,7 @@ class BookingRule {
 		return array_filter(
 			$userBookings,
 			function ( $userBooking ) use ( $booking ) {
-				return $userBooking->hasTimeframeDateOverlap( $booking );
+				return TimeframeValidator::hasTimeframeDateOverlap( $userBooking, $booking );
 			}
 		);
 	}
