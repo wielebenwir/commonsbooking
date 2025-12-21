@@ -32,7 +32,7 @@ jobs:
           - '8.3'
         core:
           - {name: 'tested', version: 'null'}
-          - {name: 'minimum', version: 'WordPress/WordPress#6.2'}
+          - {name: 'minimum', version: 'WordPress/WordPress#6.4'}
           - {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:

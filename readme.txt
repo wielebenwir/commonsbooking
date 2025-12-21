@@ -2,7 +2,7 @@
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 Donate link: https://www.wielebenwir.de/verein/unterstutzen  
 Tags: booking, calendar, sharing, commoning, open-source
-Requires at least: 6.2
+Requires at least: 6.4
 Tested up to: 6.9
 Stable Tag: 2.10.7
 Requires PHP: 7.4

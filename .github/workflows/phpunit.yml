@@ -34,7 +34,7 @@ jobs:
           - '8.3'
         core:
           - { name: 'latest', version: 'latest' }
-          - { name: 'minimum', version: '6.2' }
+          - { name: 'minimum', version: '6.4' }
           - { name: 'trunk', version: 'trunk' }
 
     steps:
