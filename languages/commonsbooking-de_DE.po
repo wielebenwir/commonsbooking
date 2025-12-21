@@ -3427,11 +3427,11 @@ msgstr "Fehlende ID des Zeitrahmens"
 msgid "Error sending booking codes"
 msgstr "Fehler beim Senden von Buchungscodes"
 
-#: src/View/BookingCodes.php:551
+#: src/View/BookingCodes.php:552
 msgid "An unknown error occured"
 msgstr "Ein unbekannter Fehler ist aufgetreten"
 
-#: src/View/BookingCodes.php:552
+#: src/View/BookingCodes.php:553
 msgid "Email booking codes"
 msgstr "Buchungscodes per E-Mail versenden"
 
