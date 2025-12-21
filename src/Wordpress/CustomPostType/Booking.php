@@ -461,13 +461,14 @@ class Booking extends Timeframe {
 	/**
 	 * Loads template according to global set post and to whether the user is authorized and returns content.
 	 *
-	 * @param $content
+	 * @param string $content value of content parameter of `the_content` filter
 	 *
 	 * @return string
 	 */
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) && is_main_query() ) {
+		if ( ! post_password_required() &&
+			is_singular( self::getPostType() ) && is_main_query() ) {
 			ob_start();
 			global $post;
 

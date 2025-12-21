@@ -59,7 +59,7 @@ dann dort angezeigt.
   * **Maximal**: Wie viele Tage in am Stück buchbar sind.  (Achtung: Bei mehreren Zeitrahmen für die gleiche Kombination von Artikel und Standort wird der Wert des ersten gültigen Zeitrahmens verwendet.)
   * **Vorlauf:**: Wie viele Tage Vorlauf der Station zwischen Buchung und Abholung liegen soll. Wenn z.B. 2 Tage eingestellt sind, dann kann der Artikel immer erst für in 2 Tagen gebucht werden. Leer lassen für keine Vorlaufzeit.
   * **Kalender zeigt als buchbar:**: Wie viele Tage im Voraus der Kalender mögliche Buchungen anzeigt. Wenn z.B. 7 Tage eingestellt sind, dann können die Nutzenden im Kalender nur Buchungen für die nächste Woche vornehmen.
-  * **Erlaubt für:**: Für welche [Nutzendenrollen](https://wordpress.org/documentation/article/roles-and-capabilities/) die Buchung erlaubt ist. Wenn das Feld leer ist, dürfen alle registrierten Nutzenden den Artikel buchen.
+  * **Erlaubt für:**: Für welche [Nutzendenrollen](https://wordpress.org/documentation/article/roles-and-capabilities/) die Buchung erlaubt ist. Wenn das Feld leer ist, dürfen alle registrierten Nutzenden den Artikel buchen. Alternativ ist es möglich in den Einstellungen des [Artikels](/dokumentation/erste-schritte/artikel-anlegen) einen Passwortschutz für die Buchung zu konfigurieren.
 
 ### **Konfigurieren des Zeitrahmens:**
   * **Ganzer Tag:** Wenn aktiviert, belegt der Zeitrahmen den ganzen Tag. Wenn diese Option deaktiviert ist, muss der Zeitraum eine Start- und Endzeit haben.
