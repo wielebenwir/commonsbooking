@@ -67,6 +67,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ### Where can I find help/report bugs?
 
+* [Documentation](https://commonsbooking.org/)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
 * [Support](https://commonsbooking.org/kontakt/)
 
