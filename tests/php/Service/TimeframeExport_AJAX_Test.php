@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Service;
 
+use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Service\TimeframeExport;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
@@ -76,8 +77,6 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		$this->assertFalse( $firstPageResponse->success );
 		$this->assertFalse( $firstPageResponse->error );
 		$this->assertEquals( 'Processed ' . TimeframeExport::ITERATION_COUNTS . ' of ' . $totalBookings . ' bookings', $firstPageResponse->progress );
-		$tfs = $firstPageResponse->settings->relevantTimeframes;
-		$this->assertEquals( TimeframeExport::ITERATION_COUNTS, count( $tfs ) );
 
 		// let's set the $_POST data anew so that we can get the second page
 		// we do the decoding and encoding to get an associative array from an object
@@ -166,7 +165,7 @@ class TimeframeExport_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		);
 
 		update_post_meta( $bookingId, 'type', \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID );
-		update_post_meta( $bookingId, 'timeframe-repetition', 'd' );
+		update_post_meta( $bookingId, Timeframe::META_REPETITION, 'd' );
 		update_post_meta( $bookingId, 'start-time', '08:00 AM' );
 		update_post_meta( $bookingId, 'end-time', '12:00 PM' );
 		update_post_meta( $bookingId, 'timeframe-max-days', 3 );

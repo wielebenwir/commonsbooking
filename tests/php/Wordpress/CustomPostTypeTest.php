@@ -122,7 +122,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, $advanceBookingDays );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, $bookingStartdayOffset );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
-		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_REPETITION, $repetition );
 		if ( $repetitionStart ) {
 			update_post_meta( $timeframeId, 'repetition-start', $repetitionStart );
 		}
@@ -216,14 +216,16 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$repetitionStart,
 		$repetitionEnd,
 		$startTime = '12:00 AM',
-		$endTime = '23:59 PM',
+		$endTime = '23:59',
 		$postStatus = 'confirmed',
 		$postAuthor = self::USER_ID,
 		$timeframeRepetition = 'w',
 		$timeframeMaxDays = 3,
 		$postTitle = 'Booking',
 		$grid = 0,
-		$weekdays = [ '1', '2', '3', '4', '5', '6', '7' ]
+		$weekdays = [ '1', '2', '3', '4', '5', '6', '7' ],
+		$startGridSize = '', // How long is the timeframe in which the booking starts
+		$endGridSize = '' // How long is the timeframe in which the booking ends
 	) {
 		// Create booking
 		$bookingId = wp_insert_post(
@@ -236,7 +238,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		);
 
 		update_post_meta( $bookingId, 'type', Timeframe::BOOKING_ID );
-		update_post_meta( $bookingId, 'timeframe-repetition', $timeframeRepetition );
+		update_post_meta( $bookingId, \CommonsBooking\Model\Timeframe::META_REPETITION, $timeframeRepetition );
 		update_post_meta( $bookingId, 'start-time', $startTime );
 		update_post_meta( $bookingId, 'end-time', $endTime );
 		update_post_meta( $bookingId, 'timeframe-max-days', $timeframeMaxDays );
@@ -246,6 +248,13 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $bookingId, 'repetition-start', $repetitionStart );
 		update_post_meta( $bookingId, 'repetition-end', $repetitionEnd );
 		update_post_meta( $bookingId, 'weekdays', $weekdays );
+
+		if ( $startGridSize ) {
+			update_post_meta( $bookingId, \CommonsBooking\Model\Booking::START_TIMEFRAME_GRIDSIZE, $startGridSize );
+		}
+		if ( $endGridSize ) {
+			update_post_meta( $bookingId, \CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE, $endGridSize );
+		}
 
 		$this->bookingIds[] = $bookingId;
 
@@ -569,7 +578,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
             location bigint(20) unsigned NOT NULL,
             item bigint(20) unsigned NOT NULL,
             code varchar(100) NOT NULL,
-            PRIMARY KEY (date, timeframe, location, item, code) 
+            PRIMARY KEY (date, timeframe, location, item, code)
         ) $charset_collate;";
 
 		$wpdb->query( $sql );

@@ -6,12 +6,23 @@
 Some technical expertise is needed to determine whether caching is working correctly in your installation. That said, we've tried to make using caching as simple as possible.
 :::
 
-You can find the cache settings for your site in the **"Advanced options"** tab.
+You can find the cache settings for your site in the  **"CommonsBooking->Options->Advanced options"** tab.
 The cache stores data of frequently requested queries and optimizes response times of your web server.
 
-* The file-based cache is enabled by default. 
+* The file-based cache is enabled by default.
 * Alternativly you can enable the [REDIS](http://redis.io) based cache. You need to provide the DSN for this.  You can ask your web host for support.
 * We generally do not recommend disabling the cache, but if you wish to do so, you can select "Cache disabled" as the cache adapter.
+
+When CommonsBooking fails to activate due to an issue with the cache, you can disable the cache by default
+through adding the following code snippet. [ Read more about how to use code snippets ](/en/documentation/administration/hooks-and-filters).
+This is only recommended, when other methods of disabling the cache are not working.
+
+```php
+add_filter('commonsbooking_disableCache', function() {
+    return true;
+} );
+```
+
 
 ## Troubleshooting
 
@@ -26,6 +37,15 @@ A misconfigured cache can slow down your site!
 
 * If your site is very slow, this may also indicate a problem with the cache.
   More about this: [The site is very slow](/en/documentation/faq/site-slow).
+
+* **Periodical cache warmup through cronjob**:
+  :::warning
+  This setting was developed for some very specific edge cases and probably does not apply to you. It is also experimental and may lead to unintended consequences. For instance, we were not able to determine if the cache will be cleared on time after a booking. You should probably set the cronjob to run fairly frequently if you want to use this feature.
+  :::
+  If your site is rarely accessed but contains many items or bookings, it may be that the first access to the site is very slow.
+  If this becomes a problem, you can have the cache warmed up regularly. You can do this by enabling the "Periodical warmup through cronjob" option.
+  After the option is enabled, you can configure how often the cache should be warmed up automatically. This can lead to higher server load if the cache is warmed up very frequently.
+  In order for this to work, WP-Cron must be hooked into the system task scheduler. See here: [Hooking WP-Cron Into the System Task Scheduler](https://developer.wordpress.org/plugins/cron/hooking-wp-cron-into-the-system-task-scheduler/)
 
 ## Known problems
 

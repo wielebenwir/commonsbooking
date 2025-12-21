@@ -1,6 +1,8 @@
 name: Build zip from PR
 on:
   pull_request:
+    paths-ignore:
+    - 'docs/**'
     branches:
       - 'master'
 
@@ -10,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     
-     - uses: actions/checkout@v4
+     - uses: actions/checkout@v6
        with:
         fetch-depth: 0  # Important for getting full commit history
 
@@ -22,7 +24,7 @@ jobs:
          generate_zip: 'true'
 
      - name: Upload zip
-       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+       uses: SamKirkland/FTP-Deploy-Action@v4.3.6
        with:
          exclude: |
           **
@@ -35,7 +37,7 @@ jobs:
          protocol: ftps
              
      - name: Find Comment
-       uses: peter-evans/find-comment@v3
+       uses: peter-evans/find-comment@v4
        id: fc
        with:
          issue-number: ${{ github.event.pull_request.number }}
@@ -43,11 +45,11 @@ jobs:
          body-includes: Download built plugin zip
 
      - name: Create or update comment
-       uses: peter-evans/create-or-update-comment@v4
+       uses: peter-evans/create-or-update-comment@v5
        with:
          comment-id: ${{ steps.fc.outputs.comment-id }}
          issue-number: ${{ github.event.pull_request.number }}
          body: |
            [Download built plugin zip](https://builds.commonsbooking.org/${{ github.event.number }}/commonsbooking.zip)
-           [Test Plugin in Wordpress Playground](https://playground.wordpress.net/#{%22steps%22:[{%22step%22:%22installPlugin%22,%22pluginData%22:{%22resource%22:%22url%22,%22url%22:%22https://builds.commonsbooking.org/${{ github.event.number }}/commonsbooking.zip%22}},{%22step%22:%22importWxr%22,%22file%22:{%22resource%22:%22url%22,%22url%22:%22https://raw.githubusercontent.com/wielebenwir/commonsbooking/refs/heads/master/tests/cypress/wordpress-files/content-example.xml%22}}],%22preferredVersions%22:{%22php%22:%227.4%22,%22wp%22:%22latest%22},%22login%22:true})
+           [Test Plugin in Wordpress Playground](https://playground.wordpress.net/#{%22steps%22:[{%22step%22:%22installPlugin%22,%22pluginData%22:{%22resource%22:%22url%22,%22url%22:%22https://builds.commonsbooking.org/${{ github.event.number }}/commonsbooking.zip%22}},{%22step%22:%22importWxr%22,%22file%22:{%22resource%22:%22url%22,%22url%22:%22https://raw.githubusercontent.com/wielebenwir/commonsbooking/refs/heads/master/tests/cypress/wordpress-files/content-example.xml%22}}],%22login%22:true})
          edit-mode: replace

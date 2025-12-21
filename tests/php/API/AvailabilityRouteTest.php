@@ -115,7 +115,7 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		update_post_meta( $timeframeId, 'timeframe-max-days', $maxDays );
 		update_post_meta( $timeframeId, 'timeframe-advance-booking-days', $advanceBookingDays );
 		update_post_meta( $timeframeId, 'full-day', $fullday );
-		update_post_meta( $timeframeId, 'timeframe-repetition', $repetition );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_REPETITION, $repetition );
 		if ( $repetitionStart ) {
 			update_post_meta( $timeframeId, 'repetition-start', $repetitionStart );
 		}

@@ -8,9 +8,13 @@ on:
       - 'docs/**'
       - '**.md'
       - '**.txt'
-      - '**.yml'
       - '**.xml'
   pull_request:
+      paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '**.txt'
+      - '**.xml'
   # Allow manually triggering the workflow.
   workflow_dispatch:
 
@@ -21,7 +25,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     # TODO Use the composer action below
     - uses: shivammathur/setup-php@v2
@@ -40,7 +44,7 @@ jobs:
       run: |
         composer dump-autoload -o
 
-    #- uses: actions/checkout@v4
+    #- uses: actions/checkout@v6
     #- uses: php-actions/composer@v6
 
     - name: PHPStan Static Analysis

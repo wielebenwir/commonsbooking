@@ -30,6 +30,16 @@ class Location extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
+	protected static function getTaxonomyArgs() {
+		return array(
+			'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
+			'rewrite'           => array( 'slug' => self::getPostType() . '-cat' ),
+			'hierarchical'      => true,
+			'show_in_rest'      => true,
+			'show_admin_column' => true,
+		);
+	}
+
 	/**
 	 * Handles save-Request for location.
 	 */
@@ -427,10 +437,20 @@ class Location extends CustomPostType {
 			);
 		}
 
+		$cmb = new_cmb2_box(
+			array(
+				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_overbooking',
+				'title'        => esc_html__( 'Overbooking settings', 'commonsbooking' ),
+				'object_types' => array( self::$postType ), // Post type
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true, // Show field names on the left
+			)
+		);
 		$cmb->add_field(
 			array(
 				'name' => esc_html__( 'Use global location settings', 'commonsbooking' ),
-				'desc' => esc_html__( 'If selected, the global location settings (under the "General" tab) will be used for this location. If not selected, the settings below will be used.', 'commonsbooking' ),
+				'desc' => esc_html__( 'If selected, the global location settings (under the "General" tab) will be used to define overbookings for this location. If not selected, the settings below will be used.', 'commonsbooking' ),
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'use_global_settings',
 				'type' => 'checkbox',
 				'default_cb' => 'cmb2_set_checkbox_default_for_new_post',
@@ -441,6 +461,16 @@ class Location extends CustomPostType {
 			$cmb->add_field( $metabox );
 		}
 
+		$cmb = new_cmb2_box(
+			array(
+				'id'           => COMMONSBOOKING_METABOX_PREFIX . 'location_reminders',
+				'title'        => esc_html__( 'Reminders', 'commonsbooking' ),
+				'object_types' => array( self::$postType ), // Post type
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true, // Show field names on the left
+			)
+		);
 		$cmb->add_field(
 			array(
 				'name' => esc_html__( 'Receive booking start reminder', 'commonsbooking' ),
@@ -499,7 +529,7 @@ class Location extends CustomPostType {
 		return [
 			array(
 				'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),
-				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/">Create Locations</a> for more information.', 'commonsbooking' ) ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen">Create Locations</a> for more information.', 'commonsbooking' ) ),
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
 				'type' => 'checkbox',
 			),

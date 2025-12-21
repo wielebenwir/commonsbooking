@@ -73,7 +73,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 					?>
 						<div class="restriction">
 						<?php echo '⚠ ' . esc_html__( 'Usage Restrictions', 'commonsbooking' ); ?>:
-							
+
 								<span class="restrictions">
 									<ul>
 							<?php
@@ -109,7 +109,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 							?>
 									</ul>
 								</span>
-						   
+
 						</div>
 					<?php
 				}
@@ -129,9 +129,17 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 				$calendarData = json_decode( $templateData['calendar_data'] );
 				commonsbooking_get_template_part( 'calendar', 'key' ); // file: calendar-key.php
 				// translators: %1$s is a number of days
-				printf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend).', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
+				printf( commonsbooking_sanitizeHTML( __( 'Maximum %1$s days bookable in a row.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->maxDays ) );
 				?>
-					
+
+				<?php
+
+				if ( $calendarData->startDayOffset ) {
+					// translators: %1$s is a number of days
+					printf( commonsbooking_sanitizeHTML( __( 'Bookings have to be made at least %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->startDayOffset ) );
+				}
+				?>
+
 				<?php
 				// translators: %1$s is a number of days
 				printf( commonsbooking_sanitizeHTML( __( 'Bookings are limited to a maximum of %1$s days in advance.', 'commonsbooking' ) ), commonsbooking_sanitizeHTML( $calendarData->advanceBookingDays ) );

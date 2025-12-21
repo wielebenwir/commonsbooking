@@ -78,7 +78,7 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 			\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS => 30,
 			\CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET => 0,
 			'full-day'    => 'on',
-			'timeframe-repetition' => 'd',
+			\CommonsBooking\Model\Timeframe::META_REPETITION => 'd',
 			'repetition-start' => strtotime( 'now' ),
 			'grid'        => '0',
 		];
@@ -93,7 +93,7 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 
 		$bookingMeta     = [
 			'type' => Timeframe::BOOKING_ID,
-			'timeframe-repetition' => 'd',
+			\CommonsBooking\Model\Timeframe::META_REPETITION => 'd',
 			'repetition-start' => strtotime( 'now' ),
 			'repetition-end' => strtotime( '+1 day' ),
 			'location-id' => $this->locationId,

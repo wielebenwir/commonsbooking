@@ -1463,10 +1463,10 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }, {
       key: "_getTransitionFunction",
       value: function _getTransitionFunction(opts) {
-        var _this10 = this;
+        var _this0 = this;
         return function (done) {
           opts.item.applyCss(opts.styles);
-          _this10._whenTransitionDone(opts.item.element, opts.callback, done);
+          _this0._whenTransitionDone(opts.item.element, opts.callback, done);
         };
       }
 
@@ -1507,13 +1507,13 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }, {
       key: "_startTransitions",
       value: function _startTransitions(transitions) {
-        var _this11 = this;
+        var _this1 = this;
         // Set flag that shuffle is currently in motion.
         this.isTransitioning = true;
 
         // Create an array of functions to be called.
         var callbacks = transitions.map(function (obj) {
-          return _this11._getTransitionFunction(obj);
+          return _this1._getTransitionFunction(obj);
         });
         arrayParallel(callbacks, this._movementFinished.bind(this));
       }
@@ -1656,9 +1656,9 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }, {
       key: "add",
       value: function add(newItems) {
-        var _this12 = this;
+        var _this10 = this;
         var items = arrayUnique(newItems).map(function (el) {
-          return new ShuffleItem$1(el, _this12.options.isRTL);
+          return new ShuffleItem$1(el, _this10.options.isRTL);
         });
 
         // Add classes and set initial positions.
@@ -1686,7 +1686,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           if (isNewItem(item)) {
             item.point = itemPositions[i];
             applyHiddenState(item);
-            item.applyCss(_this12.getStylesForTransition(item, {}));
+            item.applyCss(_this10.getStylesForTransition(item, {}));
           }
         });
         allSortedItemsSet.hidden.forEach(function (item) {
@@ -1740,24 +1740,24 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }, {
       key: "remove",
       value: function remove(elements) {
-        var _this13 = this;
+        var _this11 = this;
         if (!elements.length) {
           return;
         }
         var collection = arrayUnique(elements);
         var oldItems = collection.map(function (element) {
-          return _this13.getItemByElement(element);
+          return _this11.getItemByElement(element);
         }).filter(function (item) {
           return !!item;
         });
         var handleLayout = function handleLayout() {
-          _this13._disposeItems(oldItems);
+          _this11._disposeItems(oldItems);
 
           // Remove the collection in the callback
           collection.forEach(function (element) {
             element.parentNode.removeChild(element);
           });
-          _this13._dispatch(Shuffle.EventType.REMOVED, {
+          _this11._dispatch(Shuffle.EventType.REMOVED, {
             collection: collection
           });
         };
@@ -1799,7 +1799,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }, {
       key: "resetItems",
       value: function resetItems() {
-        var _this14 = this;
+        var _this12 = this;
         // Remove refs to current items.
         this._disposeItems(this.items);
         this.isInitialized = false;
@@ -1811,8 +1811,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         this._initItems(this.items);
         this.once(Shuffle.EventType.LAYOUT, function () {
           // Add transition to each item.
-          _this14.setItemTransitions(_this14.items);
-          _this14.isInitialized = true;
+          _this12.setItemTransitions(_this12.items);
+          _this12.isInitialized = true;
         });
 
         // Lay out all items.
