@@ -2,6 +2,10 @@
 
 __
 
+Buchungsregeln sind nur eine der vielfältigen Möglichkeiten, die Buchung von Artikeln einzuschränken.
+Es ist auch möglich in den [Einstellungen für die Zeitrahmen](/dokumentation/erste-schritte/buchungszeitraeume-verwalten)
+die Nutzung nur bestimmten Nutzendengruppen zu erlauben oder in den Einstellungen für die [Artikel](/dokumentation/erste-schritte/artikel-anlegen) ein Passwort für die Buchung festzulegen.
+
 Mithilfe von Buchungsregeln kannst du die Nutzung von Artikeln von Nutzenden
 projektweit einschränken. Wenn du also zum Beispiel verhindern willst, dass
 ein Nutzender für einen Tag mehrere Artikel gleichzeitig bucht oder übermäßige
