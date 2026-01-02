@@ -35,6 +35,23 @@ describe('correctly render metaboxes for backend CPT creation', () => {
         cy.wait(5000).get('#cb_positioning_map').scrollIntoView().screenshot('cb-location-metaboxes-positioning-map')
     })
 
+    it('retrieves geocoding info', () => {
+        const TEST_STREET = "Domkloster 4";
+        const TEST_ZIP = "50667";
+        const TEST_CITY = "Köln";
+        const TEST_COUNTRY = "Deutschland";
+        const EXPECTED_LAT = "50.9413035";
+        const EXPECTED_LNG = "6.9581380";
+        cy.visit( '/wp-admin/post-new.php?post_type=cb_location' );
+        cy.get('#_cb_location_street').clear().type(TEST_STREET);
+        cy.get('#_cb_location_postcode').clear().type(TEST_ZIP);
+        cy.get('#_cb_location_city').clear().type(TEST_CITY);
+        cy.get('#_cb_location_country').clear().type(TEST_COUNTRY);
+        cy.get('#get_gps').click();
+        cy.get('#geo_latitude').should('have.prop', 'value', EXPECTED_LAT);
+        cy.get('#geo_longitude').should('have.prop', 'value', EXPECTED_LNG);
+    })
+
     it('shows timeframe metaboxes', () => {
         cy.visit( '/wp-admin/edit.php?post_type=cb_timeframe' );
         const BOOKABLE_ID = "2";
