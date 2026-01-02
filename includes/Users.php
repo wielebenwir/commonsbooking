@@ -52,7 +52,7 @@ function commonsbooking_isUserAllowedToEdit( $post, WP_User $user ): bool {
 /**
  * Validates if current user is allowed to edit current post in admin.
  *
- * @param $current_screen
+ * @param \WP_Screen $current_screen
  *
  * @return void
  */
@@ -129,14 +129,26 @@ foreach ( Plugin::getCustomPostTypes() as $custom_post_type ) {
 	add_filter( 'views_edit-' . $custom_post_type, 'commonsbooking_custom_view_count', 10, 1 );
 }
 
-// Filter function for fix of counts in admin lists for custom post types.
-function commonsbooking_custom_view_count( $views ) {
-	global $current_screen;
+/**
+ * Filter function for fix of counts in admin lists for custom post types.
+ *
+ * @param string[] $views An array of available list table views.
+ * @return array|mixed
+ */
+function commonsbooking_custom_view_count( array $views ) {
+	global /** @var \WP_Screen $current_screen */
+	$current_screen;
 	return commonsbooking_fix_view_counts( str_replace( 'edit-', '', $current_screen->id ), $views );
 }
 
-// fixes counts for custom posts countings in admin list
-function commonsbooking_fix_view_counts( $postType, $views ) {
+/**
+ * fixes counts for custom posts countings in admin list
+ *
+ * @param $postType
+ * @param $views
+ * @return array|mixed
+ */
+function commonsbooking_fix_view_counts($postType, $views ) {
 	// admin is allowed to see all posts
 	if ( commonsbooking_isCurrentUserAdmin() ) {
 		return $views;

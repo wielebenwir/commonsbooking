@@ -1,8 +1,8 @@
 <?php
 
 /**
+ * Runs the cb_tag shortcode to output parsed template tag.
  * @param array $atts
- * @return string
  */
 function commonsbooking_tag( $atts ) {
 	$atts = shortcode_atts(

@@ -9,7 +9,7 @@ use CommonsBooking\CB\CB;
  * @param array    $objects
  * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
  *
- * @return mixed
+ * @return string|null the template with replaced tags, null if no template content is given after tag replacement
  */
 function commonsbooking_parse_template( string $template = '', $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
 	$template = preg_replace_callback(
@@ -51,11 +51,12 @@ function commonsbooking_parse_shortcode( $tag ) {
  * Renders html before and after the template tag if it is given by using [html text] before or after the template tag
  * Example: {{[this comes before: ]item:post_title[this comes after]}}
  *
- * @param mixed    $match
- * @param array    $objects
+ * @param mixed $match
+ * @param array $objects
  * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
  *
- * @return false|mixed
+ * @return false|string the template tag rendered as a string, false if property or function not found
+ * @throws Exception
  */
 function commonsbooking_parse_template_callback( $match, array $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
 
