@@ -24,7 +24,7 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
 	// to items or locations
 	//
 	// why? users can add e.g. individual booking-mail texts per location by adding a custom field like
-	// 'custom_booking_message' and use all avaiable template tags within this custom field
+	// 'custom_booking_message' and use all available template tags within this custom field
 	if ( preg_match_all( '/{{.*?}}/', $template ) === 0 ) {
 		/**
 		* Default template content
@@ -34,7 +34,10 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
 		*
 		* @param string $template content of template after tag replacement
 		*/
-		return apply_filters( 'commonsbooking_template_tag', $template );
+		$filteredTemplate = apply_filters('commonsbooking_template_tag', $template);
+		if ( ! empty( $filteredTemplate ) ) {
+			return null;
+		}
 	} else {
 		return commonsbooking_parse_template( $template, $objects, $sanitizeFunction );
 	}
@@ -100,12 +103,13 @@ function commonsbooking_parse_template_callback( $match, array $objects = [], $s
 			if ( $rendered_template_tag !== null && strlen( $rendered_template_tag ) > 0 ) {
 				return $html_before . $rendered_template_tag . $html_after;
 			} else {
-				return $rendered_template_tag;
+				return false;
 			}
 		}
 
 		return false;
 	}
+	return false;
 }
 
 /**
