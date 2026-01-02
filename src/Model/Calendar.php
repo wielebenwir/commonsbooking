@@ -35,8 +35,10 @@ class Calendar {
 
 	/**
 	 * @var array
+	 *
+	 * TODO seems unused in php-code, always empty list, maybe remove
 	 */
-	protected $types;
+	protected array $types; // @phpstan-ignore missingType.iterableValue
 
 	/**
 	 * The timeframes that are relevant for this calendar.
@@ -52,7 +54,7 @@ class Calendar {
 	 * @param Day   $endDate
 	 * @param int[] $locations
 	 * @param int[] $items
-	 * @param array $types
+	 * @param array $types // @phpstan-ignore missingType.iterableValue
 	 */
 	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
 		// check, that it spans at least two days
@@ -80,7 +82,7 @@ class Calendar {
 	/**
 	 * Returns weeks for calendar time range.
 	 *
-	 * @return array
+	 * @return Week[]
 	 */
 	public function getWeeks(): array {
 		$startDate = strtotime( $this->startDate->getDate() ) + 1;
@@ -127,7 +129,9 @@ class Calendar {
 	 * Because we process the calendar by weeks, at least two days are needed to get a valid calendar.
 	 * The calendar does not consider the individual boundaries set by $startDate and $endDate but will always return a full week.
 	 *
-	 * @return array
+	 * TODO add proper type for returning availability slots
+	 *
+	 * @return stdClass[]
 	 * @throws \Exception
 	 */
 	public function getAvailabilitySlots(): array {
