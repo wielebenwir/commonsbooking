@@ -21,6 +21,13 @@ function commonsbooking_public() {
 		wp_add_inline_style( 'cb-styles-public', $colorScheme_css );
 	}
 
+	// enable output buffering so we can use redirect in the templates (not needed after WP 6.9 wp_template_enhancement_output_buffer)
+	// needs to happen after SCSSPHP bc SCSSPHP flushes the output buffer
+	// this might still not work if another plugin decides to flush the output buffer after we started it here
+	// general recommendation is to use WP >= 6.9
+	// See #1954
+	ob_start();
+
 	// Template specific styles
 	$template            = wp_get_theme()->template;
 	$customizedTemplates = [
