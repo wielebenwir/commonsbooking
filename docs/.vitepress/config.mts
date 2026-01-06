@@ -4,7 +4,7 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
-const COMMONSBOOKING_VERSION_STRING = '2.10.5';
+const COMMONSBOOKING_VERSION_STRING = '2.10.7';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
