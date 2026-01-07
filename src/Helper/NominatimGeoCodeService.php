@@ -55,7 +55,7 @@ class NominatimGeoCodeService implements GeoCodeService {
 				return $addresses->first();
 			}
 		} catch ( Exception $exception ) {
-			// Nothing to do in this case
+			error_log( $exception->getMessage() );
 		}
 
 		return null;
