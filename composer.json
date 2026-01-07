@@ -1,7 +1,12 @@
 {
   "name": "wielebenwir/commonsbooking",
   "description": "~",
-  "version": "0.0.1",
+  "homepage": "https://commonsbooking.org",
+  "version": "2.10.7",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "prefer-stable": true,
+  "minimum-stability": "dev",
   "config": {
     "platform-check": false,
     "allow-plugins": {
