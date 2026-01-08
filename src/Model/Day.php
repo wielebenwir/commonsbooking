@@ -337,7 +337,7 @@ class Day {
 						$dayOfWeek = 7;
 					}
 
-					$timeframeWeekdaysString = join(", ", $timeframeWeekdays);
+					$timeframeWeekdaysString = join( ', ', $timeframeWeekdays );
 					echo "Weekly rep with $timeframeWeekdaysString weekday(s) and the $dayOfWeek day of week\n";
 					if ( is_array( $timeframeWeekdays ) && in_array( $dayOfWeek, $timeframeWeekdays, true ) ) {
 						return true;
