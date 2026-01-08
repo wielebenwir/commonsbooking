@@ -383,7 +383,7 @@ class Migration {
 			}
 
 			if ( get_post_type( $postId ) == Location::$postType && $includeGeoData ) {
-				$location = new \CommonsBooking\Model\Location( $postId );
+				$location = \CommonsBooking\Repository\Location::getPostById( $postId );
 				$location->updateGeoLocation();
 				sleep( 1 );
 			}
