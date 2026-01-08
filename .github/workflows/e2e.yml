@@ -36,10 +36,14 @@ jobs:
           - {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: ./.github/actions/build-plugin
 
+      - name: Install wp-env systemwide
+        shell: bash
+        run: npm -g i @wordpress/env
+        
       - name: Overwrite PHP versions & core for wp-env 
         if: matrix.core.version != 'null'
         run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
@@ -58,7 +62,7 @@ jobs:
 
       - name: Upload Cypress screenshots
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: cypress-screenshots-${{ matrix.php }}_${{ matrix.core.name }}
           path: ${{ github.workspace }}/tests/cypress/screenshots/

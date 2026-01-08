@@ -216,4 +216,120 @@ class DayTest extends CustomPostTypeTest {
 		$end = strtotime( self::CURRENT_DATE . ' 23:59:59' );
 		$this->assertEquals( $end, $this->instance->getEndTimestamp() );
 	}
+
+	public function testGetGrid() {
+		// one grid entry spanning whole day
+		$grid = $this->instance->getGrid();
+		$this->assertCount( 1, $grid );
+		$this->assertArrayHasKey( 23, $grid );
+		$this->assertEquals( $grid[23]['timeframe']->ID, $this->bookableTimeframeForCurrentDayId );
+
+		// hourly grid
+		// we explicitly define a new location and item here to avoid interference with other tests
+		$hourlyLocation  = $this->createLocation( 'Hourly Location' );
+		$hourlyItem      = $this->createItem( 'Hourly Item', $hourlyLocation );
+		$hourlyTimeframe = $this->createTimeframe(
+			$hourlyLocation,
+			$hourlyItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'off',
+			'd',
+			1,
+			'8:00 AM',
+			'4:00 PM'
+		);
+		$instance        = new Day(
+			$this->dateFormatted,
+			[ $hourlyLocation ],
+			[ $hourlyItem ]
+		);
+		$grid            = $instance->getGrid();
+		$this->assertCount( 8, $grid );
+
+		// timeframe blocking parts of hourly grid with no end date (related to bug #1553)
+		$blockingTimeframe = $this->createTimeframe(
+			$hourlyLocation,
+			$hourlyItem,
+			strtotime( self::CURRENT_DATE ),
+			0,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
+			'off',
+			'd',
+			1,
+			'08:00 AM',
+			'10:00 AM'
+		);
+		// new instance of day to fetch new timeframe
+		$instance = new Day(
+			$this->dateFormatted,
+			[ $hourlyLocation ],
+			[ $hourlyItem ]
+		);
+		$grid     = $instance->getGrid();
+
+		$assertGridLocked = function ( $grid ) {
+			$this->assertCount( 8, $grid );
+			$this->assertArrayHasKey( 8, $grid );
+			$this->assertArrayHasKey( 15, $grid );
+
+			// make sure, that only 8:00-10:00 is correctly blocked
+			$this->assertTrue( $grid[8]['timeframe']->locked );
+			$this->assertTrue( $grid[9]['timeframe']->locked );
+			$this->assertFalse( $grid[10]['timeframe']->locked );
+			$this->assertFalse( $grid[11]['timeframe']->locked );
+			$this->assertFalse( $grid[12]['timeframe']->locked );
+			$this->assertFalse( $grid[13]['timeframe']->locked );
+			$this->assertFalse( $grid[14]['timeframe']->locked );
+			$this->assertFalse( $grid[15]['timeframe']->locked );
+		};
+
+		$assertGridLocked( $grid );
+
+		// now set an end-date to trigger bug #1553
+		update_post_meta( $blockingTimeframe, 'repetition-end', strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ) );
+		$grid = $instance->getGrid();
+		$assertGridLocked( $grid );
+
+		// but still, if the timeframe does not have a repetition set, the block should span over the whole range
+		update_post_meta( $blockingTimeframe, Timeframe::META_REPETITION, 'norep' );
+		$grid = $instance->getGrid();
+		// blocking grid should extend till end of the day
+		$assertOverbookLocked = function ( $grid ) {
+			$this->assertCount( 16, $grid );
+			$this->assertArrayHasKey( 8, $grid );
+			$this->assertArrayHasKey( 23, $grid );
+			for ( $i = 8; $i <= 23; $i++ ) {
+				$this->assertTrue( $grid[ $i ]['timeframe']->locked );
+			}
+		};
+		$assertOverbookLocked( $grid );
+
+		// do the same for a booking (bug #1900)
+		wp_delete_post( $blockingTimeframe, true );
+		$booking = $this->createBooking(
+			$hourlyLocation,
+			$hourlyItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ),
+			'9:00 AM',
+			'10:00 AM'
+		);
+		// delete repetition key (also usually not set in the wild)
+		delete_post_meta( $booking, Timeframe::META_REPETITION );
+		// rebuild instance to fetch new booking
+		$instance = new Day(
+			$this->dateFormatted,
+			[ $hourlyLocation ],
+			[ $hourlyItem ]
+		);
+		$grid     = $instance->getGrid();
+		// first hour (8:00-9:00) still free, rest blocked
+		$this->assertCount( 2, $grid );
+		$this->assertArrayHasKey( 8, $grid );
+		$this->assertArrayHasKey( 23, $grid );
+		$this->assertFalse( $grid[8]['timeframe']->locked );
+		$this->assertTrue( $grid[23]['timeframe']->locked );
+	}
 }

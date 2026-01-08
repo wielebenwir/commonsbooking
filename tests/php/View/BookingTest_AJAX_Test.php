@@ -117,7 +117,7 @@ class BookingTest_AJAX_Test extends \WP_Ajax_UnitTestCase {
 		update_post_meta( $this->timeframeID, 'timeframe-advance-booking-days', 30 );
 		update_post_meta( $this->timeframeID, 'booking-startday-offset', 0 );
 		update_post_meta( $this->timeframeID, 'full-day', 'on' );
-		update_post_meta( $this->timeframeID, 'timeframe-repetition', 'd' );
+		update_post_meta( $this->timeframeID, \CommonsBooking\Model\Timeframe::META_REPETITION, 'd' );
 		update_post_meta( $this->timeframeID, 'repetition-start', $now->getTimestamp() );
 		update_post_meta( $this->timeframeID, 'repetition-end', $inTwoWeeks->getTimestamp() );
 		update_post_meta( $this->timeframeID, 'start-time', '8:00 AM' );

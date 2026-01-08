@@ -260,7 +260,6 @@ class Day {
 	 */
 	protected function getEndSlot( array $slots, int $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
 		// Timeframe
-		$fullDay = get_post_meta( $timeframe->ID, 'full-day', true );
 		$endTime = $timeframe->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
 		$endDate = $timeframe->getEndDateDateTime();
 
@@ -268,14 +267,14 @@ class Day {
 		$endSlot = count( $slots );
 
 		// If timeframe isn't configured as full day
-		if ( ! $fullDay ) {
+		if ( ! $timeframe->isFullDay() ) {
 			$endSlot = $this->getSlotByTime( $endTime, $grid );
 		}
 
 		// If we have a overbooked day, we need to mark all slots as booked
-		if ( ! $timeframe->isOverBookable() && ! empty( $endDate ) ) {
+		if ( ! $timeframe->isOverBookable() && ! empty( $endDate ) && $timeframe->getRepetition() == 'norep' ) {
 			// Check if timeframe ends after the current day
-			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
+			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59:59' ) ) < $endDate->getTimestamp() ) {
 				$endSlot = count( $slots );
 			}
 		}

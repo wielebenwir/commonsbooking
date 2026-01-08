@@ -1222,10 +1222,15 @@ class Timeframe extends CustomPost {
 	 * manual = manual selection of dates
 	 * norep = no repetition
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function getRepetition() {
-		return $this->getMeta( self::META_REPETITION );
+		$meta = $this->getMeta( self::META_REPETITION );
+		if ( $meta ) {
+			return strval( $meta );
+		} else {
+			return 'norep'; // usually not set for booking timeframes
+		}
 	}
 
 	/**

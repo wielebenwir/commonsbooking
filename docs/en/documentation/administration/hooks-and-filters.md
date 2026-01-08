@@ -1,45 +1,36 @@
-#  Hooks und Filter
+#  Hooks and filters
 
 __
 
 ##  Action Hooks
 
-Ab Version 2.7
+Using hooks (https://developer.wordpress.org/plugins/hooks/), you can insert your own
+code snippets at specific points in the CommonsBooking templates. This allows you to
+add your own code to the templates without having to replace the template files.
 
-Mit Hooks (https://developer.wordpress.org/plugins/hooks/) kannst du deine eigenen
-Code-Schnipsel an bestimmten Stellen in den CommonsBooking Vorlagen einbinden.
-So kannst du deinen eigenen Code in die Templates einfügen, ohne die
-entsprechenden Template Dateien ersetzen zu müssen.
+Code snippets are usually very short pieces of PHP code that can be included via a
+[ Child Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes)
+or through special code snippet plugins (e.g. Code Snippets). No advanced PHP knowledge is
+required, it is however also possible to use these snippets to deeply interfere with the
+functionality of CommonsBooking or even to make the booking system unusable. If you see examples
+in the documentation, these are reasonably safe and tested. However, a certain residual risk remains.
+If you encounter problems, please feel free to contact us. However, please also provide
+all code snippets you are using. This will help us to better understand the problem.
 
-Code Schnipsel sind meist sehr kurzer Code in PHP und kann über ein [ Child
-Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes)
-eingebunden werden oder über spezielle Plugins für Code Schnipsel (z.B. Code
-Snippets). Dafür musst du nicht sonderlich viel PHP können, es ist aber auch
-möglich mit diesen Snippets etwas fundamentales an der Funktion der Webseite
-zu ändern oder auch Fehler zu erzeugen, die das Buchungssystem nicht mehr
-nutzbar machen. Wenn du in der Dokumentation Beispiele siehst, dann sind diese
-einigermaßen sicher und getestet. Ein gewisses Restrisiko bleibt aber. Falls
-du Probleme haben solltest, dann kannst du dich gerne an uns wenden. Bitte gib
-aber auch sämtliche Codeschnipsel mit an, die ihr verwendet. Dadurch können
-wir das Problem besser nachvollziehen.
+Action hooks are patterned according to the principle
 
-Die Action Hooks sind nach dem Prinzip
+`commonsbooking_(before/after)_(template-file)`
 
+Using _add_action_ you can integrate your own callback function. Example:
 
+```php
+function itemsingle_callback() {
+    // what should appear before the item single template
+}
+add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
+```
 
-    commonsbooking_(before/after)_(template-file)
-
-strukturiert. Mit der Funktion _add_action_ kannst du deine eigene Callback
-Funktion integrieren. Beispiel:
-
-
-
-    function itemsingle_callback() {
-        // dein code hier
-    }
-    add_action( 'commonsbooking_before_item-single', 'itemsingle_callback' );
-
-###  Alle Action Hooks im Überblick:
+###  Overview of all of the action hooks:
 
   * commonsbooking_before_booking-single
   * commonsbooking_after_booking-single
@@ -55,14 +46,38 @@ Funktion integrieren. Beispiel:
   * commonsbooking_after_item-single
   * commonsbooking_mail_sent
 
-##  Filter Hooks
+### Hooks in the context of an object (since 2.10.8)
 
-Filter Hooks (https://developer.wordpress.org/plugins/hooks/filters) funktionieren
-ähnlich wie Action Hooks jedoch mit dem Unterschied, dass die Callback
-Funktion einen Wert übergeben bekommt, diesen modifiziert und ihn dann wieder
-zurückgibt.
+Some action hooks also additionally pass the post ID of the current object and an instance of the object
+as a \CommonsBooking\Model\<object class> object. Those are:
 
-###  Alle Filter Hooks im Überblick:
+  * `commonsbooking_before_booking-single` and `commonsbooking_after_booking-single`
+    * Parameters: `int $booking_id`, `\CommonsBooking\Model\Booking $booking`
+  * `commonsbooking_before_location-single` and `commonsbooking_after_location-single`
+    * Parameters: `int $location_id`, `\CommonsBooking\Model\Location $location`
+  * `commonsbooking_before_item-single` and `commonsbooking_after_item-single`
+    * Parameters: `int $item_id`, `\CommonsBooking\Model\Item $item`
+  * `commonsbooking_before_item-calendar-header` and `commonsbooking_after_item-calendar-header`
+    * Parameters: `int $item_id`, `\CommonsBooking\Model\Item $item`
+  * `commonsbooking_before_location-calendar-header` and `commonsbooking_after_location-calendar-header`
+    * Parameters: `int $location_id`, `\CommonsBooking\Model\Location $location`
+
+Example usage:
+```php
+function my_cb_before_booking_single( $booking_id, $booking ) {
+    echo 'Booking ID: ' . $booking_id;
+    echo 'The booking status is ' . $booking->getStatus();
+}
+add_action( 'commonsbooking_before_booking-single', 'my_cb_before_booking_single', 10, 2 );
+```
+
+##  Filter hooks
+
+Filter hooks (https://developer.wordpress.org/plugins/hooks/filters) work
+just like action hooks, but with the difference that the callback function
+receives a value, modifies it, and then returns it.
+
+###  Overview of all filter hooks:
 
   * commonsbooking_isCurrentUserAdmin
   * commonsbooking_isCurrentUserSubscriber
@@ -74,34 +89,41 @@ zurückgibt.
   * commonsbooking_mail_subject
   * commonsbooking_mail_body
   * commonsbooking_mail_attachment
+  * commonsbooking_disableCache
 
-Es gibt auch Filter Hooks, mit denen du zusätzliche Benutzerrollen, die
-zusätzlich zum CB Manager Artikel und Standorte administrieren können,
-hinzufügen kannst.
-Mehr dazu: [ Zugriffsrechte vergeben (CB-Manager) ](/dokumentation/grundlagen/rechte-
-des-commonsbooking-manager/#andere-rollen-einem-artikel-standort-zuweisen-
-ab-2-8-2)
+There are also filter hooks that allow you to add additional user roles
+akin to the CB Manager that can manage items and locations.
+Read more: [Permission management](/en/documentation/basics/permission-management) (not translated yet)
 
-Darüber hinaus gibt es Filter Hooks, mit denen du die voreingestellten
-Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu [hier](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern):
+In addition to that, there are filter hooks that allow you to change the default
+values when creating timeframes. More about that [here](/en/documentation/advanced-functionality/change-timeframe-creation-defaults)
+
 ###  Filter Hook: commonsbooking_tag_$key_$property
 
-####  Beispiel: Stations-Betreibende als E-Mail Empfänger der Buchungs-Mails überschreiben
+####  Example: Overwrite who receives booking e-mails
 
-Ein Anwendungsfall für diesen Hook, stellt z.B. die Verwendung innerhalb einer
-Staging-Umgebung dar. Du möchtest dort Buchungs-Vorgänge einer neuen Version
-von Commonsbooking mit verschiedenen Zeitrahmen-Stations-Artikel-Kombinationen
-testen, aber gleichzeitig nicht Mails an alle möglichen Stationsbetreibende
-verschicken. Dann kannst das mit folgendem Filter-Hook via eingebundem Code-
-Snippet (gleichnamiges Plugin) oder Theme-/Plugin-Datei-Editor erreichen:
+This filter hook can be used in a staging environment to override
+who receives booking confirmation e-mails.
+
+```php
+/**
+ * This adds a filter to send all booking confirmations to one email adress.
+ */
+function mywebsite_cb_return_location_mail( $value ){
+    return 'yourname@example.com';
+}
+add_filter('commonsbooking_tag_cb_location__cb_location_email', 'mywebsite_cb_return_location_mail' );
+```
+
+### Filter `commonsbooking_mobile_calendar_month_count`
+
+::: tip Since version 2.10.5
+:::
+
+How many months are displayed in the mobile calendar view can be adjusted using this filter.
 
 
-
-    /**
-     * This adds a filter to send all booking confirmations to one email adress.
-     */
-    function mywebsite_cb_return_location_mail( $value ){
-        return 'yourname@example.com';
-    }
-    add_filter('commonsbooking_tag_cb_location__cb_location_email', 'mywebsite_cb_return_location_mail' );
-
+```php
+// Sets the mobile calendar view to display 2 month
+add_filter('commonsbooking_mobile_calendar_month_count', fn(): int => 2);
+```

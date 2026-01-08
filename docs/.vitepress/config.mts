@@ -4,7 +4,7 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
-const COMMONSBOOKING_VERSION_STRING = '2.10.5';
+const COMMONSBOOKING_VERSION_STRING = '2.10.7';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -337,22 +337,23 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         { text: 'Cancel bookings', link: 'bookings-cancel' },
         { text: 'iCalendar Feed', link: 'icalendar-feed' }
       ]
-    },
+    }*/
       {
           text: 'Administration', base: '/en/documentation/administration/',
           collapsed: true,
           items: [
-              { text: 'Booking list', link: 'booking-list' },
-              { text: 'Hooks and Filter', link: 'hooks-and-filters' },
-              { text: 'Embed map', link: 'map-embed' },
-              { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
-              { text: 'New Frontend(Beta)', link: 'new-frontend' },
-              { text: 'Adjust registration page and user fields', link: 'custom-registration-user-fields' },
-              { text: 'Shortcodes', link: 'shortcodes' },
-              { text: 'Template Tags', link: 'template-tags' },
-              { text: 'Widget', link: 'widget' }
+//              { text: 'Booking list', link: 'booking-list' },
+              { text: 'Hooks and filters', link: 'hooks-and-filters' }
+//              { text: 'Embed map', link: 'map-embed' },
+//              { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
+//              { text: 'New Frontend(Beta)', link: 'new-frontend' },
+//              { text: 'Adjust registration page and user fields', link: 'custom-registration-user-fields' },
+//              { text: 'Shortcodes', link: 'shortcodes' },
+//              { text: 'Template Tags', link: 'template-tags' },
+//              { text: 'Widget', link: 'widget' }
           ]
       },
+      /*
       {
           text: 'Extensions / API', base: '/en/documentation/api/',
           collapsed: true,
@@ -367,7 +368,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         collapsed: true,
       items: [
             { text: 'Caching', link: 'cache' },
-        //{ text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' }
+            { text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' }
       ]
     },
 /*
