@@ -151,7 +151,7 @@ class Wordpress {
 	 * @throws \Exception
 	 */
 	public static function getRelatedPostsIdsForTimeframe( $postId ): array {
-		$timeframe = new Timeframe( $postId );
+		$timeframe = \CommonsBooking\Repository\Timeframe::getPostById( $postId );
 		$ids       = [ $postId ];
 		return array_merge( $ids, $timeframe->getItemIDs(), $timeframe->getLocationIDs() );
 	}
@@ -165,7 +165,7 @@ class Wordpress {
 	 * @throws \Exception
 	 */
 	public static function getRelatedPostsIdsForBooking( $postId ): array {
-		$booking = new \CommonsBooking\Model\Booking( $postId );
+		$booking = \CommonsBooking\Repository\Booking::getPostById( $postId );
 		$ids     = [ $postId ];
 
 		if ( $booking->getItem() ) {
@@ -190,7 +190,7 @@ class Wordpress {
 	 * @throws \Psr\Cache\InvalidArgumentException
 	 */
 	public static function getRelatedPostsIdsForRestriction( $postId ): array {
-		$restriction = new \CommonsBooking\Model\Restriction( $postId );
+		$restriction = \CommonsBooking\Repository\Restriction::getPostById( $postId );
 
 		// Restriction itself
 		$relatedPostIds = [ $postId ];
