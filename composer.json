@@ -66,6 +66,22 @@
     "ext-libxml": "*",
     "ext-dom": "*"
   },
+  "scripts": {
+    "post-install-cmd": [
+      "@prefix-namespaces"
+    ],
+    "post-update-cmd": [
+      "@prefix-namespaces"
+    ],
+    "prefix-namespaces": [
+      "sh -c 'test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.26.3/strauss.phar'",
+      "@php bin/strauss.phar --info",
+      "@composer dump-autoload"
+    ]
+  },
+  "scripts-descriptions": {
+    "prefix-namespaces": "Copy the required dependencies to vendor-prefixed and edit the PHP namespaces to begin with CommonsBooking."
+  },
   "extra": {
     "strauss": {
       "include_root_autoload": true
