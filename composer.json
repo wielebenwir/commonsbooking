@@ -65,5 +65,10 @@
     "phpstan/extension-installer": "^1.4",
     "ext-libxml": "*",
     "ext-dom": "*"
+  },
+  "extra": {
+    "strauss": {
+      "include_root_autoload": true
+    }
   }
 }

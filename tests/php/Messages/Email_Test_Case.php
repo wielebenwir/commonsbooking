@@ -142,7 +142,7 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 	 *
 	 * Wraps tests_retrieve_phpmailer_instance()
 	 *
-	 * @return \PHPMailer\PHPMailer\PHPMailer
+	 * @return \CommonsBooking\PHPMailer\PHPMailer\PHPMailer
 	 */
 	protected function getMockMailer() {
 		return tests_retrieve_phpmailer_instance();

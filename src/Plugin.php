@@ -819,7 +819,7 @@ class Plugin {
 	 * @param $post
 	 * @param $update
 	 *
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	public function savePostActions( $post_id, $post, $update ) {
 		if ( ! self::isPostCustomPostType( $post ) ) {
