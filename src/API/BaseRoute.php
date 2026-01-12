@@ -8,9 +8,9 @@ use RuntimeException;
 
 use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
-use Opis\JsonSchema\Schema;
-use Opis\JsonSchema\Validator;
-use Opis\JsonSchema\Errors\ErrorFormatter;
+use CommonsBooking\Opis\JsonSchema\Schema;
+use CommonsBooking\Opis\JsonSchema\Validator;
+use CommonsBooking\Opis\JsonSchema\Errors\ErrorFormatter;
 use WP_REST_Controller;
 use WP_REST_Server;
 
