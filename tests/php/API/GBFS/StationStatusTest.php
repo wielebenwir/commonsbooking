@@ -36,7 +36,7 @@ class StationStatusTest extends CustomPostTypeTest {
 		$tf    = $this->createConfirmedBookingStartingToday();
 		$model = new Timeframe( $tf );
 		// echo "This is a booking: " . $model->getStartDateDateTime()->format( 'Y-m-d\TH:i:sP' ) . " " . $model->getEndDateDateTime()->format( 'Y-m-d\TH:i:sP' );
-		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->num_bikes_available );
+		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
 		// $this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
 
 		// the timeframe has ended now, so the station should be empty
