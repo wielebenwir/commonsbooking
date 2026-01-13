@@ -123,15 +123,15 @@ class WordpressTest extends CustomPostTypeTest {
 	 */
 	public function testGetUTCDateTimeByTimestamp() {
 
-		// $tz_list = [
-		// 'America/Los_Angeles', // UTC-10
-		// 'Europe/Berlin' // UTC+1
-		// ];
+		$tz_list = [
+			'America/Los_Angeles', // UTC-10 (negative offset)
+			'Europe/Berlin', // UTC+1 (positive offset)
+		];
 
-		// foreach ($tz_list as $timezone_under_test) {
+		foreach ( $tz_list as $timezone_under_test ) {
 
-		$timezone_under_test = 'Europe/Berlin';
-		date_default_timezone_set( $timezone_under_test );
+			// $timezone_under_test = 'Europe/Berlin';
+			date_default_timezone_set( $timezone_under_test );
 
 			$nowDT = new \DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) );
 
@@ -154,10 +154,10 @@ class WordpressTest extends CustomPostTypeTest {
 
 			$this->assertEquals( $nowDT, $converted, "Timezones should match when converted from {$timezone_under_test}" );
 
-		date_default_timezone_set( 'UTC' );
+			date_default_timezone_set( 'UTC' );
 
-		// break;
-		// }
+			// break;
+		}
 	}
 
 	protected function setUp(): void {
