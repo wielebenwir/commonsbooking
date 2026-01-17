@@ -33,14 +33,14 @@ class OwnersRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.owners.schema.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.owners.schema.json';
 
 	/**
 	 * Returns raw data collection.
 	 *
-	 * @param $request
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
-	 * @return array
+	 * @return WP_REST_Response[]
 	 */
 	public function getItemData( $request ): array {
 		$data = [];
@@ -53,8 +53,8 @@ class OwnersRoute extends BaseRoute {
 	}
 
 	/**
-	 * @param WP_User         $owner
-	 * @param WP_REST_Request $request
+	 * @param WP_User                               $owner
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response
 	 */
@@ -85,6 +85,10 @@ class OwnersRoute extends BaseRoute {
 
 	/**
 	 * Get a single item
+	 *
+	 * @param WP_REST_Request<array<string, mixed>> $request
+	 *
+	 * @return WP_REST_Response
 	 */
 	public function get_item( $request ): WP_REST_Response {
 		// get parameters from request
@@ -99,7 +103,7 @@ class OwnersRoute extends BaseRoute {
 	/**
 	 * Get a collection of items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param WP_REST_Request<array<string, mixed>> $request Full data about the request.
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -112,6 +116,8 @@ class OwnersRoute extends BaseRoute {
 
 	/**
 	 * TODO investigate why we overwrite this method
+	 *
+	 * @return array // @phpstan-ignore missingType.iterableValue
 	 */
 	public function prepare_response_for_collection( $itemdata ) {
 		return $itemdata; // @phpstan-ignore return.type
