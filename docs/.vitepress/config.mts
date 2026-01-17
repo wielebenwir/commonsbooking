@@ -220,6 +220,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
               { text: 'Shortcodes', link: 'shortcodes' },
               { text: 'Template Tags', link: 'template-tags' },
               { text: 'Widget', link: 'widget' },
+              { text: 'Datenschutz', link: 'datenschutz'},
               { text: 'Registrierungsseiten & Benutzerfelder anpassen', link: 'registrierungs-seiten-und-benutzerfelder-anpassen' },
               { text: 'Hooks und Filter', link: 'hooks-und-filter' },
           ]
@@ -343,14 +344,15 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
 //              { text: 'Booking list', link: 'booking-list' },
-              { text: 'Hooks and filters', link: 'hooks-and-filters' }
+                { text: 'Hooks and filters', link: 'hooks-and-filters' },
 //              { text: 'Embed map', link: 'map-embed' },
 //              { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
 //              { text: 'New Frontend(Beta)', link: 'new-frontend' },
 //              { text: 'Adjust registration page and user fields', link: 'custom-registration-user-fields' },
 //              { text: 'Shortcodes', link: 'shortcodes' },
 //              { text: 'Template Tags', link: 'template-tags' },
-//              { text: 'Widget', link: 'widget' }
+//              { text: 'Widget', link: 'widget' },
+                { text: 'Privacy', link: 'privacy'}
           ]
       },
       /*
