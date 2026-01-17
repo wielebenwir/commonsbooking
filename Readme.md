@@ -17,12 +17,12 @@ concept of [Commons](https://en.wikipedia.org/wiki/Commons), where resources are
 
 * [WordPress Plugin Page](https://wordpress.org/plugins/commonsbooking/) or the [official Website](https://commonsbooking.org)
 * View the full [changelog](https://wordpress.org/plugins/commonsbooking/#developers).
-* For users read the [documentation](https://commonsbooking.org/dokumentation) or get [Support](https://commonsbooking.org/kontakt/)
+* For users read the [documentation](https://commonsbooking.org/en/documentation) or get [Support](https://commonsbooking.org/en/contact)
 * For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug)
 
 ## Installation
 
-Refer to our [Documentation](https://commonsbooking.org/dokumentation/installation/installieren) for the normal installation and the necessary setup.
+Refer to our [Documentation](https://commonsbooking.org//en/documentation/setup/install) for the normal installation and the necessary setup.
 See [INSTALL.md](https://github.com/wielebenwir/commonsbooking/blob/master/INSTALL.md) for additional installation methods.
 
 ## Feedback
