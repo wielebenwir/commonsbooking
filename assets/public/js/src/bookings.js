@@ -218,9 +218,12 @@ class BookingList {
      */
     _handleFilterUpdate(response) {
         if(typeof response.filters !== "undefined") {
+            console.log(Object.entries(response.filters));
             for (const [filter, values] of Object.entries(response.filters)) {
 
+
                 let select  = document.getElementById('filter-' + filter);
+
 
                 // Remove all option, but all
                 var length = select .options.length;
@@ -234,6 +237,26 @@ class BookingList {
                         select.options[i].style.display = 'inline';
                     }
 
+                }
+
+                //console.log(select);
+
+                // iterate over object_entries to add missing options
+                console.log(values);
+                for (let value of values) {
+                    let found = false;
+                    for (var i = length-1; i >= 0; i--) {
+                        const optionValue = select.options[i].value;
+                        if(optionValue === value) {
+                            found = true;
+                        }
+                    }
+                    if(!found) {
+                        let option = document.createElement("option");
+                        option.text = value.charAt(0).toUpperCase() + value.slice(1);
+                        option.value = value;
+                        select.add(option);
+                    }
                 }
             }
         }
