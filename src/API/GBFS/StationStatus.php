@@ -64,8 +64,8 @@ class StationStatus extends BaseRoute {
 		foreach ( $items as $item ) {
 			// we have to make our calendar span at least one day, otherwise we get no results
 			$itemCalendar      = new Calendar(
-				new Day( date( 'Y-m-d', time() ) ),
-				new Day( date( 'Y-m-d', strtotime( '+1 day' ) ) ),
+				new Day( gmdate( 'Y-m-d', time() ) ),
+				new Day( gmdate( 'Y-m-d', strtotime( '+1 day' ) ) ),
 				[ $locationId ],
 				[ $item->ID ]
 			);

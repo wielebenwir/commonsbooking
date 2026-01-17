@@ -6,6 +6,7 @@ use CommonsBooking\Exception\OverlappingException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use DateTime;
+use DateTimeZone;
 use Exception;
 
 /**
@@ -166,13 +167,13 @@ class Timeframe extends CustomPost {
 	 * Do not use this function to get the actual end date of the timeframe.
 	 * Use getRawEndDate() instead.
 	 *
-	 * @return false|int
+	 * @return int local timestamp
 	 */
 	public function getEndDate() {
 		$endDate = $this->getTimeframeEndDate();
 
 		// Latest possible booking date
-		$latestPossibleBookingDate = $this->getLatestPossibleBookingDateTimestamp();
+		$latestPossibleBookingDate = Wordpress::getLocalTimestampFromUTCTimestamp( $this->getLatestPossibleBookingDateTimestamp() );
 
 		// If enddate is < than the latest possible booking date, we use it as end-date
 		if ( $endDate < $latestPossibleBookingDate ) {
@@ -223,7 +224,7 @@ class Timeframe extends CustomPost {
 	 * TODO / CAREFUL: This does not respect the end of the timeframe. So if the timeframe ends before
 	 *       the configured "advance booking days" setting, the function will return a date later than the end date of the timeframe.
 	 *
-	 * @return false|int
+	 * @return false|int utc unix timestamp
 	 */
 	public function getLatestPossibleBookingDateTimestamp() {
 		$calculationBase = time();
@@ -240,12 +241,12 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * This function will get the formatted end date of the timeframe.
-	 * This is used to display the end date of the timeframe in the frontend.
+	 * This function will return the formatted start and end date of the timeframe.
+	 * This is used to display the start and end date of the timeframe in the frontend.
 	 * This is mainly in use by the [cb_items] shortcode.
 	 *
-	 * @param   int $startDate
-	 * @param   int $endDate
+	 * @param int|bool $startDate in local time or false
+	 * @param int|bool $endDate in local time or false
 	 *
 	 * @return string
 	 */
@@ -319,7 +320,7 @@ class Timeframe extends CustomPost {
 	 * @return bool
 	 */
 	public function isBookable(): bool {
-		$startDateTimestamp                 = $this->getStartDate();
+		$startDateTimestamp                 = Wordpress::getUTCDateTimeByTimestamp( $this->getStartDate() )->getTimestamp();
 		$latestPossibleBookingDateTimestamp = $this->getLatestPossibleBookingDateTimestamp();
 
 		return $startDateTimestamp <= $latestPossibleBookingDateTimestamp;
@@ -1236,12 +1237,12 @@ class Timeframe extends CustomPost {
 	/**
 	 * Returns first bookable day based on the defined booking startday offset in timeframe
 	 *
-	 * @return string  date format Y-m-d
+	 * @return string  date format Y-m-d (utc timezone)
 	 */
 	public function getFirstBookableDay() {
 		$offset = $this->getFieldValue( self::META_BOOKING_START_DAY_OFFSET ) ?: 0;
-		$today  = current_datetime()->format( 'Y-m-d' );
-		return date( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
+		$today  = ( new DateTime( 'now', new DateTimeZone( 'UTC' ) ) )->format( 'Y-m-d' );
+		return gmdate( 'Y-m-d', strtotime( $today . ' + ' . $offset . ' days' ) );
 	}
 
 	/**
