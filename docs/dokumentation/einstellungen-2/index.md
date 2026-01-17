@@ -2,6 +2,8 @@
 
 __
 
+Hier findest du einen Überblick zu den Einstellungen von CommonsBooking, die über das WordPress-Dashboard angepasst werden können. Die Einstellungen findest du entweder über **Einstellungen -> CommonsBooking** oder über das CommonsBooking Dashboard im WordPress Backend auf der rechten Seite wenn du auf "Einstellungen" klickst.
+
 ###  Artikel
 
   * [ Allgemeine Einstellungen ](/dokumentation/einstellungen-2/allgemeine-einstellungen)
