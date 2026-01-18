@@ -1,15 +1,13 @@
-#  Einschränkungen
+#  Restrictions
 
 __
 
-Einstellungen -> CommonsBooking -> Reiter: Einschränkungen
+**Settings -> CommonsBooking -> Tab: Restrictions**
 
-Hier verwaltest Du die Vorlagen zu den E-Mails, die bei Einschränkungen an die
-Ausleihenden versendet werden.
+You can configure the templates here for the emails that are sent to users when there is a restriction during the time of their booking.
 
-Du kannst TemplateTags (Platzhalter) verwenden. Siehe in der [ Liste der
-Template-Tags ](/dokumentation/einstellungen/template-tags) nach, um passende
-Platzhalter zu finden.
+You can use Template Tags in the templates. Please refer to the [list of Template Tags](/en/documentation/administration/template-tags).
 
-Wie du [Einschränkungen verwendest ist hier beschrieben.](/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten)
+The [use of restrictions is described here.](/en/documentation/first-steps/manage-booking-restrictions).
 
+In addition, you can configure the booking rules here. The [use of booking rules is described here.](/en/documentation/first-steps/setup-bookingrules).

@@ -16,7 +16,7 @@ Your users will be notified about the defects or the total breakdown and any aff
 The following settings are now available:
 
   * **Type**
-    * **Total breakdown:** In the case of a total breakdown, the item is no longer bookable. All bookings in this period are canceled, unless this behavior has been explicitly disabled in the [booking restriction settings](/en/documentation/settings/restrictions). (Not translated yet)
+    * **Total breakdown:** In the case of a total breakdown, the item is no longer bookable. All bookings in this period are canceled, unless this behavior has been explicitly disabled in the [booking restriction settings](/en/documentation/settings/restrictions).
     * **Notice:** A notice is only displayed on the item page and users can be notified when desired.
   * **Location**
     * Select the location for the restriction.
@@ -37,4 +37,4 @@ The following settings are now available:
       :::warning
         When a total breakdown restriction is set to "Problem solved", it **does not** notify the users that had their bookings cancelled about the resolution of the issue. The rationale behind this is that users likely have already sought alternative bookings by that time. If cancellations are disabled, users will notified about the resolution of the total breakdown.
         :::
-    * The templates for these emails can be configured under [Settings -> Commonsbooking -> Restrictions](/en/documentation/settings/restrictions). (Not translated yet)
+    * The templates for these emails can be configured under [Settings -> Commonsbooking -> Restrictions](/en/documentation/settings/restrictions).
