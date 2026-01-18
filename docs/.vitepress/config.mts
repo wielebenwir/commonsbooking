@@ -304,7 +304,6 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
       },
-      /*
       {
           text: 'Settings', base: '/en/documentation/settings/',
           collapsed: true,
@@ -318,6 +317,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Language settings & date format', link: 'language-and-date' }
           ]
       },
+    /*
     {
       text: 'Basics', base: '/en/documentation/basics/',
       collapsed: true,
