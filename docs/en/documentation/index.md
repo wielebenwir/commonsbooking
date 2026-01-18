@@ -3,7 +3,7 @@
 This documentation applies to CommonsBooking > 2.0.0.
 
 ::: danger Help wanted!
-The documentation is not fully translated yet (10%), you can help by sending a [PR on Github](https://github.com/wielebenwir/commonsbooking).
+The documentation is not fully translated yet (25%), you can help by sending a [PR on Github](https://github.com/wielebenwir/commonsbooking).
 :::
 
 # Finding your way around
