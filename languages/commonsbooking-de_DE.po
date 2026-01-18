@@ -4463,3 +4463,7 @@ msgstr ""
 #: src/Service/Cache.php:425
 msgid "Cache was disabled through external setting. Please see the documentation for more information."
 msgstr ""
+
+#: includes/OptionsArray.php:770
+msgid "You can apply rules to individual items or categories of items/locations, which will restrict how users are able to book and, if violated, abort the booking process"
+msgstr ""
