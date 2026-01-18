@@ -2,10 +2,7 @@
 
 __
 
-Wähle hier mindestens 20 – 30 Wörter aus. Diese werden per Zufallsprinzip dann
-den einzelnen Tagen zugeordnet.
-
-Die Buchungs-Codes können beim tageweisen Verleih je Tag im Rahmen der
+Buchungscodes werden, wenn aktiviert zu jeder Buchung erstellt und können z.B. von Stationen als Passwörter genutzt werden, um die Abholende Person zu identifizieren. Die Buchungs-Codes können NUR beim tageweisen Verleih je Tag im Rahmen der
 Erstellung eines [Zeitrahmens](/dokumentation/erste-schritte/buchungszeitraeume-verwalten) generiert werden. Die Codes selbst werden dann auch am Ende der
 Detailseite des Zeitrahmens aufgelistet. Über einen CSV-Download kannst du die
 Buchungscodes auch runterladen und bei Bedarf weiterbearbeiten.
@@ -14,7 +11,7 @@ Unter Einstellungen -> CommonsBooking findest du im Reiter **Buchungscodes**
 die Sammlung der im Plugin verwendeten Buchungs-Codes.
 
 Ergänze hier Buchungs-Codes, die zu deinem Projekt und deiner Stadt passen.
-Fällt dir nichts ein, so nimmt doch erstmal die
+Fällt dir nichts ein, so nimm doch erstmal die hier:
 
 ###  **Beatles songs**
 ```
