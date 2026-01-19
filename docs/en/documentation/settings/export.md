@@ -4,7 +4,7 @@ __
 
 You can find the data export under Settings -> Export. There, you can export timeframes and bookings in CSV format to archive them or analyze them using statistical programs.
 
-# Export
+## Export
 
 First, you select which type of data you want to export (timeframes, bookings,...)
 
@@ -12,12 +12,12 @@ By default, basic fields of a timeframe are exported (see below).
 
 Additionally, you can export any additional fields for locations, items, and users. Since we do not know if you are using any custom fields like phone numbers or others, the export does not include any additional fields by default. In order to include them, simply provide the identifier of the corresponding meta field.
 
-# Analysis tools
+## Analysis tools
 
 * [cb-statistics by inSPEYERed](https://inspeyered.github.io/cb-statistics/)
 * [R-Script to determine yearly utilization](https://gist.github.com/hansmorb/b4de840ed98f5b26d46ee51a1907b8b7)
 
-# Contents of the export
+## Contents of the export
 
 The resulting CSV file is separated by semicolons.
 By default, the following fields are included in an export:

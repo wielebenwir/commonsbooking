@@ -4,7 +4,7 @@ __
 
 Über die Einstellungen -> Export könnt ihr Zeitrahmen und Buchungen im CSV Format exportieren um diese zB. zu archivieren oder mithilfe von statistischen Programmen auszuwerten. 
 
-# Exportieren
+## Exportieren
 
 Dabei wählt ihr zunächst, welche Daten ihr exportieren möchtet (Zeitrahmen, Buchungen etc.)
 
@@ -13,12 +13,12 @@ Standardmäßig werden die grundlegenden Felder eines Zeitrahmens exportiert (si
 Zusätzlich könnt ihr zu Standorten, Artikeln und Benutzenden beliebige weitere Felder exportieren. Da wir nicht wissen, ob wir ggf. weitere
 benutzerdefinierte Felder wie Telefonnummern oder andere Felder erfasst, haben wir den Export im Standard hier derzeit keine weiteren Felder vorbelegt. Dazu muss nur der Bezeichner des entsprechenden Meta Feldes angegeben werden.
 
-# Auswertungstools
+## Auswertungstools
 
 * [cb-statistics von inSPEYERed](https://inspeyered.github.io/cb-statistics/)
 * [R-Script für die jährliche Auslastung](https://gist.github.com/hansmorb/b4de840ed98f5b26d46ee51a1907b8b7)
 
-# Inhalt des Exports
+## Inhalt des Exports
 
 Die resultierende CSV Datei ist durch Semikolons getrennt.
 Standardmäßig sind in einem Datenexport enthalten:
