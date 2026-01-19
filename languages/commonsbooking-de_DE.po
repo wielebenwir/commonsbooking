@@ -1348,11 +1348,11 @@ msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht ge
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:419
+#: src/Service/Cache.php:420
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
-#: src/Service/Cache.php:163
+#: src/Service/Cache.php:164
 #, php-format
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
@@ -3464,11 +3464,11 @@ msgid "(not planned)"
 msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1536
-#: src/Service/Cache.php:453
+#: src/Service/Cache.php:454
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:448
+#: src/Service/Cache.php:449
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
@@ -4366,23 +4366,23 @@ msgstr "Cache Pfad"
 msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
 msgstr "Der Pfad zu dem Cache. Kann ein Ordner sein für den Dateisystem-Cache, eine REDIS DSN, ..."
 
-#: src/Service/Cache.php:158
+#: src/Service/Cache.php:159
 msgid "Filesystem"
 msgstr "Dateisystem"
 
-#: src/Service/Cache.php:174
+#: src/Service/Cache.php:175
 msgid "Redis"
 msgstr "REDIS"
 
-#: src/Service/Cache.php:184
+#: src/Service/Cache.php:185
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: src/Service/Cache.php:428
+#: src/Service/Cache.php:429
 msgid "Cache is disabled."
 msgstr "Cache ist deaktiviert."
 
-#: src/Service/Cache.php:431
+#: src/Service/Cache.php:432
 msgid "Cache adapter successfully connected."
 msgstr "Cache Adapter erfolgreich verbunden."
 
@@ -4460,7 +4460,7 @@ msgstr ""
 #~ msgid "Confirmed"
 #~ msgstr "Bestätigt"
 
-#: src/Service/Cache.php:425
+#: src/Service/Cache.php:426
 msgid "Cache was disabled through external setting. Please see the documentation for more information."
 msgstr ""
 
