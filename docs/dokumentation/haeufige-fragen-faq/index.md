@@ -50,6 +50,10 @@ vorgenommen wurde. Mehr dazu auf [ Github im CommonsBooking Quellcode-Repository
 
 ## Inkompatibles Plugin All-in-one-Event Plugins
 
+:::info Behoben seit 2.7.2 (06.2022)
+Für Experten siehe [Issue 675](https://github.com/wielebenwir/commonsbooking/issues/675)
+:::
+
 Leider kommt es bei der gleichzeitigen Nutzung des Plugins "All-in-one-Event" zu Fehlern, sodass Seiten, die von CommonsBooking erzeugt werden nicht angezeigt werden.
 
 Die Ursache ist leider auf eine schlechte Programmierung des All-in-one-Event-Plugins zurückzuführen, welches sich nicht an die Wordpress-Standards hält und so tief in Wordpress eingreift, dass es die Programmlogik von CommonsBooking quasi überschreibt.
@@ -57,8 +61,6 @@ Die Ursache ist leider auf eine schlechte Programmierung des All-in-one-Event-Pl
 Wir haben einiges versucht, um eine parallele Nutzung zu ermöglichen, leider aber bisher keine Lösung gefunden.
 
 Wenn ihr das Problem auch habt, schreibt gerne direkt an den Support des Plugins, vielleicht passen sie ihr Plugin doch noch irgendwann an.
-
-Für Experten: Wir haben in unserem github dazu auch ein Ticket: https://github.com/wielebenwir/commonsbooking/issues/675
 
 ## Inkompatibles Plugin REDIS Object Cache
 
