@@ -266,6 +266,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
     },
       {
           text: 'Häufige Fragen (FAQ)', base: '/dokumentation/haeufige-fragen-faq/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'Die Seite ist sehr langsam', link: 'die-seite-ist-sehr-langsam' },
