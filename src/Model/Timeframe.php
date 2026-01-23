@@ -395,7 +395,7 @@ class Timeframe extends CustomPost {
 	 * Returns the corresponding multiple locations for a timeframe.
 	 * If multiple locations are not available, it will call the getLocation() method and return an array with one location.
 	 *
-	 * @since 2.9 (anticipated)
+	 * @since 2.9
 	 * @return Location[]
 	 */
 	public function getLocations(): ?array {
@@ -418,7 +418,7 @@ class Timeframe extends CustomPost {
 	 * Returns the corresponding location ids for a timeframe.
 	 * If multiple locations are not available, it will call the getLocationID() method and return an array with one location id.
 	 *
-	 * @since 2.9 (anticipated)
+	 * @since 2.9
 	 * @return int[]
 	 */
 	public function getLocationIDs(): array {
@@ -1190,13 +1190,19 @@ class Timeframe extends CustomPost {
 		$itemAdminIds     = [];
 		$locationAdminIds = [];
 
-		$location = $this->getLocation();
-		if ( ! empty( $location ) ) {
-			$locationAdminIds = $location->getAdmins();
+		$locations = $this->getLocations();
+		if ( ! empty( $locations ) ) {
+			$locationAdminIds = array_shift( $locations )->getAdmins();
+			foreach ( $locations as $location ) {
+				$locationAdminIds = array_intersect( $locationAdminIds, $location->getAdmins() ); // only include locations that have same admins
+			}
 		}
-		$item = $this->getItem();
-		if ( ! empty( $item ) ) {
-			$itemAdminIds = $item->getAdmins();
+		$items = $this->getItems();
+		if ( ! empty( $items ) ) {
+			$itemAdminIds = array_shift( $items )->getAdmins();
+			foreach ( $items as $item ) {
+				$itemAdminIds = array_intersect( $itemAdminIds, $item->getAdmins() ); // only include items that have same admins
+			}
 		}
 
 		if ( empty( $locationAdminIds ) && empty( $itemAdminIds ) ) {
