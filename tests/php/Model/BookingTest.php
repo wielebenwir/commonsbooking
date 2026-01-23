@@ -9,7 +9,6 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Plugin;
-use CommonsBooking\Service\Booking as BookingAlias;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use SlopeIt\ClockMock\ClockMock;
 
@@ -746,7 +745,7 @@ class BookingTest extends CustomPostTypeTest {
 		$endingTime->setTime( 17, 59, 59 );
 		// we need to create this booking in the "frontend" way in order to save the correct grid sizes for the generation
 		// pickup and returntimes
-		$testBookingSpanningOverTwoSlotsID     = BookingAlias::handleBookingRequest(
+		$testBookingSpanningOverTwoSlotsID     = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$separateItem,
 			$separateLocation,
 			'confirmed',

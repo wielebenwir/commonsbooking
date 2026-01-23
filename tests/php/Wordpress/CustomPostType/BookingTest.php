@@ -2,7 +2,6 @@
 
 namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
-use CommonsBooking\Service\Booking as BookingAlias;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use SlopeIt\ClockMock\ClockMock;
@@ -28,7 +27,7 @@ class BookingTest extends CustomPostTypeTest {
 		$date->modify( '-1 day' );
 		ClockMock::freeze( $date );
 		// Case 1: We create an unconfirmed booking for a bookable timeframe. The unconfirmed booking should be created
-		$bookingId = BookingAlias::handleBookingRequest(
+		$bookingId = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -51,7 +50,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse( $bookingModel->isConfirmed() );
 
 		// Case 2: We now confirm the booking. The booking should be confirmed
-		$newBookingId       = BookingAlias::handleBookingRequest(
+		$newBookingId       = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'confirmed',
@@ -74,7 +73,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Case 3: We now try to cancel our booking a little bit later. The booking should be cancelled.
 		$date->modify( '+ 5 hours' );
 		ClockMock::freeze( $date );
-		$canceledId         = BookingAlias::handleBookingRequest(
+		$canceledId         = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'canceled',
@@ -101,7 +100,7 @@ class BookingTest extends CustomPostTypeTest {
 	public function testHandleBookingRequest_deleteUnconfirmed() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		// We create an unconfirmed booking and then cancel the booking. The booking should be canceled
-		$bookingId          = BookingAlias::handleBookingRequest(
+		$bookingId          = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -120,7 +119,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( $bookingModel->isUnconfirmed() );
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'Booking canceled.' );
-		BookingAlias::handleBookingRequest(
+		\CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'delete_unconfirmed',
@@ -140,7 +139,7 @@ class BookingTest extends CustomPostTypeTest {
 		$date->modify( '-1 day' );
 		ClockMock::freeze( $date );
 		// 3 Days are overbooked, that means that the Litepicker had 3 locked / holidays in range
-		$bookingId = BookingAlias::handleBookingRequest(
+		$bookingId = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -164,7 +163,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse( $bookingModel->isConfirmed() );
 
 		// The overbooked days are not present anymore when confirming the booking cause they are only calculated on the Litepicker screen
-		$newBookingId       = BookingAlias::handleBookingRequest(
+		$newBookingId       = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'confirmed',
@@ -191,7 +190,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Case 1: We try to create a booking without a defined location
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'Location does not exist. ()' );
-		$booking = BookingAlias::handleBookingRequest(
+		$booking = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			null,
 			'unconfirmed',
@@ -207,7 +206,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Case 2: We try to create a booking without a defined item
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'Item does not exist. ()' );
-		$booking = BookingAlias::handleBookingRequest(
+		$booking = \CommonsBooking\Service\Booking::handleBookingRequest(
 			null,
 			$this->locationId,
 			'unconfirmed',
@@ -223,7 +222,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Case 3: We try to create a booking without a defined start date
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'Start- and/or end-date is missing.' );
-		$booking = BookingAlias::handleBookingRequest(
+		$booking = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -239,7 +238,7 @@ class BookingTest extends CustomPostTypeTest {
 		// Case 4: We try to create a booking without a defined end date
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'Start- and/or end-date is missing.' );
-		$booking = BookingAlias::handleBookingRequest(
+		$booking = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -256,7 +255,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->createConfirmedBookingStartingToday();
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
 		$this->expectExceptionMessage( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.' );
-		$booking = BookingAlias::handleBookingRequest(
+		$booking = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -271,7 +270,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testReAccessUnconfirmed() {
 		// this tests the case where the same user tries to access their unconfirmed booking again
-		$bookingId = BookingAlias::handleBookingRequest(
+		$bookingId = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -288,7 +287,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertIsInt( $bookingId );
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$this->assertTrue( $bookingModel->isUnconfirmed() );
-		$sameBookingId      = BookingAlias::handleBookingRequest(
+		$sameBookingId      = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -315,7 +314,7 @@ class BookingTest extends CustomPostTypeTest {
 	 * @return void
 	 */
 	public function testHandleBookingRequest_deleted_confirm() {
-		$bookingId = BookingAlias::handleBookingRequest(
+		$bookingId = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -335,7 +334,7 @@ class BookingTest extends CustomPostTypeTest {
 		$this->expectExceptionMessage( 'Your reservation has expired, please try to book again' );
 
 		// now we try to confirm the booking
-		$confirmedId = BookingAlias::handleBookingRequest(
+		$confirmedId = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'confirmed',

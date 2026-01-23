@@ -6,7 +6,6 @@ use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
-use CommonsBooking\Service\Booking as BookingAlias;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\iCalendar;
 use Exception;
@@ -189,7 +188,7 @@ class Booking extends Timeframe {
 			$postName        = isset( $_REQUEST['cb_booking'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['cb_booking'] ) ) : null;
 			$postType        = isset( $_REQUEST['type'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['type'] ) ) : null;
 
-			$postId = BookingAlias::handleBookingRequest(
+			$postId = \CommonsBooking\Service\Booking::handleBookingRequest(
 				$itemId,
 				$locationId,
 				$post_status,
