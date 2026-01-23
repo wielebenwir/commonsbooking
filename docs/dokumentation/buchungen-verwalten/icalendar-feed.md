@@ -2,8 +2,9 @@
 
 __
 
-Ab 2.8.
+::: tip Ab Version 2.8
 Diese Feature ist noch experimentell.
+:::
 
 In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
 aktivieren. iCalendar ist ein sehr geläufiges Format für digitale Kalender.
@@ -14,7 +15,7 @@ importiert werden können. Diese Kalendereinträge sind nicht beschreibbar, dh.
 auswirken.
 
 Nachdem diese Funktion aktiviert ist, findest du die individuelle Kalender URL
-in dem Menü in der Übersicht "Meine Buchungen".
+in dem Menü in der Übersicht "Meine Buchungen" ([Shortcode `[cb_bookings]`](/dokumentation/einstellungen/shortcodes#liste-aller-buchungen))
 
 ![](/img/iCalendar-feed.png)
 
