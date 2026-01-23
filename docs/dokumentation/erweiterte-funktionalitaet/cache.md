@@ -38,6 +38,7 @@ Ein falsch konfigurierter Cache kann deine Seite verlangsamen.
 * Falls deine Seite sehr langsam ist, kann das auch auf Problem mit dem Cache hindeuten.
   Mehr dazu: [Die Seite ist sehr langsam](/dokumentation/haeufige-fragen-faq/die-seite-ist-sehr-langsam).
 
+* Siehe auch die Seite [Häufige Fragen](/dokumentation/haeufige-fragen-faq/) für bekannte Inkompatibilitäten.
 * **Regelmäßiges Aufwärmen des Caches durch Cronjob**:
   :::warning ACHTUNG
   Diese Einstellung ist nur für ganz besondere Randfälle gedacht und betrifft dich vermutlich nicht.Außerdem ist die Funktion experimentell und kann unerwünschte Nebeneffekte haben. Wir konnten zum Beispiel nicht feststellen, ob der Cache nach einer Buchung rechtzeitig geleert wird. Der Cronjob sollte wahrscheinlich relativ häufig ausgeführt werden, wenn die Funktion genutzt werden soll.
@@ -50,8 +51,7 @@ Ein falsch konfigurierter Cache kann deine Seite verlangsamen.
 
 ## Bekannte Probleme
 
-In der Vergangenheit gab es bereits Probleme mit anderen Wordpress-Plugins wie z.B. 'REDIS Object Cache'.
-Aus diesem Grund raten wir von der Nutzung solcher Plugins ab.
+* Siehe auch die Seite [Häufige Fragen](/dokumentation/haeufige-fragen-faq/) für bekannte Inkompatibilitäten.
 
 ## Diskussion
 
