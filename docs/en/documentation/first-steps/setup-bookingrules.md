@@ -2,6 +2,10 @@
 
 __
 
+Booking rules are just one of the many ways to restrict the booking of items by users.
+You can also use the [timeframe settings](/en/documentation/first-steps/booking-timeframes-manage) to 
+configure user roles that may book an item or restrict booking by setting a password for the [item](/en/documentation/first-steps/create-item).
+
 Using booking rules, you can restrict the use of items by users across the installation.
 For instance, if you want to prevent a user from booking multiple items on the same day
 or limit excessive use, you can achieve this using booking rules.
