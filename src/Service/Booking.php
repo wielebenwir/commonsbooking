@@ -235,7 +235,7 @@ class Booking {
 
 		$postarr['type']                  = $postType;
 		$postarr['post_status']           = $post_status;
-		$postarr['post_type']             = CustomPostType::getPostType();
+		$postarr['post_type']             = \CommonsBooking\Wordpress\CustomPostType\Booking::getPostType();
 		$postarr['post_title']            = esc_html__( 'Booking', 'commonsbooking' );
 		$postarr['meta_input']['comment'] = $comment;
 
