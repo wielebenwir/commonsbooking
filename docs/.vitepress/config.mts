@@ -266,6 +266,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
     },
       {
           text: 'Häufige Fragen (FAQ)', base: '/dokumentation/haeufige-fragen-faq/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'Die Seite ist sehr langsam', link: 'die-seite-ist-sehr-langsam' },
@@ -304,7 +305,6 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
       },
-      /*
       {
           text: 'Settings', base: '/en/documentation/settings/',
           collapsed: true,
@@ -318,6 +318,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Language settings & date format', link: 'language-and-date' }
           ]
       },
+    /*
     {
       text: 'Basics', base: '/en/documentation/basics/',
       collapsed: true,

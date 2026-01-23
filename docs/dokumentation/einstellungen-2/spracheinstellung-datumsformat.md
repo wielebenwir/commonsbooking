@@ -14,19 +14,8 @@ Diese kannst du folgendermaßen anpassen:
 **Datumsformate einstellen**
 
 CommonsBooking arbeitet mit den Zeit- und Datumseinstellungen, die du in
-WordPress unter "Einstellungen -> Allgemein -> Zeitzone" eingestellt hast. Ach
-die Formatierungen für die Zeitanzeige (24h-Format etc) und die
-Datumsformatierung übernimmt CommonsBooking aus den allgemein WordPress-
-Einstellungen.
+WordPress unter "Einstellungen -> Allgemein -> Zeitzone" eingestellt hast. Auch
+die Formatierungen für die Zeitanzeige (24h-Format etc) und die Datumsformatierung übernimmt CommonsBooking aus den allgemein WordPress-Einstellungen. Das betrifft dann z.B. die Anzeige des Datums auf der Buchungsbestätigungsseite und in E-Mails.
 
-Bitte prüfe deshalb, dass du die richtige Zeitzone in WordPress konfiguriert
-hast.
-
-Wenn du das noch nicht getan hast hole unter "Einstellungen / Allgemein /
-Zeitzone" nach.
-
-  * Einstellungen -> Allgemein: Datumsformat 
-
-Die Datumsformate werden z.B. in der Buchungsbestätigungs-Seite und den
-E-Mails entsprechend der hier eingestellten Formate ausgegeben.
+Bitte prüfe deshalb, dass du die richtige Zeitzone in WordPress konfiguriert hast.
 

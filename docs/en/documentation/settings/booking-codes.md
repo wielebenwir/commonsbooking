@@ -1,24 +1,15 @@
-#  Buchungs-Codes
+#  Booking codes
 
 __
 
-Wähle hier mindestens 20 – 30 Wörter aus. Diese werden per Zufallsprinzip dann
-den einzelnen Tagen zugeordnet.
+When booking codes are activated, they will be created for each booking and can be used by locations as passwords to identify the person picking up the item. Booking codes can only be generated once for every day and thus only for day-based rentals. They can be created when setting up a [timeframe](/en/documentation/first-steps/booking-timeframes-manage). The codes will also be listed at the end of the timeframe detail page. Additionally, they can be downloaded as a CSV file for further processing.
 
-Die Buchungs-Codes können beim tageweisen Verleih je Tag im Rahmen der
-Erstellung eines [ Zeitrahmens ](/dokumentation/erste-schritte/buchungszeitraeume-
-anlegen) generiert werden. Die Codes selbst werden dann auch am Ende der
-Detailseite des Zeitrahmens aufgelistet. Über einen CSV-Download kannst du die
-Buchungscodes auch runterladen und bei Bedarf weiterbearbeiten.
+The available booking codes are located in the **Booking codes** tab under Settings -> CommonsBooking.
 
-Unter Einstellungen -> CommonsBooking findest du im Reiter **Buchungscodes**
-die Sammlung der im Plugin verwendeten Buchungs-Codes.
-
-Ergänze hier Buchungs-Codes, die zu deinem Projekt und deiner Stadt passen.
-Fällt dir nichts ein, so nimmt doch erstmal die
+You may add booking codes that fit your project and city here. If you can't think of any, you may use the following:
 
 ###  **Beatles songs**
-
+```
 12-Bar Original, A Beginning, A Day In The Life, A Hard Day’s Night, A Shot Of
 Rhythm And Blues, A Taste Of Honey, Across The Universe, Act Naturally, Ain’t
 She Sweet, All I’ve Got To Do, All My Loving, All Things Must Pass, All
@@ -66,43 +57,4 @@ Nowhere Man, Ob-La-Di, Ob-La-Da, Octopus’s Garden, Oh! Darling, Old Brown
 Shoe, One After 909, Only A Northern Song, Ooh! My Soul, Paperback Writer,
 Penny Lane, Pepperland, Pepperland Laid Waste, Piggies, Please Mister Postman,
 Please Please Me,
-
-###  **Alte und schöne Wörter**
-
-Affenstall,Allmende,altbacken,Apfelwolken,Appetithäppchen,Backfisch,Backofen,Balkonien,Bandsalat,Blaustrumpf,Blechlawine,Blümchenkaffee,Blümerant,Blütenzauber,Bratkartoffelverhältnis,Butterbrot,Contenance,Dämmerung,Dauerbrenner,Dauerlauf,daumendick,Daumenregel,Dibbedutz,Diskette,Donnerbalken,Donnerwetter,Doppelgänger,doppeltgemoppelt,Drahtesel,Dreikäsehoch,Dunstkreis,Entschleunigung,Erbsenzähler,Erntemond,Eselsbrücke,Eselsohr,Extraeinladung,Extrawurst,Fahrvergnügen,Fangfrage,Faustregel,Fernweh,Fersengeld,Firlefanz,Fisimatenten,Fitzelchen,Frauenzimmer,Freiheit,Froschperspektive,Frühjahrsputz,Funkstille,Gardinenpredigt,Gartenzwerg,Geheimratsecken,Geistesblitz,Gemeinschaftserlebnis,Gerüchteküche,Glückspilz,Gratwanderung,Gretchenfrage,Groschen,Grundeinkommen,Guglhupf,Gurkentruppe,Halbdunkel,Hallodri,Hammelsprung,Hanami,Handschmeichler,Hängepartie,Hanswurst,Hauch,Heimat,Heimweh,Heißhunger,Henkelmann,Himmelsstürmer,Hingabe,Hitzefrei,Höhepunkt,Honigkuchenpferd,Hosenträger,Humbug,Jungbrunnen,Kabelsalat,Kaffeefahrt,Kassettenrecorder,Katzenmusik,Kauderwelsch,Killewipps,Kinkerlitzchen,Kladderadatsch,Klammeraffe,Kleinod,Klimbim,Knalltüte,Knust,Kokolores,Krempel,Krimskrams,Krümel,Kuddelmuddel,Lackaffe,Lampenfieber,Larifari,Lebenskünstler,Lebenslust,Lebensweg,Lebenswerk,Leergut,Leidenschaft,Leseratte,Leuchtturm,Lichthupe,Lichtspielhaus,Liebe,Löwenzahn,Luftikus,Luftnummer,Lulatsch,Makulatur,Malzbier,Mauerblümchen,Meisterwerk,Menschenskinder,Menschentraube,Milchbubi,Milchmädchenrechnung,Mitfahrzentrale,Mobilitätswende,Möchtegern,Modemuffel,Mondschein,Morgenfrische,Morgenmuffel,Morgentau,Muckefuck,mucksmäuschenstill,Mumpitz,Müßiggang,Nachbarschaftshilfe,Nagelprobe,Naturkulisse,Neuanfang,Neuland,Nigelnagelneu,Nippes,Nische,Ohrwurm,Orgel,Pantoffelheld,Pantoffelkino,papperlapapp,Paradebeispiel,Pferdekuss,Plaudertasche,Polterabend,Pumuckl,Purzelbaum,Pusteblume,Qualitätszeit,Querdenker,Quietschfidel,Quintessenz,Regenbogen,Reizüberflutung,Rollkragenpullover,Rummel,Saftladen,Sahnehäubchen,Sahnetorte,Sammelsurium,Sandkastenliebe,Schäfchenwolke,Schallplatte,Schattenspiel,Schlafittchen,Schlafmütze,Schlaraffenland,Schlitzohr,Schlumpf,Schlupfloch,Schmetterling,Schmollmund,Schmuddelwetter,Schnäppchen,Schnapszahl,Schneegestöber,Schneemann,Schnickschnack,Schnipsel,Schnittchen,Schnitzeljagd,schnurgerade,schnurzpiepegal,Schürzenjäger,Schweinehund,Sehnsucht,Selbstvertrauen,Siedeverzug,Sollbruchstelle,Sommersprossen,Sonnenuntergang,Spekulatius,Spritztour,Stehaufmännchen,Steilvorlage,Sternenhimmel,Sternschnuppe,Straßenfeger,Sturmfrei,Tacheles,Tagwerk,Tapetenwechsel,Tausendsassa,Tauwetter,Telefonzelle,Tinnef,Tohuwabohu,Tollpatsch,Treppenwitz,Unendlichkeit,Videothek,Vision,Vorbild,Vorfreude,Wählscheibe,Waldfee,Walkman,Wanderung,Wellenreiter,Windeseile,Winterlandschaft,Wirrwarr,Wischiwaschi,Wohlfeil,Wolkenbruch,Wolkenkuckucksheim,Wonne,Worthülse,Wundertüte,Zackzack,Zaungast,Zeitfenster,Zeitgeist,Zeitlupe,Zirkus,Zukunftsmusik,Zungenbrecher,Zuversicht,Zwetschgenkuchen,Zylinder
-
-##  Weitere Wörter
-
-abenteuer, abenteuerlich, absolut, achtsam, aktion, aktiv, akzeptiert,
-altruistisch, anerkennung, angenehm, anmut, anmutig, annahme, anpassungsfähig,
-atemberaubend, attraktiv, aufgeräumt, aufgeregt, aufgeschlossen, aufrecht,
-aufregend, aufrichtig, augenblicklich, ausgewogen, ausgezeichnet,
-außergewöhnlich, authentisch, bereit, bereitschaft, beruhigend, berühmt,
-bescheiden, beschwingt, beteiligt, bewundern, bewusst, bewusstsein,
-bezaubernd, blendend, blühen, blühend, blühte, brausetabletten, brillant,
-edel, effizient, ehrenwert, ehrgeizig, ehrlich, ehrlichkeit, eifer, eifrig,
-einfallsreich, einfallsreichtum, einfühlsam,einnehmend, einzigartig,
-elastizität, elektrisierend,empfänglich, empfindlich, emporgehoben, endlos,
-energie, energisch, engel, entscheidend, entschlossen, entspannt, erfahren,
-erfinderisch, erfindungsreichtum, magie, magisch, glückseligkeit, mehr als
-fabelhaft, meisterhaft, mitfühlend, motivierend, mühelos, mut, mutig,
-veränderung, verbindung, verdienen, verdienstvoll, verehrt, verjüngt,
-versöhnlich, verstehen, vertrauen, verwandeln, verzaubert, vielseitig,
-vitalität, vorsichtig,vorteilhaft
-
-##  Rund um das Thema Fahrrad & Umwelt
-
-Radnagen,Knirschen,Gebäckträger,Klimagriller,Sanfte
-Brise,Gurke,Tomate,Salat,Radieschen,Dinkelmilch,Lastenesel,Schietwedder,Gegenwind,HauRuck,Wech
-Damit,Selbermachen,Überzeugt,Gute Laune,Bergauf,Tret rein,Tanz mit dem
-Rad,Wind im
-Haar,Pedalista,Schaltwerk,Umwerfer,Kettenglied,Wahnsinnsrad,Laufmit,Laufrad,Bremszug,Trotzdem
-rauf,Weiterfahren,Flottflott,Schnell in der City,Überholerin,Fortuna,Glück
-aufm Sattel,Widder,Bullhorn,Sofa auf Rädern,Zieh
-weg,Slalomfahren,Verkehrswende,Parcoursfahren,Wind um die
-Nase,FreiFahren,SlowDown,Packrad,Radatouille,Ed-von
-Schlepp,Hej!,Blimblim,dingdong,klinklonk,Radlager,Sausebrause,Fahrradhelm,Bowdenzug,Sand
-im Getriebe,Rin damit,Steig ein,Aufgesattelt,Festgezurrt,Auf der
-Überholspur,Pampa,Fauna,Flora,Drahtesel,Rakete,Familienkutsche,Technisches
-Wunderwerk,Sonnenuntergang
-
+```

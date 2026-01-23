@@ -20,7 +20,7 @@ Therefore, please check that you have configured the correct time zone in WordPr
 ### Configure CommonsBooking
 
 In the WordPress settings you will now find a new list item ‘CommonsBooking’. Here you can do perform the initial configuration.  Please
-enter at least the sender name and e-mail in the ‘Templates’ tab to get started. More information can be found under \[Configuration](/en/documentation/settings) (Not translated yet).
+enter at least the sender name and e-mail in the ‘Templates’ tab to get started. More information can be found under [Configuration](/en/documentation/settings/index)
 
 ### Create locations, articles and time frames
 
