@@ -1182,6 +1182,8 @@ class Timeframe extends CustomPost {
 	 * Returns users with admin role for location and item, assigned to this timeframe.
 	 * Will call the respective methods on the location and item.
 	 *
+	 * See https://github.com/wielebenwir/commonsbooking/discussions/1999
+	 *
 	 * @return array|string[]
 	 * @throws Exception
 	 */
@@ -1205,6 +1207,7 @@ class Timeframe extends CustomPost {
 			}
 		}
 
+		// this will probably never occur, because getAdmins also returns the postAuthor, which every post naturally has.
 		if ( empty( $locationAdminIds ) && empty( $itemAdminIds ) ) {
 			return [];
 		}

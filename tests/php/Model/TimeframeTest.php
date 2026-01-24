@@ -1047,6 +1047,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( [ self::USER_ID ], $this->firstTimeframe->getAdmins() );
 
 		// Case 2: Item admin set
+		// Should get the item admin as eligible
 		$this->createCBManager();
 		$managedItem       = $this->createItem( 'Managed Item', 'publish', [ $this->cbManagerUserID ] );
 		$unmanagedLocation = $this->createLocation( 'Unmanaged Location', 'publish' );
@@ -1076,7 +1077,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$timeframe               = new Timeframe( $holiday4managedLocation );
 		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $timeframe->getAdmins() );
 
-		// case 6: one of the locations of holiday timeframe is managed, other is not. manager should not be allowed to edit timeframes that are not completely under their control
+		// case 6: one of the locations of holiday timeframe is managed, other is not. manager should not be allowed to edit timeframes that are not completely under their control for multi-assigned timeframes
 		$holiday4partlyManagedLocation = $this->createTimeframe(
 			[ $otherManagedLocation, $unmanagedLocation ],
 			[ $otherManagedItem, $unmanagedItem ],
