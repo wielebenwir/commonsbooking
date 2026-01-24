@@ -278,7 +278,7 @@ HTML;
 
 		echo '<div class="cmb-row cmb2-id-email-booking-codes-info">
                 <div class="cmb-th">
-                    <label for="email-booking-codes-list">' . commonsbooking_sanitizeHTML( __( 'Send booking codes by email', 'commonsbooking' ) ) . '</label>
+                    <label for="email-booking-codes-list">' . commonsbooking_sanitizeHTML( __( 'Send booking codes automated by email', 'commonsbooking' ) ) . '</label>
                 </div>
 
                 <div id="email-booking-codes-list" class="cmb-td">';
