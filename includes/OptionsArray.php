@@ -44,14 +44,14 @@ return array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Welcome to CommonsBooking', 'commonsbooking' ) ),
 				'id'     => 'welcome',
 				'desc'   =>
-				// translators: %s = version number
 					sprintf(
 						commonsbooking_sanitizeHTML(
+							// translators: %s = version number
 							__(
 								'You are using CommonsBooking Version %s
 
                             <h2>How to start</h2>
-                            <p>To get startet visit our tutorials and documentation on <a target="_blank" href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
+                            <p>To get started visit our tutorials and documentation on <a target="_blank" href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
 
                             <h2>Questions or bug reports?</h2>
                             <p>Ask your questions or send us your bug reports here <a target="_blank" href="https://commonsbooking.org/kontakt/">https://commonsbooking.org/kontakt/</a></p>
