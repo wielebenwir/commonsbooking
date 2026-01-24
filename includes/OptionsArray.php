@@ -91,10 +91,10 @@ return array(
 					array(
 						'name'        => commonsbooking_sanitizeHTML( __( 'Items slug', 'commonsbooking' ) ),
 						'id'          => 'posttypes_items-slug',
-						// translators: %s = example url (like website.com/cb-items/)
 						'description' =>
 							sprintf(
 								commonsbooking_sanitizeHTML(
+									// translators: %s = example url (like website.com/cb-items/)
 									__(
 										'The slug for article detail page. Type in the slug without slashes. Example: <strong>cb_item</strong> or <strong>article</strong>.  The url for the items detail will be like %s',
 										'commonsbooking'
@@ -108,10 +108,10 @@ return array(
 					array(
 						'name'        => esc_html__( 'Locations slug', 'commonsbooking' ),
 						'id'          => 'posttypes_locations-slug',
-						// translators: %s = example url (like website.com/cb-locations/)
 						'description' =>
 							sprintf(
 								commonsbooking_sanitizeHTML(
+									// translators: %s = example url (like website.com/cb-locations/)
 									__(
 										'The slug for location detail page. Type in the slug without slashes. Example: <strong>cb_location</strong> or <strong>location</strong>.  The url for the items detail will be like %s',
 										'commonsbooking'
@@ -125,10 +125,10 @@ return array(
 					array(
 						'name'        => esc_html__( 'Bookings Page', 'commonsbooking' ),
 						'id'          => 'bookings_page',
-						// translators: %s = example url (like website.com/cb-locations/)
 						'description' =>
 							sprintf(
 								commonsbooking_sanitizeHTML(
+									// translators: %s = example url (like website.com/cb-locations/)
 									__(
 										'The page where you included the [cb_bookings] shortcode. This is used in the Users Widget',
 										'commonsbooking'
@@ -1281,6 +1281,7 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Location-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf(
+							// translators: %s formatted meta field as an var_dump-like assoc array string
 							commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ),
 							commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields( 'cb_location' ) )
 						),
@@ -1290,6 +1291,7 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 					array(
 						'name' => commonsbooking_sanitizeHTML( __( 'Item-Fields', 'commonsbooking' ) ),
 						'desc' => sprintf(
+						// translators: %s formatted meta field as an var_dump-like assoc array string
 							commonsbooking_sanitizeHTML( __( 'Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s', 'commonsbooking' ) ),
 							commonsbooking_sanitizeHTML( Settings::returnFormattedMetaboxFields( 'cb_item' ) )
 						),

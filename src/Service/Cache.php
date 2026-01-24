@@ -161,6 +161,7 @@ trait Cache {
 					$location = $config['cacheLocation'] ?: sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache';
 					if ( ! is_writable( $location ) ) {
 						throw new CacheException(
+							// translators: %s directory path of the operating system
 							sprintf( commonsbooking_sanitizeHTML( __( 'Directory %s could not be written to.', 'commonsbooking' ) ), $config['cacheLocation'] )
 						);
 					}
