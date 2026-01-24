@@ -123,7 +123,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns true if the restriction has an enddate.
 	 *
-	 * As far as I know, this is never used.
+	 * Used in timeframe-calendar.php template
 	 *
 	 * @return bool
 	 */
