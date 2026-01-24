@@ -72,7 +72,7 @@ return array(
 
 	/* Tab: general start*/
 	'general'      => array(
-		'title'        => commonsbooking_sanitizeHTML( __( 'General', 'commonsbooking' ) ),
+		'title'        => commonsbooking_sanitizeHTML( _x( 'General', 'The general settings category', 'commonsbooking' ) ),
 		'id'           => 'general',
 		'field_groups' => array(
 			/* posttype: naming, rewrite, archives start */
