@@ -138,7 +138,7 @@ class Location extends CustomPostType {
 			'view_item'             => esc_html__( 'Show location', 'commonsbooking' ),
 			'view_items'            => esc_html__( 'Show locations', 'commonsbooking' ),
 			'search_items'          => esc_html__( 'Search locations', 'commonsbooking' ),
-			'not_found'             => esc_html__( 'location not found', 'commonsbooking' ),
+			'not_found'             => esc_html__( 'Location not found', 'commonsbooking' ),
 			'not_found_in_trash'    => esc_html__( 'No locations found in trash', 'commonsbooking' ),
 			'parent_item_colon'     => esc_html__( 'Parent location:', 'commonsbooking' ),
 			'all_items'             => esc_html__( 'All locations', 'commonsbooking' ),
