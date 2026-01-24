@@ -434,10 +434,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		if ( $startdate === $enddate ) {
 			/* translators: %s = date in WordPress defined format */
-			return sprintf( sanitize_text_field( __( ' on %s ', 'commonsbooking' ) ), $startdate );
+			return sprintf( sanitize_text_field( __( 'on %s', 'commonsbooking' ) ), $startdate );
 		} else {
 			/* translators: %1 = startdate, %2 = enddate in WordPress defined format */
-			return sprintf( sanitize_text_field( __( ' from %1$s until %2$s ', 'commonsbooking' ) ), $startdate, $enddate );
+			return sprintf( sanitize_text_field( __( 'from %1$s until %2$s', 'commonsbooking' ) ), $startdate, $enddate );
 		}
 	}
 
