@@ -1,0 +1,32 @@
+name: PHP CS WP.i18n check
+
+on:
+  push:
+    paths:
+      - '**/*.php'
+  pull_request:
+    paths:
+      - '**/*.php'
+  workflow_dispatch:
+
+
+jobs:
+  phpcs-i18n-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'  # Adjust this to your PHP version
+          extensions: uopz
+
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+      - name: Run phpcbf
+        run: ./vendor/bin/phpcs --standard=.phpcs.xml.dist --sniffs=Wordpress.WP.I18n src templates includes commonsbooking.php
