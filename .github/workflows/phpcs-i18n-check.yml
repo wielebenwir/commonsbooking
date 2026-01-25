@@ -4,9 +4,13 @@ on:
   push:
     paths:
       - '**/*.php'
+      - '.github/workflows/phpcs-i18n-check.yml'
+      - 'composer.lock'
   pull_request:
     paths:
       - '**/*.php'
+      - '.github/workflows/phpcs-i18n-check.yml'
+      - 'composer.lock'
   workflow_dispatch:
 
 
