@@ -11,10 +11,16 @@ use CommonsBooking\View\Admin\Filter;
 use WP_Post;
 use WP_Term;
 
+// TODO: Find a better place for the `Roles and Capabilities` in this doc-comment
+// TODO: Refactor this class to incorporate the initHooks() method. Many of the child classes have the same code there.
 /**
  * Abstract wp custom post type for the CommonsBooking domain, implements a base of post functionality.
  *
- *  TODO: Refactor this class to incorporate the initHooks() method. Many of the child classes have the same code there.
+ * <strong>Roles and Capabilities for cb_manager-role</strong>
+ *
+ * One non-standard extension of custom-post-type behaviour are the `manage_commonsbooking` and `manage_commonsbooking_{post_type}` capabilities, which set out from the `cb_manager` role.
+ * The capability `manage_commonsbooking` controls the display and access of the all backend-pages, whereas the `manage_commonsbooking_{post_type}` capability the control for each custom post type implements.
+ * See {@see CustomPostType::getMenuParams()} and {@see Plugin::addMenuPages()}.
  */
 abstract class CustomPostType {
 
@@ -215,7 +221,7 @@ abstract class CustomPostType {
 			'cb-dashboard',
 			$this->getArgs()['labels']['name'],
 			$this->getArgs()['labels']['name'],
-			'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+			'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . static::getPostType(),
 			'edit.php?post_type=' . static::getPostType(),
 			'',
 			$this->menuPosition ?: null,

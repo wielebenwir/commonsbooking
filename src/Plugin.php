@@ -266,7 +266,10 @@ class Plugin {
 	/**
 	 * Adds permissions to edit custom post types for specified role.
 	 *
-	 * @param $postType
+	 * @param string $postType the id of the post type
+	 * @param string $roleName the id of the role
+	 *
+	 * @return void
 	 */
 	protected static function addRoleCaps( $postType, $roleName ) {
 		// Add the roles you'd like to administer the custom post types
@@ -277,7 +280,7 @@ class Plugin {
 			$role = get_role( $the_role );
 			if ( $role ) {
 				$role->add_cap( 'read_' . $postType );
-				$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType );
+				$role->add_cap( 'manage_' . COMMONSBOOKING_PLUGIN_SLUG . '_' . $postType ); // show sub-menu item for post type
 
 				$role->add_cap( 'edit_' . $postType );
 				$role->add_cap( 'edit_' . $postType . 's' ); // show item list
@@ -354,7 +357,7 @@ class Plugin {
 				$params[0],
 				$params[1],
 				$params[2],
-				$params[3] . '_' . $cbCustomPostType::$postType,
+				$params[3],
 				$params[4],
 				$params[5],
 				$params[6]
