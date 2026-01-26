@@ -244,14 +244,14 @@ class Booking extends View {
 					 * NOTE: Upon using this filter hook, the schema of associative array keys needs to be adhered to in order to not break the booking list.
 					 * See $rowData in this function, for the valid keys.
 					 *
-					 * @since 2.7.3
-					 *
-					 * @param array                         $rowData assoc array of one row booking data
+					 * @param array|mixed|null              $rowData assoc array of one row booking data
 					 * @param \CommonsBooking\Model\Booking $booking booking model of one row booking data
+					 *
+					 *@since 2.7.3
 					 */
 					$filteredRowData = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
 
-					// Only includes valid row data objects
+					// Only includes non-null array row data objects
 					if ( isset( $filteredRowData ) && is_array( $filteredRowData ) ) {
 						if ( WP_DEBUG ) {
 							// Logs absent keys, relative to the original row data keys, could cause problems
