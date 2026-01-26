@@ -67,7 +67,8 @@ final class BookingTest extends CustomPostTypeTest {
 		remove_filter( 'commonsbooking_booking_filter', $simpleFilter );
 	}
 
-	/* TODO implement more complex test (to test keys of rowData as input/filter and as output via getBookingListData
+	/*
+	TODO implement more complex test (to test keys of rowData as input/filter and as output via getBookingListData
 	public function testGetBookingListData_withComplexRowDataFilter() {
 
 	}
