@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.9
-Stable Tag: 2.10.7
+Stable Tag: 2.10.8
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -80,6 +80,15 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.8 (27.01.2026)
+ENHANCED: Password protecting an item will now also password protect the booking calendar
+ENHANCED: Post IDs and models will now be passed to action hooks
+FIXED: Cache breaking after update
+FIXED: Incompatibility with MP3 Audio Player – Music Player, Podcast Player & Radio by Sonaar. The MP3 media player plugin also needs to be at least at version 5.10
+FIXED: Cache can now be disabled through filter hook before plugin starts
+FIXED: WP 6.9 compatibility
+UPDATED: Dependencies
 
 ### 2.10.7 (16.10.2025)
 ENHANCED: Restrictions can now be created for all items / locations again
