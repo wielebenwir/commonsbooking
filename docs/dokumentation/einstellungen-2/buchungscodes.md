@@ -2,6 +2,11 @@
 
 __
 
+# Was sind Buchungs-Codes?
+
+<!-- this import does not work in VitePress < 2.0-->
+<!--<!--@include: ../erste-schritte/buchungszeitraeume-verwalten.md#bookingcodes-description-->-->
+
 Buchungscodes werden, wenn aktiviert zu jeder Buchung erstellt und können z.B. von Stationen als Passwörter genutzt werden, um die Abholende Person zu identifizieren. Die Buchungs-Codes können NUR beim tageweisen Verleih je Tag im Rahmen der
 Erstellung eines [Zeitrahmens](/dokumentation/erste-schritte/buchungszeitraeume-verwalten) generiert werden. Die Codes selbst werden dann auch am Ende der
 Detailseite des Zeitrahmens aufgelistet. Über einen CSV-Download kannst du die
