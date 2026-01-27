@@ -55,7 +55,7 @@ jobs:
         run: npm run cypress:setup
 
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           install: false
           config-file: tests/cypress/cypress.config.js
