@@ -23,4 +23,4 @@ jobs:
             use_local_config: 'true' # Use local config if available
             extra_args: '--sniffs=Wordpress.WP.I18n' # Extra arguments passing to the command
             #only_changed_files: '' # Run the linter only on the changed files. Accepts true|false
-            #only_changed_lines: '' # Run the linter only on the changed lines. Accepts true|false
+            only_changed_lines: 'true' # Run the linter only on the changed lines. Accepts true|false
