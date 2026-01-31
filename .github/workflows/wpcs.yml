@@ -1,4 +1,4 @@
-name: WPCS check
+name: WPCS WP.i18n check
 
 on:
   push:
