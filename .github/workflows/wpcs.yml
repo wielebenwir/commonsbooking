@@ -1,0 +1,24 @@
+name: WPCS check
+
+on: pull_request
+
+jobs:
+  phpcs:
+      name: WPCS
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - name: WPCS check
+          uses: 10up/wpcs-action@stable
+          with:
+            #enable_warnings: false # Enable checking for warnings (-w)
+            paths: 'src templates includes commonsbooking.php' # Paths to check, space separated
+            #excludes: '' # Paths to excludes, space separated
+            #standard: 'WordPress' # Standard to use. Accepts WordPress|WordPress-Core|WordPress-Docs|WordPress-Extra|WordPress-VIP-Go|WordPressVIPMinimum|10up-Default.
+            #standard_repo: '' # Public (git) repository URL of the coding standard
+            #repo_branch: 'master' # Branch of Standard repository
+            #phpcs_bin_path: 'phpcs' # Custom PHPCS bin path
+            use_local_config: 'true' # Use local config if available
+            extra_args: '--sniffs=Wordpress.WP.I18n' # Extra arguments passing to the command
+            #only_changed_files: '' # Run the linter only on the changed files. Accepts true|false
+            #only_changed_lines: '' # Run the linter only on the changed lines. Accepts true|false
