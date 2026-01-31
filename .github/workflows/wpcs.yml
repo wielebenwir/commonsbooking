@@ -8,6 +8,8 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
+        - name: Install dependencies
+          run: composer install --prefer-dist --no-progress --ignore-platform-reqs
         - name: WPCS check
           uses: 10up/wpcs-action@stable
           with:
