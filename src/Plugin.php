@@ -830,7 +830,7 @@ class Plugin {
 		if ( ! in_array( $post->post_status, $ignoredStates ) || $update ) {
 			$tags   = Wordpress::getRelatedPostIds( $post_id );
 			$tags[] = 'misc';
-			self::scheduleClearCache( $tags );
+			self::clearCache( $tags );
 		}
 	}
 

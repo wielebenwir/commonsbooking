@@ -25,7 +25,7 @@ $current_status               = $booking->post_status;
 $internal_comment             = $booking->getMeta( 'internal-comment' );
 
 
-do_action( 'commonsbooking_before_booking-single' );
+do_action( 'commonsbooking_before_booking-single', $booking->ID, $booking );
 
 echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 
@@ -212,6 +212,6 @@ if ( $current_status && $current_status !== 'draft' ) {
 	<?php
 }
 
-do_action( 'commonsbooking_after_booking-single' );
+do_action( 'commonsbooking_after_booking-single', $booking->ID, $booking );
 
 ?>

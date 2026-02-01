@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2023-09-15T04:04:14+02:00\n"
-"PO-Revision-Date: 2025-06-18 14:51+0200\n"
+"PO-Revision-Date: 2025-10-15 11:12+0200\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.6\n"
@@ -1246,20 +1246,20 @@ msgstr " am %s "
 msgid " from %1$s until %2$s "
 msgstr " von %1$s bis %2$s "
 
-#: src/Model/Booking.php:571
+#: src/Model/Booking.php:574
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
 
-#: src/Model/Booking.php:577
+#: src/Model/Booking.php:580
 #, php-format
 msgid "Your booking has been canceled at %s."
 msgstr "Die Buchung wurde storniert am %s."
 
-#: src/Model/Booking.php:579
+#: src/Model/Booking.php:582
 msgid "Your booking has been canceled"
 msgstr "Die Buchung wurde storniert"
 
-#: src/Model/Booking.php:665
+#: src/Model/Booking.php:668
 msgid "Link to your booking"
 msgstr "Link zu deiner Buchung"
 
@@ -1348,25 +1348,25 @@ msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht ge
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:404
+#: src/Service/Cache.php:419
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
-#: src/Service/Cache.php:161
+#: src/Service/Cache.php:163
 #, php-format
 msgid "Directory %s could not be written to."
 msgstr "Der Ordner %s ist nicht beschreibbar."
 
 #: src/View/Admin/Filter.php:58
 #: src/Wordpress/CustomPostType/Booking.php:780
-#: src/Wordpress/CustomPostType/Restriction.php:449
+#: src/Wordpress/CustomPostType/Restriction.php:451
 #: src/Wordpress/CustomPostType/Timeframe.php:672
 msgid "Start date"
 msgstr "Startdatum"
 
 #: src/View/Admin/Filter.php:62
 #: src/Wordpress/CustomPostType/Booking.php:797
-#: src/Wordpress/CustomPostType/Restriction.php:459
+#: src/Wordpress/CustomPostType/Restriction.php:461
 #: src/Wordpress/CustomPostType/Timeframe.php:696
 msgid "End date"
 msgstr "Enddatum"
@@ -1399,7 +1399,7 @@ msgstr "Nutzende*r"
 #: src/View/Booking.php:200
 #: src/View/MassOperations.php:42
 #: src/Wordpress/CustomPostType/Booking.php:970
-#: src/Wordpress/CustomPostType/Restriction.php:475
+#: src/Wordpress/CustomPostType/Restriction.php:477
 msgid "Status"
 msgstr "Status"
 
@@ -1421,7 +1421,7 @@ msgstr "Liste der Buchungscodes"
 #: src/Wordpress/CustomPostType/Booking.php:986
 #: src/Wordpress/CustomPostType/Item.php:117
 #: src/Wordpress/CustomPostType/Restriction.php:48
-#: src/Wordpress/CustomPostType/Restriction.php:437
+#: src/Wordpress/CustomPostType/Restriction.php:438
 #: src/Wordpress/CustomPostType/Timeframe.php:99
 #: templates/shortcode-bookings.php:72
 msgid "Item"
@@ -1557,12 +1557,12 @@ msgstr "CSV Herunterladen"
 msgid "Download Export"
 msgstr "Download Export"
 
-#: src/Model/Booking.php:1020
-#: src/Service/TimeframeExport.php:537
-#: src/Service/TimeframeExport.php:547
-#: src/Service/TimeframeExport.php:553
-#: src/Service/TimeframeExport.php:565
-#: src/Service/TimeframeExport.php:578
+#: src/Model/Booking.php:1023
+#: src/Service/TimeframeExport.php:590
+#: src/Service/TimeframeExport.php:600
+#: src/Service/TimeframeExport.php:606
+#: src/Service/TimeframeExport.php:618
+#: src/Service/TimeframeExport.php:631
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -2208,39 +2208,30 @@ msgstr "Einschränkungsbild entfernen"
 msgid "use as Restriction image"
 msgstr "Verwendung als Einschränkungsbild"
 
-#: src/Wordpress/CustomPostType/Restriction.php:417
-msgid ""
-"Select the type of restriction.<br>\n"
-"\t\t\t\tSelect <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>\n"
-"\t\t\t\tSelect <strong>total breakdown</strong> if the defect means that the item can no longer be used. If you select total breakdown \n"
-"\t\t\t\tall affected bookings will be automatically canceled after activating this restriction and after clicking send the information email.\n"
-"\t\t\t\t"
-msgstr ""
-"Wähle den Typ der Einschränkung aus.<br>Wähle <strong>Hinweis</strong>, wenn der Artikel weiterhin verwendet werden kann und wenn z.B. nur ein Teil fehlt oder defekt ist.<br>Wähle <strong>Totalausfall,</strong> wenn der Fehler bedeutet, dass der Artikel nicht mehr verwendet werden kann. Wenn du Totalausfall auswählst, \n"
-"\t\t\twerden alle betroffenen Buchungen nach Aktivierung dieser Einschränkung und nach Anklicken des Senden-Buttons der Informations-E-Mail automatisch storniert "
-
+#: src/Wordpress/CustomPostType/Restriction.php:434
+#: src/Wordpress/CustomPostType/Restriction.php:441
 #: src/Wordpress/CustomPostType/Timeframe.php:805
 #: templates/shortcode-bookings.php:54
 msgid "All"
 msgstr "Alle"
 
-#: src/Wordpress/CustomPostType/Restriction.php:443
+#: src/Wordpress/CustomPostType/Restriction.php:445
 msgid "Hint"
 msgstr "Erläuterung"
 
-#: src/Wordpress/CustomPostType/Restriction.php:445
+#: src/Wordpress/CustomPostType/Restriction.php:447
 msgid "Please enter here a short information about the reason and possible effects of the usage restriction. <br>The explanation will be displayed on the article page and in the notification e-mail."
 msgstr "Bitte gib hier eine kurze Information über den Grund und mögliche Auswirkungen der Nutzungsbeschränkung ein. <br>Die Erklärung wird auf der Artikelseite und in der Benachrichtigungs-E-Mail angezeigt."
 
-#: src/Wordpress/CustomPostType/Restriction.php:450
+#: src/Wordpress/CustomPostType/Restriction.php:452
 msgid "Set the start date and time"
 msgstr "Startdatums und der Startzeit festlegen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:460
+#: src/Wordpress/CustomPostType/Restriction.php:462
 msgid "Set the estimated end date and time"
 msgstr "Das geschätzte Enddatum und die geschätzten Endzeit festlegen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:478
+#: src/Wordpress/CustomPostType/Restriction.php:480
 msgid ""
 "Choose status of this restriction. <br>\n"
 "\t\t\t\tSet to <strong>None</strong> if you want to deactivate the restriction.<br>\n"
@@ -2252,31 +2243,31 @@ msgstr ""
 "Wähle den Status dieser Einschränkung aus. <br>Wähle <strong>Keine</strong> wenn du die Einschränkung deaktivieren möchtest.<br>Wähle <strong>Aktiv</strong>, wenn die Einschränkung aktiv ist. <br>Wähle <strong>Problem gelöst</strong>, wenn die Einschränkung nicht mehr besteht.<br>Je nach ausgewähltem Status erhalten betroffene Nutzende entsprechende Benachrichtigungs-E-Mails.\n"
 "Wähle den gewünschten Status aus und klicke dann auf die Schaltfläche \"Senden\", um die E-Mail zu senden.<br"
 
-#: src/Wordpress/CustomPostType/Restriction.php:493
+#: src/Wordpress/CustomPostType/Restriction.php:495
 msgid "Send notification emails to users"
 msgstr "Benachrichtigungs-E-Mails an Nutzende senden"
 
-#: src/Wordpress/CustomPostType/Restriction.php:494
+#: src/Wordpress/CustomPostType/Restriction.php:496
 msgid "Important: Please save this restriction before clicking the send-button. Dependent of the status of the restriction, the appropriate notifications are sent to all affected users and location admins. You can configure the e-mail templates via Options -> Commonsbooking -> Tab Restrictions"
 msgstr "Wichtig: Bitte speichere diese Einschränkung, bevor du auf den Senden-Button klickst. Abhängig vom Status der Einschränkung werden die entsprechenden Benachrichtigungen an alle betroffenen Nutzenden und Standortadministrierenden gesendet. Du kannst die E-Mail-Vorlagen über Optionen -> CommonsBooking -> Einschränkungen konfigurieren"
 
-#: src/Wordpress/CustomPostType/Restriction.php:512
+#: src/Wordpress/CustomPostType/Restriction.php:514
 msgid "Total breakdown"
 msgstr "Totalausfall"
 
-#: src/Wordpress/CustomPostType/Restriction.php:513
+#: src/Wordpress/CustomPostType/Restriction.php:515
 msgid "Notice"
 msgstr "Hinweis"
 
-#: src/Wordpress/CustomPostType/Restriction.php:523
+#: src/Wordpress/CustomPostType/Restriction.php:525
 msgid "Not active"
 msgstr "Nicht aktiv"
 
-#: src/Wordpress/CustomPostType/Restriction.php:524
+#: src/Wordpress/CustomPostType/Restriction.php:526
 msgid "Active"
 msgstr "Aktiv"
 
-#: src/Wordpress/CustomPostType/Restriction.php:525
+#: src/Wordpress/CustomPostType/Restriction.php:527
 msgid "Problem solved"
 msgstr "Problem gelöst"
 
@@ -3124,13 +3115,7 @@ msgid "Continue to booking confirmation"
 msgstr "Weiter zur Buchungsprüfung"
 
 #. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:132
-#, php-format
-msgid "Maximum %1$s days bookable in a row. Depending on the setting, it is also possible to book over a gray area (e.g. weekend)."
-msgstr "Maximal %1$s Tage hintereinander buchbar. Je nach Einstellung ist es auch möglich, über einen grauen Bereich (z.B. Wochenende) zu buchen."
-
-#. translators: %1$s is a number of days
-#: templates/timeframe-calendar.php:137
+#: templates/timeframe-calendar.php:145
 #, php-format
 msgid "Bookings are limited to a maximum of %1$s days in advance."
 msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
@@ -3139,7 +3124,7 @@ msgstr "Buchungen sind auf maximal %1$s Tage im Voraus beschränkt."
 msgid "It is not possible to access this timeframe on frontend. Please edit timeframe in backend. If you want to check the result of your timeframe settings visit the item or location in frontend to see the booking calender"
 msgstr "Es ist nicht möglich, diesen Zeitrahmen im Frontend abzurufen. Bitte bearbeite den Zeitrahmen im Backend. Wenn du das Ergebnis deiner Zeitrahmeneinstellungen überprüfen möchtest, rufe den Artikel oder Standort im Frontend auf, um den Buchungskalender zu sehen"
 
-#: src/Model/Booking.php:1018
+#: src/Model/Booking.php:1021
 msgid "Cancelled"
 msgstr "Storniert"
 
@@ -3442,11 +3427,11 @@ msgstr "Fehlende ID des Zeitrahmens"
 msgid "Error sending booking codes"
 msgstr "Fehler beim Senden von Buchungscodes"
 
-#: src/View/BookingCodes.php:551
+#: src/View/BookingCodes.php:552
 msgid "An unknown error occured"
 msgstr "Ein unbekannter Fehler ist aufgetreten"
 
-#: src/View/BookingCodes.php:552
+#: src/View/BookingCodes.php:553
 msgid "Email booking codes"
 msgstr "Buchungscodes per E-Mail versenden"
 
@@ -3479,11 +3464,11 @@ msgid "(not planned)"
 msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1536
-#: src/Service/Cache.php:435
+#: src/Service/Cache.php:453
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:430
+#: src/Service/Cache.php:448
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
@@ -3927,32 +3912,32 @@ msgstr "Upgrade beendet"
 msgid "Start Upgrade"
 msgstr "Upgrade starten"
 
-#: src/Service/TimeframeExport.php:91
+#: src/Service/TimeframeExport.php:145
 msgid "Invalid start date"
 msgstr "Ungültiges Startdatum"
 
-#: src/Service/TimeframeExport.php:95
+#: src/Service/TimeframeExport.php:149
 msgid "Invalid end date"
 msgstr "Ungültiges Enddatum"
 
-#: src/Service/TimeframeExport.php:98
+#: src/Service/TimeframeExport.php:152
 msgid "Start date must not be after the end date."
 msgstr "Das Startdatum darf nicht nach dem Enddatum liegen."
 
-#: src/Service/TimeframeExport.php:172
+#: src/Service/TimeframeExport.php:223
 #: src/View/TimeframeExport.php:39
 msgid "Export finished"
 msgstr "Export beendet"
 
-#: src/Service/TimeframeExport.php:265
+#: src/Service/TimeframeExport.php:318
 msgid "Export data is not complete. Please complete the process before trying to export."
 msgstr "Exportdaten konnten nicht vollständig gesammelt werden. Bitte den Vorgang abschließen, bevor der Export versucht wird."
 
-#: src/Service/TimeframeExport.php:269
+#: src/Service/TimeframeExport.php:322
 msgid "No data was found for the selected time period"
 msgstr "Es wurden keine Daten für den gewählten Zeitraum gefunden"
 
-#: src/Service/TimeframeExport.php:274
+#: src/Service/TimeframeExport.php:327
 msgid "You need to set an export path to execute the export"
 msgstr "Es muss ein Exportpfad angegeben werden, um den Export ausführen zu können"
 
@@ -3972,27 +3957,27 @@ msgstr "Buchung wurde als Entwurf gespeichert."
 msgid "Timeframe is saved as draft."
 msgstr "Zeitrahmen wurde als Entwurf gespeichert."
 
-#: src/Model/Booking.php:608
+#: src/Model/Booking.php:611
 msgid "Item not found"
 msgstr "Artikel nicht gefunden"
 
-#: src/Model/Booking.php:617
+#: src/Model/Booking.php:620
 msgid "Location not found"
 msgstr "Standort nicht gefunden"
 
-#: src/Model/Booking.php:622
+#: src/Model/Booking.php:625
 msgid "There is no timeframe for this booking. Please create a timeframe first."
 msgstr "Es existiert kein Zeitrahmen für diese Buchung. Bitte zuerst einen Zeitrahmen erstellen."
 
-#: src/Model/Booking.php:642
+#: src/Model/Booking.php:645
 msgid "There are one ore more overlapping bookings within the chosen timerange"
 msgstr "Es gibt eine oder mehrere sich überlappende Buchungen innerhalb des gewählten Zeitraums"
 
-#: src/Model/Booking.php:643
+#: src/Model/Booking.php:646
 msgid "Please adjust the start- or end-date."
 msgstr "Bitte passe das Start- oder Enddatum an."
 
-#: src/Model/Booking.php:644
+#: src/Model/Booking.php:647
 #, php-format
 msgid "Affected Bookings: %s"
 msgstr "Betroffene Buchungen: %s"
@@ -4276,7 +4261,7 @@ msgstr "Beim Umziehen der Buchungen ist ein Fehler aufgetreten."
 msgid "There is already a booking on the new location during the timeframe of booking with ID %s."
 msgstr "Es existiert bereits eine Buchung für den Standort in dem Zeitraum der existierenden Buchung mit der ID %s."
 
-#: src/Service/TimeframeExport.php:378
+#: src/Service/TimeframeExport.php:431
 #, php-format
 msgid "Processed %1$d of %2$d bookings"
 msgstr "%1$d von %2$d Buchungen verarbeitet"
@@ -4288,10 +4273,6 @@ msgid ""
 msgstr ""
 "Geben Sie die Buchungscodes ein, die für Buchungen mit ganztägigen Buchungszeiträumen im Voraus generiert werden sollen.  Geben Sie die Buchungscodes als kommagetrennte Liste ein, z.B.: Code1,Code2,Code3,Code4\n"
 "                <br>Mehr Informationen dazu in der Dokumentation: <a href=\"https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/\" target=\"_blank\">Buchungscodes</a>"
-
-#: src/Wordpress/CustomPostType/Location.php:532
-msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/\">Create Locations</a> for more information."
-msgstr "Wenn ausgewählt, können nicht aktivierte Tage bei der Buchung überbucht werden. Dies gilt für alle Zeitrahmen vom Typ „buchbar“, die mit diesem Standort verknüpft sind. Lies die Dokumentation unter <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen/\">Standorte anlegen</a> für mehr Informationen."
 
 #: src/Wordpress/CustomPostType/Timeframe.php:597
 msgid "Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/\">Manage Booking Timeframes</a>"
@@ -4385,23 +4366,23 @@ msgstr "Cache Pfad"
 msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
 msgstr "Der Pfad zu dem Cache. Kann ein Ordner sein für den Dateisystem-Cache, eine REDIS DSN, ..."
 
-#: src/Service/Cache.php:156
+#: src/Service/Cache.php:158
 msgid "Filesystem"
 msgstr "Dateisystem"
 
-#: src/Service/Cache.php:172
+#: src/Service/Cache.php:174
 msgid "Redis"
 msgstr "REDIS"
 
-#: src/Service/Cache.php:182
+#: src/Service/Cache.php:184
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: src/Service/Cache.php:410
+#: src/Service/Cache.php:428
 msgid "Cache is disabled."
 msgstr "Cache ist deaktiviert."
 
-#: src/Service/Cache.php:413
+#: src/Service/Cache.php:431
 msgid "Cache adapter successfully connected."
 msgstr "Cache Adapter erfolgreich verbunden."
 
@@ -4429,22 +4410,56 @@ msgstr "Jede Stunde"
 msgid "Every day"
 msgstr "Jeden Tag"
 
-#: src/Model/Booking.php:1016
-#~ msgid "Unconfirmed"
-#~ msgstr "Unbestätigt"
-
-#: src/Model/Booking.php:1014
-#~ msgid "Confirmed"
-#~ msgstr "Bestätigt"
-
 #: src/Wordpress/CustomPostType/Location.php:443
 msgid "Overbooking settings"
-msgstr ""
+msgstr "Einstellungen für die Überbuchung"
 
 #: src/Wordpress/CustomPostType/Location.php:453
 msgid "If selected, the global location settings (under the \"General\" tab) will be used to define overbookings for this location. If not selected, the settings below will be used."
-msgstr ""
+msgstr "Wenn diese Option ausgewählt ist, werden die globalen Standorteinstellungen (im Reiter \"Allgemein\") für diesen Standort verwendet. Wenn sie nicht ausgewählt ist, werden die unten stehenden Einstellungen verwendet."
 
 #: src/Wordpress/CustomPostType/Location.php:467
 msgid "Reminders"
+msgstr "Erinnerungen"
+
+#: src/Wordpress/CustomPostType/Location.php:532
+msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen\">Create Locations</a> for more information."
+msgstr "Wenn ausgewählt, können nicht aktivierte Tage bei der Buchung überbucht werden. Dies gilt für alle Zeitrahmen vom Typ „buchbar“, die mit diesem Standort verknüpft sind. Lies die Dokumentation unter <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen\">Standorte anlegen</a> für mehr Informationen."
+
+#. translators: %1$s is a number of days
+#: templates/timeframe-calendar.php:132
+#, php-format
+msgid "Maximum %1$s days bookable in a row."
+msgstr "Maximal %1$s Tage hintereinander buchbar."
+
+#. translators: %1$s is a number of days
+#: templates/timeframe-calendar.php:139
+#, php-format
+msgid "Bookings have to be made at least %1$s days in advance."
+msgstr "Buchungen müssen mindestens %1$s Tage im Voraus getätigt werden."
+
+#: src/Wordpress/CustomPostType/Restriction.php:417
+msgid ""
+"Select the type of restriction.<br>\n"
+"\t\t\t\tSelect <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>\n"
+"\t\t\t\tSelect <strong>total breakdown</strong> if the defect means that the item can no longer be used. If you select total breakdown\n"
+"\t\t\t\tall affected bookings will be automatically canceled after activating this restriction and after clicking send the information email.\n"
+"\t\t\t\t"
+msgstr ""
+"Wähle den Typ der Einschränkung aus.<br>\r\n"
+"\t\t\t\tWähle <strong>Hinweis</strong>, wenn der Artikel weiterhin verwendet werden kann und wenn z.B. nur ein Teil fehlt oder defekt ist..<br>\r\n"
+"\t\t\t\tWähle <strong>Totalausfall</strong> wenn der Fehler bedeutet, dass der Artikel nicht mehr verwendet werden kann. Wenn du Totalausfall auswählst, \r\n"
+"\t\t\t\twerden alle betroffenen Buchungen nach Aktivierung dieser Einschränkung und nach Anklicken des Senden-Buttons der Informations-E-Mail automatisch storniert.\r\n"
+"\t\t\t\t"
+
+#: src/Model/Booking.php:1019
+#~ msgid "Unconfirmed"
+#~ msgstr "Unbestätigt"
+
+#: src/Model/Booking.php:1017
+#~ msgid "Confirmed"
+#~ msgstr "Bestätigt"
+
+#: src/Service/Cache.php:425
+msgid "Cache was disabled through external setting. Please see the documentation for more information."
 msgstr ""

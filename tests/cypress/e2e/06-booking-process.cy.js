@@ -14,11 +14,7 @@ describe('test booking process', () => {
 
   beforeEach( function() {
     cy.clock(getTestDate());
-    cy.visit( '/wp-login.php' );
-    cy.wait( 1000 );
-    cy.get( '#user_login' ).type( Cypress.env( "wpSubscriber" ) );
-    cy.get( '#user_pass' ).type( Cypress.env( "wpPassword" ) );
-    cy.get( '#wp-submit' ).click();
+    cy.loginAs( 'subscriber' );
     cy.visit('/?cb_item=basictest-noadmin&cb-location=32');
   } );
 

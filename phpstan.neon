@@ -15,8 +15,6 @@ parameters:
     - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
 #    - '#Instantiated class (CommonsBooking.*CB_Data) not found.#'
     - '#Function cb_object_to_array not found.#'
-    - 
-      identifier: requireOnce.fileNotFound # https://github.com/szepeviktor/phpstan-wordpress/issues/239
     # As long as symfony exceptions do not extend from throwable
     - '#Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
     - '#Psr\\Cache\\CacheException is not subtype of Throwable#'

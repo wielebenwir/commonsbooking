@@ -1,33 +1,22 @@
-#  Standardwerte für Zeitrahmenerstellung ändern
+#  Change default values for timeframe creation
 
 __
 
-Es ist möglich mithilfe von kleinen Codeschnipseln die Standardwerte, die bei
-jeder Erstellung eines Zeitrahmens schon ausgefüllt sind, zu ändern.
+Using code snippets akin to [ hooks and filters ](/en/documentation/administration/hooks-and-filters), 
+the default values that are pre-filled when creating a timeframe can be changed.
+The available filters and corresponding example snippets are listed below. For more information on how to apply them, see [ hooks and filters ](/en/documentation/administration/hooks-and-filters).
 
-Code Schnipsel sind meist sehr kurzer Code in PHP und können über ein [ Child
-Theme ](https://developer.wordpress.org/themes/advanced-topics/child-themes)
-eingebunden werden oder über spezielle Plugins für Code Schnipsel (z.B. Code
-Snippets). Dafür musst du nicht sonderlich viel PHP können, es ist aber auch
-möglich mit diesen Snippets etwas fundamentales an der Funktion der Webseite
-zu ändern oder auch Fehler zu erzeugen, die das Buchungssystem nicht mehr
-nutzbar machen. Wenn du in der Dokumentation Beispiele siehst, dann sind diese
-einigermaßen sicher und getestet. Ein gewisses Restrisiko bleibt aber. Falls
-du Probleme haben solltest, dann kannst du dich gerne an uns wenden. Bitte gib
-aber auch sämtliche Codeschnipsel mit an, die ihr verwendet. Dadurch können
-wir das Problem besser nachvollziehen.
-
-###  Buchungskommentar
+###  Booking comment
 
 ```php
 function change_defaults_comment( $comment ) {
-    $comment = "Hier dein Buchungskommentar"; // string
+    $comment = "Your booking comment here"; // string
     return $comment;
 
 }
 add_filter( 'commonsbooking_defaults_comment', 'change_defaults_comment' );
 ```
-###  Buchungstyp
+###  Timeframe type
 
 ```php
 function change_defaults_type( $type ) {
@@ -40,7 +29,7 @@ function change_defaults_type( $type ) {
 add_filter( 'commonsbooking_defaults_type', 'change_defaults_type' );
 ```
 
-###  Standort
+###  Location
 
 ```php
 function change_defaults_location_id( $location_id ) {
@@ -50,7 +39,7 @@ function change_defaults_location_id( $location_id ) {
 add_filter( 'commonsbooking_defaults_location-id', 'change_defaults_location_id' );
 ```
 
-###  Artikel
+###  Item
 
 ```php
 function change_defaults_item_id( $item_id ) {
@@ -61,7 +50,7 @@ function change_defaults_item_id( $item_id ) {
 add_filter( 'commonsbooking_defaults_item-id', 'change_defaults_item_id' );
 ```
 
-###  Maximale Buchungstage
+###  Max days for booking
 
 ```php
 function change_defaults_timeframe_max_days( $max_days ) {
@@ -71,7 +60,7 @@ function change_defaults_timeframe_max_days( $max_days ) {
 add_filter( 'commonsbooking_defaults_timeframe-max-days', 'change_defaults_timeframe_max_days' );
 ```
 
-###  Buchungsvorlauf
+###  Booking offset
 
 ```php
 function change_defaults_booking_startday_offset( $offset ) {
@@ -81,7 +70,7 @@ function change_defaults_booking_startday_offset( $offset ) {
 add_filter( 'commonsbooking_defaults_booking-startday-offset', 'change_defaults_booking_startday_offset' );
 ```
 
-###  Buchungs bis (Kalender)
+###  Booking advance booking days
 
 ```php
 function change_defaults_timeframe_advance_booking_days( $advance_booking_days ) {
@@ -91,7 +80,7 @@ function change_defaults_timeframe_advance_booking_days( $advance_booking_days )
 add_filter( 'commonsbooking_defaults_timeframe-advance-booking-days', 'change_defaults_timeframe_advance_booking_days' );
 ```
 
-###  Zur Buchung zugelassene Rollen
+###  Allowed user roles
 
 ```php
 function change_defaults_allowed_user_roles( $allowed_user_roles ) {
@@ -101,7 +90,7 @@ function change_defaults_allowed_user_roles( $allowed_user_roles ) {
 add_filter( 'commonsbooking_defaults_allowed_user_roles', 'change_defaults_allowed_user_roles' );
 ```
 
-###  Ganztägige Buchung
+### Full day booking
 
 ```php
 function change_defaults_full_day( $full_day ) {
@@ -111,7 +100,7 @@ function change_defaults_full_day( $full_day ) {
 add_filter( 'commonsbooking_defaults_full-day', 'change_defaults_full_day');
 ```
 
-###  Slotbuchung / Stundenbuchung
+###  Default Grid (Slot / Hourly)
 
 ```php
 function change_defaults_grid( $grid ) {
@@ -122,7 +111,7 @@ function change_defaults_grid( $grid ) {
 add_filter( 'commonsbooking_defaults_grid', 'change_defaults_grid');
 ```
 
-###  Startzeit
+###  Start time
 
 ```php
 function change_defaults_start_time( $start_time ) {
@@ -132,7 +121,7 @@ function change_defaults_start_time( $start_time ) {
 add_filter( 'commonsbooking_defaults_start-time', 'change_defaults_start_time' );
 ```
 
-###  Endzeit
+###  End time
 
 ```php
 function change_defaults_end_time( $end_time ) {
@@ -142,7 +131,7 @@ function change_defaults_end_time( $end_time ) {
 add_filter( 'commonsbooking_defaults_end-time', 'change_defaults_end_time' );
 ```
 
-###  Wiederholung
+###  Repetition
 
 ```php
 function change_defaults_timeframe_repetition( $repitition ) {
@@ -157,7 +146,7 @@ function change_defaults_timeframe_repetition( $repitition ) {
 add_filter( 'commonsbooking_defaults_timeframe-repetition', 'change_defaults_timeframe_repetition' );
 ```
 
-###  Wochentage
+###  Weekdays (for weekly repetition)
 
 ```php
 function change_defaults_weekdays( $weekdays ) {
@@ -167,7 +156,7 @@ function change_defaults_weekdays( $weekdays ) {
 add_filter( 'commonsbooking_defaults_weekdays', 'change_defaults_weekdays' );
 ```
 
-###  Wiederholungs-Start
+###  Repetition start
 
 ```php
 function change_defaults_repetition_start( $repetition ) {
@@ -177,7 +166,7 @@ function change_defaults_repetition_start( $repetition ) {
 add_filter( 'commonsbooking_defaults_repetition-start', 'change_defaults_repetition_start' );
 ```
 
-###  Wiederholungs-Ende
+###  Repetition end
 
 ```php
 function change_defaults_repetition_end( $repetition ) {
@@ -187,7 +176,7 @@ function change_defaults_repetition_end( $repetition ) {
 add_filter( 'commonsbooking_defaults_repetition-end', 'change_defaults_repetition_end' );
 ```
 
-###  Buchungscodes erstellen
+###  Create booking codes toggle
 
 ```php
 function change_defaults_create_booking_codes( $create_booking_codes ) {
@@ -197,7 +186,7 @@ function change_defaults_create_booking_codes( $create_booking_codes ) {
 add_filter( 'commonsbooking_defaults_create-booking-codes', 'change_defaults_create_booking_codes');
 ```
 
-###  Buchungscodes anzeigen
+###  Show booking codes toggle
 
 ```php
 function change_defaults_show_booking_codes( $show_booking_codes ) {

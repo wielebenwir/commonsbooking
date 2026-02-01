@@ -6,12 +6,23 @@
 Some technical expertise is needed to determine whether caching is working correctly in your installation. That said, we've tried to make using caching as simple as possible.
 :::
 
-You can find the cache settings for your site in the **"Advanced options"** tab.
+You can find the cache settings for your site in the  **"CommonsBooking->Options->Advanced options"** tab.
 The cache stores data of frequently requested queries and optimizes response times of your web server.
 
 * The file-based cache is enabled by default.
 * Alternativly you can enable the [REDIS](http://redis.io) based cache. You need to provide the DSN for this.  You can ask your web host for support.
 * We generally do not recommend disabling the cache, but if you wish to do so, you can select "Cache disabled" as the cache adapter.
+
+When CommonsBooking fails to activate due to an issue with the cache, you can disable the cache by default
+through adding the following code snippet. [ Read more about how to use code snippets ](/en/documentation/administration/hooks-and-filters).
+This is only recommended, when other methods of disabling the cache are not working.
+
+```php
+add_filter('commonsbooking_disableCache', function() {
+    return true;
+} );
+```
+
 
 ## Troubleshooting
 
