@@ -65,6 +65,20 @@ Contributions are welcome either through
 
 ## Development
 
+### Prerequisites
+
+`npm run start` runs `composer install`, `npm install` and then builds assets via `grunt dist`. To avoid setup-related errors, make sure you have the following installed:
+
+- PHP
+- Composer
+- Node.js + npm
+
+Optional (only needed for running the local WordPress environment via `wp-env`):
+
+- Docker
+- On Windows: WSL2 enabled (recommended by Docker Desktop)
+
+
 ### Run plugin
 
 First, we have to install the necessary dependencies and packages, we can do this by using the 
