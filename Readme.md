@@ -57,7 +57,11 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 
 ## Contribute
 
-Either through translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/)) or through developing and testing new versions of the application.
+Contributions are welcome either through 
+
+* Translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/))
+* Improving or translating the documentation at https://commonsbooking.org
+* or through developing and testing new versions of the application (see [Development](#development))
 
 ## Development
 

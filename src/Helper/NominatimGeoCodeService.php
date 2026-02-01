@@ -16,6 +16,8 @@ use Http\Client\Curl\Client;
 class NominatimGeoCodeService implements GeoCodeService {
 
 	/**
+	 * NOTE: This uses the english locale since we only use the coordinates of the returned address objects
+	 *
 	 * @param $addressString
 	 *
 	 * @return ?Location
@@ -29,6 +31,7 @@ class NominatimGeoCodeService implements GeoCodeService {
 		}
 
 		$defaultUserAgent = 'CommonsBooking v.' . COMMONSBOOKING_VERSION . ' Contact: mail@commonsbooking.org';
+		$defaultReferer   = get_site_url();
 
 		$client = new Client(
 			null,
@@ -41,7 +44,8 @@ class NominatimGeoCodeService implements GeoCodeService {
 
 		$provider = Nominatim::withOpenStreetMapServer(
 			$client,
-			array_key_exists( 'HTTP_USER_AGENT', $_SERVER ) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
+			$defaultUserAgent,
+			$defaultReferer,
 		);
 		$geoCoder = new StatefulGeocoder( $provider, 'en' );
 
@@ -51,7 +55,7 @@ class NominatimGeoCodeService implements GeoCodeService {
 				return $addresses->first();
 			}
 		} catch ( Exception $exception ) {
-			// Nothing to do in this case
+			error_log( $exception->getMessage() );
 		}
 
 		return null;

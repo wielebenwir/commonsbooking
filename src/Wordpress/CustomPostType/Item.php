@@ -202,10 +202,17 @@ class Item extends CustomPostType {
 		);
 	}
 
+	/**
+	 * @param string $content value of content parameter of `the_content` filter
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
 	public function getTemplate( $content ) {
 		$cb_content   = '';
 		$errormessage = '';
-		if ( is_singular( self::getPostType() ) && is_main_query() && get_post_type() == self::getPostType() ) {
+		if ( ! post_password_required() &&
+					is_singular( self::getPostType() ) && is_main_query() && get_post_type() === self::getPostType() ) {
 			ob_start();
 			global $post;
 

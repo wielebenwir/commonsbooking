@@ -1,83 +1,56 @@
-#  Vorlagen
-
+# Templates
 __
 
-Unter Einstellungen -> CommonsBooking findest du den Reiter **Vorlagen**
+**Settings -> CommonsBooking -> Tab: Templates**
 
-##  E-Mail Vorlagen
 
-In den Vorlagen kannst du die Inhalte der Buchungsmails und die Absender-
-Adresse der Buchungs-Mails festlegen.
+## E-Mail Templates
+
+In the templates, you can define the content of the booking emails and the sender address of the booking emails. 
 
 ::: tip
-Möchtest du den Standard wieder herstellen, so lösche einfach alle
-Einträge und speicher die Seite, die Standard-Vorlagen werden dann wieder
-geladen.
+If you want to restore the default text, simply empty the fields for all entries that you want to reset and save the changes, the default templates will then be loaded again.
 :::
 
-Um Daten aus der Buchung (wie Artikel, Buchungszeitraum etc.) in die Mail zu
-integrieren, verwendet CommosBooking so genannte TemplateTags. Dies sind
-Platzhalter, die in der E-Mail dann durch die entsprechenden Daten ersetzt
-werden.
+To integrate data from the booking (such as items, booking period, etc.) into the email, CommonsBooking uses so-called [Template Tags](/en/documentation/administration/template-tags). These are placeholders that are then replaced in the email with the corresponding data.
 
-In den Standard-Vorlagen sind bereits die wichtigsten TemplateTags enthalten.
-Du kannst sie an jeder beliebige Stelle in den Vorlagen verwenden.
+The default templates already include the most important template tags. You can use them anywhere in the templates. You may also use HTML tags in the templates and add additional template tags, if the ones included by default are not sufficient.
 
-Du kannst weitere Template-Tags verwenden, wenn dir die standardmäßig
-enthaltenen nicht ausreichen.
+[ An overview about the use of template tags can be found here](/en/documentation/administration/template-tags)
 
-Eine Übersicht zur Verwendung der [Template-Tags findest du hier](/dokumentation/einstellungen/template-tags)
+## iCalendar Files
 
-##  iCalendar Dateien
+CommonsBooking is able to generate a .ics file from the bookings made, which is compatible with most digital calendars. Just like in the email templates, you may use template tags. The resulting calendar file is attached to the email and users can import it into their digital calendar. Most email programs support this import with one click. Currently, canceling a booking does not yet delete the generated calendar entry.
 
-Ab 2.8
+Additionally, you can also create a subscribable calendar. [Learn more about the iCalendar Feed here](/en/documentation/manage-bookings/icalendar-feed).
 
-CommonsBooking ist in der Lage aus den getätigten Buchungen eine .ics Datei zu
-generieren, die mit den meisten digitalen Kalendern kompatibel ist. Du kannst
-hier, genau wie in den E-Mail Vorlagen, die entsprechenden Template Tags
-verwenden. Die resultierende Kalenderdatei wird an die E-Mail angehängt und
-die Nutzenden können sie in ihren digitalen Kalender importieren. Die meisten
-E-Mail Programme unterstützen diesen Import mit einem Klick. Aktuell löscht
-die Stornierung einer Buchung noch nicht den erzeugten Kalendereintrag.
-Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr dazu : [iCalendar Feed](/dokumentation/buchungen-verwalten/icalendar-feed) .
+## Template and booking process messages
 
-##  Template und Buchungsprozess-Vorlagen
+In this section you will find various text blocks that are output at different points of the booking process. The fields each contain a description of the use of the text block.
 
-In diesem Abschnitt findest du verschiedene Textbausteine, die an
-unterschiedlichen Stellen ausgegeben werden. Die Felder enthalten jeweils eine
-Beschreibung über die Verwendung der Textbausteine.
+### User details on booking page
 
-###  Benutzer\*innen-Details auf der Buchungsseite
+In this section you define which user data is displayed in the booking detail view. Adress data (street), phone numbers, ..., for instance can be added here. CommonsBooking does not manage user data itself. [Please add user fields using external plugins](/en/documentation/administration/custom-registration-user-fields). Please check how the field names are called in your user management plugin and add them accordingly. You can also use simple HTML formatting in the template, e.g. for line breaks (`<br>`).
 
-In diesem Abschnitt definierst du, welche Benutzer\*innen Daten in der
-Buchungsdetailansicht angezeigt werden. Hier ist es z.B. möglich, Adressdaten
-(Straße), Telefonnummer hinzuzufügen. Da jede CommonsBooking-Installation die
-Verwaltung der Nutzendendaten selbst organisiert, können wir hier keine
-vordefinierten Felder anbieten. Bitte prüft deshalb, wie die Feldnamen in
-eurer Nutzer_ innen-Verwaltung heißen und fügt diese dann entsprechend hinzu.
-In der Vorlage könnt ihr auch einfache HTML-Formatierungen z.B. für
-Zeilenumbrüche (`<br>`) verwenden.
-Beispiel, um das Feld "phone" und das Feld "address" aus den Userdaten
-anzuzeigen:
+Consider this example to display the field "phone" and the field "address" from the user data:
 ```
-{{[Telefon: ]user: _phone_ }} <br>
-{{[Adresse: ]user: _address_ }}
+{{[Phone: ]user:phone}} <br>
+{{[Address: ]user:address }}
 ```
+::: warning
+Please note that the field names (e.g. "phone" and "address") must be written exactly as they are stored by your user management plugin.
+:::
 
-In den eckigen Klammern steht die Bezeichnung, die vor dem jeweiligen Wert
-angezeigt werden soll.
+In the square brackets is the label that should be displayed before the respective value.
 
-##  Bildformatierung
+## Image formatting
 
-Wenn du die Shortcodes [cb_items] oder [cb_locations] nutzt, erzeugt
-CommonsBooking entsprechende Listenansichten mit Vorschaubildern der Artikel
-und Standorte. In dieser Einstellung kannst du die Standardgröße dieser
-Vorschaubilder anpassen.
+::: warning
+This feature is currently not working. We are working on a solution.
+:::
 
-##  Farben
+When using the shortcodes [cb_items] or [cb_locations] on a page, CommonsBooking generates corresponding list views with preview images of the items and locations. In this setting you can adjust the default size of these preview images.
 
-Sämtliche Farben in der Benutzeroberfläche sind anpassbar. Um Farben wieder
-auf die Standardwerte zurückzusetzen kannst du in der entsprechenden Farbe auf
-den "Leeren" Knopf drücken und anschließend deine Änderungen speichern. Jetzt
-sollte für das entsprechende Feld wieder der Standardwert eingestellt sein.
+## Color schemes
 
+All colors in the CommonsBooking user interface are customizable. To reset colors to their default values, you can click the "Clear" button in the corresponding color field and then save your changes. The default value should now be set for the respective field.
