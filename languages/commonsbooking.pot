@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-26T19:29:53+00:00\n"
+"POT-Creation-Date: 2026-02-01T19:59:31+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -601,7 +601,7 @@ msgid "Manage Item Restriction Templates"
 msgstr ""
 
 #: includes/OptionsArray.php:640
-msgid "Templates for restriction emails.<br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">More Information in the documentation</a>"
+msgid "Templates for restriction emails.<br><a href=\"https://commonsbooking.org/dokumentation/einstellungen-2/einschraenkungen\" target=\"_blank\">More Information in the documentation</a>"
 msgstr ""
 
 #: includes/OptionsArray.php:645
@@ -701,7 +701,7 @@ msgid "Restriction settings"
 msgstr ""
 
 #: includes/OptionsArray.php:757
-msgid "Settings for restrictions.<br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">More Information in the documentation</a>"
+msgid "Settings for restrictions.<br><a href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten\" target=\"_blank\">More Information in the documentation</a>"
 msgstr ""
 
 #: includes/OptionsArray.php:760
@@ -725,7 +725,7 @@ msgid "Count cancelled bookings towards quota"
 msgstr ""
 
 #: includes/OptionsArray.php:775
-msgid "Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\\\"_blank\\\" href=\\\"https://commonsbooking.org/dokumentation/?p=2157\\\">More info in the documentation</a>"
+msgid "Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\\\"_blank\\\" href=\\\"https://commonsbooking.org/dokumentation/erste-schritte/buchungsregeln-einrichten\\\">More info in the documentation</a>"
 msgstr ""
 
 #: includes/OptionsArray.php:784

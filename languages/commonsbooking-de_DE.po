@@ -547,8 +547,8 @@ msgid "Manage Item Restriction Templates"
 msgstr "Verwaltung der Vorlagen für Einschränkungen"
 
 #: includes/OptionsArray.php:640
-msgid "Templates for restriction emails.<br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">More Information in the documentation</a>"
-msgstr "Vorlagen für Einschränkungs-E-Mails.<br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
+msgid "Templates for restriction emails.<br><a href=\"https://commonsbooking.org/dokumentation/einstellungen-2/einschraenkungen\" target=\"_blank\">More Information in the documentation</a>"
+msgstr "Vorlagen für Einschränkungs-E-Mails.<br><a href=\"https://commonsbooking.org/dokumentation/einstellungen-2/einschraenkungen\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
 
 #: includes/OptionsArray.php:645
 msgid "Email that will be shown as sender in generated emails"
@@ -3526,8 +3526,8 @@ msgid "Count cancelled bookings towards quota"
 msgstr "Stornierte Buchungen mitzählen"
 
 #: includes/OptionsArray.php:775
-msgid "Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\\\"_blank\\\" href=\\\"https://commonsbooking.org/dokumentation/?p=2157\\\">More info in the documentation</a>"
-msgstr "Prüft, ob die Buchungen die während der Buchungsperiode storniert wurden zu den maximal buchbaren Tagen eines Nutzenden angerechnet werden sollen. <a target=\\\"_blank\\\" href=\\\"https://commonsbooking.org/dokumentation/?p=2157\\\">Mehr Infos dazu in der Dokumentation.</a>"
+msgid "Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\\\"_blank\\\" href=\\\"https://commonsbooking.org/dokumentation/erste-schritte/buchungsregeln-einrichten\\\">More info in the documentation</a>"
+msgstr "Prüft, ob die Buchungen die während der Buchungsperiode storniert wurden zu den maximal buchbaren Tagen eines Nutzenden angerechnet werden sollen. <a target=\\\"_blank\\\" href=\\\"https://commonsbooking.org/dokumentation/erste-schritte/buchungsregeln-einrichten\\\">Mehr Infos dazu in der Dokumentation.</a>"
 
 #: includes/OptionsArray.php:784
 msgid "Rule "
@@ -4113,8 +4113,8 @@ msgid "Restriction settings"
 msgstr "Einstellungen für Einschränkungen"
 
 #: includes/OptionsArray.php:757
-msgid "Settings for restrictions.<br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">More Information in the documentation</a>"
-msgstr "Einstellungen für Einschränkungen. <br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">Mehr Informationen in der Dokumentation</a>"
+msgid "Settings for restrictions.<br><a href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten\" target=\"_blank\">More Information in the documentation</a>"
+msgstr "Einstellungen für Einschränkungen. <br><a href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten\" target=\"_blank\">Mehr Informationen in der Dokumentation</a>"
 
 #: includes/OptionsArray.php:760
 msgid "Do not cancel bookings on total breakdown"
