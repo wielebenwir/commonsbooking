@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d75783c80d61af25cb71e55999539b0",
+    "content-hash": "7f9fe31187ec4601da0b17834402ddb4",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -356,17 +356,17 @@
             "time": "2023-03-01T10:18:27+00:00"
         },
         {
-            "name": "mustardBees/cmb-field-select2",
-            "version": "3.0.5",
+            "name": "mustardbees/cmb-field-select2",
+            "version": "3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wielebenwir/cmb-field-select2.git",
-                "reference": "c05e975c98d59932c678edb5dc3b0844660a7257"
+                "reference": "56a6718a019cfd1db3d5ff762328d5a416e592a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wielebenwir/cmb-field-select2/zipball/c05e975c98d59932c678edb5dc3b0844660a7257",
-                "reference": "c05e975c98d59932c678edb5dc3b0844660a7257",
+                "url": "https://api.github.com/repos/wielebenwir/cmb-field-select2/zipball/56a6718a019cfd1db3d5ff762328d5a416e592a1",
+                "reference": "56a6718a019cfd1db3d5ff762328d5a416e592a1",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
@@ -386,9 +386,9 @@
                 "wordpress"
             ],
             "support": {
-                "source": "https://github.com/wielebenwir/cmb-field-select2/tree/3.0.5"
+                "source": "https://github.com/wielebenwir/cmb-field-select2/tree/3.0.6"
             },
-            "time": "2025-12-02T11:49:27+00:00"
+            "time": "2025-12-23T10:00:30+00:00"
         },
         {
             "name": "nyholm/psr7",
