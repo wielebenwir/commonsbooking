@@ -637,7 +637,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 			/* field group email templates start */
 			'emailtemplates' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Manage Item Restriction Templates', 'commonsbooking' ) ),
-				'desc'   => commonsbooking_sanitizeHTML( __( 'Templates for restriction emails.<br><a href="https://commonsbooking.org/?p=1762" target="_blank">More Information in the documentation</a>', 'commonsbooking' ) ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Templates for restriction emails.<br><a href="https://commonsbooking.org/dokumentation/einstellungen-2/einschraenkungen" target="_blank">More Information in the documentation</a>', 'commonsbooking' ) ),
 				'id'     => 'restricition-templates',
 				'fields' => array(
 					array(
@@ -754,7 +754,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 			'restrictionsettings' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Restriction settings', 'commonsbooking' ) ),
 				'id'     => 'restrictionsettings',
-				'desc'   => commonsbooking_sanitizeHTML( __( 'Settings for restrictions.<br><a href="https://commonsbooking.org/?p=1762" target="_blank">More Information in the documentation</a>', 'commonsbooking' ) ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Settings for restrictions.<br><a href="https://commonsbooking.org/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten" target="_blank">More Information in the documentation</a>', 'commonsbooking' ) ),
 				'fields' => array(
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Do not cancel bookings on total breakdown', 'commonsbooking' ) ),
@@ -772,7 +772,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				'fields' => array(
 					array(
 						'name'  => commonsbooking_sanitizeHTML( __( 'Count cancelled bookings towards quota', 'commonsbooking' ) ),
-						'desc'  => commonsbooking_sanitizeHTML( __( 'Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=2157\">More info in the documentation</a>', 'commonsbooking' ) ),
+						'desc'  => commonsbooking_sanitizeHTML( __( 'Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/erste-schritte/buchungsregeln-einrichten\">More info in the documentation</a>', 'commonsbooking' ) ),
 						'id'    => 'bookingrules-count-cancelled',
 						'type'  => 'checkbox',
 					),
