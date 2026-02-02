@@ -102,48 +102,56 @@ module.exports = function (grunt) {
 					{
 						dest: nodePackagesDestDir + 'leaflet/',
 						expand: true,
+						nonull: true,
 						cwd: 'node_modules/leaflet/dist/',
 						src: '**',
 					},
 					{
 						dest: nodePackagesDestDir + 'leaflet-markercluster/',
 						expand: true,
+						nonull: true,
 						cwd: 'node_modules/leaflet.markercluster/dist/',
 						src: '**',
 					},
 					{
 						dest: nodePackagesDestDir + 'leaflet-easybutton/',
 						expand: true,
+						nonull: true,
 						cwd: 'node_modules/leaflet-easybutton/src/',
 						src: '**',
 					},
 					{
 						dest: nodePackagesDestDir + 'leaflet-spin/',
 						expand: true,
+						nonull: true,
 						cwd: 'node_modules/leaflet-spin/',
 						src: '**'
 					},
 					{
 						dest: nodePackagesDestDir + 'spin-js/',
 						expand: true,
+						nonull: true,
 						cwd: 'node_modules/spin.js/',
 						src: 'spin.min.js'
 					},
 					{
 						dest: nodePackagesDestDir + 'commons-search/',
 						expand: true,
+						nonull: true,
 						cwd: 'node_modules/@commonsbooking/frontend/dist/lib/commons-search/',
 						src: ['commons-search.umd.js', 'style.css'],
 					},
 					{
 						dest: nodePackagesDestDir + 'vue/',
 						expand: true,
+						nonull: true,
 						cwd: 'node_modules/vue/dist/',
 						src: 'vue.runtime.global.prod.js',
 					},
                     {
                         dest: 'includes/commons-api-json-schema/',
                         expand: true,
+						nonull: true,
                         cwd: 'node_modules/commons-api/',
                         src: '**schema.json',
                     }
