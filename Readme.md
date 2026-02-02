@@ -67,13 +67,13 @@ Contributions are welcome either through
 
 ### Prerequisites
 
-`npm run start` runs `composer install`, `npm install` and then builds assets via `grunt dist`. To avoid setup-related errors, make sure you have the following installed:
+To avoid setup-related errors, make sure you have the following installed:
 
 - PHP
 - Composer
 - Node.js + npm
 
-Optional (only needed for running the local WordPress environment via `wp-env`):
+Optional (for [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)):
 
 - Docker
 - On Windows: WSL2 enabled (recommended by Docker Desktop)
@@ -81,11 +81,11 @@ Optional (only needed for running the local WordPress environment via `wp-env`):
 
 ### Run plugin
 
-First, we have to install the necessary dependencies and packages, we can do this by using the 
+First, we have to install the necessary dependencies and packages: We can do this using 
 ```
 npm run start
 ```
-command. 
+`npm run start` runs `composer install`, `npm install` and then builds assets via `grunt dist`.
 
 The most easy way to start hacking WordPress plugins in general (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and run this to start the enviroment:
 ```
