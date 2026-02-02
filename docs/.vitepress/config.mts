@@ -35,6 +35,7 @@ export default defineConfig({
           ]
         }
         ],
+        darkModeSwitchLabel: 'Themenwechsel',
         lastUpdated: {
             text: 'Zuletzt aktualisiert',
         },
