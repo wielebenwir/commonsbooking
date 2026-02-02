@@ -154,7 +154,17 @@ module.exports = function (grunt) {
 						nonull: true,
                         cwd: 'node_modules/commons-api/',
                         src: '**schema.json',
-                    }
+                    },
+					{
+						dest: nodePackagesDestDir + 'litepicker/',
+						expand: true,
+						nonull: true,
+						cwd: 'node_modules/litepicker/dist/js/',
+						src: 'main.js',
+						rename: function () {
+							return nodePackagesDestDir + 'litepicker/litepicker.js';
+						}
+					}
 				],
 			},
 		},
@@ -211,7 +221,14 @@ module.exports = function (grunt) {
 		const versionMap = Object.fromEntries(
 			Object
 				.entries(deps)
-				.map(([name, version]) => [name, version.replace(/^\D/, '')])
+				.map(([name, version]) => 
+				{
+					if ((version.startsWith('github:')) && version.includes('#') ) {
+						return [name, version.split('#').pop()];
+					}
+					return [name, version.replace(/^\D/, '')];
+				}
+				)
 		)
 		grunt.file.write(nodePackagesDestDir + 'dist.json', JSON.stringify(versionMap))
 	})
