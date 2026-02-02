@@ -14,6 +14,9 @@ class WeekTest extends CustomPostTypeTest {
 
 	private Week $week;
 
+	/**
+	 * @group failing
+	 */
 	public function testGetDays() {
 		$this->week = new Week( 2023, 120 );
 		$this->assertEquals( 7, count( $this->week->getDays() ) );
@@ -31,6 +34,9 @@ class WeekTest extends CustomPostTypeTest {
 		);
 	}
 
+	/**
+	 * @group failing
+	 */
 	public function testGetDays2() {
 		$this->week = new Week( 2023, 121 );
 		$this->assertEquals( 6, count( $this->week->getDays() ) );

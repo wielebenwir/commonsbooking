@@ -9,6 +9,7 @@ use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Item;
+use DateTimeZone;
 use SlopeIt\ClockMock\ClockMock;
 
 /**
@@ -912,18 +913,36 @@ class TimeframeTest extends CustomPostTypeTest {
 	/**
 	 * @return void
 	 *
+	 * @group failing
+	 *
 	 * @dataProvider providerFormatBookableDate()
 	 */
 	public function test_formatBookableDate( $todayMockDate, $expectedString, $start, $end ) {
 
+		$timezone = 'Europe/Berlin';
+
+		date_default_timezone_set( $timezone );
+
+		$offset = ( new \DateTime( 'now', new DateTimeZone( $timezone ) ) )->getOffset();
+		echo $offset . PHP_EOL;
 		// Mocks strtotime
 		ClockMock::freeze( new \DateTime( $todayMockDate ) );
+
+		if ( $start ) {
+			$start += $offset;
+		}
+
+		if ( $end ) {
+			$end += $offset;
+		}
 
 		$result = Timeframe::formatBookableDate( $start, $end );
 
 		ClockMock::reset();
 
 		$this->assertEquals( $expectedString, $result );
+
+		date_default_timezone_set( 'UTC' );
 	}
 
 	/**

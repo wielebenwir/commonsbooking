@@ -4,6 +4,8 @@ namespace CommonsBooking\Tests\Helper;
 
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use DateTimeZone;
+use Eluceo\iCal\Domain\ValueObject\Date;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -114,6 +116,48 @@ class WordpressTest extends CustomPostTypeTest {
 		$this->assertContains( $this->bookingId, $related );
 		$this->assertContains( $this->restrictionId, $related );
 		$this->assertEquals( 5, count( $related ) );
+	}
+
+	/**
+	 * @group failing
+	 */
+	public function testGetUTCDateTimeByTimestamp() {
+
+		$tz_list = [
+			'America/Los_Angeles', // UTC-10 (negative offset)
+			'Europe/Berlin', // UTC+1 (positive offset)
+		];
+
+		foreach ( $tz_list as $timezone_under_test ) {
+
+			// $timezone_under_test = 'Europe/Berlin';
+			date_default_timezone_set( $timezone_under_test );
+
+			$nowDT = new \DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) );
+
+			// Remove micro seconds, to enable assertEquals
+			$nowDT = $nowDT->setTime( $nowDT->format( 'H' ), $nowDT->format( 'i' ), $nowDT->format( 's' ) );
+
+			$UTCunixTimeStamp    = $nowDT->getTimestamp() + $nowDT->getOffset();
+			$nowDTNonUTC         = $nowDT->setTimezone( new DateTimeZone( $timezone_under_test ) );
+			$nonUTCunixTimeStamp = $nowDTNonUTC->getTimestamp() + $nowDTNonUTC->getOffset();
+
+			// Timestamps from different timezones are unequal
+			$this->assertNotEquals( $UTCunixTimeStamp, $nonUTCunixTimeStamp );
+
+			// Custom convert
+			// $myconvert = new \DateTime( 'now', new DateTimeZone( $timezone_under_test ) );
+			// $myconvert->setTimestamp( $nonUTCunixTimeStamp - $myconvert->getOffset());
+			// $this->assertEquals( $nowDT, $myconvert );
+
+			$converted = Wordpress::getUTCDateTimeByTimestamp( $nonUTCunixTimeStamp );
+
+			$this->assertEquals( $nowDT, $converted, "Timezones should match when converted from {$timezone_under_test}" );
+
+			date_default_timezone_set( 'UTC' );
+
+			// break;
+		}
 	}
 
 	protected function setUp(): void {
