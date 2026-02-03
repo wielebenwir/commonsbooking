@@ -138,6 +138,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
 		// TODO: Make this value configurable
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
 
 		$this->timeframeIds[] = $timeframeId;
 
