@@ -1267,8 +1267,8 @@ msgstr "Link zu deiner Buchung"
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr "Bitte kontaktiere die Kontaktpersonen vor Ort direkt, wenn du Fragen zur Abholung oder Rückgabe hast:"
 
-#: src/Model/Restriction.php:241
-#: src/Model/Restriction.php:265
+#: src/Model/Restriction.php:244
+#: src/Model/Restriction.php:268
 msgid "Not set"
 msgstr "Nicht gesetzt"
 
