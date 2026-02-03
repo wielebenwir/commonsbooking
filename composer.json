@@ -48,9 +48,6 @@
     "phpmailer/phpmailer": "^7.0.0",
     "ed-itsolutions/cmb2-field-ajax-search": "v2.0.1"
   },
-  "provide": {
-    "ext-uopz": "*"
-  },
   "require-dev": {
     "mockery/mockery": "^1.6.6",
     "phpunit/phpunit": "^9.6.21",
