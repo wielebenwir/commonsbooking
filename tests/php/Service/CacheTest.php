@@ -23,23 +23,10 @@ class CacheTest extends TestCase {
 		// one with args, one without
 		$shortcodes = [ '[cb_items]', '[cb_locations id=123]' ];
 		$this->createPages( $shortcodes );
-		try {
-			/**
-			 * `Plugin::warmupCache()` calls {@see wp_send_json()} which ends in {@see die()} preventing the test
-			 * from completing. Here we throw an exception during the `wp_doing_ajax` filter which returns the
-			 * control flow back to this function through this exception handler.
-			 */
-			add_filter(
-				'wp_doing_ajax',
-				// @phpstan-ignore return.type
-				function () {
-					throw new \Exception();
-				}
-			);
-			Plugin::warmupCache();
-		} catch ( \Exception $e ) {
-			// JSON printed, WordPress exited.
-		}
+
+		$this->expectException(\WPAjaxDieContinueException::class);
+		Plugin::warmupCache();
+
 		$this->assertNotEmpty( self::$fakeShortcodeACalled );
 		$this->assertNotEmpty( self::$fakeShortcodeBCalled );
 
@@ -58,23 +45,8 @@ class CacheTest extends TestCase {
 		];
 		$this->createPages( $shortcodes );
 
-		try {
-			/**
-			 * `Plugin::warmupCache()` calls {@see wp_send_json()} which ends in {@see die()} preventing the test
-			 * from completing. Here we throw an exception during the `wp_doing_ajax` filter which returns the
-			 * control flow back to this function through this exception handler.
-			 */
-			add_filter(
-				'wp_doing_ajax',
-				// @phpstan-ignore return.type
-				function () {
-					throw new \Exception();
-				}
-			);
-			Plugin::warmupCache();
-		} catch ( \Exception $e ) {
-			// JSON printed, WordPress exited.
-		}
+		$this->expectException(\WPAjaxDieContinueException::class);
+		Plugin::warmupCache();
 
 		$this->assertNotEmpty( self::$fakeShortcodeACalled );
 		$this->assertNotEmpty( self::$fakeShortcodeBCalled );
@@ -95,23 +67,8 @@ class CacheTest extends TestCase {
 	public function testWarmupCache_twoOnSamePage() {
 		$this->createPages( [ '[cb_items id=123] [cb_locations id=456]' ] );
 
-		try {
-			/**
-			 * `Plugin::warmupCache()` calls {@see wp_send_json()} which ends in {@see die()} preventing the test
-			 * from completing. Here we throw an exception during the `wp_doing_ajax` filter which returns the
-			 * control flow back to this function through this exception handler.
-			 */
-			add_filter(
-				'wp_doing_ajax',
-				// @phpstan-ignore return.type
-				function () {
-					throw new \Exception();
-				}
-			);
-			Plugin::warmupCache();
-		} catch ( \Exception $e ) {
-			// JSON printed, WordPress exited.
-		}
+		$this->expectException(\WPAjaxDieContinueException::class);
+		Plugin::warmupCache();
 
 		$this->assertNotEmpty( self::$fakeShortcodeACalled );
 		$this->assertNotEmpty( self::$fakeShortcodeBCalled );
@@ -129,23 +86,8 @@ class CacheTest extends TestCase {
 	 * @return void
 	 */
 	public function testWarmupCache_1723() {
-		try {
-			/**
-			 * `Plugin::warmupCache()` calls {@see wp_send_json()} which ends in {@see die()} preventing the test
-			 * from completing. Here we throw an exception during the `wp_doing_ajax` filter which returns the
-			 * control flow back to this function through this exception handler.
-			 */
-			add_filter(
-				'wp_doing_ajax',
-				// @phpstan-ignore return.type
-				function () {
-					throw new \Exception();
-				}
-			);
-			Plugin::warmupCache();
-		} catch ( \Exception $e ) {
-			// JSON printed, WordPress exited.
-		}
+		$this->expectException(\WPAjaxDieContinueException::class);
+		Plugin::warmupCache();
 		// because it just checks for crashes
 		$this->expectNotToPerformAssertions();
 	}
@@ -163,23 +105,9 @@ class CacheTest extends TestCase {
 			]
 		);
 
-		try {
-			/**
-			 * `Plugin::warmupCache()` calls {@see wp_send_json()} which ends in {@see die()} preventing the test
-			 * from completing. Here we throw an exception during the `wp_doing_ajax` filter which returns the
-			 * control flow back to this function through this exception handler.
-			 */
-			add_filter(
-				'wp_doing_ajax',
-				// @phpstan-ignore return.type
-				function () {
-					throw new \Exception();
-				}
-			);
-			Plugin::warmupCache();
-		} catch ( \Exception $e ) {
-			// JSON printed, WordPress exited.
-		}
+		$this->expectException(\WPAjaxDieContinueException::class);
+		Plugin::warmupCache();
+
 		$this->assertEmpty( self::$fakeShortcodeACalled );
 	}
 
@@ -218,6 +146,20 @@ class CacheTest extends TestCase {
 		);
 		self::$fakeShortcodeACalled = [];
 		self::$fakeShortcodeBCalled = [];
+
+		/**
+		 * `Plugin::warmupCache()` calls {@see wp_send_json()} which ends in {@see die()} preventing the test
+		 * from completing. Here we throw an exception during the `wp_doing_ajax` filter which returns the
+		 * control flow back to the test method.
+		 */
+		add_filter(
+			'wp_doing_ajax',
+			// @phpstan-ignore return.type
+			function () {
+				throw new \WPAjaxDieContinueException();
+			}
+		);
+
 		parent::setUp();
 	}
 
