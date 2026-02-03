@@ -1,32 +1,18 @@
-#  Spracheinstellung & Datumsformat
+#  Language & date format
 
 __
 
-CommonsBooking übernimmt die Sprach- und Datumsteinstellung von deinen
-WordPress-Einstellung.
+The language as well as the date format used in the plugin is pulled from your WordPress settings.
 
-Diese kannst du folgendermaßen anpassen:
+You can change these settings as follows:
 
-**Sprache ändern:**
+**Change language:**
 
-  * Einstellung -> Allgemein: Sprache der Webseite 
+  * Settings -> General: Site Language 
 
-**Datumsformate einstellen**
+**Change the date format**
 
-CommonsBooking arbeitet mit den Zeit- und Datumseinstellungen, die du in
-WordPress unter "Einstellungen -> Allgemein -> Zeitzone" eingestellt hast. Ach
-die Formatierungen für die Zeitanzeige (24h-Format etc) und die
-Datumsformatierung übernimmt CommonsBooking aus den allgemein WordPress-
-Einstellungen.
+CommonsBooking uses the time and date settings you have set in WordPress under "Settings -> General -> Timezone". The date format and time format set below will also be the format that CommonsBooking uses. This, for instance, affects the date format shown on the booking confirmation page and in emails.
 
-Bitte prüfe deshalb, dass du die richtige Zeitzone in WordPress konfiguriert
-hast.
-
-Wenn du das noch nicht getan hast hole unter "Einstellungen / Allgemein /
-Zeitzone" nach.
-
-  * Einstellungen -> Allgemein: Datumsformat 
-
-Die Datumsformate werden z.B. in der Buchungsbestätigungs-Seite und den
-E-Mails entsprechend der hier eingestellten Formate ausgegeben.
+It is therefore important to check that you have configured the correct timezone in WordPress.
 

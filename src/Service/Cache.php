@@ -69,7 +69,8 @@ trait Cache {
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-		$namespace     = COMMONSBOOKING_PLUGIN_DIR; // To account for multiple instances on same server
+		$namespace     = COMMONSBOOKING_VERSION; // To account for changes in the installed plugin versions
+		$namespace    .= COMMONSBOOKING_PLUGIN_DIR; // To account for multiple instances on same server
 		$namespace    .= '_' . get_current_blog_id(); // To account for WP Multisite
 		$namespace    .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
 		$namespace    .= '_' . $backtrace['function'];

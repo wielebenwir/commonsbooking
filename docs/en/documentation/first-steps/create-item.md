@@ -23,3 +23,8 @@ Only users with the role cb_manager can be selected here.
 
 Add a short version of the item description here; this will be displayed in the item list, the location list and in the map popup.
 
+**Password protection (since 2.10.8)**
+
+It is possible to protect an item with a password. To do this, click next to "Status" on the right side of the item and add a password. Now, users can only book this item if the correct password was entered.
+![](/img/item-password.png){width="400"}
+

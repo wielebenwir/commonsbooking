@@ -4,7 +4,7 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 const require = createRequire(import.meta.url)
 const pkg = require('../../package.json')
 
-const COMMONSBOOKING_VERSION_STRING = '2.10.5';
+const COMMONSBOOKING_VERSION_STRING = '2.10.8';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -35,6 +35,7 @@ export default defineConfig({
           ]
         }
         ],
+        darkModeSwitchLabel: 'Themenwechsel',
         lastUpdated: {
             text: 'Zuletzt aktualisiert',
         },
@@ -220,6 +221,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
               { text: 'Shortcodes', link: 'shortcodes' },
               { text: 'Template Tags', link: 'template-tags' },
               { text: 'Widget', link: 'widget' },
+              { text: 'Datenschutz', link: 'datenschutz'},
               { text: 'Registrierungsseiten & Benutzerfelder anpassen', link: 'registrierungs-seiten-und-benutzerfelder-anpassen' },
               { text: 'Hooks und Filter', link: 'hooks-und-filter' },
           ]
@@ -265,6 +267,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
     },
       {
           text: 'Häufige Fragen (FAQ)', base: '/dokumentation/haeufige-fragen-faq/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'Die Seite ist sehr langsam', link: 'die-seite-ist-sehr-langsam' },
@@ -303,7 +306,6 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
       },
-      /*
       {
           text: 'Settings', base: '/en/documentation/settings/',
           collapsed: true,
@@ -317,6 +319,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Language settings & date format', link: 'language-and-date' }
           ]
       },
+    /*
     {
       text: 'Basics', base: '/en/documentation/basics/',
       collapsed: true,
@@ -343,14 +346,15 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
 //              { text: 'Booking list', link: 'booking-list' },
-              { text: 'Hooks and filters', link: 'hooks-and-filters' }
+                { text: 'Hooks and filters', link: 'hooks-and-filters' },
 //              { text: 'Embed map', link: 'map-embed' },
 //              { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
 //              { text: 'New Frontend(Beta)', link: 'new-frontend' },
 //              { text: 'Adjust registration page and user fields', link: 'custom-registration-user-fields' },
 //              { text: 'Shortcodes', link: 'shortcodes' },
 //              { text: 'Template Tags', link: 'template-tags' },
-//              { text: 'Widget', link: 'widget' }
+//              { text: 'Widget', link: 'widget' },
+                { text: 'Privacy', link: 'privacy'}
           ]
       },
       /*

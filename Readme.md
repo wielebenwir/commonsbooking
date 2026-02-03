@@ -57,17 +57,35 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 
 ## Contribute
 
-Either through translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/)) or through developing and testing new versions of the application.
+Contributions are welcome either through 
+
+* Translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/))
+* Improving or translating the documentation at https://commonsbooking.org
+* or through developing and testing new versions of the application (see [Development](#development))
 
 ## Development
 
+### Prerequisites
+
+To avoid setup-related errors, make sure you have the following installed:
+
+- PHP
+- Composer
+- Node.js + npm
+
+Optional (for [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)):
+
+- Docker
+- On Windows: WSL2 enabled (recommended by Docker Desktop)
+
+
 ### Run plugin
 
-First, we have to install the necessary dependencies and packages, we can do this by using the 
+First, we have to install the necessary dependencies and packages: We can do this using 
 ```
 npm run start
 ```
-command. 
+`npm run start` runs `composer install`, `npm install` and then builds assets via `grunt dist`.
 
 The most easy way to start hacking WordPress plugins in general (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and run this to start the enviroment:
 ```

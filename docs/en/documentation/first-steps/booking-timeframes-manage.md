@@ -37,7 +37,7 @@ and click on "Add new timeframe". From there on fill out the form:
 
 ### **Type:**
 
-* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](/en/documentation/basics/timeframes-config). (Not translated yet)
+* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](/en/documentation/basics/timeframes-config). (Not translated yet) .  Alternatively, it is possible to enable password protection for an [item](/en/documentation/first-steps/create-item).
 
 ### **Location:**
 

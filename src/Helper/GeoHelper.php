@@ -16,6 +16,7 @@ class GeoHelper {
 	private static GeoCodeService $geoCodeService;
 
 	/**
+	 * @see NominatimGeoCodeService::getAddressData() for default values and more information
 	 * @param string $addressString
 	 *
 	 * @return Location|null

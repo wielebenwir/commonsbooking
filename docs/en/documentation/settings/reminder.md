@@ -1,37 +1,46 @@
-#  E-Mail-Benachrichtigungen
+#  Reminder via email concerning bookings
 
 __
 
-##  An Ausleihende
+In addition to the emails that users receive when confirming or canceling a booking, CommonsBooking can also send reminder emails to users and locations before the start or after the end of a booking. These can be activated and deactivated individually. This page provides an overview of all email notifications sent by CommonsBooking.
 
-CommonsBooking versendet an Ausleihende folgende Emails, deren Text hier
-angepasst werden kann: "Einstellungen → CommonsBooking → Vorlagen" bzw.
-"Einstellungen -> CommonsBooking -> Erinnerungen"
+## To users
 
-  * **Buchungsbestätigung**
-  * Bestätigung einer **eventuellen Stornierung**
-  * **Erinnerungs-E-Mail vor der Buchung** . Diese wird standardmäßig 2 Tage vorher versendet. Die Nutzenden können so gefragt werden, ob die Buchung bestehen bleiben soll oder eventuell storniert werden kann.
-  * **Abschluss** : Einen Tag nach der Buchung erhalten Nutzende eine E-Mail, die nach etwaigen Problemen fragt und ggf. z.B. für Spendenaufrufe etc. genutzt werden kann
-  * Gegebenenfalls: **Hinweise über[ Buchungseinschränkungen ](/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten)** (Wichtig: Die Email muss beim nach dem Einrichten der Einschränkung per Klick versendet werden, der Knopf befindet sich auf der Konfigurationsseite der Einschränkung)
+CommonsBooking will send the following emails to users, the text of which can be customized here: "Settings → CommonsBooking → Templates" or "Settings -> CommonsBooking -> Reminder"
 
-##  An euer Team
+  * **Booking confirmation / Cancellation confirmation**
+    * Enabled by default
+    * Template under "Settings → CommonsBooking → Templates"
+    * Can also be sent as a blind carbon copy to additional email addresses (see below)
 
-###  Administrator:innen
+  * **Restriction notification**
+    * Sent when "Send" is clicked in restriction
+    * Template under "Settings → CommonsBooking → Restrictions"
+    * Is sent by default as a blind carbon copy to station emails (see below) 
 
-**WordPress-Seiten-Administrator:innen** (unter WordPress-Einstellungen→
-Allgemein → Administrator-E-Mail-Adresse) erhalten Buchungs- und Stornierungs-
-Emails in Blindkopie (BCC)
+  * **Booking reminder** .
+    * Not enabled by default
+    * Template under "Settings → CommonsBooking → Reminder"
+    * Intended purpose is to ask users whether the booking should remain or possibly be canceled.
+  * **Email after booking has ended** :
+    * Not enabled by default
+    * One day after the booking, users receive an email where they can be asked if they had any problems or if they would to to donate etc.
 
-###  Standorte
+## To your team
 
-  * **Standorte** (unter Standort → Standort E-Mail) erhalten **Buchungs- und Stornierungs-Emails** , wenn beim Standort die Option “Kopie der Buchungen/Stornierungen per E-Mail an den Standort senden” aktiviert ist
-  * **Standorte** (unter Standort → Standort E-Mail) erhalten **Erinnerungen** , wenn die Option unter “Einstellungen → “Erinnerungen → Erinnerung für Standorte vor Buchungsbeginn” eingestellt ist. Dies kann in den Einstellungen eines Standortes überschrieben werden.
+### Administrators
 
-::: warning **Wichtig**
-Es reicht nicht, Personen als [Standort-Manager:innen](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) einzutragen! Um E-Mails zu erhalten, muss die Email-Adresse in das Feld “Standort → Standort E-Mail” eingetragen werden.
+**WordPress page administrators** (under WordPress Settings→General → Administrator Email Address) receive booking and cancellation emails as blind carbon copies (BCC)
+
+### Locations
+
+  * **Locations** (under Location → Location Email) receive **booking and cancellation emails** if the option "Send a copy of bookings/cancellations by email to the location" is enabled at the location
+  * **Locations** (under Location → Location Email) receive **reminders about bookings** if the option under "Settings → "Reminders → Reminder for locations before booking start" or "Reminder for locations before booking end" is set AND in the corresponding location the option "Reminder email for booking start" or "Reminder email for booking end" is enabled.
+
+::: warning **Important**
+It is not enough to enter people as [location managers](/en/documentation/basics/permission-management) for them to be notified. In order to receive emails, the recipients address must be entered in the field "Location → Location Email".
 :::
 
-###  Artikelbetreuende
+### Item maintainers
 
-  * Unter “Artikel → E-Mail-Adresse des Artikelbetreuers” kann konfiguriert werden, dass Artikelbetreuer:innen über Buchungseinschränkungen benachrichtigt werden.
-
+* A maintainer of an item can be notified about booking restrictions by configuring the "Item → Item maintainer email" field. This can be used in a workflow where when damage to an item is reported by the location, the location creates a restriction which will automatically block the item from being booked and notify the items maintainer about the issue.
