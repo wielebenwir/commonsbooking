@@ -31,8 +31,8 @@ class CacheTest extends TestCase {
 			 */
 			add_filter(
 				'wp_doing_ajax',
+				// @phpstan-ignore return.type
 				function () {
-					// @phpstan-ignore return.type
 					throw new \Exception();
 				}
 			);
@@ -66,8 +66,8 @@ class CacheTest extends TestCase {
 			 */
 			add_filter(
 				'wp_doing_ajax',
+				// @phpstan-ignore return.type
 				function () {
-					// @phpstan-ignore return.type
 					throw new \Exception();
 				}
 			);
@@ -103,8 +103,8 @@ class CacheTest extends TestCase {
 			 */
 			add_filter(
 				'wp_doing_ajax',
+				// @phpstan-ignore return.type
 				function () {
-					// @phpstan-ignore return.type
 					throw new \Exception();
 				}
 			);
@@ -136,7 +136,8 @@ class CacheTest extends TestCase {
 			 * control flow back to this function through this exception handler.
 			 */
 			add_filter(
-				'wp_doing_ajax', // @phpstan-ignore return.type
+				'wp_doing_ajax',
+				// @phpstan-ignore return.type
 				function () {
 					throw new \Exception();
 				}
@@ -169,7 +170,8 @@ class CacheTest extends TestCase {
 			 * control flow back to this function through this exception handler.
 			 */
 			add_filter(
-				'wp_doing_ajax', // @phpstan-ignore return.type
+				'wp_doing_ajax',
+				// @phpstan-ignore return.type
 				function () {
 					throw new \Exception();
 				}
