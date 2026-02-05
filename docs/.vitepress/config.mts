@@ -319,19 +319,18 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Language settings & date format', link: 'language-and-date' }
           ]
       },
-    /*
     {
-      text: 'Basics', base: '/en/documentation/basics/',
+      text: 'Fundamentals', base: '/en/documentation/fundamentals/',
       collapsed: true,
       items: [
-        { text: 'Concepts', link: 'concepts' },
+        { text: 'Basic Concepts', link: 'concepts' },
         { text: 'Booking codes', link: 'booking-codes' },
         { text: 'Permission management (CB-Manager)', link: 'permission-management' },
         { text: 'Configure timeframes', link: 'timeframes-config' }
       ]
     },
 
-
+   /*
     {
       text: 'Manage bookings', base: '/en/documentation/manage-bookings/',
         collapsed: true,

@@ -97,24 +97,27 @@ _Wähle aus, wie sich der buchbaren Zeitrahmen innerhalb des angegebenen Start-u
 * **Manuell ausgewählte Daten:**
   * Nur bei manueller Wiederholung: Trage einzelne Tage im Format JJJJ-MM-TT ein, um den Artikel an diesem Tag buchbar zu machen. Mehrere Tage werden durch Kommas getrennt. Du kannst auch auf das Textfeld hinter "Ausgewählte Daten" klicken, dort öffnet sich ein Kalender. Jeder Tag, der in dem Kalender angeklickt wird, wird dann der Liste hinzugefügt.
 
-## **Buchungs-Codes**
+## **Buchungs-Codes** {#bookingcodes}
 
+### Beschreibung {#bookingcodes-description}
 Beim Erstellen der Zeiträume können auf Wunsch auch Buchungs-Codes generiert werden, die dann auf die Buchungsbestätigungsseite und in
-der Bestätigungs-Mail integriert werden. Buchungscodes können wie Passwörter genutzt werden,
-damit die Station eine Verifizierung der Buchung vornehmen kann. Dann muss vom Ausleihenden der richtige, tagesaktuelle Code genannt werden um
-nachzuweisen, dass sie die Buchung auch wirklich vorgenommen haben.
+der Bestätigungs-Mail integriert werden. Buchungscodes können wie Passwörter genutzt werden, damit die Station eine Verifizierung der Buchung vornehmen kann. Dann muss vom Ausleihenden der richtige, tagesaktuelle Code genannt werden um nachzuweisen, dass sie die Buchung auch wirklich vorgenommen haben.
+Es gibt nur einen Buchungscode pro Tag, diese können also nicht für mehrere Buchungen mit Abholung am selben Tag verwendet werden. Da die Buchungs-Codes im Vorhein generiert werden, können sie z.B. in der Station als Liste ausgedruckt werden. Zu diesem Zweck gibt es auch die Möglichkeit [Buchungs-Codes automatisiert per E-Mail zu versenden](#bookingcodes-email).
 
 :::tip Tipp
 Die Buchungscodes werden für jeden Tag vorab generiert und können als
 Textdatei heruntergeladen werden. So könnt ihr die Codes vorab dem Standort
 zur Verfügung stellen, damit ein Abgleich vor Ort erfolgen kann.
 :::
+
+### In der Zeitrahmenkonfiguration 
+
 Die Codes können nur für Zeitrahmen erstellt werden, die die Option "Ganzer Tag" aktiviert haben.
 
 * **Buchungscodes generieren:** Wenn diese Option aktiviert ist, werden nach dem Speichern des Zeitrahmens die Buchungscodes generiert.
 * **Zeige Buchungs-Codes:** Wenn aktiviert, wird der Code den Nutzenden auch während des Buchungsprozesses angezeigt.
 
-### **Buchungscodes per E-Mail versenden:**
+### **Buchungscodes per E-Mail versenden:** {#bookingcodes-email}
 
 :::warning ACHTUNG!
 Der Zeitrahmen muss erst gespeichert werden, bevor Buchungscodes versendet werden können.
