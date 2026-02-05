@@ -74,7 +74,7 @@ module.exports = function (grunt) {
 					'assets/admin/js/admin.js': [
 						/* add path to js dependencies (ie in node_modules) here */
 						'assets/admin/js/src/*.js',
-						'node_modules/feiertagejs/build/feiertage.umd.js'
+						'node_modules/feiertagejs/build/feiertage.umd.cjs'
 					]
 				}
 			},
