@@ -32,20 +32,52 @@ einzelnen Personen zugeordnet werden ausgewählt werden. Die Zuordnung kann nur
 durch Administrator_ innen erfolgen. CommonsBooking Manager können selbst
 keine Rechte vergeben.
 
-Auf den Artikel- und Stationsseiten können dann die administrierenden Personen
+Auf den Artikel- und Stationsseiten können dann die Manager
 ausgewählt und hinzugefügt werden. Zur Auswahl stehen hier nur die Personen,
 denen vorher die Rolle "CommonsBooking Manager" zugeordnet wurde.
 
-Zugang zur Verwaltung erhalten die Administrierenden dann über denselben Link,
+Zugang zur Verwaltung erhalten die Manager dann über denselben Link,
 über den sich auch allgemeine Administrierende Zugang zum WordPress-Backend
 erhalten.
 
-Folgende Dinge darf der CommonsBooking Manager nicht:
+## Administrator vs CommonsBooking Manager
+In der folgenden Tabelle ist exemplarisch dargestellt, was ein CommonsBooking Manager darf im Gegensatz zu einem Administrator.
+
+**Funktion** |  **Administrator** |  **CommonsBooking Manager**
+---|---|---
+Artikel / Standorte anlegen  |  Ja  |  Ja
+Artikel / Standorte bearbeiten  |  Ja  |  Ja (nur wenn zugewiesen)
+Artikel / Standorte löschen  |  Ja  |  Nein
+Zeitrahmen anlegen  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
+Zeitrahmen bearbeiten  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
+Zeitrahmen löschen  |  Ja  |  Nein (nur selbst angelegte)
+Buchungen stornieren  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
+
+Darüber hinaus hat der CommonsBooking Manager keine besonderen Berechtigungen was andere Teile der Webseite betrifft.
+Folgende Dinge darf der CommonsBooking Manager zum Beispiel nicht:
 
   * Allgemeine Seiten bearbeiten
   * Plugins ändern
   * Das Design der Seite ändern
   * usw.
+
+## CommonsBooking Manager zum Manager für alle Artikel / Standorte machen {#filterhook-isCurrentUserAdmin}
+
+Mithilfe eines [Filter Hooks](/dokumentation/einstellungen/hooks-und-filter) kannst du eine bestimmte Rolle so einstellen,
+dass sie automatisch Manager für alle Artikel / Standorte wird. Das unten genannte Beispiel macht das mit der Rolle 'cb_manager', also konfiguriert den CB-Manager so, dass er automatisch allen Artikeln und Standorten der Instanz zugerechnet wird. Falls das mit einer anderen Rolle passieren soll, muss diese Rolle auch den Manager Rollen mit einem [weiteren Codeschnipsel hinzugefügt werden](#filterhook-manager-roles).
+
+```php
+add_filter(
+	'commonsbooking_isCurrentUserAdmin',
+	function ( bool $isAdmin, WP_User $user ) {
+		return in_array( 'cb_manager', $user->roles, true ) ? true : $isAdmin;
+	},
+	10,
+	2
+);
+```
+
+
 
 ##  Zugriffsrechte anpassen
 
@@ -112,7 +144,7 @@ Hier auch besonders relevant ist die Berechtigung **edit_other_cb_bookings** .
 Diese bestimmt, ob ein Manager in der Lage ist Buchungen von anderen Nutzenden
 zu stornieren.
 
-###  Andere Rollen einem Artikel / Standort zuweisen
+###  Andere Rollen einem Artikel / Standort zuweisen {#filterhook-manager-roles}
 
 ::: tip Ab Version 2.8.2
 :::
