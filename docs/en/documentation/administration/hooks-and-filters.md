@@ -79,7 +79,7 @@ receives a value, modifies it, and then returns it.
 
 ###  Overview of all filter hooks:
 
-  * commonsbooking_isCurrentUserAdmin
+  * [commonsbooking_isCurrentUserAdmin](/en/documentation/basics/permission-management#filterhook-isCurrentUserAdmin)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
   * commonsbooking_template_tag
