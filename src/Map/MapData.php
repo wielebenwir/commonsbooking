@@ -150,9 +150,12 @@ class MapData {
 		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );
 		$max_days_in_future = $map->getMeta( 'availability_max_days_to_show' );
-		$date_max           = Wordpress::getUTCDateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
-		$date_max           = $date_max->format( 'Y-m-d' );
-		$maxdays            = $map->getMeta( 'availability_max_day_count' );
+		if ( ! is_numeric( $max_days_in_future ) || $max_days_in_future < 1 ) {
+			$max_days_in_future = 11;
+		}
+		$date_max = Wordpress::getUTCDateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
+		$date_max = $date_max->format( 'Y-m-d' );
+		$maxdays  = $map->getMeta( 'availability_max_day_count' );
 
 		$settings = [
 			'data_url'                     => get_site_url( null, '', null ) . '/wp-admin/admin-ajax.php',
