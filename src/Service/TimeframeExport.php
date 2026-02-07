@@ -428,6 +428,7 @@ class TimeframeExport {
 		$totalBookings    = $this->totalPosts;
 		$progressBookings = $this->lastProcessedPage * self::ITERATION_COUNTS;
 
+		// translators: %1$d actual item number, %2$d total item number
 		return sprintf( __( 'Processed %1$d of %2$d bookings', 'commonsbooking' ), $progressBookings, $totalBookings );
 	}
 

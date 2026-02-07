@@ -654,8 +654,8 @@ class Timeframe extends CustomPost {
 						&& $this->hasTimeframeDateOverlap( $sameItemTimeframe )
 					) {
 						throw new TimeframeInvalidException(
-						/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
 							sprintf(
+								/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
 								__(
 									'Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s',
 									'commonsbooking'
