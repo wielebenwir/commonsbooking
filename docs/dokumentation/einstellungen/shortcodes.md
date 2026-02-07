@@ -130,12 +130,15 @@ dort befinden
 
 ![](/img/shortcode-cb-locations.png)
 
-##  Liste aller Buchungen
+## Liste aller Buchungen
+
+Liste aller Buchungen, also eigene Buchungen des eingeloggten Nutzenden.
+User in der Rolle von Administrator*innen sehen hier alle Buchungen.
 
   * Shortcode: `[cb_bookings]`
-  * Liste aller Buchungen (eigene Buchungen des eingeloggten Nutzenden)
-  * Administrator*innen sehen hier alle Buchungen
-  * [User mit der Rolle cb_manager](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
+  * [User mit der Rolle cb_manager](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel
+    und Stationen.
+  * Import in digitalen Kalender über [iCalendar](/dokumentation/buchungen-verwalten/icalendar-feed)-Format möglich
 
 ![](/img/shortcode-cb-bookings.png)
 

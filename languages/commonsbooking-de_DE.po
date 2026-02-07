@@ -162,6 +162,7 @@ msgid "Mail-Header from E-Mail"
 msgstr "Absender E-Mail Mail-Adresse"
 
 #: includes/OptionsArray.php:275
+#: includes/OptionsArray.php:645
 msgid "E-Mail that will be shown as sender in generated emails"
 msgstr "E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
@@ -549,10 +550,6 @@ msgstr "Verwaltung der Vorlagen für Einschränkungen"
 #: includes/OptionsArray.php:640
 msgid "Templates for restriction emails.<br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">More Information in the documentation</a>"
 msgstr "Vorlagen für Einschränkungs-E-Mails.<br><a href=\"https://commonsbooking.org/?p=1762\" target=\"_blank\">Weitere Informationen in der Dokumentation</a>"
-
-#: includes/OptionsArray.php:645
-msgid "Email that will be shown as sender in generated emails"
-msgstr "E-Mail, die als Absender in automatisch versendeten E-Mails angezeigt wird"
 
 #: includes/OptionsArray.php:660
 msgid "Breakdown email subject"
@@ -1234,18 +1231,6 @@ msgstr "E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar 
 msgid "Your booking code is: %s"
 msgstr "Dein Buchungscode lautet: %s"
 
-#. translators: %s = date in WordPress defined format
-#: src/Model/Booking.php:437
-#, php-format
-msgid " on %s "
-msgstr " am %s "
-
-#. translators: %1 = startdate, %2 = enddate in WordPress defined format
-#: src/Model/Booking.php:440
-#, php-format
-msgid " from %1$s until %2$s "
-msgstr " von %1$s bis %2$s "
-
 #: src/Model/Booking.php:574
 msgid "Please check your booking and click confirm booking"
 msgstr "Bitte überprüfe die Buchung und klicke auf „Buchung bestätigen“"
@@ -1267,8 +1252,8 @@ msgstr "Link zu deiner Buchung"
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr "Bitte kontaktiere die Kontaktpersonen vor Ort direkt, wenn du Fragen zur Abholung oder Rückgabe hast:"
 
-#: src/Model/Restriction.php:241
-#: src/Model/Restriction.php:265
+#: src/Model/Restriction.php:244
+#: src/Model/Restriction.php:268
 msgid "Not set"
 msgstr "Nicht gesetzt"
 
@@ -1277,6 +1262,7 @@ msgid "Available here"
 msgstr "Hier verfügbar"
 
 #. translators: %s = date in WordPress defined format
+#: src/Model/Booking.php:437
 #: src/Model/Timeframe.php:264
 #, php-format
 msgid "on %s"
@@ -1292,7 +1278,9 @@ msgstr "von %s"
 msgid "permanently"
 msgstr "dauerhaft"
 
+#. translators: %1 = startdate, %2 = enddate in WordPress defined format
 #. translators: %1$s = startdate, second %2$s = enddate in WordPress defined format
+#: src/Model/Booking.php:440
 #: src/Model/Timeframe.php:279
 #, php-format
 msgid "from %1$s until %2$s"
@@ -1921,10 +1909,6 @@ msgstr "Standorte anzeigen"
 #: src/Wordpress/CustomPostType/Location.php:146
 msgid "Search locations"
 msgstr "Standorte suchen"
-
-#: src/Wordpress/CustomPostType/Location.php:147
-msgid "location not found"
-msgstr "Standort nicht gefunden"
 
 #: src/Wordpress/CustomPostType/Location.php:148
 msgid "No locations found in trash"
@@ -3325,6 +3309,8 @@ msgid "Will attach an iCalendar compatible file with booking codes per day to im
 msgstr "Fügt eine iCalendar-kompatible Datei mit Buchungscodes für die einzelnen Tage bei, um sie in die jeweilige Kalenderanwendung zu importieren."
 
 #: src/Messages/BookingCodesMessage.php:56
+#: src/View/BookingCodes.php:181
+#: src/View/BookingCodes.php:290
 msgid "Unable to send Emails. No location email(s) configured, check location"
 msgstr "Emails können nicht gesendet werden. Keine Standort-E-Mail(s) konfiguriert, bitte Standort prüfen"
 
@@ -3346,24 +3332,12 @@ msgstr "Fehler beim Senden von Buchungscodes per E-Mail für Zeitrahmen "
 msgid "No location configured for this timeframe"
 msgstr "Kein Standort für diesen Zeitraum konfiguriert"
 
-#: src/View/BookingCodes.php:181
-msgid "Unable to send emails. No location email configured, check location"
-msgstr "E-Mails konnten nicht gesendet werden. Keine Standort-E-Mail konfiguriert, bitte Standort prüfen"
-
 #: src/View/BookingCodes.php:185
 #: src/View/BookingCodes.php:294
 #: src/View/BookingCodes.php:394
 #: src/View/BookingCodes.php:420
 msgid "This timeframe has no booking codes. To generate booking codes you need to save the timeframe."
 msgstr "Dieser Zeitrahmen hat keine Buchungscodes. Um Buchungscodes zu generieren, muss der Zeitrahmen gespeichert werden."
-
-#: src/View/BookingCodes.php:281
-msgid "Send booking codes by email"
-msgstr "Buchungscodes per E-Mail versenden"
-
-#: src/View/BookingCodes.php:290
-msgid "Unable to send Emails. No location email configured, check location"
-msgstr "Emails konnten nicht gesendet werden. Keine Standort-E-Mail konfiguriert, bitte Standort prüfen"
 
 #: src/View/BookingCodes.php:307
 msgid "Email booking codes for the entire timeframe"
@@ -3435,6 +3409,7 @@ msgstr "Ein unbekannter Fehler ist aufgetreten"
 msgid "Email booking codes"
 msgstr "Buchungscodes per E-Mail versenden"
 
+#: src/View/BookingCodes.php:281
 #: src/Wordpress/CustomPostType/Timeframe.php:746
 msgid "Send booking codes automated by email"
 msgstr "Buchungscodes automatisch per E-Mail versenden"
@@ -3488,10 +3463,6 @@ msgstr "Standort auswählen"
 msgid "Select one or more locations"
 msgstr "Wähle einen oder mehrere Standorte aus"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:494
-msgid "Item Selection"
-msgstr "Artikel auswählen"
-
 #: src/Wordpress/CustomPostType/Timeframe.php:502
 msgid "Select one or more items"
 msgstr "Wähle einen oder mehrere Artikel aus"
@@ -3500,6 +3471,7 @@ msgstr "Wähle einen oder mehrere Artikel aus"
 msgid "Item Category Selection"
 msgstr "Artikelkategorie auswählen"
 
+#: src/Wordpress/CustomPostType/Timeframe.php:494
 #: src/Wordpress/CustomPostType/Timeframe.php:517
 msgid "Item selection"
 msgstr "Artikel auswählen"
@@ -3962,6 +3934,7 @@ msgid "Item not found"
 msgstr "Artikel nicht gefunden"
 
 #: src/Model/Booking.php:620
+#: src/Wordpress/CustomPostType/Location.php:147
 msgid "Location not found"
 msgstr "Standort nicht gefunden"
 

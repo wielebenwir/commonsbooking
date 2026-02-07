@@ -4,27 +4,38 @@ __
 
 ## Beschreibung
 
-In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
-aktivieren. iCalendar ist ein sehr geläufiges Format für digitale Kalender.
+iCalendar ist ein sehr geläufiges Format für digitale Kalender.
+
 Die meisten dieser digitalen Kalender erlauben es eine URL hinzuzufügen, mit
 der automatisch Termine aus dem Buchungssystem in den digitalen Kalender
 importiert werden können. Diese Kalendereinträge sind nicht beschreibbar, dh.
-Änderungen am digitalen Kalender können sich nicht auf das Buchungssystem
+Änderungen am digitalen Kalender können sich für CommonsBooking nicht auf das Buchungssystem
 auswirken.
 
+## Einrichtung
+
+In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
+aktivieren.
 Nachdem diese Funktion aktiviert ist, findest du die individuelle Kalender URL
-in dem Menü in der Übersicht "Meine Buchungen".
+in dem Menü in der Übersicht "Meine Buchungen" ([Shortcode `[cb_bookings]`](/dokumentation/einstellungen/shortcodes#liste-aller-buchungen))
+
+
+
 
 ![](/img/iCalendar-feed.png)
 
-**ACHTUNG** : Dieser digitale Kalender listet nicht nur deine eigenen
+::: warning **ACHTUNG**
+Dieser digitale Kalender listet nicht nur deine eigenen
 Buchungen auf sondern alle Buchungen, die du einsehen darfst. Dies hat
 besondere Auswirkungen auf den Administrator und die CommonsBooking Manager,
 die Zugriffsrechte auf Stationen oder Artikel haben. Mehr dazu: [
 Zugriffsrechte vergeben ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager)
+:::
 
+::: info
 **ACHTUNG:** Vergangene Termine verschwinden aktuell noch aus dem Kalender.
 Das kann sich unter Umständen ändern.
+:::
 
 ## Vorlagen
 

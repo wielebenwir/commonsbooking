@@ -32,6 +32,7 @@ CommonsBooking is a WordPress plugin and can therefore be easily integrated into
 
   * **New** : Designated managers can manage items assigned by admins
   * Automatic booking confirmation: Users can book items without the need for administration.
+  * Calendar integration: Automatic import of all relevant bookings into your digital calendar via [iCal format](/en/documentation/manage-bookings/icalendar-feed.md).
 
 ![](/img/cb-managers.png)
 

@@ -491,7 +491,7 @@ class Timeframe extends CustomPostType {
 				'default_cb' => 'commonsbooking_filter_from_cmb2',
 			),
 			array(
-				'name'    => esc_html__( 'Item Selection', 'commonsbooking' ),
+				'name'    => esc_html__( 'Item selection', 'commonsbooking' ),
 				'id'      => \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE,
 				'type'    => 'select',
 				'options' => self::getSelectionOptions(),

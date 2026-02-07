@@ -642,7 +642,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				'fields' => array(
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Mail-Header from E-Mail', 'commonsbooking' ) ),
-						'desc'    => commonsbooking_sanitizeHTML( __( 'Email that will be shown as sender in generated emails', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'E-Mail that will be shown as sender in generated emails', 'commonsbooking' ) ),
 						'id'      => 'restrictions-from-email',
 						'type'    => 'text',
 						'default' => get_option( 'admin_email' ),

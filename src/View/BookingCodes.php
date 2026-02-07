@@ -178,7 +178,7 @@ class BookingCodes {
 			$errMsg = commonsbooking_sanitizeHTML( __( 'No location configured for this timeframe', 'commonsbooking' ) );
 		} elseif ( empty( $location_emails ) ) {
 			$errMsg = commonsbooking_sanitizeHTML(
-				__( 'Unable to send emails. No location email configured, check location', 'commonsbooking' ) .
+				__( 'Unable to send Emails. No location email(s) configured, check location', 'commonsbooking' ) .
 													sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_edit_post_link( $location->ID ) ), commonsbooking_sanitizeHTML( $location->post_title ) )
 			);
 		} elseif ( ! $timeframe->hasBookingCodes() ) {
@@ -278,7 +278,7 @@ HTML;
 
 		echo '<div class="cmb-row cmb2-id-email-booking-codes-info">
                 <div class="cmb-th">
-                    <label for="email-booking-codes-list">' . commonsbooking_sanitizeHTML( __( 'Send booking codes by email', 'commonsbooking' ) ) . '</label>
+                    <label for="email-booking-codes-list">' . commonsbooking_sanitizeHTML( __( 'Send booking codes automated by email', 'commonsbooking' ) ) . '</label>
                 </div>
 
                 <div id="email-booking-codes-list" class="cmb-td">';
@@ -287,7 +287,7 @@ HTML;
 			echo commonsbooking_sanitizeHTML( __( 'No location configured for this timeframe', 'commonsbooking' ) );
 		} elseif ( empty( $location_emails ) ) {
 			echo commonsbooking_sanitizeHTML(
-				__( 'Unable to send Emails. No location email configured, check location', 'commonsbooking' ) .
+				__( 'Unable to send Emails. No location email(s) configured, check location', 'commonsbooking' ) .
 				sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_edit_post_link( $location->ID ) ), commonsbooking_sanitizeHTML( $location->post_title ) )
 			);
 		} elseif ( ! $timeframe->hasBookingCodes() ) {
