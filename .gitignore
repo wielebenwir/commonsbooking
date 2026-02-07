@@ -28,3 +28,5 @@ commonsbookingdocker.code-workspace
 wp-core
 tests/cypress/screenshots
 docs/.vitepress/dist
+/vendor-prefixed
+/bin/strauss.phar

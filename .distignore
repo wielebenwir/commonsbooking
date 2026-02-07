@@ -26,3 +26,4 @@ phpstan.neon
 phpstan-baseline.neon
 
 docs
+vendor
