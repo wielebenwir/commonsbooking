@@ -1485,7 +1485,7 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 				'title' => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
 				'desc'  => commonsbooking_sanitizeHTML(
 					__(
-						'Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
+						'Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars.',
 						'commonsbooking'
 					)
 				),
