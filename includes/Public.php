@@ -94,6 +94,9 @@ function commonsbooking_public() {
 		true
 	);
 
+	// Litepicker
+	wp_enqueue_script( 'cb-litepicker' ); // registered in Plugin::registerScriptsAndStyles
+
 	/**
 	 * Public scripts
 	 */
