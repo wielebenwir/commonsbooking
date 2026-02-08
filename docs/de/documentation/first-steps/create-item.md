@@ -20,7 +20,7 @@ Artikelliste sowie im Buchungsprozess angezeigt.
 Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben,
 diesen bestimmten Artikel zu bearbeiten und zu verwalten. Hier können nur
 Benutzer mit der Rolle cb_manager ausgewählt werden.
-[Mehr zur Rolle cb_manager lesen](/dokumentation/grundlagen/rechte-des-commonsbooking-manager).
+[Mehr zur Rolle cb_manager lesen](/documentation/basics/permission-management).
 
 **Textauszug**
 

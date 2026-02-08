@@ -3,8 +3,8 @@
 __
 
 Buchungsregeln sind nur eine der vielfältigen Möglichkeiten, die Buchung von Artikeln einzuschränken.
-Es ist auch möglich in den [Einstellungen für die Zeitrahmen](/dokumentation/erste-schritte/buchungszeitraeume-verwalten)
-die Nutzung nur bestimmten Nutzendengruppen zu erlauben oder in den Einstellungen für die [Artikel](/dokumentation/erste-schritte/artikel-anlegen) ein Passwort für die Buchung festzulegen.
+Es ist auch möglich in den [Einstellungen für die Zeitrahmen](/documentation/first-steps/booking-timeframes-manage)
+die Nutzung nur bestimmten Nutzendengruppen zu erlauben oder in den Einstellungen für die [Artikel](/documentation/first-steps/create-item) ein Passwort für die Buchung festzulegen.
 
 Mithilfe von Buchungsregeln kannst du die Nutzung von Artikeln von Nutzenden
 projektweit einschränken. Wenn du also zum Beispiel verhindern willst, dass
@@ -20,7 +20,7 @@ Artikel 2 Tage pro Woche und eine andere 3 Tage pro Woche gebucht werden darf.
 
 ## Unterschied zur Einstellung "Maximale Buchungsdauer"
 
-In den [Einstellungen für die Zeitrahmen](/dokumentation/erste-schritte/buchungszeitraeume-verwalten) ist es
+In den [Einstellungen für die Zeitrahmen](/documentation/first-steps/booking-timeframes-manage) ist es
 möglich die maximale Buchungsdauer für eine Buchung eines Artikels festzulegen. Das definiert nur
 das Maximum für eine einzelne Buchung. Nutzende könnten also mehrere Buchungen anlegen, die dann über den Maximalwert hinausgehen.
 Die Buchungsregeln hingegen definieren, wie viele Tage ein Nutzer insgesamt pro Woche, Monat oder in einem bestimmten Zeitraum buchen darf.
@@ -83,7 +83,7 @@ die maximal buchbaren Tage für die Buchungsregeln. Dabei gilt:
 
 ###  Bestimmte Rollen grundsätzlich von allen Buchungsregeln ausnehmen
 
-Mit einem kleinen Codeschnipsel ([mehr dazu hier](/dokumentation/einstellungen/hooks-und-filter)) kannst du eine Rolle
+Mit einem kleinen Codeschnipsel ([mehr dazu hier](/documentation/administration/hooks-and-filter)) kannst du eine Rolle
 definieren, die grundsätzlich nicht von Buchungsregeln betroffen ist. Dafür musst du die Rolle nicht manuell bei jeder
 Regel hinzufügen.
 
@@ -99,5 +99,5 @@ Dieser Schnipsel fügt zum Beispiel die Rolle "Redakteur" mit dem slug editor
 als "privilegierte" Rolle hinzu.
 
 Darüber hinaus sind auch alle Administratoren und CB-Manager, denen der
-betroffene Artikel / Standort zugewiesen ist immer ausgenommen. [Mehr zu manueller Vergabe von Berechtigungen.](/dokumentation/grundlagen/rechte-des-commonsbooking-manager)
+betroffene Artikel / Standort zugewiesen ist immer ausgenommen. [Mehr zu manueller Vergabe von Berechtigungen.](/documentation/basics/permission-management)
 

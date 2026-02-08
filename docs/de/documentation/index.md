@@ -4,12 +4,12 @@ Die folgende Dokumentation gilt, wenn nicht anders beschrieben, für die neue Ve
 
 # So findest du dich zurecht
 
-[Los geht es mit der Installation](/dokumentation/installation/installieren).
-Mach dich mit den [Grundlagen](/dokumentation/grundlagen/) vertraut, um dich mit den wichtigsten Begriffen und Konzepten vertraut zu machen.
-Anschließend erfährst du in [Erste Schritte](/dokumentation/erste-schritte/), wie du deine Gegenstände buchbar machst.
-Wenn das erledigt ist kannst du aus vielen Möglichkeiten wählen deine [Buchungsangebote im Frontend darzustellen und Felder anzupassen](/dokumentation/einstellungen/).
-Zu guter letzt kannst du [deine E-Mail Vorlagen anpassen und CommonsBooking perfekt auf deine Organisation anpassen](/dokumentation/einstellungen-2/).
-Im laufenden Betrieb kannst du dann [Buchungen verwalten](/dokumentation/buchungen-verwalten/) und [exportieren um sie auszuswerten](/dokumentation/einstellungen-2/export). Bei Problemen hilft dir vielleicht unser [FAQ](/dokumentation/haeufige-fragen-faq/) weiter. Mit der [API](/dokumentation/schnittstellen-api/) kannst du dann auch externe Systeme anbinden.
+[Los geht es mit der Installation](/documentation/setup/install).
+Mach dich mit den [Grundlagen](/documentation/basics/) vertraut, um dich mit den wichtigsten Begriffen und Konzepten vertraut zu machen.
+Anschließend erfährst du in [Erste Schritte](/documentation/first-steps/), wie du deine Gegenstände buchbar machst.
+Wenn das erledigt ist kannst du aus vielen Möglichkeiten wählen deine [Buchungsangebote im Frontend darzustellen und Felder anzupassen](/documentation/administration/).
+Zu guter letzt kannst du [deine E-Mail Vorlagen anpassen und CommonsBooking perfekt auf deine Organisation anpassen](/documentation/settings/).
+Im laufenden Betrieb kannst du dann [Buchungen verwalten](/documentation/bookings/manage/) und [exportieren um sie auszuswerten](/documentation/settings/export). Bei Problemen hilft dir vielleicht unser [FAQ](/documentation/faq/) weiter. Mit der [API](/documentation/api/) kannst du dann auch externe Systeme anbinden.
 
 ### Habt ihr Fragen oder einen Fehler entdeckt?
 

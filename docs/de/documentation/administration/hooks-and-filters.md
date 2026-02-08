@@ -85,7 +85,7 @@ zurückgibt.
 
 ###  Alle Filter Hooks im Überblick:
 
-  * [commonsbooking_isCurrentUserAdmin](/dokumentation/grundlagen/rechte-des-commonsbooking-manager#filterhook-isCurrentUserAdmin)
+  * [commonsbooking_isCurrentUserAdmin](/documentation/basics/permission-management#filterhook-isCurrentUserAdmin)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
   * commonsbooking_template_tag
@@ -100,10 +100,10 @@ zurückgibt.
 Es gibt auch Filter Hooks, mit denen du zusätzliche Benutzerrollen, die
 zusätzlich zum CB Manager Artikel und Standorte administrieren können,
 hinzufügen kannst.
-Mehr dazu: [Zugriffsrechte vergeben (CB-Manager)](/dokumentation/grundlagen/rechte-des-commonsbooking-manager#andere-rollen-einem-artikel-standort-zuweisen-ab-2-8-2)
+Mehr dazu: [Zugriffsrechte vergeben (CB-Manager)](/documentation/basics/permission-management#andere-rollen-einem-artikel-standort-zuweisen-ab-2-8-2)
 
 Darüber hinaus gibt es Filter Hooks, mit denen du die voreingestellten
-Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu [hier](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern):
+Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu [hier](/documentation/advanced-functionality/change-timeframe-creation-defaults):
 ###  Filter Hook: commonsbooking_tag_$key_$property
 
 ####  Beispiel: Stations-Betreibende als E-Mail Empfänger der Buchungs-Mails überschreiben

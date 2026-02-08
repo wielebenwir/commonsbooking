@@ -13,7 +13,7 @@ Möchtest du den Standardtext wieder herstellen, so lösche einfach alle Einträ
 :::
 
 Um Daten aus der Buchung (wie Artikel, Buchungszeitraum etc.) in die Mail zu
-integrieren, verwendet CommosBooking so genannte [Template-Tags](/dokumentation/einstellungen/template-tags). Dies sind Platzhalter, die in der E-Mail dann durch die entsprechenden Daten ersetzt
+integrieren, verwendet CommosBooking so genannte [Template-Tags](/documentation/administration/template-tags). Dies sind Platzhalter, die in der E-Mail dann durch die entsprechenden Daten ersetzt
 werden.
 
 In den Standard-Vorlagen sind bereits die wichtigsten Template-Tags enthalten. Du kannst sie an jeder beliebige Stelle in den Vorlagen verwenden. Darüber hinaus kannst du auch HTML tags in den Vorlagen verwenden.
@@ -21,12 +21,12 @@ In den Standard-Vorlagen sind bereits die wichtigsten Template-Tags enthalten. D
 Du kannst weitere Template-Tags verwenden, wenn dir die standardmäßig
 enthaltenen nicht ausreichen.
 
-[Eine Übersicht zur Verwendung der Template-Tags findest du hier](/dokumentation/einstellungen/template-tags)
+[Eine Übersicht zur Verwendung der Template-Tags findest du hier](/documentation/administration/template-tags)
 
 ##  iCalendar Dateien
 
 CommonsBooking ist in der Lage aus den getätigten Buchungen eine .ics Datei zu generieren, die mit den meisten digitalen Kalendern kompatibel ist. Du kannst hier, genau wie in den E-Mail Vorlagen, die entsprechenden Template Tags verwenden. Die resultierende Kalenderdatei wird an die E-Mail angehängt und die Nutzenden können sie in ihren digitalen Kalender importieren. Die meisten E-Mail Programme unterstützen diesen Import mit einem Klick. Aktuell löscht die Stornierung einer Buchung noch nicht den erzeugten Kalendereintrag.
-Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr dazu : [iCalendar Feed](/dokumentation/buchungen-verwalten/icalendar-feed) .
+Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr dazu : [iCalendar Feed](/documentation/manage-bookings/icalendar-feed) .
 
 ##  Template und Buchungsprozess-Meldungen
 
@@ -37,7 +37,7 @@ Beschreibung über die Verwendung der Textbausteine.
 ###  Benutzer\*innen-Details auf der Buchungsseite
 
 In diesem Abschnitt definierst du, welche Benutzer\*innen Daten in der Buchungsdetailansicht angezeigt werden. Hier ist es z.B. möglich, Adressdaten
-(Straße), Telefonnummer hinzuzufügen. CommonsBooking verwaltet die Nutzendendaten nicht selbst. [Bitte greife dafür auf externe Plugins zurück](/dokumentation/einstellungen/registrierungs-seiten-und-benutzerfelder-anpassen). Bitte prüft, wie die Feldnamen in eurer Nutzer_ innen-Verwaltung heißen und fügt diese dann entsprechend hinzu. In der Vorlage könnt ihr auch einfache HTML-Formatierungen z.B. für Zeilenumbrüche (`<br>`) verwenden.
+(Straße), Telefonnummer hinzuzufügen. CommonsBooking verwaltet die Nutzendendaten nicht selbst. [Bitte greife dafür auf externe Plugins zurück](/documentation/administration/custom-registration-user-fields). Bitte prüft, wie die Feldnamen in eurer Nutzer_ innen-Verwaltung heißen und fügt diese dann entsprechend hinzu. In der Vorlage könnt ihr auch einfache HTML-Formatierungen z.B. für Zeilenumbrüche (`<br>`) verwenden.
 Hier ein Beispiel, um das Feld "phone" und das Feld "address" aus den Userdaten anzuzeigen:
 ```
 {{[Telefon: ]user:phone}} <br>

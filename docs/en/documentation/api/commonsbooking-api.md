@@ -3,7 +3,7 @@
 __
 
 CommonsBooking verfügt über eine eigene API [ (Was ist die CommonsBooking
-API), ](/dokumentation/schnittstellen-api/was-ist-die-commonsapi) über die ihr bequem
+API), ](/documentation/api/what-is-the-commonsapi) über die ihr bequem
 auf entsprechende Daten zugreifen könnt oder die Daten für andere Plattformen
 oder Dienste zur Verfügung stellen könnt.
 

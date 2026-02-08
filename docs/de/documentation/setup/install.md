@@ -26,7 +26,7 @@ hast. Wenn du das noch nicht getan hast, hole unter “Einstellungen / Allgemein
 In den WordPress-Einstellungen findest Du nun einen neuen Punkt
 “CommonsBooking”. Hier kannst Du einige Voreinstellungen vornehmen. Bitte
 mindestens den Absender-Namen und E-Mail im Tab “Vorlagen” eintragen. Weitere
-Informationen zur [ Konfiguration ](/dokumentation/einstellungen-2/) .
+Informationen zur [ Konfiguration ](/documentation/settings/) .
 
 ###  Standorte, Artikel und Zeitrahmen anlegen
 
@@ -34,14 +34,14 @@ Informationen zur [ Konfiguration ](/dokumentation/einstellungen-2/) .
   * **Standorte** unter “CommonsBooking -> Standorte” anlegen
   * Anschließend kannst du im Menüpunkt “ **Zeitrahmen** ” festlegen, wann ein Artikel an einem bestimmten Standort für die Ausleihe verfügbar sein soll.
 
-Detailliierte Informationen dazu findest du unter [Erste Schritte](/dokumentation/erste-schritte/).
+Detailliierte Informationen dazu findest du unter [Erste Schritte](/documentation/first-steps/).
 
 ###  Inhalte auf der Website einbinden
 
   * Eine Seite anlegen, auf der deine Artikel erscheinen sollen. Den Textbaustein (Shortocde) ` [cb_items] ` in die Seite einbinden.
   * Mit dem klassischen WordPress-Editor fügst du `[cb_items]` inklusive der Klammern einfach in das Textfeld ein.
   * Mit dem neuen Editor klickst du auf das schwarze **\+ Plus im Kasten** , wählst “Shortcode” und fügst `[cb_items]` inklusive der Klammern ein.
-  * Weitere [ Shortcodes für Karten, Tabellen, etc ](/dokumentation/einstellungen/shortcodes) . Fertig!
+  * Weitere [ Shortcodes für Karten, Tabellen, etc ](/documentation/administration/shortcodes) . Fertig!
   * Im Frontend stehen die Artikel nun zur Buchung zur Verfügung.
 
 ###  **Hinweis** :

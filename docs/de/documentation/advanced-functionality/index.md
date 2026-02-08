@@ -4,6 +4,6 @@ __
 
 ###  Artikel
 
-  * [ Cache ](/dokumentation/erweiterte-funktionalitaet/cache)
-  * [ Standardwerte für Zeitrahmenerstellung ändern ](/dokumentation/erweiterte-funktionalitaet/standardwerte-fuer-zeitrahmenerstellung-aendern)
+  * [ Cache ](/documentation/advanced-functionality/cache)
+  * [ Standardwerte für Zeitrahmenerstellung ändern ](/documentation/advanced-functionality/change-timeframe-creation-defaults)
 

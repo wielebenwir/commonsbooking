@@ -47,7 +47,7 @@ Jeder kommerzielle Weitervertrieb ist ausdrücklich verboten.
 
 **Datenschutzerklärung**
 
-Link zu unserer [Datenschutzerklärung](/datenschutzerklaerung)
+Link zu unserer [Datenschutzerklärung](/privacy-policy)
 
 ###  Die Seite nutzt die folgenden Illustrationen:
 

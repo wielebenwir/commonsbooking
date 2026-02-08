@@ -41,7 +41,7 @@ import Newsletter from '../.vitepress/components/Newsletter.vue'
             CommonsBooking bietet euch <strong>volle Flexibilität</strong>.
         </p>
         <div>
-            <a class="cbdoc-button cb-brand" href="/de/documentation/installation/install">Installieren</a>
+            <a class="cbdoc-button cb-brand" href="/de/documentation/setup/install">Installieren</a>
             <a class="cbdoc-button cb-alt" href="/de/features/">Alle Funktionen</a>
         </div>
     </div>

@@ -4,7 +4,7 @@ __
 
 ###  Artikel
 
-  * [ Buchungen anlegen & Adminbuchung ](/dokumentation/buchungen-verwalten/buchungen-anlegen)
-  * [ Buchung stornieren ](/dokumentation/buchungen-verwalten/buchung-stornieren)
-  * [ iCalendar Feed ](/dokumentation/buchungen-verwalten/icalendar-feed)
+  * [ Buchungen anlegen & Adminbuchung ](/documentation/manage-bookings/bookings-create)
+  * [ Buchung stornieren ](/documentation/manage-bookings/bookings-cancel)
+  * [ iCalendar Feed ](/documentation/manage-bookings/icalendar-feed)
 

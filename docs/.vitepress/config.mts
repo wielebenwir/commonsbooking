@@ -155,7 +155,7 @@ export default defineConfig({
 export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
   return [
       {
-      text: 'Installation', base: '/de/documentation/installation/',
+      text: 'Installation', base: '/de/documentation/setup/',
           collapsed: true,
           items: [
         { text: 'Installieren', link: 'install' },

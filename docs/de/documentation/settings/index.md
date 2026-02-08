@@ -6,11 +6,11 @@ Hier findest du einen Überblick zu den Einstellungen von CommonsBooking, die ü
 
 ###  Artikel
 
-  * [ Allgemeine Einstellungen ](/dokumentation/einstellungen-2/allgemeine-einstellungen)
-  * [ Buchungs-Codes ](/dokumentation/einstellungen-2/buchungscodes)
-  * [ Vorlagen ](/dokumentation/einstellungen-2/e-mail-vorlagen)
-  * [ Einschränkungen ](/dokumentation/einstellungen-2/einschraenkungen)
-  * [ E-Mail-Benachrichtigungen ](/dokumentation/einstellungen-2/erinnerungs-e-mail)
-  * [ Export von Zeitrahmen und Buchungen ](/dokumentation/einstellungen-2/export)
-  * [ Spracheinstellung & Datumsformat ](/dokumentation/einstellungen-2/spracheinstellung-datumsformat)
+  * [ Allgemeine Einstellungen ](/documentation/settings/general-settings)
+  * [ Buchungs-Codes ](/documentation/settings/booking-codes)
+  * [ Vorlagen ](/documentation/settings/templates)
+  * [ Einschränkungen ](/documentation/settings/restrictions)
+  * [ E-Mail-Benachrichtigungen ](/documentation/settings/reminder)
+  * [ Export von Zeitrahmen und Buchungen ](/documentation/settings/export)
+  * [ Spracheinstellung & Datumsformat ](/documentation/settings/language-and-date)
 

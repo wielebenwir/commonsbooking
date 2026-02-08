@@ -4,10 +4,10 @@ __
 
 ###  Artikel
 
-  * [ Wie bekomme ich den Buchungskommentar auf die Seite und in die Email? ](/dokumentation/haeufige-fragen-faq/wie-bekomme-ich-den-buchungskommentar-auf-die-webseite-zu-den-buchungsinformationen-etc-sowohl-als-auch-in-die-email)
-  * [ Wie kann ich die Artikeldetailseite übersichtlicher gestalten? ](/dokumentation/haeufige-fragen-faq/wie-kann-ich-die-artikeldetailseite-uebersichtlicher-gestalten)
-  * [ Die Seite ist sehr langsam ](/dokumentation/haeufige-fragen-faq/die-seite-ist-sehr-langsam)
-  * [ Wie füge ich Zahlenschloss-Codes in E-Mails ein? ](/dokumentation/haeufige-fragen-faq/kann-ich-zahlenschloss-codes-in-e-mails-einfuegen)
+  * [ Wie bekomme ich den Buchungskommentar auf die Seite und in die Email? ](/documentation/faq/booking-comment-emails)
+  * [ Wie kann ich die Artikeldetailseite übersichtlicher gestalten? ](/documentation/faq/organise-article-page)
+  * [ Die Seite ist sehr langsam ](/documentation/faq/site-slow)
+  * [ Wie füge ich Zahlenschloss-Codes in E-Mails ein? ](/documentation/faq/lock-codes-email)
 
 
 ## Ich möchte einzelne Nutzer vorübergehend sperren
@@ -24,7 +24,7 @@ Das Blockieren bestimmter Benutzergruppen ist kein Feature in CommonsBooking und
 
 Wenn ihr euren Nutzenden ermöglichen wollt, den Artikel z.B. über das Wochenende zu buchen, könnt ihr diese Einstellung in den Standort-Einstellungen vornehmen.
 
-Infos dazu unter: https://commonsbooking.org/docs/erste-schritte/stationen-anlegen/
+Infos dazu unter: https://commonsbooking.org/docs/first-steps/create-locations/
 
 ## Anzahl der Artikel in der cb_items Liste erhöhen
 
@@ -64,7 +64,7 @@ Wenn ihr das Problem auch habt, schreibt gerne direkt an den Support des Plugins
 
 ## Inkompatibles Plugin REDIS Object Cache
 
-Im Zusammenhang mit dem [Cache](/dokumentation/erweiterte-funktionalitaet/) gab
+Im Zusammenhang mit dem [Cache](/documentation/advanced-functionality/) gab
 es in der Vergangenheit bereits Probleme mit anderen Wordpress-Plugins wie
 z.B. 'REDIS Object Cache'. Aus diesem Grund raten wir von der Nutzung solcher
 Plugins ab.

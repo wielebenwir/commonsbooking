@@ -2,10 +2,10 @@
 
 __
 
-Es ist möglich mit Codeschnipseln, ähnlich zu den [ Hooks und Filtern ](/dokumentation/einstellungen/hooks-und-filter),
+Es ist möglich mit Codeschnipseln, ähnlich zu den [ Hooks und Filtern ](/documentation/administration/hooks-and-filter),
 die Standardwerte, die bei der Erstellung eines Zeitrahmens voreingestellt sind, zu ändern.
 
-Die veränderbaren Standardwerte sind hier mit Beispielschnipseln aufgelistet. Für mehr Informationen zur Anwendung siehe [ Hooks und Filter ](/dokumentation/einstellungen/hooks-und-filter).
+Die veränderbaren Standardwerte sind hier mit Beispielschnipseln aufgelistet. Für mehr Informationen zur Anwendung siehe [ Hooks und Filter ](/documentation/administration/hooks-and-filter).
 
 ###  Buchungskommentar
 

@@ -27,7 +27,7 @@ als Start- und Enddatum eingetragen werden und die Wiederholung auf `Täglich` g
 werden soll, muss die Wiederholung auf `Keine Wiederholung` gesetzt werden.
 
 :::tip Tipp
-Für Wartungszeiträume lohnt es sich eher eine [Buchungseinschränkung](/dokumentation/erste-schritte/buchungseinschraenkungen-verwalten) zu erstellen, da diese auch eine Benachrichtigung an die Betroffenen Nutzenden mit Buchung in dem entsprechenden Zeitraum ermöglicht.
+Für Wartungszeiträume lohnt es sich eher eine [Buchungseinschränkung](/documentation/first-steps/manage-booking-restrictions) zu erstellen, da diese auch eine Benachrichtigung an die Betroffenen Nutzenden mit Buchung in dem entsprechenden Zeitraum ermöglicht.
 :::
 
 #  Feiertage automatisch importieren
@@ -41,7 +41,7 @@ weitere Tage einfügen.
 # Überbuchbarkeit
 
 Ein Zeitrahmen vom Typ "Urlaub" ist überbuchbar, wenn die Überbuchbarkeit in
-den Standorteinstellungen konfiguriert ist ( [mehr dazu](/dokumentation/erste-schritte/stationen-anlegen#overbooking) ).
+den Standorteinstellungen konfiguriert ist ( [mehr dazu](/documentation/first-steps/create-locations#overbooking) ).
 Das bedeutet, dass ein Artikel zwar über den Zeitraum ausgeliehen werden kann,
 aber währenddessen weder ausgeliehen noch zurückgegeben werden kann.
 

@@ -5,10 +5,10 @@ __
 Über die CommonsAPI ist es möglich, dass die Dateien einzelner lokaler
 CommonsBooking-Plugins über eine Schnittstelle mit zentralen Plattformen (wie
 z.B. deutschlandweite Verzeichnisse von freien Lastenrädern oder ggf.
-übergreifende Portale) verbunden werden. Die [Aktivierung](/dokumentation/schnittstellen-api/commonsbooking-api) und Freigaben können von euch
+übergreifende Portale) verbunden werden. Die [Aktivierung](/documentation/api/commonsbooking-api) und Freigaben können von euch
 natürlich individuell eingestellt werden.
 
-[Technische Details findet ihr hier](/dokumentation/schnittstellen-api/commonsbooking-api).
+[Technische Details findet ihr hier](/documentation/api/commonsbooking-api).
 
 ##  So funktionieren die CommonsAPI und das CommonsHub
 

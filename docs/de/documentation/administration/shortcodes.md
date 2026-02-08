@@ -63,7 +63,7 @@ Beispiel:
 Zeigt eine Karte aller veröffentlichen Artikel an.
 Dafür muss zuerst eine Karte unter "CommonsBooking -> Karten" eingerichtet werden.
 
-[Mehr zur Einrichtung und Konfiguration von Karten](/dokumentation/einstellungen/karte-einbinden).
+[Mehr zur Einrichtung und Konfiguration von Karten](/documentation/administration/map-embed).
 
   * Shortcode: ` [cb_map] `
   * Argumente ( **erforderlich!** ): ` id `
@@ -85,7 +85,7 @@ danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 ![](/img/shortcode-cb-search-map.png)
 
 [ Weitere Argumente und ausführliche Dokumentation
-](/dokumentation/einstellungen/neues-frontend-beta)
+](/documentation/administration/new-frontend)
 
 ##  Artikel-Tabelle mit Verfügbarkeit
 
@@ -136,9 +136,9 @@ Liste aller Buchungen, also eigene Buchungen des eingeloggten Nutzenden.
 User in der Rolle von Administrator*innen sehen hier alle Buchungen.
 
   * Shortcode: `[cb_bookings]`
-  * [User mit der Rolle cb_manager](/dokumentation/grundlagen/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel
+  * [User mit der Rolle cb_manager](/documentation/basics/permission-management) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel
     und Stationen.
-  * Import in digitalen Kalender über [iCalendar](/dokumentation/buchungen-verwalten/icalendar-feed)-Format möglich
+  * Import in digitalen Kalender über [iCalendar](/documentation/manage-bookings/icalendar-feed)-Format möglich
 
 ![](/img/shortcode-cb-bookings.png)
 

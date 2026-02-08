@@ -4,8 +4,8 @@ __
 
 ###  Artikel
 
-  * [ Begriffe ](/dokumentation/grundlagen/begriffe)
-  * [ Zeitrahmen-Typen ](/dokumentation/grundlagen/zeitrahmen-konfigurieren)
-  * [ Buchungs-Codes ](/dokumentation/grundlagen/buchungs-codes)
-  * [ Zugriffsrechte vergeben (CB-Manager) ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager)
+  * [ Begriffe ](/documentation/basics/concepts)
+  * [ Zeitrahmen-Typen ](/documentation/basics/timeframes-config)
+  * [ Buchungs-Codes ](/documentation/basics/booking-codes)
+  * [ Zugriffsrechte vergeben (CB-Manager) ](/documentation/basics/rechte-des-commonsbooking-manager)
 
