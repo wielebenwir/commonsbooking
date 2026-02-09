@@ -40,7 +40,7 @@ provided to the user regarding pickup and contact to the location:
 * **Send copy of bookings / cancellations to location email**: Enabling this option will send a copy of the booking and cancellation emails to the email addresses specified above.
 * **Pickup instructions** (opening hours, pickup process, etc.) will be displayed on the item page and throughout the booking process. The information provided here is public and visible even without a booking or registration.
 * **Location contact information** (email and phone number) will only be displayed on the confirmation page after booking. If you want users to see some information only after booking, you can enter it here.
-* **Location admin(s)**: Select one or more users to allow them to edit and manage this specific location. More about this: [Permission management](/en/documentation/basics/permission-management) (not translated yet)
+* **Location admin(s)**: Select one or more users to allow them to edit and manage this specific location. More about this: [Permission management](./documentation/basics/permission-management) (not translated yet)
 
 ## Overbooking settings {#overbooking}
 
@@ -48,7 +48,7 @@ provided to the user regarding pickup and contact to the location:
 In the following, we will use the term "Overbooking" to describe a booking period that spans over days where an item can neither be picked up or dropped off. This term is misleading and there is an [ongoing discussion on how to fix this issue.](https://github.com/wielebenwir/commonsbooking/issues/1858)
 :::
 
-When creating a timeframe (see [Timeframes](/en/documentation/first-steps/booking-timeframes-manage) ),
+When creating a timeframe (see [Timeframes](../first-steps/booking-timeframes-manage) ),
 you can choose whether bookings are only possible on certain days of the week.
 This way, you can configure items that are only available for booking on weekdays, for example.
 This also means, that pickup and drop-off can only occur on these days. If you want

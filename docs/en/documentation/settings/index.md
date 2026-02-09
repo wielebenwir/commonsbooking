@@ -6,11 +6,11 @@ The following pages cover the various settings available in CommonsBooking. The 
 
 ###  Pages
 
-  * [ General ](/en/documentation/settings/general-settings)
-  * [ Booking codes ](/en/documentation/settings/booking-codes)
-  * [ Templates ](/en/documentation/settings/templates)
-  * [ Restrictions ](/en/documentation/settings/restrictions)
-  * [ Reminder ](/en/documentation/settings/reminder)
-  * [ Export of timeframes and bookings](/en/documentation/settings/export)
-  * [ Language settings and date format ](/en/documentation/settings/language-and-date)
+  * [ General ](./documentation/settings/general-settings)
+  * [ Booking codes ](./documentation/settings/booking-codes)
+  * [ Templates ](./documentation/settings/templates)
+  * [ Restrictions ](./documentation/settings/restrictions)
+  * [ Reminder ](./documentation/settings/reminder)
+  * [ Export of timeframes and bookings](./documentation/settings/export)
+  * [ Language settings and date format ](./documentation/settings/language-and-date)
 

@@ -10,9 +10,9 @@ CommonsBooking gives you the opportunity to offer items (e.g. cargo bikes, tools
 
 CommonsBooking is a WordPress plugin and can therefore be easily integrated into existing websites.
 
-[ Install ](/en/documentation/setup/install)
+[ Install ](./documentation/setup/install)
 
-[ Documentation ](/en/documentation/)
+[ Documentation ](./documentation/)
 
 * * *
 
@@ -32,7 +32,7 @@ CommonsBooking is a WordPress plugin and can therefore be easily integrated into
 
   * **New** : Designated managers can manage items assigned by admins
   * Automatic booking confirmation: Users can book items without the need for administration.
-  * Calendar integration: Automatic import of all relevant bookings into your digital calendar via [iCal format](/en/documentation/manage-bookings/icalendar-feed.md).
+  * Calendar integration: Automatic import of all relevant bookings into your digital calendar via [iCal format](./documentation/manage-bookings/icalendar-feed.md).
 
 ![](/img/cb-managers.png)
 
@@ -51,9 +51,9 @@ CommonsBooking is continuously under development. The following milestones are p
   * Improved Metadata
   * Implementing the Commons API
 
-[ Install ](/en/documentation/setup/install)
+[ Install ](./documentation/setup/install)
 
-[ Roadmap of upcoming development milestone ](/en/documentation/roadmap/)
+[ Roadmap of upcoming development milestone ](./documentation/roadmap/)
 
 * * *
 

@@ -79,7 +79,7 @@ receives a value, modifies it, and then returns it.
 
 ###  Overview of all filter hooks:
 
-  * [commonsbooking_isCurrentUserAdmin](/en/documentation/basics/permission-management#filterhook-isCurrentUserAdmin)
+  * [commonsbooking_isCurrentUserAdmin](./documentation/basics/permission-management#filterhook-isCurrentUserAdmin)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
   * commonsbooking_template_tag
@@ -93,10 +93,10 @@ receives a value, modifies it, and then returns it.
 
 There are also filter hooks that allow you to add additional user roles
 akin to the CB Manager that can manage items and locations.
-Read more: [Permission management](/en/documentation/basics/permission-management) (not translated yet)
+Read more: [Permission management](./documentation/basics/permission-management) (not translated yet)
 
 In addition to that, there are filter hooks that allow you to change the default
-values when creating timeframes. More about that [here](/en/documentation/advanced-functionality/change-timeframe-creation-defaults)
+values when creating timeframes. More about that [here](./documentation/advanced-functionality/change-timeframe-creation-defaults)
 
 ###  Filter Hook: commonsbooking_tag_$key_$property
 

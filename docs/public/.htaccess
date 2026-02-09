@@ -4,7 +4,7 @@
   # Redirect legacy DE doc paths to new /de/documentation/ structure
   RewriteRule ^dokumentation/(.*)$ /de/documentation/$1 [R=301,L]
   # Redirect legacy EN doc paths that used german slug
-  RewriteRule ^en/dokumentation/(.*)$ /en/documentation/$1 [R=301,L]
+  RewriteRule ^en/documentation/(.*)$ /en/documentation/$1 [R=301,L]
 
   # Rule 1 - support english language header rewrite
   RewriteCond %{REQUEST_URI} ^/$

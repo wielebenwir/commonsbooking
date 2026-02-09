@@ -2,9 +2,9 @@
 
 __
 
-Using code snippets akin to [ hooks and filters ](/en/documentation/administration/hooks-and-filters), 
+Using code snippets akin to [ hooks and filters ](../administration/hooks-and-filters), 
 the default values that are pre-filled when creating a timeframe can be changed.
-The available filters and corresponding example snippets are listed below. For more information on how to apply them, see [ hooks and filters ](/en/documentation/administration/hooks-and-filters).
+The available filters and corresponding example snippets are listed below. For more information on how to apply them, see [ hooks and filters ](../administration/hooks-and-filters).
 
 ###  Booking comment
 

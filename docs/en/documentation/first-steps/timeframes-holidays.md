@@ -29,7 +29,7 @@ as the start and end dates and the repetition set to `Daily`. However, if the it
 the repetition must be set to `No repetition`.
 
 :::tip
-For maintenance periods, it is better to create a [booking restriction](/en/documentation/first-steps/manage-booking-restrictions), as this also allows you to notify the users whose bookings are in the affected time range.
+For maintenance periods, it is better to create a [booking restriction](../first-steps/manage-booking-restrictions), as this also allows you to notify the users whose bookings are in the affected time range.
 :::
 
 #  Automatically import holidays
@@ -42,6 +42,6 @@ further days using the date picker.
 # Overbooking
 
 A timeframe of the type "Holidays or location closed" is overbookable if
-overbooking is configured in the location settings ( [more about this](/en/documentation/first-steps/create-location#overbooking) ).
+overbooking is configured in the location settings ( [more about this](../first-steps/create-location#overbooking) ).
 This means that an item can be kept by the user over the period,
 if they picked it up before and will return it after the holiday.

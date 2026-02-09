@@ -38,7 +38,7 @@ CommonsBooking will send the following emails to users, the text of which can be
   * **Locations** (under Location → Location Email) receive **reminders about bookings** if the option under "Settings → "Reminders → Reminder for locations before booking start" or "Reminder for locations before booking end" is set AND in the corresponding location the option "Reminder email for booking start" or "Reminder email for booking end" is enabled.
 
 ::: warning **Important**
-It is not enough to enter people as [location managers](/en/documentation/basics/permission-management) for them to be notified. In order to receive emails, the recipients address must be entered in the field "Location → Location Email".
+It is not enough to enter people as [location managers](./documentation/basics/permission-management) for them to be notified. In order to receive emails, the recipients address must be entered in the field "Location → Location Email".
 :::
 
 ### Item maintainers
