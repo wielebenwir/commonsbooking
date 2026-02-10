@@ -112,7 +112,7 @@ Die u.g. Beispiele sind nur für die Version 2.10.9 oder höher geeignet.
 :::
 
 Dieser Filter Hook ist dazu da, um das Standardverhalten der Template Tags zu überschreiben.
-Dabei muss der Wert $key und $property mit den entsprechenden Werten der Template Tags ersetzt werden. Das $key entspricht dabei dem post_type des Objekts, z.B. "cb_location" oder "cb_item" und $property entspricht der Eigenschaft bzw. dem Metafeld, dass du überschreiben möchtest, z.B. "_cb_location_email" oder "phone".
+Dabei muss der Wert $key und $property mit den entsprechenden Werten der Template Tags ersetzt werden. Das $key entspricht dabei dem post_type des Objekts, z.B. `cb_location` oder `cb_item` und $property entspricht der Eigenschaft bzw. dem Metafeld, dass du überschreiben möchtest, z.B. `_cb_location_email` oder `phone`.
 Du kannst auch komplett eigene Funktionen mit diesem Hook definieren, die dann durch ein Template Tag aufgerufen werden.
 
 
@@ -122,23 +122,22 @@ Ein Anwendungsfall für diesen Hook, stellt z.B. die Verwendung innerhalb einer
 Staging-Umgebung dar. Du möchtest dort Buchungs-Vorgänge einer neuen Version
 von Commonsbooking mit verschiedenen Zeitrahmen-Stations-Artikel-Kombinationen
 testen, aber gleichzeitig nicht Mails an alle möglichen Stationsbetreibende
-verschicken. Dann kannst das mit folgendem Filter-Hook via eingebundem Code-
+verschicken. Dann kannst das mit folgendem Filter-Hook via eingebundenem Code-
 Snippet (gleichnamiges Plugin) oder Theme-/Plugin-Datei-Editor erreichen:
 
 
 ```php
 /**
- * This adds a filter to send all booking confirmations to one email adress.
+ * This adds a filter to send all booking confirmations to one email address.
  */
-function mywebsite_cb_return_location_mail( $value ){
+add_filter('commonsbooking_tag_cb_location__cb_location_email', function($value) {
     return 'yourname@example.com';
-}
-add_filter('commonsbooking_tag_cb_location__cb_location_email', 'mywebsite_cb_return_location_mail' );
+});
 ```
 
 #### Beispiel: Eigene Funktion für die Template Tags eines Artikels definieren
 
-Dieser Hook würde bei dem Template Tag `{{item:yourFunction}}` aufgerufen werden.
+Dieser Hook würde bei dem Template Tag <span v-pre>`{{item:yourFunction}}`</span> aufgerufen werden.
 Mögliche Einsatzzwecke sind z.B. Schlosscodes, die mit einer weiteren Funktion anhand der Buchungsdaten generiert werden.
 In diesem Beispiel wird einfach nur die ID des Artikels zurückgegeben.
 
