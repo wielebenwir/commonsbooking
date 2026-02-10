@@ -66,7 +66,7 @@ class CB {
 		 *
 		 * @param string|null $result from property lookup
 		 */
-		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result );
+		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result, $wpObject, $args );
 	}
 
 	/**
