@@ -90,10 +90,12 @@ class Day {
 	}
 
 	/**
+	 * Gets the date in Y-m-d format.
+	 *
 	 * @return string
 	 */
 	public function getDate(): string {
-		return $this->date;
+		return date('Y-m-d', strtotime($this->date));
 	}
 
 	/**
@@ -358,7 +360,9 @@ class Day {
 
 					// Manual Rep
 				case 'manual':
-					return in_array( $this->getDate(), $timeframe->getManualSelectionDates() );
+					$manualSelectionDates = $timeframe->getManualSelectionDates();
+					$date1 = $this->getDate();
+					return in_array( $date1, $manualSelectionDates);
 
 				// No Repetition
 				case 'norep':
