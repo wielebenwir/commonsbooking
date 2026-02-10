@@ -1,0 +1,35 @@
+name: WPCS WP.i18n check
+
+on:
+  push:
+    paths:
+      - '**/*.php'
+      - '.github/workflows/wpcs.yml'
+  pull_request:
+    paths:
+      - '**/*.php'
+      - '.github/workflows/wpcs.yml'
+  workflow_dispatch:
+
+jobs:
+  phpcs:
+      name: WPCS
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - name: Install dependencies
+          run: composer install --prefer-dist --no-progress --ignore-platform-reqs
+        - name: WPCS check
+          uses: 10up/wpcs-action@stable
+          with:
+            #enable_warnings: false # Enable checking for warnings (-w)
+            paths: 'src templates includes commonsbooking.php' # Paths to check, space separated
+            #excludes: '' # Paths to excludes, space separated
+            standard: '10up-Default' # Standard to use. Accepts WordPress|WordPress-Core|WordPress-Docs|WordPress-Extra|WordPress-VIP-Go|WordPressVIPMinimum|10up-Default.
+            #standard_repo: '' # Public (git) repository URL of the coding standard
+            #repo_branch: 'master' # Branch of Standard repository
+            phpcs_bin_path: './vendor/bin/phpcs' # Custom PHPCS bin path
+            use_local_config: 'true' # Use local config if available
+            extra_args: '--sniffs=Wordpress.WP.I18n' # Extra arguments passing to the command
+            #only_changed_files: '' # Run the linter only on the changed files. Accepts true|false
+            only_changed_lines: 'true' # Run the linter only on the changed lines. Accepts true|false
