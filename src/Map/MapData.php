@@ -144,8 +144,12 @@ class MapData {
 
 	/**
 	 * get the settings for the frontend of the map with given id
-	 **/
-	public static function get_settings( $cb_map_id ): array {
+	 *
+	 * @param int|\WP_Post $cb_map_id
+	 * @return array
+	 * @throws \Exception
+	 */
+	public static function get_settings($cb_map_id ): array {
 		$map                = new Map( $cb_map_id );
 		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );

@@ -18,14 +18,14 @@ class Item extends BookablePost {
 	/**
 	 * Returns all bookable timeframes for a specific location.
 	 *
-	 * @param $locationId
+	 * @param int  $locationId
 	 *
 	 * @param bool $asModel
 	 *
-	 * @return array
+	 * @return \CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
-	public function getBookableTimeframesByLocation( $locationId, bool $asModel = false ): array {
+	public function getBookableTimeframesByLocation( int $locationId, bool $asModel = false ): array {
 		return Timeframe::getBookableForCurrentUser(
 			[ $locationId ],
 			[ $this->ID ],
@@ -70,7 +70,7 @@ class Item extends BookablePost {
 	 *
 	 * This function is not used anywhere yet.
 	 *
-	 * @return array
+	 * @return Restriction[]
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {

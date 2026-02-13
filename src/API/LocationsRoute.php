@@ -32,7 +32,7 @@ class LocationsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.locations.schema.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.locations.schema.json';
 
 	/**
 	 * @var Provider
@@ -47,7 +47,7 @@ class LocationsRoute extends BaseRoute {
 	/**
 	 * Get one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param WP_REST_Request<array<string, mixed>> $request Full data about the request.
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -58,7 +58,7 @@ class LocationsRoute extends BaseRoute {
 	/**
 	 * Get a collection of items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param WP_REST_Request<array<string, mixed>> $request Full data about the request.
 	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
@@ -73,7 +73,13 @@ class LocationsRoute extends BaseRoute {
 		return new WP_REST_Response( $data, 200 );
 	}
 
-	public function getItemData( $request ) {
+	/**
+	 * @param WP_REST_Request<array<string, mixed>> $request
+	 *
+	 * @return stdClass
+	 * @throws \Geocoder\Exception\Exception
+	 */
+	public function getItemData( $request ): stdClass {
 		$data       = new stdClass();
 		$data->type = 'FeatureCollection';
 
@@ -105,8 +111,8 @@ class LocationsRoute extends BaseRoute {
 	}
 
 	/**
-	 * @param $item Location
-	 * @param $request
+	 * @param Location                              $item
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response
 	 * @throws \Geocoder\Exception\Exception
