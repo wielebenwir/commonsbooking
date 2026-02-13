@@ -38,7 +38,7 @@
 		"cypress:setup": "./bin/setup-cypress-env.sh",
 		"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
 		"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js",
-		"dist": "grunt dist",
+		"dist": "grunt default",
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
 		"docs:preview": "vitepress preview docs"
