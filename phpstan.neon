@@ -6,6 +6,7 @@ parameters:
     - commonsbooking.php
   scanDirectories:
     - vendor/cmb2/cmb2/includes
+    - vendor-prefixed
   paths:
     - commonsbooking.php
     - src/

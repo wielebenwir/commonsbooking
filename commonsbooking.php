@@ -38,8 +38,8 @@ $cb_db_version = '1.0';
 
 require __DIR__ . '/includes/Admin.php';
 require __DIR__ . '/includes/Public.php';
-require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/vendor/cmb2/cmb2/init.php';
-require __DIR__ . '/vendor/mustardBees/cmb-field-select2/cmb-field-select2.php';
-require __DIR__ . '/vendor/ed-itsolutions/cmb2-field-ajax-search/cmb2-field-ajax-search.php';
+require __DIR__ . '/vendor-prefixed/autoload.php';
+require __DIR__ . '/vendor-prefixed/cmb2/cmb2/init.php';
+require __DIR__ . '/vendor-prefixed/mustardBees/cmb-field-select2/cmb-field-select2.php';
+require __DIR__ . '/vendor-prefixed/ed-itsolutions/cmb2-field-ajax-search/cmb2-field-ajax-search.php';
 require_once __DIR__ . '/includes/Plugin.php';

@@ -193,7 +193,7 @@ class Migration {
 	/**
 	 * @param WP_Post $location CB1 Location
 	 *
-	 * @throws Exception|\Geocoder\Exception\Exception
+	 * @throws Exception|\CommonsBooking\Geocoder\Exception\Exception
 	 */
 	public static function migrateLocation( WP_Post $location ): bool {
 		// Collect post data
@@ -361,7 +361,7 @@ class Migration {
 	 * @param $postMeta array Post meta
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
 	protected static function savePostData( $existingPost, array $postData, array $postMeta ): bool {
 
@@ -435,7 +435,7 @@ class Migration {
 	 * @param WP_Post $item
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
 	public static function migrateItem( WP_Post $item ): bool {
 		// Collect post data
@@ -473,7 +473,7 @@ class Migration {
 	 * @param $timeframe
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
 	public static function migrateTimeframe( $timeframe ): bool {
 		$cbItem     = self::getExistingPost( $timeframe['item_id'], Item::$postType );
@@ -525,7 +525,7 @@ class Migration {
 	 * @param $booking
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 * @throws Exception
 	 */
 	public static function migrateBooking( $booking ): bool {

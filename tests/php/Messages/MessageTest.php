@@ -123,7 +123,7 @@ class MessageTest extends Email_Test_Case {
 
 	public function testSendNotificationMail() {
 		$this->message->sendNotificationMail();
-		/** @var \PHPMailer\PHPMailer\PHPMailer $mailer */
+		/** @var \CommonsBooking\PHPMailer\PHPMailer\PHPMailer $mailer */
 		$mailer = $this->getMockMailer();
 		$this->assertEmpty( $mailer->ErrorInfo );
 		$this->assertEquals( self::FROM_MAIL, $mailer->From );
@@ -207,7 +207,7 @@ class MessageTest extends Email_Test_Case {
 			]
 		);
 		$this->message->sendNotificationMail();
-		/** @var \PHPMailer\PHPMailer\PHPMailer $mailer */
+		/** @var \CommonsBooking\PHPMailer\PHPMailer\PHPMailer $mailer */
 		$mailer = $this->getMockMailer();
 		$this->assertEquals( $fromMail, $mailer->From );
 		$this->assertEquals( $fromName, $mailer->FromName );
