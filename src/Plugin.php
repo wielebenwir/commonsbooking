@@ -609,7 +609,7 @@ class Plugin {
 			$versions['leaflet-spin']
 		);
 
-		// leaflet-messagebox
+		// leaflet-messagebox (not tracked by NPM)
 		wp_register_script(
 			'cb-leaflet-messagebox',
 			COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.js',
@@ -623,7 +623,7 @@ class Plugin {
 			'1.1'
 		);
 
-		// jquery overscroll
+		// jquery overscroll (not tracked by NPM)
 		wp_register_script(
 			'cb-jquery-overscroll',
 			COMMONSBOOKING_MAP_ASSETS_URL . 'overscroll/jquery.overscroll.min.js',
