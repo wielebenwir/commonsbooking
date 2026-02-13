@@ -26,9 +26,9 @@
 		"grunt-contrib-watch": "^1.1.0",
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
-		"vitepress": "^1.6.4",
 		"medium-zoom": "^1.1.0",
-		"sass": "^1.97.3"
+		"sass": "^1.97.3",
+		"vitepress": "^1.6.4"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
@@ -51,9 +51,8 @@
 		"leaflet-spin": "^1.1.2",
 		"leaflet.markercluster": "^1.5.0",
 		"moment": "^2.19.4",
-		"npm": "^11.3.0",
+		"search-insights": "^2.17.3",
 		"select2": "^4.0.13",
-    "search-insights": "^2.17.3",
 		"shufflejs": "^6.1.1",
 		"spin.js": "^2.3.2",
 		"vue": "^3.5.27"
