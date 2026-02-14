@@ -23,7 +23,12 @@ jobs:
        with:
          generate_zip: 'true'
 
+     - name: Skip notice (dependabot)
+       if: ${{ startsWith(github.head_ref, 'dependabot') }}
+       run: echo "Upload skipped for dependabot PRs — secrets are not available and upload steps would fail the checks unecessarily."
+
      - name: Upload zip
+       if: ${{ !startsWith(github.head_ref, 'dependabot') }}
        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
        with:
          exclude: |
@@ -37,6 +42,7 @@ jobs:
          protocol: ftps
              
      - name: Find Comment
+       if: ${{ !startsWith(github.head_ref, 'dependabot') }}
        uses: peter-evans/find-comment@v4
        id: fc
        with:
@@ -45,6 +51,7 @@ jobs:
          body-includes: Download built plugin zip
 
      - name: Create or update comment
+       if: ${{ !startsWith(github.head_ref, 'dependabot') }}
        uses: peter-evans/create-or-update-comment@v5
        with:
          comment-id: ${{ steps.fc.outputs.comment-id }}
