@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.locations.schema.json",
     "title": "Commons Api Locations Schema",
     "description": "A schema for item locations of the Commons API",
@@ -20,7 +20,8 @@
                             "type": "string",
                             "format": "uri"
                         },
-                        "address": { "type": "string" }
+                        "address": { "type": "string" },
+                        "pickupInstructions": { "type": "string" }
                     },
                     "required": ["name", "id"]
                 },

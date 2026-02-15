@@ -91,7 +91,7 @@ class LocationsRoute extends BaseRoute {
 		foreach ( $locations as $location ) {
 			try {
 				$itemdata   = $this->prepare_item_for_response( $location, $request );
-				$features[] = $itemdata;
+				$features[] = $itemdata->get_data();
 			} catch ( Exception $exception ) {
 				if ( WP_DEBUG ) {
 					error_log( $exception->getMessage() );
