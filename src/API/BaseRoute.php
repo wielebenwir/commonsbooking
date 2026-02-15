@@ -29,6 +29,12 @@ class BaseRoute extends WP_REST_Controller {
 
 	const API_KEY_PARAM = 'apikey';
 
+	// prefix of $id used in schemas (currently the URL of the Github repo)
+	const SCHEMA_URL = 'https://github.com/wielebenwir/commons-api/blob/master/';
+
+	// the location of the .schema.json files locally
+	const SCHEMA_PATH = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/';
+
 	protected $schemaUrl;
 
 	/**
@@ -92,6 +98,11 @@ class BaseRoute extends WP_REST_Controller {
 	 */
 	public function validateData( $data ) {
 		$validator = new Validator();
+
+		// Opis does not fetch remote $ref targets in getSchemaJson() main schema.
+		// Map schema URLs to local filesystem paths
+		$resolver = $validator->resolver();
+		$resolver->registerPrefix(BaseRoute::SCHEMA_URL, BaseRoute::SCHEMA_PATH);
 
 		try {
 			$result = $validator->validate( $data, $this->getSchemaJson() );
