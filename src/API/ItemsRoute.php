@@ -52,7 +52,7 @@ class ItemsRoute extends BaseRoute {
 		$items = Item::get( $args );
 		foreach ( $items as $item ) {
 			$itemdata      = $this->prepare_item_for_response( $item, $request );
-			$data->items[] = $this->prepare_response_for_collection( $itemdata );
+			$data->items[] = $itemdata->get_data();
 		}
 
 		return $data;
