@@ -9,3 +9,7 @@
 !**/*.scss
 **/*.json
 **/*.css
+
+# Do not format sources of copied 3rd-party-libs
+assets/map/leaflet-messagebox/*
+assets/map/overscroll/*
