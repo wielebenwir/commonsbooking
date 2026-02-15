@@ -35,16 +35,6 @@ class LocationsRoute extends BaseRoute {
 	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.locations.schema.json';
 
 	/**
-	 * @var Provider
-	 */
-	protected $provider;
-
-	/**
-	 * @var Geocoder
-	 */
-	protected $geocoder;
-
-	/**
 	 * Get one item from the collection
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
@@ -67,7 +57,7 @@ class LocationsRoute extends BaseRoute {
 		$data->locations = $this->getItemData( $request );
 
 		return $this->respond_with_validation( $data );
-	}
+		}
 
 	public function getItemData( $request ) {
 		$data       = new stdClass();
@@ -122,7 +112,7 @@ class LocationsRoute extends BaseRoute {
 		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true );
 		$longitude = get_post_meta( $item->ID, 'geo_longitude', true );
 
-		// If we have latitude and longitude definec, we use them.
+		// If we have latitude and longitude defined, we use them.
 		if ( $latitude && $longitude ) {
 			$preparedItem->geometry              = new stdClass();
 			$preparedItem->geometry->type        = 'Point';
