@@ -94,7 +94,7 @@ class BaseRoute extends WP_REST_Controller {
 		$validator = new Validator();
 
 		try {
-			$result = $validator->validate( $data, $this->getSchemaObject() );
+			$result = $validator->validate( $data, $this->getSchemaJson() );
 			if ( $result->hasError() ) {
 				if ( WP_DEBUG ) {
 
@@ -131,43 +131,17 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
-	 * Returns schema-object for current route.
-	 *
-	 * @return Schema
-	 */
-	protected function getSchemaObject(): object {
-		$schemaObject = json_decode( $this->getSchemaJson() );
-		unset( $schemaObject->{'$schema'} );
-		unset( $schemaObject->{'$id'} );
-
-		return $schemaObject;
-	}
-
-	/**
 	 * Returns schema json for current route.
 	 *
 	 * @throws RuntimeException On missing schema files.
 	 * @return string
 	 */
-	protected function getSchemaJson(): string {
-		$schemaArray = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		if ( $schemaArray ) {
-			return $schemaArray;
-		} else {
+	private function getSchemaJson(): string {
+		$schema = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $schema === false ) {
 			throw new RuntimeException( 'Could not retrieve schema json from ' . esc_url( $this->schemaUrl ) );
 		}
-	}
-
-	/**
-	 * Adds schema-fields for output to current route.
-	 *
-	 * @param array $schema Assoc array of schema json object.
-	 * @return array
-	 */
-	public function add_additional_fields_schema( $schema ): array {
-		$schemaArray = json_decode( $this->getSchemaJson(), true );
-
-		return array_merge( $schema, $schemaArray );
+		return $schema;
 	}
 
 	/**
