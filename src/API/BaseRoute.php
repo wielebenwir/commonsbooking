@@ -12,6 +12,7 @@ use CommonsBooking\Opis\JsonSchema\Schema;
 use CommonsBooking\Opis\JsonSchema\Validator;
 use CommonsBooking\Opis\JsonSchema\Errors\ErrorFormatter;
 use WP_REST_Controller;
+use WP_REST_Response;
 use WP_REST_Server;
 
 /**
@@ -203,5 +204,18 @@ class BaseRoute extends WP_REST_Controller {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Validates data against schema (when WP_DEBUG) and returns REST response.
+	 *
+	 * @param object $data The response data to validate and return.
+	 * @return WP_REST_Response
+	 */
+	protected function respond_with_validation( $data ): WP_REST_Response {
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+		}
+		return new WP_REST_Response( $data, 200 );
 	}
 }
