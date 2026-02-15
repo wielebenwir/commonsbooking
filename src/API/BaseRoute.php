@@ -156,6 +156,18 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
+	 * Adds schema-fields for output to current route (needed for /.../schema endpoint)
+	 *
+	 * @param array $schema Assoc array of schema json object.
+	 * @return array
+	 */
+	public function add_additional_fields_schema( $schema ): array {
+		$schemaArray = json_decode( $this->getSchemaJson(), true );
+
+		return array_merge( $schema, $schemaArray );
+	}
+
+	/**
 	 * Escapes JSON String for output.
 	 *
 	 * @param $string
