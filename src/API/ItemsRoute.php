@@ -114,6 +114,11 @@ class ItemsRoute extends BaseRoute {
 	 */
 	public function get_item( $request ): WP_REST_Response {
 		$data = $this->getItemData( $request );
+
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+		}
+
 		return new WP_REST_Response( $data, 200 );
 	}
 

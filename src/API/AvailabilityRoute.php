@@ -68,14 +68,10 @@ class AvailabilityRoute extends BaseRoute {
 		try {
 			$data->availability = $this->getItemData( $params['id'] );
 
-			// return a response or error based on some conditional
-			if ( count( $data->availability ) ) {
-				return new WP_REST_Response( $data, 200 );
-			} else {
-				// This was missing in previous versions. According to the availability spec, we can return a list with no items
-				// TODO this part and the enclosing if-clause can be removed in future version, if no problems arose ...
-				return new WP_REST_Response( $data, 200 );
+			if ( WP_DEBUG ) {
+				$this->validateData( $data );
 			}
+			return new WP_REST_Response( $data, 200 );
 		} catch ( Exception $e ) {
 			return new WP_Error( 'code', $e->getMessage() );
 		}
@@ -102,6 +98,11 @@ class AvailabilityRoute extends BaseRoute {
 				$this->getItemData( $item->ID )
 			);
 		}
+
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+        }
+            
 		return new WP_REST_Response( $data, 200 );
 	}
 }
