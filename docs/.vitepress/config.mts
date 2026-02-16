@@ -161,7 +161,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Installieren', link: 'install' },
         { text: 'Migration von CB1', link: 'migration-from-cb1' },
         { text: 'Theme', link: 'theme' },
-        { text: 'Update-Info', link: 'update-info' }
+        { text: 'Update-Info', link: 'update-news' }
           ]
       },
       {
@@ -224,7 +224,6 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
               { text: 'Widget', link: 'widget' },
               { text: 'Datenschutz', link: 'privacy'},
               { text: 'Registrierungsseiten & Benutzerfelder anpassen', link: 'custom-registration-user-fields' },
-              { text: 'Hooks und Filter', link: 'hooks-and-filters' },
           ]
       },
       {
@@ -244,6 +243,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       items: [
           { text: 'Caching', link: 'cache' },
           { text: 'Standardwerte für Zeitrahmen-Erstellung ändern', link: 'change-timeframe-creation-defaults' },
+          { text: 'Hooks und Filter', link: 'hooks-and-filters' },
       ]
     },
 
@@ -251,19 +251,19 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       text: 'Roadmap', base: '/de/documentation/roadmap/',
         collapsed: true,
       items: [
-        { text: 'Übersicht über die Releases', link: 'uebersicht-ueber-die-releases' }
+        { text: 'Übersicht über die Releases', link: 'release-overview' }
       ]
     },
     {
       text: 'Informationen zur alten Version 0.9', base: '/de/documentation/version-0-9/',
         collapsed: true,
       items: [
-        { text: 'Installation', link: 'installation' },
-        { text: 'Erste Schritte v0.9', link: 'erste-schritte' },
-        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-version-0-9' },
-        { text: 'Einstellungen v0.9', link: 'einstellungen-version-0-9' },
+        { text: 'Installation', link: 'setup' },
+        { text: 'Erste Schritte v0.9', link: 'first-steps' },
+        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags' },
+        { text: 'Einstellungen v0.9', link: 'settings' },
         { text: 'Widgets & Themes v0.9', link: 'widgets-themes' },
-        { text: 'FAQ v0.9', link: 'haeufige-fragen-version-0-9' }
+        { text: 'FAQ v0.9', link: 'faq' }
       ]
     },
       {
@@ -271,12 +271,12 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           link: '/',
           collapsed: true,
           items: [
-              { text: 'Die Seite ist sehr langsam', link: 'slow-page' },
-              { text: 'Probleme und Antworten', link: 'issues-and-answers' },
-              { text: 'Wie bekomme ich den Buchungskommentar ...', link: 'booking-comment-email' },
+              { text: 'Die Seite ist sehr langsam', link: 'site-slow' },
+              { text: 'Probleme und Antworten', link: 'problems-and-answers' },
+              { text: 'Wie bekomme ich den Buchungskommentar ...', link: 'booking-comment-emails' },
               { text: 'Kann ich Zahlenschloss-Codes in E-Mails einfügen?', link: 'lock-codes-email' },
-              { text: 'Artikeldetailseite übersichtlicher gestalten', link: 'item-detail-page' },
-              { text: 'Wie verhindere ich Spam Registrierungen', link: 'prevent-spam-registrations'}
+              { text: 'Artikeldetailseite übersichtlicher gestalten', link: 'organise-article-page' },
+              { text: 'Wie verhindere ich Spam Registrierungen', link: 'avoid-spam-registrations'}
           ]
       },
   ]
@@ -347,7 +347,6 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
 //              { text: 'Booking list', link: 'booking-list' },
-                { text: 'Hooks and filters', link: 'hooks-and-filters' },
 //              { text: 'Embed map', link: 'map-embed' },
 //              { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
 //              { text: 'New Frontend(Beta)', link: 'new-frontend' },
@@ -373,7 +372,8 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         collapsed: true,
       items: [
             { text: 'Caching', link: 'cache' },
-            { text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' }
+            { text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' },
+            { text: 'Hooks and filters', link: 'hooks-and-filters' },
       ]
     },
 /*

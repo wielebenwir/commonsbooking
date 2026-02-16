@@ -14,6 +14,5 @@ Administrationsfunktionen und Merkmalen.
   * [ Registrierung & Login anpassen ](custom-registration-user-fields)
   * [ Buchungsliste ](booking-list)
   * [ Datenschutz ](privacy)
-  * [ Hooks und Filter ](hooks-and-filter)
   * [ Neues Frontend (BETA) ](new-frontend)
 

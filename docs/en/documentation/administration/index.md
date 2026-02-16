@@ -17,6 +17,5 @@ Administrationsfunktionen und Merkmalen.
   * [ Karte der Standorte mit Filter ](./map-embed)
   * [ Registrierung & Login anpassen ](./custom-registration-user-fields)
   * [ Buchungsliste ](./booking-list)
-  * [ Hooks und Filter ](./hooks-and-filter)
   * [ Neues Frontend (BETA) ](./new-frontend)
 
