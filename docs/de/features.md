@@ -13,8 +13,8 @@ CommonsBooking ist ein WordPress-Plugin und lässt sich so einfach in
 bestehende Webseiten integrieren.
 
 <div>
-  <a class="cbdoc-button cb-brand" href="/documentation/setup/install">Installieren</a>
-  <a class="cbdoc-button cb-alt" href="/documentation">Dokumentation</a>
+  <a class="cbdoc-button cb-brand" href="./documentation/setup/install">Installieren</a>
+  <a class="cbdoc-button cb-alt" href="./documentation/">Dokumentation</a>
 </div>
 
 ##  Die wichtigsten Features
@@ -58,8 +58,8 @@ sind Teil der geplanten Weiterentwicklung:
   * Implementierung der CommonsAPI
 
 <div>
-  <a class="cbdoc-button cb-brand" href="/documentation/setup/install">Installieren</a>
-  <a class="cbdoc-button cb-alt" href="/documentation/roadmap">Roadmap der geplanten Weiterentwicklung</a>
+  <a class="cbdoc-button cb-brand" href="./documentation/setup/install">Installieren</a>
+  <a class="cbdoc-button cb-alt" href="./documentation/roadmap/">Roadmap der geplanten Weiterentwicklung</a>
 </div>
 
 
