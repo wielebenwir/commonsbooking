@@ -12,7 +12,7 @@ Möchtest du den Standardtext wieder herstellen, so lösche einfach alle Einträ
 :::
 
 Um Daten aus der Buchung (wie Artikel, Buchungszeitraum etc.) in die Mail zu
-integrieren, verwendet CommosBooking so genannte [Template-Tags](../administration/template-tags). Dies sind Platzhalter, die in der E-Mail dann durch die entsprechenden Daten ersetzt
+integrieren, verwendet CommonsBooking so genannte [Template-Tags](../administration/template-tags). Dies sind Platzhalter, die in der E-Mail dann durch die entsprechenden Daten ersetzt
 werden.
 
 In den Standard-Vorlagen sind bereits die wichtigsten Template-Tags enthalten. Du kannst sie an jeder beliebige Stelle in den Vorlagen verwenden. Darüber hinaus kannst du auch HTML tags in den Vorlagen verwenden.
