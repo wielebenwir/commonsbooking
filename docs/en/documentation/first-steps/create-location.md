@@ -1,6 +1,5 @@
 #  Create location
 
-__
 
 ## Location description
 Use the large text editor at the top of the location page to describe

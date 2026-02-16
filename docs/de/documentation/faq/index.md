@@ -1,13 +1,12 @@
 #  Häufige Fragen (FAQ)
 
-__
 
 ###  Artikel
 
-  * [ Wie bekomme ich den Buchungskommentar auf die Seite und in die Email? ](/documentation/faq/booking-comment-emails)
-  * [ Wie kann ich die Artikeldetailseite übersichtlicher gestalten? ](/documentation/faq/organise-article-page)
-  * [ Die Seite ist sehr langsam ](/documentation/faq/site-slow)
-  * [ Wie füge ich Zahlenschloss-Codes in E-Mails ein? ](/documentation/faq/lock-codes-email)
+  * [ Wie bekomme ich den Buchungskommentar auf die Seite und in die Email? ](booking-comment-emails)
+  * [ Wie kann ich die Artikeldetailseite übersichtlicher gestalten? ](organise-article-page)
+  * [ Die Seite ist sehr langsam ](site-slow)
+  * [ Wie füge ich Zahlenschloss-Codes in E-Mails ein? ](lock-codes-email)
 
 
 ## Ich möchte einzelne Nutzer vorübergehend sperren
@@ -64,7 +63,7 @@ Wenn ihr das Problem auch habt, schreibt gerne direkt an den Support des Plugins
 
 ## Inkompatibles Plugin REDIS Object Cache
 
-Im Zusammenhang mit dem [Cache](/documentation/advanced-functionality/) gab
+Im Zusammenhang mit dem [Cache](../advanced-functionality) gab
 es in der Vergangenheit bereits Probleme mit anderen Wordpress-Plugins wie
 z.B. 'REDIS Object Cache'. Aus diesem Grund raten wir von der Nutzung solcher
 Plugins ab.

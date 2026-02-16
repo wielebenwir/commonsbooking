@@ -1,6 +1,5 @@
 #  Probleme und Antworten
 
-
 ###  Anzeige Kalender-Widget im Admin-Bereich
 
 Treten Probleme bei der Anzeige des Kalenders im Admin-Bereich der Buchungen

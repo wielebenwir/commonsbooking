@@ -33,7 +33,7 @@ bestehende Webseiten integrieren.
 
   * **Neu** : Benutzer*innen können zugeordnete Artikel, Stationen und Zeiträume selbst verwalten.
   * Automatische Buchungsannahme: Nutzende können Gegenstände buchen, ohne dass Administration nötig ist.
-  * Kalendar-Integration: Automatischer Import aller relevanter Buchungen in den digitale Kalender via [ICal-Format](/documentation/manage-bookings/icalendar-feed).
+  * Kalendar-Integration: Automatischer Import aller relevanter Buchungen in den digitale Kalender via [ICal-Format](documentation/manage-bookings/icalendar-feed).
 
 ![](/img/cb-managers.png)
 

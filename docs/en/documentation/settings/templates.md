@@ -1,5 +1,4 @@
 # Templates
-__
 
 **Settings -> CommonsBooking -> Tab: Templates**
 

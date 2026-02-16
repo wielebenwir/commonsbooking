@@ -1,6 +1,5 @@
 #  Zeitrahmen-Typen
 
-__
 
 Die Zeitrahmen-Typen wählst du im Zeitrahmen-Editor aus. Hier beschreiben wir
 die dort einstellbaren Typen.

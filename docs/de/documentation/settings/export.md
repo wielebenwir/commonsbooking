@@ -1,6 +1,5 @@
 #  Export von Zeitrahmen und Buchungen
 
-__
 
 Über die Einstellungen -> Export könnt ihr Zeitrahmen und Buchungen im CSV Format exportieren um diese zB. zu archivieren oder mithilfe von statistischen Programmen auszuwerten. 
 

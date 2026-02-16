@@ -1,6 +1,5 @@
 #  iCalendar Feed
 
-__
 
 ::: tip Ab Version 2.8
 Diese Feature ist noch experimentell.
@@ -19,7 +18,7 @@ auswirken.
 In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
 aktivieren.
 Nachdem diese Funktion aktiviert ist, findest du die individuelle Kalender URL
-in dem Menü in der Übersicht "Meine Buchungen" ([Shortcode `[cb_bookings]`](/documentation/administration/shortcodes#liste-aller-buchungen))
+in dem Menü in der Übersicht "Meine Buchungen" ([Shortcode `[cb_bookings]`](../administration/shortcodes#liste-aller-buchungen))
 
 
 
@@ -31,7 +30,7 @@ Dieser digitale Kalender listet nicht nur deine eigenen
 Buchungen auf sondern alle Buchungen, die du einsehen darfst. Dies hat
 besondere Auswirkungen auf den Administrator und die CommonsBooking Manager,
 die Zugriffsrechte auf Stationen oder Artikel haben. Mehr dazu: [
-Zugriffsrechte vergeben ](/documentation/basics/permission-management)
+Zugriffsrechte vergeben ](../basics/permission-management)
 :::
 
 ::: info

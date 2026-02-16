@@ -1,6 +1,5 @@
 #  Change default values for timeframe creation
 
-__
 
 Using code snippets akin to [ hooks and filters ](../administration/hooks-and-filters), 
 the default values that are pre-filled when creating a timeframe can be changed.

@@ -1,6 +1,5 @@
 #  Buchungseinschränkungen verwalten
 
-__
 
 **Was sind Buchungseinschränkungen?**
 
@@ -18,7 +17,7 @@ betroffenen Zeitraum können automatisch storniert werden und neue Buchungen blo
 Folgende Einstellungen stehen nun zur Verfügung:
 
   * **Typ**
-    * **Totalausfall:**. Bei einem Totalaufall ist der Artikel nicht mehr buchbar. Sämtliche Buchungen in diesem Zeitraum werden storniert, außer in den [Einstellungen für die Buchungseinschränkungen](/documentation/settings/restrictions) ist dieses Verhalten explizit deaktiviert worden.
+    * **Totalausfall:**. Bei einem Totalaufall ist der Artikel nicht mehr buchbar. Sämtliche Buchungen in diesem Zeitraum werden storniert, außer in den [Einstellungen für die Buchungseinschränkungen](../settings/restrictions) ist dieses Verhalten explizit deaktiviert worden.
     * **Hinweis:** Ein Hinweis wird lediglich auf der Artikelseite angezeigt und Buchende können auf Wunsch benachrichtigt werden.
   * **Standort**
     * Wähle den betreffenden Standort aus.
@@ -40,5 +39,5 @@ Folgende Einstellungen stehen nun zur Verfügung:
         Wir gehen davon aus, dass die Nutzenden sich zu dem Zeitpunkt wahrscheinlich bereits um eine Ersatzbuchung bemüht haben.
         Falls jedoch Stornierungen deaktiviert sind, werden die Nutzenden über die Lösung des Totalausfalls informiert.
         :::
-      * Die Vorlagen für diese E-Mails kannst du unter [ Einstellungen -> Commonsbooking -> Einschränkungen ](/documentation/settings/restrictions) konfigurieren.
+      * Die Vorlagen für diese E-Mails kannst du unter [ Einstellungen -> Commonsbooking -> Einschränkungen ](../settings/restrictions) konfigurieren.
 

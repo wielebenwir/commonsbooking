@@ -1,6 +1,5 @@
 #  Buchung stornieren
 
-__
 
 Buchungen sollten in der aktuellen Version nur über die Frontend-Ansicht (also
 quasi über die Webseite, nicht über die WordPress-Verwaltung) storniert

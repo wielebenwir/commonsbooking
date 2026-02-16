@@ -1,6 +1,5 @@
 #  Timeframes: Define when an item can be booked
 
-__
 
 An item becomes bookable through the connection of an item and a location using a timeframe.
 The timeframe defines a time window (start and end date) and the booking conditions (e.g. hourly rental) under

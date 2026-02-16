@@ -1,9 +1,8 @@
 #  Schnittstellen / API
 
-__
 
 ###  Artikel
 
-  * [ Was ist die CommonsAPI? ](/documentation/api/what-is-the-commonsapi)
-  * [ Die CommonsBooking API nutzen ](/documentation/api/commonsbooking-api)
+  * [ Was ist die CommonsAPI? ](./what-is-the-commonsapi)
+  * [ Die CommonsBooking API nutzen ](./commonsbooking-api)
 

@@ -1,6 +1,5 @@
 #  Manage restrictions
 
-__
 
 **What are restrictions?**
 

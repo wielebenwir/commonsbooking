@@ -1,6 +1,5 @@
 #  Hooks and filters
 
-__
 
 ##  Action Hooks
 

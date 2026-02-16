@@ -1,6 +1,5 @@
 #  Create item
 
-__
 
 **Item description**
 

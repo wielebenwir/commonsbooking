@@ -1,6 +1,5 @@
 #  Booking codes
 
-__
 
 When booking codes are activated, they will be created for each booking and can be used by locations as passwords to identify the person picking up the item. Booking codes can only be generated once for every day and thus only for day-based rentals. They can be created when setting up a [timeframe](../first-steps/booking-timeframes-manage). The codes will also be listed at the end of the timeframe detail page. Additionally, they can be downloaded as a CSV file for further processing.
 

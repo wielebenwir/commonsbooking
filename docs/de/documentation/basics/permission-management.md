@@ -1,6 +1,5 @@
 #  Zugriffsrechte vergeben (CB-Manager)
 
-__
 
 In WordPress dürfen die Nutzenden mit der Rolle "Administrator" meistens
 alles, bei CommonsBooking sind auch die Personen mit dieser Rolle die, die
@@ -63,7 +62,7 @@ Folgende Dinge darf der CommonsBooking Manager zum Beispiel nicht:
 
 ## CommonsBooking Manager zum Manager für alle Artikel / Standorte machen {#filterhook-isCurrentUserAdmin}
 
-Mithilfe eines [Filter Hooks](/documentation/administration/hooks-and-filter) kannst du eine bestimmte Rolle so einstellen,
+Mithilfe eines [Filter Hooks](../administration/hooks-and-filter) kannst du eine bestimmte Rolle so einstellen,
 dass sie automatisch Manager für alle Artikel / Standorte wird. Das unten genannte Beispiel macht das mit der Rolle 'cb_manager', also konfiguriert den CB-Manager so, dass er automatisch allen Artikeln und Standorten der Instanz zugerechnet wird. Falls das mit einer anderen Rolle passieren soll, muss diese Rolle auch den Manager Rollen mit einem [weiteren Codeschnipsel hinzugefügt werden](#filterhook-manager-roles).
 
 ```php
@@ -152,7 +151,7 @@ zu stornieren.
 Es ist mit einem kleinen Codeschnipsel möglich, auch eine weitere Rolle zu
 definieren die einem Artikel / Standort zugewiesen werden kann und diesen dann
 entsprechend ihrer / seiner Berechtigung bearbeiten darf. Das funktioniert mit
-einem [Filter](/documentation/administration/hooks-and-filter) (Dort findest du auch
+einem [Filter](../administration/hooks-and-filter) (Dort findest du auch
 mehr Infos zu Codeschnipseln). Dieser heißt `commonsbooking_manager_roles` und
 kann zum Beispiel wie folgt benutzt werden:
 

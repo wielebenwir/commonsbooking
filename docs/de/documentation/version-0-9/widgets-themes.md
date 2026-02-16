@@ -1,7 +1,5 @@
 #  Widgets & Themes (Version 0.9.x)
 
-__
-
 #  **Widgets**
 
 Allgemeine Informationen zur Nutzung von Widgets: [http://www.win-win-webseite.com/portfolio/widgets-teil1/ ](http://www.win-win-webseite.com/portfolio/widgets-teil1)

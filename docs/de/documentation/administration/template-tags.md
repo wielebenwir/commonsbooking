@@ -1,6 +1,5 @@
 #  Template Tags und Platzhalter für E-Mail-Vorlagen
 
-__
 
 Die folgende Seite zeigt dir, wie du die Wordpress Templates und die automatischen E-Mail Nachrichten mit Daten aus Wordpress bzw.
 dem Plugin anreichern kannst.

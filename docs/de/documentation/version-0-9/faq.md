@@ -1,7 +1,5 @@
 #  Häufige Fragen (Version 0.9.x)
 
-__
-
 ###  **Es werden keine Emails (Registrierung, Buchung) versendet**
 
   * **Siehe in deinem SPAM-Ordner nach** . Vielleicht sind die Mails dort gelandet. Versuche in den E-Mail-Templates weniger Auszeichnungen (o.ä.) zu verwenden.

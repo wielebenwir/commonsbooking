@@ -1,6 +1,5 @@
 #  Shortcodes
 
-__
 
 Die CommonsBooking-Inhalte (z.B. Artikellisten oder Verfügbarkeiten) kannst du auf der Website anzuzeigen, indem du sogenannte Shortcodes verwendest.
 Shortcodes können in jede WordPress Seite eingefügt werden. [Offizielle WordPress Dokumentation](https://en.support.wordpress.com/shortcodes).
@@ -63,7 +62,7 @@ Beispiel:
 Zeigt eine Karte aller veröffentlichen Artikel an.
 Dafür muss zuerst eine Karte unter "CommonsBooking -> Karten" eingerichtet werden.
 
-[Mehr zur Einrichtung und Konfiguration von Karten](/documentation/administration/map-embed).
+[Mehr zur Einrichtung und Konfiguration von Karten](map-embed).
 
   * Shortcode: ` [cb_map] `
   * Argumente ( **erforderlich!** ): ` id `
@@ -85,7 +84,7 @@ danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 ![](/img/shortcode-cb-search-map.png)
 
 [ Weitere Argumente und ausführliche Dokumentation
-](/documentation/administration/new-frontend)
+](new-frontend)
 
 ##  Artikel-Tabelle mit Verfügbarkeit
 
@@ -136,9 +135,9 @@ Liste aller Buchungen, also eigene Buchungen des eingeloggten Nutzenden.
 User in der Rolle von Administrator*innen sehen hier alle Buchungen.
 
   * Shortcode: `[cb_bookings]`
-  * [User mit der Rolle cb_manager](/documentation/basics/permission-management) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel
+  * [User mit der Rolle cb_manager](../basics/permission-management) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel
     und Stationen.
-  * Import in digitalen Kalender über [iCalendar](/documentation/manage-bookings/icalendar-feed)-Format möglich
+  * Import in digitalen Kalender über [iCalendar](../manage-bookings/icalendar-feed)-Format möglich
 
 ![](/img/shortcode-cb-bookings.png)
 

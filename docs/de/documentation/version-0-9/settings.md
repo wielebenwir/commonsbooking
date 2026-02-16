@@ -1,7 +1,5 @@
 #  Login- und Registrierungsseiten anpassen (Version (0.9.x)
 
-__
-
 Ab Version 0.9.1.1 – Dieser Schalter ersetzt die beiden vorherigen Optionen
 
 Dieser Schalter verändert die Darstellung der Benutzerprofil- und

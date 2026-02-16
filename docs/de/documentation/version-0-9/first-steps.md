@@ -1,6 +1,4 @@
-#  Erste Schritte (Version 0.9…)
-
-__
+#  Erste Schritte (Version 0.9.x)
 
 ###  **Plugin-Seiten in das Menü stellen**
 

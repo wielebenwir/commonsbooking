@@ -1,6 +1,5 @@
 #  User-Widget einbinden
 
-__
 
 Das User-Widget beinhaltet die Links zu den persönlichen Buchungen und zur
 Login- bzw. Logout-Seite.

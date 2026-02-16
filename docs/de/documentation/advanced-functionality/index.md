@@ -1,9 +1,8 @@
 #  Erweiterte Funktionalität
 
-__
 
 ###  Artikel
 
-  * [ Cache ](/documentation/advanced-functionality/cache)
-  * [ Standardwerte für Zeitrahmenerstellung ändern ](/documentation/advanced-functionality/change-timeframe-creation-defaults)
+  * [ Cache ](cache)
+  * [ Standardwerte für Zeitrahmenerstellung ändern ](change-timeframe-creation-defaults)
 

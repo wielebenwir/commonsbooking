@@ -1,6 +1,5 @@
 # Install
 
-__
 
 Installing the current version of the new CommonsBooking (Version 2.x.x)
 

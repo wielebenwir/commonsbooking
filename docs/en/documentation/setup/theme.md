@@ -1,6 +1,5 @@
 #  WordPress-Theme auswählen
 
-__
 
 Empfohlene WordPress Design Templates:
 

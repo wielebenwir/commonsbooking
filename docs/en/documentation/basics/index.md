@@ -1,11 +1,10 @@
 #  Grundlagen
 
-__
 
 ###  Artikel
 
-  * [ Begriffe ](/documentation/basics/concepts)
-  * [ Zeitrahmen-Typen ](/documentation/basics/timeframes-config)
-  * [ Buchungs-Codes ](/documentation/basics/booking-codes)
-  * [ Zugriffsrechte vergeben (CB-Manager) ](/documentation/basics/rechte-des-commonsbooking-manager)
+  * [ Begriffe ](./concepts)
+  * [ Zeitrahmen-Typen ](./timeframes-config)
+  * [ Buchungs-Codes ](./booking-codes)
+  * [ Zugriffsrechte vergeben (CB-Manager) ](./permission-management)
 

@@ -1,7 +1,5 @@
 #  Frontend-Einbindung (Version 0.9.x)
 
-__
-
 ##  Bookings Template Tags
 
 ::: warning

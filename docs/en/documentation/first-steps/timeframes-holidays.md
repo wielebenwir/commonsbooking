@@ -1,6 +1,5 @@
 #  Timeframes: Configure a location's holidays
 
-__
 
 Timeframes can not only make items available at locations, but also determine
 specific closing days of the locations. Since version 2.9, CommonsBooking

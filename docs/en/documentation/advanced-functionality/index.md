@@ -1,8 +1,7 @@
 #  Erweiterte Funktionalität
 
-__
 
 ###  Artikel
 
-  * [ Standardwerte für Zeitrahmenerstellung ändern ](/documentation/advanced-functionality/change-timeframe-creation-defaults)
+  * [ Standardwerte für Zeitrahmenerstellung ändern ](./change-timeframe-creation-defaults)
 

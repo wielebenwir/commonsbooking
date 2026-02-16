@@ -1,7 +1,5 @@
 #  Die Seite ist sehr langsam
 
-__
-
 Wenn deine CommonsBooking Seite sehr langsam ist, kann das verschiedene Gründe haben.
 Wir nutzen eine Technologie namens Caching, mit der wir häufig gestellte Anfragen in einem Zwischenspeicher
 zurückhalten, um Serverkapazitäten einzusparen.

@@ -1,9 +1,8 @@
 #  Buchungs-Codes
 
-__
 
 Buchungscodes werden, wenn aktiviert zu jeder Buchung erstellt und können z.B. von Stationen als Passwörter genutzt werden, um die Abholende Person zu identifizieren. Die Buchungs-Codes können NUR beim tageweisen Verleih je Tag im Rahmen der
-Erstellung eines [Zeitrahmens](/documentation/first-steps/booking-timeframes-manage) generiert werden. Die Codes selbst werden dann auch am Ende der
+Erstellung eines [Zeitrahmens](../first-steps/booking-timeframes-manage) generiert werden. Die Codes selbst werden dann auch am Ende der
 Detailseite des Zeitrahmens aufgelistet. Über einen CSV-Download kannst du die
 Buchungscodes auch runterladen und bei Bedarf weiterbearbeiten.
 

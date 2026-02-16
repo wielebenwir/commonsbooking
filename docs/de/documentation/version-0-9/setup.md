@@ -1,7 +1,5 @@
 #  Installation (Version 0.9.x)
 
-__
-
 ::: warning UPDATE
 Der Download ist nicht mehr verfügbar, das Plugin wurde von WordPress stillgelegt
 :::

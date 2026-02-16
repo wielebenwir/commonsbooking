@@ -1,6 +1,5 @@
 #  Shortcodes für Frontend-Darstellung
 
-__
 
 Um die CommonsBooking-Inhalte (z.B. die automatisch generierten Artikellisten)
 auf der Website anzuzeigen werden Shortcodes verwendet. Shortcodes können in
@@ -52,7 +51,7 @@ Zeigt einen einzelnen Artikel in der Listenansicht (s.o.) an.
 
 Zeigt eine Karte aller veröffentlichen Artikel an. Eine Karte muss dafür
 zunächst unter "CommonsBooking -> Karten" eingerichtet werden. [ Mehr zur
-Einrichtung und Konfiguration von Karten ](/documentation/administration/map-embed) .
+Einrichtung und Konfiguration von Karten ](./map-embed) .
 
   * Shortcode: ` [cb_map] `
   * Argumente ( **erforderlich!** ): ` id `
@@ -75,7 +74,7 @@ danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 ![](/img/shortcode-cb-search-map.png)
 
 [ Weitere Argumente und ausführliche Dokumentation
-](/documentation/administration/new-frontend)
+](/new-frontend)
 
 * * *
 
@@ -111,7 +110,7 @@ dort befinden
   * Shortcode: `[cb_bookings]`
   * Liste aller Buchungen (eigene Buchungen des eingeloggten Nutzenden)
   * Administrator*innen sehen hier alle Buchungen
-  * [ cb_manager ](/documentation/basics/rechte-des-commonsbooking-manager) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
+  * [ cb_manager ](../basics/permission-management) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
 
 ![](/img/shortcode-cb-bookings.png)
 

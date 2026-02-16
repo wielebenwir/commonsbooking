@@ -1,6 +1,5 @@
 #  Configure booking rules (Since 2.9)
 
-__
 
 Booking rules are just one of the many ways to restrict the booking of items by users.
 You can also use the [timeframe settings](../first-steps/booking-timeframes-manage) to 

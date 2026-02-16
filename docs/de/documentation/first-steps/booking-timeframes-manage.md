@@ -1,6 +1,5 @@
 #  Zeitrahmen: Buchungszeiträume verwalten
 
-__
 
 Ein Artikel wird buchbar durch eine Verknüpfung von Artikel und Station mithilfe eines Zeitrahmens.
 Der Zeitrahmen definiert für den Buchungszeitraum ein
@@ -19,7 +18,7 @@ Stationsbetreibenden.
 ::: info Los geht's!
 Auf dieser Seite erfährst du, wie du einen Zeitrahmen im Backend anlegst um einen Artikel buchbar zu machen.
 Wenn du wissen willst, wie du nach dem Veröffentlichen deiner Zeiträume auf
-das Buchungsangebot auf den Frontend-Seiten mithilfe von Shortcodes darstellen kannst,  [klicke hier.](/documentation/administration/shortcodes)
+das Buchungsangebot auf den Frontend-Seiten mithilfe von Shortcodes darstellen kannst,  [klicke hier.](../administration/shortcodes)
 
 **Achtung** : Zeitrahmen können nicht direkt über den Backend-Link “Beitrag anzeigen” im Frontend aufgerufen werden,
 sondern müssen über die o.g. Shortcodes eingebunden werden.
@@ -45,7 +44,7 @@ dann dort angezeigt.
 
 ### **Typ:**
 
-  * Wähle hier den Typ “ **Buchbar** ” aus. Du kannst für weitere Fälle (z.B. eintragen eines Urlaubs, Reparatur) auch andere Typen auswählen. Diese verhindern dann z.B. dass zu den definierten Zeiten eine Ausleihe oder Nutzung erfolgen kann. Mehr dazu findest du unter der [ Doku zu den Zeitrahmen-Typen ](/documentation/basics/timeframes-config) .
+  * Wähle hier den Typ “ **Buchbar** ” aus. Du kannst für weitere Fälle (z.B. eintragen eines Urlaubs, Reparatur) auch andere Typen auswählen. Diese verhindern dann z.B. dass zu den definierten Zeiten eine Ausleihe oder Nutzung erfolgen kann. Mehr dazu findest du unter der [ Doku zu den Zeitrahmen-Typen ](../basics/timeframes-config) .
 
 ### **Standort:**
 
@@ -59,7 +58,7 @@ dann dort angezeigt.
   * **Maximal**: Wie viele Tage in am Stück buchbar sind.  (Achtung: Bei mehreren Zeitrahmen für die gleiche Kombination von Artikel und Standort wird der Wert des ersten gültigen Zeitrahmens verwendet.)
   * **Vorlauf:**: Wie viele Tage Vorlauf der Station zwischen Buchung und Abholung liegen soll. Wenn z.B. 2 Tage eingestellt sind, dann kann der Artikel immer erst für in 2 Tagen gebucht werden. Leer lassen für keine Vorlaufzeit.
   * **Kalender zeigt als buchbar:**: Wie viele Tage im Voraus der Kalender mögliche Buchungen anzeigt. Wenn z.B. 7 Tage eingestellt sind, dann können die Nutzenden im Kalender nur Buchungen für die nächste Woche vornehmen.
-  * **Erlaubt für:**: Für welche [Nutzendenrollen](https://wordpress.org/documentation/article/roles-and-capabilities/) die Buchung erlaubt ist. Wenn das Feld leer ist, dürfen alle registrierten Nutzenden den Artikel buchen. Alternativ ist es möglich in den Einstellungen des [Artikels](/documentation/first-steps/create-item) einen Passwortschutz für die Buchung zu konfigurieren.
+  * **Erlaubt für:**: Für welche [Nutzendenrollen](https://wordpress.org/documentation/article/roles-and-capabilities/) die Buchung erlaubt ist. Wenn das Feld leer ist, dürfen alle registrierten Nutzenden den Artikel buchen. Alternativ ist es möglich in den Einstellungen des [Artikels](create-item) einen Passwortschutz für die Buchung zu konfigurieren.
 
 ### **Konfigurieren des Zeitrahmens:**
   * **Ganzer Tag:** Wenn aktiviert, belegt der Zeitrahmen den ganzen Tag. Wenn diese Option deaktiviert ist, muss der Zeitraum eine Start- und Endzeit haben.
@@ -93,7 +92,7 @@ _Wähle aus, wie sich der buchbaren Zeitrahmen innerhalb des angegebenen Start-u
 * **Wochentage:**
   * Nur bei wöchentlicher Wiederholung: Wähle die Wochentage aus, an denen der Artikel buchbar sein soll.
   * Wenn gewünscht kann das auch die Tage definieren, an denen der Artikel nur abgeholt / zurückgegeben werden kann.
-    Ob ein Wochentag "überbuchbar" ist wird durch die [Standorteinstellungen](/documentation/first-steps/create-locations) bestimmt.
+    Ob ein Wochentag "überbuchbar" ist wird durch die [Standorteinstellungen](create-locations) bestimmt.
 * **Manuell ausgewählte Daten:**
   * Nur bei manueller Wiederholung: Trage einzelne Tage im Format JJJJ-MM-TT ein, um den Artikel an diesem Tag buchbar zu machen. Mehrere Tage werden durch Kommas getrennt. Du kannst auch auf das Textfeld hinter "Ausgewählte Daten" klicken, dort öffnet sich ein Kalender. Jeder Tag, der in dem Kalender angeklickt wird, wird dann der Liste hinzugefügt.
 

@@ -1,6 +1,5 @@
 #  Update information
 
-__
 
 Detaillierte Release-Informationen findest du auf der [ **CommonsBooking
 WordPress-Seite**

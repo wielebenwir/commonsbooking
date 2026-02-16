@@ -1,6 +1,5 @@
 #  Migration von Version 0.9.x
 
-__
 
 Die Migration von Version CB 0.9.x zu CB 2.x.x könnt ihr per Knopfdruck
 erledigen. Die Migration importiert folgende Daten:
@@ -24,9 +23,9 @@ erledigen. Die Migration importiert folgende Daten:
 
   * Erstelle ein **Backup der aktuellen Seite** (wir empfehlen das Plugin „ [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus) “)
   * Aktualisiere dein bestehendes Commons Booking auf die neueste Version
-  * Gehe unter Einstellungen -> Commons Booking zum Tab “E-Mails” und kopiere dir dort die Vorlagen-Texte in einen Texteditor auf deinem Rechner (Notepad oder ähnliches). Bei der Migration können die Templates nicht übernommen werden, da das neue CommonsBooking mit anderen [ Template-Tags ](/documentation/administration/template-tags) arbeitet. Nach der Migration sind im neuen CommonsBooking dann neue Standardvorlagen aktiviert. Diese kannst du dann manuell an deine Bedürfnisse anpassen. Bitte nicht die gespeicherten Vorlagen einfach in das neue CB kopieren, da sonst die Platzhalter (Template-Tags) nicht mehr funktionieren.
-  * Auf unserer [ Doku-Seite der Template-Tags ](/documentation/administration/template-tags) findest du die Namen der neuen Template-Tags und kannst mit diesen dann die Templates entsprechend anpassen.
-  * [ Installiere dir CommonsBooking 2 ](/documentation/setup/install) und aktiviere das Plugin. Du kannst die Version 2 parallel zu deiner bestehenden CommonsBooking-Installation betreiben.
+  * Gehe unter Einstellungen -> Commons Booking zum Tab “E-Mails” und kopiere dir dort die Vorlagen-Texte in einen Texteditor auf deinem Rechner (Notepad oder ähnliches). Bei der Migration können die Templates nicht übernommen werden, da das neue CommonsBooking mit anderen [ Template-Tags ](../administration/template-tags) arbeitet. Nach der Migration sind im neuen CommonsBooking dann neue Standardvorlagen aktiviert. Diese kannst du dann manuell an deine Bedürfnisse anpassen. Bitte nicht die gespeicherten Vorlagen einfach in das neue CB kopieren, da sonst die Platzhalter (Template-Tags) nicht mehr funktionieren.
+  * Auf unserer [ Doku-Seite der Template-Tags ](../administration/template-tags) findest du die Namen der neuen Template-Tags und kannst mit diesen dann die Templates entsprechend anpassen.
+  * [ Installiere dir CommonsBooking 2 ](install) und aktiviere das Plugin. Du kannst die Version 2 parallel zu deiner bestehenden CommonsBooking-Installation betreiben.
   * Wir empfehlen, währen der Migration deine Seite in einen Wartungsmodus zu versetzen, damit während der Migrations- und Testzeit keine Buchungen möglich sind, die dann evtl. in der neuen Version nicht zur Verfügung sind. Ihr könnt dazu z.B. das Plugin [ WP Maintenance Mode ](https://de.wordpress.org/plugins/wp-maintenance-mode) nutzen. Im Wartungsmodus könnt ihr selbst als Administratoren natürlich auf die Seite zugreifen und so alles testen.
 
 ##  2\. Migration durchführen Daten migrieren
@@ -64,7 +63,7 @@ Klicke in den Einstellungen im Reiter “ **Migration** ”
 
 Mehr Infos zum Thema Registrierungsfelder findest du auf der Seite [
 Registrierungs-Seiten und -Felder anpassen
-](/documentation/administration/custom-registration-user-fields)
+](../administration/custom-registration-user-fields)
 
 * * *
 

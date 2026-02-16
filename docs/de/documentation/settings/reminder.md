@@ -1,6 +1,5 @@
 # E-Mail-Benachrichtigungen
 
-__
 
 Zusätzlich zu den E-Mails die die Nutzenden bei Bestätigung bzw. Stornierung einer Buchung erhalten, kann CommonsBooking auch Erinnerungs-E-Mails an Nutzende und Standorte vor Beginn bzw. nach Beendigung einer Buchung versenden. Diese können inviduell aktiviert und deaktiviert werden. Diese Seite gibt einen Überblick über sämtliche E-Mail Benachrichtigungen die CommonsBooking versendet.
 
@@ -35,7 +34,7 @@ CommonsBooking versendet an Ausleihende folgende Emails, deren Text hier angepas
   * **Standorte** (unter Standort → Standort E-Mail) erhalten **Erinnerungen zu Buchungen** , wenn die Option unter “Einstellungen → “Erinnerungen → Erinnerung für Standorte vor Buchungsbeginn” bzw. "Erinnerung für Standorte vor Buchungsende" eingestellt ist UND in dem entsprechenden Standort die Option "Erinnerungsmail zum Buchungsstart" bzw. "Erinnerungsmail zum Buchungsende" aktiviert ist.
 
 ::: warning **Wichtig**
-Es reicht nicht, Personen als [Standort-Manager:innen](/documentation/basics/permission-management) einzutragen! Um E-Mails zu erhalten, muss die Email-Adresse in das Feld “Standort → Standort E-Mail” eingetragen werden.
+Es reicht nicht, Personen als [Standort-Manager:innen](../basics/permission-management) einzutragen! Um E-Mails zu erhalten, muss die Email-Adresse in das Feld “Standort → Standort E-Mail” eingetragen werden.
 :::
 
 ###  Artikelbetreuende

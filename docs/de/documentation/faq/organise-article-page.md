@@ -1,7 +1,5 @@
 #  Wie kann ich die Artikeldetailseite übersichtlicher gestalten?
 
-__
-
 ##  Informationen erst auf Klick anzeigen
 
 Lange Artikelseiten bedeuten, dass Menschen lange bis zum Buchungskalender

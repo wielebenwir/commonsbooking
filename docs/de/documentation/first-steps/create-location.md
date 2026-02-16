@@ -1,6 +1,5 @@
 #  Station anlegen
 
-__
 
 ## Stationsbeschreibung
 
@@ -44,11 +43,11 @@ usw. wann angezeigt werden:
   die oben genannten E-Mail-Adressen eine Kopie der Buchungs- und Stornierungs-E-Mails, die an die Nutzenden gesendet werden.
   * **Abhol-Hinweise** (Öffnungszeiten, Abholprozess usw.) werden auf der Artikelseite und im gesamtem Buchungsprozess angezeigt. Die hier angegebenen Informationen sind öffentlich und auch ohne Buchung oder Registrierung sichtbar.
   * **Kontaktinformationen** (E-Mail und Telefonnummer) werden erst auf der Bestätigungsseite nach der Buchung angezeigt. Falls Buchende manche Informationen erst nach der Buchung sehen sollen, kannst du sie hier eintragen.
-  * **Standort-Administrator(en)**: Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, diesen bestimmten Standort zu bearbeiten und zu verwalten. Mehr dazu: [Zugriffsrechte vergeben](/documentation/basics/permission-management)
+  * **Standort-Administrator(en)**: Wähle einen oder mehrere Benutzer aus, um ihnen die Möglichkeit zu geben, diesen bestimmten Standort zu bearbeiten und zu verwalten. Mehr dazu: [Zugriffsrechte vergeben](../basics/permission-management)
 
 ## Einstellungen für die Überbuchung {#overbooking}
 
-Wenn du einen Buchungszeitraum anlegst (siehe [Buchungszeiträume anlegen](/documentation/first-steps/booking-timeframes-manage)) kannst du auswählen,
+Wenn du einen Buchungszeitraum anlegst (siehe [Buchungszeiträume anlegen](booking-timeframes-manage)) kannst du auswählen,
 ob Buchungen nur an bestimmten Wochentagen möglich sind. So kannst du z.B.
 definieren, dass Buchungen nur Montags – Freitags möglich sind. Dies bedeutet
 dann, dass eine Abholung und Rückgabe nur an diesen Tagen erfolgt. Um

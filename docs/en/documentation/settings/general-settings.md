@@ -1,6 +1,5 @@
 #  General Settings
 
-__
 
 The general settings are located in the **General** tab under Settings -> CommonsBooking.
 

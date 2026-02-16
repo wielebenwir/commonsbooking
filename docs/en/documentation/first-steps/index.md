@@ -1,6 +1,5 @@
 # First steps
 
-__
 
 After you finished the [installation](./documentation/setup/install), this section will guide you, step by step, to
 create your first interactive booking.

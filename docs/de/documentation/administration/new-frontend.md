@@ -1,6 +1,5 @@
 #  Neues Frontend (BETA)
 
-__
 
 Der Shortcode wird mit `[cb_search id="4" ...]` aufgerufen.
 

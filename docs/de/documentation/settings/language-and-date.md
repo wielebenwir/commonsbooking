@@ -1,6 +1,5 @@
 #  Spracheinstellung & Datumsformat
 
-__
 
 CommonsBooking übernimmt die Sprach- und Datumsteinstellung von deinen
 WordPress-Einstellung.

@@ -1,6 +1,5 @@
 #  Settings
 
-__
 
 The following pages cover the various settings available in CommonsBooking. The settings menu can be found in the WordPress backend under **Settings -> CommonsBooking** or by clicking on "Settings" on the right hand side of the CommonsBooking Dashboard.
 

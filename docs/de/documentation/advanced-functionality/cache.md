@@ -1,7 +1,5 @@
 # Cache einstellen
 
---
-
 ::: warning Technisch!
 Um zu verstehen ob der Cache in deiner Installation korrekt funktioniert benötigst du technisches Verständnis.
 Wir versuchen trotzdem, dir den Einsatz des Caches möglichst einfach zu gestalten.
@@ -16,7 +14,7 @@ Der Cache hält Ausleih-Daten zu häufig gestellten Anfragen vor und soll so die
 * Wir empfehlen es grundsätzlich nicht den Cache zu deaktivieren, sollte das dennoch gewünscht sein, kannst du als Cache Adapter "Cache deaktiviert" auswählen.
 
 Falls CommonsBooking aufgrund eines Problems mit dem Cache nicht aktiviert werden kann, kannst du den Cache standardmäßig
-mit diesem Codeschnipsel deaktivieren. [ Mehr dazu, wie du Codeschnipsel nutzen kannst ](/documentation/administration/hooks-and-filter).
+mit diesem Codeschnipsel deaktivieren. [ Mehr dazu, wie du Codeschnipsel nutzen kannst ](../administration/hooks-and-filter).
 Dies wird nur empfohlen, wenn andere Methoden den Cache zu deaktivieren nicht funktionieren.
 
 ```php
@@ -36,9 +34,9 @@ Ein falsch konfigurierter Cache kann deine Seite verlangsamen.
   Probiere dann einen anderen Pfad für den Cache oder einen anderen Cache Adapter.
 
 * Falls deine Seite sehr langsam ist, kann das auch auf Problem mit dem Cache hindeuten.
-  Mehr dazu: [Die Seite ist sehr langsam](/documentation/faq/site-slow).
+  Mehr dazu: [Die Seite ist sehr langsam](../faq/site-slow).
 
-* Siehe auch die Seite [Häufige Fragen](/documentation/faq/) für bekannte Inkompatibilitäten.
+* Siehe auch die Seite [Häufige Fragen](../faq) für bekannte Inkompatibilitäten.
 * **Regelmäßiges Aufwärmen des Caches durch Cronjob**:
   :::warning ACHTUNG
   Diese Einstellung ist nur für ganz besondere Randfälle gedacht und betrifft dich vermutlich nicht.Außerdem ist die Funktion experimentell und kann unerwünschte Nebeneffekte haben. Wir konnten zum Beispiel nicht feststellen, ob der Cache nach einer Buchung rechtzeitig geleert wird. Der Cronjob sollte wahrscheinlich relativ häufig ausgeführt werden, wenn die Funktion genutzt werden soll.
@@ -51,7 +49,7 @@ Ein falsch konfigurierter Cache kann deine Seite verlangsamen.
 
 ## Bekannte Probleme
 
-* Siehe auch die Seite [Häufige Fragen](/documentation/faq/) für bekannte Inkompatibilitäten.
+* Siehe auch die Seite [Häufige Fragen](../faq) für bekannte Inkompatibilitäten.
 
 ## Diskussion
 

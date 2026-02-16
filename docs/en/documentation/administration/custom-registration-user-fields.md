@@ -1,6 +1,5 @@
 #  Registrierung & Login anpassen
 
-__
 
 ##  Login- und Registrierungsseiten im Website Stil
 
