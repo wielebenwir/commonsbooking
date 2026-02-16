@@ -317,7 +317,7 @@ class Upgrade {
 								'commonsbooking'
 							)
 						),
-						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
+						'<a target="_blank" href="https://commonsbooking.org/documentation/setup/update-news/">',
 						'</a>'
 					);
 					?>

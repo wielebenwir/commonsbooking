@@ -51,10 +51,10 @@ return array(
 								'You are using CommonsBooking Version %s
 
                             <h2>How to start</h2>
-                            <p>To get startet visit our tutorials and documentation on <a target="_blank" href="https://commonsbooking.org/dokumentation">https://commonsbooking.org/dokumentation</a></p>
+							<p>To get startet visit our tutorials and documentation on <a target="_blank" href="https://commonsbooking.org/documentation">https://commonsbooking.org/documentation</a></p>
 
                             <h2>Questions or bug reports?</h2>
-                            <p>Ask your questions or send us your bug reports here <a target="_blank" href="https://commonsbooking.org/kontakt/">https://commonsbooking.org/kontakt/</a></p>
+                            <p>Ask your questions or send us your bug reports here <a target="_blank" href="https://commonsbooking.org/contact/">https://commonsbooking.org/contact/</a></p>
 
                             <h2>Contribute</h2>
                             The future of this plugin depends on your support. You can support us by make a donation on our website: <a target="_blank" href="https://www.wielebenwir.de/verein/unterstutzen">wielebenwir</a>',
@@ -189,7 +189,7 @@ return array(
 					commonsbooking_sanitizeHTML(
 						__(
 							'Enter the booking codes to be generated in advance for booking types with all-day booking time frames.  Enter booking codes as a comma separated list, e.g.: Code1,Code2,Code3,Code4
-                <br>More information in the documentation: <a href="https://commonsbooking.org/dokumentation/grundlagen/buchungs-codes/" target="_blank">Booking codes</a>',
+				<br>More information in the documentation: <a href="https://commonsbooking.org/documentation/basics/booking-codes/" target="_blank">Booking codes</a>',
 							'commonsbooking'
 						)
 					),
@@ -772,7 +772,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				'fields' => array(
 					array(
 						'name'  => commonsbooking_sanitizeHTML( __( 'Count cancelled bookings towards quota', 'commonsbooking' ) ),
-						'desc'  => commonsbooking_sanitizeHTML( __( 'Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation/?p=2157\">More info in the documentation</a>', 'commonsbooking' ) ),
+						'desc'  => commonsbooking_sanitizeHTML( __( 'Check if bookings that have been cancelled in the booking period shall be counted towards the amount of booked days for the user. <a target=\"_blank\" href=\"https://commonsbooking.org/documentation/?p=2157\">More info in the documentation</a>', 'commonsbooking' ) ),
 						'id'    => 'bookingrules-count-cancelled',
 						'type'  => 'checkbox',
 					),
@@ -1213,7 +1213,7 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 			'migration'         => array(
 				'title'  => esc_html__( 'Migrate from Commons Booking Version 0.X', 'commonsbooking' ),
 				'id'     => 'migration',
-				'desc'   => commonsbooking_sanitizeHTML( __( 'Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style="color:red">If you have clicked "Migrate" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/?p=434">How to migrate from version 0.9.x to 2.x.x </a> before you start migration.', 'commonsbooking' ) ),
+				'desc'   => commonsbooking_sanitizeHTML( __( 'Migrate data from CommonsBooking Version 0.X. <br>The migration includes: locations, items, timeframes and bookings. <br><span style="color:red">If you have clicked "Migrate" before, starting the migration again will overwrite any changes you made to  locations, items, timeframes and bookings</span>.<br>Please read the documentation <a target="_blank" href="https://commonsbooking.org/documentation/?p=434">How to migrate from version 0.9.x to 2.x.x </a> before you start migration.', 'commonsbooking' ) ),
 				'fields' => [
 					array(
 						'name'          => commonsbooking_sanitizeHTML( __( 'Start Migration', 'commonsbooking' ) ),
@@ -1381,13 +1381,13 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 				'fields' => [
 					array(
 						'name' => esc_html__( 'Activate API', 'commonsbooking' ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is enabled. See more information in the documentation: <a target="_blank" href="https://commonsbooking.org/documentation/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
 						'id'   => 'api-activated',
 						'type' => 'checkbox',
 					),
 					array(
 						'name' => esc_html__( 'Enable API Access without API-Key', 'commonsbooking' ),
-						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'If selected, the API is accessible without an API-Key. For details see: <a target="_blank" href="https://commonsbooking.org/documentation/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
 						'id'   => 'apikey_not_required',
 						'type' => 'checkbox',
 					),
@@ -1395,7 +1395,7 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 					array(
 						// Repeatable group -> API Shares
 						'name'       => esc_html__( 'API shares', 'commonsbooking' ),
-						'desc'       => commonsbooking_sanitizeHTML( __( 'You can define on or more API shares. Read the documentation for more information about API shares and configuration <a target="_blank" href="https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
+						'desc'       => commonsbooking_sanitizeHTML( __( 'You can define on or more API shares. Read the documentation for more information about API shares and configuration <a target="_blank" href="https://commonsbooking.org/documentation/schnittstellen-api/commonsbooking-api/">API documentation</a>', 'commonsbooking' ) ),
 						'id'         => 'api_share_group',
 						'type'       => 'group',
 						'repeatable' => true,

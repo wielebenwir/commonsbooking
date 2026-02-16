@@ -594,7 +594,7 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Grid', 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
+				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/documentation/first-steps/booking-timeframes-manage/">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
 				'id'      => 'grid',
 				'type'    => 'select',
 				'options' => self::getGridOptions(),
@@ -714,7 +714,7 @@ class Timeframe extends CustomPostType {
 						'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
 				- Timeframe is bookable</br>
-				<a href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/" target="_blank">More Information in the documentation</a>
+				<a href="https://commonsbooking.org/documentation/erste-schritte/buchungszeitraeume-verwalten/" target="_blank">More Information in the documentation</a>
 				',
 						'commonsbooking'
 					)

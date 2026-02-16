@@ -535,7 +535,7 @@ class Location extends CustomPostType {
 		return [
 			array(
 				'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),
-				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen">Create Locations</a> for more information.', 'commonsbooking' ) ),
+				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/documentation/first-steps/create-location">Create Locations</a> for more information.', 'commonsbooking' ) ),
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
 				'type' => 'checkbox',
 			),
