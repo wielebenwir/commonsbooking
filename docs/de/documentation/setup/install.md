@@ -25,7 +25,7 @@ hast. Wenn du das noch nicht getan hast, hole unter “Einstellungen / Allgemein
 In den WordPress-Einstellungen findest Du nun einen neuen Punkt
 “CommonsBooking”. Hier kannst Du einige Voreinstellungen vornehmen. Bitte
 mindestens den Absender-Namen und E-Mail im Tab “Vorlagen” eintragen. Weitere
-Informationen zur [ Konfiguration ](../settings) .
+Informationen zur [ Konfiguration ](../settings/) .
 
 ###  Standorte, Artikel und Zeitrahmen anlegen
 
@@ -33,7 +33,7 @@ Informationen zur [ Konfiguration ](../settings) .
   * **Standorte** unter “CommonsBooking -> Standorte” anlegen
   * Anschließend kannst du im Menüpunkt “ **Zeitrahmen** ” festlegen, wann ein Artikel an einem bestimmten Standort für die Ausleihe verfügbar sein soll.
 
-Detailliierte Informationen dazu findest du unter [Erste Schritte](../first-steps).
+Detailliierte Informationen dazu findest du unter [Erste Schritte](../first-steps/).
 
 ###  Inhalte auf der Website einbinden
 

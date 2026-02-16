@@ -6,7 +6,7 @@ Speziell zum Verständnis von CommonsBooking:
   * [Artikel](../first-steps/create-item): Gegenstände oder Gemeingüter, die zum Verleih angeboten werden
   * [Standort](../first-steps/create-location): Physischer Ort, von dem aus die Artikel verliehen werden
   * [Zeitrahmen](../first-steps/booking-timeframes-manage): Fasst alle Ereignisse wie Verfügbarkeiten, Ferien und Buchungen zusammen
-  * [Buchung](../manage-bookings): Sogenannter “Slot” innerhalb einer Zeitrahmen-Konfiguration, welcher einen Artikel an einer Location einem User zuordnet.
+  * [Buchung](../manage-bookings/): Sogenannter “Slot” innerhalb einer Zeitrahmen-Konfiguration, welcher einen Artikel an einer Location einem User zuordnet.
   * [Buchungseinschränkungen](../first-steps/manage-booking-restrictions): Umfasst wichtige Benutzungshinweise und Einschränkungen (z.B. Totalausfall) und ergänzt einen buchbaren Zeitrahmen.
   * [Template-Tag](../administration/template-tags): Platzhalter für dynamische Inhalte welche zum Beispiel den Namen einer Userin in einer Buchungs-Bestätigungs-E-Mail anzeigen.
   * [Buchungs-Codes](booking-codes): Zufällig gewählte Begriffs-Kombinationen welche vom System erzeugt werden. Sie helfen dabei User einer Buchung offline zu verifizieren.

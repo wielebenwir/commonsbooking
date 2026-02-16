@@ -1,5 +1,5 @@
 <script setup>
-import Newsletter from '.vitepress/components/Newsletter.vue'
+import Newsletter from '../.vitepress/components/Newsletter.vue'
 </script>
 
 #  Merkmale & Funktionen

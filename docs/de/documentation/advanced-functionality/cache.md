@@ -36,10 +36,10 @@ Ein falsch konfigurierter Cache kann deine Seite verlangsamen.
 * Falls deine Seite sehr langsam ist, kann das auch auf Problem mit dem Cache hindeuten.
   Mehr dazu: [Die Seite ist sehr langsam](../faq/site-slow).
 
-* Siehe auch die Seite [Häufige Fragen](../faq) für bekannte Inkompatibilitäten.
+* Siehe auch die Seite [Häufige Fragen](../faq/) für bekannte Inkompatibilitäten.
 * **Regelmäßiges Aufwärmen des Caches durch Cronjob**:
   :::warning ACHTUNG
-  Diese Einstellung ist nur für ganz besondere Randfälle gedacht und betrifft dich vermutlich nicht.Außerdem ist die Funktion experimentell und kann unerwünschte Nebeneffekte haben. Wir konnten zum Beispiel nicht feststellen, ob der Cache nach einer Buchung rechtzeitig geleert wird. Der Cronjob sollte wahrscheinlich relativ häufig ausgeführt werden, wenn die Funktion genutzt werden soll.
+  Diese Einstellung ist nur für ganz besondere Randfälle gedacht und betrifft dich vermutlich nicht. Außerdem ist die Funktion experimentell und kann unerwünschte Nebeneffekte haben. Wir konnten zum Beispiel nicht feststellen, ob der Cache nach einer Buchung rechtzeitig geleert wird. Der Cronjob sollte wahrscheinlich relativ häufig ausgeführt werden, wenn die Funktion genutzt werden soll.
   :::
   Wenn deine Seite selten aufgerufen wird aber viele Artikel / Buchungen enthält kann es sein, dass beim ersten Aufrufen
   die Seite sehr langsam reagiert. Falls sich das zum Problem entwickelt, kannst du den Cache regelmäßig aufwärmen lassen.
@@ -49,7 +49,7 @@ Ein falsch konfigurierter Cache kann deine Seite verlangsamen.
 
 ## Bekannte Probleme
 
-* Siehe auch die Seite [Häufige Fragen](../faq) für bekannte Inkompatibilitäten.
+* Siehe auch die Seite [Häufige Fragen](../faq/) für bekannte Inkompatibilitäten.
 
 ## Diskussion
 

@@ -63,7 +63,7 @@ Wenn ihr das Problem auch habt, schreibt gerne direkt an den Support des Plugins
 
 ## Inkompatibles Plugin REDIS Object Cache
 
-Im Zusammenhang mit dem [Cache](../advanced-functionality) gab
+Im Zusammenhang mit dem [Cache](../advanced-functionality/) gab
 es in der Vergangenheit bereits Probleme mit anderen Wordpress-Plugins wie
 z.B. 'REDIS Object Cache'. Aus diesem Grund raten wir von der Nutzung solcher
 Plugins ab.

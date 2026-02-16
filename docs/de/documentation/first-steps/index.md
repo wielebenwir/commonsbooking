@@ -7,7 +7,7 @@ erste interaktive Buchung über deine Website ermöglichst.
 ## Übersicht
 
 Hier liefern wir dir einen kurzen Abriss über die Zusammenhänge. Falls das dein erster Kontakt mit CommonsBooking ist,
-schau dir auch die [Artikel zu den Grundlagen](../basics) an.
+schau dir auch die [Artikel zu den Grundlagen](../basics/) an.
 
 Zuerst legst du [Artikel](create-item) und [Standorte](create-location) an und weist diesen dann entsprechende Ausleihzeitfenster zu.
 Ausleihfenster definierst du durch das Anlegen von [Zeitrahmen](booking-timeframes-manage) und kannst du zusätzlich durch [Einschränkungen](manage-booking-restrictions) unterbrechen.

@@ -25,7 +25,7 @@ Dann abonniert doch unseren Newsletter:
 Prüfe deinen Posteingang oder Spam-Ordner, um dein Abonnement zu bestätigen.
 
 <script setup>
-import Newsletter from '.vitepress/components/Newsletter.vue';
+import Newsletter from '../.vitepress/components/Newsletter.vue'
 </script>
 
 <Newsletter />
