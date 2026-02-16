@@ -892,7 +892,7 @@ class Booking extends Timeframe {
 		and checked. Use this function with care.<br>
 		Click on preview to show booking details in frontend<br>
 		To search and filter bookings please integrate the frontend booking list via shortcode. 
-		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>',
+		See here <a target="_blank" href="https://commonsbooking.org/documentation/administration/booking-list/">How to display the booking list</a>',
 				'commonsbooking'
 			)
 		);

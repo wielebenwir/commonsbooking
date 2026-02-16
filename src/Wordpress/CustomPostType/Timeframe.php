@@ -714,7 +714,7 @@ class Timeframe extends CustomPostType {
 						'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
 				- Timeframe is bookable</br>
-				<a href="https://commonsbooking.org/documentation/erste-schritte/buchungszeitraeume-verwalten/" target="_blank">More Information in the documentation</a>
+				<a href="https://commonsbooking.org/documentation/first-steps/booking-timeframes-manage/" target="_blank">More Information in the documentation</a>
 				',
 						'commonsbooking'
 					)
