@@ -1,13 +1,13 @@
 # First steps
 
 
-After you finished the [installation](./documentation/setup/install), this section will guide you, step by step, to
+After you finished the [installation](../setup/install), this section will guide you, step by step, to
 create your first interactive booking.
 
 ## Overview
 
 We give a brief overview of the different concepts used in the plugin. If this is your first time using CommonsBooking,
-be sure to check out the [Basics](./documentation/basics/)(not translated yet) section as well.
+be sure to check out the [Basics](../basics/)(not translated yet) section as well.
 
 At first, you have to [create items](../first-steps/create-item) and [locations](../first-steps/create-location), and how to make them bookable within specific timeframes.
 Availability is defined by setting up [timeframes](../first-steps/booking-timeframes-manage), which can be further restricted using [restrictions](../first-steps/manage-booking-restrictions).

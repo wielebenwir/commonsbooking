@@ -23,7 +23,7 @@ Das Blockieren bestimmter Benutzergruppen ist kein Feature in CommonsBooking und
 
 Wenn ihr euren Nutzenden ermöglichen wollt, den Artikel z.B. über das Wochenende zu buchen, könnt ihr diese Einstellung in den Standort-Einstellungen vornehmen.
 
-Infos dazu unter: https://commonsbooking.org/docs/first-steps/create-locations/
+Infos dazu unter: https://commonsbooking.org/docs/first-steps/create-location/
 
 ## Anzahl der Artikel in der cb_items Liste erhöhen
 

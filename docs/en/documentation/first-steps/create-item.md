@@ -16,7 +16,7 @@ The image will be displayed in the frontend map, in the location and item list, 
 
 Select one or more users to allow them to edit and manage this specific item.
 Only users with the role cb_manager can be selected here.
-[Read more about the cb_manager role](./documentation/basics/permission-management)
+[Read more about the cb_manager role](../basics/permission-management)
 
 **Excerpt**
 

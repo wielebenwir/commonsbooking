@@ -82,7 +82,7 @@ die maximal buchbaren Tage für die Buchungsregeln. Dabei gilt:
 
 ###  Bestimmte Rollen grundsätzlich von allen Buchungsregeln ausnehmen
 
-Mit einem kleinen Codeschnipsel ([mehr dazu hier](../administration/hooks-and-filter)) kannst du eine Rolle
+Mit einem kleinen Codeschnipsel ([mehr dazu hier](../advanced-functionality/hooks-and-filters)) kannst du eine Rolle
 definieren, die grundsätzlich nicht von Buchungsregeln betroffen ist. Dafür musst du die Rolle nicht manuell bei jeder
 Regel hinzufügen.
 

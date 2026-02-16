@@ -73,8 +73,7 @@ danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 
 ![](/img/shortcode-cb-search-map.png)
 
-[ Weitere Argumente und ausführliche Dokumentation
-](/new-frontend)
+[ Weitere Argumente und ausführliche Dokumentation](./new-frontend)
 
 * * *
 

@@ -9,7 +9,7 @@ Administrationsfunktionen und Merkmalen.
   * [ Leihangebote im Frontend anzeigen ](./frontend-show-bookable)
   * [ Shortcodes für Frontend-Darstellung ](./shortcodes)
   * [ User-Widget einbinden ](./widget)
-  * [ Privacy ](../administrationprivacy)
+  * [ Privacy ](../administration/privacy)
   * [ Leihangebote im Frontend anzeigen ](./frontend-show-bookable)
   * [ Shortcodes für Frontend-Darstellung ](./shortcodes)
   * [ User-Widget einbinden ](./widget)

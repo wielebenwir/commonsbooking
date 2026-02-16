@@ -10,5 +10,5 @@ Unter Einstellungen -> CommonsBooking findest du den Reiter **Allgemein**
   * **Buchungskommentar**
     * Stelle ein, ob Ausleihende bei einer Buchung einen Kommentar hinterlassen können. Dieser Kommentar wird an die Buchung angehängt.
   * **Globale Standorteinstellungen**
-    * Verändere das Standardverhalten für die Überbuchung bestimmter Schließtage für alle Standorte. Diese Einstellung definiert nur das Standardverhalten und kann von jedem Standort individuell überschrieben werden. Mehr Informationen dazu findest du unter [Standorteinstellungen: Überbuchung]( /documentation/first-steps/create-locations#overbooking ) .
+    * Verändere das Standardverhalten für die Überbuchung bestimmter Schließtage für alle Standorte. Diese Einstellung definiert nur das Standardverhalten und kann von jedem Standort individuell überschrieben werden. Mehr Informationen dazu findest du unter [Standorteinstellungen: Überbuchung](../first-steps/create-location#overbooking).
 

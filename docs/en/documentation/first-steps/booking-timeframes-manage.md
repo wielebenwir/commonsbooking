@@ -13,7 +13,7 @@ to be bookable and another one for the holidays of the location operators.
 
 :::info Getting started
 On this page you will learn how to create a timeframe in the backend to make an item bookable.
-If you want to know how to display the bookings that are on offer (using shortcodes), after you have published your timeframes, [click here.](../administrationshortcodes)
+If you want to know how to display the bookings that are on offer (using shortcodes), after you have published your timeframes, [click here.](../administration/shortcodes)
 :::
 
 **Caution**: Timeframes cannot be directly accessed in the frontend using the backend link "View Post" but must be embedded using the shortcodes mentioned above.
@@ -36,7 +36,7 @@ and click on "Add new timeframe". From there on fill out the form:
 
 ### **Type:**
 
-* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](./documentation/basics/timeframes-config). (Not translated yet) .  Alternatively, it is possible to enable password protection for an [item](../first-steps/create-item).
+* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](../basics/timeframes-config). (Not translated yet) .  Alternatively, it is possible to enable password protection for an [item](../first-steps/create-item).
 
 ### **Location:**
 

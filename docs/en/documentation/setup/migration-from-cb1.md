@@ -61,9 +61,7 @@ Klicke in den Einstellungen im Reiter “ **Migration** ”
   * Klicke unter „CommonsBooking Version 0.X profile fields“ auf „Aktivieren“
   * Zusätzlich überprüfe ob der Link zu den AGBs korrekt ist.
 
-Mehr Infos zum Thema Registrierungsfelder findest du auf der Seite [
-Registrierungs-Seiten und -Felder anpassen
-](/administration/custom-registration-user-fields)
+Mehr Infos zum Thema Registrierungsfelder findest du auf der Seite [Registrierungs-Seiten und -Felder anpassen](../administration/custom-registration-user-fields)
 
 * * *
 

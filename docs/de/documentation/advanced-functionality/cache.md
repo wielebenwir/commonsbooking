@@ -14,7 +14,7 @@ Der Cache hält Ausleih-Daten zu häufig gestellten Anfragen vor und soll so die
 * Wir empfehlen es grundsätzlich nicht den Cache zu deaktivieren, sollte das dennoch gewünscht sein, kannst du als Cache Adapter "Cache deaktiviert" auswählen.
 
 Falls CommonsBooking aufgrund eines Problems mit dem Cache nicht aktiviert werden kann, kannst du den Cache standardmäßig
-mit diesem Codeschnipsel deaktivieren. [ Mehr dazu, wie du Codeschnipsel nutzen kannst ](../administration/hooks-and-filter).
+mit diesem Codeschnipsel deaktivieren. [ Mehr dazu, wie du Codeschnipsel nutzen kannst ](./hooks-and-filters).
 Dies wird nur empfohlen, wenn andere Methoden den Cache zu deaktivieren nicht funktionieren.
 
 ```php

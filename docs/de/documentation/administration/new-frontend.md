@@ -94,7 +94,6 @@ z.B. so aussehen:
 Bei dieser Konfiguration würden die Marker z.B. zuerst anhand der Kategorien
 zugeordnet werden und als Rückfalloption entweder das Thumbnail oder
 schlussendlich eine Farbe genutzt werden. Details der Konfiguration sind in
-der [ Dokumentation der CB-Frontend Bibliothek
-](https://github.com/wielebenwir/CB-Frontend/blob/main/documentation/configuration.md)
+der [ Dokumentation der CB-Frontend Bibliothek](https://github.com/wielebenwir/CB-Frontend/blob/main/documentation/configuration.md)
 ausgeführt.
 

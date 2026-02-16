@@ -46,11 +46,9 @@ Telefonfeld, sondern ein einfaches Textfeld (wie bei Adresse), und setze die
 ####  Profil/Kontoseite aufräumen
 
 UsersWP hat leider einige unnötige Elemente auf der Profil-Seite (etwa:
-"Notifications"). Um diese auszublenden könnt ihr [ **diesen Code verwenden**
-](https://gist.github.com/flegfleg/8b4fc52dd3f2eed7fc489b55c8137872) . Er muss
+"Notifications"). Um diese auszublenden könnt ihr [ **diesen Code verwenden**](https://gist.github.com/flegfleg/8b4fc52dd3f2eed7fc489b55c8137872) . Er muss
 entweder in die Datei `functions.php` in deinem Theme-Verzeichnis
-kopiert werden, _oder_ ihr verwendet das Plugin [Code Snippets
-](https://wordpress.org/plugins/code-snippets).
+kopiert werden, _oder_ ihr verwendet das Plugin [Code Snippets](https://wordpress.org/plugins/code-snippets).
 
 ####  Mehr Tips
 

@@ -40,7 +40,7 @@ weitere Tage einfügen.
 # Überbuchbarkeit
 
 Ein Zeitrahmen vom Typ "Urlaub" ist überbuchbar, wenn die Überbuchbarkeit in
-den Standorteinstellungen konfiguriert ist ( [mehr dazu](create-locations#overbooking) ).
+den Standorteinstellungen konfiguriert ist ( [mehr dazu](create-location#overbooking) ).
 Das bedeutet, dass ein Artikel zwar über den Zeitraum ausgeliehen werden kann,
 aber währenddessen weder ausgeliehen noch zurückgegeben werden kann.
 

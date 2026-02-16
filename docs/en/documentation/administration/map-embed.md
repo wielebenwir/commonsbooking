@@ -17,8 +17,7 @@ unterschiedlichen Parametern (z.B. Filtern) eingebunden werden können.
 
 **Karte auf einer Website einbauen**
 
-Unter "Kartendarstellung" erhaltet Ihr den [ Shortcode
-](/shortcodes) zur Einbindung in Eure Website.
+Unter "Kartendarstellung" erhaltet Ihr den [Shortcode](./shortcodes) zur Einbindung in Eure Website.
 
 ![](/img/shortcode-cb-map-settings.png)
 

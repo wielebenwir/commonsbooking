@@ -21,7 +21,7 @@ The default templates already include the most important template tags. You can 
 
 CommonsBooking is able to generate a .ics file from the bookings made, which is compatible with most digital calendars. Just like in the email templates, you may use template tags. The resulting calendar file is attached to the email and users can import it into their digital calendar. Most email programs support this import with one click. Currently, canceling a booking does not yet delete the generated calendar entry.
 
-Additionally, you can also create a subscribable calendar. [Learn more about the iCalendar Feed here](./documentation/manage-bookings/icalendar-feed).
+Additionally, you can also create a subscribable calendar. [Learn more about the iCalendar Feed here](../manage-bookings/icalendar-feed).
 
 ## Template and booking process messages
 

@@ -9,6 +9,4 @@ Das funktioniert über sog. Meta-Felder, welche Artikel und Standort zugewiesen
 werden. Diese Felder können dann auch in den E-Mail Templates verwendet
 werden.
 
-[ Dieser Aritkel der Dokumentation enthält eine Ausführliche Anleitung.
-](/administration/template-tags)
-
+[ Dieser Aritkel der Dokumentation enthält eine Ausführliche Anleitung.](../administration/template-tags)

@@ -39,7 +39,7 @@ provided to the user regarding pickup and contact to the location:
 * **Send copy of bookings / cancellations to location email**: Enabling this option will send a copy of the booking and cancellation emails to the email addresses specified above.
 * **Pickup instructions** (opening hours, pickup process, etc.) will be displayed on the item page and throughout the booking process. The information provided here is public and visible even without a booking or registration.
 * **Location contact information** (email and phone number) will only be displayed on the confirmation page after booking. If you want users to see some information only after booking, you can enter it here.
-* **Location admin(s)**: Select one or more users to allow them to edit and manage this specific location. More about this: [Permission management](./documentation/basics/permission-management) (not translated yet)
+* **Location admin(s)**: Select one or more users to allow them to edit and manage this specific location. More about this: [Permission management](../basics/permission-management) (not translated yet)
 
 ## Overbooking settings {#overbooking}
 

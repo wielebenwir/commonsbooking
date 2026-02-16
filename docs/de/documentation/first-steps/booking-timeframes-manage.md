@@ -92,7 +92,7 @@ _Wähle aus, wie sich der buchbaren Zeitrahmen innerhalb des angegebenen Start-u
 * **Wochentage:**
   * Nur bei wöchentlicher Wiederholung: Wähle die Wochentage aus, an denen der Artikel buchbar sein soll.
   * Wenn gewünscht kann das auch die Tage definieren, an denen der Artikel nur abgeholt / zurückgegeben werden kann.
-    Ob ein Wochentag "überbuchbar" ist wird durch die [Standorteinstellungen](create-locations) bestimmt.
+    Ob ein Wochentag "überbuchbar" ist wird durch die [Standorteinstellungen](create-location) bestimmt.
 * **Manuell ausgewählte Daten:**
   * Nur bei manueller Wiederholung: Trage einzelne Tage im Format JJJJ-MM-TT ein, um den Artikel an diesem Tag buchbar zu machen. Mehrere Tage werden durch Kommas getrennt. Du kannst auch auf das Textfeld hinter "Ausgewählte Daten" klicken, dort öffnet sich ein Kalender. Jeder Tag, der in dem Kalender angeklickt wird, wird dann der Liste hinzugefügt.
 

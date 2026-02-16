@@ -2,7 +2,7 @@
 
 
   * [ Artikel ](../first-steps/create-item) : Gegenstände oder Gemeingüter, die zum Verleih angeboten werden
-  * [ Standort ](../first-steps/create-locations) : Physischer Ort, von dem aus die Artikel verliehen werden
+  * [ Standort ](../first-steps/create-location) : Physischer Ort, von dem aus die Artikel verliehen werden
   * [ Zeitrahmen ](../first-steps/booking-timeframes-manage) : Fasst alle Ereignisse wie Verfügbarkeiten, Ferien und Buchungen zusammen
   * [ Buchung ](../manage-bookings/) : Sogenannter “Slot” innerhalb einer Zeitrahmen-Konfiguration, welcher einen Artikel an einer Location einem User zuordnet.
   * [ Buchungseinschränkungen ](../first-steps/manage-booking-restrictions) : Umfasst wichtige Benutzungshinweise und Einschränkungen (z.B. Totalausfall) und ergänzt einen buchbaren Zeitrahmen.

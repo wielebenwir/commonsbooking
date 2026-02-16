@@ -69,7 +69,7 @@ When this option is enabled, canceled bookings also count towards the maximum bo
 
 ###  Exempt groups from all booking rules
 
-Using a [small code snippet](../administration/hooks-and-filters) you can set
+Using a [small code snippet](../advanced-functionality/hooks-and-filters) you can set
 a role to be permanently exempt from all booking rules. This way, you do not have to manually add the role to each rule.
 
 ```php
@@ -82,4 +82,4 @@ add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
 The above snippet would add the role "Editor" with the slug `editor` as a "privileged" role.
 
 In addition to that, all administrators and CB managers assigned to the affected item/location are always exempted.
-[Learn more about permission management](./documentation/basics/permission-management)
+[Learn more about permission management](../basics/permission-management)
