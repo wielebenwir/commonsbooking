@@ -57,7 +57,7 @@ class LocationsRoute extends BaseRoute {
 		$data->locations = $this->getItemData( $request );
 
 		return $this->respond_with_validation( $data );
-		}
+	}
 
 	public function getItemData( $request ) {
 		$data       = new stdClass();
