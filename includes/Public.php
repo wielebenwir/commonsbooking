@@ -55,31 +55,9 @@ function commonsbooking_public() {
 		COMMONSBOOKING_VERSION
 	);
 
-	$versions = \CommonsBooking\Plugin::getManagedDepsVersions();
-
-	// Select 2
-	wp_enqueue_style(
-		'cb-styles-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/select2/css/select2.min.css',
-		array(),
-		$versions['select2']
-	);
-
-	wp_enqueue_script(
-		'cb-scripts-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/select2/js/select2.min.js',
-		array( 'jquery' ),
-		$versions['select2']
-	);
-
-	// Moment.js
-	wp_enqueue_script(
-		'cb-scripts-moment',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/moment/moment.min.js',
-		array(),
-		$versions['moment'],
-		true
-	);
+	wp_enqueue_style( 'cb-styles-select2' );
+	wp_enqueue_script( 'cb-scripts-select2' );
+	wp_enqueue_script( 'cb-scripts-moment' );
 
 	/**
 	 * Public scripts
