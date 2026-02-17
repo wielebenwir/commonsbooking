@@ -51,7 +51,8 @@
     "symfony/service-contracts": "^v2.5.2",
     "eluceo/ical": "~2.14.0",
     "phpmailer/phpmailer": "^7.0.0",
-    "ed-itsolutions/cmb2-field-ajax-search": "v2.0.1"
+    "ed-itsolutions/cmb2-field-ajax-search": "v2.0.1",
+    "symfony/http-client": "^8.0"
   },
   "require-dev": {
     "mockery/mockery": "^1.6.6",
@@ -66,6 +67,7 @@
     "szepeviktor/phpstan-wordpress": "^2.0",
     "phpstan/extension-installer": "^1.4",
     "ext-libxml": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "phpbench/phpbench": "^1.4"
   }
 }
