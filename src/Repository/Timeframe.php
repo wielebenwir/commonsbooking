@@ -230,7 +230,7 @@ class Timeframe extends PostRepository {
 	 */
 	public static function getInRangePaginated(
 		int $minTimestamp,
-		int $maxTimestamp = null,
+		?int $maxTimestamp = null,
 		int $page = 1,
 		int $perPage = 10,
 		array $types = [
