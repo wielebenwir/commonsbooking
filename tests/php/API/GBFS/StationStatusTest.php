@@ -12,17 +12,17 @@ class StationStatusTest extends CustomPostTypeTest {
 
 	public function testPrepare_item_for_response() {
 		$currDate       = new \DateTime( self::CURRENT_DATE );
-		$locationObject = new Location( $this->locationId );
+		$locationObject = new Location( $this->locationID );
 		ClockMock::freeze( $currDate );
 		$routeObject       = new StationStatus();
 		$spanningTimeframe = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) )
 		);
 		$stationStatus     = $routeObject->prepare_item_for_response( $locationObject, null )->get_data();
-		$this->assertEquals( $this->locationId, $stationStatus->station_id );
+		$this->assertEquals( $this->locationID, $stationStatus->station_id );
 		$this->assertEquals( 1, $stationStatus->num_bikes_available );
 		$this->assertTrue( $stationStatus->is_installed );
 		$this->assertTrue( $stationStatus->is_renting );
@@ -70,12 +70,12 @@ class StationStatusTest extends CustomPostTypeTest {
 	public function testPrepare_item_for_response_hourly() {
 		$currDate = new \DateTime( self::CURRENT_DATE );
 		$currDate->setTime( 8, 0, 0 );
-		$locationObject = new Location( $this->locationId );
+		$locationObject = new Location( $this->locationID );
 		ClockMock::freeze( $currDate );
 		$routeObject     = new StationStatus();
 		$hourlyTimeframe = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -98,8 +98,8 @@ class StationStatusTest extends CustomPostTypeTest {
 		$endBooking = clone $startBooking;
 		$endBooking->setTime( 13, 0, 0 );
 		$this->createBooking(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '10:00 AM', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '01:00 PM', strtotime( self::CURRENT_DATE ) ),
 			'10:00 AM',

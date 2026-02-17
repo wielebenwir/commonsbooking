@@ -29,6 +29,6 @@ class MessageRecipientTest extends CustomPostTypeTest {
 		$this->manualRecipient = new MessageRecipient( 'testmail@example.com', 'Test User' );
 
 		$this->createSubscriber();
-		$this->subscriber = get_userdata( $this->subscriberId );
+		$this->subscriber = get_userdata( $this->subscriberID );
 	}
 }

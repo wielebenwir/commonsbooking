@@ -90,8 +90,8 @@ class BookingTest extends CustomPostTypeTest {
 		$booking = Booking::getByDate(
 			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_START, true ),
 			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_END, true ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 
 		$this->assertTrue( $booking instanceof \CommonsBooking\Model\Booking );
@@ -100,8 +100,8 @@ class BookingTest extends CustomPostTypeTest {
 		$booking = Booking::getByDate(
 			strtotime( 'midnight' ),
 			time(),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertNull( $booking );
 	}
@@ -109,8 +109,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookings = Booking::getByTimerange(
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertCount( 1, $bookings );
 		$this->assertEquals( $this->confirmedBookingStartingToday, $bookings[0]->ID );
@@ -139,8 +139,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_START, true ),
 			get_post_meta( $this->confirmedBookingEndingToday, Timeframe::REPETITION_END, true ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 
 		$this->assertCount( 2, $bookingIDs );
@@ -160,23 +160,23 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( 'midnight' ),
 			time(),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertEmpty( $bookingIDs );
 
 		// make sure, that it works for a timeframe in between
 		$nextMonthBooking = $this->createBooking(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '+29 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+32 days', strtotime( self::CURRENT_DATE ) )
 		);
 		$bookingIDs       = Booking::getByTimerange(
 			strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+31 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertCount( 1, $bookingIDs );
 		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
@@ -185,8 +185,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( '+28 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertCount( 1, $bookingIDs );
 		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
@@ -195,8 +195,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( '+31 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+32 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertCount( 1, $bookingIDs );
 		$this->assertEquals( $nextMonthBooking, $bookingIDs[0]->ID );
@@ -205,8 +205,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = Booking::getByTimerange(
 			strtotime( '+33 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+34 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertCount( 0, $bookingIDs );
 
@@ -214,8 +214,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookingIDs = [];
 		for ( $i = 0; $i < 10; $i++ ) {
 			$bookingIDs[] = $this->createBooking(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+' . ( $i + 60 ) . ' days', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+' . ( $i + 61 ) . ' days', strtotime( self::CURRENT_DATE ) )
 			);
@@ -223,8 +223,8 @@ class BookingTest extends CustomPostTypeTest {
 		$bookings = Booking::getByTimerange(
 			strtotime( '+60 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+70 days', strtotime( self::CURRENT_DATE ) ),
-			$this->locationId,
-			$this->itemId
+			$this->locationID,
+			$this->itemID
 		);
 		$this->assertCount( 10, $bookings );
 		$this->assertEqualsCanonicalizing(
@@ -275,7 +275,7 @@ class BookingTest extends CustomPostTypeTest {
 	public function testGetForUsersPaginated() {
 		// let's use the subscriber here to not get confused with the other tests
 		$this->createSubscriber();
-		$subscriber = get_user_by( 'id', $this->subscriberId );
+		$subscriber = get_user_by( 'id', $this->subscriberID );
 		$nextWeek   = new \CommonsBooking\Model\Booking(
 			$this->createBooking(
 				$this->testLocation,
@@ -285,7 +285,7 @@ class BookingTest extends CustomPostTypeTest {
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->subscriberId
+				$this->subscriberID
 			)
 		);
 		Booking::getForUserPaginated( $subscriber );
@@ -303,7 +303,7 @@ class BookingTest extends CustomPostTypeTest {
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->subscriberId
+				$this->subscriberID
 			);
 		}
 		$this->assertCount( 21, Booking::getForUserPaginated( $subscriber, 1, 21 ) );
@@ -357,7 +357,7 @@ class BookingTest extends CustomPostTypeTest {
 
 		// Test that we get bookings now
 		$bookings = Booking::getForCurrentUser();
-		$this->assertCount( count( $this->bookingIds ), $bookings );
+		$this->assertCount( count( $this->bookingIDs ), $bookings );
 		$this->assertIsArray( $bookings );
 
 		// Test if bookings are of type WP_Post
@@ -377,7 +377,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	public function testCentralBookingsGetFunction() {
 		// Test without params
-		$this->assertCount( count( $this->bookingIds ), Booking::get() );
+		$this->assertCount( count( $this->bookingIDs ), Booking::get() );
 		$this->assertContainsOnlyInstancesOf( WP_Post::class, Booking::get() );
 
 		// Return as model
@@ -497,8 +497,8 @@ class BookingTest extends CustomPostTypeTest {
 
 		$this->restriction2 = self::createRestriction(
 			\CommonsBooking\Model\Restriction::TYPE_HINT,
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '+50 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+52 days', strtotime( self::CURRENT_DATE ) )
 		);

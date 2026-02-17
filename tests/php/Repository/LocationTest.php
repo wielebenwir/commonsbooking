@@ -12,14 +12,14 @@ class LocationTest extends CustomPostTypeTest {
 
 		// Create timeframe with location and item, so that we can search vor it
 		$this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( 'midnight' ),
 			strtotime( '+90 days' )
 		);
 	}
 
 	public function testGetByItem() {
-		$this->assertTrue( count( Location::getByItem( $this->itemId, true ) ) == 1 );
+		$this->assertTrue( count( Location::getByItem( $this->itemID, true ) ) == 1 );
 	}
 }

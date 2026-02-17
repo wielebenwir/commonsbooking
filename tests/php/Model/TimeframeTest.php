@@ -451,7 +451,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$noItemTF = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
+				$this->locationID,
 				'',
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+3 days', strtotime( self::CURRENT_DATE ) )
@@ -469,7 +469,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$noLocationTF = new Timeframe(
 			$this->createTimeframe(
 				'',
-				$this->itemId,
+				$this->itemID,
 				strtotime( '+20 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+25 days', strtotime( self::CURRENT_DATE ) )
 			)
@@ -485,8 +485,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$exceptionCaught = false;
 		$noStartDateTF   = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				'',
 				strtotime( '+10 days', strtotime( self::CURRENT_DATE ) )
 			)
@@ -500,8 +500,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$isOverlapping = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -525,7 +525,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$timeframe         = $this->createBookableTimeFrameIncludingCurrentDay( $unmanagedLocation, $managedItem );
 		$timeframe         = new Timeframe( $timeframe );
 
-		wp_set_current_user( $this->subscriberId );
+		wp_set_current_user( $this->subscriberID );
 		$this->assertFalse( $timeframe->isUserPrivileged() );
 
 		wp_set_current_user( $this->cbManagerUserID );
@@ -542,7 +542,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$isOverlapping = new Timeframe(
 			$this->createTimeframe(
 				$secondLocation,
-				$this->itemId,
+				$this->itemID,
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
 			)
@@ -564,8 +564,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$exceptionCaught = false;
 		$endBeforeStart  = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+5 days', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+4 day', strtotime( self::CURRENT_DATE ) )
 			)
@@ -582,8 +582,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		// we have to create that more in the future so that it does not overlap with other timeframes
 		$notCorrectSlot = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+31 days', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+32 days', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -603,8 +603,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$pickupTimeInvalid = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+10 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+13 days', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -637,8 +637,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$noEndDate = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				''
 			)
@@ -653,8 +653,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		// case 1: timeframe is longer than advance booking days
 		$lateTimeframe = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+100 days', strtotime( self::CURRENT_DATE ) ),
 			)
@@ -676,8 +676,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		// case 3: timeframe is infinite and no advance booking days are set, should default to one year
 		$noEndDate = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 				''
 			)
@@ -736,8 +736,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		// make sure, that timeframes with manual repetition can be saved without a start date or end date
 		$noStartDateManualRep = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				'',
 				'',
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -757,8 +757,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		try {
 			$noManualRepValues = new Timeframe(
 				$this->createTimeframe(
-					$this->locationId,
-					$this->itemId,
+					$this->locationID,
+					$this->itemID,
 					'',
 					'',
 					\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -776,8 +776,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		try {
 			$doubleDateManualRep = new Timeframe(
 				$this->createTimeframe(
-					$this->locationId,
-					$this->itemId,
+					$this->locationID,
+					$this->itemID,
 					'',
 					'',
 					\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -799,23 +799,23 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testGetLocation() {
-		$location = new Location( $this->locationId );
+		$location = new Location( $this->locationID );
 		$this->assertEquals( $location, $this->firstTimeframe->getLocation() );
 
 		// when location has been deleted
-		wp_delete_post( $this->locationId );
+		wp_delete_post( $this->locationID );
 		$this->assertNull( $this->firstTimeframe->getLocation() );
 	}
 
 	public function testGetLocationID() {
-		$this->assertEquals( $this->locationId, $this->firstTimeframe->getLocationID() );
+		$this->assertEquals( $this->locationID, $this->firstTimeframe->getLocationID() );
 	}
 
 	public function testGetLocations() {
 		// for just one location
 		$oneLocation = $this->firstTimeframe->getLocations();
 		$this->assertCount( 1, $oneLocation );
-		$this->assertEquals( $this->locationId, $oneLocation[0]->ID );
+		$this->assertEquals( $this->locationID, $oneLocation[0]->ID );
 
 		// for multiple defined locations
 		$holiday4all        = $this->createHolidayTimeframeForAllItemsAndLocations();
@@ -832,7 +832,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEqualsCanonicalizing( $locationIds, [ $this->firstLocation->ID,$this->otherLocation->ID ] );
 
 		// when location has been deleted
-		wp_delete_post( $this->locationId );
+		wp_delete_post( $this->locationID );
 		$locations = $this->firstTimeframe->getLocations();
 		$this->assertIsArray( $locations );
 		$this->assertCount( 0, $locations );
@@ -846,20 +846,20 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertCount( 2, $retrievedLocations );
 		$this->assertEqualsCanonicalizing( $retrievedLocations, [ $this->firstLocation->ID,$this->otherLocation->ID ] );
 
-		$this->assertEquals( [ $this->locationId ], $this->firstTimeframe->getLocationIDs() );
+		$this->assertEquals( [ $this->locationID ], $this->firstTimeframe->getLocationIDs() );
 	}
 
 	public function testGetItem() {
-		$item = new Item( $this->itemId );
+		$item = new Item( $this->itemID );
 		$this->assertEquals( $item, $this->firstTimeframe->getItem() );
 
 		// when item has been deleted
-		wp_delete_post( $this->itemId );
+		wp_delete_post( $this->itemID );
 		$this->assertNull( $this->firstTimeframe->getItem() );
 	}
 
 	public function testGetItemID() {
-		$this->assertEquals( $this->itemId, $this->firstTimeframe->getItemID() );
+		$this->assertEquals( $this->itemID, $this->firstTimeframe->getItemID() );
 	}
 
 	public function testGetItems() {
@@ -888,7 +888,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEqualsCanonicalizing( [ $this->firstItem->ID,$this->otherItem->ID ], $itemIds );
 
 		// when item has been deleted
-		wp_delete_post( $this->itemId );
+		wp_delete_post( $this->itemID );
 		$items = $this->firstTimeframe->getItems();
 		$this->assertIsArray( $items );
 		$this->assertCount( 0, $items );
@@ -973,8 +973,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$dateFormattedInAWeek       = date( 'Y-m-d', strtotime( '+1 week', strtotime( self::CURRENT_DATE ) ) );
 		$tfWithManualSelectionDates = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -998,8 +998,8 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetGridSize() {
 		$fullDayTimeframe = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -1010,8 +1010,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$twoHourSlotEachDay = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -1026,8 +1026,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$hourlyBookable = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -1092,12 +1092,12 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected function setUp(): void {
 
 		parent::setUp();
-		$this->firstTimeframeId  = $this->createBookableTimeFrameIncludingCurrentDay();
-		$this->secondTimeframeId = $this->createBookableTimeFrameStartingInAWeek();
-		$this->firstTimeframe    = new Timeframe( $this->firstTimeframeId );
-		$this->secondTimeframe   = new Timeframe( $this->secondTimeframeId );
-		$this->firstItem         = new Item( $this->itemId );
-		$this->firstLocation     = new Location( $this->locationId );
+		$this->firstTimeframeID  = $this->createBookableTimeFrameIncludingCurrentDay();
+		$this->secondTimeframeID = $this->createBookableTimeFrameStartingInAWeek();
+		$this->firstTimeframe    = new Timeframe( $this->firstTimeframeID );
+		$this->secondTimeframe   = new Timeframe( $this->secondTimeframeID );
+		$this->firstItem         = new Item( $this->itemID );
+		$this->firstLocation     = new Location( $this->locationID );
 		$otherItem               = $this->createItem( 'Other Item', 'publish' );
 		$this->otherItem         = new Item( $otherItem );
 		$otherLocation           = $this->createLocation( 'Other Location', 'publish' );

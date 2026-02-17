@@ -19,10 +19,10 @@ class CB1Test extends CustomPostTypeTest {
 		update_post_meta( $this->timeframeInstanceId, '_cb_cb1_post_post_ID', 1 );
 
 		// Setup CB 2 Location with CB 1 ID == 2
-		update_post_meta( $this->locationId, '_cb_cb1_post_post_ID', 2 );
+		update_post_meta( $this->locationID, '_cb_cb1_post_post_ID', 2 );
 
 		// Setup CB 2 Item with CB 1 ID == 3
-		update_post_meta( $this->itemId, '_cb_cb1_post_post_ID', 3 );
+		update_post_meta( $this->itemID, '_cb_cb1_post_post_ID', 3 );
 	}
 
 	protected function tearDown(): void {
@@ -34,16 +34,16 @@ class CB1Test extends CustomPostTypeTest {
 	}
 
 	public function testGetCB2LocationId() {
-		$this->assertTrue( CB1::getCB2LocationId( 2 ) == $this->locationId );
+		$this->assertTrue( CB1::getCB2LocationId( 2 ) == $this->locationID );
 	}
 
 	public function testGetCB2PostIdByCB1Id() {
 		$this->assertTrue( CB1::getCB2PostIdByCB1Id( 1 ) == $this->timeframeInstanceId );
-		$this->assertTrue( CB1::getCB2PostIdByCB1Id( 2 ) == $this->locationId );
-		$this->assertTrue( CB1::getCB2PostIdByCB1Id( 3 ) == $this->itemId );
+		$this->assertTrue( CB1::getCB2PostIdByCB1Id( 2 ) == $this->locationID );
+		$this->assertTrue( CB1::getCB2PostIdByCB1Id( 3 ) == $this->itemID );
 	}
 
 	public function testGetCB2ItemId() {
-		$this->assertTrue( CB1::getCB2ItemId( 3 ) == $this->itemId );
+		$this->assertTrue( CB1::getCB2ItemId( 3 ) == $this->itemID );
 	}
 }

@@ -22,7 +22,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	 * @throws \Exception
 	 */
 	public function testGetByItemAndLocation() {
-		$restrictions = Restriction::get( [ $this->locationId ], [ $this->itemId ] );
+		$restrictions = Restriction::get( [ $this->locationID ], [ $this->itemID ] );
 		$this->assertIsArray( $restrictions );
 		$this->assertEquals( 1, count( $restrictions ) );
 		$this->assertEquals( $this->restrictionId, $restrictions[0]->ID );
@@ -35,8 +35,8 @@ class RestrictionTest extends CustomPostTypeTest {
 		$this->timeframeId   = $this->createBookableTimeFrameIncludingCurrentDay();
 		$this->restrictionId = $this->createRestriction(
 			'hint',
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
 		);

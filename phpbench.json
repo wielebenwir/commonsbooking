@@ -1,0 +1,10 @@
+{
+  "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
+  "runner.bootstrap": "tests/benchmark/bootstrap.php",
+  "report.generators": {
+    "all": {
+      "generator": "composite",
+      "reports": ["aggregate"]
+    }
+  }
+}

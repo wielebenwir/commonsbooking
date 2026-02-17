@@ -24,34 +24,34 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 		// make sure, that booking codes are not generated for timeframes with disabled booking codes
 		BookingCodes::generate( $this->timeframeWithDisabledBookingCodesAndEndDate, self::ADVANCE_GENERATION_DAYS );
-		$code = BookingCodes::getCode( $this->timeframeWithDisabledBookingCodesAndEndDate, $this->itemId, $this->locationId, $todayDate, self::ADVANCE_GENERATION_DAYS );
+		$code = BookingCodes::getCode( $this->timeframeWithDisabledBookingCodesAndEndDate, $this->itemID, $this->locationID, $todayDate, self::ADVANCE_GENERATION_DAYS );
 		$this->assertNull( $code );
 
 		BookingCodes::generate( $this->timeframeWithDisabledBookingCodesWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
-		$code = BookingCodes::getCode( $this->timeframeWithDisabledBookingCodesWithoutEndDate, $this->itemId, $this->locationId, $todayDate, self::ADVANCE_GENERATION_DAYS );
+		$code = BookingCodes::getCode( $this->timeframeWithDisabledBookingCodesWithoutEndDate, $this->itemID, $this->locationID, $todayDate, self::ADVANCE_GENERATION_DAYS );
 		$this->assertNull( $code );
 
 		// now make sure, that booking codes are generated for timeframes with enabled booking codes and valid end date
 		BookingCodes::generate( $this->timeframeWithEndDate, self::ADVANCE_GENERATION_DAYS );
-		$code = BookingCodes::getCode( $this->timeframeWithEndDate, $this->itemId, $this->locationId, $todayDate, self::ADVANCE_GENERATION_DAYS );
+		$code = BookingCodes::getCode( $this->timeframeWithEndDate, $this->itemID, $this->locationID, $todayDate, self::ADVANCE_GENERATION_DAYS );
 		$this->assertNotNull( $code );
 		$this->assertEquals( $todayDate, $code->getDate() );
-		$this->assertEquals( $this->itemId, $code->getItem() );
+		$this->assertEquals( $this->itemID, $code->getItem() );
 
 		// and now without end date (the fabled "infinite" timeframe)
 		BookingCodes::generate( $this->timeframeWithoutEndDate, self::ADVANCE_GENERATION_DAYS );
-		$code = BookingCodes::getCode( $this->timeframeWithoutEndDate, $this->itemId, $this->locationId, $todayDate, self::ADVANCE_GENERATION_DAYS );
+		$code = BookingCodes::getCode( $this->timeframeWithoutEndDate, $this->itemID, $this->locationID, $todayDate, self::ADVANCE_GENERATION_DAYS );
 		$this->assertNotNull( $code );
 		$this->assertEquals( $todayDate, $code->getDate() );
-		$this->assertEquals( $this->itemId, $code->getItem() );
+		$this->assertEquals( $this->itemID, $code->getItem() );
 
 		// make sure, that the last infinite code is also generated
 		$advanceDays = self::ADVANCE_GENERATION_DAYS - 1;
 		$lastCodeDay = date( 'Y-m-d', strtotime( " + $advanceDays days", strtotime( self::CURRENT_DATE ) ) );
-		$code        = BookingCodes::getCode( $this->timeframeWithoutEndDate, $this->itemId, $this->locationId, $lastCodeDay, self::ADVANCE_GENERATION_DAYS );
+		$code        = BookingCodes::getCode( $this->timeframeWithoutEndDate, $this->itemID, $this->locationID, $lastCodeDay, self::ADVANCE_GENERATION_DAYS );
 		$this->assertNotNull( $code );
 		$this->assertEquals( $lastCodeDay, $code->getDate() );
-		$this->assertEquals( $this->itemId, $code->getItem() );
+		$this->assertEquals( $this->itemID, $code->getItem() );
 	}
 
 	public function testGetCode() {
@@ -59,8 +59,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 		// make sure, that non-existing codes are not returned
 		$code = BookingCodes::getCode(
 			$this->timeframeWithEndDate,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			date(
 				'Y-m-d',
 				strtotime( '+31 days', strtotime( self::CURRENT_DATE ) )
@@ -82,20 +82,20 @@ class BookingCodesTest extends CustomPostTypeTest {
 		// this should trigger the generation of a new code past the max generation days
 		$code = BookingCodes::getCode(
 			$this->timeframeWithoutEndDate,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			$dayInFuture,
 			self::ADVANCE_GENERATION_DAYS
 		);
 		$this->assertNotNull( $code );
-		$this->assertEquals( $this->itemId, $code->getItem() );
+		$this->assertEquals( $this->itemID, $code->getItem() );
 		$this->assertEquals( $dayInFuture, $code->getDate() );
 
 		// test that the code is persisted (i.e. it's not generated again)
 		$otherCode = BookingCodes::getCode(
 			$this->timeframeWithoutEndDate,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			$dayInFuture,
 			self::ADVANCE_GENERATION_DAYS
 		);
@@ -114,19 +114,19 @@ class BookingCodesTest extends CustomPostTypeTest {
 		// this should trigger the generation of a new code past the max generation days
 		$futureTwoCode = BookingCodes::getCode(
 			$this->timeframeWithoutEndDate,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			$dayInFutureTwo,
 			self::ADVANCE_GENERATION_DAYS
 		);
 		$this->assertNotNull( $futureTwoCode );
-		$this->assertEquals( $this->itemId, $futureTwoCode->getItem() );
+		$this->assertEquals( $this->itemID, $futureTwoCode->getItem() );
 		$this->assertEquals( $dayInFutureTwo, $futureTwoCode->getDate() );
 		// now check, that the old code is still persisted
 		$stillSameCode = BookingCodes::getCode(
 			$this->timeframeWithoutEndDate,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			$dayInFuture,
 			self::ADVANCE_GENERATION_DAYS
 		);
@@ -140,8 +140,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 		// create timeframe with parameters like $timeframeWithoutEndDate
 		$timeframe_1 = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( 'today midnight' ),
 				null,
 			)
@@ -153,8 +153,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 		// get code for $this->itemId today
 		$todaysCode = BookingCodes::getCode(
 			$timeframe_1,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			date( 'Y-m-d', strtotime( self::CURRENT_DATE ) ),
 			self::ADVANCE_GENERATION_DAYS
 		);
@@ -181,8 +181,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 		// ... and check by comparing today's code
 		$todaysCodeAfter = BookingCodes::getCode(
 			$timeframe_1,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			date( 'Y-m-d', strtotime( self::CURRENT_DATE ) ),
 			self::ADVANCE_GENERATION_DAYS
 		);
@@ -194,8 +194,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 		$timeframe_2 = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( 'today midnight' ),
 				null,
 			)
@@ -207,8 +207,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 		// ... and check by comparing today's code
 		$todaysCodeTimeframe2 = BookingCodes::getCode(
 			$timeframe_2,
-			$this->itemId,
-			$this->locationId,
+			$this->itemID,
+			$this->locationID,
 			date( 'Y-m-d', strtotime( self::CURRENT_DATE ) ),
 			self::ADVANCE_GENERATION_DAYS
 		);
@@ -353,28 +353,28 @@ class BookingCodesTest extends CustomPostTypeTest {
 			[
 				'code' => 'right_code',
 				'timeframe' => $thisTimeframeId,
-				'location' => $this->locationId,
+				'location' => $this->locationID,
 			],
 			[
 				'code' => 'wrong_timeframe',
 				'timeframe' => $thisTimeframeId - 1,
-				'location' => $this->locationId,
+				'location' => $this->locationID,
 			],
 			[
 				'code' => 'wrong_location',
 				'timeframe' => $thisTimeframeId,
-				'location' => $this->locationId - 1,
+				'location' => $this->locationID - 1,
 			],
 		];
 
 		// insert the codes (all with same date & itemId)
 		foreach ( $codesToInsert as $codeData ) {
-			self::insertBookingCode( $todayDate, $codeData['timeframe'], $codeData['location'], $this->itemId, $codeData['code'] );
+			self::insertBookingCode( $todayDate, $codeData['timeframe'], $codeData['location'], $this->itemID, $codeData['code'] );
 		}
 
 		BookingCodes::generate( $this->timeframeWithEndDate, self::ADVANCE_GENERATION_DAYS );
 
-		$code = BookingCodes::getCode( $this->timeframeWithEndDate, $this->itemId, $this->locationId, $todayDate, self::ADVANCE_GENERATION_DAYS );
+		$code = BookingCodes::getCode( $this->timeframeWithEndDate, $this->itemID, $this->locationID, $todayDate, self::ADVANCE_GENERATION_DAYS );
 		$this->assertEquals( 'right_code', $code->getCode() );
 
 		// now test getCodes()
@@ -407,16 +407,16 @@ class BookingCodesTest extends CustomPostTypeTest {
 		parent::setUp();
 		$this->timeframeWithEndDate    = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+29 day', strtotime( self::CURRENT_DATE ) )
 			)
 		);
 		$this->timeframeWithoutEndDate = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( self::CURRENT_DATE ),
 				null,
 			)
@@ -424,8 +424,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 		$this->timeframeWithDisabledBookingCodesAndEndDate = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+30 day', strtotime( self::CURRENT_DATE ) ),
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -450,8 +450,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 		$this->timeframeWithDisabledBookingCodesWithoutEndDate = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( self::CURRENT_DATE ),
 				null,
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,

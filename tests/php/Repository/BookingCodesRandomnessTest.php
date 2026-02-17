@@ -20,7 +20,7 @@ class BookingCodesRandomnessTest extends BookingCodesTest {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$todayDate = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		BookingCodes::generate( $this->timeframeWithEndDate, 1 );
-		$codeObj = BookingCodes::getCode( $this->timeframeWithEndDate, $this->itemId, $this->locationId, $todayDate, 1 );
+		$codeObj = BookingCodes::getCode( $this->timeframeWithEndDate, $this->itemID, $this->locationID, $todayDate, 1 );
 		return $codeObj->getCode();
 	}
 

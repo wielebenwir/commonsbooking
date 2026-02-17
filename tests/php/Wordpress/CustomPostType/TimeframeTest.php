@@ -63,8 +63,8 @@ class TimeframeTest extends CustomPostTypeTest {
 	 */
 	public function testPostSaving() {
 		$validDailyTimeframe = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
 			Timeframe::BOOKABLE_ID,
@@ -78,7 +78,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$invalidDailyTimeframe = $this->createTimeframe(
 			null,
-			$this->itemId,
+			$this->itemID,
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '-10 days', strtotime( self::CURRENT_DATE ) ),
 			Timeframe::BOOKABLE_ID,
@@ -89,8 +89,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( 'draft', get_post_status( $invalidDailyTimeframe ) );
 
 		$manualRepetitionTimeframe = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			null,
 			null,
 			Timeframe::BOOKABLE_ID,
@@ -125,7 +125,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta( $timeframeId );
 		// now, let's check if our second item is assigned to our timeframe by getting the timeframe with the specific second item
 		$timeframe = \CommonsBooking\Repository\Timeframe::get(
-			[ $this->locationId ],
+			[ $this->locationID ],
 			[ $secondItemId ],
 		);
 		$this->assertEquals( 1, count( $timeframe ) );
@@ -161,7 +161,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		\CommonsBooking\Wordpress\CustomPostType\Timeframe::manageTimeframeMeta( $timeframeId );
 		// now, let's check if our second item is assigned to our timeframe by getting the timeframe with the specific second item
 		$timeframe = \CommonsBooking\Repository\Timeframe::get(
-			[ $this->locationId ],
+			[ $this->locationID ],
 			[ $secondItemId ],
 		);
 		$this->assertEquals( 1, count( $timeframe ) );
@@ -186,7 +186,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		// specific second location
 		$timeframe = \CommonsBooking\Repository\Timeframe::get(
 			[ $secondLocationId ],
-			[ $this->itemId ],
+			[ $this->itemID ],
 		);
 		$this->assertEquals( 1, count( $timeframe ) );
 		$this->assertEquals( $timeframeId, $timeframe[0]->ID );
@@ -224,7 +224,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		// with the specific location
 		$timeframe = \CommonsBooking\Repository\Timeframe::get(
 			[ $secondLocationId ],
-			[ $this->itemId ],
+			[ $this->itemID ],
 		);
 		$this->assertEquals( 1, count( $timeframe ) );
 		$this->assertEquals( $timeframeId, $timeframe[0]->ID );
@@ -240,8 +240,8 @@ class TimeframeTest extends CustomPostTypeTest {
 	 */
 	public function testRemoveIrrelevantPostmeta() {
 		$tf = new \CommonsBooking\Model\Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
-		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST, [ $this->itemId ] );
-		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST, [ $this->locationId ] );
+		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST, [ $this->itemID ] );
+		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST, [ $this->locationID ] );
 		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID );
 		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_ALL_ID );
 		update_post_meta( $tf->ID, \CommonsBooking\Model\Timeframe::META_LOCATION_CATEGORY_IDS, [ '123' ] );

@@ -8,8 +8,8 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 class BookingTest extends CustomPostTypeTest {
 	public function testCleanupBookings() {
 		$bookingId = $this->createBooking(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 			'8:00 AM',
@@ -37,7 +37,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->firstTimeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
+		$this->firstTimeframeID = $this->createBookableTimeFrameIncludingCurrentDay();
 	}
 
 	protected function tearDown(): void {

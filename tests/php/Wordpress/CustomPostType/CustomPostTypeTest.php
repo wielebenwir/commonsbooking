@@ -28,12 +28,12 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 	protected int $map;
 	protected Map $mapModel;
 	public function testGetModel() {
-		$itemModel     = new Item( $this->itemId );
-		$locationModel = new Location( $this->locationId );
+		$itemModel     = new Item( $this->itemID );
+		$locationModel = new Location( $this->locationID );
 
 		// get model by ID
-		$this->assertEquals( $itemModel, CustomPostType::getModel( $this->itemId ) );
-		$this->assertEquals( $locationModel, CustomPostType::getModel( $this->locationId ) );
+		$this->assertEquals( $itemModel, CustomPostType::getModel( $this->itemID ) );
+		$this->assertEquals( $locationModel, CustomPostType::getModel( $this->locationID ) );
 		$this->assertEquals( $this->timeframeModel, CustomPostType::getModel( $this->timeframeId ) );
 		$this->assertEquals( $this->bookingModel, CustomPostType::getModel( $this->bookingId ) );
 		$this->assertEquals( $this->restrictionModel, CustomPostType::getModel( $this->restrictionId ) );
@@ -230,8 +230,8 @@ class CustomPostTypeTest extends \CommonsBooking\Tests\Wordpress\CustomPostTypeT
 		);
 		$this->restrictionId    = $this->createRestriction(
 			Restriction::META_HINT,
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+3 weeks', strtotime( self::CURRENT_DATE ) )
 		);
