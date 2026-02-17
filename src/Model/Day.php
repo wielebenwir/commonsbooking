@@ -90,10 +90,12 @@ class Day {
 	}
 
 	/**
+	 * Gets the date in Y-m-d format.
+	 *
 	 * @return string
 	 */
 	public function getDate(): string {
-		return $this->date;
+		return date( 'Y-m-d', strtotime( $this->date ) );
 	}
 
 	/**

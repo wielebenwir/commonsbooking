@@ -307,8 +307,8 @@ class Upgrade {
 				<div class="e-major-update-warning__message">
 					<?php
 					printf(
-					/* translators: %1$s Link open tag, %2$s: Link close tag. */
 						commonsbooking_sanitizeHTML(
+						/* translators: %1$s Link open tag, %2$s: Link close tag. */
 							__(
 								'
 					This CommonsBooking update has a lot of new features and changes on some templates.<br>
