@@ -38,7 +38,7 @@ class BookablePostTest extends CustomPostTypeTest {
 
 		// now we create more than one item + timeframe for the first location and check if we get both
 		$item2      = new Item( $this->createItem( 'Item2', 'publish' ) );
-		$timeframe2 = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay( $this->locationId, $item2->ID ) );
+		$timeframe2 = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay( $this->locationID, $item2->ID ) );
 
 		$bookableTimeframes = $this->locationModel->getBookableTimeframes( true );
 		$this->assertEquals( 2, count( $bookableTimeframes ) );
@@ -55,8 +55,8 @@ class BookablePostTest extends CustomPostTypeTest {
 		parent::setUp();
 
 		$this->timeframeId    = $this->createBookableTimeFrameIncludingCurrentDay();
-		$this->locationModel  = new Location( $this->locationId );
-		$this->itemModel      = new Item( $this->itemId );
+		$this->locationModel  = new Location( $this->locationID );
+		$this->itemModel      = new Item( $this->itemID );
 		$this->timeframeModel = new Timeframe( $this->timeframeId );
 	}
 

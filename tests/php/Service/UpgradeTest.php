@@ -136,8 +136,8 @@ class UpgradeTest extends CustomPostTypeTest {
 
 		// create holiday with ADVANCE_BOOKING_DAYS setting (the function does this by default)
 		$holiday = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '+1 week', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+2 weeks', strtotime( self::CURRENT_DATE ) ),
 		);
@@ -156,7 +156,7 @@ class UpgradeTest extends CustomPostTypeTest {
 
 	public function testEnableLocationBookingNotification() {
 		Upgrade::enableLocationBookingNotification();
-		$this->assertEquals( 'on', get_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', true ) );
+		$this->assertEquals( 'on', get_post_meta( $this->locationID, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', true ) );
 	}
 
 	public function testIsAJAXUpgrade() {

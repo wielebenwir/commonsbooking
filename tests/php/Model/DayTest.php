@@ -31,8 +31,8 @@ class DayTest extends CustomPostTypeTest {
 		$this->bookableTimeframeForCurrentDayId = $this->createBookableTimeFrameIncludingCurrentDay();
 
 		$this->bookableTimeframeNoRepSingleDayTomorrowId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -41,8 +41,8 @@ class DayTest extends CustomPostTypeTest {
 		);
 
 		$this->bookableTimeframeNoRepSingleDayTodayId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( self::CURRENT_DATE ),
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -51,8 +51,8 @@ class DayTest extends CustomPostTypeTest {
 		);
 
 		$this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '-1 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+1 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -65,8 +65,8 @@ class DayTest extends CustomPostTypeTest {
 		$weekday = $weekday == 0 ? 7 : $weekday;
 
 		$this->bookableTimeframeOnceWeeklyValidTodayNoEnd = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '-7 days', strtotime( self::CURRENT_DATE ) ),
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -80,8 +80,8 @@ class DayTest extends CustomPostTypeTest {
 		);
 
 		$this->bookableTimeframeOnceWeeklyValidTodayWithEnd = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '-7 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -95,8 +95,8 @@ class DayTest extends CustomPostTypeTest {
 		);
 
 		$this->bookableTimeframeManualDateInputOnlyForToday = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			null,
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -113,8 +113,8 @@ class DayTest extends CustomPostTypeTest {
 		$tfModel->updatePostMetaStartAndEndDate();
 
 		$this->bookableTimeframeManualDateInputTomorrow = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			null,
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -135,8 +135,8 @@ class DayTest extends CustomPostTypeTest {
 
 		$this->instance = new Day(
 			$this->dateFormatted,
-			[ $this->locationId ],
-			[ $this->itemId ]
+			[ $this->locationID ],
+			[ $this->itemID ]
 		);
 	}
 
@@ -196,8 +196,8 @@ class DayTest extends CustomPostTypeTest {
 
 		$this->createRestriction(
 			'hint',
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( self::CURRENT_DATE ),
 			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) )
 		);

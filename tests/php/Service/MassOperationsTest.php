@@ -23,7 +23,7 @@ class MassOperationsTest extends CustomPostTypeTest {
 		$noOrphan = new Booking(
 			$this->createBooking(
 				$newLocation,
-				$this->itemId,
+				$this->itemID,
 				strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+8 days' ),
 				strtotime( self::CURRENT_DATE )
@@ -78,8 +78,8 @@ class MassOperationsTest extends CustomPostTypeTest {
 		parent::setUp();
 		$this->testTimeframe = new Timeframe(
 			$this->createTimeframe(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+14 days', strtotime( self::CURRENT_DATE ) )
 			)

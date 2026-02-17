@@ -69,7 +69,7 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetForItem() {
 		$inItemTimeframes = Timeframe::get(
 			[],
-			[ $this->itemId ],
+			[ $this->itemID ],
 		);
 		$this->assertEquals( count( $this->allTimeframes ), count( $inItemTimeframes ) );
 		$postIds = array_map(
@@ -84,7 +84,7 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testGetForLocation() {
 		$inLocationTimeframes = Timeframe::get(
-			[ $this->locationId ],
+			[ $this->locationID ],
 		);
 		$this->assertEquals( count( $this->allTimeframes ), count( $inLocationTimeframes ) );
 		$postIds = array_map(
@@ -99,8 +99,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testGetForLocationAndItem() {
 		$inLocationAndItemTimeframes = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
+			[ $this->locationID ],
+			[ $this->itemID ],
 		);
 		$this->assertEquals( count( $this->allTimeframes ), count( $inLocationAndItemTimeframes ) );
 		$postIds = array_map(
@@ -119,15 +119,15 @@ class TimeframeTest extends CustomPostTypeTest {
 	 */
 	public function testGetHoliday() {
 		$holidayId                  = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
 		);
 		$allTimeframesForLocAndItem = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
+			[ $this->locationID ],
+			[ $this->itemID ],
 		);
 		$this->assertEquals( 6, count( $allTimeframesForLocAndItem ) );
 		$this->assertEqualsCanonicalizing(
@@ -150,8 +150,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		// Test-case for #1357 . The holiday should be returned regardless of the 'maxBookingDays'(aka advanceBookingDays) setting for the holiday. The maxBookingDays setting is only applicable for bookable timeframes.
 		// We remove the irrelevant postmeta so that it is not processed by the filtering functions anymore
 		$holidayInFuture = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '+61 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+62 days', strtotime( self::CURRENT_DATE ) ),
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
@@ -177,8 +177,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		// Therefore we have to freeze the time or else the test would make no sense.
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$allTimeframesForLocAndItem = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
+			[ $this->locationID ],
+			[ $this->itemID ],
 		);
 		$this->assertEquals( 7, count( $allTimeframesForLocAndItem ) );
 		$this->assertEqualsCanonicalizing(
@@ -231,8 +231,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// Timeframe with enddate
 		$this->timeframeWithEndDate = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			$this->repetition_start,
 			$this->repetition_end
 		);
@@ -240,8 +240,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// Timeframe without enddate
 		$this->timeframeWithoutEndDate = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			$this->repetition_start,
 			null
 		);
@@ -249,8 +249,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// timeframe with daily repetition
 		$this->timeframeDailyRepetition = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			$this->repetition_start,
 			$this->repetition_end,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -261,8 +261,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// timeframe with weekly repetition from monday to friday
 		$this->timeframeWeeklyRepetition = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			$this->repetition_start,
 			$this->repetition_end,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -279,8 +279,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$dateInAWeek = date( 'Y-m-d', strtotime( '+1 week', $this->repetition_start ) );
 		// timeframe with manual repetition for today and in a week
 		$this->timeframeManualRepetition = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			$this->repetition_start,
 			$this->repetition_end,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
@@ -300,8 +300,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 	public function testGetForSpecificDate() {
 		$inSpecificDate = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
+			[ $this->locationID ],
+			[ $this->itemID ],
 			[],
 			$this->dateFormatted
 		);
@@ -316,8 +316,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( $this->allTimeframes, $postIds );
 
 		$inOneWeek = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
+			[ $this->locationID ],
+			[ $this->itemID ],
 			[],
 			date( 'Y-m-d', strtotime( '+1 week', $this->repetition_start ) )
 		);
@@ -333,8 +333,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( $this->allTimeframes, $postIds );
 
 		$tomorrow = Timeframe::get(
-			[ $this->locationId ],
-			[ $this->itemId ],
+			[ $this->locationID ],
+			[ $this->itemID ],
 			[],
 			date( 'Y-m-d', strtotime( '+1 day', $this->repetition_start ) )
 		);
@@ -414,8 +414,8 @@ class TimeframeTest extends CustomPostTypeTest {
 		$bookingIds = [];
 		for ( $i = 0; $i < 21; $i++ ) {
 			$bookingIds[] = $this->createBooking(
-				$this->locationId,
-				$this->itemId,
+				$this->locationID,
+				$this->itemID,
 				strtotime( '+ ' . ( $i + 10 ) . ' days', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+ ' . ( $i + 11 ) . ' days', strtotime( self::CURRENT_DATE ) ),
 			);
@@ -486,15 +486,15 @@ class TimeframeTest extends CustomPostTypeTest {
 		$otherItemId = $this->createItem( 'Other Item' );
 		// Timeframe with enddate and two items
 		$multiItemTF   = $this->createTimeframe(
-			$this->locationId,
-			[ $this->itemId, $otherItemId ],
+			$this->locationID,
+			[ $this->itemID, $otherItemId ],
 			$this->repetition_start,
 			$this->repetition_end
 		);
 		$fromFirstItem = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId ],
-			[ $this->locationId ]
+			[ $this->itemID ],
+			[ $this->locationID ]
 		);
 		$this->assertEquals( 6, count( $fromFirstItem ) );
 		$this->assertEqualsCanonicalizing(
@@ -512,15 +512,15 @@ class TimeframeTest extends CustomPostTypeTest {
 		$fromSecondItem = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
 			[ $otherItemId ],
-			[ $this->locationId ]
+			[ $this->locationID ]
 		);
 		$this->assertEquals( 1, count( $fromSecondItem ) );
 		$this->assertEquals( $multiItemTF, $fromSecondItem[0] );
 
 		$fromBothItems = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ],
-			[ $this->itemId, $otherItemId ],
-			[ $this->locationId ]
+			[ $this->itemID, $otherItemId ],
+			[ $this->locationID ]
 		);
 		$this->assertEquals( 6, count( $fromBothItems ) );
 		$this->assertEqualsCanonicalizing(
@@ -545,8 +545,8 @@ class TimeframeTest extends CustomPostTypeTest {
 	public function testGetPostIdsByType_multiLocationMultiItem() {
 		// Timeframe with enddate and one item
 		$timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			$this->repetition_start,
 			$this->repetition_end,
 		);
@@ -554,8 +554,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		// create holiday applicable for both
 		$holidayId = $this->createTimeframe(
-			[ $this->locationId, $this->otherLocationId ],
-			[ $this->itemId, $this->otherItemId ],
+			[ $this->locationID, $this->otherLocationId ],
+			[ $this->itemID, $this->otherItemId ],
 			$this->repetition_start,
 			$this->repetition_end,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
@@ -563,8 +563,8 @@ class TimeframeTest extends CustomPostTypeTest {
 
 		$holidayFromFirstItemAndLoc = Timeframe::getPostIdsByType(
 			[ \CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID ],
-			[ $this->itemId ],
-			[ $this->locationId ]
+			[ $this->itemID ],
+			[ $this->locationID ]
 		);
 		$this->assertEquals( 1, count( $holidayFromFirstItemAndLoc ) );
 		$this->assertEquals( $holidayId, $holidayFromFirstItemAndLoc[0] );

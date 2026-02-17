@@ -25,8 +25,8 @@ class TimeframeExportTest extends CustomPostTypeTest {
 		$secondItem                   = $this->createItem( 'second-item' );
 		$timeframeTwoItemsOneLocation =
 			$this->createTimeframe(
-				$this->locationId,
-				[ $this->itemId, $secondItem ],
+				$this->locationID,
+				[ $this->itemID, $secondItem ],
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+1 week', strtotime( self::CURRENT_DATE ) )
 			);
@@ -36,8 +36,8 @@ class TimeframeExportTest extends CustomPostTypeTest {
 		$secondLocation                = $this->createLocation( 'second-location' );
 		$timeframeTwoItemsTwoLocations =
 			$this->createTimeframe(
-				[ $this->locationId, $secondLocation ],
-				[ $this->itemId, $secondItem ],
+				[ $this->locationID, $secondLocation ],
+				[ $this->itemID, $secondItem ],
 				strtotime( self::CURRENT_DATE ),
 				strtotime( '+1 week', strtotime( self::CURRENT_DATE ) )
 			);
@@ -100,8 +100,8 @@ class TimeframeExportTest extends CustomPostTypeTest {
 
 		$secondItem                   = $this->createItem( 'second-item' );
 		$timeframeTwoItemsOneLocation = $this->createTimeframe(
-			$this->locationId,
-			[ $this->itemId, $secondItem ],
+			$this->locationID,
+			[ $this->itemID, $secondItem ],
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 week', strtotime( self::CURRENT_DATE ) )
 		);

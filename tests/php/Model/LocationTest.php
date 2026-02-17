@@ -20,7 +20,7 @@ class LocationTest extends CustomPostTypeTest {
 	public function testGetBookableTimeframesByItem() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$timeframeArray[] = $this->timeframeModel;
-		$this->assertEquals( $timeframeArray, $this->locationModel->getBookableTimeframesByItem( $this->itemId, true ) );
+		$this->assertEquals( $timeframeArray, $this->locationModel->getBookableTimeframesByItem( $this->itemID, true ) );
 	}
 
 	public function testGetAdmins() {
@@ -60,16 +60,16 @@ class LocationTest extends CustomPostTypeTest {
 		$this->assertEquals( '', $this->locationModel->formattedAddressOneLine() );
 
 		// Case: Partial emtpy meta fields
-		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_street', 'Karl-Marx-Allee' );
+		update_post_meta( $this->locationID, COMMONSBOOKING_METABOX_PREFIX . 'location_street', 'Karl-Marx-Allee' );
 		wp_cache_flush();
-		$this->locationModel = new Location( $this->locationId );
+		$this->locationModel = new Location( $this->locationID );
 		$this->assertEquals( 'Karl-Marx-Allee  ', $this->locationModel->formattedAddressOneLine() );
 
 		// Case: Complete meta fields
-		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', '10115' );
-		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_city', 'Berlin' );
+		update_post_meta( $this->locationID, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', '10115' );
+		update_post_meta( $this->locationID, COMMONSBOOKING_METABOX_PREFIX . 'location_city', 'Berlin' );
 		wp_cache_flush();
-		$this->locationModel = new Location( $this->locationId );
+		$this->locationModel = new Location( $this->locationID );
 		$this->assertEquals( 'Testlocation<br> Karl-Marx-Allee<br> 10115 Berlin<br>', $this->locationModel->formattedAddress() );
 
 		$this->assertEquals( 'Karl-Marx-Allee, 10115 Berlin', $this->locationModel->formattedAddressOneLine() );
@@ -77,23 +77,23 @@ class LocationTest extends CustomPostTypeTest {
 
 	public function testGetFormattedContactInfo() {
 		// Case: Complete contact meta fields
-		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', 'Max Weber' );
+		update_post_meta( $this->locationID, COMMONSBOOKING_METABOX_PREFIX . 'location_contact', 'Max Weber' );
 		wp_cache_flush();
-		$this->locationModel = new Location( $this->locationId );
+		$this->locationModel = new Location( $this->locationID );
 		$this->assertEquals( '<br><br>Please contact the contact persons at the location directly if you have any questions regarding collection or return:<br>Max Weber', $this->locationModel->formattedContactInfo() );
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->restrictionIds[] = $this->createRestriction(
+		$this->restrictionIDs[] = $this->createRestriction(
 			Restriction::META_HINT,
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( self::CURRENT_DATE ),
 			null
 		);
 		$this->timeframeModel   = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
-		$this->locationModel    = new Location( $this->locationId );
+		$this->locationModel    = new Location( $this->locationID );
 		$this->createSubscriber();
 	}
 

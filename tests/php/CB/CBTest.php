@@ -59,7 +59,7 @@ class CBTest extends CustomPostTypeTest {
 			CB::get(
 				Item::$postType,
 				$this->itemMetaKey,
-				get_post( $this->itemId )
+				get_post( $this->itemID )
 			)
 		);
 
@@ -69,7 +69,7 @@ class CBTest extends CustomPostTypeTest {
 			CB::get(
 				Location::$postType,
 				$this->locationMetaKey,
-				get_post( $this->locationId )
+				get_post( $this->locationID )
 			)
 		);
 
@@ -146,8 +146,8 @@ class CBTest extends CustomPostTypeTest {
 			true
 		);
 
-		add_post_meta( $this->locationId, $this->locationMetaKey, $this->locationMetaValue );
-		add_post_meta( $this->itemId, $this->itemMetaKey, $this->itemMetaValue );
+		add_post_meta( $this->locationID, $this->locationMetaKey, $this->locationMetaValue );
+		add_post_meta( $this->itemID, $this->itemMetaKey, $this->itemMetaValue );
 
 		$this->bookingId = $this->createConfirmedBookingEndingToday();
 		add_post_meta( $this->bookingId, $this->bookingMetaKey, $this->bookingMetaValue );

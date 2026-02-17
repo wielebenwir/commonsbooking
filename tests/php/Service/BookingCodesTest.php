@@ -109,8 +109,8 @@ class BookingCodesTest extends CustomPostTypeTest {
 
 		$now               = time();
 		$this->timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
+			$this->locationID,
+			$this->itemID,
 			strtotime( '+' . self::timeframeStart . ' days midnight', $now ),
 			strtotime( '+' . self::timeframeEnd . ' days midnight', $now )
 		);
