@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://github.com/wielebenwir/commons-api/blob/master/commons-api.items.schema.json",
     "title": "Commons Api Items Schema",
     "description": "A schema for items that can be booked",
@@ -21,7 +21,7 @@
                 "ownerId": { "type": "string" },
                 "projectId": { "type": "string" }
             },
-            "required": ["id", "name", "url", "ownerId", "projectId"]
+            "required": ["id", "name", "url", "projectId"]
         }
     },
     "type": "object",

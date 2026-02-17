@@ -28,7 +28,7 @@ class ItemsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.items.schema.json';
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.items.schema.json';
 
 	/**
 	 * Returns raw data collection.
@@ -52,7 +52,7 @@ class ItemsRoute extends BaseRoute {
 		$items = Item::get( $args );
 		foreach ( $items as $item ) {
 			$itemdata      = $this->prepare_item_for_response( $item, $request );
-			$data->items[] = $this->prepare_response_for_collection( $itemdata );
+			$data->items[] = $itemdata->get_data();
 		}
 
 		return $data;
@@ -98,11 +98,7 @@ class ItemsRoute extends BaseRoute {
 			}
 		}
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $data );
 	}
 
 	/**
@@ -114,7 +110,8 @@ class ItemsRoute extends BaseRoute {
 	 */
 	public function get_item( $request ): WP_REST_Response {
 		$data = $this->getItemData( $request );
-		return new WP_REST_Response( $data, 200 );
+
+		return $this->respond_with_validation( $data );
 	}
 
 	/**
