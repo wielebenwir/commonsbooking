@@ -102,7 +102,7 @@ class BaseRoute extends WP_REST_Controller {
 		// Opis does not fetch remote $ref targets in getSchemaJson() main schema.
 		// Map schema URLs to local filesystem paths
 		$resolver = $validator->resolver();
-		$resolver->registerPrefix(BaseRoute::SCHEMA_URL, BaseRoute::SCHEMA_PATH);
+		$resolver->registerPrefix( self::SCHEMA_URL, self::SCHEMA_PATH );
 
 		try {
 			$result = $validator->validate( $data, $this->getSchemaJson() );
