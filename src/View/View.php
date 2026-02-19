@@ -5,8 +5,8 @@ namespace CommonsBooking\View;
 
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Settings\Settings;
-use ScssPhp\ScssPhp\Compiler;
-use ScssPhp\ScssPhp\ValueConverter;
+use CommonsBooking\ScssPhp\ScssPhp\Compiler;
+use CommonsBooking\ScssPhp\ScssPhp\ValueConverter;
 use Exception;
 
 /**

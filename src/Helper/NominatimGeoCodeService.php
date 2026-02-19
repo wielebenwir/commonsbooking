@@ -2,12 +2,12 @@
 
 namespace CommonsBooking\Helper;
 
-use Geocoder\Exception\Exception;
-use Geocoder\Location;
-use Geocoder\Provider\Nominatim\Nominatim;
-use Geocoder\Query\GeocodeQuery;
-use Geocoder\StatefulGeocoder;
-use Http\Client\Curl\Client;
+use CommonsBooking\Geocoder\Exception\Exception;
+use CommonsBooking\Geocoder\Location;
+use CommonsBooking\Geocoder\Provider\Nominatim\Nominatim;
+use CommonsBooking\Geocoder\Query\GeocodeQuery;
+use CommonsBooking\Geocoder\StatefulGeocoder;
+use CommonsBooking\Http\Client\Curl\Client;
 
 /**
  * Implementation of geocoding web service calls.

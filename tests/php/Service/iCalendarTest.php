@@ -32,7 +32,7 @@ class iCalendarTest extends CBTest {
 			static::$eventTitle,
 			static::$eventDescription
 		);
-		$this->assertInstanceOf( \Eluceo\iCal\Domain\Entity\Event::class, $event );
+		$this->assertInstanceOf( \CommonsBooking\Eluceo\iCal\Domain\Entity\Event::class, $event );
 		$calendarData = $this->calendar->getCalendarData();
 		$this->checkCalendarStringValid( $calendarData );
 	}
@@ -44,7 +44,7 @@ class iCalendarTest extends CBTest {
 			static::$eventDescription,
 			true
 		);
-		$this->assertInstanceOf( \Eluceo\iCal\Domain\Entity\Event::class, $event );
+		$this->assertInstanceOf( \CommonsBooking\Eluceo\iCal\Domain\Entity\Event::class, $event );
 		$calendarData = $this->calendar->getCalendarData();
 		$this->checkCalendarStringValid( $calendarData );
 	}
