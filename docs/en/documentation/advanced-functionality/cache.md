@@ -1,7 +1,5 @@
 # Cache settings
 
---
-
 ::: warning Technical!
 Some technical expertise is needed to determine whether caching is working correctly in your installation. That said, we've tried to make using caching as simple as possible.
 :::
@@ -14,7 +12,7 @@ The cache stores data of frequently requested queries and optimizes response tim
 * We generally do not recommend disabling the cache, but if you wish to do so, you can select "Cache disabled" as the cache adapter.
 
 When CommonsBooking fails to activate due to an issue with the cache, you can disable the cache by default
-through adding the following code snippet. [ Read more about how to use code snippets ](/en/documentation/administration/hooks-and-filters).
+through adding the following code snippet. [ Read more about how to use code snippets ](./hooks-and-filters).
 This is only recommended, when other methods of disabling the cache are not working.
 
 ```php
@@ -36,7 +34,7 @@ A misconfigured cache can slow down your site!
   working properly. In that case, try a different path for the cache or a different cache adapter.
 
 * If your site is very slow, this may also indicate a problem with the cache.
-  More about this: [The site is very slow](/en/documentation/faq/site-slow).
+  More about this: [The site is very slow](../faq/site-slow).
 
 * **Periodical cache warmup through cronjob**:
   :::warning

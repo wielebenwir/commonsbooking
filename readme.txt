@@ -34,7 +34,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 **Plugin websites**
 
 * [Official Website](https://commonsbooking.org)
-* [Official Documentation](https://commonsbooking.org/dokumentation)
+* [Official Documentation](https://commonsbooking.org/documentation)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) 
 
 
@@ -67,9 +67,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ### Where can I find help/report bugs?
 
-* [Documentation](https://commonsbooking.org/)
+* [Documentation](https://commonsbooking.org/documentation)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
-* [Support](https://commonsbooking.org/kontakt/)
+* [Support](https://commonsbooking.org/contact/)
 
 
 ## Screenshots
@@ -208,7 +208,7 @@ ENHANCED: Made items, locations & taxonomies searchable (thanks @flegfleg)
 ### 2.8.3 (25.08.2023)
 ENHANCED: Booking codes are now available for timeframes without a configured end-date
 ENHANCED: Added option to change directory of filesystem cache
-ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/docs/grundlagen/rechte-des-commonsbooking-manager/ )
+ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/documentation/grundlagen/rechte-des-commonsbooking-manager/ )
 ENHANCED: Added filter to allow selecting other roles to be assigned to items / locations
 FIXED: Location map view not working since 2.8.1
 FIXED: Booking offset should work again

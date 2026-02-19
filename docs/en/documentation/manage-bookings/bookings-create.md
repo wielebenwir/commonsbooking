@@ -1,6 +1,5 @@
 #  Buchungen anlegen & Adminbuchung
 
-__
 
 Buchungen sollten in der Regel nur über den entsprechenden Kalender eines
 Artikels (also im Frontend) angelegt und storniert werden.

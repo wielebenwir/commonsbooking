@@ -1,6 +1,5 @@
 #  Buchungsliste
 
-__
 
 Über den Shortcode [cb_bookings] kannst Du auf einer beliebigen Seite die
 Buchungsliste anzeigen.
