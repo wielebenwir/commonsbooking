@@ -54,6 +54,15 @@ jobs:
       - name: install test data for e2e test
         run: npm run cypress:setup
 
+      - name: Debug WP CLI meta update
+        run: |
+          echo "Node version:"
+          node -v
+          echo "WP-ENV version:"
+          npx wp-env --version || true
+          echo "Running meta update test..."
+          npx wp-env run tests-cli wp --debug post meta update 110 _cb_allow_lockdays_in_range on
+
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
