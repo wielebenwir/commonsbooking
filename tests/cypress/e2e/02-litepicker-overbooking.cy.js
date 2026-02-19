@@ -18,17 +18,9 @@ describe('test overbooking process', () => {
     }
 
     function updatePostMetaAndReload(postID, metaKey, metaValue){
-        cy.exec(
-        'npx wp-env run tests-cli wp post meta update ' + postID + ' ' + metaKey + ' ' + metaValue,
-        { failOnNonZeroExit: false }
-    ).then((result) => {
-        console.log('--- WP-CLI VERBOSE ---');
-        console.log('COMMAND:', 'wp post meta update', postID, metaKey, metaValue);
-        console.log('EXIT CODE:', result.code);
-        console.log('STDOUT:\n', result.stdout);
-        console.log('STDERR:\n', result.stderr);
-        console.log('----------------------');
-    });
+        cy.exec( 'npx wp-env run tests-cli wp post meta update ' + postID + ' ' + metaKey + ' ' + metaValue,
+            { failOnNonZeroExit: false }
+        );
         cy.reload()
     }
 
