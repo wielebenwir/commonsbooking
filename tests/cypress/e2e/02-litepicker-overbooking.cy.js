@@ -18,7 +18,9 @@ describe('test overbooking process', () => {
     }
 
     function updatePostMetaAndReload(postID, metaKey, metaValue){
-        cy.exec('wp-env run tests-cli wp post meta update ' + postID + ' ' + metaKey + ' ' + metaValue)
+        cy.exec( 'npx wp-env run tests-cli wp post meta update ' + postID + ' ' + metaKey + ' ' + metaValue,
+            { failOnNonZeroExit: false }
+        );
         cy.reload()
     }
 

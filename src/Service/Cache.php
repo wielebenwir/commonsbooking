@@ -161,6 +161,7 @@ trait Cache {
 					$location = $config['cacheLocation'] ?: sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache';
 					if ( ! is_writable( $location ) ) {
 						throw new CacheException(
+							// translators: %s directory path of the operating system
 							sprintf( commonsbooking_sanitizeHTML( __( 'Directory %s could not be written to.', 'commonsbooking' ) ), $config['cacheLocation'] )
 						);
 					}
@@ -386,11 +387,32 @@ trait Cache {
 			$shortCodeCalls = array_unique( $shortCodeCalls, SORT_REGULAR );
 
 			self::runShortcodeCalls( $shortCodeCalls );
-
-			wp_send_json( 'cache successfully warmed up' );
 		} catch ( \Exception $exception ) {
-			wp_send_json( 'something went wrong with cache warm up' );
+			if ( WP_DEBUG ) {
+				wp_send_json(
+					array(
+						'success' => false,
+						'error'   => true,
+						'message' => sprintf( 'cache warmup failed with message: %s, trace: %s', $exception->getMessage(), $exception->getTraceAsString() ),
+					)
+				);
+			} else {
+				wp_send_json(
+					array(
+						'success' => false,
+						'error'   => true,
+						'message' => 'cache warmup failed',
+					)
+				);
+			}
 		}
+		wp_send_json(
+			array(
+				'success' => true,
+				'error'   => false,
+				'message' => 'cache successfully warmed up',
+			)
+		);
 	}
 
 	/**

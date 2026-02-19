@@ -938,6 +938,28 @@ function init() {
     }());
 })(this, function(exports) {
     "use strict";
+    const englishTranslations = {
+        NEUJAHRSTAG: "New Year's Day",
+        HEILIGEDREIKOENIGE: "Epiphany",
+        KARFREITAG: "Good Friday",
+        OSTERSONNTAG: "Easter Sunday",
+        OSTERMONTAG: "Easter Monday",
+        TAG_DER_ARBEIT: "Labour Day",
+        CHRISTIHIMMELFAHRT: "Ascension Day",
+        PFINGSTSONNTAG: "Whit Sunday",
+        PFINGSTMONTAG: "Whit Monday",
+        FRONLEICHNAM: "Corpus Christi",
+        MARIAHIMMELFAHRT: "Assumption of Mary",
+        DEUTSCHEEINHEIT: "German Unity Day",
+        REFORMATIONSTAG: "Reformation Day",
+        ALLERHEILIGEN: "All Saints' Day",
+        BUBETAG: "Day of Repentance and Prayer",
+        ERSTERWEIHNACHTSFEIERTAG: "Christmas Day",
+        ZWEITERWEIHNACHTSFEIERTAG: "Boxing Day",
+        WELTKINDERTAG: "World Children's Day",
+        WELTFRAUENTAG: "International Women's Day",
+        AUGSBURGER_FRIEDENSFEST: "Augsburg Peace Festival"
+    };
     const germanTranslations = {
         NEUJAHRSTAG: "Neujahrstag",
         HEILIGEDREIKOENIGE: "Heilige Drei Könige",
@@ -965,7 +987,8 @@ function init() {
     const defaultLanguage = "de";
     let currentLanguage = defaultLanguage;
     const translations = {
-        de: germanTranslations
+        de: germanTranslations,
+        en: englishTranslations
     };
     function addTranslation(isoCode, newTranslation) {
         const code = isoCode.toLowerCase();
@@ -994,19 +1017,43 @@ function init() {
     }
     function isSunOrHoliday(date, region) {
         checkRegion(region);
-        return date.getDay() === 0 || isHoliday(date, region);
+        const dayOfWeek = getDayOfWeekInGermanTimezone(date);
+        return dayOfWeek === 0 || isHoliday(date, region);
+    }
+    function getDayOfWeekInGermanTimezone(date) {
+        var _a;
+        const formatter = new Intl.DateTimeFormat("en-US", {
+            timeZone: "Europe/Berlin",
+            weekday: "short"
+        });
+        const dayStr = formatter.format(date);
+        const days = {
+            Sun: 0,
+            Mon: 1,
+            Tue: 2,
+            Wed: 3,
+            Thu: 4,
+            Fri: 5,
+            Sat: 6
+        };
+        return (_a = days[dayStr]) !== null && _a !== void 0 ? _a : 0;
     }
     function isHoliday(date, region) {
         checkRegion(region);
-        const year = date.getFullYear();
-        const internalDate = toUtcTimestamp(date);
-        const holidays = getHolidaysAsUtcTimestamps(year, region);
+        const year = getYearInGermanTimezone(date);
+        const internalDate = toGermanTimezoneTimestamp(date);
+        const holidays = getHolidaysAsGermanTimezoneTimestamps(year, region);
         return holidays.indexOf(internalDate) !== -1;
     }
     function getHolidayByDate(date, region = "ALL") {
         checkRegion(region);
-        const holidays = getHolidaysOfYear(date.getFullYear(), region);
-        return holidays.find(holiday => holiday.equals(date));
+        const year = getYearInGermanTimezone(date);
+        const holidays = getHolidaysOfYear(year, region);
+        const dateInGermanTz = toGermanTimezoneTimestamp(date);
+        return holidays.find(holiday => {
+            const holidayInGermanTz = toGermanTimezoneTimestamp(holiday.date);
+            return holidayInGermanTz === dateInGermanTz;
+        });
     }
     function checkRegion(region) {
         if (region === null || region === undefined) {
@@ -1027,8 +1074,13 @@ function init() {
     function isSpecificHoliday(date, holidayName, region = "ALL") {
         checkRegion(region);
         checkHolidayType(holidayName);
-        const holidays = getHolidaysOfYear(date.getFullYear(), region);
-        const foundHoliday = holidays.find(holiday => holiday.equals(date));
+        const year = getYearInGermanTimezone(date);
+        const holidays = getHolidaysOfYear(year, region);
+        const dateInGermanTz = toGermanTimezoneTimestamp(date);
+        const foundHoliday = holidays.find(holiday => {
+            const holidayInGermanTz = toGermanTimezoneTimestamp(holiday.date);
+            return holidayInGermanTz === dateInGermanTz;
+        });
         if (!foundHoliday) {
             return false;
         }
@@ -1044,9 +1096,9 @@ function init() {
         checkRegion(region);
         return getHolidaysOfYear(y, region);
     }
-    function getHolidaysAsUtcTimestamps(year, region) {
+    function getHolidaysAsGermanTimezoneTimestamps(year, region) {
         const holidays = getHolidaysOfYear(year, region);
-        return holidays.map(holiday => toUtcTimestamp(holiday.date));
+        return holidays.map(holiday => toGermanTimezoneTimestamp(holiday.date));
     }
     function getHolidaysOfYear(year, region) {
         const easterDate = getEasterDate(year);
@@ -1055,7 +1107,7 @@ function init() {
         const christiHimmelfahrt = addDays(new Date(easterDate.getTime()), 39);
         const pfingstsonntag = addDays(new Date(easterDate.getTime()), 49);
         const pfingstmontag = addDays(new Date(easterDate.getTime()), 50);
-        const holidays = [ ...getCommonHolidays(year), newHoliday("KARFREITAG", karfreitag), newHoliday("OSTERMONTAG", ostermontag), newHoliday("CHRISTIHIMMELFAHRT", christiHimmelfahrt), newHoliday("PFINGSTMONTAG", pfingstmontag) ];
+        const holidays = [ ...getCommonHolidays(year), newHoliday("KARFREITAG", karfreitag, [ "ALL" ]), newHoliday("OSTERMONTAG", ostermontag, [ "ALL" ]), newHoliday("CHRISTIHIMMELFAHRT", christiHimmelfahrt, [ "ALL" ]), newHoliday("PFINGSTMONTAG", pfingstmontag, [ "ALL" ]) ];
         addHeiligeDreiKoenige(year, region, holidays);
         addEasterAndPfingsten(year, region, easterDate, pfingstsonntag, holidays);
         addFronleichnam(region, easterDate, holidays);
@@ -1069,53 +1121,60 @@ function init() {
         return holidays.sort((a, b) => a.date.getTime() - b.date.getTime());
     }
     function getCommonHolidays(year) {
-        return [ newHoliday("NEUJAHRSTAG", makeDate(year, 1, 1)), newHoliday("TAG_DER_ARBEIT", makeDate(year, 5, 1)), newHoliday("DEUTSCHEEINHEIT", makeDate(year, 10, 3)), newHoliday("ERSTERWEIHNACHTSFEIERTAG", makeDate(year, 12, 25)), newHoliday("ZWEITERWEIHNACHTSFEIERTAG", makeDate(year, 12, 26)) ];
+        return [ newHoliday("NEUJAHRSTAG", makeDate(year, 1, 1), [ "ALL" ]), newHoliday("TAG_DER_ARBEIT", makeDate(year, 5, 1), [ "ALL" ]), newHoliday("DEUTSCHEEINHEIT", makeDate(year, 10, 3), [ "ALL" ]), newHoliday("ERSTERWEIHNACHTSFEIERTAG", makeDate(year, 12, 25), [ "ALL" ]), newHoliday("ZWEITERWEIHNACHTSFEIERTAG", makeDate(year, 12, 26), [ "ALL" ]) ];
     }
     function addRegionalHolidays(year, region, feiertageObjects) {
         if (region === "AUGSBURG") {
-            feiertageObjects.push(newHoliday("AUGSBURGER_FRIEDENSFEST", makeDate(year, 8, 8)));
+            feiertageObjects.push(newHoliday("AUGSBURGER_FRIEDENSFEST", makeDate(year, 8, 8), [ "AUGSBURG" ]));
         }
     }
     function addHeiligeDreiKoenige(year, region, feiertageObjects) {
-        if (region === "BW" || region === "BY" || region === "AUGSBURG" || region === "ST" || region === "ALL") {
-            feiertageObjects.push(newHoliday("HEILIGEDREIKOENIGE", makeDate(year, 1, 6)));
+        const validRegions = [ "BW", "BY", "AUGSBURG", "ST" ];
+        if (validRegions.includes(region) || region === "ALL") {
+            feiertageObjects.push(newHoliday("HEILIGEDREIKOENIGE", makeDate(year, 1, 6), validRegions));
         }
     }
     function addEasterAndPfingsten(year, region, easterDate, pfingstsonntag, feiertageObjects) {
-        if (region === "BB" || region === "ALL") {
-            feiertageObjects.push(newHoliday("OSTERSONNTAG", easterDate), newHoliday("PFINGSTSONNTAG", pfingstsonntag));
+        const validRegions = [ "BB" ];
+        if (validRegions.includes(region) || region === "ALL") {
+            feiertageObjects.push(newHoliday("OSTERSONNTAG", easterDate, validRegions), newHoliday("PFINGSTSONNTAG", pfingstsonntag, validRegions));
         }
     }
     function addFronleichnam(region, easterDate, holidays) {
-        if (region === "BW" || region === "BY" || region === "AUGSBURG" || region === "HE" || region === "NW" || region === "RP" || region === "SL" || region === "ALL") {
+        const validRegions = [ "BW", "BY", "AUGSBURG", "HE", "NW", "RP", "SL" ];
+        if (validRegions.includes(region) || region === "ALL") {
             const fronleichnam = addDays(new Date(easterDate.getTime()), 60);
-            holidays.push(newHoliday("FRONLEICHNAM", fronleichnam));
+            holidays.push(newHoliday("FRONLEICHNAM", fronleichnam, validRegions));
         }
     }
     function addMariaeHimmelfahrt(year, region, holidays) {
-        if (region === "SL" || region === "BY" || region === "AUGSBURG" || region === "ALL") {
-            holidays.push(newHoliday("MARIAHIMMELFAHRT", makeDate(year, 8, 15)));
+        const validRegions = [ "SL", "BY", "AUGSBURG" ];
+        if (validRegions.includes(region) || region === "ALL") {
+            holidays.push(newHoliday("MARIAHIMMELFAHRT", makeDate(year, 8, 15), validRegions));
         }
     }
     function addReformationstag(year, region, holidays) {
-        if (year === 2017 || region === "NI" || region === "BB" || region === "HB" || region === "HH" || region === "MV" || region === "SN" || region === "ST" || region === "TH" || region === "SH" || region === "ALL") {
-            holidays.push(newHoliday("REFORMATIONSTAG", makeDate(year, 10, 31)));
+        const validRegions = [ "NI", "BB", "MV", "SN", "ST", "TH", "HB", "HH", "SH" ];
+        if (year === 2017 || validRegions.includes(region) || region === "ALL") {
+            holidays.push(newHoliday("REFORMATIONSTAG", makeDate(year, 10, 31), validRegions));
         }
     }
     function addAllerheiligen(year, region, holidays) {
-        if (region === "BW" || region === "BY" || region === "AUGSBURG" || region === "NW" || region === "RP" || region === "SL" || region === "ALL") {
-            holidays.push(newHoliday("ALLERHEILIGEN", makeDate(year, 11, 1)));
+        const validRegions = [ "BW", "BY", "NW", "RP", "SL", "AUGSBURG" ];
+        if (validRegions.includes(region) || region === "ALL") {
+            holidays.push(newHoliday("ALLERHEILIGEN", makeDate(year, 11, 1), validRegions));
         }
     }
     function addBussUndBetttag(year, region, holidays) {
+        const validRegions = [ "SN" ];
         if (region === "SN" || region === "ALL") {
             const bussbettag = getBussBettag(year);
-            holidays.push(newHoliday("BUBETAG", makeDate(bussbettag.getUTCFullYear(), bussbettag.getUTCMonth() + 1, bussbettag.getUTCDate())));
+            holidays.push(newHoliday("BUBETAG", makeDate(bussbettag.getUTCFullYear(), bussbettag.getUTCMonth() + 1, bussbettag.getUTCDate()), validRegions));
         }
     }
     function addWeltkindertag(year, region, holidays) {
         if (year >= 2019 && (region === "TH" || region === "ALL")) {
-            holidays.push(newHoliday("WELTKINDERTAG", makeDate(year, 9, 20)));
+            holidays.push(newHoliday("WELTKINDERTAG", makeDate(year, 9, 20), [ "TH" ]));
         }
     }
     function addWeltfrauenTag(year, region, feiertageObjects) {
@@ -1123,10 +1182,10 @@ function init() {
             return;
         }
         if (region === "BE" || region === "ALL") {
-            feiertageObjects.push(newHoliday("WELTFRAUENTAG", makeDate(year, 3, 8)));
+            feiertageObjects.push(newHoliday("WELTFRAUENTAG", makeDate(year, 3, 8), [ "MV", "BE" ]));
         }
         if (region === "MV" && year >= 2023) {
-            feiertageObjects.push(newHoliday("WELTFRAUENTAG", makeDate(year, 3, 8)));
+            feiertageObjects.push(newHoliday("WELTFRAUENTAG", makeDate(year, 3, 8), [ "MV", "BE" ]));
         }
     }
     function getEasterDate(year) {
@@ -1141,12 +1200,12 @@ function init() {
         const L = I - J;
         const M = 3 + Math.floor((L + 40) / 44);
         const D = L + 28 - 31 * Math.floor(M / 4);
-        return new Date(year, M - 1, D);
+        return new Date(Date.UTC(year, M - 1, D, 12, 0, 0, 0));
     }
     function getBussBettag(jahr) {
-        const weihnachten = new Date(jahr, 11, 25, 12, 0, 0);
+        const weihnachten = new Date(Date.UTC(jahr, 11, 25, 12, 0, 0, 0));
         const ersterAdventOffset = 32;
-        let wochenTagOffset = weihnachten.getDay() % 7;
+        let wochenTagOffset = weihnachten.getUTCDay() % 7;
         if (wochenTagOffset === 0) {
             wochenTagOffset = 7;
         }
@@ -1157,20 +1216,23 @@ function init() {
     }
     function addDays(date, days) {
         const changedDate = new Date(date);
-        changedDate.setDate(date.getDate() + days);
+        changedDate.setUTCDate(date.getUTCDate() + days);
         return changedDate;
     }
     function makeDate(year, naturalMonth, day) {
-        return new Date(year, naturalMonth - 1, day);
+        return new Date(Date.UTC(year, naturalMonth - 1, day, 12, 0, 0, 0));
     }
-    function newHoliday(name, date) {
+    function newHoliday(name, date, regions) {
+        if (regions.length === 1 && regions[0] === "ALL") {
+            regions = allRegions;
+        }
         return {
             name: name,
             date: date,
             dateString: localeDateObjectToDateString(date),
+            regions: regions,
             trans(lang = currentLanguage) {
-                console.warn('FeiertageJs: You are using "Holiday.trans() method. This will be replaced in the next major version with translate()"');
-                return this.translate(lang);
+                throw new Error("Method deprecated. Please replace trans() with translate(). This method will be removed in the next major release.");
             },
             translate(lang = currentLanguage) {
                 return lang === undefined || lang === null ? undefined : translations[lang][this.name];
@@ -1188,6 +1250,29 @@ function init() {
         const normalizedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1e3);
         normalizedDate.setUTCHours(0, 0, 0, 0);
         return normalizedDate.toISOString().slice(0, 10);
+    }
+    function getYearInGermanTimezone(date) {
+        const formatter = new Intl.DateTimeFormat("en-US", {
+            timeZone: "Europe/Berlin",
+            year: "numeric"
+        });
+        const parts = formatter.formatToParts(date);
+        return parseInt(parts.find(p => p.type === "year").value, 10);
+    }
+    function toGermanTimezoneTimestamp(date) {
+        const formatter = new Intl.DateTimeFormat("en-US", {
+            timeZone: "Europe/Berlin",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false
+        });
+        const parts = formatter.formatToParts(date);
+        const hour = parseInt(parts.find(p => p.type === "hour").value, 10);
+        const minute = parseInt(parts.find(p => p.type === "minute").value, 10);
+        const second = parseInt(parts.find(p => p.type === "second").value, 10);
+        const millisecondsFromMidnight = hour * 3600 * 1e3 + minute * 60 * 1e3 + second * 1e3;
+        return date.getTime() - millisecondsFromMidnight;
     }
     function toUtcTimestamp(date) {
         const internalDate = new Date(date);

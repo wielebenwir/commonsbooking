@@ -395,7 +395,7 @@ class Timeframe extends CustomPost {
 	 * Returns the corresponding multiple locations for a timeframe.
 	 * If multiple locations are not available, it will call the getLocation() method and return an array with one location.
 	 *
-	 * @since 2.9 (anticipated)
+	 * @since 2.9
 	 * @return Location[]
 	 */
 	public function getLocations(): ?array {
@@ -418,7 +418,7 @@ class Timeframe extends CustomPost {
 	 * Returns the corresponding location ids for a timeframe.
 	 * If multiple locations are not available, it will call the getLocationID() method and return an array with one location id.
 	 *
-	 * @since 2.9 (anticipated)
+	 * @since 2.9
 	 * @return int[]
 	 */
 	public function getLocationIDs(): array {
@@ -654,8 +654,8 @@ class Timeframe extends CustomPost {
 						&& $this->hasTimeframeDateOverlap( $sameItemTimeframe )
 					) {
 						throw new TimeframeInvalidException(
-						/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
 							sprintf(
+								/* translators: %1$s = timeframe-ID, %2$s is timeframe post_title */
 								__(
 									'Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s',
 									'commonsbooking'
@@ -1182,6 +1182,8 @@ class Timeframe extends CustomPost {
 	 * Returns users with admin role for location and item, assigned to this timeframe.
 	 * Will call the respective methods on the location and item.
 	 *
+	 * See https://github.com/wielebenwir/commonsbooking/discussions/1999
+	 *
 	 * @return array|string[]
 	 * @throws Exception
 	 */
@@ -1190,15 +1192,22 @@ class Timeframe extends CustomPost {
 		$itemAdminIds     = [];
 		$locationAdminIds = [];
 
-		$location = $this->getLocation();
-		if ( ! empty( $location ) ) {
-			$locationAdminIds = $location->getAdmins();
+		$locations = $this->getLocations();
+		if ( ! empty( $locations ) ) {
+			$locationAdminIds = array_shift( $locations )->getAdmins();
+			foreach ( $locations as $location ) {
+				$locationAdminIds = array_intersect( $locationAdminIds, $location->getAdmins() ); // only include locations that have same admins
+			}
 		}
-		$item = $this->getItem();
-		if ( ! empty( $item ) ) {
-			$itemAdminIds = $item->getAdmins();
+		$items = $this->getItems();
+		if ( ! empty( $items ) ) {
+			$itemAdminIds = array_shift( $items )->getAdmins();
+			foreach ( $items as $item ) {
+				$itemAdminIds = array_intersect( $itemAdminIds, $item->getAdmins() ); // only include items that have same admins
+			}
 		}
 
+		// this will probably never occur, because getAdmins also returns the postAuthor, which every post naturally has.
 		if ( empty( $locationAdminIds ) && empty( $itemAdminIds ) ) {
 			return [];
 		}

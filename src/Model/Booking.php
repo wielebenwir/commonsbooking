@@ -434,10 +434,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		if ( $startdate === $enddate ) {
 			/* translators: %s = date in WordPress defined format */
-			return sprintf( sanitize_text_field( __( ' on %s ', 'commonsbooking' ) ), $startdate );
+			return sprintf( sanitize_text_field( __( 'on %s', 'commonsbooking' ) ), $startdate );
 		} else {
 			/* translators: %1 = startdate, %2 = enddate in WordPress defined format */
-			return sprintf( sanitize_text_field( __( ' from %1$s until %2$s ', 'commonsbooking' ) ), $startdate, $enddate );
+			return sprintf( sanitize_text_field( __( 'from %1$s until %2$s', 'commonsbooking' ) ), $startdate, $enddate );
 		}
 	}
 
@@ -577,7 +577,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		} elseif ( $this->isCancelled() ) {
 			if ( $cancellationTime ) {
 				$cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
-				$noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
+				// translators: %s cancellation time as formatted date-time
+				$noticeText = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
 			} else {
 				$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
 			}
@@ -644,6 +645,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			throw new TimeframeInvalidException(
 				__( 'There are one ore more overlapping bookings within the chosen timerange', 'commonsbooking' ) . PHP_EOL .
 				__( 'Please adjust the start- or end-date.', 'commonsbooking' ) . PHP_EOL .
+				// translators: %s list of urls to one or more booking pages
 				sprintf( __( 'Affected Bookings: %s', 'commonsbooking' ), commonsbooking_sanitizeHTML( $formattedOverlappingLinks ) ),
 			);
 		}

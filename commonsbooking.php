@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:         Commons Booking
- * Version:             2.10.8
+ * Version:             2.10.9
  * Requires at least:   5.2
  * Requires PHP:        7.4
  * Plugin URI:          https://commonsbooking.org
@@ -16,7 +16,7 @@
  */
 
 defined( 'ABSPATH' ) || die( 'Thanks for visiting' );
-define( 'COMMONSBOOKING_VERSION', '2.10.8' );
+define( 'COMMONSBOOKING_VERSION', '2.10.9' );
 define( 'COMMONSBOOKING_VERSION_COMMENT', '' ); // Empty for release - Used to mark development versions
 define( 'COMMONSBOOKING_PLUGIN_SLUG', 'commonsbooking' );
 define( 'COMMONSBOOKING_MENU_SLUG', COMMONSBOOKING_PLUGIN_SLUG . '-menu' );

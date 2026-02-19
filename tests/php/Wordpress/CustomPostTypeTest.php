@@ -13,6 +13,10 @@ use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use SlopeIt\ClockMock\ClockMock;
 
+/**
+ * This is the test class that most other tests,
+ * that check the behaviour of our CustomPostTypes inherit from.
+ */
 abstract class CustomPostTypeTest extends BaseTestCase {
 
 	/**
@@ -138,6 +142,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_CREATE_BOOKING_CODES, $createBookingCodes );
 		// TODO: Make this value configurable
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
 
 		$this->timeframeIds[] = $timeframeId;
 

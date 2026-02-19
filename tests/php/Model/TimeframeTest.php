@@ -3,12 +3,11 @@
 namespace CommonsBooking\Tests\Model;
 
 use CommonsBooking\Exception\OverlappingException;
-use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Exception\TimeframeInvalidException;
-
-use CommonsBooking\Model\Timeframe;
-use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Item;
+use CommonsBooking\Model\Location;
+use CommonsBooking\Model\Timeframe;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use SlopeIt\ClockMock\ClockMock;
 
 /**
@@ -1048,6 +1047,7 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertEquals( [ self::USER_ID ], $this->firstTimeframe->getAdmins() );
 
 		// Case 2: Item admin set
+		// Should get the item admin as eligible
 		$this->createCBManager();
 		$managedItem       = $this->createItem( 'Managed Item', 'publish', [ $this->cbManagerUserID ] );
 		$unmanagedLocation = $this->createLocation( 'Unmanaged Location', 'publish' );
@@ -1065,6 +1065,28 @@ class TimeframeTest extends CustomPostTypeTest {
 		$otherManagedItem     = $this->createItem( 'Other Managed Item', 'publish', [ $this->cbManagerUserID ] );
 		$timeframe            = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay( $otherManagedLocation, $otherManagedItem ) );
 		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $timeframe->getAdmins() );
+
+		// case 5: timeframe which can have multiple items / locations assigned (#1961)
+		$holiday4managedLocation = $this->createTimeframe(
+			[ $otherManagedLocation ],
+			[ $otherManagedItem ],
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID,
+		);
+		$timeframe               = new Timeframe( $holiday4managedLocation );
+		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $timeframe->getAdmins() );
+
+		// case 6: one of the locations of holiday timeframe is managed, other is not. manager should not be allowed to edit timeframes that are not completely under their control for multi-assigned timeframes
+		$holiday4partlyManagedLocation = $this->createTimeframe(
+			[ $otherManagedLocation, $unmanagedLocation ],
+			[ $otherManagedItem, $unmanagedItem ],
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::HOLIDAYS_ID
+		);
+		$timeframe                     = new Timeframe( $holiday4partlyManagedLocation );
+		$this->assertEqualsCanonicalizing( [ self::USER_ID ], $timeframe->getAdmins() );
 	}
 
 	protected function setUp(): void {

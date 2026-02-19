@@ -230,6 +230,7 @@ class Location extends BookablePost {
 	 *
 	 *  TODO: This currently includes the author of the location as an admin.
 	 *        This does not make sense in all contexts and should be changed.
+	 *        Duplicated implementation in Model/Item.php
 	 *
 	 * @return array|mixed|string[]
 	 */

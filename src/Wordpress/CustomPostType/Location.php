@@ -144,7 +144,7 @@ class Location extends CustomPostType {
 			'view_item'             => esc_html__( 'Show location', 'commonsbooking' ),
 			'view_items'            => esc_html__( 'Show locations', 'commonsbooking' ),
 			'search_items'          => esc_html__( 'Search locations', 'commonsbooking' ),
-			'not_found'             => esc_html__( 'location not found', 'commonsbooking' ),
+			'not_found'             => esc_html__( 'Location not found', 'commonsbooking' ),
 			'not_found_in_trash'    => esc_html__( 'No locations found in trash', 'commonsbooking' ),
 			'parent_item_colon'     => esc_html__( 'Parent location:', 'commonsbooking' ),
 			'all_items'             => esc_html__( 'All locations', 'commonsbooking' ),
@@ -535,7 +535,13 @@ class Location extends CustomPostType {
 		return [
 			array(
 				'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),
-				'desc' => commonsbooking_sanitizeHTML( __( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/stationen-anlegen">Create Locations</a> for more information.', 'commonsbooking' ) ),
+				'desc' => commonsbooking_sanitizeHTML(
+					sprintf(
+						__( 'If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation %1$sCreate Locations%2$s for more information.', 'commonsbooking' ),
+						'<a target="_blank" href="' . esc_url( 'https://commonsbooking.org/documentation/first-steps/create-location' ) . '">',
+						'</a>'
+					)
+				),
 				'id'   => COMMONSBOOKING_METABOX_PREFIX . 'allow_lockdays_in_range',
 				'type' => 'checkbox',
 			),
