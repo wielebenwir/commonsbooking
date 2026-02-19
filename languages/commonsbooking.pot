@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-04T20:35:56+00:00\n"
+"POT-Creation-Date: 2026-02-17T12:34:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -48,13 +48,14 @@ msgstr ""
 msgid "Welcome to CommonsBooking"
 msgstr ""
 
+#. translators: %s = version number
 #: includes/OptionsArray.php:50
 #, php-format
 msgid ""
 "You are using CommonsBooking Version %s\n"
 "\n"
 "                            <h2>How to start</h2>\n"
-"                            <p>To get startet visit our tutorials and documentation on <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation\">https://commonsbooking.org/dokumentation</a></p>\n"
+"                            <p>To get started visit our tutorials and documentation on <a target=\"_blank\" href=\"https://commonsbooking.org/dokumentation\">https://commonsbooking.org/dokumentation</a></p>\n"
 "\n"
 "                            <h2>Questions or bug reports?</h2>\n"
 "                            <p>Ask your questions or send us your bug reports here <a target=\"_blank\" href=\"https://commonsbooking.org/kontakt/\">https://commonsbooking.org/kontakt/</a></p>\n"
@@ -64,6 +65,7 @@ msgid ""
 msgstr ""
 
 #: includes/OptionsArray.php:75
+msgctxt "The general settings category"
 msgid "General"
 msgstr ""
 
@@ -79,6 +81,7 @@ msgstr ""
 msgid "Items slug"
 msgstr ""
 
+#. translators: %s = example url (like website.com/cb-items/)
 #: includes/OptionsArray.php:98
 #, php-format
 msgid "The slug for article detail page. Type in the slug without slashes. Example: <strong>cb_item</strong> or <strong>article</strong>.  The url for the items detail will be like %s"
@@ -88,6 +91,7 @@ msgstr ""
 msgid "Locations slug"
 msgstr ""
 
+#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:115
 #, php-format
 msgid "The slug for location detail page. Type in the slug without slashes. Example: <strong>cb_location</strong> or <strong>location</strong>.  The url for the items detail will be like %s"
@@ -97,6 +101,7 @@ msgstr ""
 msgid "Bookings Page"
 msgstr ""
 
+#. translators: %s = example url (like website.com/cb-locations/)
 #: includes/OptionsArray.php:132
 msgid "The page where you included the [cb_bookings] shortcode. This is used in the Users Widget"
 msgstr ""
@@ -315,7 +320,7 @@ msgid "The title of the attached event"
 msgstr ""
 
 #: includes/OptionsArray.php:364
-#: includes/OptionsArray.php:1503
+#: includes/OptionsArray.php:1505
 msgid "{{item:post_title}} at {{location:post_title}}"
 msgstr ""
 
@@ -1002,7 +1007,7 @@ msgid "Migrate bookings"
 msgstr ""
 
 #: includes/OptionsArray.php:1267
-#: includes/OptionsArray.php:1325
+#: includes/OptionsArray.php:1327
 msgid "Export"
 msgstr ""
 
@@ -1027,198 +1032,199 @@ msgstr ""
 msgid "Location-Fields"
 msgstr ""
 
-#: includes/OptionsArray.php:1284
-#: includes/OptionsArray.php:1293
+#. translators: %s formatted meta field as an var_dump-like assoc array string
+#: includes/OptionsArray.php:1285
+#: includes/OptionsArray.php:1295
 #, php-format
 msgid "Just add field names, no matter if its a post- or a meta-field. Comma separated list. Beside the standard post fields and standard postmeta-fields, the following custom meta fields are available. Copy only the values in [] in the field without the brackets. %s"
 msgstr ""
 
-#: includes/OptionsArray.php:1291
+#: includes/OptionsArray.php:1292
 msgid "Item-Fields"
 msgstr ""
 
-#: includes/OptionsArray.php:1300
+#: includes/OptionsArray.php:1302
 msgid "User-Fields"
 msgstr ""
 
-#: includes/OptionsArray.php:1301
+#: includes/OptionsArray.php:1303
 msgid "Just add field names, no matter if its a userfield or a meta-field. Comma separated list."
 msgstr ""
 
-#: includes/OptionsArray.php:1306
+#: includes/OptionsArray.php:1308
 msgid "Export start date"
 msgstr ""
 
-#: includes/OptionsArray.php:1316
+#: includes/OptionsArray.php:1318
 msgid "Export end date"
 msgstr ""
 
-#: includes/OptionsArray.php:1333
+#: includes/OptionsArray.php:1335
 msgid "Cron settings for timeframes export"
 msgstr ""
 
-#: includes/OptionsArray.php:1337
+#: includes/OptionsArray.php:1339
 msgid "Run as cronjob"
 msgstr ""
 
-#: includes/OptionsArray.php:1342
+#: includes/OptionsArray.php:1344
 msgid "Export interval"
 msgstr ""
 
-#: includes/OptionsArray.php:1346
-#: includes/OptionsArray.php:1347
+#: includes/OptionsArray.php:1348
+#: includes/OptionsArray.php:1349
 msgid "minutes"
 msgstr ""
 
-#: includes/OptionsArray.php:1348
+#: includes/OptionsArray.php:1350
 msgid "daily"
 msgstr ""
 
-#: includes/OptionsArray.php:1352
+#: includes/OptionsArray.php:1354
 msgid "Export timerange"
 msgstr ""
 
-#: includes/OptionsArray.php:1353
+#: includes/OptionsArray.php:1355
 msgid "Export timerange in days."
 msgstr ""
 
-#: includes/OptionsArray.php:1362
+#: includes/OptionsArray.php:1364
 msgid "Filepath"
 msgstr ""
 
-#: includes/OptionsArray.php:1363
+#: includes/OptionsArray.php:1365
 msgid "Absolute path on your webserver (including trailing slash) where export file will be saved to."
 msgstr ""
 
-#: includes/OptionsArray.php:1375
-#: includes/OptionsArray.php:1403
+#: includes/OptionsArray.php:1377
+#: includes/OptionsArray.php:1405
 msgid "API"
 msgstr ""
 
-#: includes/OptionsArray.php:1379
+#: includes/OptionsArray.php:1381
 msgid "Configure API Access"
 msgstr ""
 
-#: includes/OptionsArray.php:1383
+#: includes/OptionsArray.php:1385
 msgid "Activate API"
 msgstr ""
 
-#: includes/OptionsArray.php:1384
+#: includes/OptionsArray.php:1386
 msgid "If selected, the API is enabled. See more information in the documentation: <a target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API documentation</a>"
 msgstr ""
 
-#: includes/OptionsArray.php:1389
+#: includes/OptionsArray.php:1391
 msgid "Enable API Access without API-Key"
 msgstr ""
 
-#: includes/OptionsArray.php:1390
+#: includes/OptionsArray.php:1392
 msgid "If selected, the API is accessible without an API-Key. For details see: <a target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API documentation</a>"
 msgstr ""
 
-#: includes/OptionsArray.php:1397
+#: includes/OptionsArray.php:1399
 msgid "API shares"
 msgstr ""
 
-#: includes/OptionsArray.php:1398
+#: includes/OptionsArray.php:1400
 msgid "You can define on or more API shares. Read the documentation for more information about API shares and configuration <a target=\"_blank\" href=\"https://commonsbooking.org/docs/schnittstellen-api/commonsbooking-api/\">API documentation</a>"
 msgstr ""
 
-#: includes/OptionsArray.php:1404
+#: includes/OptionsArray.php:1406
 msgid "Add Another API"
 msgstr ""
 
-#: includes/OptionsArray.php:1405
+#: includes/OptionsArray.php:1407
 msgid "Remove API"
 msgstr ""
 
-#: includes/OptionsArray.php:1412
+#: includes/OptionsArray.php:1414
 msgid "API name"
 msgstr ""
 
-#: includes/OptionsArray.php:1413
+#: includes/OptionsArray.php:1415
 msgid "Internal name for this API share"
 msgstr ""
 
-#: includes/OptionsArray.php:1418
+#: includes/OptionsArray.php:1420
 msgid "API enabled"
 msgstr ""
 
-#: includes/OptionsArray.php:1419
+#: includes/OptionsArray.php:1421
 msgid "If checked this API share is enabled"
 msgstr ""
 
-#: includes/OptionsArray.php:1424
+#: includes/OptionsArray.php:1426
 msgid "Push URL"
 msgstr ""
 
-#: includes/OptionsArray.php:1425
+#: includes/OptionsArray.php:1427
 msgid "URL that gets push information everytime there was a change on CommonsBooking data"
 msgstr ""
 
-#: includes/OptionsArray.php:1430
+#: includes/OptionsArray.php:1432
 msgid "API Key"
 msgstr ""
 
-#: includes/OptionsArray.php:1433
+#: includes/OptionsArray.php:1435
 msgid " You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long."
 msgstr ""
 
-#: includes/OptionsArray.php:1436
+#: includes/OptionsArray.php:1438
 msgid "API Owner"
 msgstr ""
 
-#: includes/OptionsArray.php:1437
+#: includes/OptionsArray.php:1439
 msgid "The owner value is provided by the API. It is set to the blog name by default in this version. In future versions you may be able to change this information"
 msgstr ""
 
-#: includes/OptionsArray.php:1457
+#: includes/OptionsArray.php:1459
 msgid "Advanced Options"
 msgstr ""
 
-#: includes/OptionsArray.php:1461
+#: includes/OptionsArray.php:1463
 msgid "Set Custom metadata to locations and items"
 msgstr ""
 
-#: includes/OptionsArray.php:1463
+#: includes/OptionsArray.php:1465
 msgid "This is an advanced feature and should only be used if you are experienced or instructed how to set it up properly. In future versions we will add more detailed information and documentation."
 msgstr ""
 
-#: includes/OptionsArray.php:1471
+#: includes/OptionsArray.php:1473
 msgid "Meta Data"
 msgstr ""
 
-#: includes/OptionsArray.php:1473
+#: includes/OptionsArray.php:1475
 msgid ""
 "Use only this format, separated by semicolon and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>\n"
 "                                        Example: item;waterproof;Waterproof material;checkbox;\"This item is waterproof and can be used in heavy rain\" "
 msgstr ""
 
-#: includes/OptionsArray.php:1485
+#: includes/OptionsArray.php:1487
 msgid "iCalendar Feed"
 msgstr ""
 
-#: includes/OptionsArray.php:1487
+#: includes/OptionsArray.php:1489
 msgid "Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental."
 msgstr ""
 
-#: includes/OptionsArray.php:1495
+#: includes/OptionsArray.php:1497
 msgid "Enable iCalendar feed"
 msgstr ""
 
-#: includes/OptionsArray.php:1500
+#: includes/OptionsArray.php:1502
 msgid "Event title"
 msgstr ""
 
-#: includes/OptionsArray.php:1501
-#: includes/OptionsArray.php:1513
+#: includes/OptionsArray.php:1503
+#: includes/OptionsArray.php:1515
 msgid "You can use template tags here as well"
 msgstr ""
 
-#: includes/OptionsArray.php:1512
+#: includes/OptionsArray.php:1514
 msgid "Event description"
 msgstr ""
 
-#: includes/OptionsArray.php:1515
+#: includes/OptionsArray.php:1517
 msgid ""
 "\n"
 "Pick up: {{booking:pickupDatetime}}\n"
@@ -1227,56 +1233,56 @@ msgid ""
 "{{booking:formattedBookingCode}} "
 msgstr ""
 
-#: includes/OptionsArray.php:1530
+#: includes/OptionsArray.php:1532
 msgid "Advanced caching settings"
 msgstr ""
 
-#: includes/OptionsArray.php:1533
+#: includes/OptionsArray.php:1535
 msgid "Allows you to change options regarding the caching system"
 msgstr ""
 
-#: includes/OptionsArray.php:1536
-#: src/Service/Cache.php:454
+#: includes/OptionsArray.php:1538
+#: src/Service/Cache.php:476
 msgid "Clear Cache"
 msgstr ""
 
-#: includes/OptionsArray.php:1542
+#: includes/OptionsArray.php:1544
 msgid "Cache Adapter"
 msgstr ""
 
-#: includes/OptionsArray.php:1549
+#: includes/OptionsArray.php:1551
 msgid "Location of cache"
 msgstr ""
 
-#: includes/OptionsArray.php:1550
+#: includes/OptionsArray.php:1552
 msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
 msgstr ""
 
-#: includes/OptionsArray.php:1556
+#: includes/OptionsArray.php:1558
 msgid "Current connection status"
 msgstr ""
 
-#: includes/OptionsArray.php:1562
+#: includes/OptionsArray.php:1564
 msgid "Periodical warmup through cronjob"
 msgstr ""
 
-#: includes/OptionsArray.php:1563
+#: includes/OptionsArray.php:1565
 msgid "Will periodically warm up the cache through a cronjob. This can be useful, when you have a lot of timeframes / bookings but your site is rarely accessed. <br> You NEED to hook WP-Cron Into the System Task Scheduler for this to have any positive effect. <b> You probably don't want this. </b>"
 msgstr ""
 
-#: includes/OptionsArray.php:1568
+#: includes/OptionsArray.php:1570
 msgid "Every 10 minutes"
 msgstr ""
 
-#: includes/OptionsArray.php:1569
+#: includes/OptionsArray.php:1571
 msgid "Every 30 minutes"
 msgstr ""
 
-#: includes/OptionsArray.php:1570
+#: includes/OptionsArray.php:1572
 msgid "Every hour"
 msgstr ""
 
-#: includes/OptionsArray.php:1571
+#: includes/OptionsArray.php:1573
 msgid "Every day"
 msgstr ""
 
@@ -1440,7 +1446,8 @@ msgstr ""
 msgid "Could not find booking codes for this timeframe/period"
 msgstr ""
 
-#: src/Messages/BookingCodesMessage.php:222
+#. translators: %1$s item name, %2$s booking code value
+#: src/Messages/BookingCodesMessage.php:223
 #, php-format
 msgid "booking code for item \"%1$s\": %2$s"
 msgstr ""
@@ -1474,63 +1481,65 @@ msgstr ""
 msgid "Please check your booking and click confirm booking"
 msgstr ""
 
-#: src/Model/Booking.php:580
+#. translators: %s cancellation time as formatted date-time
+#: src/Model/Booking.php:581
 #, php-format
 msgid "Your booking has been canceled at %s."
 msgstr ""
 
-#: src/Model/Booking.php:582
+#: src/Model/Booking.php:583
 msgid "Your booking has been canceled"
 msgstr ""
 
-#: src/Model/Booking.php:611
+#: src/Model/Booking.php:612
 msgid "Item not found"
 msgstr ""
 
-#: src/Model/Booking.php:620
+#: src/Model/Booking.php:621
 #: src/Wordpress/CustomPostType/Location.php:147
 msgid "Location not found"
 msgstr ""
 
-#: src/Model/Booking.php:625
+#: src/Model/Booking.php:626
 msgid "There is no timeframe for this booking. Please create a timeframe first."
 msgstr ""
 
-#: src/Model/Booking.php:645
+#: src/Model/Booking.php:646
 msgid "There are one ore more overlapping bookings within the chosen timerange"
 msgstr ""
 
-#: src/Model/Booking.php:646
+#: src/Model/Booking.php:647
 msgid "Please adjust the start- or end-date."
 msgstr ""
 
-#: src/Model/Booking.php:647
+#. translators: %s list of urls to one or more booking pages
+#: src/Model/Booking.php:649
 #, php-format
 msgid "Affected Bookings: %s"
 msgstr ""
 
-#: src/Model/Booking.php:668
+#: src/Model/Booking.php:670
 msgid "Link to your booking"
 msgstr ""
 
-#: src/Model/Booking.php:1017
+#: src/Model/Booking.php:1019
 msgid "Confirmed"
 msgstr ""
 
-#: src/Model/Booking.php:1019
+#: src/Model/Booking.php:1021
 msgid "Unconfirmed"
 msgstr ""
 
-#: src/Model/Booking.php:1021
+#: src/Model/Booking.php:1023
 msgid "Cancelled"
 msgstr ""
 
-#: src/Model/Booking.php:1023
-#: src/Service/TimeframeExport.php:590
-#: src/Service/TimeframeExport.php:600
-#: src/Service/TimeframeExport.php:606
-#: src/Service/TimeframeExport.php:618
-#: src/Service/TimeframeExport.php:631
+#: src/Model/Booking.php:1025
+#: src/Service/TimeframeExport.php:591
+#: src/Service/TimeframeExport.php:601
+#: src/Service/TimeframeExport.php:607
+#: src/Service/TimeframeExport.php:619
+#: src/Service/TimeframeExport.php:632
 msgid "Unknown"
 msgstr ""
 
@@ -1595,6 +1604,7 @@ msgstr ""
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr ""
 
+#. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
 #: src/Model/Timeframe.php:659
 #, php-format
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
@@ -1782,27 +1792,32 @@ msgstr ""
 msgid "Number of bookings each user is allowed to make per month"
 msgstr ""
 
-#: src/Service/BookingRule.php:463
+#. translators: %1$s number of days, %2$s number of days
+#: src/Service/BookingRule.php:464
 #, php-format
 msgid "You can only book %1$s days out of %2$s days. Please wait a while in-between bookings."
 msgstr ""
 
-#: src/Service/BookingRule.php:495
+#. translators: %1$s number of days allowed, %2$s name of day next week
+#: src/Service/BookingRule.php:497
 #, php-format
 msgid "You can only book %1$s days per week, please try again after %2$s next week."
 msgstr ""
 
-#: src/Service/BookingRule.php:513
+#. translators: %1$s allowed number of bookings, %2$s reset day
+#: src/Service/BookingRule.php:516
 #, php-format
 msgid "You are only allowed to have %1$s booking(s) per week, please try again after %2$s next week."
 msgstr ""
 
-#: src/Service/BookingRule.php:542
+#. translators: %1$s allowed number of bookings, %2$s reset day (date)
+#: src/Service/BookingRule.php:546
 #, php-format
 msgid "You can only book %1$s days per month, please try again after the %2$s. next month."
 msgstr ""
 
-#: src/Service/BookingRule.php:557
+#. translators: %1$s allowed number of bookings, %2$s reset day (date)
+#: src/Service/BookingRule.php:562
 #, php-format
 msgid "You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month."
 msgstr ""
@@ -1835,36 +1850,37 @@ msgstr ""
 msgid "Filesystem"
 msgstr ""
 
-#: src/Service/Cache.php:164
+#. translators: %s directory path of the operating system
+#: src/Service/Cache.php:165
 #, php-format
 msgid "Directory %s could not be written to."
 msgstr ""
 
-#: src/Service/Cache.php:175
+#: src/Service/Cache.php:176
 msgid "Redis"
 msgstr ""
 
-#: src/Service/Cache.php:185
+#: src/Service/Cache.php:186
 msgid "Disabled"
 msgstr ""
 
-#: src/Service/Cache.php:420
+#: src/Service/Cache.php:442
 msgid "Connection status:"
 msgstr ""
 
-#: src/Service/Cache.php:426
+#: src/Service/Cache.php:448
 msgid "Cache was disabled through external setting. Please see the documentation for more information."
 msgstr ""
 
-#: src/Service/Cache.php:429
+#: src/Service/Cache.php:451
 msgid "Cache is disabled."
 msgstr ""
 
-#: src/Service/Cache.php:432
+#: src/Service/Cache.php:454
 msgid "Cache adapter successfully connected."
 msgstr ""
 
-#: src/Service/Cache.php:449
+#: src/Service/Cache.php:471
 msgid "Clear all cache items"
 msgstr ""
 
@@ -1893,13 +1909,15 @@ msgstr ""
 msgid "No bookings to move selected."
 msgstr ""
 
-#: src/Service/MassOperations.php:64
-#: src/Service/MassOperations.php:67
+#. translators: %s numeric post id
+#: src/Service/MassOperations.php:65
+#: src/Service/MassOperations.php:69
 #, php-format
 msgid "New location not found for booking with ID %s"
 msgstr ""
 
-#: src/Service/MassOperations.php:70
+#. translators: %s numeric post id
+#: src/Service/MassOperations.php:73
 #, php-format
 msgid "There is already a booking on the new location during the timeframe of booking with ID %s."
 msgstr ""
@@ -1933,7 +1951,8 @@ msgstr ""
 msgid "You need to set an export path to execute the export"
 msgstr ""
 
-#: src/Service/TimeframeExport.php:431
+#. translators: %1$d actual item number, %2$d total item number
+#: src/Service/TimeframeExport.php:432
 #, php-format
 msgid "Processed %1$d of %2$d bookings"
 msgstr ""
@@ -1950,6 +1969,7 @@ msgstr ""
 msgid "New features and changes: Please backup your site before upgrading!"
 msgstr ""
 
+#. translators: %1$s Link open tag, %2$s: Link close tag.
 #: src/Service/Upgrade.php:312
 #, php-format
 msgid ""
@@ -1994,7 +2014,7 @@ msgstr ""
 #: src/View/MassOperations.php:38
 #: src/Wordpress/CustomPostType/Booking.php:448
 #: src/Wordpress/CustomPostType/Timeframe.php:97
-#: templates/shortcode-bookings.php:73
+#: templates/shortcode-bookings.php:74
 msgid "User"
 msgstr ""
 
@@ -2021,8 +2041,8 @@ msgstr ""
 
 #: src/View/BookingCodes.php:185
 #: src/View/BookingCodes.php:294
-#: src/View/BookingCodes.php:394
-#: src/View/BookingCodes.php:420
+#: src/View/BookingCodes.php:397
+#: src/View/BookingCodes.php:424
 msgid "This timeframe has no booking codes. To generate booking codes you need to save the timeframe."
 msgstr ""
 
@@ -2067,45 +2087,47 @@ msgstr ""
 msgid "Download booking codes"
 msgstr ""
 
-#: src/View/BookingCodes.php:392
+#. translators: %s number of days
+#: src/View/BookingCodes.php:394
 #, php-format
 msgid "Will download all available booking codes for this timeframe. If the timeframe has no end-date, the booking codes for the next %s days will be retrieved."
 msgstr ""
 
-#: src/View/BookingCodes.php:393
+#: src/View/BookingCodes.php:396
 msgid "The file will be exported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)"
 msgstr ""
 
-#: src/View/BookingCodes.php:407
+#: src/View/BookingCodes.php:410
 msgid "Booking codes list"
 msgstr ""
 
-#: src/View/BookingCodes.php:415
+#. translators: %s is a positive number
+#: src/View/BookingCodes.php:419
 #, php-format
 msgid "Only showing booking codes for the next %s days."
 msgstr ""
 
-#: src/View/BookingCodes.php:417
+#: src/View/BookingCodes.php:421
 msgid "The amount of booking codes shown in the overview can be changed in the settings."
 msgstr ""
 
-#: src/View/BookingCodes.php:506
+#: src/View/BookingCodes.php:510
 msgid "Unable to retrieve booking codes"
 msgstr ""
 
-#: src/View/BookingCodes.php:507
+#: src/View/BookingCodes.php:511
 msgid "Missing ID of timeframe post"
 msgstr ""
 
-#: src/View/BookingCodes.php:533
+#: src/View/BookingCodes.php:537
 msgid "Error sending booking codes"
 msgstr ""
 
-#: src/View/BookingCodes.php:552
+#: src/View/BookingCodes.php:556
 msgid "An unknown error occured"
 msgstr ""
 
-#: src/View/BookingCodes.php:553
+#: src/View/BookingCodes.php:557
 msgid "Email booking codes"
 msgstr ""
 
@@ -2121,7 +2143,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Restriction.php:48
 #: src/Wordpress/CustomPostType/Restriction.php:438
 #: src/Wordpress/CustomPostType/Timeframe.php:99
-#: templates/shortcode-bookings.php:72
+#: templates/shortcode-bookings.php:73
 msgid "Item"
 msgstr ""
 
@@ -2134,7 +2156,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Restriction.php:431
 #: src/Wordpress/CustomPostType/Timeframe.php:100
 #: src/Wordpress/CustomPostType/Timeframe.php:463
-#: templates/shortcode-bookings.php:74
+#: templates/shortcode-bookings.php:75
 msgid "Location"
 msgstr ""
 
@@ -3527,7 +3549,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Restriction.php:434
 #: src/Wordpress/CustomPostType/Restriction.php:441
 #: src/Wordpress/CustomPostType/Timeframe.php:805
-#: templates/shortcode-bookings.php:54
+#: templates/shortcode-bookings.php:55
 msgid "All"
 msgstr ""
 
@@ -4185,46 +4207,47 @@ msgstr ""
 msgid "Migrate orphaned bookings"
 msgstr ""
 
-#: templates/shortcode-bookings.php:16
+#. translators: %s is the url to the login
+#: templates/shortcode-bookings.php:17
 #, php-format
 msgid "Please <a href=\"%s\"> login </a> to see your bookings."
 msgstr ""
 
-#: templates/shortcode-bookings.php:18
+#: templates/shortcode-bookings.php:19
 msgid "No bookings available."
 msgstr ""
 
-#: templates/shortcode-bookings.php:34
-#: templates/shortcode-bookings.php:70
+#: templates/shortcode-bookings.php:35
+#: templates/shortcode-bookings.php:71
 msgid "Startdate"
 msgstr ""
 
-#: templates/shortcode-bookings.php:41
-#: templates/shortcode-bookings.php:71
+#: templates/shortcode-bookings.php:42
+#: templates/shortcode-bookings.php:72
 msgid "Enddate"
 msgstr ""
 
-#: templates/shortcode-bookings.php:68
+#: templates/shortcode-bookings.php:69
 msgid "Sorting"
 msgstr ""
 
-#: templates/shortcode-bookings.php:78
+#: templates/shortcode-bookings.php:79
 msgid "Order"
 msgstr ""
 
-#: templates/shortcode-bookings.php:80
+#: templates/shortcode-bookings.php:81
 msgid "Ascending"
 msgstr ""
 
-#: templates/shortcode-bookings.php:81
+#: templates/shortcode-bookings.php:82
 msgid "Descending"
 msgstr ""
 
-#: templates/shortcode-bookings.php:85
+#: templates/shortcode-bookings.php:86
 msgid "Reset filters"
 msgstr ""
 
-#: templates/shortcode-bookings.php:86
+#: templates/shortcode-bookings.php:87
 msgid "Filter"
 msgstr ""
 
