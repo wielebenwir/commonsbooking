@@ -22,13 +22,13 @@ class Location extends BookablePost {
 	 *
 	 * returns bookable timeframes for a given itemID
 	 *
-	 * @param mixed $itemId
-	 * @param bool  $asModel
+	 * @param int  $itemId
+	 * @param bool $asModel
 	 *
-	 * @return array
+	 * @return Location[]
 	 * @throws \Exception
 	 */
-	public function getBookableTimeframesByItem( $itemId, bool $asModel = false ): array {
+	public function getBookableTimeframesByItem( int $itemId, bool $asModel = false ): array {
 		// get bookable timeframes that has min timestamp = now
 		return Timeframe::getBookableForCurrentUser(
 			[ $this->ID ],
@@ -186,8 +186,10 @@ class Location extends BookablePost {
 	/**
 	 * Calls the geocoder to update the geo coordinates of the location.
 	 * Caution: Do not call this function without a one-second delay between calls. Do not overload the geocoder.
+	 *
+	 * @return void
 	 */
-	public function updateGeoLocation() {
+	public function updateGeoLocation(): void {
 		$street        = $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_street' );
 		$postCode      = $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_postcode' );
 		$city          = $this->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'location_city' );

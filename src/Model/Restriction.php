@@ -81,9 +81,15 @@ class Restriction extends CustomPost {
 
 	const NO_END_TIMESTAMP = 3000000000;
 
-	protected $active;
+	/**
+	 * @var bool|null
+	 */
+	protected ?bool $active;
 
-	protected $canceled;
+	/**
+	 * @var bool|null
+	 */
+	protected ?bool $canceled;
 
 	/**
 	 * Returns post id, for array_unique.
@@ -277,17 +283,19 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns location id for the location that the restricted item is in.
 	 *
-	 * @return mixed
+	 * @return int|null
 	 */
-	public function getLocationId() {
-		return $this->getMeta( self::META_LOCATION_ID );
+	public function getLocationId(): ?int {
+		return $this->getMetaInt( self::META_LOCATION_ID );
 	}
 
 	/**
 	 * Apply restriction workflow.
 	 * Will cancel the bookings if restriction is active and type is total breakdown.
+	 *
+	 * @return void
 	 */
-	public function apply() {
+	public function apply(): void {
 		// Check if this is an active restriction
 		if ( $this->isActive() ) {
 			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
@@ -318,9 +326,9 @@ class Restriction extends CustomPost {
 	 * We currently have two types: hint and repair.
 	 * They can be differentiated using the constants TYPE_HINT and TYPE_REPAIR.
 	 *
-	 * @return mixed
+	 * @return Restriction::TYPE_HINT|Restriction::TYPE_REPAIR|null
 	 */
-	public function getType() {
+	public function getType(): ?string {
 		return $this->getMeta( self::META_TYPE );
 	}
 
@@ -376,8 +384,10 @@ class Restriction extends CustomPost {
 	 * Will cancel all bookings that belong to this restriction.
 	 *
 	 * @param Booking[] $bookings booking post objects.
+	 *
+	 * @return void
 	 */
-	protected function cancelBookings( $bookings ) {
+	protected function cancelBookings( $bookings ): void {
 		foreach ( $bookings as $booking ) {
 			$booking->cancel();
 		}
@@ -390,8 +400,10 @@ class Restriction extends CustomPost {
 	 * Because the booking link is different for multiple bookings of the same user. So we would have to send multiple links to the same user.
 	 *
 	 * @param Booking[] $bookings booking post objects.
+	 *
+	 * @return void
 	 */
-	protected function sendRestrictionMails( $bookings ) {
+	protected function sendRestrictionMails( $bookings ): void {
 		foreach ( $bookings as $key => $booking ) {
 			// get User ID from booking
 			$userId = $booking->getUserData()->ID;

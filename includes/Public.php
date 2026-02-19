@@ -7,6 +7,11 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\View\View;
 
 
+/**
+ * Enqueues the public facing styles and scripts.
+ *
+ * @return void
+ */
 function commonsbooking_public() {
 
 	wp_enqueue_style(
@@ -185,8 +190,13 @@ add_action( 'wp_ajax_nopriv_cb_map_locations', array( MapData::class, 'get_locat
 add_action( 'wp_ajax_cb_map_geo_search', array( MapData::class, 'geo_search' ) );
 add_action( 'wp_ajax_nopriv_cb_map_geo_search', array( MapData::class, 'geo_search' ) );
 
-// Query vars
-function commonsbooking_query_vars( $qvars ) {
+/**
+ * Attaches our custom query vars to the WordPress query_vars hook.
+ *
+ * @param String[] $qvars
+ * @return String[]
+ */
+function commonsbooking_query_vars( $qvars ): array {
 	$qvars[] = 'cb-location';
 	$qvars[] = 'cb-item';
 	$qvars[] = 'cb-type';

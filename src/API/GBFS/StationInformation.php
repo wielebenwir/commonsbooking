@@ -8,6 +8,7 @@ use CommonsBooking\Model\Location;
 use Exception;
 use stdClass;
 use WP_REST_Response;
+use WP_REST_Request;
 
 class StationInformation extends BaseRoute {
 
@@ -23,11 +24,11 @@ class StationInformation extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_information.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_information.json';
 
 	/**
-	 * @param $item Location
-	 * @param $request
+	 * @param Location                              $item
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response
 	 * @throws \Geocoder\Exception\Exception

@@ -6,6 +6,7 @@ namespace CommonsBooking\API\GBFS;
 use Exception;
 use stdClass;
 use WP_REST_Response;
+use WP_REST_Request;
 
 /**
  * Assembles feed urls for different gbfs endpoints and it's purpose is service discovery.
@@ -24,12 +25,12 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/gbfs.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/gbfs.json';
 
 	/**
 	 * Returns feed urls for different endpoints
 	 *
-	 * @param mixed $request
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 * @return WP_REST_Response
 	 */
 	public function get_items( $request ): WP_REST_Response {
@@ -55,7 +56,12 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		return new WP_REST_Response( $data, 200 );
 	}
 
-	private function get_feed( $name ): stdClass {
+	/**
+	 * @param string $name
+	 *
+	 * @return stdClass
+	 */
+	private function get_feed( string $name ): stdClass {
 		$feed       = new stdClass();
 		$feed->name = $name;
 		$feed->url  = get_rest_url() . 'commonsbooking/v1/' . $name . '.json';
