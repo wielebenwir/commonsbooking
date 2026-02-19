@@ -61,6 +61,15 @@ jobs:
           config-file: tests/cypress/cypress.config.js
         env:
           NODE_TLS_REJECT_UNAUTHORIZED: 1
+          DEBUG: cypress:server:exec,cypress:server:run
+
+      - name: Dump Docker logs after Cypress
+        if: ${{ always() }}
+        run: |
+          docker ps -a
+          docker logs $(docker ps -q --filter "name=tests-cli") || true
+          docker logs $(docker ps -q --filter "name=wordpress") || true
+
 
       - name: Upload Cypress screenshots
         if: ${{ always() }}
