@@ -62,7 +62,7 @@ CommonsBooking is continuously under development. The following milestones are p
 
 ##  Application areas
 
-The WordPress plugin was originally developed for the needs of the [„Free cargo bike movement"](http://www.dein-lastenrad.de),
+The WordPress plugin was originally developed for the needs of the [„Free cargo bike movement"](https://freies-lastenrad.org/),
  but it can be used for the rental of any item.
 
   * You or your organization have tools that are not used on a daily basis and you want to make them available to local groups.
