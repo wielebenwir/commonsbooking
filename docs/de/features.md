@@ -65,7 +65,7 @@ sind Teil der geplanten Weiterentwicklung:
 
 ##  Anwendungsbereiche
 
-Entwickelt wurde das WordPress-Plugin ursprünglich für die Bedürfnisse der [„Freies Lastenrad“-Bewegung](http://www.dein-lastenrad.de),
+Entwickelt wurde das WordPress-Plugin ursprünglich für die Bedürfnisse der [„Freies Lastenrad“-Bewegung](https://freies-lastenrad.org/),
 es kann aber für den Verleih beliebiger Dinge verwendet werden.
 
   * Du/deine Organisation besitzt Werkzeuge, die nicht täglich genutzt werden, und ihr möchtet sie verfügbar machen für lokale Gruppen.
