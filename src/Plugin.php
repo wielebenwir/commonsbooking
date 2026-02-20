@@ -673,7 +673,7 @@ class Plugin {
 	public static function registerUserDataExporters( $exporters ) {
 		$exporters[ COMMONSBOOKING_PLUGIN_SLUG ] = array(
 			'exporter_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
-			'callback'               => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'exportUserBookingsByEmail' ),
+			'callback'               => array( \CommonsBooking\Service\WPPersonalDataBookingService::class, 'exportUserBookingsByEmail' ),
 		);
 		return $exporters;
 	}
@@ -688,7 +688,7 @@ class Plugin {
 	public static function registerUserDataErasers( $erasers ) {
 		$erasers[ COMMONSBOOKING_PLUGIN_SLUG ] = array(
 			'eraser_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
-			'callback'             => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'removeUserBookingsByEmail' ),
+			'callback'             => array( \CommonsBooking\Service\WPPersonalDataBookingService::class, 'removeUserBookingsByEmail' ),
 		);
 		return $erasers;
 	}
