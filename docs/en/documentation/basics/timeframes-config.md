@@ -1,12 +1,9 @@
-#  Zeitrahmen-Typen
+# Timeframe types
 
+You select the timeframe types in the timeframe editor. Here we describe the types that can be set there.
 
-Die Zeitrahmen-Typen wählst du im Zeitrahmen-Editor aus. Hier beschreiben wir
-die dort einstellbaren Typen.
+Higher values override lower ones.
 
-Höhere Werte überschreiben niedrigere
-
-  * 1 = **Buchbar** : erlaubt Abholung & Rückgabe, Nutzung (buchbar im Kalender) 
-  * 2 = **Urlaub:** verhindert, diesen Zeitraum zur Abholung Rückgabe oder Nutzung auszuwählen. Dieser Typ kann auch über einen bereits definierten “buchbaren” Zeitraum gelegt werden. 
-  * 3 = **Reparatur** verhindert, diesen Zeitraum zur Abholung Rückgabe oder Nutzung auszuwählen. Dieser Typ kann auch über einen bereits definierten “buchbaren” Zeitraum gelegt werden. 
-
+  * 1 = **Bookable**: allows pickup & return and use (bookable in the calendar)
+  * 2 = **Holiday:** prevents selecting this period for pickup, return, or use. This type can also be applied over an already defined "bookable" period.
+  * 3 = **Repair**: prevents selecting this period for pickup, return, or use. This type can also be applied over an already defined "bookable" period.

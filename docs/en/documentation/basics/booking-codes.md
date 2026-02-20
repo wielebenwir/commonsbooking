@@ -1,7 +1,5 @@
-#  Buchungs-Codes
+# Booking codes
 
-Buchungs-Codes werden bei der Konfiguration der Verfügbarkeiten im Bereich der
-Zeitrahmen automatisch erstellt.
+Booking codes are automatically created when configuring availability in the timeframe section.
 
-Eigene Buchungs-Codes können vorab im Reiter [ "Buchungs-Codes" ](../settings/booking-codes) in den Einstellungen hinterlegt werden.
-
+Custom booking codes can be set in advance under the ["Booking codes"](../settings/booking-codes) tab in the settings.

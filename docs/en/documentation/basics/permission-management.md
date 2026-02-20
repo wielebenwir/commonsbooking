@@ -1,69 +1,57 @@
-#  Zugriffsrechte vergeben (CB-Manager)
+# Assign access rights (CB Manager)
 
+In WordPress, users with the role "Administrator" can usually do everything.
+In CommonsBooking, people with this role are also the ones who create items and locations, create timeframes, view bookings, and so on.
+Sometimes you may want to define roles that cannot edit everything on the site, but only certain items or locations.
+This allows stations, for example, to administer themselves without always relying on an administrator.
 
-In WordPress dürfen die Nutzenden mit der Rolle "Administrator" meistens
-alles, bei CommonsBooking sind auch die Personen mit dieser Rolle die, die
-Artikel und Standorte anlegen, Zeitrahmen erstellen, Buchungen einsehen können
-usw. Manchmal will man jedoch auch Rollen definieren, die nicht alles auf der
-Webseite bearbeiten können sondern nur bestimmte Artikel oder Standorte. Dann
-können sich Stationen z.B. selbst administrieren, ohne immer auf die / den
-Administrator*in angewiesen zu sein.
+CommonsBooking offers the option to set up so-called **CB Managers**. 
+They can then manage **ONLY** specific items / locations. In practice, these could be employees of the shop where an item is stationed.
 
-CommonsBooking bietet die Möglichkeit sogenannte **CB-Manager** einzurichten,
-diese können dann **NUR** bestimmte Artikel / Stationen verwalten. Das könnten
-in der Praxis zum Beispiel die Mitarbeitenden des Ladens sein, bei dem ein
-Artikel stationiert ist.
+The following is allowed for a CommonsBooking Manager:
 
-Folgende Dinge darf der CommonsBooking Manager:
+  * Create items, locations, and timeframes
+  * If assigned or self-created: Edit items, locations, and timeframes
+  * Self-created timeframes can be moved to the trash
+  * No rights to delete or move items and locations to the trash
+  * Cancel bookings that belong to items they administer.
 
-  * Artikel, Stationen und Zeitrahmen anlegen
-  * Wenn zugewiesen oder selbst angelegt: Bearbeiten von Artikel, Stationen und Zeitrahmen
-  * Selbst angelegte Zeitrahmen können in den Papierkorb gelegt werden
-  * Keine Rechte für Löschen bzw. in den Papierkorb legen von Artikeln und Stationen
-  * Buchungen stornieren, die zu Artikel gehören die sie administrieren.
+On the item and location pages, permissions to manage items, locations, and bookings can be assigned.
+For this, people with the role "CommonsBooking Manager" can be added individually to items or locations.
+The role is added by CommonsBooking to the WordPress user management and can be assigned to
+individual users in the admin interface. Assignment can only be done by administrators.
+CommonsBooking Managers cannot assign permissions themselves.
 
-Auf den Artikel- und Stationsseiten können die Rechte zum Verwalten der
-Artikel, Stationen und Buchungen vergeben werden. Hierfür können Personen, mit
-der Rolle "CommonsBooking Manager" einzeln den Artikeln bzw. Station
-hinzugefügt werden. Die Rolle wird von CommonsBooking automatisch in die
-Benutzer _innenverwaltung von WordPress hinzugefügt und kann in der Verwaltung
-einzelnen Personen zugeordnet werden ausgewählt werden. Die Zuordnung kann nur
-durch Administrator_ innen erfolgen. CommonsBooking Manager können selbst
-keine Rechte vergeben.
+On the item and location pages, managers can then be selected and added. Only users who have previously been assigned the role "CommonsBooking Manager" are available for selection.
 
-Auf den Artikel- und Stationsseiten können dann die Manager
-ausgewählt und hinzugefügt werden. Zur Auswahl stehen hier nur die Personen,
-denen vorher die Rolle "CommonsBooking Manager" zugeordnet wurde.
-
-Zugang zur Verwaltung erhalten die Manager dann über denselben Link,
-über den sich auch allgemeine Administrierende Zugang zum WordPress-Backend
-erhalten.
+Managers access the admin interface via the same link that general administrators use to access the WordPress backend.
 
 ## Administrator vs CommonsBooking Manager
-In der folgenden Tabelle ist exemplarisch dargestellt, was ein CommonsBooking Manager darf im Gegensatz zu einem Administrator.
 
-**Funktion** |  **Administrator** |  **CommonsBooking Manager**
+The following table shows, as an example, what a CommonsBooking Manager can do compared to an administrator.
+
+**Function** |  **Administrator** |  **CommonsBooking Manager**
 ---|---|---
-Artikel / Standorte anlegen  |  Ja  |  Ja
-Artikel / Standorte bearbeiten  |  Ja  |  Ja (nur wenn zugewiesen)
-Artikel / Standorte löschen  |  Ja  |  Nein
-Zeitrahmen anlegen  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
-Zeitrahmen bearbeiten  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
-Zeitrahmen löschen  |  Ja  |  Nein (nur selbst angelegte)
-Buchungen stornieren  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
+Create items / locations  |  Yes  |  Yes
+Edit items / locations  |  Yes  |  Yes (only if assigned)
+Delete items / locations  |  Yes  |  No
+Create timeframes  |  Yes  |  Yes (only with assigned items / locations)
+Edit timeframes  |  Yes  |  Yes (only with assigned items / locations)
+Delete timeframes  |  Yes  |  No (only self-created)
+Cancel bookings  |  Yes  |  Yes (only with assigned items / locations)
 
-Darüber hinaus hat der CommonsBooking Manager keine besonderen Berechtigungen was andere Teile der Webseite betrifft.
-Folgende Dinge darf der CommonsBooking Manager zum Beispiel nicht:
+In addition, CommonsBooking Managers have no special permissions regarding other parts of the website. For example, a CommonsBooking Manager cannot:
 
-  * Allgemeine Seiten bearbeiten
-  * Plugins ändern
-  * Das Design der Seite ändern
-  * usw.
+  * Edit general pages
+  * Change plugins
+  * Change the site design
+  * etc.
 
-## CommonsBooking Manager zum Manager für alle Artikel / Standorte machen {#filterhook-isCurrentUserAdmin}
+## Make a CommonsBooking Manager a manager for all items / locations {#filterhook-isCurrentUserAdmin}
 
-Mithilfe eines [Filter Hooks](../advanced-functionality/hooks-and-filters) kannst du eine bestimmte Rolle so einstellen,
-dass sie automatisch Manager für alle Artikel / Standorte wird. Das unten genannte Beispiel macht das mit der Rolle 'cb_manager', also konfiguriert den CB-Manager so, dass er automatisch allen Artikeln und Standorten der Instanz zugerechnet wird. Falls das mit einer anderen Rolle passieren soll, muss diese Rolle auch den Manager Rollen mit einem [weiteren Codeschnipsel hinzugefügt werden](#filterhook-manager-roles).
+With a [filter hook](../advanced-functionality/hooks-and-filters) you can set a specific role so that it automatically becomes a manager for all items / locations.
+The example below does this for the role 'cb_manager', i.e. it configures the CB Manager to be automatically assigned to all items and locations in the instance.
+If this should happen with a different role, that role must also be added to the manager roles with an [additional code snippet](#filterhook-manager-roles).
 
 ```php
 add_filter(
@@ -76,84 +64,64 @@ add_filter(
 );
 ```
 
+## Adjust access rights
 
+If the available permissions are not sufficient or you want to add a second role that has fewer permissions than the CB Manager, you can use plugins to adjust user role permissions (e.g. User Role Editor).
 
-##  Zugriffsrechte anpassen
+For reference: The internal names for items / locations / timeframes /
+bookings, etc. are often used. Therefore, here is an overview table of the
+internal names and their meaning.
 
-Falls die angebotenen Berechtigungen nicht ausreichen oder du eine zweite
-Rolle hinzufügen möchtest, die weniger kann als der CB Manager dann kannst du
-Plugins nutzen um die Berechtigung von Nutzendenrollen anzupassen (z.B. User
-Role Editor).
-
-Zur Referenz: Hier werden oft die internen Namen für Artikel / Standorte /
-Zeitrahmen / Buchungen etc. verwendet. Deshalb hier eine Übersichtstabelle zu
-den internen Namen und deren Bedeutung
-
-**Externer Name** |  **Interner Name**
+**External name** |  **Internal name**
 ---|---
-Artikel  |  cb_items
-Standorte  |  cb_locations
-Zeitrahmen  |  cb_timeframes
-Karten  |  cb_maps
-Buchungen  |  cb_bookings
-Einschränkungen  |  cb_restrictions
+Items  |  cb_items
+Locations  |  cb_locations
+Timeframes  |  cb_timeframes
+Maps  |  cb_maps
+Bookings  |  cb_bookings
+Restrictions  |  cb_restrictions
 
+Here are the names of the various permissions that can be assigned to a role:
 
+### Management permissions
 
-Hier sind die Namen der verschiedenen Berechtigungen, die einer Rolle gegeben
-werden kann:
-
-###  Management Berechtigungen
-
-**Berechtigung** |  **Bewirkt**
+**Permission** |  **Effect**
 ---|---
-manage_commonsbooking  |  CommonsBooking Menüpunkt im Backend anklickbar (Vorraussetzung für alle anderen Berechtigungen)
-manage_commonsbooking_cb_booking  |  Buchungen-Menüpunkt im Backend anzeigen
-manage_commonsbooking_cb_item  |  Artikel-Menüpunkt im Backend anzeigen
-manage_commonsbooking_cb_location  |  Standorte-Menüpunkt im Backend anzeigen
-manage_commonsbooking_cb_map  |  Karten-Menüpunkt im Backend anzeigen
-manage_commonsbooking_cb_restriction  |  Einschränkungen-Menüpunkt im Backend anzeigen
-manage_commonsbooking_cb_timeframe  |  Zeitrahmen-Menüpunkt im Backend anzeigen
+manage_commonsbooking  |  CommonsBooking menu item clickable in the backend (prerequisite for all other permissions)
+manage_commonsbooking_cb_booking  |  Show the bookings menu item in the backend
+manage_commonsbooking_cb_item  |  Show the items menu item in the backend
+manage_commonsbooking_cb_location  |  Show the locations menu item in the backend
+manage_commonsbooking_cb_map  |  Show the maps menu item in the backend
+manage_commonsbooking_cb_restriction  |  Show the restrictions menu item in the backend
+manage_commonsbooking_cb_timeframe  |  Show the timeframes menu item in the backend
 
-Diese Berechtigungen definieren erstmal NUR, ob der Menüpunkt im Backend für
-die Administrierenden angezeigt wird. Das heißt noch nicht, dass die Rollen
-auch die Artikel bearbeiten dürfen.
+These permissions only define whether the menu item is shown in the backend
+for administrators. That does not yet mean that the roles are also allowed to
+edit items.
 
-NUR wenn alle manage_xxx Berechtigungen deaktiviert sind, verschwindet auch
-der "CommonsBooking" Reiter in den Optionen. Wenn zb. nur die
-manage_commonsbooking_cb_location Berechtigung gesetzt ist sieht die
-entsprechende Rolle zwar den Menüpunkt, kann aber nicht darauf zugreifen.
+Only if all manage_xxx permissions are disabled does the "CommonsBooking" tab also disappear from the options.
+For example, if only the manage_commonsbooking_cb_location permission is set, the role can see the menu item but cannot access it.
 
-###  Bearbeitungs-Berechtigungen
+### Editing permissions
 
-Jede Art von Post (also Artikel / Standorte / Zeitrahmen / Karten /
-Einschränkungen) hat eigenen Berechtigungen, die nach einem festen Schema
-funktionieren. Da die Namen selbsterklärend sind, werden sie hier nicht näher
-beschrieben, hier nur ein Screenshot von den Berechtigungen für einen Artikel.
+Each type of post (items / locations / timeframes / maps / restrictions) has its own permissions that follow a fixed schema. 
+Since the names are self-explanatory, they are not described here in detail; here is only a screenshot of the permissions for an item.
 
 ![](/img/cb-manager-permissions.png)
 
-Nur wenn die entsprechende Rolle auch die Berechtigung für eine Aktion
-bekommen hat, kann sie auch diese durchführen. Das heißt also, dass z.B. die
-`manage_commonsbooking_cb_item` Berechtigung zu verleihen wenig Sinn ergibt,
-wenn nicht zumindest auch die edit_cb_items Berechtigung oder eine andere
-Berechtigung für Artikel verliehen wird.
+Only if the corresponding role has the permission for an action can it carry it out.
+That means, for example, granting the `manage_commonsbooking_cb_item` permission makes little sense if you do not also grant the edit_cb_items permission or another item-related permission.
 
-Hier auch besonders relevant ist die Berechtigung **edit_other_cb_bookings** .
-Diese bestimmt, ob ein Manager in der Lage ist Buchungen von anderen Nutzenden
-zu stornieren.
+The **edit_other_cb_bookings** permission is especially relevant here.
+It determines whether a manager is able to cancel bookings made by other users.
 
-###  Andere Rollen einem Artikel / Standort zuweisen {#filterhook-manager-roles}
+### Assign other roles to an item / location {#filterhook-manager-roles}
 
-::: tip Ab Version 2.8.2
+::: tip From version 2.8.2
 :::
 
-Es ist mit einem kleinen Codeschnipsel möglich, auch eine weitere Rolle zu
-definieren die einem Artikel / Standort zugewiesen werden kann und diesen dann
-entsprechend ihrer / seiner Berechtigung bearbeiten darf. Das funktioniert mit
-einem [Filter](../advanced-functionality/hooks-and-filters) (Dort findest du auch
-mehr Infos zu Codeschnipseln). Dieser heißt `commonsbooking_manager_roles` und
-kann zum Beispiel wie folgt benutzt werden:
+With a small code snippet it is possible to define another role that can be assigned to an item / location and can then edit it according to its permissions.
+This works with a [filter](../advanced-functionality/hooks-and-filters) (you can also find more information about code snippets there). The filter is called `commonsbooking_manager_roles` and can be used as follows:
 
 ```php
 add_filter('commonsbooking_manager_roles', 'add_manager' );
@@ -163,6 +131,4 @@ function add_manager( $array ){
 }
 ```
 
-Dieser Codeschnipsel würde die Rolle mit dem Namen ‘editor’ zu den Rollen
-hinzufügen, die einem Artikel hinzugefügt werden können. Dabei ist es wichtig
-den _slug_ der Rolle zu verwenden.
+This code snippet would add the role with the name 'editor' to the roles that can be added to an item. It is important to use the _slug_ of the role.
