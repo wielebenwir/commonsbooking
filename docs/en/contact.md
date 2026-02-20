@@ -13,7 +13,7 @@ We will be happy to help you with any new questions or problems!
   * Or by email to [mail@commonsbooking.org](mailto:mail@commonsbooking.org)
 (German and English welcome).
 
-  * If you want to contact the people behind CommonsBooking, simply call us on +49221-98650801
+  * If you want to contact the people behind CommonsBooking, simply call us on [+49221-98650801](tel:+4922198650801)
 
 ![](/img/icons-support-together.png)
 
