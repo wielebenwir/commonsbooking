@@ -10,9 +10,11 @@ CommonsBooking gives you the opportunity to offer items (e.g. cargo bikes, tools
 
 CommonsBooking is a WordPress plugin and can therefore be easily integrated into existing websites.
 
-[ Install ](./documentation/setup/install)
+<div>
+  <a class="cbdoc-button cb-brand" href="./documentation/setup/install">Install</a>
+  <a class="cbdoc-button cb-alt" href="./documentation/">Documentation</a>
+</div>
 
-[ Documentation ](./documentation/)
 
 * * *
 
