@@ -1,7 +1,6 @@
-#  Übersicht über bisherige Releases und geplante Weiterentwicklung
+# Overview of releases and planned further development
 
 
-  * Die Übersicht über die bisherigen Releases findet ihr im [ Changelog auf WordPress.org. ](https://wordpress.org/plugins/commonsbooking/#developers)
-  * Für die geplanten Weiterentwicklungen haben wir Meilensteine definiert und halten die entsprechenden Fortschritte auf Github nach: [ Meilensteine auf Github. ](https://github.com/wielebenwir/commonsbooking/milestones)
-  * Außerdem pflegen wir ein [ Kanban-Board ](https://github.com/wielebenwir/commonsbooking/projects/1) , welches Einblick in die aktuelle Umsetzung gibt. 
-
+  * You can find an overview of previous releases in the [Changelog on WordPress.org](https://wordpress.org/plugins/commonsbooking/#developers).
+  * For planned further development, we have defined milestones and track the corresponding progress on GitHub: [Milestones on GitHub](https://github.com/wielebenwir/commonsbooking/milestones).
+  * We also maintain a [Kanban board](https://github.com/wielebenwir/commonsbooking/projects/1) which provides insight into the current implementation.

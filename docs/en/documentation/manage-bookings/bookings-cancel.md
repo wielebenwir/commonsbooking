@@ -1,21 +1,15 @@
-#  Buchung stornieren
+# Cancel Bookings
 
+Bookings should only be canceled via the frontend view (i.e., via the website, not via WordPress administration) in the current version.
 
-Buchungen sollten in der aktuellen Version nur über die Frontend-Ansicht (also
-quasi über die Webseite, nicht über die WordPress-Verwaltung) storniert
-werden.
+Administrators have access to all bookings. If administrators or location managers (role cb_manager) want to cancel a booking for a user, please proceed as follows.
 
-Administratoren haben Zugriff auf alle Buchungen. Wenn Administratoren oder
-Standort-Manager (Rolle cb_manager) eine Buchung für einen Nutzenden
-stornieren möchten, bitte folgendermaßen vorgehen.
-
-  * in WordPress-Verwaltung (Backend) unter Commons-Booking auf “Zeitrahmen” gehen 
-  * Dann über die Filter oben nach der Buchung suchen, z.B. mit folgenden Filter: 
-    * Typ = buchung 
-    * Artikel = (Auswahl des Artikels) 
-    * Wiederholungsstart = hier den ersten Buchungstag eingeben 
-  * In der Ergebnisliste dann auf die Buchung klicken, um im nachfolgenden Editor-Fenster rechts auf “Vorschau” klicken 
-  * Die Buchung öffnet sich dann so, wie sie auch der Nutzende sehen würde. 
-  * Hier kannst du nun auf stornieren klicken, um die Buchung zu stornieren. 
-  * Dabei wird auch eine E-Mail an den Ausleihenden versendet. 
-
+  * In WordPress administration (backend) under CommonsBooking, go to "Timeframes"
+  * Then use the filters at the top to search for the booking, e.g., with the following filters:
+    * Type = booking
+    * Item = (select the item)
+    * Start Date = enter the first booking day here
+  * In the result list, click on the booking, then click on "Preview" on the right in the subsequent editor window
+  * The booking will then open as it would appear to the user
+  * Here you can now click "Cancel" to cancel the booking
+  * A cancellation email will also be sent to the user
