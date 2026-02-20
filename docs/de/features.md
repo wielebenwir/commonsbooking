@@ -31,9 +31,9 @@ bestehende Webseiten integrieren.
 
 ###  Einfache Administration
 
-  * **Neu** : Benutzer*innen können zugeordnete Artikel, Stationen und Zeiträume selbst verwalten.
+  * **Neu:** Benutzer*innen können zugeordnete Artikel, Stationen und Zeiträume selbst verwalten.
   * Automatische Buchungsannahme: Nutzende können Gegenstände buchen, ohne dass Administration nötig ist.
-  * Kalendar-Integration: Automatischer Import aller relevanter Buchungen in den digitale Kalender via [ICal-Format](documentation/manage-bookings/icalendar-feed).
+  * Kalender-Integration: Automatischer Import aller relevanter Buchungen in den digitalen Kalender via [ICal-Format](documentation/manage-bookings/icalendar-feed).
 
 ![](/img/cb-managers.png)
 
@@ -69,7 +69,7 @@ Entwickelt wurde das WordPress-Plugin ursprünglich für die Bedürfnisse der [�
 es kann aber für den Verleih beliebiger Dinge verwendet werden.
 
   * Du/deine Organisation besitzt Werkzeuge, die nicht täglich genutzt werden, und ihr möchtet sie verfügbar machen für lokale Gruppen.
-  * Du besitzt eine Lastenrad und willst es mit der Gemeinschaft teilen, es soll über das Jahr hinweg an verschiedenen Standorten stationiert sein.
+  * Du besitzt ein Lastenrad und willst es mit der Gemeinschaft teilen, es soll über das Jahr hinweg an verschiedenen Standorten stationiert sein.
 
 * * *
 
