@@ -1,5 +1,4 @@
-#  Manage restrictions
-
+# Manage restrictions
 
 **What are restrictions?**
 
@@ -9,8 +8,8 @@ Your users will be notified about the defects or the total breakdown and any aff
 
 **How it works:**
 
-  * Select "Restrictions" in the Commonsbooking menu.
-  * Klick on "Add new restriction"
+  * Select "Restrictions" in the CommonsBooking menu.
+  * Click on "Add new restriction"
 
 The following settings are now available:
 
@@ -27,13 +26,13 @@ The following settings are now available:
     * Select the prospective start and end date of the restriction.
   * **Status**
     * **Not active:** The restriction is not yet active. This is useful if you want to create and save the restrictions first, but do not want to inform users yet.
-    * **Active:** = The restriction is shown on the booking pages (in the booking calendar) and in the case of a total breakdown, the days between the start and end date are blocked.
-    * **Problem solved:** If you select this status and then click "Update", the restriction will be lifted. Cancelled bookings will not be restored.
+    * **Active:** The restriction is shown on the booking pages (in the booking calendar) and in the case of a total breakdown, the days between the start and end date are blocked.
+    * **Problem solved:** If you select this status and then click "Update", the restriction will be lifted. Canceled bookings will not be restored.
 
-  * **Send Notification emails to users**
+  * **Send notification emails to users**
     * When you click this button, an email will be sent to all users informing them about the issue. Depending on the type (total breakdown or notice), a different message will be sent.
     * When the status of the restriction is set to "Problem solved" and you click the send button, an info email with a corresponding note will be sent.
       :::warning
-        When a total breakdown restriction is set to "Problem solved", it **does not** notify the users that had their bookings cancelled about the resolution of the issue. The rationale behind this is that users likely have already sought alternative bookings by that time. If cancellations are disabled, users will notified about the resolution of the total breakdown.
+        When a total breakdown restriction is set to "Problem solved", it **does not** notify the users that had their bookings canceled about the resolution of the issue. The rationale behind this is that users likely have already sought alternative bookings by that time. If cancellations are disabled, users will be notified about the resolution of the total breakdown.
         :::
-    * The templates for these emails can be configured under [Settings -> Commonsbooking -> Restrictions](../settings/restrictions).
+    * The templates for these emails can be configured under [Settings -> CommonsBooking -> Restrictions](../settings/restrictions).
