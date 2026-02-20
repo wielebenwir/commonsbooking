@@ -1,5 +1,4 @@
-#  Reminder via email concerning bookings
-
+# Reminder via email concerning bookings
 
 In addition to the emails that users receive when confirming or canceling a booking, CommonsBooking can also send reminder emails to users and locations before the start or after the end of a booking. These can be activated and deactivated individually. This page provides an overview of all email notifications sent by CommonsBooking.
 

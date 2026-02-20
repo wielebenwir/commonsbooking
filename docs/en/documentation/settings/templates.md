@@ -2,7 +2,6 @@
 
 **Settings -> CommonsBooking -> Tab: Templates**
 
-
 ## E-Mail Templates
 
 In the templates, you can define the content of the booking emails and the sender address of the booking emails. 
