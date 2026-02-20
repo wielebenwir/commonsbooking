@@ -53,9 +53,10 @@ CommonsBooking is continuously under development. The following milestones are p
   * Improved Metadata
   * Implementing the Commons API
 
-[ Install ](./documentation/setup/install)
-
-[ Roadmap of upcoming development milestone ](./documentation/roadmap/)
+<div>
+  <a class="cbdoc-button cb-brand" href="./documentation/setup/install">Install</a>
+  <a class="cbdoc-button cb-alt" href="./documentation/roadmap/">Roadmap of upcoming development milestone</a>
+</div>
 
 * * *
 
