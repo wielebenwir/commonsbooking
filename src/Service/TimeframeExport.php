@@ -8,8 +8,8 @@ use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
-use Psr\Cache\CacheException;
-use Psr\Cache\InvalidArgumentException;
+use CommonsBooking\Psr\Cache\CacheException;
+use CommonsBooking\Psr\Cache\InvalidArgumentException;
 
 /**
  * The TimeframeExport class will export timeframes to a CSV file.

@@ -1,6 +1,5 @@
 #  Timeframes: Define when an item can be booked
 
-__
 
 An item becomes bookable through the connection of an item and a location using a timeframe.
 The timeframe defines a time window (start and end date) and the booking conditions (e.g. hourly rental) under
@@ -14,7 +13,7 @@ to be bookable and another one for the holidays of the location operators.
 
 :::info Getting started
 On this page you will learn how to create a timeframe in the backend to make an item bookable.
-If you want to know how to display the bookings that are on offer (using shortcodes), after you have published your timeframes, [click here.](/en/documentation/administration/shortcodes)
+If you want to know how to display the bookings that are on offer (using shortcodes), after you have published your timeframes, [click here.](../administration/shortcodes)
 :::
 
 **Caution**: Timeframes cannot be directly accessed in the frontend using the backend link "View Post" but must be embedded using the shortcodes mentioned above.
@@ -37,7 +36,7 @@ and click on "Add new timeframe". From there on fill out the form:
 
 ### **Type:**
 
-* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](/en/documentation/basics/timeframes-config). (Not translated yet) .  Alternatively, it is possible to enable password protection for an [item](/en/documentation/first-steps/create-item).
+* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](../basics/timeframes-config). (Not translated yet) .  Alternatively, it is possible to enable password protection for an [item](../first-steps/create-item).
 
 ### **Location:**
 
@@ -84,7 +83,7 @@ _Select how the bookable timeframe should be repeated within the specified start
     * Defines the start and end date during which the timeframe is valid. Leave empty to have the timeframe be valid indefinitely.
 * **Weekdays:**
     * Only availabe for weekly repetition. Select the days of the week on which the item should be bookable.
-    * When configured, this can also define days on which only a pickup / return is possible but items can still  be  booked. For example, a user could book an item for pickup on Friday and return it on Monday. This behaviour is defined in the [location settings](/en/documentation/first-steps/create-location).
+    * When configured, this can also define days on which only a pickup / return is possible but items can still  be  booked. For example, a user could book an item for pickup on Friday and return it on Monday. This behaviour is defined in the [location settings](../first-steps/create-location).
 * **Selected manual dates:**
     * Only available for manual repetition. Select the specific dates on which the item should be bookable. Enter the dates in the "YYYY-MM-DD" format. Multiple dates need to be comma-separated (e.g. "2023-01-01, 2023-01-02, 2023-01-03"). Clicking on the text field next to "Select dates" will open a calendar. Every day that is selected in the calendar will be appended to the list of dates.
 

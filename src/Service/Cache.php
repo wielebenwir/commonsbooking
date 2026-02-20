@@ -7,12 +7,12 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
-use Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
-use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
-use Symfony\Component\Cache\Adapter\NullAdapter;
-use Symfony\Component\Cache\Exception\CacheException;
+use CommonsBooking\Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
+use CommonsBooking\Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
+use CommonsBooking\Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use CommonsBooking\Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
+use CommonsBooking\Symfony\Component\Cache\Adapter\NullAdapter;
+use CommonsBooking\Symfony\Component\Cache\Exception\CacheException;
 
 /**
  * Cache service wrapper around Symfony Cache Adapters.
@@ -48,7 +48,7 @@ trait Cache {
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
 			}
-		} catch ( \Psr\Cache\CacheException $exception ) {
+		} catch ( \CommonsBooking\Psr\Cache\CacheException $exception ) {
 			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
 		} catch ( Exception $exception ) {
 			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
@@ -132,7 +132,7 @@ trait Cache {
 				$defaultLifetime,
 				$location
 			);
-		} catch ( \Psr\Cache\CacheException $e ) {
+		} catch ( \CommonsBooking\Psr\Cache\CacheException $e ) {
 			// fall back to generic filesystem adapter, if it fails
 			try {
 				commonsbooking_write_log( $e->getMessage() . '\n' . 'Falling back to Filesystem adapter' );
@@ -207,7 +207,7 @@ trait Cache {
 	 * @param $defaultLifetime
 	 * @param string $cacheLocation
 	 * @return TagAwareAdapterInterface
-	 * @throws \Psr\Cache\CacheException
+	 * @throws \CommonsBooking\Psr\Cache\CacheException
 	 */
 	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
 		if ( self::isDisabled() ) {
@@ -277,7 +277,7 @@ trait Cache {
 			$cacheItem->expiresAfter( intval( $expiration ) );
 
 			return $cache->save( $cacheItem );
-		} catch ( \Psr\Cache\CacheException $e ) {
+		} catch ( \CommonsBooking\Psr\Cache\CacheException $e ) {
 			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
 		} catch ( Exception $e ) {
 			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
@@ -290,7 +290,7 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
 		if ( ! count( $tags ) ) {
@@ -300,7 +300,7 @@ trait Cache {
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
-		if ( is_a( self::getCache(), 'Symfony\Component\Cache\PruneableInterface' ) ) {
+		if ( is_a( self::getCache(), 'CommonsBooking\Symfony\Component\Cache\PruneableInterface' ) ) {
 			self::getCache()->prune();
 		}
 
@@ -387,11 +387,32 @@ trait Cache {
 			$shortCodeCalls = array_unique( $shortCodeCalls, SORT_REGULAR );
 
 			self::runShortcodeCalls( $shortCodeCalls );
-
-			wp_send_json( 'cache successfully warmed up' );
 		} catch ( \Exception $exception ) {
-			wp_send_json( 'something went wrong with cache warm up' );
+			if ( WP_DEBUG ) {
+				wp_send_json(
+					array(
+						'success' => false,
+						'error'   => true,
+						'message' => sprintf( 'cache warmup failed with message: %s, trace: %s', $exception->getMessage(), $exception->getTraceAsString() ),
+					)
+				);
+			} else {
+				wp_send_json(
+					array(
+						'success' => false,
+						'error'   => true,
+						'message' => 'cache warmup failed',
+					)
+				);
+			}
 		}
+		wp_send_json(
+			array(
+				'success' => true,
+				'error'   => false,
+				'message' => 'cache successfully warmed up',
+			)
+		);
 	}
 
 	/**

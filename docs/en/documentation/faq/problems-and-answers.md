@@ -1,6 +1,5 @@
 #  Probleme und Antworten
 
-__
 
 ###  Anzeige Kalender-Widget im Admin-Bereich
 

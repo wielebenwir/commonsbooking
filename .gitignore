@@ -1,15 +1,38 @@
 **/.DS_Store
+.sass-cache
+.DS_Store
+.nova
+yarn.lock
+cache
+commonsbooking.zip
 node_modules
+.phpunit.*
+/phpunit
 assets/packaged
+src/Wordpress/.DS_Store
+tests/cypress/screenshots
 /vendor
 /build
+src/.DS_Store
+assets/.DS_Store
+#assets/admin/css
+#assets/global/css
+#assets/public/css
+#vendor
+views/.DS_Store
+/composer.phar
+copy-svn.sh
 .vscode/settings.json
 .idea
-
+cb-local-1.code-workspace
+commonsbookingdocker.code-workspace
+wp-core
 tests/cypress/screenshots
 docs/.vitepress/dist
+/vendor-prefixed
+/bin/strauss.phar
 
-# Pre-Build dist only sources
+# Pre-Built dist only sources
 assets/admin/js/admin.js
 assets/admin/js/admin.min.js
 assets/admin/css/admin.css

@@ -2,7 +2,7 @@
   "name": "wielebenwir/commonsbooking",
   "description": "~",
   "homepage": "https://commonsbooking.org",
-  "version": "2.10.8",
+  "version": "2.10.9",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "prefer-stable": true,
@@ -39,7 +39,7 @@
   "require": {
     "php": ">=7.4",
     "cmb2/cmb2": "^2.10.1",
-    "mustardbees/cmb-field-select2": "^3.0.5",
+    "mustardbees/cmb-field-select2": "^3.0.6",
     "geocoder-php/nominatim-provider": "^5.7",
     "php-http/curl-client": "^2.3",
     "nyholm/psr7": "^1.8",
@@ -67,5 +67,26 @@
     "phpstan/extension-installer": "^1.4",
     "ext-libxml": "*",
     "ext-dom": "*"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@prefix-namespaces"
+    ],
+    "post-update-cmd": [
+      "@prefix-namespaces"
+    ],
+    "prefix-namespaces": [
+      "sh -c 'test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.26.5/strauss.phar'",
+      "@php bin/strauss.phar --info",
+      "@composer dump-autoload"
+    ]
+  },
+  "scripts-descriptions": {
+    "prefix-namespaces": "Copy the required dependencies to vendor-prefixed and edit the PHP namespaces to begin with CommonsBooking."
+  },
+  "extra": {
+    "strauss": {
+      "include_root_autoload": true
+    }
   }
 }

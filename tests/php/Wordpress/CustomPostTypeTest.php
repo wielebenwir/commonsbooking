@@ -13,6 +13,10 @@ use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use SlopeIt\ClockMock\ClockMock;
 
+/**
+ * This is the test class that most other tests,
+ * that check the behaviour of our CustomPostTypes inherit from.
+ */
 abstract class CustomPostTypeTest extends BaseTestCase {
 
 	/**

@@ -1,6 +1,5 @@
 #  Export timeframes and bookings
 
-__
 
 You can find the data export under Settings -> Export. There, you can export timeframes and bookings in CSV format to archive them or analyze them using statistical programs.
 

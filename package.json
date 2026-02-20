@@ -1,6 +1,6 @@
 {
 	"name": "commonsbooking",
-	"version": "2.10.8",
+	"version": "2.10.9",
 	"description": "Wordpress plugin for managing and booking of common goods.",
 	"author": "The CommonsBooking Team <info@commonsbooking.org>",
 	"license": "SEE LICENSE IN LICENSE.txt",
@@ -9,7 +9,7 @@
 		"url": "https://github.com/wielebenwir/cb"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.28.6",
+		"@babel/preset-env": "^7.29.0",
 		"@wordpress/env": "^10.39.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"cypress": "^15.10.0",
@@ -55,6 +55,6 @@
 		"select2": "^4.0.13",
 		"shufflejs": "^6.1.1",
 		"spin.js": "^2.3.2",
-		"vue": "^3.5.27"
+		"vue": "^3.5.28"
 	}
 }

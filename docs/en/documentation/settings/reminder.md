@@ -1,6 +1,5 @@
 #  Reminder via email concerning bookings
 
-__
 
 In addition to the emails that users receive when confirming or canceling a booking, CommonsBooking can also send reminder emails to users and locations before the start or after the end of a booking. These can be activated and deactivated individually. This page provides an overview of all email notifications sent by CommonsBooking.
 
@@ -38,7 +37,7 @@ CommonsBooking will send the following emails to users, the text of which can be
   * **Locations** (under Location → Location Email) receive **reminders about bookings** if the option under "Settings → "Reminders → Reminder for locations before booking start" or "Reminder for locations before booking end" is set AND in the corresponding location the option "Reminder email for booking start" or "Reminder email for booking end" is enabled.
 
 ::: warning **Important**
-It is not enough to enter people as [location managers](/en/documentation/basics/permission-management) for them to be notified. In order to receive emails, the recipients address must be entered in the field "Location → Location Email".
+It is not enough to enter people as [location managers](../basics/permission-management) for them to be notified. In order to receive emails, the recipients address must be entered in the field "Location → Location Email".
 :::
 
 ### Item maintainers
