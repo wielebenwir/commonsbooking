@@ -586,11 +586,11 @@ class Plugin {
 			[ 'cb-leaflet-markercluster-base' ],
 			$versions['leaflet.markercluster']
 		);
-		
+
 		// Select 2 (Styles)
 		wp_register_style(
 			'cb-styles-select2',
-			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/select2/css/select2.min.css',
+			$base . 'select2/css/select2.min.css',
 			array(),
 			$versions['select2']
 		);
@@ -598,7 +598,7 @@ class Plugin {
 		// Select 2 (JS)
 		wp_register_script(
 			'cb-scripts-select2',
-			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/select2/js/select2.min.js',
+			$base . 'select2/js/select2.min.js',
 			array( 'jquery' ),
 			$versions['select2']
 		);
@@ -606,7 +606,7 @@ class Plugin {
 		// Moment.js
 		wp_register_script(
 			'cb-scripts-moment',
-			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/moment/moment.min.js',
+			$base . 'moment/moment.min.js',
 			array(),
 			$versions['moment'],
 			true
