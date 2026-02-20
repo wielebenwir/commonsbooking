@@ -17,13 +17,13 @@ CommonsBooking will send the following emails to users, the text of which can be
     * Template under "Settings → CommonsBooking → Restrictions"
     * Is sent by default as a blind carbon copy to station emails (see below) 
 
-  * **Booking reminder** .
+  * **Booking reminder**
     * Not enabled by default
     * Template under "Settings → CommonsBooking → Reminder"
     * Intended purpose is to ask users whether the booking should remain or possibly be canceled.
   * **Email after booking has ended** :
     * Not enabled by default
-    * One day after the booking, users receive an email where they can be asked if they had any problems or if they would to to donate etc.
+    * One day after the booking, users receive an email where they can be asked if they had any problems or if they would like to donate etc.
 
 ## To your team
 
