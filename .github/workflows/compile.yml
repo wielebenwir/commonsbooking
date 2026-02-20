@@ -28,7 +28,7 @@ jobs:
 
       - name: Generate pot files
         run: bin/update-pot.sh
-        
+
       - name: Commit changes
         uses: elstudio/actions-js-build/commit@v4
         with:
@@ -65,13 +65,7 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate
 
-
     - name: Compile with Grunt
       uses: elstudio/actions-js-build/build@v4
       with:
         args: build
-
-    - name: Commit changes
-      uses: elstudio/actions-js-build/commit@v4
-      with:
-        commitMessage: Ran grunt 
