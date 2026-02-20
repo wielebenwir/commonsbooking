@@ -1,5 +1,4 @@
-#  Restrictions
-
+# Restrictions
 
 **Settings -> CommonsBooking -> Tab: Restrictions**
 
