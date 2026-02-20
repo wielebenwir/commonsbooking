@@ -49,8 +49,8 @@ import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
     <img src="/img/icon-help-alt.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
       <h1>Extensive support</h1>
-      <p>In addition to our documentation, the CommonsBooking team will assist you <b>personally</b>  with all questions about CommonsBooking via <b>Online-Support</b> and through our <b>telephone hotline</b>: </p>
-      <p> E-Mail: <a href="mailto:mail@commonsbooking.org">mail@commonsbooking.org</a><br> Telefon: <a href= "tel:004922198650801">+49221-98650801</a></p>
+      <p>In addition to our documentation, the CommonsBooking team will assist you <b>personally</b> with all questions about CommonsBooking via <b>Online-Support</b> and through our <b>telephone hotline</b>: </p>
+      <p> Email: <a href="mailto:mail@commonsbooking.org">mail@commonsbooking.org</a><br> Phone: <a href="tel:+4922198650801">+49221-98650801</a></p>
     </div>
   </div>
 
@@ -66,10 +66,10 @@ import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
     <img src="/img/icon-support-chat.png" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
         <h1>Community</h1>
-        <p>CommonsBooking is already being used by dozens of non-profit initiatives. On these pages you will find an overview of different types of existing initiatives that are being supported by CommonsBooking in their work:</p>
+        <p>CommonsBooking is already being used by dozens of non-profit initiatives. On these pages you will find an overview of different types of existing initiatives that use CommonsBooking in their work:</p>
         <ul>
-            <li>Lastenradverleihe in einer <a href="http://dein-lastenrad.de/wiki/Bestehende_Initiativen_freier_Lastenr%C3%A4der" target="_blank">Interactive map on Dein-Lastenrad.de (German)</a></li>
-            <li>Lending libraries <a href="https://leihladen-vernetzung.de/liste/" target="_blank">Leihläden-Vernetzung.de (German)</a></li>
+            <li>Cargo bike rental initiatives in an <a href="http://dein-lastenrad.de/wiki/Bestehende_Initiativen_freier_Lastenr%C3%A4der" target="_blank">interactive map on Dein-Lastenrad.de (German)</a></li>
+            <li>Lending libraries on <a href="https://leihladen-vernetzung.de/liste/" target="_blank">Leihläden-Vernetzung.de (German)</a></li>
         </ul>
     </div>
 </div>
@@ -79,7 +79,7 @@ import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
     <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
         <h1>Newsletter</h1>
-        <p>We will keep you posted. Subscribe to our newsletter</p>
+        <p>We will keep you posted. Subscribe to our newsletter.</p>
         <Newsletter />
     </div>
 </div>
