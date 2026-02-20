@@ -15,7 +15,7 @@ To integrate data from the booking (such as items, booking period, etc.) into th
 
 The default templates already include the most important template tags. You can use them anywhere in the templates. You may also use HTML tags in the templates and add additional template tags, if the ones included by default are not sufficient.
 
-[ An overview about the use of template tags can be found here](../administration/template-tags)
+[An overview about the use of template tags can be found here](../administration/template-tags)
 
 ## iCalendar Files
 
@@ -29,7 +29,7 @@ In this section you will find various text blocks that are output at different p
 
 ### User details on booking page
 
-In this section you define which user data is displayed in the booking detail view. Adress data (street), phone numbers, ..., for instance can be added here. CommonsBooking does not manage user data itself. [Please add user fields using external plugins](../administration/custom-registration-user-fields). Please check how the field names are called in your user management plugin and add them accordingly. You can also use simple HTML formatting in the template, e.g. for line breaks (`<br>`).
+In this section you define which user data is displayed in the booking detail view. Address data (street), phone numbers, ..., for instance can be added here. CommonsBooking does not manage user data itself. [Please add user fields using external plugins](../administration/custom-registration-user-fields). Please check how the field names are called in your user management plugin and add them accordingly. You can also use simple HTML formatting in the template, e.g. for line breaks (`<br>`).
 
 Consider this example to display the field "phone" and the field "address" from the user data:
 ```
