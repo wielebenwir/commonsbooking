@@ -1,12 +1,8 @@
-#  Wie füge ich Zahlenschloss-Codes in E-Mails ein?
+# How do I show lock codes in emails?
 
+A frequent question is whether lock codes for combination locks can be added to items or locations so that they are displayed in the sent emails.
 
-Eine häufige Frage ist, ob Codes für Zahlenschlösser an Artikeln oder
-Standorten hinzugefügt werden können um Sie in den versendeten E-Mails
-anzuzeigen.
-
-Das funktioniert über sog. Meta-Felder, welche Artikel und Standort zugewiesen
-werden. Diese Felder können dann auch in den E-Mail Templates verwendet
+This is possible via so-called meta fields, which are assigned to items and locations. These fields can then also be used in email templates.
 werden.
 
-[ Dieser Aritkel der Dokumentation enthält eine Ausführliche Anleitung.](../administration/template-tags)
+[This page of the documentation contains a detailed guide.](../administration/template-tags)
