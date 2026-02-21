@@ -1,4 +1,4 @@
-# Shortcodes
+# Shortcodes for frontend display
 
 You can display CommonsBooking content (e.g., automatically generated item lists) on the website using shortcodes. Shortcodes can be inserted into any WordPress page. [Official WordPress documentation](https://en.support.wordpress.com/shortcodes).
 
