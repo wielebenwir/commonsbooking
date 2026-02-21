@@ -1,83 +1,69 @@
-#  Migration von Version 0.9.x
+# Migration from version 0.9.x
 
+You can migrate from CB 0.9.x to CB 2.x.x with a single click. The migration imports the following data:
 
-Die Migration von Version CB 0.9.x zu CB 2.x.x könnt ihr per Knopfdruck
-erledigen. Die Migration importiert folgende Daten:
-
-  * Artikel
-  * Standorte
-  * Zeiträume (inkl. Buchungscodes)
-  * vorhandene Buchungen
-  * Die Liste der Buchungscodes
-  * Absender E-Mail und Name
-    * Hinweis: Dabei werden evtl. bereits im neuen CommonsBooking gespeicherte Absendername und E-Mail überschrieben.
-  * Die in Standorten definierten geschlossenen Tage (werden als nicht buchbare Tage in CB 2.x.x. in die Einstellungen der buchbaren Zeitrahmen übernommen)
-  * Die bisherigen Registrierungsfelder für Nutzer (Telefonnummer, Adresse)
-  * Kategorien
-  * Ab CB 2.2.14 kannst du im Zeitrahmen-Editor einstellen, ob Buchungscodes angezeigt werden oder nicht. Während der Migration wird dieser Wert für alle importierten buchbaren Zeiträume auf “an” gesetzt, um direkt wie aus CB 0.9.x gewohnt, die Buchungscodes den Nutzenden anzuzeigen.
-  * Für die Nutzung der Karte werden Geo-Koordinaten für jeden Standort benötigt. Du kannst bei der Migration die Option “Geo-Koordinaten erzeugen” anklicken. Beim Import werden dann für jeden Standort anhand der Adressdaten die Geo-Koordinaten generiert und zu dem Standort gespeichert.
+  * Items
+  * Locations
+  * Timeframes (including booking codes)
+  * Existing bookings
+  * The list of booking codes
+  * Sender email and name
+    * Note: This may overwrite the sender name and email already stored in the new CommonsBooking.
+  * Closed days defined in locations (are carried over as non-bookable days in CB 2.x.x into the settings for bookable timeframes)
+  * Existing registration fields for users (phone number, address)
+  * Categories
+  * From CB 2.2.14 you can set in the timeframe editor whether booking codes are displayed or not. During migration, this value is set to "on" for all imported bookable timeframes so that booking codes are shown as in CB 0.9.x.
+  * For using the map, geo coordinates are required for each location. During migration you can select the option "Generate geo coordinates". During import, the geo coordinates are generated from address data for each location and saved to the location.
 
 * * *
 
-##  1\. Vorbereitung der Migration
+##  1\. Prepare the migration
 
-  * Erstelle ein **Backup der aktuellen Seite** (wir empfehlen das Plugin „ [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus) “)
-  * Aktualisiere dein bestehendes Commons Booking auf die neueste Version
-  * Gehe unter Einstellungen -> Commons Booking zum Tab “E-Mails” und kopiere dir dort die Vorlagen-Texte in einen Texteditor auf deinem Rechner (Notepad oder ähnliches). Bei der Migration können die Templates nicht übernommen werden, da das neue CommonsBooking mit anderen [ Template-Tags ](../administration/template-tags) arbeitet. Nach der Migration sind im neuen CommonsBooking dann neue Standardvorlagen aktiviert. Diese kannst du dann manuell an deine Bedürfnisse anpassen. Bitte nicht die gespeicherten Vorlagen einfach in das neue CB kopieren, da sonst die Platzhalter (Template-Tags) nicht mehr funktionieren.
-  * Auf unserer [ Doku-Seite der Template-Tags ](../administration/template-tags) findest du die Namen der neuen Template-Tags und kannst mit diesen dann die Templates entsprechend anpassen.
-  * [ Installiere dir CommonsBooking 2 ](./install) und aktiviere das Plugin. Du kannst die Version 2 parallel zu deiner bestehenden CommonsBooking-Installation betreiben.
-  * Wir empfehlen, währen der Migration deine Seite in einen Wartungsmodus zu versetzen, damit während der Migrations- und Testzeit keine Buchungen möglich sind, die dann evtl. in der neuen Version nicht zur Verfügung sind. Ihr könnt dazu z.B. das Plugin [ WP Maintenance Mode ](https://de.wordpress.org/plugins/wp-maintenance-mode) nutzen. Im Wartungsmodus könnt ihr selbst als Administratoren natürlich auf die Seite zugreifen und so alles testen.
+  * Create a **backup of the current site** (we recommend the [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus) plugin)
+  * Update your existing CommonsBooking to the latest version
+  * Go to Settings -> CommonsBooking -> "Emails" and copy the template texts into a text editor on your computer (Notepad or similar). During migration, the templates cannot be carried over because the new CommonsBooking uses different [ template tags ](../administration/template-tags). After the migration, new default templates are activated in the new CommonsBooking. You can then adjust them manually to your needs. Do not simply copy the saved templates into the new CB, otherwise the placeholders (template tags) will no longer work.
+  * On our [ template tags documentation page ](../administration/template-tags) you will find the names of the new template tags and can use them to adapt the templates accordingly.
+  * [ Install CommonsBooking 2 ](./install) and activate the plugin. You can run version 2 in parallel with your existing CommonsBooking installation.
+  * We recommend putting your site into maintenance mode during the migration so that no bookings are possible during the migration and testing period that might not be available in the new version. You can use the [ WP Maintenance Mode ](https://de.wordpress.org/plugins/wp-maintenance-mode) plugin for this. In maintenance mode, you can still access the site as administrators and test everything.
 
-##  2\. Migration durchführen Daten migrieren
+## 2\. Run the migration
 
-Erstelle vor der Migration **ein Backup eurer Seite** (wir empfehlen das
-Plugin „ [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus) “)
+Before the migration, create **a backup of your site** (we recommend the [ Updraft Plus ](https://de.wordpress.org/plugins/updraftplus) plugin).
 
-  1. Klicke in den Einstellungen -> CommonsBooking im Reiter “ **Migration** ” auf “ **Migration starten** ” und warte einen Moment, bis alle Daten migriert sind. Die Übernahme der Datensätze erfolgt einzelnen Schritten, um nicht eure Server zu überlasten. Bei vielen Datensätzen (z.B. vielen Buchungen und Buchungscodes) kann der Vorgang mehrere Minuten dauern. Bitte habe Geduld 🙂
-Während des Imports aktualisiert sich die Anzahl der importierten Datensätze.
-Warte, bis du die Meldung “Migration beendet” siehst.
+  1. In Settings -> CommonsBooking, on the **Migration** tab, click **Start migration** and wait a moment until all data is migrated. The transfer of records happens in steps so that your server is not overloaded. With many records (e.g., many bookings and booking codes) the process can take several minutes. Please be patient.
+During the import, the number of imported records updates. Wait until you see the message "Migration finished".
 
-  2. CB 2.x.x hat nun deine Daten importiert, du kannst CB 0.9.x deaktivieren.
-Hinweis: Wenn etwas nicht funktioniert hat, kannst du CB 0.9.x. später einfach
-wieder aktivieren und bist sozusagen direkt im vorherigen Stand.
+  2. CB 2.x.x has now imported your data and you can deactivate CB 0.9.x.
+Note: If something did not work, you can simply activate CB 0.9.x later and you will effectively be back to the previous state.
 
-  3. Falls bei der Migration Probleme auftauchen sollten oder diese nicht startet, deaktiviere nicht erforderliche Plugins. Probleme wurden etwa mit den Plugin “HiFi (Head Injection, Foot Injection)” festgestellt.
+  3. If problems occur during migration or it does not start, deactivate non-essential plugins. Issues were observed with the plugin "HiFi (Head Injection, Foot Injection)".
 
-**Bitte beachte:**
+**Please note:**
 
-  * **Kategorien** : Wenn du in CB 0.9.x Kategorien angelegt hast, werden diese ebenfalls für Artikel und Standorte migriert. Die Kategorien werden im neuen CommonsBooking jedoch erst aktiv, wenn du CB0 deaktiviert hast. **Bitte deaktiviere deshalb CB0, bevor du die Migration prüfst** .
-  * **Erneutes Importieren:** Du kannst die Migration beliebig oft wiederholen. Bitte beachte, dass dabei die bereits importierten Daten mit den jeweils aktuellen Werten aus CB1 überschrieben werden. Artikel, Standorte oder Zeitrahmen, die du in der Zwischenzeit direkt in CB2 angelegt hast, bleiben unverändert.
-  * **Gelöschte Elemente** : Wenn Du die Migration noch einmal erneut durchführen möchtest, ist das grundsätzlich möglich. Beachte aber dabei folgendes: Wenn du die einem vorigen Migrationsdurchlauf bereits im neuen CommonsBooking angelegten Daten (Artikel. Standorte, Zeitrahmen) gelöscht hast (also in den Papierkorb legst), musst du vor einem erneuten Migrationsdurchlauf den Papierkorb im neuen CommonsBooking für alle Artikel / Standorte / Zeitrahmen leeren, ansonsten kann es zu Fehlerhaften Daten beim Import kommen.
-  * **Nicht mehr existierende Artikel / Standorte / Nutzer:** Wenn Zeitrahmen oder Buchungen importiert werden und die damit verknüpften Artikel, Standorte oder Nutzende nicht mehr im alten CommonsBooking vorhanden waren, dann werden diese Angaben leer gelassen bzw. mit einen “null” oder “undefined user” gekennzeichnet.
+  * **Categories:** If you created categories in CB 0.9.x, they are also migrated for items and locations. Categories in the new CommonsBooking only become active after you deactivate CB0. **Therefore, deactivate CB0 before checking the migration.**
+  * **Re-importing:** You can repeat the migration as often as you want. Note that previously imported data is overwritten with the current values from CB1. Items, locations, or timeframes that you created directly in CB2 in the meantime remain unchanged.
+  * **Deleted elements:** You can run the migration again, but note the following: If you deleted data (items, locations, timeframes) that had already been created in the new CommonsBooking from a previous migration run (moved to trash), you must empty the trash in the new CommonsBooking for all items / locations / timeframes before running the migration again. Otherwise, faulty data can occur during import.
+  * **Items / locations / users that no longer exist:** If timeframes or bookings are imported and the associated items, locations, or users no longer existed in the old CommonsBooking, then these entries are left empty or marked as "null" or "undefined user".
 
-##  4\. Registrierungsfelder übernehmen
+## 4\. Transfer registration fields
 
-Vordefinierte Registrierungsfelder (z.B. Adresse, AGBs akzeptiert) sind in
-CommonsBooking 2.x.x **nicht mehr standardmässig aktiv** . Um diese zu re-
-aktivieren, gehst du so vor:
+Predefined registration fields (e.g., address, terms accepted) are **not active by default** in CommonsBooking 2.x.x. To re-enable them, do the following:
 
-Klicke in den Einstellungen im Reiter “ **Migration** ”
+In Settings, click the **Migration** tab.
 
-  * Klicke unter „CommonsBooking Version 0.X profile fields“ auf „Aktivieren“
-  * Zusätzlich überprüfe ob der Link zu den AGBs korrekt ist.
+  * Under "CommonsBooking Version 0.X profile fields" click "Activate"
+  * Also verify that the link to the terms is correct.
 
-Mehr Infos zum Thema Registrierungsfelder findest du auf der Seite [Registrierungs-Seiten und -Felder anpassen](../administration/custom-registration-user-fields)
+More information about registration fields can be found on the page [Customize registration and login](../administration/custom-registration-user-fields)
 
 * * *
 
-##  3\. Artikel-Seite anlegen
+## 3\. Create an items page
 
-In CommonsBooking 2 musst du nicht mehr in den Einstellungen eine spezielle
-„Artikel“-Seite einstellen, du kannst deine Artikel-Liste ganz einfach auf
-einer bestehenden Seite an gewünschter Stelle per **Shortcode** einfügen.
+In CommonsBooking 2 you no longer need to set a special "Items" page in the settings. You can insert your items list on an existing page at the desired location via a **shortcode**.
 
-  1. Erstelle eine neue Seite und füge den Shortcode „[cb_items]“ ein.
-     1. In WordPress mit dem „Classic-Editor“ schreibst du den Shortcode einfach in den text: ` [cb_items] `
-     2. In WordPress (ab 5) mit dem Gutenberg-Block-Editor fügst du per Plus einen neuen Shortcode-Block hinzu, und gibst dort den Shortcode: ` [cb_items] `
-  2. Navigiere nun auf die Seite und mache eine Test-Buchung eines Artikels.
-  3. Wenn alles gut aussieht: Ersetze die die alte Artikel-Liste in deiner Navigation mit der neuen Seite.
-
-* * *
-
-* * *
-
+  1. Create a new page and insert the shortcode "[cb_items]".
+    1. In WordPress with the classic editor, just enter the shortcode in the text: `[cb_items]`
+    2. In WordPress (5+) with the Gutenberg block editor, click the plus icon to add a new Shortcode block and enter: `[cb_items]`
+  2. Navigate to the page and create a test booking for an item.
+  3. If everything looks good, replace the old items list in your navigation with the new page.
