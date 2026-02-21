@@ -289,9 +289,9 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
               { text: 'Install', link: 'install' },
-              //{ text: 'Migration from CB1', link: 'migration-from-cb1' },
-              //{ text: 'Theme', link: 'theme' },
-              //{ text: 'Update-News', link: 'update-news' }
+              { text: 'Migration from CB1', link: 'migration-from-cb1' },
+              { text: 'Theme', link: 'theme' },
+              { text: 'Update news', link: 'update-news' }
           ]
       },
       {
@@ -320,14 +320,13 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Language settings & date format', link: 'language-and-date' }
           ]
       },
-    /*
     {
       text: 'Basics', base: '/en/documentation/basics/',
       collapsed: true,
       items: [
         { text: 'Concepts', link: 'concepts' },
         { text: 'Booking codes', link: 'booking-codes' },
-        { text: 'Permission management (CB-Manager)', link: 'permission-management' },
+        { text: 'CommonsBooking Manager permissions', link: 'permission-management' },
         { text: 'Configure timeframes', link: 'timeframes-config' }
       ]
     },
@@ -341,32 +340,31 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         { text: 'Cancel bookings', link: 'bookings-cancel' },
         { text: 'iCalendar Feed', link: 'icalendar-feed' }
       ]
-    }*/
+    },
       {
           text: 'Administration', base: '/en/documentation/administration/',
           collapsed: true,
           items: [
-//              { text: 'Booking list', link: 'booking-list' },
-//              { text: 'Embed map', link: 'map-embed' },
-//              { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
-//              { text: 'New Frontend(Beta)', link: 'new-frontend' },
-//              { text: 'Adjust registration page and user fields', link: 'custom-registration-user-fields' },
-//              { text: 'Shortcodes', link: 'shortcodes' },
-//              { text: 'Template Tags', link: 'template-tags' },
-//              { text: 'Widget', link: 'widget' },
-                { text: 'Privacy', link: 'privacy'}
+                { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
+                { text: 'Booking list', link: 'booking-list' },
+                { text: 'Embed map', link: 'map-embed' },
+                { text: 'New frontend (BETA)', link: 'new-frontend' },
+                { text: 'Shortcodes', link: 'shortcodes' },
+                { text: 'Template tags and placeholders for email templates', link: 'template-tags' },
+                { text: 'Add the user widget', link: 'widget' },
+                { text: 'Privacy', link: 'privacy' },
+                { text: 'Customize registration and login', link: 'custom-registration-user-fields' }
           ]
       },
-      /*
       {
           text: 'Extensions / API', base: '/en/documentation/api/',
           collapsed: true,
           items: [
               { text: 'What is the CommonsAPI?', link: 'what-is-the-commonsapi' },
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' }
+              { text: 'CommonsBooking API', link: 'commonsbooking-api' },
+              { text: 'GBFS', link: 'gbfs' }
           ]
       },
-*/
     {
       text: 'Advanced functionality', base: '/en/documentation/advanced-functionality/',
         collapsed: true,
@@ -376,7 +374,6 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
             { text: 'Hooks and filters', link: 'hooks-and-filters' },
       ]
     },
-/*
     {
       text: 'Roadmap', base: '/en/documentation/roadmap/',
         collapsed: true,
@@ -384,22 +381,6 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         { text: 'Release overview', link: 'release-overview' }
       ]
     },
-    */
-    /* Won't be added to English version
-    {
-      text: 'Informationen zur alten Version 0.9', base: '/en/documentation/version-0-9/',
-        collapsed: true,
-      items: [
-        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-version-0-9' },
-        { text: 'Einstellungen v0.9', link: 'einstellungen-version-0-9' },
-        { text: 'Erste Schritte v0.9', link: 'erste-schritte' },
-        { text: 'FAQ v0.9', link: 'haeufige-fragen-version-0-9' },
-        { text: 'Installation', link: 'installation' },
-        { text: 'Widgets & Themes v0.9', link: 'widgets-themes-version-0-9' }
-      ]
-    },
-    */
-   /*
       {
           text: 'Frequently Asked Questions (FAQ)', base: '/en/documentation/faq/',
           collapsed: true,
@@ -412,7 +393,25 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'How to avoid spam registrations', link: 'avoid-spam-registrations'}
           ]
       },
-      */
+    {
+      text: 'Roadmap', base: '/en/documentation/roadmap/',
+        collapsed: true,
+      items: [
+        { text: 'Release overview', link: 'release-overview' }
+      ]
+    },
+      {
+          text: 'Frequently Asked Questions (FAQ)', base: '/en/documentation/faq/',
+          collapsed: true,
+          items: [
+              { text: 'My site is very slow', link: 'site-slow' },
+              { text: 'Problems and answers', link: 'problems-and-answers' },
+              { text: 'Add booking comment to email templates', link: 'booking-comment-emails' },
+              { text: 'How to add lock codes in email templates', link: 'lock-codes-email' },
+              { text: 'Make article page look more organised', link: 'organise-article-page' },
+              { text: 'How to avoid spam registrations', link: 'avoid-spam-registrations'}
+          ]
+      },
   ]
 }
 
