@@ -4,10 +4,10 @@ The following pages cover the various settings available in CommonsBooking. The 
 
 ### Pages
 
-  * [General settings](./general-settings)
-  * [Booking codes](./booking-codes)
-  * [Templates](./templates)
-  * [Restrictions](./restrictions)
-  * [Reminder via email concerning bookings](./reminder)
-  * [Export timeframes and bookings](./export)
-  * [Language & date format](./language-and-date)
+  * [General settings](general-settings)
+  * [Booking codes](booking-codes)
+  * [Templates](templates)
+  * [Restrictions](restrictions)
+  * [Reminder via email concerning bookings](reminder)
+  * [Export timeframes and bookings](export)
+  * [Language & date format](language-and-date)
