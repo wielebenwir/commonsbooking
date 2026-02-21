@@ -2,4 +2,4 @@
 
 ###  Pages
 
-  * [Overview of releases and planned further development](./release-overview)
+  * [Overview of releases and planned further development](release-overview)

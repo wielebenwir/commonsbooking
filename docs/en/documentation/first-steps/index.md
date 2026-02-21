@@ -22,9 +22,9 @@ that the "CommonsBooking" menu item is selected on the left-hand side.
 
 CommonsBooking is a highly flexible tool, which can feel a bit overwhelming at first. These guides are here to help you get started and to familiarize yourself with the basic concepts of CommonsBooking.
 
-  * [Create a location](../first-steps/create-location)
-  * [Create an item](../first-steps/create-item)
-  * [Create a timeframe](../first-steps/booking-timeframes-manage)
-  * [Optional: Create a restriction](../first-steps/manage-booking-restrictions)
-  * [Optional: Set up booking rules](../first-steps/setup-bookingrules)
-  * [Optional: Create a holiday timeframe](../first-steps/timeframes-holidays)
+  * [Create location](create-location)
+  * [Create item](create-item)
+  * [Timeframes: Define when an item can be booked](booking-timeframes-manage)
+  * [Optional: Manage restrictions](manage-booking-restrictions)
+  * [Optional: Configure booking rules (since 2.9)](setup-bookingrules)
+  * [Optional: Timeframes: Configure a location's holidays](timeframes-holidays)
