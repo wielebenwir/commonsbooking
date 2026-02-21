@@ -1,15 +1,12 @@
-#  User-Widget einbinden
+# Integrating the user widget
 
-
-Das User-Widget beinhaltet die Links zu den persönlichen Buchungen und zur
-Login- bzw. Logout-Seite.
+The user widget contains links to personal bookings and to the login or logout page.
 
 ![](/img/user-widget.png)
 
-Mit den folgenden Schritten integrierst du das Widget in deine Seite:
+Follow these steps to integrate the widget into your site:
 
-  1. Unter Design -> Widget findest du bei den “Verfügbaren Widgets” das CommonsBooking User Widget. Ziehe es in die gewünschte Seitenleiste, die durch dein Theme definiert ist.
-  2. Ergänze, wenn gewünscht, einen Titel, d.h. eine Überschrift und einen Beschreibungstext.
-  3. Erstelle eine Buchungsliste im Frontend indem du den Shortcode [cb_bookings] in eine neue Seite einfügst und diese publizierst.
-  4. Definiere unter Einstellungen -> CommonsBooking im Reiter “Allgemein” diese neue Seite als Buchungen-Seite.
-
+  1. Under Appearance -> Widgets, you will find the CommonsBooking User Widget among the "Available Widgets". Drag it to the desired sidebar, which is defined by your theme.
+  2. Add a title, i.e., a heading and descriptive text, if desired.
+  3. Create a booking list on the frontend by inserting the shortcode [cb_bookings] into a new page and publishing it.
+  4. Define this new page as the Bookings Page under Settings -> CommonsBooking in the "General" tab.
