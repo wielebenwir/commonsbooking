@@ -1,9 +1,8 @@
-#  Erweiterte Funktionalität
+# Erweiterte Funktionalität
 
+### Artikel
 
-###  Artikel
-
-  * [ Cache ](cache)
-  * [ Standardwerte für Zeitrahmenerstellung ändern ](change-timeframe-creation-defaults)
-  * [ Hooks und Filter ](hooks-and-filters)
+  * [Cache einstellen](cache)
+  * [Standardwerte für Zeitrahmenerstellung ändern](change-timeframe-creation-defaults)
+  * [Hooks und Filter](hooks-and-filters)
 
