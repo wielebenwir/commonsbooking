@@ -164,8 +164,9 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Update-Info', link: 'update-news' }
           ]
       },
-      {
-      text: 'Erste Schritte', base: '/de/documentation/first-steps/',
+        {
+        text: 'Erste Schritte', base: '/de/documentation/first-steps/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'Erste Schritte', link: 'index' },
@@ -177,8 +178,9 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Zeitrahmen & Feiertage definieren', link: 'timeframes-holidays' }
           ]
       },
-      {
-      text: 'Einstellungen', base: '/de/documentation/settings/',
+        {
+        text: 'Einstellungen', base: '/de/documentation/settings/',
+          link: '/',
           collapsed: true,
           items: [
         { text: 'Allgemeine Einstellungen', link: 'general-settings' },
@@ -192,6 +194,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       },
     {
     text: 'Grundlagen', base: '/de/documentation/basics/',
+      link: '/',
       collapsed: true,
       items: [
     { text: 'Begriffe', link: 'concepts' },
@@ -204,6 +207,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
 
     {
       text: 'Buchungen verwalten', base: '/de/documentation/manage-bookings/',
+        link: '/',
         collapsed: true,
       items: [
         { text: 'Buchungen anlegen', link: 'bookings-create' },
@@ -211,8 +215,9 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'iCalendar Feed', link: 'icalendar-feed' }
       ]
     },
-      {
+        {
           text: 'Administration', base: '/de/documentation/administration/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'Leihangebote im Frontend anzeigen', link: 'frontend-show-bookable' },
@@ -239,6 +244,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
 
     {
       text: 'Erweiterte Funktionalität', base: '/de/documentation/advanced-functionality/',
+        link: '/',
         collapsed: true,
       items: [
           { text: 'Cache einstellen', link: 'cache' },
@@ -249,6 +255,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
 
     {
       text: 'Roadmap', base: '/de/documentation/roadmap/',
+        link: '/',
         collapsed: true,
       items: [
         { text: 'Übersicht über die Releases', link: 'release-overview' }
@@ -256,6 +263,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
     },
     {
       text: 'Informationen zur alten Version 0.9', base: '/de/documentation/version-0-9/',
+        link: '/',
         collapsed: true,
       items: [
         { text: 'Installation (Version 0.9.x)', link: 'setup' },
@@ -294,8 +302,9 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Update information', link: 'update-news' }
           ]
       },
-      {
+        {
           text: 'First steps', base: '/en/documentation/first-steps/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'First steps', link: 'index' },
@@ -307,8 +316,9 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Timeframes: Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
       },
-      {
+        {
           text: 'Settings', base: '/en/documentation/settings/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'General settings', link: 'general-settings' },
@@ -322,6 +332,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
       },
     {
       text: 'Basics', base: '/en/documentation/basics/',
+      link: '/',
       collapsed: true,
       items: [
         { text: 'Concepts', link: 'concepts' },
@@ -334,6 +345,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
 
     {
       text: 'Manage bookings', base: '/en/documentation/manage-bookings/',
+        link: '/',
         collapsed: true,
       items: [
         { text: 'Create Bookings & Admin Booking', link: 'bookings-create' },
@@ -341,8 +353,9 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         { text: 'iCalendar Feed', link: 'icalendar-feed' }
       ]
     },
-      {
+        {
           text: 'Administration', base: '/en/documentation/administration/',
+          link: '/',
           collapsed: true,
           items: [
                 { text: 'Displaying lending offers in the frontend', link: 'frontend-show-bookable' },
@@ -368,6 +381,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
       },
     {
       text: 'Advanced functionality', base: '/en/documentation/advanced-functionality/',
+        link: '/',
         collapsed: true,
       items: [
             { text: 'Configure cache', link: 'cache' },
@@ -377,6 +391,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
     },
     {
       text: 'Roadmap', base: '/en/documentation/roadmap/',
+        link: '/',
         collapsed: true,
       items: [
         { text: 'Overview of releases and planned further development', link: 'release-overview' }
