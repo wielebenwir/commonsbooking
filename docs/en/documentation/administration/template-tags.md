@@ -1,71 +1,89 @@
-#  Template Tags und Platzhalter für E-Mail-Vorlagen
+# Template tags and placeholders for email templates
 
+The following page shows you how to enrich the WordPress templates and automatic email messages with data from WordPress and the plugin.
 
-Template-Tags kannst du in den E-Mail-Vorlagen oder Frontend-Templates
-einsetzen.
-Grundsätzlich funktionieren Template-Tags folgendermaßen:
-  * Für einige Daten haben wir bereits entsprechende Funktionen hinterlegt, die z.B. eine formatiertes Buchungsdatum ausgeben.
-  * Grundsätzlich kannst du mit dem Template-Tags aber auf alle `wp_post` , `wp_postmeta` sowie die `user` und `user_meta` Daten zugreifen. Dies funktioniert nach folgendem Schema:
-    * Über den ersten Teil definierst du zunächst, ob du Daten eines Artikels oder einer Station ausgeben möchtest. Artikel und Stationen sind in WordPress Costum Post Types und enthalten deshalb alle WordPress-Typischen Basisdaten wie title, status etc.
-    * Mit dem Teil nach dem `:` definierst du das anzuzeigende Feld. Dieses kann entweder ein Feld aus der Tabelle `wp_post`
-      oder `wp_postmeta` sein. Unsere Template-Funktion erkennt dies automatisch und fügt den entsprechenden Wert ein.
-    * Ein Beispiel: Du hast für den Typ Artikel noch ein ein weiteres Feld in postmeta angelegt, um z.B. eine Auskunft
-      über den Zustand des Artikels zu geben. Du legst also im WordPress-Editor ein weiteres benutzerdefiniertes Feld an, z.B. mit den Namen `condition`.
-      Auf dieses Feld kannst du folgendermaßen zugreifen:
-      - in E-Mail-Template: über <span v-pre><span v-pre>`{{item:condition}}`</span></span>
-      - in Frontend-Templates (im Ordner `/template`) über folgende Funktion:
-        ```php
-        <?php echo CB::get('item', 'condition'); ?>
-        ```
-  * Für User funktioniert dies nach dem gleichen Prinzip. Hast du z.b. über ein User-Profil-Plugin wie WP Members etc. weitere user_meta Felder (z.B. Straße, Telefonnummer) angelegt, kannst du auf diese Felder über <span v-pre><span v-pre>`{{user:feldname}}`</span></span> bzw. über
+The following use cases are covered:
+* Personal salutation of users in a confirmation email
+* Key code for opening a bike lock in a confirmation email
+* Compartment or shelf number of an item
+
+## Template tags and meta fields
+
+You can use template tags in email templates or frontend templates.
+These so-called tags help you access data from the plugin, e.g., the name of an item or the date of a booking.
+A template tag for accessing the name of an item looks like this, for example: <span v-pre>`{{item:post_title}}`</span>
+
+::: tip Tip
+For some data, we have already created corresponding functions that output, for example, a formatted booking date.
+Below you will find a complete list of all tags in the plugin.
+Basically, you can use template tags to access all `wp_post`, `wp_postmeta` as well as `user` and `user_meta` data.
+:::
+
+The general access to the values behind the template tags works according to the following scheme:
+
+* The first part defines whether you want to output data for an item or a location. Items and locations are custom post types in WordPress and therefore contain all the typical WordPress base data such as title, status, etc.
+* With the part after the `:` you define the field to be displayed. This can be either a field from the `wp_post` table or `wp_postmeta`. Our template function recognizes this automatically and inserts the corresponding value.
+* **An example:** You have created another field in postmeta for the item type, for example to provide information about the condition of the item. So you create another custom field in the WordPress editor, for example with the name `condition`.
+  You can access this field as follows:
+  - in email template: via <span v-pre>`{{item:condition}}`</span>
+  - in frontend templates (in the `/template` folder) via the following function:
     ```php
-    <?php echo CB::get(‘user’, ‘feldname’); ?>
+    <?php echo CB::get('item', 'condition'); ?>
     ```
-    zugreifen.
-  * Buchungen funktionieren nicht nach diesem Schema, da hier einige Besonderheiten bestehen. Um weitere Buchungsdaten ausgeben zu können, benötigst du Programmierkenntnisse. Falls dir hier etwas fehlt, schrieb uns bitte. Wir schauen, was wir möglich machen können.
-Folgende Template-Tags sind in den standardmäßig bei der Installation angelegten Vorlagen enthalten.
 
-| Feld                                                                                                                |                Template-Tag                |
+* For users, this works on the same principle. If you have created additional user_meta fields (e.g., street, phone number) via a user profile plugin like WP Members, you can access these fields via <span v-pre>`{{user:fieldname}}`</span> or via
+  ```php
+  <?php echo CB::get('user', 'fieldname'); ?>
+  ```
+* Bookings do not work according to this scheme, as there are some special features. To output additional booking data, you need programming knowledge. If you are missing something here, please write to us. We will see what we can make possible.
+
+## List of CB tags
+
+The following template tags are included in the templates created by default during installation.
+
+| Field                                                                                                                |                Template tag                |
 |---------------------------------------------------------------------------------------------------------------------|:------------------------------------------:|
 | **User**                                                                                                            |                                            |
-| Vorname:                                                                                                            |           <span v-pre>`{{user:first_name}}`</span>            |
-| Nachname                                                                                                            |            <span v-pre>`{{user:last_name}}`</span>            |
+| First name                                                                                                          |           <span v-pre>`{{user:first_name}}`</span>            |
+| Last name                                                                                                           |            <span v-pre>`{{user:last_name}}`</span>            |
 | Email                                                                                                               |           <span v-pre>`{{user:user_email}}`</span>            |
-| **Artikel**                                                                                                         |                                            |
-| Name des Artikels                                                                                                   |           <span v-pre>`{{item:post_title}}`</span>            |
-| **Station**                                                                                                         |                                            |
-| Name der Standort                                                                                                   |         <span v-pre>`{{location:post_title}}`</span>          |
-| Adresse der Station                                                                                                 |      <span v-pre>`{{location:formattedAddress}}`</span>       |
-| Kontaktdaten der Station                                                                                            | <span v-pre>`{{location:formattedContactInfoOneLine}}`</span> |
-| **Buchung**                                                                                                         |                                            |
-| Anfang der Buchung                                                                                                  |        <span v-pre>`{{booking:pickupDatetime}}`</span>        |
-| Ende der Buchung                                                                                                    |        <span v-pre>`{{booking:returnDatetime}}`</span>        |
-| Zusammengefasster Buchungs-Zeitraum (z.B. vom 24. Januar 16:00 Uhr bis 26. Januar 12:00 Uhr)                 |     <span v-pre>`{{booking:formattedBookingDate}}`</span>     |
-| Abholinformationen                                                                                                  |     <span v-pre>`{{location:pickupInstructions}}`</span>      |
-| Link zur Buchung/Stornierung                                                                                        |         <span v-pre>`{{booking:bookingLink}}`</span>          |
-| Buchungs-Codes (nur bei tageweise Buchung)                                                                          |     <span v-pre>`{{booking:formattedBookingCode}}`</span>     |
-| Buchungskommentar                                                                                                   |        <span v-pre>`{{booking:returnComment}}`</span>         |
-| **Einschränkungen**: Es sind die Templates Tags von User, Artikel, Station und Buchung sowie folgende möglich |                                            |
-| Startdatum der Einschränkung inkl. Uhrzeit                                                                          |  <span v-pre>`{{restriction:formattedStartDateTime}}`</span>  |
-| Voraussichtliches Enddatum der Einschränkung inkl. Uhrzeit                                                          |   <span v-pre>`{{restriction:formattedEndDateTime}}`</span>   |
-| Hinweistext, der in der Einschränkung eingegeben wurde                                                              |           <span v-pre>`{{restriction:hint}}`</span>           |
+| **Item**                                                                                                            |                                            |
+| Item name                                                                                                           |           <span v-pre>`{{item:post_title}}`</span>            |
+| **Location**                                                                                                        |                                            |
+| Location name                                                                                                       |         <span v-pre>`{{location:post_title}}`</span>          |
+| Location address                                                                                                    |      <span v-pre>`{{location:formattedAddress}}`</span>       |
+| Location contact details                                                                                            | <span v-pre>`{{location:formattedContactInfoOneLine}}`</span> |
+| **Booking**                                                                                                         |                                            |
+| Booking start                                                                                                       |        <span v-pre>`{{booking:pickupDatetime}}`</span>        |
+| Booking end                                                                                                         |        <span v-pre>`{{booking:returnDatetime}}`</span>        |
+| Summarized booking period (e.g., from January 24, 4:00 PM to January 26, 12:00 PM)                                   |     <span v-pre>`{{booking:formattedBookingDate}}`</span>     |
+| Pickup instructions                                                                                                 |     <span v-pre>`{{location:pickupInstructions}}`</span>      |
+| Link to booking/cancellation                                                                                        |         <span v-pre>`{{booking:bookingLink}}`</span>          |
+| Booking codes (only for day-wise bookings)                                                                          |     <span v-pre>`{{booking:formattedBookingCode}}`</span>     |
+| Booking comment                                                                                                     |        <span v-pre>`{{booking:returnComment}}`</span>         |
+| **Restrictions**: The template tags for User, Item, Location, and Booking as well as the following are possible    |                                            |
+| Restriction start date incl. time                                                                                   |  <span v-pre>`{{restriction:formattedStartDateTime}}`</span>  |
+| Expected restriction end date incl. time                                                                            |   <span v-pre>`{{restriction:formattedEndDateTime}}`</span>   |
+| Notice text that was entered in the restriction                                                                     |           <span v-pre>`{{restriction:hint}}`</span>           |
 
-##  Andere Metafelder
+## Other meta fields
 
-Bei der Verwendung von CommonsBooking in Kombination mit anderen Plugins muss deren Plugin-Präfix für Meta-Felder
-genutzt werden, damit diese korrekt referenziert werden. Es folgt eine nicht vollständige Liste:
+When using CommonsBooking in combination with other plugins, their plugin prefix for meta fields must be used so that they are correctly referenced. The following is a non-exhaustive list:
 
-**User (Plugin UsersWP):**
-Für neu angelegte Felder in UsersWP den Prefix `uwp_meta_` verwenden: <span v-pre>`{{user:uwp_meta_address}}`</span>
+* **User (Plugin UsersWP):**
+  For newly created fields in UsersWP, use the prefix `uwp_meta_`: <span v-pre>`{{user:uwp_meta_address}}`</span>
 
-##  Eigene Metafelder für Standorte und Artikel verwenden
+## Using custom meta fields for locations and items
 
-Ihr könnt weitere Felder für Standorte oder Artikel anlegen.
+You can create additional fields for locations or items.
 
-  * Dazu in den Einstellungen -> Tab “Erweitert” auswählen
-  * im Feld Meta-Daten die gewünschten Felder nach der dort benannten Syntax anlegen. Die Erläuterung zur Syntax findet ihr in der Feldbschreibung.
-  * z.B. `item;ItemKeyCode;Schloss-Code;text;Code` für das Zahlenschloss
-  * Dieses Metafeld könnt ihr nun über die oben genannten Shortcodes in den E-Mail-Vorlagen einsetzen.
-  * Beispiel: <span v-pre>`{{ [Der Code für das Zahlenschloss lautet:] item:ItemKeyCode}}`</span>
-  * Der Text in den eckigen Klammern `[ ]` dient als Beschreibungstext, der vor dem eigentlichen Metafeld ausgegeben wird. Der Vorteil hier ist, dass der Beschreibungstext inklusive des Werts nur ausgegeben wird, wenn das dynamische Feld einen Wert enthält. In diesem Beschreibungstext sind auch einfache HTML-Codes erlaubt (z.B. br, strong, etc.)
+  * To do this, go to Settings -> Select "Advanced" tab
+  * In the Meta data field, create the desired fields according to the syntax specified there. You can find an explanation of the syntax in the field description.
+  * e.g., `item;ItemKeyCode;Lock code;text;Code` for the combination lock
+  * You can now use this meta field in the email templates using the shortcodes mentioned above.
+  * Example: <span v-pre>`{{ [The code for the combination lock is:] item:ItemKeyCode}}`</span>
+  * The text in the square brackets `[ ]` serves as descriptive text that is output before the actual meta field. The advantage here is that the descriptive text including the value is only output if the dynamic field contains a value. Simple HTML codes are also allowed in this descriptive text (e.g., br, strong, etc.)
 
+The following tutorial video shows the process step by step:
+
+<iframe width="100%" height="547" src="https://www.youtube.com/embed/f4rr77GpB9o" title="CommonsBooking Tutorial Metafelder" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

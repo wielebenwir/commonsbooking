@@ -1,16 +1,14 @@
-#  Begriffe
+# Concepts
 
+  * [Item](../first-steps/create-item): Objects or shared goods offered for lending
+  * [Location](../first-steps/create-location): Physical place from which items are lent out
+  * [Timeframe](../first-steps/booking-timeframes-manage): Groups all events such as availability, holidays, and bookings
+  * [Booking](../manage-bookings/): A so-called "slot" within a timeframe configuration that assigns an item at a location to a user
+  * [Booking restrictions](../first-steps/manage-booking-restrictions): Covers important usage notes and restrictions (e.g. total breakdown) and supplements a bookable timeframe
+  * [Template tags](../administration/template-tags): Placeholders for dynamic content, such as the name of a user in a booking confirmation email
+  * [Booking codes](./booking-codes): Randomly generated word combinations created by the system that help verify a booking offline
 
-  * [ Artikel ](../first-steps/create-item) : Gegenstände oder Gemeingüter, die zum Verleih angeboten werden
-  * [ Standort ](../first-steps/create-location) : Physischer Ort, von dem aus die Artikel verliehen werden
-  * [ Zeitrahmen ](../first-steps/booking-timeframes-manage) : Fasst alle Ereignisse wie Verfügbarkeiten, Ferien und Buchungen zusammen
-  * [ Buchung ](../manage-bookings/) : Sogenannter “Slot” innerhalb einer Zeitrahmen-Konfiguration, welcher einen Artikel an einer Location einem User zuordnet.
-  * [ Buchungseinschränkungen ](../first-steps/manage-booking-restrictions) : Umfasst wichtige Benutzungshinweise und Einschränkungen (z.B. Totalausfall) und ergänzt einen buchbaren Zeitrahmen.
-  * [ Template-Tag ](../administration/template-tags) : Platzhalter für dynamische Inhalte welche zum Beispiel den Namen einer Userin in einer Buchungs-Bestätigungs-E-Mail anzeigen.
-  * [ Buchungs-Codes ](./booking-codes) : Zufällig gewählte Begriffs-Kombinationen die vom System erzeugt werden und die helfen die User einer Buchung offline zu verifizieren.
+Here are some general terms that may need explanation, but do not apply only to the CommonsBooking plugin:
 
-Hier noch ein paar allgemeine Begriffe die vielleicht erklärungsbedürftig
-sind, aber nicht speziell nur für das CommonsBooking-Plugin gelten.
-
-  * **Frontend** : Teil einer Website den Besucher der Website einsehen könen. Gegenteil zum Backend oder Admin-Bereich.
-
+  * **Frontend**: The part of a website visible to visitors. The opposite is the backend or admin area.
+  

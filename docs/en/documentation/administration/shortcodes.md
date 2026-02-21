@@ -1,115 +1,127 @@
-#  Shortcodes für Frontend-Darstellung
+# Shortcodes for frontend display
 
+You can display CommonsBooking content (e.g., automatically generated item lists) on the website using shortcodes. Shortcodes can be inserted into any WordPress page. [Official WordPress documentation](https://en.support.wordpress.com/shortcodes).
 
-Um die CommonsBooking-Inhalte (z.B. die automatisch generierten Artikellisten)
-auf der Website anzuzeigen werden Shortcodes verwendet. Shortcodes können in
-jede WordPress Seite eingefügt werden. [ Offizielle WordPress Dokumentation
-](https://en.support.wordpress.com/shortcodes) .
+The display of a shortcode can be influenced by certain arguments.
 
-Die Ergebnis-Liste der Shortcodes kann dabei über einige Parameter beeinflusst
-werden. Beispielsweise:
+Example arguments:
 
-  * ` orderby ` : Bestimmt das Attribut nachdem sortiert werden soll z.B. ` orderby=post_title ` für eine Sortierung nach dem Namen eines Posts.
-  * ` order ` : Bestimmt die Sortierreihenfolge. Aufsteigend ` ASC ` und absteigend ` DESC ` .
+  * `orderby`: Determines the attribute by which to sort, e.g., `orderby=post_title` for sorting by the name of a post.
+  * `order`: Determines the sort order. Ascending `ASC` and descending `DESC`.
 
-Das gilt für die folgenden Shortcodes, welche über das CommonsBooking Plugin
-verfügbar sind:
+These parameters are valid for the following shortcodes available through the CommonsBooking plugin:
 
-##  Artikel-Liste
+## Item list
 
-Zeigt eine Liste aller veröffentlichen Artikel an mit den Stationen, an denen
-sie sich befinden.
+Displays a list of all published items with the locations where they are located.
 
-  * Shortcode: ` [cb_items] `
-  * Argumente:
-    * ` Kategorie-Filter: category_slug `
-    * Nur einzelnen Artikel anzeigen: [cb_items p=PostID]
-    * Nur Artikel von einer Station anzeigen: `[cb_items location-id=PostIDVonDemStandort]`
+  * Shortcode: `[cb_items]`
+  * Arguments:
+    * `category_slug`: Category filter
+    * `p`: Display only a single item, where 1234 is the numeric ID of the item.
+      ```
+      [cb_items p=1234]
+      ```
+    * `location-id`: Display only items from one location, where 1234 is the numeric ID of the location post.
+      ```
+      [cb_items location-id=1234]
+      ```
 
 ![](/img/shortcode-cb-items.png)
 
-**Nur eine bestimmte Kategorie anzeigen?**
+**Display only a specific category?**
 
-Wenn ihr Artikel Kategorien zugeordnet habt, könnt ihr über einen Parameter
-nur Artikel einer bestimmten Kategorie anzeigen. Dazu sucht ihr zunächst die
-Titelform / Slug der Kategorie über das Kategorie-Menü aus und setzt diese
-dann folgendermaßen ein:
+If you have assigned categories to items, you can display only items of a specific category via a parameter. To do this, first find the slug of the category via the category menu and then use it as follows.
 
-  * `[cb_items category_slug= _titelform_ ]`
+Example:
+```
+[cb_items category_slug=slug]
+```
 
-* * *
+## Single item
 
-##  Einzelner Artikel
+Displays a single item in list view (see above).
 
-Zeigt einen einzelnen Artikel in der Listenansicht (s.o.) an.
+* Shortcode: `[cb_items]`
+* Arguments: `p` the post ID of your item
 
-* Shortcode: `[cb_items p= _postID_ ]`
+Example:
+```
+[cb_items p=1234]
+```
 
-* * *
+## Map with filter option
 
-##  Karte mit Filter-Möglichkeit
+Displays a map of all published items.
+A map must first be set up under "CommonsBooking -> Maps". [More about setting up and configuring maps](./map-embed).
 
-Zeigt eine Karte aller veröffentlichen Artikel an. Eine Karte muss dafür
-zunächst unter "CommonsBooking -> Karten" eingerichtet werden. [ Mehr zur
-Einrichtung und Konfiguration von Karten ](./map-embed) .
-
-  * Shortcode: ` [cb_map] `
-  * Argumente ( **erforderlich!** ): ` id `
+  * Shortcode: `[cb_map]`
+  * Arguments (**required!**): `id`
 
 ![](/img/shortcode-cb-map.png)
 
-* * *
+## Map with item list
 
-##  Karte mit Artikelliste (BETA)
+::: tip Since version 2.9
+:::
 
-Erst ab Version 2.9
+Previously, each shortcode could only be used independently, meaning a filter applied on the map had no effect on the adjacent item list. For this purpose, there is now the new shortcode
 
-Bisher war jeder Shortcode nur unabhängig voneinander verwendbar, dh. ein
-Filter der auf der Karte angewendet wurde hatte keine Auswirkungen auf die
-danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
-
-  * Shortcode: ` [cb_search] `
-  * Argumente ( **erforderlich!** : ` id `
+  * Shortcode: `[cb_search]`
+  * Arguments (**required!**): `id`
 
 ![](/img/shortcode-cb-search-map.png)
 
-[ Weitere Argumente und ausführliche Dokumentation](./new-frontend)
+[Additional arguments and detailed documentation](./new-frontend)
 
-* * *
+## Item table with availability
 
-##  Artikel-Tabelle mit Verfügbarkeit
+Displays a table of all published items with the locations where they are located and their current availability.
 
-Zeigt eine Tabelle aller veröffentlichen Artikel an mit Stationen, an denen
-sie sich befinden und der aktuellen Verfügbarkeit.
+  * Shortcode: `[cb_items_table]`
+  * Arguments
+    * `days`: The number of days to display is set to 31 by default. This value can be adjusted using the days attribute. Example to display only 10 days.
 
-  * Shortcode: ` [cb_items_table] `
-  * Die Anzahl der anzuzeigende Tage ist standardmäßig auf 31 gesetzt. Über das Attribut days kann dieser Wert angepasst werden. Beispiel, um nur 10 Tage anzuzeigen: ` [cb_items_table days=10] `
-  * Zusätzlich kann oberhalb der Tabelle eine kurze Beschreibung mit dem Attribut desc eingefügt werden. ` [cb_items_table desc=Lastenräder] `
-  * Die Liste der Einträge kann mit folgenden Attributen weiter gefiltert werden
-    * Filter nach Artikel-Kategorien: itemcat (Beispiel: ` [cb_items_table itemcat=itemcategoryslug] `
-    * Filter nach Standort-Kategorien: locationcat (Beispiel: ` [cb_items_table locationcat=locationcategoryslug] `
+      Example:
+      ```
+      [cb_items_table days=10]
+      ```
+    * `desc`: Additionally, a brief description can be inserted above the table using the desc attribute.
+
+      Example:
+      ```
+      [cb_items_table desc=Cargo bikes]
+      ```
+    * `itemcat`: Filter by item categories
+
+      Example:
+      ```
+      [cb_items_table itemcat=itemcategoryslug]
+      ```
+    * `locationcat`: Filter by location categories
+
+      Example:
+      ```
+      [cb_items_table locationcat=locationcategoryslug]
+      ```
 
 ![](/img/shortcode-cb-items-table.png)
 
-* * *
+## Location list
 
-##  Stationen-Liste
-
-Zeigt eine Liste aller veröffentlichen Stationen an mit den Artikeln, die sich
-dort befinden
+Displays a list of all published locations with the items that are located there
 
   * Shortcode: `[cb_locations]`
 
 ![](/img/shortcode-cb-locations.png)
 
-* * *
+## List of all bookings
 
-##  Liste aller Buchungen
+List of all bookings, i.e., own bookings of the logged-in user.
+Users in the administrator role see all bookings here.
 
   * Shortcode: `[cb_bookings]`
-  * Liste aller Buchungen (eigene Buchungen des eingeloggten Nutzenden)
-  * Administrator*innen sehen hier alle Buchungen
-  * [ cb_manager ](../basics/permission-management) sehen hier alle eigenen Buchungen und Buchungen der ihnen zugeordneten Artikel und Stationen.
+  * [Users with the cb_manager role](../basics/permission-management) see all their own bookings and bookings of the items and locations assigned to them.
+  * Import to digital calendar via [iCalendar](../manage-bookings/icalendar-feed) format possible
 
 ![](/img/shortcode-cb-bookings.png)
-

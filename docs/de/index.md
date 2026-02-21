@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "CommonsBooking"
   text: Organisiert den Verleih eurer Gemeingüter
-  tagline: Ihr möchtet ein Lastenrad kostenlos mit eurer Haus-, Straßen oder Stadt-Gemeinschaft teilen? Ihr wollt Gegenstände wie Werkzeuge oder Biertische gemeinsam nutzen?
+  tagline: Ihr möchtet ein Lastenrad kostenlos mit eurer Haus-, Straßen- oder Stadt-Gemeinschaft teilen? Ihr wollt Gegenstände wie Werkzeuge oder Biertische gemeinsam nutzen?
   actions:
     - theme: brand
       text: Dokumentation
@@ -80,7 +80,7 @@ import Newsletter from '../.vitepress/components/Newsletter.vue'
     <img src="/img/icon-support-chat.png" class="feature-image" />
     <div class="feature-text">
         <h1>Community</h1>
-        <p>CommonsBooking wird jetzt schon von dutzenden gemeinnützigen Initiativen genutzt. Auf diesen Seiten findest du einen Überblick über verschiedene Arten von bereits existierende Initiativen die CommonsBooking in ihrer Arbeit unterstützt:</p>
+        <p>CommonsBooking wird jetzt schon von dutzenden gemeinnützigen Initiativen genutzt. Auf diesen Seiten findest du einen Überblick über verschiedene Arten von bereits existierenden Initiativen, die CommonsBooking in ihrer Arbeit unterstützt:</p>
         <ul>
             <li>Lastenradverleihe in einer <a href="http://dein-lastenrad.de/wiki/Bestehende_Initiativen_freier_Lastenr%C3%A4der" target="_blank">interaktiven Karte auf Dein-Lastenrad.de</a></li>
             <li>Leihläden auf <a href="https://leihladen-vernetzung.de/liste/" target="_blank">Leihläden-Vernetzung.de</a></li>

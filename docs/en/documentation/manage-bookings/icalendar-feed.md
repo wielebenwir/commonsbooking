@@ -1,43 +1,33 @@
-#  iCalendar Feed
+# iCalendar Feed
 
+From version 2.8.
+This feature is still experimental.
 
-Ab 2.8.
-Diese Feature ist noch experimentell.
+In the settings under "Advanced Options" you can activate the iCalendar feed. iCalendar is a very common format for digital calendars.
+Most digital calendars allow you to add a URL from which calendar entries are automatically imported from the booking system into your digital calendar.
+These calendar entries are read-only, i.e. changes to the digital calendar cannot affect the booking system.
 
-In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
-aktivieren. iCalendar ist ein sehr geläufiges Format für digitale Kalender.
-Die meisten dieser digitalen Kalender erlauben es eine URL hinzuzufügen, mit
-der automatisch Termine aus dem Buchungssystem in den digitalen Kalender
-importiert werden können. Diese Kalendereinträge sind nicht beschreibbar, dh.
-Änderungen am digitalen Kalender können sich nicht auf das Buchungssystem
-auswirken.
-
-Nachdem diese Funktion aktiviert ist, findest du die individuelle Kalender URL
-in dem Menü in der Übersicht "Meine Buchungen".
+Once this feature is activated, you will find the individual calendar URL in the menu in the "My Bookings" overview.
 
 ![](/img/iCalendar-feed.png)
 
-**ACHTUNG** : Dieser digitale Kalender listet nicht nur deine eigenen
-Buchungen auf sondern alle Buchungen, die du einsehen darfst. Dies hat
-besondere Auswirkungen auf den Administrator und die CommonsBooking Manager,
-die Zugriffsrechte auf Stationen oder Artikel haben. Mehr dazu: [
-Zugriffsrechte vergeben ](../basics/permission-management)
+**ATTENTION** : This digital calendar not only lists your own bookings but all bookings you have access to.
+This has special implications for administrators and CommonsBooking managers who have access rights to locations or items. For more information: [Assign access rights](../basics/permission-management)
 
-**ACHTUNG:** Vergangene Termine verschwinden aktuell noch aus dem Kalender.
-Das kann sich unter Umständen ändern.
+**ATTENTION:** Past appointments currently still disappear from the calendar.
+This may change under certain circumstances.
 
-###  Anwendungsszenario Station
+###  Use case scenario: Location
 
-Dieses Szenario soll kurz verdeutlichen, wie diese Funktion sinnvoll genutzt
-werden kann. Gehen wir davon aus, dass wir als Station für den Verleih von
-Fahrrädern automatisch in unserem digitalen Kalender sehen wollen ob das Rad
-gebucht wurde. Zu diesem Zweck erstellen wir einen neuen Nutzeraccount für die
-Station mit der Rolle CommonsBooking Manager*in. Anschließend gehen wir in die
-Einstellungen von dem zu verwaltenden Standort und tragen dort das Nutzerkonto
-in die Liste der Stationsmanager ein.
+This scenario is intended to briefly illustrate how this feature can be used meaningfully.
+Let's assume that as a location for bicycle rentals we want to automatically see in our digital calendar whether the bike
+was booked. For this purpose, we create a new user account for the
+location with the role CommonsBooking Manager. Then select the
+settings of the location to be managed and enter the user account
+in the list of CommonsBooking Managers.
 
-Jetzt kann das Stationskonto über "Meine Buchungen" sämtliche Buchungen für
-diesen Standort einsehen. Wenn nun wie oben beschrieben die URL für den
-digitalen Kalender in den Kalender der Standortbetreibenden eingefügt wird,
-dann sehen sie sämtliche Buchungen direkt in ihrem digitalen Kalender.
+Now the location account can view all bookings for
+this location via "My Bookings". If, as described above, the URL for the
+digital calendar is inserted into the calendar of the location operators,
+then they will see all bookings directly in their digital calendar.
 

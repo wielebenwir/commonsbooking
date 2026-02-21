@@ -1,19 +1,18 @@
-#  Timeframes: Define when an item can be booked
-
+# Timeframes: Define when an item can be booked
 
 An item becomes bookable through the connection of an item and a location using a timeframe.
 The timeframe defines a time window (start and end date) and the booking conditions (e.g. hourly rental) under
 which items can be booked. The timeframe type specifies whether we define a period in which the item is available (bookable) or not (holiday/repair).
 
 A bookable timeframe can only be created for one item and one location at a time.
-A timeframe which blocks the item (holiday / repair), on the other hand, can be linked to multiple items or locations.
+A timeframe that blocks the item (holiday / repair), on the other hand, can be linked to multiple items or locations.
 
 A common approach to timeframe creation is to create a timeframe for when you want the item
 to be bookable and another one for the holidays of the location operators.
 
 :::info Getting started
 On this page you will learn how to create a timeframe in the backend to make an item bookable.
-If you want to know how to display the bookings that are on offer (using shortcodes), after you have published your timeframes, [click here.](../administration/shortcodes)
+If you want to know how to display the available bookings (using shortcodes) after you have published your timeframes, [click here](../administration/shortcodes).
 :::
 
 **Caution**: Timeframes cannot be directly accessed in the frontend using the backend link "View Post" but must be embedded using the shortcodes mentioned above.
@@ -21,7 +20,7 @@ If you want to know how to display the bookings that are on offer (using shortco
 ## Creating a timeframe step by step
 
 To create a bookable timeframe, go to "Timeframes" from the CommonsBooking menu
-and click on "Add new timeframe". From there on fill out the form:
+and click on "Add new timeframe". From there, fill out the form:
 
 ### **Add title**
 
@@ -36,20 +35,20 @@ and click on "Add new timeframe". From there on fill out the form:
 
 ### **Type:**
 
-* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](../basics/timeframes-config). (Not translated yet) .  Alternatively, it is possible to enable password protection for an [item](../first-steps/create-item).
+* Select "Bookable" as the type. Other types can be selected for different use cases (e.g. location is on holiday, item is under repair). These types will prevent bookings or usage during the defined times. More information can be found in the [documentation on configuring timeframe types](../basics/timeframes-config). Alternatively, it is possible to enable password protection for an [item](../first-steps/create-item).
 
 ### **Location:**
 
 * Select the location for which you want to create the bookable timeframe.
 
-### **Item** :
+### **Item:**
 
 * Select the item that should be available at the location.
 
 ### **Configure bookings:**
 * **Maximum**: How many days can be booked in a row. (Note: If there are multiple timeframes for the same item and location, the value of the first valid timeframe will be used.)
-* **Lead time:**: How many days in advance the location should have between booking and pickup. For example, if 2 days are set, then the item can only be booked for pickup two days from now. Leave empty to allow immediate bookings.
-* **Calendar shows as bookable:**: How many days the item can be booked in advance. For example, if 7 days are set, then users can only book the item in the span of next week.
+* **Lead time:** How many days of lead time the location should have between booking and pickup. For example, if 2 days are set, then the item can only be booked for pickup two days from now. Leave empty to allow immediate bookings.
+* **Calendar shows as bookable:** How many days in advance the item can be booked. For example, if 7 days are set, then users can only book the item over the next week.
 * **Allowed for:** Which [user roles](https://wordpress.org/documentation/article/roles-and-capabilities/) may book the item. If left empty, all registered users can book the item.
 
 ### **Configure timeframe:**
@@ -71,19 +70,19 @@ _Select how the bookable timeframe should be repeated within the specified start
     * Example: The item should only be available for booking from Monday to Friday, as the location is open on these days. No bookings should be possible on weekends.
 * **Monthly**
     * Will make the timeframe repeat every month on the same date from start to end date.
-    * When a timeframe starts on 15.02.2025 and ends on 15.05.2025, the item will be bookable on the 15th of each month for 3 months consecutively.
-    * Keep in mind, that for longer time periods you should set the "Calendar shows as bookable" setting to a higher value.
+    * When a timeframe starts on 2025-02-15 and ends on 2025-05-15, the item will be bookable on the 15th of each month for 3 months consecutively.
+    * Keep in mind that for longer time periods you should set the "Calendar shows as bookable" setting to a higher value.
 * **Yearly**
     * Will make the timeframe repeat every year on the same date from start to end date.
-    * When a timeframe starts on 15.02.2025 and ends on 15.02.2028, the item will be bookable on the 15th of February each year for 3 years.
-    * Keep in mind, that for longer time periods you should set the "Calendar shows as bookable" setting to a higher value.
+    * When a timeframe starts on 2025-02-15 and ends on 2028-02-15, the item will be bookable on the 15th of February each year for 3 years.
+    * Keep in mind that for longer time periods you should set the "Calendar shows as bookable" setting to a higher value.
 
 ### **Configure repetition**
 * **Start date / End date:**
     * Defines the start and end date during which the timeframe is valid. Leave empty to have the timeframe be valid indefinitely.
 * **Weekdays:**
-    * Only availabe for weekly repetition. Select the days of the week on which the item should be bookable.
-    * When configured, this can also define days on which only a pickup / return is possible but items can still  be  booked. For example, a user could book an item for pickup on Friday and return it on Monday. This behaviour is defined in the [location settings](../first-steps/create-location).
+    * Only available for weekly repetition. Select the days of the week on which the item should be bookable.
+    * When configured, this can also define days on which only pickup and return are possible but items can still be booked. For example, a user could book an item for pickup on Friday and return it on Monday. This behaviour is defined in the [location settings](../first-steps/create-location).
 * **Selected manual dates:**
     * Only available for manual repetition. Select the specific dates on which the item should be bookable. Enter the dates in the "YYYY-MM-DD" format. Multiple dates need to be comma-separated (e.g. "2023-01-01, 2023-01-02, 2023-01-03"). Clicking on the text field next to "Select dates" will open a calendar. Every day that is selected in the calendar will be appended to the list of dates.
 
@@ -122,21 +121,21 @@ The codes will be sent to the email addresses stored in the "Location Email" fie
 
 ### Examples
 
-### **Bookable every day with absence (Holiday)**
+### **Bookable every day with absence (holidays)**
 1. **Timeframe making the item bookable:**
     * Type="Bookable",
     * Full Day= X
     * Timeframe Repetition = ”Daily”
     * Start date: 01.01.2023
     * End date: None (meaning the timeframe is bookable indefinitely)
-2. **A multi day absence due to holidays:**
+2. **A multi-day absence due to holidays:**
     * Type=”Holidays or location closed”,
     * Full Day= X
     * Timeframe Repetition=”Daily”
     * Start date: 15.07.2023
     * End date: 22.07.2023
 
-### **Hourly or** **slot based booking** (e.g. half-day, every three hours,...)
+### **Hourly or slot-based booking** (e.g. half-day, every three hours,...)
 * Type: Bookable
 * "Full Day": unchecked
 * Grid: "Hourly" or "Full Slot"

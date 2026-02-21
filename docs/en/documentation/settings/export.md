@@ -1,5 +1,4 @@
-#  Export timeframes and bookings
-
+# Export timeframes and bookings
 
 You can find the data export under Settings -> Export. There, you can export timeframes and bookings in CSV format to archive them or analyze them using statistical programs.
 
@@ -53,4 +52,3 @@ By default, the following fields are included in an export:
     * First name: `user-firstname`
     * Last name: `user-lastname`
     * Login: `user-login`
-

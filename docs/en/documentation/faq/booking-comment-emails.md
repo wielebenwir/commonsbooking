@@ -1,6 +1,3 @@
-#  Wie bekomme ich den Buchungskommentar auf die Seite und in die Email?
+# How do I show the booking comment on the page and in the email?
 
-
-In den Einstellungen kannst du die Buchungskommentare aktivieren. In den email
-Vorlagen musst du dann folgenden Code einfügen: <div v-pre>`{{booking:returnComment}}`</div>
-
+In the settings you can enable booking comments. In the email templates you then need to insert the following code: <div v-pre>`{{booking:returnComment}}`</div>
