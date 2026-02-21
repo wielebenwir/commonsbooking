@@ -63,6 +63,15 @@ import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
     </div>
   </div>
 <div class="feature-row reverse">
+    <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
+    <div class="feature-text">
+        <h1>Newsletter</h1>
+        <p>We will keep you posted. Subscribe to our newsletter.</p>
+        <Newsletter />
+    </div>
+</div>
+
+<div class="feature-row">
     <img src="/img/icon-support-chat.png" class="feature-image" style="max-width: 150px" />
     <div class="feature-text">
         <h1>Community</h1>
@@ -73,13 +82,5 @@ import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
         </ul>
     </div>
 </div>
-</div>
 
-<div class="feature-row reverse">
-    <img src="/img/icon-newsletter.png" alt="Feature 2" class="feature-image" style="max-width: 150px" />
-    <div class="feature-text">
-        <h1>Newsletter</h1>
-        <p>We will keep you posted. Subscribe to our newsletter.</p>
-        <Newsletter />
-    </div>
 </div>
