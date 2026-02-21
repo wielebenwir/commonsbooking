@@ -1,4 +1,4 @@
-# Cache settings
+# Configure cache
 
 ::: warning Technical!
 Some technical expertise is needed to determine whether caching is working correctly in your installation. That said, we've tried to make using caching as simple as possible.

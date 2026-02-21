@@ -219,7 +219,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
               { text: 'Buchungsliste', link: 'booking-list' },
               { text: 'Karte einbinden', link: 'map-embed' },
               { text: 'Neue Karte', link: 'new-frontend' },
-              { text: 'Shortcodes', link: 'shortcodes' },
+              { text: 'Shortcodes für Frontend-Darstellung', link: 'shortcodes' },
               { text: 'Template Tags', link: 'template-tags' },
               { text: 'Widget', link: 'widget' },
               { text: 'Datenschutz', link: 'privacy'},
@@ -232,7 +232,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
               { text: 'Was ist die CommonsAPI?', link: 'what-is-the-commonsapi' },
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' },
+              { text: 'CommonsBooking API nutzen', link: 'commonsbooking-api' },
               { text: 'GBFS', link: 'gbfs'}
           ]
       },
@@ -241,8 +241,8 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       text: 'Erweiterte Funktionalität', base: '/de/documentation/advanced-functionality/',
         collapsed: true,
       items: [
-          { text: 'Caching', link: 'cache' },
-          { text: 'Standardwerte für Zeitrahmen-Erstellung ändern', link: 'change-timeframe-creation-defaults' },
+          { text: 'Cache einstellen', link: 'cache' },
+          { text: 'Standardwerte für Zeitrahmenerstellung ändern', link: 'change-timeframe-creation-defaults' },
           { text: 'Hooks und Filter', link: 'hooks-and-filters' },
       ]
     },
@@ -258,12 +258,12 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       text: 'Informationen zur alten Version 0.9', base: '/de/documentation/version-0-9/',
         collapsed: true,
       items: [
-        { text: 'Installation', link: 'setup' },
-        { text: 'Erste Schritte v0.9', link: 'first-steps' },
-        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags' },
-        { text: 'Einstellungen v0.9', link: 'settings' },
-        { text: 'Widgets & Themes v0.9', link: 'widgets-themes' },
-        { text: 'FAQ v0.9', link: 'faq' }
+        { text: 'Installation (Version 0.9.x)', link: 'setup' },
+        { text: 'Erste Schritte (Version 0.9.x)', link: 'first-steps' },
+        { text: 'Frontend-Einbindung (Version 0.9.x)', link: 'bookings-template-tags' },
+        { text: 'Login- und Registrierungsseiten anpassen (Version (0.9.x)', link: 'settings' },
+        { text: 'Widgets & Themes (Version 0.9.x)', link: 'widgets-themes' },
+        { text: 'Häufige Fragen (Version 0.9.x)', link: 'faq' }
       ]
     },
       {
@@ -349,7 +349,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
                 { text: 'Booking list', link: 'booking-list' },
                 { text: 'Location map with filters', link: 'map-embed' },
                 { text: 'New frontend (BETA)', link: 'new-frontend' },
-                { text: 'Shortcodes', link: 'shortcodes' },
+                { text: 'Shortcodes for frontend display', link: 'shortcodes' },
                 { text: 'Template tags and placeholders for email templates', link: 'template-tags' },
                 { text: 'Integrating the user widget', link: 'widget' },
                 { text: 'Privacy', link: 'privacy' },
@@ -370,7 +370,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
       text: 'Advanced functionality', base: '/en/documentation/advanced-functionality/',
         collapsed: true,
       items: [
-            { text: 'Cache settings', link: 'cache' },
+            { text: 'Configure cache', link: 'cache' },
             { text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' },
             { text: 'Hooks and filters', link: 'hooks-and-filters' },
       ]

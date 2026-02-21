@@ -5,7 +5,7 @@ In this section you will find information about specific administration function
 ###  Pages
 
   * [Displaying lending offers in the frontend](frontend-show-bookable)
-  * [Shortcodes](shortcodes)
+  * [Shortcodes for frontend display](shortcodes)
   * [Integrating the user widget](widget)
   * [Template tags and placeholders for email templates](template-tags)
   * [Location map with filters](map-embed)
