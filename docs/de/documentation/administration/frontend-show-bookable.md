@@ -19,7 +19,7 @@ aktuell nicht buchbar sind.
 
 ## Weitere Möglichkeiten
 
-Weitere Möglichkeiten zur Darstellung der ausleihbaren Artikel wie zum
+Weitere Möglichkeiten zur Darstellung der buchbaren Artikel wie zum
 Beispiel Standort-Listen, eine Karte oder eine Verfügbarkeitstabelle findest
 ihr im Artikel [Shortcodes für Frontend-Darstellung](shortcodes)
 
