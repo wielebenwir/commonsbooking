@@ -169,7 +169,6 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           link: '/',
           collapsed: true,
           items: [
-              { text: 'Erste Schritte', link: 'index' },
         { text: 'Artikel anlegen', link: 'create-item' },
         { text: 'Stationen anlegen', link: 'create-location' },
         { text: 'Buchungszeiträume verwalten', link: 'booking-timeframes-manage'},
@@ -307,7 +306,6 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           link: '/',
           collapsed: true,
           items: [
-              { text: 'First steps', link: 'index' },
               { text: 'Create item', link: 'create-item' },
               { text: 'Create location', link: 'create-location' },
               { text: 'Timeframes: Define when an item can be booked', link: 'booking-timeframes-manage'},
