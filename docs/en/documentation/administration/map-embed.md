@@ -2,7 +2,7 @@
 
 Your items can also be displayed on a map.
 
-With the new "Map" feature, you have the option to display your items on an interactive map. Especially for projects in larger cities and with multiple items, the map provides users with a good overview of all available locations.
+With the "Map" feature, you have the option to display your items on an interactive map. Especially for projects in larger cities and with multiple items, the map provides users with a good overview of all available locations.
 
 **How do I create maps?**
 
