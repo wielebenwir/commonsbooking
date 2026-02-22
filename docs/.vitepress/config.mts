@@ -311,7 +311,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Create item', link: 'create-item' },
               { text: 'Create location', link: 'create-location' },
               { text: 'Timeframes: Define when an item can be booked', link: 'booking-timeframes-manage'},
-              { text: 'Configure booking rules (since 2.9)', link: 'setup-bookingrules' },
+              { text: 'Configure booking rules', link: 'setup-bookingrules' },
               { text: 'Manage restrictions', link: 'manage-booking-restrictions' },
               { text: 'Timeframes: Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
