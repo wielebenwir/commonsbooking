@@ -4,7 +4,7 @@ To display the list of items, you need to insert a **shortcode** into the WordPr
 
   * First create a page, for example "**My Bikes**".
   * Now copy the following shortcode into the editor (including the square brackets): `[cb_items]`
-  * If you are using the Gutenberg editor, you must first insert the "Shortcode" block.
+  * If you are using the WordPress Block Editor, you must first insert the "Shortcode" block.
 
 ## About the item list
 
@@ -14,4 +14,4 @@ Published items that are currently not assigned to a location via a timeframe ar
 
 ## Additional options
 
-You can find more options for displaying lendable items, such as location lists, a map or an availability table, in the article [Shortcodes for frontend display](./shortcodes).
+You can find more options for displaying bookable items, such as location lists, a map or an availability table, in the article [Shortcodes for frontend display](./shortcodes).
