@@ -15,16 +15,16 @@ You activate the API via the settings (see below) and the checkbox "Enable API".
 
 You can access the API via _Settings_ -> _CommonsBooking_ -> Tab: _API / Export_.
 
-  * Enable API: Generally activates API access
-  * API access without API key: If this option is enabled, the API can be accessed without an individual API key. This setting is useful if you want to share your data with multiple platforms.
-  * API permissions: The interface can be enabled for different endpoints or requesting pages. To control access rights accordingly, you can also create multiple different permissions.
+  * Activate API: Generally activates API access
+  * Enable API Access without API-Key: If this option is enabled, the API can be accessed without an individual API key. This setting is useful if you want to share your data with multiple platforms.
+  * API shares: The interface can be enabled for different endpoints or requesting pages. To control access rights accordingly, you can also create multiple different shares.
 
-## Settings per API permission
+## Settings per API share
 
-  * Interface name: Any name for your internal designation of the API
-  * Interface activated: The API permission is only activated when this checkbox is checked.
+  * API name: Any name for your internal designation of the API
+  * API enabled: The API permission is only activated when this checkbox is checked.
   * Push URL: Here you can enter the URL of the receiving system. CommonsBooking will call this URL whenever the data changes, so that the remote system is informed about a data change and can retrieve it via a separate API call. This enables real-time data exchange.
-  * API key: Here you can enter a custom API key. If the key is set, the requesting system must provide the parameter apikey= _[key]_ in every query.
+  * API Key: Here you can enter a custom API key. If the key is set, the requesting system must provide the parameter apikey= _[key]_ in every query.
 
 ## API route specification
 
