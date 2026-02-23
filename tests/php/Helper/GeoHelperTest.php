@@ -5,8 +5,8 @@ namespace CommonsBooking\Tests\Helper;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\BaseTestCase;
-use Geocoder\Location;
-use Geocoder\Model\AddressBuilder;
+use CommonsBooking\Geocoder\Location;
+use CommonsBooking\Geocoder\Model\AddressBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -1,6 +1,5 @@
 #  iCalendar Feed
 
-__
 
 ## Beschreibung
 
@@ -21,7 +20,7 @@ in dem Menü in der Übersicht "Meine Buchungen".
 Buchungen auf sondern alle Buchungen, die du einsehen darfst. Dies hat
 besondere Auswirkungen auf den Administrator und die CommonsBooking Manager,
 die Zugriffsrechte auf Stationen oder Artikel haben. Mehr dazu: [
-Zugriffsrechte vergeben ](/dokumentation/grundlagen/rechte-des-commonsbooking-manager)
+Zugriffsrechte vergeben ](../basics/permission-management)
 
 **ACHTUNG:** Vergangene Termine verschwinden aktuell noch aus dem Kalender.
 Das kann sich unter Umständen ändern.

@@ -182,6 +182,25 @@ class BookingList {
                         select.options[i].style.display = "inline";
                     }
                 }
+                for (let value of values) {
+                    let found = false;
+                    for (var i = length - 1; i >= 0; i--) {
+                        const optionValue = select.options[i].value;
+                        if (optionValue === value) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        let option = document.createElement("option");
+                        option.text = value;
+                        option.value = value;
+                        select.add(option);
+                    }
+                }
+                this.users = Array.from(document.querySelectorAll(".filter-users option"));
+                this.items = Array.from(document.querySelectorAll(".filter-items option"));
+                this.locations = Array.from(document.querySelectorAll(".filter-locations option"));
+                this.states = Array.from(document.querySelectorAll(".filter-statuss option"));
             }
         }
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88531806d64b1d206da9a902f414e1d8",
+    "content-hash": "b0da2daa8ad6a147e3af25fd4528d2c0",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -356,17 +356,17 @@
             "time": "2023-03-01T10:18:27+00:00"
         },
         {
-            "name": "mustardBees/cmb-field-select2",
-            "version": "3.0.5",
+            "name": "mustardbees/cmb-field-select2",
+            "version": "3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wielebenwir/cmb-field-select2.git",
-                "reference": "c05e975c98d59932c678edb5dc3b0844660a7257"
+                "reference": "56a6718a019cfd1db3d5ff762328d5a416e592a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wielebenwir/cmb-field-select2/zipball/c05e975c98d59932c678edb5dc3b0844660a7257",
-                "reference": "c05e975c98d59932c678edb5dc3b0844660a7257",
+                "url": "https://api.github.com/repos/wielebenwir/cmb-field-select2/zipball/56a6718a019cfd1db3d5ff762328d5a416e592a1",
+                "reference": "56a6718a019cfd1db3d5ff762328d5a416e592a1",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
@@ -386,9 +386,9 @@
                 "wordpress"
             ],
             "support": {
-                "source": "https://github.com/wielebenwir/cmb-field-select2/tree/3.0.5"
+                "source": "https://github.com/wielebenwir/cmb-field-select2/tree/3.0.6"
             },
-            "time": "2025-12-02T11:49:27+00:00"
+            "time": "2025-12-23T10:00:30+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -3217,11 +3217,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.38",
+            "version": "2.1.39",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dfaf1f530e1663aa167bc3e52197adb221582629",
-                "reference": "dfaf1f530e1663aa167bc3e52197adb221582629",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c6f73a2af4cbcd99c931d0fb8f08548cc0fa8224",
+                "reference": "c6f73a2af4cbcd99c931d0fb8f08548cc0fa8224",
                 "shasum": ""
             },
             "require": {
@@ -3266,7 +3266,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-30T17:12:46+00:00"
+            "time": "2026-02-11T14:48:56+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5099,5 +5099,5 @@
         "ext-libxml": "*",
         "ext-dom": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

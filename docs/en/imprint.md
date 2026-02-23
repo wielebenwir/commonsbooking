@@ -23,7 +23,7 @@ Trotz sorgfältiger inhaltlicher Kontrolle wird keine Haftung für die Inhalte
 externer Links übernommen.  
 Für den Inhalt der externen verlinkten Seiten sind ausschließlich deren
 Betreiber verantwortlich.  
-Kommentare auf www.wielebenwir.de geben ausschließlich die Meinung der
+Kommentare auf <www.wielebenwir.de> geben ausschließlich die Meinung der
 jeweiligen Autoren wieder.  
 Meinungen und Behauptungen in nicht oder noch nicht moderierten Kommentaren
 macht sich der Betreiber dieser Website nicht zu Eigen.
@@ -42,7 +42,7 @@ Jeder kommerzielle Weitervertrieb ist ausdrücklich verboten.
 
 **Datenschutzerklärung**
 
-Link zu unserer [ Datenschutzerklärung ](/datenschutzerklaerung)
+Link zu unserer [Datenschutzerklärung](./privacy-policy)
 
 ###  Die Seite nutzt die folgenden Illustrationen:
 

@@ -886,14 +886,18 @@ class Booking extends Timeframe {
 		global $pagenow;
 
 		$notice = commonsbooking_sanitizeHTML(
-			__(
-				'Bookings should be created via frontend booking calendar. <br>
+			sprintf(
+				__(
+					'Bookings should be created via frontend booking calendar. <br>
 		As an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated
 		and checked. Use this function with care.<br>
 		Click on preview to show booking details in frontend<br>
 		To search and filter bookings please integrate the frontend booking list via shortcode. 
-		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>',
-				'commonsbooking'
+		See here %1$sHow to display the booking list%2$s',
+					'commonsbooking'
+				),
+				'<a target="_blank" href="' . esc_url( 'https://commonsbooking.org/documentation/administration/booking-list/' ) . '">',
+				'</a>'
 			)
 		);
 

@@ -1,6 +1,5 @@
 #  Wie kann ich die Artikeldetailseite übersichtlicher gestalten?
 
-__
 
 ##  Informationen erst auf Klick anzeigen
 

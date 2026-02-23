@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9  
 Tested up to: 6.9
-Stable Tag: 2.10.8
+Stable Tag: 2.10.9
 Requires PHP: 7.4
 License: GPLv2 or later  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -34,7 +34,7 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 **Plugin websites**
 
 * [Official Website](https://commonsbooking.org)
-* [Official Documentation](https://commonsbooking.org/dokumentation)
+* [Official Documentation](https://commonsbooking.org/documentation)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) 
 
 
@@ -67,9 +67,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ### Where can I find help/report bugs?
 
-* [Documentation](https://commonsbooking.org/)
+* [Documentation](https://commonsbooking.org/documentation)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
-* [Support](https://commonsbooking.org/kontakt/)
+* [Support](https://commonsbooking.org/contact/)
 
 
 ## Screenshots
@@ -80,6 +80,16 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.9 (19.02.2026)
+
+ENHANCED: Add object context to commonbooking_tag filter hook
+FIXED: Filter widgets not updating in cb_bookings shortcode
+FIXED: Bookings not shown when timeframes had manual repetition, slot based timeframes
+FIXED: CB-Manager couldn't see Restrictions / Timeframes created by other users
+FIXED: commonsbooking_booking filter hook can be used to empty booking list now without crashing
+FIXED: Missing value could break map
+FIXED: Links to the documentation (thx @sbomsdorf)
 
 ### 2.10.8 (27.01.2026)
 ENHANCED: Password protecting an item will now also password protect the booking calendar
@@ -208,7 +218,7 @@ ENHANCED: Made items, locations & taxonomies searchable (thanks @flegfleg)
 ### 2.8.3 (25.08.2023)
 ENHANCED: Booking codes are now available for timeframes without a configured end-date
 ENHANCED: Added option to change directory of filesystem cache
-ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/docs/grundlagen/rechte-des-commonsbooking-manager/ )
+ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/documentation/grundlagen/rechte-des-commonsbooking-manager/ )
 ENHANCED: Added filter to allow selecting other roles to be assigned to items / locations
 FIXED: Location map view not working since 2.8.1
 FIXED: Booking offset should work again
