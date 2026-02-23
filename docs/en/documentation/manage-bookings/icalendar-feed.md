@@ -1,8 +1,7 @@
 #  iCalendar Feed
 
 
-Ab 2.8.
-Diese Feature ist noch experimentell.
+## Beschreibung
 
 In den Einstellungen unter "Erweiterte Optionen" kannst du den iCalendar Feed
 aktivieren. iCalendar ist ein sehr geläufiges Format für digitale Kalender.
@@ -26,7 +25,17 @@ Zugriffsrechte vergeben ](../basics/permission-management)
 **ACHTUNG:** Vergangene Termine verschwinden aktuell noch aus dem Kalender.
 Das kann sich unter Umständen ändern.
 
-###  Anwendungsszenario Station
+## Vorlagen
+
+Der iCalendar Feed unterscheidet zwischen zwei Arten von Terminen: 
+Termine des Nutzers selbst und Termine von anderen Nutzern. Wenn Nutzende
+den Feed abonniert haben, dann werden sie hauptsächlich ihre eigenen Termine sehen,
+Stationen werden, wenn sie die entsprechenden Berechtigungen haben, auch Termine von anderen Nutzenden sehen. Für die Nutzendensicht sind andere Dinge wichtig als für die Station. Z.B. wollen Nutzende eher wissen, wo ihre Station ist und wie sie den Artikel abholen können. Stationen dagegen wollen eher wissen wie die Nutzenden heißen, die den Artikel abholen und wie diese kontaktiert werden können. Aus diesem Grund existieren zwei Vorlagen für die Darstellung der Termine:
+
+- Eigene Termine: "Einstellungen"->"CommonsBooking"->"Vorlagen"->"iCalendar Feed"
+- Fremdtermine: "Einstellungen"->"CommonsBooking"->"Erweiterte Optionen"->"iCalendar Feed"
+
+##  Anwendungsszenario Station
 
 Dieses Szenario soll kurz verdeutlichen, wie diese Funktion sinnvoll genutzt
 werden kann. Gehen wir davon aus, dass wir als Station für den Verleih von

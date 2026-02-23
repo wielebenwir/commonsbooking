@@ -1551,7 +1551,7 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 				'title' => esc_html__( 'iCalendar Feed', 'commonsbooking' ),
 				'desc'  => commonsbooking_sanitizeHTML(
 					__(
-						'Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental.',
+						'Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars.',
 						'commonsbooking'
 					)
 				),
@@ -1564,26 +1564,21 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 					),
 					array(
 						'name'  => esc_html__( 'Event title', 'commonsbooking' ),
-						'desc'  => esc_html__( 'You can use template tags here as well', 'commonsbooking' ),
-						'default'       => commonsbooking_sanitizeHTML(
-							__(
-								'{{item:post_title}} at {{location:post_title}}',
-								'commonsbooking'
-							)
-						),
+						'desc'  => esc_html__( 'This is the event title that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here as well', 'commonsbooking' ),
+						'default'       => commonsbooking_sanitizeHTML( '{{item:post_title}} @ {{user:first_name}} {{user:last_name}}' ),
 						'id'    => 'event_title',
 						'type'  => 'text',
 					),
 					array(
 						'name'  => esc_html__( 'Event description', 'commonsbooking' ),
-						'desc'  => esc_html__( 'You can use template tags here as well', 'commonsbooking' ),
+						'desc'  => esc_html__( 'This is the event description that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here.', 'commonsbooking' ),
 						'default'       => commonsbooking_sanitizeHTML(
 							__(
 								'
 Pick up: {{booking:pickupDatetime}}
 Return date: {{booking:returnDatetime}}
-{{location:formattedPickupInstructions}}
-{{booking:formattedBookingCode}} ',
+Booking code: {{booking:formattedBookingCode}}
+User Email: {{user:user_email}}',
 								'commonsbooking'
 							)
 						),
