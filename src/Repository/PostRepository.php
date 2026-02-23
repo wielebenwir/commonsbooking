@@ -28,11 +28,15 @@ abstract class PostRepository {
 			if ( $post instanceof WP_Post ) {
 				if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
 					$type = get_post_meta( $post->ID, 'type', true );
+					// Support bookinkg model via type attribute (so user can access them securly)
+					// We can cast timeframe-model if booking is "final"
 					switch ( $type ) {
 						case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID: // booking
 							return new \CommonsBooking\Model\Booking( $post );
 						case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID: // booking canceled
 							return new \CommonsBooking\Model\Booking( $post );
+						default:
+							return new \CommonsBooking\Model\Timeframe( $post );
 					}
 				}
 
