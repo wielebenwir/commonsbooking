@@ -16,17 +16,17 @@ This has special implications for administrators and CommonsBooking managers who
 **ATTENTION:** Past appointments currently still disappear from the calendar.
 This may change under certain circumstances.
 
-## Vorlagen
+## Templates
 
-Der iCalendar Feed unterscheidet zwischen zwei Arten von Terminen: 
-Termine des Nutzers selbst und Termine von anderen Nutzern. Wenn Nutzende
-den Feed abonniert haben, dann werden sie hauptsächlich ihre eigenen Termine sehen,
-Stationen werden, wenn sie die entsprechenden Berechtigungen haben, auch Termine von anderen Nutzenden sehen. Für die Nutzendensicht sind andere Dinge wichtig als für die Station. Z.B. wollen Nutzende eher wissen, wo ihre Station ist und wie sie den Artikel abholen können. Stationen dagegen wollen eher wissen wie die Nutzenden heißen, die den Artikel abholen und wie diese kontaktiert werden können. Aus diesem Grund existieren zwei Vorlagen für die Darstellung der Termine:
+The iCalendar feed differentiates between two types of bookings: 
+Bookings made by the user themselves and bookings made by other users. If users
+have subscribed to the feed, they will mainly see their own bookings.
+If they have the appropriate permissions, locations can also see bookings made by other users. What is important to users is different from what is important to locations. For example, users are more interested in knowing where their location is and how they can pick up the item. Locations, on the other hand, are more interested in knowing the names of the users who are picking up the item and how they can be contacted. For this reason, there are two templates for displaying bookings:
 
-- Eigene Termine: "Einstellungen"->"CommonsBooking"->"Vorlagen"->"iCalendar Feed"
-- Fremdtermine: "Einstellungen"->"CommonsBooking"->"Erweiterte Optionen"->"iCalendar Feed"
+- Own bookings: "Settings"->"CommonsBooking"->"Templates"->"iCalendar event title / description"
+- Other users bookings: "Settings"->"CommonsBooking"->"Advanced Options"->"iCalendar Feed"
 
-###  Use case scenario: Location
+###  Use case: Location
 
 This scenario is intended to briefly illustrate how this feature can be used meaningfully.
 Let's assume that as a location for bicycle rentals we want to automatically see in our digital calendar whether the bike
