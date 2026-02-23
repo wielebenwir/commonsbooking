@@ -1,7 +1,6 @@
 # iCalendar Feed
 
-From version 2.8.
-This feature is still experimental.
+## Description
 
 In the settings under "Advanced Options" you can activate the iCalendar feed. iCalendar is a very common format for digital calendars.
 Most digital calendars allow you to add a URL from which calendar entries are automatically imported from the booking system into your digital calendar.
@@ -16,6 +15,16 @@ This has special implications for administrators and CommonsBooking managers who
 
 **ATTENTION:** Past appointments currently still disappear from the calendar.
 This may change under certain circumstances.
+
+## Vorlagen
+
+Der iCalendar Feed unterscheidet zwischen zwei Arten von Terminen: 
+Termine des Nutzers selbst und Termine von anderen Nutzern. Wenn Nutzende
+den Feed abonniert haben, dann werden sie hauptsächlich ihre eigenen Termine sehen,
+Stationen werden, wenn sie die entsprechenden Berechtigungen haben, auch Termine von anderen Nutzenden sehen. Für die Nutzendensicht sind andere Dinge wichtig als für die Station. Z.B. wollen Nutzende eher wissen, wo ihre Station ist und wie sie den Artikel abholen können. Stationen dagegen wollen eher wissen wie die Nutzenden heißen, die den Artikel abholen und wie diese kontaktiert werden können. Aus diesem Grund existieren zwei Vorlagen für die Darstellung der Termine:
+
+- Eigene Termine: "Einstellungen"->"CommonsBooking"->"Vorlagen"->"iCalendar Feed"
+- Fremdtermine: "Einstellungen"->"CommonsBooking"->"Erweiterte Optionen"->"iCalendar Feed"
 
 ###  Use case scenario: Location
 

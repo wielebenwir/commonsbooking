@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-19T16:36:41+00:00\n"
+"POT-Creation-Date: 2026-02-23T13:23:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -321,7 +321,6 @@ msgid "The title of the attached event"
 msgstr ""
 
 #: includes/OptionsArray.php:374
-#: includes/OptionsArray.php:1569
 msgid "{{item:post_title}} at {{location:post_title}}"
 msgstr ""
 
@@ -1215,7 +1214,7 @@ msgid "iCalendar Feed"
 msgstr ""
 
 #: includes/OptionsArray.php:1553
-msgid "Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars. This feature is experimental."
+msgid "Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars."
 msgstr ""
 
 #: includes/OptionsArray.php:1561
@@ -1227,73 +1226,76 @@ msgid "Event title"
 msgstr ""
 
 #: includes/OptionsArray.php:1567
-#: includes/OptionsArray.php:1579
-msgid "You can use template tags here as well"
+msgid "This is the event title that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here as well"
 msgstr ""
 
-#: includes/OptionsArray.php:1578
+#: includes/OptionsArray.php:1573
 msgid "Event description"
 msgstr ""
 
-#: includes/OptionsArray.php:1581
+#: includes/OptionsArray.php:1574
+msgid "This is the event description that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here."
+msgstr ""
+
+#: includes/OptionsArray.php:1576
 msgid ""
 "\n"
 "Pick up: {{booking:pickupDatetime}}\n"
 "Return date: {{booking:returnDatetime}}\n"
-"{{location:formattedPickupInstructions}}\n"
-"{{booking:formattedBookingCode}} "
+"Booking code: {{booking:formattedBookingCode}}\n"
+"User Email: {{user:user_email}}"
 msgstr ""
 
-#: includes/OptionsArray.php:1596
+#: includes/OptionsArray.php:1591
 msgid "Advanced caching settings"
 msgstr ""
 
-#: includes/OptionsArray.php:1599
+#: includes/OptionsArray.php:1594
 msgid "Allows you to change options regarding the caching system"
 msgstr ""
 
-#: includes/OptionsArray.php:1602
+#: includes/OptionsArray.php:1597
 #: src/Service/Cache.php:476
 msgid "Clear Cache"
 msgstr ""
 
-#: includes/OptionsArray.php:1608
+#: includes/OptionsArray.php:1603
 msgid "Cache Adapter"
 msgstr ""
 
-#: includes/OptionsArray.php:1615
+#: includes/OptionsArray.php:1610
 msgid "Location of cache"
 msgstr ""
 
-#: includes/OptionsArray.php:1616
+#: includes/OptionsArray.php:1611
 msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
 msgstr ""
 
-#: includes/OptionsArray.php:1622
+#: includes/OptionsArray.php:1617
 msgid "Current connection status"
 msgstr ""
 
-#: includes/OptionsArray.php:1628
+#: includes/OptionsArray.php:1623
 msgid "Periodical warmup through cronjob"
 msgstr ""
 
-#: includes/OptionsArray.php:1629
+#: includes/OptionsArray.php:1624
 msgid "Will periodically warm up the cache through a cronjob. This can be useful, when you have a lot of timeframes / bookings but your site is rarely accessed. <br> You NEED to hook WP-Cron Into the System Task Scheduler for this to have any positive effect. <b> You probably don't want this. </b>"
 msgstr ""
 
-#: includes/OptionsArray.php:1634
+#: includes/OptionsArray.php:1629
 msgid "Every 10 minutes"
 msgstr ""
 
-#: includes/OptionsArray.php:1635
+#: includes/OptionsArray.php:1630
 msgid "Every 30 minutes"
 msgstr ""
 
-#: includes/OptionsArray.php:1636
+#: includes/OptionsArray.php:1631
 msgid "Every hour"
 msgstr ""
 
-#: includes/OptionsArray.php:1637
+#: includes/OptionsArray.php:1632
 msgid "Every day"
 msgstr ""
 
@@ -2040,7 +2042,7 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: src/View/Booking.php:570
+#: src/View/Booking.php:581
 #: src/Wordpress/CustomPostType/Booking.php:866
 msgid "Submit booking"
 msgstr ""
