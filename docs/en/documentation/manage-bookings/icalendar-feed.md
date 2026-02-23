@@ -17,7 +17,17 @@ This has special implications for administrators and CommonsBooking managers who
 **ATTENTION:** Past appointments currently still disappear from the calendar.
 This may change under certain circumstances.
 
-###  Use case scenario: Location
+## Templates
+
+The iCalendar feed differentiates between two types of bookings:
+Bookings made by the user themselves and bookings made by other users. If users
+have subscribed to the feed, they will mainly see their own bookings.
+If they have the appropriate permissions, locations can also see bookings made by other users. What is important to users is different from what is important to locations. For example, users are more interested in knowing where their location is and how they can pick up the item. Locations, on the other hand, are more interested in knowing the names of the users who are picking up the item and how they can be contacted. For this reason, there are two templates for displaying bookings:
+
+- Own bookings: "Settings"->"CommonsBooking"->"Templates"->"iCalendar event title / description"
+- Other users bookings: "Settings"->"CommonsBooking"->"Advanced Options"->"iCalendar Feed"
+
+###  Use case: Location
 
 This scenario is intended to briefly illustrate how this feature can be used meaningfully.
 Let's assume that as a location for bicycle rentals we want to automatically see in our digital calendar whether the bike
