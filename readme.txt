@@ -83,11 +83,11 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ### 2.10.9 (19.02.2026)
 
-ENHANCED: Add oject context to commonbooking_tag filter hook
-FIXED: Filters not updating in cb_bookings shortcode
+ENHANCED: Add object context to commonbooking_tag filter hook
+FIXED: Filter widgets not updating in cb_bookings shortcode
 FIXED: Bookings not shown when timeframes had manual repetition, slot based timeframes
 FIXED: CB-Manager couldn't see Restrictions / Timeframes created by other users
-FIXED: commonsbooking_booking filter can be used to empty booking list now without crashing
+FIXED: commonsbooking_booking filter hook can be used to empty booking list now without crashing
 FIXED: Missing value could break map
 FIXED: Links to the documentation (thx @sbomsdorf)
 
