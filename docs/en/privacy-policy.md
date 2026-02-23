@@ -6,9 +6,7 @@
 
 The following notes provide a simple overview of what is happening with your
 personal data happens when you visit this website.
-Personal data is any data that personally identifies you
-can be. Detailed information on the subject of data protection can be found here
-our data protection declaration listed below this text.
+Personal data is any data that could be used to personally identify you. Detailed information on the subject of data protection can be found in the following privacy policy.
 
 ### Data collection on this website
 
@@ -112,9 +110,9 @@ Sixty St. 73
   
 Represented by:  
 Kirsten Mardink, Florian Egermann  
-Contact: imprint -at- wielebenwir.de  
+Contact: impressum -at- wielebenwir.de  
 Entry in the association register.  
-Registration court: Cologne District Court  
+Registration court: Amtsgericht Köln
 Registration number: VR 17962
 
 Telephone: 0221-98650801  
