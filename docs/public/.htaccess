@@ -7,7 +7,7 @@
   RewriteRule ^$ https://commonsbooking.org/en [R=302,L]
 
   # Rule 1b - legacy paths without locale
-  RewriteRule ^documentation/(.*)$ /en/documentation/$1 [R=302,L]
+  RewriteRule ^documentation(?:/)?(.*)$ /en/documentation/$1 [R=301,L]
 
   # Rule 2 - SPA 404 - Serve index.html instead of the server 404 page (displays Vitepress 404)
   RewriteEngine On
