@@ -35,9 +35,9 @@ Here you can set how the map section automatically adjusts:
   - Initial adjustment to marker bounds: When the map is loaded, the map section automatically adjusts to the bounds of the displayed markers.
   - Adjustment to marker bounds on filter: The automatic adjustment of marker bounds occurs when users apply filters
 
-**Map marker tooltip**
+**Marker tooltip**
 
-You can activate the permanent display of marker tooltips here by checking a box.
+You can activate the permanent display of marker tooltips here.
 
 **Marker popup**
 
@@ -56,7 +56,7 @@ In this field, you can combine markers within a certain radius into a cluster. 0
 
 ### Custom cluster markers
 
-**Display by item status**
+**Appearance by item status**
 In this section, you can set whether (only) drafts are also displayed on the map.
 
 **Custom item draft marker**
@@ -67,8 +67,8 @@ In this menu item, you can define the search filters for users.
 
   * Show location distance filter: this activates the filter
   * Label for location distance filter: In this box you can label the filter
-  * Address search limit – bottom left
-  * Address search limit – top right
+  * Address search bounds – bottom left
+  * Address search bounds – top right
   * Show item availability filter
   * Label for item availability filter: Activation
   * Label for item category filter: Here you can label the filter for the different categories of your items. For cargo bikes, these would be the equipment features.
