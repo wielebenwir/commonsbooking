@@ -4,7 +4,7 @@ The shortcode is called with `[cb_search id="4" ...]`.
 
 `id` is the ID of the map that should be used as the basis for the settings.
 
-The shortcode can be called multiple times on the page. All elements on the same page share a state. For example, filters and item lists can be displayed at different locations on the page – e.g., in a sidebar and the main content area – and still influence each other. Using multiple map IDs on the same page is currently not (yet) possible.
+The shortcode can be inserted multiple times on the page. All elements on the same page share a state. For example, filters and item lists can be displayed at different locations on the page – e.g., in a sidebar and the main content area – and still influence each other. Using multiple map IDs on the same page is not (yet) possible.
 
 ## Layouts
 

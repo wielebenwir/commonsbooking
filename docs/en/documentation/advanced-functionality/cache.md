@@ -36,7 +36,7 @@ A misconfigured cache can slow down your site!
 * If your site is very slow, this may also indicate a problem with the cache.
   More about this: [The site is very slow](../faq/site-slow).
 
-* **Periodic cache warmup through cron job**:
+* **Periodical cache warmup through cron job**:
   :::warning
   This setting was developed for some very specific edge cases and probably does not apply to you. It is also experimental and may lead to unintended consequences. For instance, we were not able to determine if the cache will be cleared on time after a booking. You should probably set the cronjob to run fairly frequently if you want to use this feature.
   :::
