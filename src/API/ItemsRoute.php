@@ -126,7 +126,8 @@ class ItemsRoute extends BaseRoute {
 		$preparedItem->name        = $item->post_title;
 		$preparedItem->url         = get_permalink( $item->ID );
 		$preparedItem->description = $this->escapeJsonString( $item->post_content );
-		$preparedItem->projectId   = '1';
+		$preparedItem->ownerId     = '';  // not implemented, but currently required by schema
+		$preparedItem->projectId   = '1'; // not implemented, but currently required by schema
 
 		$thumbnailId = get_post_thumbnail_id( $item->ID );
 		if ( $thumbnailId ) {
