@@ -1,15 +1,20 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Rule 1 - support english language header rewrite
+  # Rule 1a - support English language header rewrite
   RewriteCond %{REQUEST_URI} ^/$
   RewriteCond %{HTTP:Accept-Language} ^en [NC]
   RewriteRule ^$ https://commonsbooking.org/en [R=302,L]
 
-  # Rule 1b - legacy paths without locale
-  RewriteRule ^documentation(?:/)?(.*)$ /en/documentation/$1 [R=301,L]
+  # Rule 1b - support German language header rewrite
+  RewriteCond %{REQUEST_URI} ^/$
+  RewriteCond %{HTTP:Accept-Language} ^de [NC]
+  RewriteRule ^$ https://commonsbooking.org/de [R=302,L]
 
-  # Rule 2 - SPA 404 - Serve index.html instead of the server 404 page (displays Vitepress 404)
+  # Rule 2 - legacy paths without locale redirect to German default
+  RewriteRule ^documentation(?:/)?(.*)$ /de/documentation/$1 [R=301,L]
+
+  # Rule 3 - SPA 404 - Serve index.html instead of the server 404 page (displays Vitepress 404)
   RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
