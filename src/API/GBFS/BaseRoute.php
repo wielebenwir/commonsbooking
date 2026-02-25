@@ -43,15 +43,39 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	/**
 	 * Returns item data array.
 	 *
-	 * @param $request
+	 * @since 2.9.3 includes filter hooks for location get-args and for-each item skip.
+	 *
+	 * @param WP_REST_Request $request inbound rest request.
 	 *
 	 * @return array
 	 */
 	public function getItemData( $request ): array {
-		$data      = [];
-		$locations = Location::get();
+		$data = array();
+
+		/**
+		 * Lets you customize the args for database query. Affects all endpoints, because gbfs is based on location model.
+		 *
+		 * @param array $args request args array
+		 * @param WP_REST_Request $request
+		 */
+		$args = apply_filters( 'commonsbooking_gbfs_location_getargs', array(), $request );
+
+		/** @var \CommonsBooking\Model\Location[] $locations */
+		$locations = Location::get( $args );
 
 		foreach ( $locations as $location ) {
+			/**
+			 * You can compute if an item should be skipped or not for the api response, based on $item data.
+			 *
+			 * Example: add_filter( '...', function ( Location $location ) {
+			 *      return 'my_category' in $location->term;
+			 * })
+			 *
+			 * @param \CommonsBooking\Model\Location $location bookable post type.
+			 */
+			if ( true === apply_filters( 'commonsbooking_gbfs_location_skipitem', $location ) ) {
+				continue;
+			}
 			try {
 				$itemdata = $this->prepare_item_for_response( $location, $request );
 				$data[]   = $itemdata;
