@@ -32,17 +32,7 @@ class LocationsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.locations.schema.json';
-
-	/**
-	 * @var Provider
-	 */
-	protected $provider;
-
-	/**
-	 * @var Geocoder
-	 */
-	protected $geocoder;
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.locations.schema.json';
 
 	/**
 	 * Get one item from the collection
@@ -66,11 +56,7 @@ class LocationsRoute extends BaseRoute {
 		$data            = new stdClass();
 		$data->locations = $this->getItemData( $request );
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $data );
 	}
 
 	public function getItemData( $request ) {
@@ -91,7 +77,7 @@ class LocationsRoute extends BaseRoute {
 		foreach ( $locations as $location ) {
 			try {
 				$itemdata   = $this->prepare_item_for_response( $location, $request );
-				$features[] = $itemdata;
+				$features[] = $itemdata->get_data();
 			} catch ( Exception $exception ) {
 				if ( WP_DEBUG ) {
 					error_log( $exception->getMessage() );
@@ -126,7 +112,7 @@ class LocationsRoute extends BaseRoute {
 		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true );
 		$longitude = get_post_meta( $item->ID, 'geo_longitude', true );
 
-		// If we have latitude and longitude definec, we use them.
+		// If we have latitude and longitude defined, we use them.
 		if ( $latitude && $longitude ) {
 			$preparedItem->geometry              = new stdClass();
 			$preparedItem->geometry->type        = 'Point';

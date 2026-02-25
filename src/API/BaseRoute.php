@@ -8,10 +8,10 @@ use RuntimeException;
 
 use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Opis\JsonSchema\Schema;
 use CommonsBooking\Opis\JsonSchema\Validator;
 use CommonsBooking\Opis\JsonSchema\Errors\ErrorFormatter;
 use WP_REST_Controller;
+use WP_REST_Response;
 use WP_REST_Server;
 
 /**
@@ -28,6 +28,12 @@ use WP_REST_Server;
 class BaseRoute extends WP_REST_Controller {
 
 	const API_KEY_PARAM = 'apikey';
+
+	// prefix of $id used in schemas (currently the URL of the Github repo)
+	const SCHEMA_URL = 'https://github.com/wielebenwir/commons-api/blob/master/';
+
+	// the location of the .schema.json files locally
+	const SCHEMA_PATH = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/';
 
 	protected $schemaUrl;
 
@@ -93,8 +99,13 @@ class BaseRoute extends WP_REST_Controller {
 	public function validateData( $data ) {
 		$validator = new Validator();
 
+		// Opis does not fetch remote $ref targets in getSchemaJson() main schema.
+		// Map schema URLs to local filesystem paths
+		$resolver = $validator->resolver();
+		$resolver->registerPrefix( self::SCHEMA_URL, self::SCHEMA_PATH );
+
 		try {
-			$result = $validator->validate( $data, $this->getSchemaObject() );
+			$result = $validator->validate( $data, $this->getSchemaJson() );
 			if ( $result->hasError() ) {
 				if ( WP_DEBUG ) {
 
@@ -131,35 +142,21 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
-	 * Returns schema-object for current route.
-	 *
-	 * @return Schema
-	 */
-	protected function getSchemaObject(): object {
-		$schemaObject = json_decode( $this->getSchemaJson() );
-		unset( $schemaObject->{'$schema'} );
-		unset( $schemaObject->{'$id'} );
-
-		return $schemaObject;
-	}
-
-	/**
 	 * Returns schema json for current route.
 	 *
 	 * @throws RuntimeException On missing schema files.
 	 * @return string
 	 */
-	protected function getSchemaJson(): string {
-		$schemaArray = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		if ( $schemaArray ) {
-			return $schemaArray;
-		} else {
+	private function getSchemaJson(): string {
+		$schema = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $schema === false ) {
 			throw new RuntimeException( 'Could not retrieve schema json from ' . esc_url( $this->schemaUrl ) );
 		}
+		return $schema;
 	}
 
 	/**
-	 * Adds schema-fields for output to current route.
+	 * Adds schema-fields for output to current route (needed for /.../schema endpoint)
 	 *
 	 * @param array $schema Assoc array of schema json object.
 	 * @return array
@@ -206,5 +203,18 @@ class BaseRoute extends WP_REST_Controller {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Validates data against schema (when WP_DEBUG) and returns REST response.
+	 *
+	 * @param object $data The response data to validate and return.
+	 * @return WP_REST_Response
+	 */
+	protected function respond_with_validation( $data ): WP_REST_Response {
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+		}
+		return new WP_REST_Response( $data, 200 );
 	}
 }
