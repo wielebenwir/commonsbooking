@@ -1,14 +1,12 @@
-# Über uns
+# About Us
 
-Commonsbooking ist ein quelloffenes [Wordpress-Plugin](https://wordpress.org/documentation/article/introduction-to-plugins) welches vom Verein [wieLebenWir e.V.](https://www.wielebenwir.de) ca. 2014 initiiert wurde.
-Es startete mit der Ausleihe von Lastenrädern im Rahmen der sog. Freien Lastenräder in Köln in Deutschland.
-Dieser Rahmen ist zu einem deutschlandweiten Verband herangewachsen der heute mehr als 100 gelistete, freie Lastenrad-Initiave zählt.
-Der Rahmenverband heißt [Forum freie Lastenräder](https://freieslastenrad.org) (FFL) und trifft sich einmal im Jahr am Ort einer beliebigen
-Initiative.
+CommonsBooking is an open-source [WordPress Plugin](https://wordpress.org/documentation/article/introduction-to-plugins) which was initiated by the association [wieLebenWir e.V.](https://www.wielebenwir.de) around 2014.
+It started with the loaning of cargo bikes within the framework of the so-called Free Cargo Bikes in Cologne, Germany.
+This framework has grown into a nationwide association that today lists more than 100 free cargo bike initiatives.
+The umbrella organization is called [Verband Freie Lastenräder e.V.](https://freies-lastenrad.org/verband/) (VFL) and meets once a year at the location of an arbitrary initiative.
 
-Zur Geschichte des Plugins: Eine vorherige Version wurde durch ein Redesigns überholt. Akutell liegt das Plugin
-in der Major Version 2 vor. Eine vorherige Version, welche bereits verbreitet war, ist unter [cb-legacy](https://github.com/wielebenwir/cb) zu finden.
+On the history of the plugin: A previous version was superseded by a redesign. Currently the plugin is available in major version 2. A previous version that was already widespread can be found under [cb-legacy](https://github.com/wielebenwir/CommonsBooking_1).
 
-## Leihläden
+## Lending Libraries
 
-Das Plugin wird auch in anderen Bereichen verwendet, z.B. die der [Leihläden](https://leihladen-vernetzung.de)
+The plugin is also used in other areas, e.g. in [tool lending libraries](https://leihladen-vernetzung.de).

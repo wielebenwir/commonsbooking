@@ -1,9 +1,8 @@
-#  Karte der Standorte mit Filter
-
+# Karte der Standorte mit Filter
 
 Die Darstellung eurer Artikel ist auch über eine Karte möglich.
 
-Mit dem neuen Feature „Karte“ habt Ihr die Möglichkeit, Eure Artikel auch auf
+Mit dem Feature „Karte“ habt Ihr die Möglichkeit, Eure Artikel auch auf
 einer interaktiven Karte darzustellen. Gerade für Projekte in größeren Städten
 und mit mehreren Artikeln bietet die Karte den User*innen eine gute Übersicht
 aller verfügbaren Standorte.
@@ -72,7 +71,7 @@ Marker hochzuladen.
 In diesem Feld könnt Ihr die Marker in einem bestimmten Radius zu einem
 Cluster kombinieren. 0 px = Deaktivierung
 
-### **Benutzerdefinierte Cluster-Marker**
+### Benutzerdefinierte Cluster-Marker
 
 **Darstellung nach Artikelstatus** In diesem Punkt könnt Ihr einstellen, ob (nur) Entwürfe in der Karte mit
 angezeigt werden.
@@ -97,4 +96,3 @@ definieren.
 **Filter-Voreinstellungen**
 
 voreingestellte Kategorien
-

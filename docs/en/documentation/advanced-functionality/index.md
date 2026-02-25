@@ -1,7 +1,7 @@
-#  Erweiterte Funktionalität
+# Advanced functionality
 
+###  Pages
 
-###  Artikel
-
-  * [ Standardwerte für Zeitrahmenerstellung ändern ](./change-timeframe-creation-defaults)
-  * [ Hooks und Filter ](./hooks-and-filters)
+  * [Configure cache](cache)
+  * [Change default values for timeframe creation](change-timeframe-creation-defaults)
+  * [Hooks and filters](hooks-and-filters)

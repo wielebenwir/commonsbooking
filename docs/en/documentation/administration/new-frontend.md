@@ -1,73 +1,55 @@
-#  Neues Frontend (BETA)
+# New frontend (BETA)
 
+The shortcode is called with `[cb_search id="4" ...]`.
 
-Der Shortcode wird mit `[cb_search id="4" ...]` aufgerufen.
+`id` is the ID of the map that should be used as the basis for the settings.
 
-`id` ist die Id der Karte, die als Basis für die Einstellungen genutzt
-werden soll.
+The shortcode can be inserted multiple times on the page. All elements on the same page share a state. For example, filters and item lists can be displayed at different locations on the page – e.g., in a sidebar and the main content area – and still influence each other. Using multiple map IDs on the same page is not (yet) possible.
 
-Der Shortcode kann mehrfach auf der Seite aufgerufen werden. Alle Elemente auf
-der selben Seite teilen sich einen Zustand. So können beispielsweise Filter
-und Artikelliste an unterschiedlichen Stellen auf der Seite angezeigt werden –
-z.B. in einer Sidebar und dem Hauptinhaltsbereich – und haben trotzdem
-Einfluss aufeinander. Eine Nutzung mehrere Karten-Ids auf der selben Seite ist
-derzeit (noch) nicht möglich.
+## Layouts
 
-##  Layouts
-
-Standardmäßig zeigt der Shortcode einen Filter mit Karte. Alternativ können
-mit dem `layouts` Parameter ein oder mehrere andere Layouts ausgewählt
-werden.
-Die folgenden Layouts stehen zur Verfügung:
+By default, the shortcode displays a filter with a map. Alternatively, one or more other layouts can be selected using the `layouts` parameter.
+The following layouts are available:
 
   * **Filter**:
-Ein Filter, um Nutzer:innen die Suche und das Filtern nach Artikeln zu
-erlauben.
+A filter to allow users to search and filter for items.
 
   * **List**:
-Eine Listenansicht der Artikel.
+A list view of the items.
 
   * **AvailabilityCalendar**:
-Der Übersichtstabelle mit der Verfügbarkeit aller Artikel im näheren Zeitraum.
+The overview table with the availability of all items in the near future.
 
   * **MapWithAutoSidebar**:
-Eine Karte mit Artikelliste, die bei Bedarf automatisch geöffnet bzw.
-geschlossen wird.
+A map with an item list that is automatically opened or closed as needed.
 
   * **LargeMapWithStaticSidebar**:
-Eine große Karte mit linksbündiger statischer Seitenleiste, die Filter und
-Artikelliste enthält.
+A large map with a left-aligned static sidebar containing the filter and item list.
 
-Das folgende Kommando würde einen Filter samt Verfügbarkeitstabelle anzeigen:
+The following command would display a filter together with an availability table:
 
 `[cb_search id="4" layouts="Filter,AvailabilityCalendar"]`
 
-##  Anzeigeoptionen
+## Display options
 
-###  `filter-expanded`
+### `filter-expanded`
 
-Mit dieser Option wird der Filter ohne Ausklapp- bzw. Dialogmechanismus
-angezeigt.
-Es gibt ihn in drei Varianten:
+With this option, the filter is displayed without a collapse or dialog mechanism.
+It comes in three variants:
 
-  * `filter-expanded` (immer aktiv)
-  * `filter-expanded-desktop` (nur in höheren Auflösungen aktiv)
-  * `filter-expanded-mobile` (nur in kleinen Auflösungen aktiv)
+  * `filter-expanded` (always active)
+  * `filter-expanded-desktop` (only active at higher resolutions)
+  * `filter-expanded-mobile` (only active at small resolutions)
 
-Nutzung: `[cb_search id="4" layouts="Filter,List" filter-expanded]`
+Usage: `[cb_search id="4" layouts="Filter,List" filter-expanded]`
 
-##  Konfiguration (Erweitert)
+## Configuration (Advanced)
 
-Zuletzt kann der Shortcode auch direkt ein Konfigurationsobjekt definieren,
-das an die [CB-Frontend Bibliothek](https://github.com/wielebenwir/CB-Frontend) durchgereicht wird. Dieser Schritt ist eher für technikaffine
-Menschen interessant, für die JSON eine bekannte Abkürzung ist. Auf diesem Weg
-lassen sich z.B. komplexe Logiken für die Anzeige der Marker auf der Karte
-umsetzen.
+Finally, the shortcode can also directly define a configuration object that is passed to the [CB-Frontend library](https://github.com/wielebenwir/CB-Frontend). This step is more interesting for tech-savvy people for whom JSON is a familiar abbreviation. This way, complex logic for displaying markers on the map can be implemented, for example.
 
-Hierfür muss ein JSON-Objekt an die den Shortcode übergeben werden. Das kann
-z.B. so aussehen:
+For this, a JSON object must be passed to the shortcode. This could look like this, for example:
 
-```
+```json
 [cb_search id="4" layouts="Filter,List" filter-expanded]
 {
   "map": {
@@ -91,9 +73,6 @@ z.B. so aussehen:
 }
 [/cb_search]
 ```
-Bei dieser Konfiguration würden die Marker z.B. zuerst anhand der Kategorien
-zugeordnet werden und als Rückfalloption entweder das Thumbnail oder
-schlussendlich eine Farbe genutzt werden. Details der Konfiguration sind in
-der [ Dokumentation der CB-Frontend Bibliothek](https://github.com/wielebenwir/CB-Frontend/blob/main/documentation/configuration.md)
-ausgeführt.
+
+With this configuration, the markers would first be assigned based on categories, for example, and either the thumbnail or ultimately a color would be used as a fallback option. Details of the configuration are explained in the [CB-Frontend library documentation](https://github.com/wielebenwir/CB-Frontend/blob/main/documentation/configuration.md).
 

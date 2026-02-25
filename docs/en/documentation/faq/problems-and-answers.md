@@ -1,28 +1,14 @@
-#  Probleme und Antworten
+# Problems and answers
 
+### Calendar widget display in the admin area
 
-###  Anzeige Kalender-Widget im Admin-Bereich
-
-Treten Probleme bei der Anzeige des Kalenders im Admin-Bereich der Buchungen
-auf (sog. Admin-Backend), siehe das folgende Bild rechts unten, kann eine
-mögliche Lösung sein, das [ Plugin "Lightstart" (wp-maintenance-mode)
-](https://wordpress.org/plugins/wp-maintenance-mode) zu deaktivieren oder zu
-entfernen und neu zu installieren. Das Problem ist eine Inkompatibilität von
-Lightstart mit CommonsBooking und kein Fehler im Code von CommonsBooking. Das
-Problem tritt nicht mehr auf, wenn eine Neuinstallation von Lightstart
-vorgenommen wurde. Mehr dazu auf [ Github im CommonsBooking Quellcode-
-Repository ](https://github.com/wielebenwir/commonsbooking/issues/1646) .
+If there are problems displaying the calendar in the booking admin area (the admin backend), see the image below on the right, one possible solution is to disable or remove and reinstall the ["Lightstart" (wp-maintenance-mode) plugin](https://wordpress.org/plugins/wp-maintenance-mode). 
+The issue is an incompatibility between Lightstart and CommonsBooking and not a bug in CommonsBooking's code.
+The problem does not occur after reinstalling Lightstart. More details on [GitHub in the CommonsBooking source repository](https://github.com/wielebenwir/commonsbooking/issues/1646).
 
 ![](/img/backend-booking-list-bug.png)
 
-###  Inkompatibles Theme Gridbulletin
+### Incompatible theme: GridBulletin
 
-In der letzten Version von [ GridBulletin
-](https://wordpress.org/themes/gridbulletin) kommt es zu einer
-Inkompatibilität mit CommonsBooking. Probleme tauchen auf, wenn der Footer
-aktiviert ist. Konkrete Probleme sind z.B. das Fehlen des Buchungs-Kalenders
-auf der Artikelseite. Aus technischer Sicht liegt es daran, dass die nötigen
-Javascript-Quellen von CommonsBooking nicht ausgeliefert werden. Der Grund
-innerhalb des GridBulletin Themes oder eine Lösung konnte bisher nicht
-gefunden werden.
-
+The latest version of [GridBulletin](https://wordpress.org/themes/gridbulletin) is incompatible with CommonsBooking.
+Problems occur when the footer is enabled. One concrete issue is the missing booking calendar on the item page. From a technical perspective, the required JavaScript sources from CommonsBooking are not being loaded. The root cause within the GridBulletin theme or a solution has not yet been found.

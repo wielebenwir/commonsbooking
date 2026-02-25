@@ -1,4 +1,4 @@
-#  Shortcodes
+# Shortcodes für Frontend-Darstellung
 
 
 Die CommonsBooking-Inhalte (z.B. Artikellisten oder Verfügbarkeiten) kannst du auf der Website anzuzeigen, indem du sogenannte Shortcodes verwendest.
@@ -13,7 +13,7 @@ Beispiel-Argumente:
 
 Diese Paramter sind für die folgenden Shortcodes gültig, welche über das CommonsBooking Plugin verfügbar sind:
 
-##  Artikel-Liste
+## Artikel-Liste
 
 Zeigt eine Liste aller veröffentlichen Artikel an mit den Stationen, an denen
 sie sich befinden.
@@ -44,7 +44,6 @@ Beispiel:
 [cb_items category_slug=titelform]
 ```
 
-
 ##  Einzelner Artikel
 
 Zeigt einen einzelnen Artikel in der Listenansicht (s.o.) an.
@@ -57,7 +56,7 @@ Beispiel:
 [cb_items p=1234]
 ```
 
-##  Karte mit Filter-Möglichkeit
+## Karte mit Filter-Möglichkeit
 
 Zeigt eine Karte aller veröffentlichen Artikel an.
 Dafür muss zuerst eine Karte unter "CommonsBooking -> Karten" eingerichtet werden.
@@ -69,7 +68,7 @@ Dafür muss zuerst eine Karte unter "CommonsBooking -> Karten" eingerichtet werd
 
 ![](/img/shortcode-cb-map.png)
 
-##  Karte mit Artikelliste
+## Karte mit Artikelliste
 
 ::: tip Ab Version 2.9
 :::
@@ -86,7 +85,7 @@ danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 [ Weitere Argumente und ausführliche Dokumentation
 ](new-frontend)
 
-##  Artikel-Tabelle mit Verfügbarkeit
+## Artikel-Tabelle mit Verfügbarkeit
 
 Zeigt eine Tabelle aller veröffentlichen Artikel an mit Stationen, an denen
 sie sich befinden und der aktuellen Verfügbarkeit.
@@ -120,7 +119,7 @@ sie sich befinden und der aktuellen Verfügbarkeit.
 
 ![](/img/shortcode-cb-items-table.png)
 
-##  Stationen-Liste
+## Stationen-Liste
 
 Zeigt eine Liste aller veröffentlichen Stationen an mit den Artikeln, die sich
 dort befinden
@@ -140,4 +139,3 @@ User in der Rolle von Administrator*innen sehen hier alle Buchungen.
   * Import in digitalen Kalender über [iCalendar](../manage-bookings/icalendar-feed)-Format möglich
 
 ![](/img/shortcode-cb-bookings.png)
-

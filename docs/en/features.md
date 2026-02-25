@@ -10,9 +10,11 @@ CommonsBooking gives you the opportunity to offer items (e.g. cargo bikes, tools
 
 CommonsBooking is a WordPress plugin and can therefore be easily integrated into existing websites.
 
-[ Install ](./documentation/setup/install)
+<div>
+  <a class="cbdoc-button cb-brand" href="./documentation/setup/install">Install</a>
+  <a class="cbdoc-button cb-alt" href="./documentation/">Documentation</a>
+</div>
 
-[ Documentation ](./documentation/)
 
 * * *
 
@@ -51,15 +53,16 @@ CommonsBooking is continuously under development. The following milestones are p
   * Improved Metadata
   * Implementing the Commons API
 
-[ Install ](./documentation/setup/install)
-
-[ Roadmap of upcoming development milestone ](./documentation/roadmap/)
+<div>
+  <a class="cbdoc-button cb-brand" href="./documentation/setup/install">Install</a>
+  <a class="cbdoc-button cb-alt" href="./documentation/roadmap/">Roadmap of upcoming development milestone</a>
+</div>
 
 * * *
 
 ##  Application areas
 
-The WordPress plugin was originally developed for the needs of the [„Free cargo bike movement"](http://www.dein-lastenrad.de),
+The WordPress plugin was originally developed for the needs of the [„Free cargo bike movement"](https://freies-lastenrad.org/),
  but it can be used for the rental of any item.
 
   * You or your organization have tools that are not used on a daily basis and you want to make them available to local groups.

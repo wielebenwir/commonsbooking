@@ -1,53 +1,53 @@
-#  Die CommonsBooking API nutzen
+# Using the CommonsBooking API
 
+This article explains how you can use the CommonsBooking API.
+But [what is the CommonsBooking API?](what-is-the-commonsapi)
 
-CommonsBooking verfügt über eine eigene API [ (Was ist die CommonsBooking
-API), ](./what-is-the-commonsapi) über die ihr bequem
-auf entsprechende Daten zugreifen könnt oder die Daten für andere Plattformen
-oder Dienste zur Verfügung stellen könnt.
+CommonsBooking has its own API through which you can conveniently access plugin data via a web interface or make the data available to other platforms and services.
+The API is based on the [REST API implemented in WordPress](https://developer.wordpress.org/rest-api).
 
-Die API basiert auf der in [WordPress implementierten REST-API](https://developer.wordpress.org/rest-api).
+::: tip Activating the API
+The API is disabled by default and there are no connections to external services or platforms.
+You activate the API via the settings (see below) and the checkbox "Enable API".
+:::
 
-##  **Aktivierung der API**
+## General settings
 
-  * Die API ist standardmäßig deaktiviert und es gibt keine Verbindungen zu externen Services oder Plattformen.. Unter _Einstellungen_ -> _CommonsBooking_ -> Tab: _API / Export_ kann die API über die entsprechende Checkbox aktiviert werden.
+You can access the API via _Settings_ -> _CommonsBooking_ -> Tab: _API / Export_.
 
-##  API-Einstellungen allgemein
+  * Activate API: Generally activates API access
+  * Enable API Access without API-Key: If this option is enabled, the API can be accessed without an individual API key. This setting is useful if you want to share your data with multiple platforms.
+  * API shares: The interface can be enabled for different endpoints or requesting pages. To control access rights accordingly, you can also create multiple different shares.
 
-  * API aktivieren: Aktiviert generell den API-Zugriff
-  * API Zugang ohne API-Schlüssel: Wenn diese Option aktiviert ist, kann auf die API auch ohne einen individuellen API-Key zugegriffen werden. Diese Einstellung ist sinnvoll, wenn ihre eure Daten mit mehreren Plattformen teilen möchtet.
-  * API-Freigaben: Die Schnittstelle kann für verschiedene Endpunkte bzw. anfragende Seiten freigegeben werden. Um die Zugriffsrechte entsprechend zu steuern könnt ihr auch mehrere unterschiedliche Freigaben anlegen.
+## Settings per API share
 
-##  API-Einstellungen pro API-Freigabe
+  * API name: Any name for your internal designation of the API
+  * API enabled: The API permission is only activated when this checkbox is checked.
+  * Push URL: Here you can enter the URL of the receiving system. CommonsBooking will call this URL whenever the data changes, so that the remote system is informed about a data change and can retrieve it via a separate API call. This enables real-time data exchange.
+  * API Key: Here you can enter a custom API key. If the key is set, the requesting system must provide the parameter apikey= _[key]_ in every query.
 
-  * Schnittstellen-Name: Ein beliebiger Name für eure interne Bezeichnung der API
-  * Schnittstelle aktiviert: Die API-Freigabe ist erst aktiviert, wenn diese Häkchen gesetzt ist.
-  * Push-URL: Hier könnt ihr die URL des empfangenden Systems eingeben. CommonsBooking wird diese URL bei jeder Änderung der Daten aufrufen, sodass das entfernte System dann über eine Änderung der Daten informiert und diese über einen separaten API-Call abrufen kann. So kann ein Datenaustausch in Echtzeit ermöglicht werden.
-  * API-Schlüssel: Hier könnt ihr einen selbstgewählten API-Schlüssel eingeben. Wenn der Schlüssel gesetzt ist, muss das abfragende System in jeder Abfrage den Parameter apikey= _[Schlüssel]_ mitliefern.
+## API route specification
 
-##  Es stehen folgende API-Routen zur Verfügung:
+**Availability**
 
-**Verfügbarkeit**
-
-  * Beschreibung: Zeit die Verfügbarkeiten von Artikel an Standorten an
-  * Route: /wp-json/commonsbooking/v1/availability
+  * Description: Shows the availability of items at locations
+  * Route: `/wp-json/commonsbooking/v1/availability`
   * Schema: https://github.com/wielebenwir/commons-api/blob/master/commons-api.availability.schema.json
 
-**Items / Artikel**
+**Items**
 
-  * Beschreibung: Gibt Daten zu allen veröffentlichen Artikeln inklusive der damit verknüpften Verfügbarkeiten und Standorte zurück
-  * Route: /wp-json/commonsbooking/v1/items
+  * Description: Returns data for all published items including the associated availability and locations
+  * Route: `/wp-json/commonsbooking/v1/items`
   * Schema: https://github.com/wielebenwir/commons-api/blob/master/commons-api.items.schema.json
 
-**Locations / Standorte**
+**Locations**
 
-  * Beschreibung: Gibt eine Liste aller Standorte zurück inklusive der Geo-Koordinaten
-  * Route: wp-json/commonsbooking/v1/locations
+  * Description: Returns a list of all locations including geo-coordinates
+  * Route: `/wp-json/commonsbooking/v1/locations`
   * Schema: https://github.com/wielebenwir/commons-api/blob/master/commons-api.locations.schema.json
 
-**Projekte / Projects**
+**Projects**
 
-  * Beschreibung: Gibt die Basisdaten der WordPress-Instanz zurück
-  * Route: wp-json/commonsbooking/v1/projects
+  * Description: Returns the basic data of the WordPress instance
+  * Route: `/wp-json/commonsbooking/v1/projects`
   * Schema: https://github.com/wielebenwir/commons-api/blob/master/commons-api.projects.schema.json
-

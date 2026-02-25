@@ -1,14 +1,9 @@
-#  Wie kann ich die Artikeldetailseite übersichtlicher gestalten?
+# How can I make the item detail page clearer?
 
+## Information only shown on click
 
-##  Informationen erst auf Klick anzeigen
+Long item pages mean users have to scroll a long way to reach the booking calendar.
 
-Lange Artikelseiten bedeuten, dass Menschen lange bis zum Buchungskalender
-scrollen müssen.
-
-Hier empfiehlt sich ein Plugin wie [ Show-Hide/Collapse-Expand
-](https://de.wordpress.org/plugins/show-hidecollapse-expand) zu nutzen, mit
-dem Informationen eingeklappt werden können.
+A plugin such as [Show-Hide/Collapse-Expand](https://de.wordpress.org/plugins/show-hidecollapse-expand) can be used to collapse information.
 
 ![](/img/item-collapse.png)
-
