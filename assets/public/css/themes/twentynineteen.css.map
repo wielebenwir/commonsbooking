@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": ";AAAA,WAAY;EACR,0BAA0B;;;AAC1B,sBAAW;EACP,OAAO,EAAE,EAAE;EACX,MAAM,EAAE,CAAC;EACT,UAAU,EAAE,WAAW",
-"sources": ["../../sass/themes/twentynineteen.scss"],
-"names": [],
-"file": "twentynineteen.css"
-}

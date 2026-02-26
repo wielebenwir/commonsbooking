@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": ";AACI,8BAAO;EACH,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,GAAG;;;AAGd,iCAAU;EACN,gBAAgB,EAAE,WAAW;EAC7B,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,GAAG",
-"sources": ["../../sass/themes/graphene.scss"],
-"names": [],
-"file": "graphene.css"
-}

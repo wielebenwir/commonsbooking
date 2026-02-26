@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": ";AAAA,WAAY;EACR,wBAAwB;;;AACxB,8DAAe;EACX,MAAM,EAAE,YAAY;;;;AAOhB,sCAAU;EACN,SAAS,EAAE,MAAM",
-"sources": ["../../sass/themes/twentytwenty.scss"],
-"names": [],
-"file": "twentytwenty.css"
-}
