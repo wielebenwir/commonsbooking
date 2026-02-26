@@ -745,7 +745,7 @@ class BookingTest extends CustomPostTypeTest {
 		$endingTime->setTime( 17, 59, 59 );
 		// we need to create this booking in the "frontend" way in order to save the correct grid sizes for the generation
 		// pickup and returntimes
-		$testBookingSpanningOverTwoSlotsID     = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
+		$testBookingSpanningOverTwoSlotsID     = \CommonsBooking\Service\Booking::handleBookingRequest(
 			$separateItem,
 			$separateLocation,
 			'confirmed',
