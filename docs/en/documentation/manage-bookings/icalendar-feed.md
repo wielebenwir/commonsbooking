@@ -40,4 +40,3 @@ Now the location account can view all bookings for
 this location via "My Bookings". If, as described above, the URL for the
 digital calendar is inserted into the calendar of the location operators,
 then they will see all bookings directly in their digital calendar.
-
