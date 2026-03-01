@@ -59,7 +59,7 @@ The following template tags are included in the templates created by default dur
 | Summarized booking period (e.g., from January 24, 4:00 PM to January 26, 12:00 PM)                                   |     <span v-pre>`{{booking:formattedBookingDate}}`</span>     |
 | Pickup instructions                                                                                                 |     <span v-pre>`{{location:pickupInstructions}}`</span>      |
 | Link to booking/cancellation                                                                                        |         <span v-pre>`{{booking:bookingLink}}`</span>          |
-| Booking codes (only for day-wise bookings)                                                                          |     <span v-pre>`{{booking:formattedBookingCode}}`</span>     |
+| Booking codes (only for per-day bookings)                                                                          |     <span v-pre>`{{booking:formattedBookingCode}}`</span>     |
 | Booking comment                                                                                                     |        <span v-pre>`{{booking:returnComment}}`</span>         |
 | **Restrictions**: The template tags for User, Item, Location, and Booking as well as the following are possible    |                                            |
 | Restriction start date incl. time                                                                                   |  <span v-pre>`{{restriction:formattedStartDateTime}}`</span>  |
@@ -84,6 +84,6 @@ You can create additional fields for locations or items.
   * Example: <span v-pre>`{{ [The code for the combination lock is:] item:ItemKeyCode}}`</span>
   * The text in the square brackets `[ ]` serves as descriptive text that is output before the actual meta field. The advantage here is that the descriptive text including the value is only output if the dynamic field contains a value. Simple HTML codes are also allowed in this descriptive text (e.g., br, strong, etc.)
 
-The following tutorial video shows the process step by step:
+The following tutorial video (in German) shows the process step by step:
 
 <iframe width="100%" height="547" src="https://www.youtube.com/embed/f4rr77GpB9o" title="CommonsBooking Tutorial Metafelder" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

@@ -2,9 +2,9 @@
 
 You can display CommonsBooking content (e.g., automatically generated item lists) on the website using shortcodes. Shortcodes can be inserted into any WordPress page. [Official WordPress documentation](https://en.support.wordpress.com/shortcodes).
 
-The display of a shortcode can be influenced by certain arguments.
+The display of a shortcode can be influenced by certain parameters.
 
-Example arguments:
+Example parameters:
 
   * `orderby`: Determines the attribute by which to sort, e.g., `orderby=post_title` for sorting by the name of a post.
   * `order`: Determines the sort order. Ascending `ASC` and descending `DESC`.
@@ -72,7 +72,7 @@ Previously, each shortcode could only be used independently, meaning a filter ap
 
 ![](/img/shortcode-cb-search-map.png)
 
-[Additional arguments and detailed documentation](./new-frontend)
+[Additional parameters and detailed documentation](./new-frontend)
 
 ## Item table with availability
 

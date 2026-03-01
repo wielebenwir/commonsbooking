@@ -53,7 +53,7 @@ Starting from the day set as the reset day, the new month will begin.
 So for example, if the 15th is set as the reset day and only one day per month
 is bookable, the user can book on both the 14th and the 15th.
 
-### Maximum number of bookable days in a time period
+### Maximum number of bookable days in time period
 
 Defines how many days a user can book an item over a specific period of days.
 Counting starts from the middle of the period, so when, for instance, 30 days are set,

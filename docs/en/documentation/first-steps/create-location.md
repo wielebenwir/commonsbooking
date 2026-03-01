@@ -15,7 +15,7 @@ can be set on the right-hand side under the "Publish" button.
 
 Fill out the address for this location using the form fields provided.
 
-## Set or update GPS and map
+## Set / Update GPS and map
 
 When saving the location, GPS coordinates are usually retrieved automatically
 for the address provided. In case that does not work, coordinates can also be

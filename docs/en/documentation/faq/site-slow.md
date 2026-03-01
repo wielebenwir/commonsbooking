@@ -1,6 +1,6 @@
 # The site is very slow
 
-If your CommonsBooking site is very slow, there may be several reasons.
+If your CommonsBooking site is very slow, there may be several underlying causes.
 We use a technology called caching, which keeps frequently requested data
 in temporary storage to save server resources.  
 Caching may not work under certain conditions, for example when:

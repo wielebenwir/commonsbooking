@@ -77,7 +77,3 @@ CommonsBooking uses its own caching.
 ::: info Have you noticed a problem?
 Then enter the incompatibility here!
 :::
-
-## Incompatible theme Gridbulletin
-
-In the latest version of [ GridBulletin ](https://wordpress.org/themes/gridbulletin) there is an incompatibility with CommonsBooking. Problems arise when the footer is activated. Specific problems are, for example, the missing booking calendar on the item page. From a technical point of view, this is because the necessary Javascript sources of CommonsBooking are not delivered. The reason within the GridBulletin theme or a solution could not be found so far.
