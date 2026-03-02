@@ -1053,7 +1053,6 @@ msgstr "Ich akzeptiere die Nutzungsbedingungen"
 msgid "Please accept the terms & conditions"
 msgstr "Bitte akzeptiere die Nutzungsbedingungen"
 
-#. translators: %s = terms and service url
 #: src/CB/CB1UserFields.php:188
 #, php-format
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
