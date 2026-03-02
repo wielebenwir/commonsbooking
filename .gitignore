@@ -1,3 +1,4 @@
+**/.DS_Store
 .sass-cache
 .DS_Store
 .nova
@@ -30,3 +31,14 @@ tests/cypress/screenshots
 docs/.vitepress/dist
 /vendor-prefixed
 /bin/strauss.phar
+
+# Pre-Built dist only sources
+assets/admin/js/admin.js
+assets/admin/js/admin.min.js
+assets/admin/css/admin.css
+assets/global/js/vendor.js
+assets/global/js/vendor.js.map
+assets/global/js/vendor.min.js
+assets/public/js/public.js
+assets/public/js/public.min.js
+assets/public/css/**

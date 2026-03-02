@@ -55,44 +55,9 @@ function commonsbooking_public() {
 		COMMONSBOOKING_VERSION
 	);
 
-	// Daterangepicker
-	wp_enqueue_style(
-		'cb-styles-daterangepicker',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/daterangepicker/daterangepicker.css',
-		array(),
-		COMMONSBOOKING_VERSION
-	);
-
-	wp_enqueue_script(
-		'cb-scripts-daterangepicker',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/daterangepicker.min.js',
-		array(),
-		'1.0.0'
-	);
-
-	// Select 2
-	wp_enqueue_style(
-		'cb-styles-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/select2/select2.min.css',
-		array(),
-		COMMONSBOOKING_VERSION
-	);
-
-	wp_enqueue_script(
-		'cb-scripts-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/select2.min.js',
-		array( 'jquery' ),
-		'1.0.0'
-	);
-
-	// Moment.js
-	wp_enqueue_script(
-		'cb-scripts-moment',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/moment.min.js',
-		array(),
-		'1.0.1',
-		true
-	);
+	wp_enqueue_style( 'cb-styles-select2' );
+	wp_enqueue_script( 'cb-scripts-select2' );
+	wp_enqueue_script( 'cb-scripts-moment' );
 
 	/**
 	 * Public scripts
