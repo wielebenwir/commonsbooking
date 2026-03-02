@@ -5,7 +5,7 @@ Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9
 Tested up to: 6.9
 Stable Tag: 2.10.9
-Requires PHP: 8.1
+Requires PHP: 8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
