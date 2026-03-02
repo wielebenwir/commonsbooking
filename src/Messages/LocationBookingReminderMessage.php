@@ -41,7 +41,7 @@ class LocationBookingReminderMessage extends Message {
 			? COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder'
 			: COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder';
 
-		if ( ! CB::get( Location::$postType, $reminderMetaKey, $location ) ) {
+		if ( ! ( CB::get( Location::$postType, $reminderMetaKey, $location ) === 'on' ) ) {
 			return;
 		}
 

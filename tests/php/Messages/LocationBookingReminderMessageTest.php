@@ -23,6 +23,20 @@ class LocationBookingReminderMessageTest extends Email_Test_Case {
 		Settings::updateOption( 'commonsbooking_options_reminder', 'booking-end-location-reminder-body', $endBody );
 
 		// Test start reminder
+
+		// #2060 make sure that mail is only sent out when option is activated
+		delete_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder' ); // cmb2 values are empty when checkbox not checked, thus meta key not present
+
+		$message = new LocationBookingReminderMessage( $this->bookingId, 'booking-start-location-reminder' );
+		$message->triggerMail();
+		$mailer = $this->getMockMailer();
+		$this->assertEmpty( $mailer->ErrorInfo );
+		$this->assertEmpty( $mailer->getToAddresses() );
+		$this->resetMailer();
+
+		// regular test, option is activated, mail should be sent out
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder', 'on' );
+
 		$message = new LocationBookingReminderMessage( $this->bookingId, 'booking-start-location-reminder' );
 		$message->triggerMail();
 
@@ -55,6 +69,18 @@ class LocationBookingReminderMessageTest extends Email_Test_Case {
 		$this->resetMailer();
 
 		// Test end reminder
+
+		// #2060 make sure that mail is only sent out when option is activated
+		delete_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder' ); // cmb2 values are empty when checkbox not checked, thus meta key not present
+		$message = new LocationBookingReminderMessage( $this->bookingId, 'booking-end-location-reminder' );
+		$message->triggerMail();
+		$mailer = $this->getMockMailer();
+		$this->assertEmpty( $mailer->ErrorInfo );
+		$this->assertEmpty( $mailer->getToAddresses() );
+		$this->resetMailer();
+
+		// regular test, option is activated, mail should be sent out
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder', 'on' );
 		$message = new LocationBookingReminderMessage( $this->bookingId, 'booking-end-location-reminder' );
 		$message->triggerMail();
 		$mailer = $this->getMockMailer();
