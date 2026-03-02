@@ -28,8 +28,8 @@ jobs:
     strategy:
       matrix:
         php:
-          - '7.4'
-          - '8.3'
+          - '8.1'
+          - '8.5'
         core:
           - {name: 'tested', version: 'null'}
           - {name: 'minimum', version: 'WordPress/WordPress#5.9'}
@@ -43,14 +43,14 @@ jobs:
       - name: Install wp-env systemwide
         shell: bash
         run: npm -g i @wordpress/env
-        
-      - name: Overwrite PHP versions & core for wp-env 
+
+      - name: Overwrite PHP versions & core for wp-env
         if: matrix.core.version != 'null'
         run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
 
       - name: setup wp env
         run: npm run env:start
-        
+
       - name: install test data for e2e test
         run: npm run cypress:setup
 

@@ -20,7 +20,7 @@ on:
 
 jobs:
   phpstan:
-    name: 'WP latest on PHP 8.3'
+    name: 'WP latest on PHP 8.5'
 
     runs-on: ubuntu-24.04
 
@@ -30,7 +30,7 @@ jobs:
     # TODO Use the composer action below
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'
+        php-version: '8.5'
         extensions: uopz
 
     - name: Validate composer.json and composer.lock
