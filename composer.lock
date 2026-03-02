@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af8c1ecd5b3410ebee4cc677682ad126",
+    "content-hash": "7070b68f26a2cf95b975565e3aff553d",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -133,20 +133,20 @@
         },
         {
             "name": "ed-itsolutions/cmb2-field-ajax-search",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wielebenwir/cmb2-field-ajax-search.git",
-                "reference": "887470a5cb9363a51d573bb8d49259435f519511"
+                "reference": "4ddf494ddcc667f74f51edaffa6300c249456910"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wielebenwir/cmb2-field-ajax-search/zipball/887470a5cb9363a51d573bb8d49259435f519511",
-                "reference": "887470a5cb9363a51d573bb8d49259435f519511",
+                "url": "https://api.github.com/repos/wielebenwir/cmb2-field-ajax-search/zipball/4ddf494ddcc667f74f51edaffa6300c249456910",
+                "reference": "4ddf494ddcc667f74f51edaffa6300c249456910",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^5.3.3 || ^7.0 || ^8.2"
             },
             "type": "library",
             "license": [
@@ -162,10 +162,10 @@
             ],
             "description": "CMB2",
             "support": {
-                "source": "https://github.com/wielebenwir/cmb2-field-ajax-search/tree/v2.0.1",
+                "source": "https://github.com/wielebenwir/cmb2-field-ajax-search/tree/v2.0.2",
                 "issues": "https://github.com/wielebenwir/cmb2-field-ajax-search/issues"
             },
-            "time": "2024-11-01T18:36:49+00:00"
+            "time": "2026-03-02T22:28:52+00:00"
         },
         {
             "name": "eluceo/ical",
