@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0da2daa8ad6a147e3af25fd4528d2c0",
+    "content-hash": "14c2b7a303140e22c011491d27378e9e",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -133,20 +133,20 @@
         },
         {
             "name": "ed-itsolutions/cmb2-field-ajax-search",
-            "version": "v2.0.1",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wielebenwir/cmb2-field-ajax-search.git",
-                "reference": "887470a5cb9363a51d573bb8d49259435f519511"
+                "reference": "9efffd99be42e525f37f0dc7431398c20fd4e4eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wielebenwir/cmb2-field-ajax-search/zipball/887470a5cb9363a51d573bb8d49259435f519511",
-                "reference": "887470a5cb9363a51d573bb8d49259435f519511",
+                "url": "https://api.github.com/repos/wielebenwir/cmb2-field-ajax-search/zipball/9efffd99be42e525f37f0dc7431398c20fd4e4eb",
+                "reference": "9efffd99be42e525f37f0dc7431398c20fd4e4eb",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0"
+                "php": "^5.3.3 || ^7.0 || ^8.1"
             },
             "type": "library",
             "license": [
@@ -162,10 +162,10 @@
             ],
             "description": "CMB2",
             "support": {
-                "source": "https://github.com/wielebenwir/cmb2-field-ajax-search/tree/v2.0.1",
+                "source": "https://github.com/wielebenwir/cmb2-field-ajax-search/tree/v2.0.3",
                 "issues": "https://github.com/wielebenwir/cmb2-field-ajax-search/issues"
             },
-            "time": "2024-11-01T18:36:49+00:00"
+            "time": "2026-03-02T22:52:56+00:00"
         },
         {
             "name": "eluceo/ical",
@@ -5091,7 +5091,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "ext-json": "*",
         "ext-curl": "*"
     },
@@ -5099,5 +5099,5 @@
         "ext-libxml": "*",
         "ext-dom": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
