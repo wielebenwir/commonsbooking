@@ -67,7 +67,7 @@
     "phpstan/extension-installer": "^1.4",
     "ext-libxml": "*",
     "ext-dom": "*",
-    "phpbench/phpbench": "^1.4"
+    "phpbench/phpbench": "^1.2"
   },
   "scripts": {
     "post-install-cmd": [
