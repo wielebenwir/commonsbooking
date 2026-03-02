@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: Documentation
-      link: /en/documentation/
+      link: ./documentation/
     - theme: alt
       text: Features
       link: /en/features/
@@ -39,7 +39,7 @@ import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
             CommonsBooking makes it easy to set up and manage rental stations and cargo bikes – or any other shared goods – for both providers and users. From <strong>rental by the hour</strong> to taking opening hours or vacations into account. CommonsBooking offers you <strong>complete flexibility</strong>.
         </p>
         <div>
-            <a class="cbdoc-button cb-brand" href="/en/documentation/setup/install">Install</a>
+            <a class="cbdoc-button cb-brand" href="./documentation/setup/install">Install</a>
             <a class="cbdoc-button cb-alt" href="/en/features">Feature overview</a>
         </div>
     </div>

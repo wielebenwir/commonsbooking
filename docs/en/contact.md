@@ -8,7 +8,7 @@ import Newsletter from '/.vitepress/components/Newsletter_EN.vue'
 
 We will be happy to help you with any new questions or problems!
 
-  * Please check out our [ documentation ](/en/documentation/) in advance to see if the topic is already discussed there.
+  * Please check out our [ documentation ](./documentation/) in advance to see if the topic is already discussed there.
   * Write us a [ support enquiry via our support system ](https://support.commonsbooking.org) . There you will also find a FAQ with frequently asked questions and answers (only in German so far).
   * Or by e-mail to [ mail@commonsbooking.org ](mailto:mail@commonsbooking.org)
 (German and English welcome)

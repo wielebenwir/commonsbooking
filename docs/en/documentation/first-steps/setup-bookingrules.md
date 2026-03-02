@@ -1,10 +1,9 @@
 #  Configure booking rules (Since 2.9)
 
-__
 
 Booking rules are just one of the many ways to restrict the booking of items by users.
-You can also use the [timeframe settings](/en/documentation/first-steps/booking-timeframes-manage) to 
-configure user roles that may book an item or restrict booking by setting a password for the [item](/en/documentation/first-steps/create-item).
+You can also use the [timeframe settings](../first-steps/booking-timeframes-manage) to 
+configure user roles that may book an item or restrict booking by setting a password for the [item](../first-steps/create-item).
 
 Using booking rules, you can restrict the use of items by users across the installation.
 For instance, if you want to prevent a user from booking multiple items on the same day
@@ -17,7 +16,7 @@ Using this feature, you could define that a specific category of items can only 
 and another category for 3 days per week.
 
 ## Difference to the "Maximum" setting in the timeframe
-In the [Timeframe settings](/en/documentation/first-steps/booking-timeframes-manage) it is possible to set
+In the [Timeframe settings](../first-steps/booking-timeframes-manage) it is possible to set
 the maximum amount of days an item can be booked in a row (single booking). So users could create multiple bookings which then exceed the maximum value.
 Booking rules, on the other hand, define how many days a user can book in total per week, month, or within a specific time period.
 They allow you to restrict the use of items by users and prevent them from creating excessive bookings.
@@ -70,7 +69,7 @@ When this option is enabled, canceled bookings also count towards the maximum bo
 
 ###  Exempt groups from all booking rules
 
-Using a [small code snippet](/en/documentation/administration/hooks-and-filters) you can set
+Using a [small code snippet](../advanced-functionality/hooks-and-filters) you can set
 a role to be permanently exempt from all booking rules. This way, you do not have to manually add the role to each rule.
 
 ```php
@@ -83,4 +82,4 @@ add_filter('commonsbooking_privileged_roles', function($privileged_roles) {
 The above snippet would add the role "Editor" with the slug `editor` as a "privileged" role.
 
 In addition to that, all administrators and CB managers assigned to the affected item/location are always exempted.
-[Learn more about permission management](/en/documentation/basics/permission-management)
+[Learn more about permission management](../basics/permission-management)

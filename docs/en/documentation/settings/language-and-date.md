@@ -1,6 +1,5 @@
 #  Language & date format
 
-__
 
 The language as well as the date format used in the plugin is pulled from your WordPress settings.
 

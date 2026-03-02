@@ -1,6 +1,5 @@
 #  Template Tags und Platzhalter für E-Mail-Vorlagen
 
-__
 
 Template-Tags kannst du in den E-Mail-Vorlagen oder Frontend-Templates
 einsetzen.
