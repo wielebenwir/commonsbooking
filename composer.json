@@ -48,7 +48,7 @@
     "ext-json": "*",
     "ext-curl": "*",
     "symfony/cache": "^5.4.30",
-    "symfony/service-contracts": "^v2.5.2",
+    "symfony/service-contracts": "^v3.6.1",
     "eluceo/ical": "~2.14.0",
     "phpmailer/phpmailer": "^7.0.0",
     "ed-itsolutions/cmb2-field-ajax-search": "v2.0.3"
