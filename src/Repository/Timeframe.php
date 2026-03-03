@@ -103,7 +103,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @return int[]|\WP_Post[]|\CommonsBooking\Model\Timeframe[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
-	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException|\CommonsBooking\Psr\Cache\CacheException @phpstan-ignore throws.notThrowable
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException|\CommonsBooking\Psr\Cache\CacheException
 	 */
 	public static function get(
 		array $locations = [],
