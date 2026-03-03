@@ -49,6 +49,21 @@ class Day {
 	 */
 	protected ?array $restrictions = null;
 
+	/** Cached timestamp derived from $this->date — computed once on first access. */
+	private ?int $dateTimestamp = null;
+
+	/** Cached Y-m-d string. */
+	private ?string $dateFormatted = null;
+
+	/** Cached start-of-day timestamp (midnight). */
+	private ?int $startTimestampCached = null;
+
+	/** Cached end-of-day timestamp (23:59:59). */
+	private ?int $endTimestampCached = null;
+
+	/** Cached UTC DateTime object. */
+	private ?DateTime $dateObjectCached = null;
+
 	/**
 	 * Day constructor.
 	 *
@@ -93,7 +108,18 @@ class Day {
 	 * @return false|string
 	 */
 	public function getDayOfWeek() {
-		return date( 'w', strtotime( $this->getDate() ) );
+		return date( 'w', $this->getTimestamp() );
+	}
+
+	/**
+	 * Returns the raw Unix timestamp for this date string (cached).
+	 */
+	private function getTimestamp(): int {
+		if ( $this->dateTimestamp === null ) {
+			$this->dateTimestamp = strtotime( $this->date );
+		}
+
+		return $this->dateTimestamp;
 	}
 
 	/**
@@ -101,7 +127,11 @@ class Day {
 	 * @throws Exception
 	 */
 	public function getDateObject(): DateTime {
-		return Wordpress::getUTCDateTime( $this->getDate() );
+		if ( $this->dateObjectCached === null ) {
+			$this->dateObjectCached = Wordpress::getUTCDateTime( $this->getDate() );
+		}
+
+		return $this->dateObjectCached;
 	}
 
 	/**
@@ -110,7 +140,11 @@ class Day {
 	 * @return string
 	 */
 	public function getDate(): string {
-		return date( 'Y-m-d', strtotime( $this->date ) );
+		if ( $this->dateFormatted === null ) {
+			$this->dateFormatted = date( 'Y-m-d', $this->getTimestamp() );
+		}
+
+		return $this->dateFormatted;
 	}
 
 	/**
@@ -121,7 +155,7 @@ class Day {
 	 * @return false|string
 	 */
 	public function getFormattedDate( string $format ) {
-		return date( $format, strtotime( $this->getDate() ) );
+		return date( $format, $this->getTimestamp() );
 	}
 
 	/**
@@ -130,7 +164,7 @@ class Day {
 	 * @return false|string
 	 */
 	public function getName() {
-		return date( 'l', strtotime( $this->getDate() ) );
+		return date( 'l', $this->getTimestamp() );
 	}
 
 	/**
@@ -229,9 +263,7 @@ class Day {
 		if ( $timeframe->getType() === Timeframe::BOOKING_ID ) {
 			$booking          = new Booking( $timeframe->getPost() );
 			$startDateBooking = $booking->getStartDate();
-			$startDateDay     = strtotime( $this->getDate() );
-
-			// if booking starts on day before, we set startslot to 0
+			$startDateDay     = $this->getTimestamp();
 			if ( $startDateBooking < $startDateDay ) {
 				$startSlot = 0;
 			}
@@ -259,9 +291,7 @@ class Day {
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
 
 		$startDateBooking = $restriction->getStartDate();
-		$startDateDay     = strtotime( $this->getDate() );
-
-		// if restriction starts on day before, we set startslot to 0
+		$startDateDay     = $this->getTimestamp();
 		if ( $startDateBooking < $startDateDay ) {
 			$startSlot = 0;
 		}
@@ -295,7 +325,7 @@ class Day {
 		// If we have a overbooked day, we need to mark all slots as booked
 		if ( ! $timeframe->isOverBookable() && ! empty( $endDate ) && $timeframe->getRepetition() == 'norep' ) {
 			// Check if timeframe ends after the current day
-			if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59:59' ) ) < $endDate->getTimestamp() ) {
+			if ( $this->getEndTimestamp() < $endDate->getTimestamp() ) {
 				$endSlot = count( $slots );
 			}
 		}
@@ -321,7 +351,7 @@ class Day {
 		$endSlot = $this->getSlotByTime( $endTime, $grid );
 
 		// Check if timeframe ends after the current day
-		if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
+		if ( $this->getEndTimestamp() < $endDate->getTimestamp() ) {
 			$endSlot = count( $slots );
 		}
 
@@ -489,17 +519,23 @@ class Day {
 	}
 
 	public function getStartTimestamp(): int {
-		$dt = new DateTime( $this->getDate() );
-		$dt->modify( 'midnight' );
+		if ( $this->startTimestampCached === null ) {
+			$dt                        = new DateTime( $this->getDate() );
+			$dt->modify( 'midnight' );
+			$this->startTimestampCached = $dt->getTimestamp();
+		}
 
-		return $dt->getTimestamp();
+		return $this->startTimestampCached;
 	}
 
 	public function getEndTimestamp(): int {
-		$dt = new DateTime( $this->getDate() );
-		$dt->modify( '23:59:59' );
+		if ( $this->endTimestampCached === null ) {
+			$dt                      = new DateTime( $this->getDate() );
+			$dt->modify( '23:59:59' );
+			$this->endTimestampCached = $dt->getTimestamp();
+		}
 
-		return $dt->getTimestamp();
+		return $this->endTimestampCached;
 	}
 
 
@@ -607,7 +643,7 @@ class Day {
 	 * @return false|float|int
 	 */
 	protected function getSlotTimestampStart( $slotsPerDay, $slotNr ) {
-		return strtotime( $this->getDate() ) + ( $slotNr * ( ( 24 / $slotsPerDay ) * 3600 ) );
+		return $this->getTimestamp() + ( $slotNr * ( ( 24 / $slotsPerDay ) * 3600 ) );
 	}
 
 	/**
@@ -619,6 +655,6 @@ class Day {
 	 * @return false|float|int
 	 */
 	protected function getSlotTimestampEnd( $slotsPerDay, $slotNr ) {
-		return strtotime( $this->getDate() ) + ( ( $slotNr + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ) - 1;
+		return $this->getTimestamp() + ( ( $slotNr + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ) - 1;
 	}
 }

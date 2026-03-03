@@ -60,9 +60,10 @@ class Calendar {
 	 * @param Day   $endDate
 	 * @param int[] $locations
 	 * @param int[] $items
+	 * @param array $preloadedTimeframes When non-empty, these are used directly instead of querying the DB.
 	 * @param array $types
 	 */
-	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $preloadedTimeframes = [], array $types = [] ) {
 		// check, that it spans at least two days
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
@@ -74,15 +75,19 @@ class Calendar {
 		$this->locations = $locations;
 		$this->types     = $types;
 
-		$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
-			$this->startDate->getStartTimestamp(),
-			$this->endDate->getEndTimestamp(),
-			$this->locations,
-			$this->items,
-			$this->types,
-			true,
-			[ 'confirmed', 'publish' ]
-		);
+		if ( ! empty( $preloadedTimeframes ) ) {
+			$this->timeframes = $preloadedTimeframes;
+		} else {
+			$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+				$this->startDate->getStartTimestamp(),
+				$this->endDate->getEndTimestamp(),
+				$this->locations,
+				$this->items,
+				$this->types,
+				true,
+				[ 'confirmed', 'publish' ]
+			);
+		}
 
 		// Pre-fetch all restrictions for the date range once so Week/Day don't each issue their own DB query.
 		$this->restrictions = \CommonsBooking\Repository\Restriction::get(

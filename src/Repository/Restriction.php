@@ -74,23 +74,33 @@ class Restriction extends PostRepository {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
-		} else {
-			global $wpdb;
-			$table_posts = $wpdb->prefix . 'posts';
+		}
 
-			$dateQuery = '';
+		// Request-level memoization: 40 Calendar instances all call queryPosts with the same
+		// arguments during a single renderTable() — deduplicate to a single DB query.
+		$wpCacheKey   = 'cb_restriction_query_' . md5( serialize( [ $date, $minTimestamp, $postStatus ] ) );
+		$wpCacheGroup = 'commonsbooking_restriction';
+		$cached       = wp_cache_get( $wpCacheKey, $wpCacheGroup );
+		if ( $cached !== false ) {
+			return $cached;
+		}
 
-			// Filter only from a specific start date.
-			// Rep-End must be > Min Date (0:00)
-			if ( $minTimestamp ) {
-				$dateQuery = self::getMinTimestampQuery( $minTimestamp );
-			} // Filter by date
-			elseif ( $date ) {
-				$dateQuery = self::getDateQuery( $date );
-			}
+		global $wpdb;
+		$table_posts = $wpdb->prefix . 'posts';
 
-			// Complete query
-			$query = "
+		$dateQuery = '';
+
+		// Filter only from a specific start date.
+		// Rep-End must be > Min Date (0:00)
+		if ( $minTimestamp ) {
+			$dateQuery = self::getMinTimestampQuery( $minTimestamp );
+		} // Filter by date
+		elseif ( $date ) {
+			$dateQuery = self::getDateQuery( $date );
+		}
+
+		// Complete query
+		$query = "
                 SELECT DISTINCT pm1.* from $table_posts pm1                
                 " . $dateQuery . '
                 ' . self::getActiveQuery() . "
@@ -99,11 +109,11 @@ class Restriction extends PostRepository {
                     pm1.post_status IN ('" . implode( "','", $postStatus ) . "')
             ";
 
-			$posts = $wpdb->get_results( $query );
-			Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
+		$posts = $wpdb->get_results( $query );
+		wp_cache_set( $wpCacheKey, $posts, $wpCacheGroup );
+		Plugin::setCacheItem( $posts, Wordpress::getTags( $posts ) );
 
-			return $posts;
-		}
+		return $posts;
 	}
 
 	/**
