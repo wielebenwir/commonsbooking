@@ -43,6 +43,13 @@ class Day {
 	protected ?array $timeframes = null;
 
 	/**
+	 * Pre-fetched restrictions for this day. When set, getRestrictions() uses this instead of querying the DB.
+	 *
+	 * @var \CommonsBooking\Model\Restriction[]|null
+	 */
+	protected ?array $restrictions = null;
+
+	/**
 	 * Day constructor.
 	 *
 	 * @param string $date
@@ -50,8 +57,9 @@ class Day {
 	 * @param array  $items
 	 * @param array  $types
 	 * @param array  $possibleTimeframes
+	 * @param array  $possibleRestrictions Pre-fetched restrictions for the calendar range; filtered to this day here.
 	 */
-	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], array $possibleRestrictions = [] ) {
 		$this->date      = $date;
 		$this->locations = array_map(
 			function ( $location ) {
@@ -71,6 +79,13 @@ class Day {
 		if ( ! empty( $possibleTimeframes ) ) {
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
 			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
+		}
+
+		if ( ! empty( $possibleRestrictions ) ) {
+			$this->restrictions = \CommonsBooking\Repository\Restriction::filterRestrictionsForDate( $possibleRestrictions, $this->getDate() );
+		} elseif ( is_array( $possibleRestrictions ) ) {
+			// An explicitly passed empty array means "there are no restrictions" — skip the DB query.
+			$this->restrictions = [];
 		}
 	}
 
@@ -155,6 +170,10 @@ class Day {
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {
+		if ( $this->restrictions !== null ) {
+			return $this->restrictions;
+		}
+
 		return \CommonsBooking\Repository\Restriction::get(
 			$this->locations,
 			$this->items,
@@ -553,12 +572,13 @@ class Day {
 		} else {
 			$slots       = [];
 			$slotsPerDay = 24;
+			$timeFormat  = esc_html( get_option( 'time_format' ) );
 
 			// Init Slots
 			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
 				$slots[ $i ] = [
-					'timestart'      => date( esc_html( get_option( 'time_format' ) ), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timeend'        => date( esc_html( get_option( 'time_format' ) ), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timestart'      => date( $timeFormat, $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timeend'        => date( $timeFormat, ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
 					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
 					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i ),
 				];

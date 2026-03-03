@@ -112,6 +112,26 @@ class Calendar {
 
 		$itemRowsHTML = '';
 
+		// Fetch timeframes for ALL items in one query instead of one query per item.
+		$allItemIds    = array_map( fn( $item ) => $item->ID, $items );
+		$allTimeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
+			strtotime( $today ),
+			strtotime( $last_day ),
+			[],
+			$allItemIds,
+			[ Timeframe::BOOKABLE_ID ],
+			true
+		);
+
+		// Group the pre-fetched timeframes by item ID for O(1) lookup in the loop.
+		$timeframesByItemId = [];
+		foreach ( $allTimeframes as $timeframe ) {
+			$itemId = $timeframe->getItemID();
+			if ( $itemId !== null ) {
+				$timeframesByItemId[ $itemId ][] = $timeframe;
+			}
+		}
+
 		foreach ( $items as $item ) {
 			// Check for category term
 			if ( $itemCategory ) {
@@ -122,15 +142,7 @@ class Calendar {
 
 			$rowHtml = ' ';
 
-			// Get timeframes for item
-			$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
-				strtotime( $today ),
-				strtotime( $last_day ),
-				[],
-				[ $item->ID ],
-				[ Timeframe::BOOKABLE_ID ],
-				true
-			);
+			$timeframes = $timeframesByItemId[ $item->ID ] ?? [];
 
 			if ( $timeframes ) {
 				// Collect unique locations from timeframes

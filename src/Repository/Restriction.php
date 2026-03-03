@@ -249,6 +249,37 @@ class Restriction extends PostRepository {
 	}
 
 	/**
+	 * Filters a pre-fetched list of Restriction models to those active on a specific date.
+	 * Used to avoid per-day DB queries when restrictions were pre-fetched for a date range.
+	 *
+	 * @param \CommonsBooking\Model\Restriction[] $restrictions
+	 * @param string                              $date Date string in Y-m-d format
+	 *
+	 * @return \CommonsBooking\Model\Restriction[]
+	 */
+	public static function filterRestrictionsForDate( array $restrictions, string $date ): array {
+		$dayStart = strtotime( $date );
+		$dayEnd   = strtotime( $date . 'T23:59' );
+
+		return array_values(
+			array_filter(
+				$restrictions,
+				function ( $restriction ) use ( $dayStart, $dayEnd ) {
+					$start = (int) $restriction->getMeta( \CommonsBooking\Model\Restriction::META_START );
+					if ( $start > $dayEnd ) {
+						return false;
+					}
+					$end = $restriction->getMeta( \CommonsBooking\Model\Restriction::META_END );
+					if ( $end !== '' && (int) $end < $dayStart ) {
+						return false;
+					}
+					return true;
+				}
+			)
+		);
+	}
+
+	/**
 	 * Casts all posts in the array to Restriction objects.
 	 *
 	 * @param $posts

@@ -36,12 +36,26 @@ class Wordpress {
 	 * @return array|array[]|null[]|\WP_Post[]
 	 */
 	public static function flattenWpdbResult( $posts ): array {
-		return array_map(
-			function ( $post ) {
-				return get_post( $post->ID );
-			},
-			$posts
-		);
+		if ( empty( $posts ) ) {
+			return [];
+		}
+
+		$wpPosts = [];
+		$ids     = [];
+		foreach ( $posts as $post ) {
+			// Populate the WP post object cache directly from the already-fetched raw data,
+			// avoiding a redundant SELECT per post.
+			$wpPost = new \WP_Post( $post );
+			wp_cache_add( $post->ID, $wpPost, 'posts' );
+			$wpPosts[] = $wpPost;
+			$ids[]     = (int) $post->ID;
+		}
+
+		// Prime the post-meta cache in one batch query so that all subsequent
+		// get_post_meta() calls for these posts are served from the in-memory cache.
+		update_postmeta_cache( $ids );
+
+		return $wpPosts;
 	}
 
 	/**
