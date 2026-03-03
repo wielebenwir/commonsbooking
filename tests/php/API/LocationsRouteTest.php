@@ -6,8 +6,6 @@ class LocationsRouteTest extends CB_REST_Route_UnitTestCase {
 
 	protected $ENDPOINT = '/commonsbooking/v1/locations';
 
-	private $locationId;
-
 	public function setUp(): void {
 		parent::setUp();
 		$this->locationId = $this->createLocation( 'Testlocation', 'publish', [] );
