@@ -553,12 +553,13 @@ class Day {
 		} else {
 			$slots       = [];
 			$slotsPerDay = 24;
+			$timeFormat  = esc_html( get_option( 'time_format' ) );
 
 			// Init Slots
 			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
 				$slots[ $i ] = [
-					'timestart'      => date( esc_html( get_option( 'time_format' ) ), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timeend'        => date( esc_html( get_option( 'time_format' ) ), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timestart'      => date( $timeFormat, $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timeend'        => date( $timeFormat, ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
 					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
 					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i ),
 				];
