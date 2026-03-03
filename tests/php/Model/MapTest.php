@@ -25,7 +25,7 @@ class MapTest extends CustomPostTypeTest {
 		$this->assertEquals( 'Köln', $locations[ $this->geoLocation->ID ]['address']['city'] );
 		$this->assertEquals( '50667', $locations[ $this->geoLocation->ID ]['address']['zip'] );
 
-		$this->assertEquals( $this->itemID, $locations[ $this->geoLocation->ID ]['items'][0]['id'] );
+		$this->assertEquals( $this->itemId, $locations[ $this->geoLocation->ID ]['items'][0]['id'] );
 	}
 
 	public function testCleanup_location_data() {

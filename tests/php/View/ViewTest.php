@@ -17,21 +17,21 @@ class ViewTest extends CustomPostTypeTest {
 	protected $now;
 
 	public function testGetShortcodeDataWithFourRangesByItem() {
-		$shortCodeData = View::getShortcodeData( new Item( $this->itemID ), 'Item' );
-		$this->assertTrue( is_array( $shortCodeData[ $this->itemID ]['ranges'] ) );
-		$this->assertCount( 4, $shortCodeData[ $this->itemID ]['ranges'] );
+		$shortCodeData = View::getShortcodeData( new Item( $this->itemId ), 'Item' );
+		$this->assertTrue( is_array( $shortCodeData[ $this->itemId ]['ranges'] ) );
+		$this->assertCount( 4, $shortCodeData[ $this->itemId ]['ranges'] );
 
 		// Check for specific timeframe start date
-		$this->assertEquals( $shortCodeData[ $this->itemID ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
+		$this->assertEquals( $shortCodeData[ $this->itemId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
 	}
 
 	public function testGetShortcodeDataWithFourRangesByLocation() {
-		$shortCodeData = View::getShortcodeData( new Location( $this->locationID ), 'Location' );
-		$this->assertTrue( is_array( $shortCodeData[ $this->locationID ]['ranges'] ) );
-		$this->assertCount( 4, $shortCodeData[ $this->locationID ]['ranges'] );
+		$shortCodeData = View::getShortcodeData( new Location( $this->locationId ), 'Location' );
+		$this->assertTrue( is_array( $shortCodeData[ $this->locationId ]['ranges'] ) );
+		$this->assertCount( 4, $shortCodeData[ $this->locationId ]['ranges'] );
 
 		// Check for specific timeframe start date
-		$this->assertEquals( $shortCodeData[ $this->locationID ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
+		$this->assertEquals( $shortCodeData[ $this->locationId ]['ranges'][0]['start_date'], strtotime( '+2 days midnight', $this->now ) );
 	}
 
 	public function testShortcodeForLocationView() {
@@ -92,12 +92,12 @@ class ViewTest extends CustomPostTypeTest {
 		$now       = time();
 		$this->now = $now;
 
-		$this->item     = new Item( $this->itemID );
-		$this->location = new Location( $this->locationID );
+		$this->item     = new Item( $this->itemId );
+		$this->location = new Location( $this->locationId );
 
 		$timeframeId = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+5 days midnight', $now ),
 			strtotime( '+6 days midnight', $now ),
 		);
@@ -105,16 +105,16 @@ class ViewTest extends CustomPostTypeTest {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+2 days midnight', $now ),
 			strtotime( '+3 days midnight', $now ),
 		);// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+8 days midnight', $now ),
 			strtotime( '+9 days midnight', $now ),
 		);
@@ -122,8 +122,8 @@ class ViewTest extends CustomPostTypeTest {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+12 days midnight', $now ),
 			strtotime( '+13 days midnight', $now ),
 		);
@@ -131,8 +131,8 @@ class ViewTest extends CustomPostTypeTest {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$timeframeId = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+14 days midnight', $now ),
 			strtotime( '+15 days midnight', $now ),
 		);
@@ -141,8 +141,8 @@ class ViewTest extends CustomPostTypeTest {
 
 		// this timeframe should not be in shortcode data, because it's out of 30 days advanced booking range
 		$timeframeId = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+32 days midnight', $now ),
 			strtotime( '+33 days midnight', $now ),
 		);

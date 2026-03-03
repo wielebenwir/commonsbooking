@@ -8,9 +8,6 @@ class ItemsRouteTest extends CB_REST_Route_UnitTestCase {
 
 	protected $ENDPOINT = '/commonsbooking/v1/items';
 
-	private $locationId;
-	private $itemId;
-
 	public function setUp(): void {
 		parent::setUp();
 

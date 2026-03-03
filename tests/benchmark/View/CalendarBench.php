@@ -41,9 +41,10 @@ class CalendarBench {
 			10,
 			6
 		);
-		$repetitions = [];
-		$start       = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
-		$end         = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$repetitions     = [];
+		$daysBeforeStart =
+		$start           = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$end             = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
 		$end->modify( self::BOOKINGS_PER_ITEM . ' days' );
 		$period = new \DatePeriod( $start, new \DateInterval( 'P1D' ), $end );
 		foreach ( $period as $date ) {
@@ -85,20 +86,6 @@ class CalendarBench {
 	}
 
 	public function tearDown(): void {
-		foreach ( $this->bookingIDs as $bookingID ) {
-			wp_delete_post( $bookingID, true );
-		}
-		foreach ( $this->itemIDs as $itemID ) {
-			wp_delete_post( $itemID, true );
-		}
-		foreach ( $this->locationIDs as $locationID ) {
-			wp_delete_post( $locationID, true );
-		}
-		foreach ( $this->timeframeIDs as $timeframeID ) {
-			wp_delete_post( $timeframeID, true );
-		}
-		foreach ( $this->bookingIDs as $bookingID ) {
-			wp_delete_post( $bookingID, true );
-		}
+		$this->tearDownAllPosts();
 	}
 }

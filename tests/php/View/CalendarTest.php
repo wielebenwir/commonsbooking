@@ -30,8 +30,8 @@ class CalendarTest extends CustomPostTypeTest {
 	public function testKeepDateRangeParam() {
 		$startDate    = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
-			$this->itemID,
-			$this->locationID,
+			$this->itemId,
+			$this->locationId,
 			$startDate,
 			date( 'Y-m-d', strtotime( '+20 days', strtotime( self::CURRENT_DATE ) ) ),
 			true
@@ -46,8 +46,8 @@ class CalendarTest extends CustomPostTypeTest {
 		$startDate    = date( 'Y-m-d', strtotime( 'midnight' ) );
 		$endDate      = date( 'Y-m-d', strtotime( '+60 days midnight' ) );
 		$jsonresponse = Calendar::getCalendarDataArray(
-			$this->itemID,
-			$this->locationID,
+			$this->itemId,
+			$this->locationId,
 			$startDate,
 			$endDate
 		);
@@ -82,8 +82,8 @@ class CalendarTest extends CustomPostTypeTest {
 		$endDate   = date( 'Y-m-d', strtotime( '+60 days midnight', strtotime( self::CURRENT_DATE ) ) );
 
 		$jsonresponse = Calendar::getCalendarDataArray(
-			$this->itemID,
-			$this->locationID,
+			$this->itemId,
+			$this->locationId,
 			$startDate,
 			$endDate
 		);
@@ -98,8 +98,8 @@ class CalendarTest extends CustomPostTypeTest {
 	public function testOverbookingDefaultValues() {
 		// the default location has no overbooking values set, overbooking should be disabled
 		$jsonresponse = Calendar::getCalendarDataArray(
-			$this->itemID,
-			$this->locationID,
+			$this->itemId,
+			$this->locationId,
 			date( 'Y-m-d', strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ) ),
 			date( 'Y-m-d', strtotime( '+60 days midnight', strtotime( self::CURRENT_DATE ) ) )
 		);
@@ -215,8 +215,8 @@ class CalendarTest extends CustomPostTypeTest {
 
 	public function testRenderTable() {
 		$calendar = Calendar::renderTable( [] );
-		$item     = new \CommonsBooking\Model\Item( $this->itemID );
-		$location = new \CommonsBooking\Model\Location( $this->locationID );
+		$item     = new \CommonsBooking\Model\Item( $this->itemId );
+		$location = new \CommonsBooking\Model\Location( $this->locationId );
 		$this->assertStringContainsString( '<table', $calendar );
 		$this->assertStringContainsString( $item->post_title, $calendar );
 		$this->assertStringContainsString( $location->post_title, $calendar );
@@ -446,8 +446,8 @@ class CalendarTest extends CustomPostTypeTest {
 
 		$this->now         = time();
 		$this->timeframeId = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+' . self::timeframeStart . ' days midnight', $this->now ),
 			strtotime( '+' . self::timeframeEnd . ' days midnight', $this->now )
 		);
@@ -455,15 +455,15 @@ class CalendarTest extends CustomPostTypeTest {
 		update_post_meta( $this->timeframeId, Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 
 		$this->closestTimeframe = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '-100 days midnight' ),
 			strtotime( '+13 days midnight' )
 		);
 
 		$this->secondClosestTimeframe = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+14 days midnight' ),
 			strtotime( '+300 days midnight' )
 		);

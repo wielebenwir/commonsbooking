@@ -36,7 +36,7 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 	protected $secondTimeframeID;
 
-	protected $subscriberID;
+	protected $subscriberId;
 
 	protected int $adminUserID;
 
@@ -55,9 +55,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	protected function createSubscriber() {
 		$wp_user = get_user_by( 'email', 'a@a.de' );
 		if ( ! $wp_user ) {
-			$this->subscriberID = wp_create_user( 'normaluser', 'normal', 'a@a.de' );
+			$this->subscriberId = wp_create_user( 'normaluser', 'normal', 'a@a.de' );
 		} else {
-			$this->subscriberID = $wp_user->ID;
+			$this->subscriberId = $wp_user->ID;
 		}
 	}
 
@@ -115,10 +115,10 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		$this->setUpBookingCodesTable();
 
 		// Create location
-		$this->locationID = self::createLocation( 'Testlocation' );
+		$this->locationId = self::createLocation( 'Testlocation' );
 
 		// Create Item
-		$this->itemID = self::createItem( 'TestItem' );
+		$this->itemId = self::createItem( 'TestItem' );
 	}
 
 	protected function setUpBookingCodesTable() {
@@ -141,51 +141,10 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 		parent::tearDown();
 
 		ClockMock::reset();
-		$this->tearDownAllItems();
-		$this->tearDownAllLocation();
-		$this->tearDownAllTimeframes();
-		$this->tearDownAllBookings();
-		$this->tearDownAllRestrictions();
-		$this->tearDownAllMaps();
+		$this->tearDownAllPosts();
 		$this->tearDownBookingCodesTable();
 
 		wp_logout();
-	}
-
-	protected function tearDownAllLocation() {
-		foreach ( $this->locationIDs as $id ) {
-			wp_delete_post( $id, true );
-		}
-	}
-
-	protected function tearDownAllItems() {
-		foreach ( $this->itemIDs as $id ) {
-			wp_delete_post( $id, true );
-		}
-	}
-
-	protected function tearDownAllTimeframes() {
-		foreach ( $this->timeframeIDs as $id ) {
-			wp_delete_post( $id, true );
-		}
-	}
-
-	protected function tearDownAllBookings() {
-		foreach ( $this->bookingIDs as $id ) {
-			wp_delete_post( $id, true );
-		}
-	}
-
-	protected function tearDownAllRestrictions() {
-		foreach ( $this->restrictionIDs as $id ) {
-			wp_delete_post( $id, true );
-		}
-	}
-
-	protected function tearDownAllMaps() {
-		foreach ( $this->mapIDs as $id ) {
-			wp_delete_post( $id, true );
-		}
 	}
 
 	protected function tearDownBookingCodesTable() {

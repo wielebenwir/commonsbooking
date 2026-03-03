@@ -12,8 +12,8 @@ final class BookingTest extends CustomPostTypeTest {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->createBooking(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			time() - 86400,
 			time() + 86400
 		);
@@ -29,7 +29,7 @@ final class BookingTest extends CustomPostTypeTest {
 		$this->assertTrue( $bookings['total'] == 1 );
 
 		// check for #1802, delete location. Booking list should still generate
-		wp_delete_post( $this->locationID, true );
+		wp_delete_post( $this->locationId, true );
 		$bookings = Booking::getBookingListData();
 		$this->assertTrue( $bookings['total'] == 1 );
 	}
@@ -53,7 +53,7 @@ final class BookingTest extends CustomPostTypeTest {
 		wp_set_current_user( self::USER_ID );
 
 		$simpleFilter = function ( $rowData, $bookingObject ) {
-			if ( in_array( $rowData['postID'], $this->bookingIDs, true ) ) {
+			if ( in_array( $rowData['postID'], $this->bookingIds, true ) ) {
 				return $rowData;
 			} else {
 				return null;

@@ -19,14 +19,14 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 
 	protected function setUpTestBooking(): void {
 		$this->testBookingId       = $this->createBooking(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '+1 day', time() ),
 			strtotime( '+2 days', time() ),
 			'8:00 AM',
 			'12:00 PM',
 			'unconfirmed',
-			$this->subscriberID
+			$this->subscriberId
 		);
 		$this->testBookingTomorrow = new Booking( get_post( $this->testBookingId ) );
 	}
@@ -84,7 +84,7 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->subscriberID
+				$this->subscriberId
 			)
 		);
 		$termRule      = new BookingRuleApplied( $this->alwaysdeny );
@@ -101,14 +101,14 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		// first, we check if the rule applies to the subscriber (as it should)
 		$subscriberBooking = new Booking(
 			$this->createBooking(
-				$this->locationID,
-				$this->itemID,
+				$this->locationId,
+				$this->itemId,
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->subscriberID
+				$this->subscriberId
 			)
 		);
 		$this->assertNotNull( $this->appliedAlwaysDeny->checkBookingCompliance( $subscriberBooking ) );
@@ -116,8 +116,8 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		$this->createAdministrator();
 		$adminBooking = new Booking(
 			$this->createBooking(
-				$this->locationID,
-				$this->itemID,
+				$this->locationId,
+				$this->itemId,
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 				'8:00 AM',
@@ -131,8 +131,8 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		$this->createEditor();
 		$editorBooking = new Booking(
 			$this->createBooking(
-				$this->locationID,
-				$this->itemID,
+				$this->locationId,
+				$this->itemId,
 				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 				strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 				'8:00 AM',
@@ -151,8 +151,8 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 		parent::setUp();
 		$this->createSubscriber();
 		$this->firstTimeframeID = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) )
 		);
@@ -175,8 +175,8 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 			}
 		);
 		$this->firstTimeframeID = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) )
 		);

@@ -9,19 +9,19 @@ use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\CustomPostType\Restriction;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 trait CPTCreationTrait {
-	protected $locationID;
-	protected $itemID;
-	protected $bookingIDs = [];
+	protected $locationId;
+	protected $itemId;
+	protected $bookingIds = [];
 
-	protected $timeframeIDs = [];
+	protected $timeframeIds = [];
 
-	protected $restrictionIDs = [];
+	protected $restrictionIds = [];
 
-	protected $locationIDs = [];
+	protected $locationIds = [];
 
-	protected $itemIDs = [];
+	protected $itemIds = [];
 
-	protected $mapIDs = [];
+	protected $mapIds = [];
 
 	protected function createTimeframe(
 		$locationId,
@@ -105,7 +105,7 @@ trait CPTCreationTrait {
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_ITEM_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE, \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID );
 
-		$this->timeframeIDs[] = $timeframeId;
+		$this->timeframeIds[] = $timeframeId;
 
 		return $timeframeId;
 	}
@@ -142,7 +142,7 @@ trait CPTCreationTrait {
 		}
 		update_post_meta( $restrictionId, \CommonsBooking\Model\Restriction::META_STATE, $state );
 
-		$this->restrictionIDs[] = $restrictionId;
+		$this->restrictionIds[] = $restrictionId;
 
 		return $restrictionId;
 	}
@@ -153,8 +153,8 @@ trait CPTCreationTrait {
 	 */
 	protected function createConfirmedBookingEndingToday() {
 		return $this->createBooking(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '-1 day', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
 			$this->getEndOfDayTimestamp( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE )
 		);
@@ -170,8 +170,8 @@ trait CPTCreationTrait {
 	 */
 	protected function createUnconfirmedBookingEndingTomorrow() {
 		return $this->createBooking(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '-1 day', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
 			strtotime( '+2 days midnight', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ) - 1,
 			null,
@@ -226,7 +226,7 @@ trait CPTCreationTrait {
 			update_post_meta( $bookingId, \CommonsBooking\Model\Booking::END_TIMEFRAME_GRIDSIZE, $endGridSize );
 		}
 
-		$this->bookingIDs[] = $bookingId;
+		$this->bookingIds[] = $bookingId;
 
 		return $bookingId;
 	}
@@ -254,10 +254,10 @@ trait CPTCreationTrait {
 	 */
 	protected function createConfirmedBookingStartingToday( $locationId = null, $itemId = null ) {
 		if ( $locationId === null ) {
-			$locationId = $this->locationID;
+			$locationId = $this->locationId;
 		}
 		if ( $itemId === null ) {
-			$itemId = $this->itemID;
+			$itemId = $this->itemId;
 		}
 
 		return $this->createBooking(
@@ -278,10 +278,10 @@ trait CPTCreationTrait {
 	 */
 	protected function createBookableTimeFrameIncludingCurrentDay( $locationId = null, $itemId = null ) {
 		if ( $locationId === null ) {
-			$locationId = $this->locationID;
+			$locationId = $this->locationId;
 		}
 		if ( $itemId === null ) {
-			$itemId = $this->itemID;
+			$itemId = $this->itemId;
 		}
 
 		return $this->createTimeframe(
@@ -294,7 +294,7 @@ trait CPTCreationTrait {
 
 	protected function createHolidayTimeframeForAllItemsAndLocations() {
 		$timeframe = $this->createTimeframe(
-			$this->locationID,
+			$this->locationId,
 			'',
 			strtotime( '-1 day', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
 			strtotime( '+1 day', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
@@ -330,10 +330,10 @@ trait CPTCreationTrait {
 	 */
 	protected function createTwoBookableTimeframeSlotsIncludingCurrentDay( $locationId = null, $itemId = null ): array {
 		if ( $locationId === null ) {
-			$locationId = $this->locationID;
+			$locationId = $this->locationId;
 		}
 		if ( $itemId === null ) {
-			$itemId = $this->itemID;
+			$itemId = $this->itemId;
 		}
 		$tf1 = $this->createTimeframe(
 			$locationId,
@@ -377,10 +377,10 @@ trait CPTCreationTrait {
 	 */
 	protected function createBookableTimeFrameStartingInAWeek( $locationId = null, $itemId = null ) {
 		if ( $locationId === null ) {
-			$locationId = $this->locationID;
+			$locationId = $this->locationId;
 		}
 		if ( $itemId === null ) {
-			$itemId = $this->itemID;
+			$itemId = $this->itemId;
 		}
 
 		return $this->createTimeframe(
@@ -402,7 +402,7 @@ trait CPTCreationTrait {
 			]
 		);
 
-		$this->itemIDs[] = $itemId;
+		$this->itemIds[] = $itemId;
 
 		if ( ! empty( $admins ) ) {
 			update_post_meta( $itemId, COMMONSBOOKING_METABOX_PREFIX . 'item_admins', $admins );
@@ -422,7 +422,7 @@ trait CPTCreationTrait {
 			]
 		);
 
-		$this->locationIDs[] = $locationId;
+		$this->locationIds[] = $locationId;
 
 		if ( ! empty( $admins ) ) {
 			update_post_meta( $locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_admins', $admins );
@@ -455,8 +455,53 @@ trait CPTCreationTrait {
 		foreach ( $defaultValues as $key => $value ) {
 			update_post_meta( $mapId, $key, $value );
 		}
-		$this->mapIDs[] = $mapId;
+		$this->mapIds[] = $mapId;
 
 		return $mapId;
+	}
+
+	protected function tearDownAllLocation() {
+		foreach ( $this->locationIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllItems() {
+		foreach ( $this->itemIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllTimeframes() {
+		foreach ( $this->timeframeIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllBookings() {
+		foreach ( $this->bookingIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllRestrictions() {
+		foreach ( $this->restrictionIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllMaps() {
+		foreach ( $this->mapIds as $id ) {
+			wp_delete_post( $id, true );
+		}
+	}
+
+	protected function tearDownAllPosts() {
+		$this->tearDownAllLocation();
+		$this->tearDownAllItems();
+		$this->tearDownAllTimeframes();
+		$this->tearDownAllBookings();
+		$this->tearDownAllRestrictions();
+		$this->tearDownAllMaps();
 	}
 }

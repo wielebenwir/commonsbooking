@@ -57,15 +57,15 @@ class ItemTest extends CustomPostTypeTest {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->restrictionIDs[] = $this->createRestriction(
+		$this->restrictionIds[] = $this->createRestriction(
 			Restriction::META_HINT,
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( self::CURRENT_DATE ),
 			null
 		);
 		$this->timeframeModel   = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
-		$this->itemModel        = new Item( $this->itemID );
+		$this->itemModel        = new Item( $this->itemId );
 		$this->createSubscriber();
 	}
 

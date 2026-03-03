@@ -37,14 +37,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingOne          = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 					strtotime( '+2 days', strtotime( self::CURRENT_DATE ) ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -66,7 +66,7 @@ class BookingRuleTest extends CustomPostTypeTest {
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -81,7 +81,7 @@ class BookingRuleTest extends CustomPostTypeTest {
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -94,28 +94,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingOne = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 					strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$testBookingTwo = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '+4 day', strtotime( self::CURRENT_DATE ) ),
 					strtotime( '+5 days', strtotime( self::CURRENT_DATE ) ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -147,28 +147,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$beforeBooking = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '-3 days', strtotime( self::CURRENT_DATE ) ),
 					strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$afterBooking  = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 					strtotime( '+3 days', strtotime( self::CURRENT_DATE ) ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -178,14 +178,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBooking = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
 					strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -197,28 +197,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingOne = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '+1 day' ),
 					strtotime( '+2 days' ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$testBookingTwo = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '+4 day' ),
 					strtotime( '+5 days' ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -226,14 +226,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingThree = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '+6 day' ),
 					strtotime( '+7 days' ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -247,14 +247,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		ClockMock::freeze( $currentDate );
 		$cancelBooking = new Booking(
 			$this->createBooking(
-				$this->locationID,
-				$this->itemID,
+				$this->locationId,
+				$this->itemId,
 				strtotime( '+7 days' ),
 				strtotime( '+10 days' ),
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->subscriberID
+				$this->subscriberId
 			)
 		);
 		// two days pass and they cancel it
@@ -264,14 +264,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		// now we create a booking that should be allowed
 		$allowedBooking = new Booking(
 			$this->createBooking(
-				$this->locationID,
-				$this->itemID,
+				$this->locationId,
+				$this->itemId,
 				strtotime( '+6 days' ),
 				strtotime( '+9 days' ),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->subscriberID
+				$this->subscriberId
 			)
 		);
 		$this->assertNull( BookingRule::checkMaxBookingDays( $allowedBooking, array( 4, 30 ) ) );
@@ -293,28 +293,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingOne = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( 'monday this week', $nextWeekDate->getTimestamp() ),
 					strtotime( 'tuesday this week', $nextWeekDate->getTimestamp() ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$testBookingTwo = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( 'wednesday this week', $nextWeekDate->getTimestamp() ),
 					strtotime( 'thursday this week', $nextWeekDate->getTimestamp() ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -322,14 +322,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingThree    = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( 'friday this week', $nextWeekDate->getTimestamp() ),
 					strtotime( 'saturday this week', $nextWeekDate->getTimestamp() ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -344,14 +344,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingFour = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					$mondayFollowingWeek->getTimestamp(),
 					$tuesdayFollowingWeek->getTimestamp(),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -387,14 +387,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$deniedBooking           = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '07.' . $testMonth . '.' . $testYear ),
 					strtotime( '09.' . $testMonth . '.' . $testYear ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -402,14 +402,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$allowedBooking          = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '20.' . $testMonth . '.' . $testYear ),
 					strtotime( '22.' . $testMonth . '.' . $testYear ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -426,14 +426,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$previousMonthBooking    = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '01.' . $testMonth . '.' . $testYear ),
 					strtotime( '04.' . $testMonth . '.' . $testYear ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -451,28 +451,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$allowedBooking          = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '03.' . $testMonth . '.' . $testYear ),
 					strtotime( '03.' . $testMonth . '.' . $testYear ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$disallowedBooking       = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '12.' . $testMonth . '.' . $testYear ),
 					strtotime( '13.' . $testMonth . '.' . $testYear ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -499,28 +499,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$deniedBooking           = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '05.02.' . $testYear ),
 					strtotime( '06.02.' . $testYear ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$allowedBooking          = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '01.03.' . $testYear ),
 					strtotime( '02.03.' . $testYear ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -541,28 +541,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingOne      = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( 'monday this week' ),
 					strtotime( 'tuesday this week' ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$testBookingSameWeek = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( 'wednesday this week' ),
 					strtotime( 'thursday this week' ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -571,14 +571,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingNextWeek = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( 'monday next week' ),
 					strtotime( 'tuesday next week' ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -597,28 +597,28 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingOne       = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '01.01.2022' ),
 					strtotime( '02.01.2022' ),
 					'8:00 AM',
 					'12:00 PM',
 					'confirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
 		$testBookingSameMonth = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '03.01.2022' ),
 					strtotime( '04.01.2022' ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -627,14 +627,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testBookingNextMonth = new Booking(
 			get_post(
 				$this->createBooking(
-					$this->locationID,
-					$this->itemID,
+					$this->locationId,
+					$this->itemId,
 					strtotime( '01.02.2022' ),
 					strtotime( '02.02.2022' ),
 					'8:00 AM',
 					'12:00 PM',
 					'unconfirmed',
-					$this->subscriberID
+					$this->subscriberId
 				)
 			)
 		);
@@ -661,14 +661,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		// This booking goes from monday to wednesday and is cancelled on tuesday
 		$cancelledBookingThisWeek = new Booking(
 			$this->createBooking(
-				$this->locationID,
-				$this->itemID,
+				$this->locationId,
+				$this->itemId,
 				strtotime( $testMonday ),
 				strtotime( $testWednesday ),
 				'8:00 AM',
 				'12:00 PM',
 				'confirmed',
-				$this->subscriberID
+				$this->subscriberId
 			)
 		);
 		// We need to use the cancel function here so that the cancellation date is set correctly. In this case we cancel shortly before the booking ends
@@ -682,14 +682,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$testSaturday                = '08.01.2022';
 		$conditionallyAllowedBooking = new Booking(
 			$this->createBooking(
-				$this->locationID,
-				$this->itemID,
+				$this->locationId,
+				$this->itemId,
 				strtotime( $testThursday ),
 				strtotime( $testSaturday ),
 				'8:00 AM',
 				'12:00 PM',
 				'unconfirmed',
-				$this->subscriberID
+				$this->subscriberId
 			)
 		);
 		$this->assertNull( BookingRule::checkMaxBookingDaysPerWeek( $conditionallyAllowedBooking, $optionsArray ) );
@@ -743,14 +743,14 @@ class BookingRuleTest extends CustomPostTypeTest {
 			$bookings[] = new Booking(
 				get_post(
 					$this->createBooking(
-						$this->locationID,
-						$this->itemID,
+						$this->locationId,
+						$this->itemId,
 						$date['start'],
 						$date['end'],
 						'8:00 AM',
 						'12:00 PM',
 						'confirmed',
-						$this->subscriberID
+						$this->subscriberId
 					)
 				)
 			);
@@ -779,8 +779,8 @@ class BookingRuleTest extends CustomPostTypeTest {
 			}
 		);
 		$this->firstTimeframeID = $this->createTimeframe(
-			$this->locationID,
-			$this->itemID,
+			$this->locationId,
+			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
 			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) )
 		);
