@@ -71,10 +71,10 @@ class Day {
 	 * @param array       $locations
 	 * @param array       $items
 	 * @param array       $types
-	 * @param array       $possibleTimeframes
+	 * @param array|null  $possibleTimeframes Pre-fetched timeframes for the calendar range (null = not provided, query DB; [] = pre-fetched but none apply).
 	 * @param array|null  $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB; [] = explicitly none).
 	 */
-	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], ?array $possibleRestrictions = null ) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], ?array $possibleTimeframes = null, ?array $possibleRestrictions = null ) {
 		$this->date      = $date;
 		$this->locations = array_map(
 			function ( $location ) {
@@ -91,9 +91,11 @@ class Day {
 
 		$this->types = $types;
 
-		if ( ! empty( $possibleTimeframes ) ) {
+		if ( $possibleTimeframes !== null ) {
+			// Pre-fetched: filter to this day's range and apply weekday rules.
+			// Result may be [] — that tells getTimeframes() "nothing applies, skip DB query".
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
-			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
+			$this->timeframes = array_values( array_filter( $this->timeframes, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) ) );
 		}
 
 		if ( $possibleRestrictions !== null ) {

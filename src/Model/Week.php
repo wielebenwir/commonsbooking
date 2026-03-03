@@ -42,9 +42,9 @@ class Week {
 	protected $types;
 
 	/**
-	 * @var Timeframe[]
+	 * @var Timeframe[]|null null = no pre-fetch was done; [] or non-empty = pre-fetched (possibly empty for this week).
 	 */
-	private array $timeframes = [];
+	private ?array $timeframes = null;
 
 	/**
 	 * Pre-fetched restrictions for this week's range.
@@ -61,10 +61,10 @@ class Week {
 	 * @param array       $locations
 	 * @param array       $items
 	 * @param array       $types
-	 * @param Timeframe[] $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
-	 * @param array|null  $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB).
+	 * @param Timeframe[]|null $possibleTimeframes Timeframes pre-fetched for the calendar range (null = not provided, query DB per day).
+	 * @param array|null       $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB).
 	 */
-	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], ?array $possibleRestrictions = null ) {
+	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], ?array $possibleTimeframes = null, ?array $possibleRestrictions = null ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}
@@ -74,7 +74,9 @@ class Week {
 		$this->items     = $items;
 		$this->types     = $types;
 
-		if ( ! empty( $possibleTimeframes ) ) {
+		if ( $possibleTimeframes !== null ) {
+			// Pre-fetched: filter to this week's range. The result may be empty [] — that's fine,
+			// it tells Day "we already know there are no timeframes, skip the DB query".
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
 		}
 
@@ -106,7 +108,7 @@ class Week {
 			$days = array();
 			for ( $i = 0; $i < 7; $i++ ) {
 				$dayDate   = $dto->format( 'Y-m-d' );
-				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $this->timeframes ?: [], $this->possibleRestrictions );
+				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $this->timeframes, $this->possibleRestrictions );
 				$dayOfWeek = $dto->format( 'w' );
 				if ( $dayOfWeek === '0' ) {
 					break;

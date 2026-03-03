@@ -131,8 +131,8 @@ class Calendar {
 					$this->locations,
 					$this->items,
 					$this->types,
-					$this->timeframes,
-					! empty( $this->restrictions ) ? $this->restrictions : null
+					! empty( $this->timeframes ) ? $this->timeframes : null,
+					$this->restrictions
 				);
 				$startDate = strtotime( 'next monday', $startDate );
 			}
