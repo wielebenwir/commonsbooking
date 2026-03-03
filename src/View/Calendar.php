@@ -112,23 +112,36 @@ class Calendar {
 
 		$itemRowsHTML = '';
 
-		// Fetch timeframes for ALL items in one query instead of one query per item.
-		$allItemIds    = array_map( fn( $item ) => $item->ID, $items );
-		$allTimeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
+		// Fetch ALL timeframe types for ALL items in a single query. This is used both to
+		// determine which items/locations are active (bookable subset) and to populate each
+		// per-item/location Calendar without additional DB queries.
+		$allItemIds          = array_map( fn( $item ) => $item->ID, $items );
+		$calendarEndDate     = date( 'Y-m-d', strtotime( '+' . ( $days + 1 ) . ' days', current_time( 'timestamp' ) ) );
+		$allTimeframesAll    = \CommonsBooking\Repository\Timeframe::getInRange(
 			strtotime( $today ),
-			strtotime( $last_day ),
+			strtotime( $calendarEndDate ),
 			[],
 			$allItemIds,
-			[ Timeframe::BOOKABLE_ID ],
-			true
+			[],
+			true,
+			[ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 		);
 
-		// Group the pre-fetched timeframes by item ID for O(1) lookup in the loop.
-		$timeframesByItemId = [];
-		foreach ( $allTimeframes as $timeframe ) {
-			$itemId = $timeframe->getItemID();
-			if ( $itemId !== null ) {
-				$timeframesByItemId[ $itemId ][] = $timeframe;
+		// Group pre-fetched timeframes by item ID + location ID for O(1) lookup.
+		// Also build the bookable-only subset (keyed by item ID) to find active locations.
+		$timeframesByItemLocation = [];
+		$bookableByItemId         = [];
+		foreach ( $allTimeframesAll as $tf ) {
+			$itemId     = $tf->getItemID();
+			$locationId = $tf->getLocationID();
+			if ( $itemId === null || $locationId === null ) {
+				continue;
+			}
+			$timeframesByItemLocation[ $itemId ][ $locationId ][] = $tf;
+			if ( intval( $tf->getMeta( 'type' ) ) === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ) {
+				if ( commonsbooking_isCurrentUserAllowedToBook( $tf->ID ) ) {
+					$bookableByItemId[ $itemId ][] = $tf;
+				}
 			}
 		}
 
@@ -142,12 +155,12 @@ class Calendar {
 
 			$rowHtml = ' ';
 
-			$timeframes = $timeframesByItemId[ $item->ID ] ?? [];
+			$bookableTimeframes = $bookableByItemId[ $item->ID ] ?? [];
 
-			if ( $timeframes ) {
-				// Collect unique locations from timeframes
+			if ( $bookableTimeframes ) {
+				// Collect unique locations from bookable timeframes
 				$locations = [];
-				foreach ( $timeframes as $timeframe ) {
+				foreach ( $bookableTimeframes as $timeframe ) {
 					// TODO #507
 					$locations[ $timeframe->getLocationID() ] = $timeframe->getLocation()->post_title;
 				}
@@ -166,7 +179,8 @@ class Calendar {
 							}
 						}
 
-						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+						$preloadedTimeframes = $timeframesByItemLocation[ $item->ID ][ $locationId ] ?? [];
+						$locationHtml        = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display, $preloadedTimeframes );
 						Plugin::setCacheItem( $locationHtml, [ strval( $item->ID ), strval( $locationId ) ], $customCacheKey );
 						$rowHtml .= $locationHtml;
 					}
@@ -246,11 +260,12 @@ class Calendar {
 	 * @param $last_day
 	 * @param $days
 	 * @param $days_display
+	 * @param array $preloadedTimeframes Pre-fetched timeframes for this item/location — avoids re-querying the DB.
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display ): string {
+	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display, array $preloadedTimeframes = [] ): string {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -264,7 +279,8 @@ class Calendar {
 				$locationId,
 				$today,
 				date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) ),
-				true
+				true,
+				$preloadedTimeframes
 			);
 
 			$gotStartDate = false;
@@ -339,11 +355,12 @@ class Calendar {
 	 * @param string                        $startDateString YYYY-MM-DD Format
 	 * @param string                        $endDateString YYYY-MM-DD Format
 	 * @param bool                          $keepDaterange
+	 * @param array                         $preloadedTimeframes Pre-fetched timeframes for this item/location — skips DB queries when provided.
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false ): array {
+	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false, array $preloadedTimeframes = [] ): array {
 		if ( $item instanceof WP_Post || $item instanceof CustomPost ) {
 			$item = $item->ID;
 		}
@@ -365,13 +382,25 @@ class Calendar {
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
 		$firstBookableDay   = null;
-		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
-			[ $location ],
-			[ $item ],
-			null,
-			true,
-			Helper::getLastFullHourTimestamp()
-		);
+
+		if ( ! empty( $preloadedTimeframes ) ) {
+			// Derive bookable timeframes from the pre-loaded set — no DB query.
+			$bookableTimeframes = array_values(
+				array_filter(
+					$preloadedTimeframes,
+					fn( $tf ) => intval( $tf->getMeta( 'type' ) ) === \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID
+						&& commonsbooking_isCurrentUserAllowedToBook( $tf->ID )
+				)
+			);
+		} else {
+			$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
+				[ $location ],
+				[ $item ],
+				null,
+				true,
+				Helper::getLastFullHourTimestamp()
+			);
+		}
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
@@ -409,7 +438,7 @@ class Calendar {
 			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay, $preloadedTimeframes );
 	}
 
 	/**
@@ -538,7 +567,8 @@ class Calendar {
 		array $items,
 		$advanceBookingDays = null,
 		$lastBookableDate = null,
-		$firstBookableDay = null
+		$firstBookableDay = null,
+		array $preloadedTimeframes = []
 	): array {
 
 		$current_user   = wp_get_current_user();
@@ -559,7 +589,8 @@ class Calendar {
 				$startDate,
 				$endDate,
 				$locations,
-				$items
+				$items,
+				$preloadedTimeframes
 			);
 
 			$jsonResponse = [
