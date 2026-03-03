@@ -150,7 +150,7 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->createSubscriber();
-		$this->firstTimeframeID = $this->createTimeframe(
+		$this->firstTimeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
@@ -174,7 +174,7 @@ class BookingRuleAppliedTest extends CustomPostTypeTest {
 				return array( $booking );
 			}
 		);
-		$this->firstTimeframeID = $this->createTimeframe(
+		$this->firstTimeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),

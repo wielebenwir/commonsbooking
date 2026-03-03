@@ -32,9 +32,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 	const USER_ID = 1;
 
-	protected $firstTimeframeID;
+	protected $firstTimeframeId;
 
-	protected $secondTimeframeID;
+	protected $secondTimeframeId;
 
 	protected $subscriberId;
 

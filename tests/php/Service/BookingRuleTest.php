@@ -50,7 +50,7 @@ class BookingRuleTest extends CustomPostTypeTest {
 		);
 		$itemtwo                 = $this->createItem( 'Item2', 'publish' );
 		$locationtwo             = $this->createLocation( 'Location2', 'publish' );
-		$this->secondTimeframeID = $this->createTimeframe(
+		$this->secondTimeframeId = $this->createTimeframe(
 			$locationtwo,
 			$itemtwo,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
@@ -143,7 +143,7 @@ class BookingRuleTest extends CustomPostTypeTest {
 	public function testCheckChainLeftRightBooking() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		// set the timeframe MaxDays a bit higher so we can properly test the chain
-		update_post_meta( $this->firstTimeframeID, 'timeframe-max-days', 5 );
+		update_post_meta( $this->firstTimeframeId, 'timeframe-max-days', 5 );
 		$beforeBooking = new Booking(
 			get_post(
 				$this->createBooking(
@@ -778,7 +778,7 @@ class BookingRuleTest extends CustomPostTypeTest {
 				return array( $booking );
 			}
 		);
-		$this->firstTimeframeID = $this->createTimeframe(
+		$this->firstTimeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),

@@ -1092,10 +1092,10 @@ class TimeframeTest extends CustomPostTypeTest {
 	protected function setUp(): void {
 
 		parent::setUp();
-		$this->firstTimeframeID  = $this->createBookableTimeFrameIncludingCurrentDay();
-		$this->secondTimeframeID = $this->createBookableTimeFrameStartingInAWeek();
-		$this->firstTimeframe    = new Timeframe( $this->firstTimeframeID );
-		$this->secondTimeframe   = new Timeframe( $this->secondTimeframeID );
+		$this->firstTimeframeId  = $this->createBookableTimeFrameIncludingCurrentDay();
+		$this->secondTimeframeId = $this->createBookableTimeFrameStartingInAWeek();
+		$this->firstTimeframe    = new Timeframe( $this->firstTimeframeId );
+		$this->secondTimeframe   = new Timeframe( $this->secondTimeframeId );
 		$this->firstItem         = new Item( $this->itemId );
 		$this->firstLocation     = new Location( $this->locationId );
 		$otherItem               = $this->createItem( 'Other Item', 'publish' );

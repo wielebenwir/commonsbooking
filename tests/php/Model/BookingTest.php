@@ -766,7 +766,7 @@ class BookingTest extends CustomPostTypeTest {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->firstTimeframeID = $this->createTimeframe(
+		$this->firstTimeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
@@ -781,7 +781,7 @@ class BookingTest extends CustomPostTypeTest {
 
 		$this->testItem      = new Item( $this->itemId );
 		$this->testLocation  = new Location( $this->locationId );
-		$this->testTimeFrame = new Timeframe( $this->firstTimeframeID );
+		$this->testTimeFrame = new Timeframe( $this->firstTimeframeId );
 		$this->createSubscriber();
 		$this->createAdministrator();
 		$this->createCBManager();

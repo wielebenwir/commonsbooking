@@ -37,7 +37,7 @@ class BookingTest extends CustomPostTypeTest {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->firstTimeframeID = $this->createBookableTimeFrameIncludingCurrentDay();
+		$this->firstTimeframeId = $this->createBookableTimeFrameIncludingCurrentDay();
 	}
 
 	protected function tearDown(): void {
