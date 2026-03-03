@@ -2,9 +2,13 @@
 
 namespace CommonsBooking\Tests\Benchmark\View;
 
+use CommonsBooking\Geocoder\Location as GeocoderLocation;
+use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\View\Calendar;
 use CommonsBooking\Tests\CPTCreationTrait;
+use CommonsBooking\Helper\GeoHelper;
+use CommonsBooking\Tests\Helper\GeoHelperTest;
 
 /**
  *
@@ -15,13 +19,14 @@ class CalendarBench {
 
 	use CPTCreationTrait;
 
-	const BOOKINGS_PER_ITEM = 100;
-	const ITEMS_TOTAL       = 30;
-	const USER_ID           = 1;
+	const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77; // Simulate bookings that are in the past
+	const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33; // Simulate bookings in the future
+	const ITEMS_TOTAL                          = 40;
+	const USER_ID                              = 1; // The user that owns all of those bookings
 
 
 	/**
-	 * @Revs(5)
+	 * @Revs(1)
 	 * @return void
 	 * @throws \Exception
 	 */
@@ -30,6 +35,23 @@ class CalendarBench {
 	}
 
 	public function setUp(): void {
+		error_reporting( E_ALL & ~E_DEPRECATED ); // do not warn about deprecations, deprecations make benchmarks fails
+		// prevent calling geocoder on startup
+		$sut = new class() implements GeoCodeService {
+			public function getAddressData( string $addressString ): ?GeocoderLocation {
+				return GeoHelperTest::mockedLocation();
+			}
+		};
+		GeoHelper::setGeoCodeServiceInstance( $sut );
+
+		// make sure that caching is disabled
+		add_filter(
+			'commonsbooking_disableCache',
+			function () {
+				return true;
+			}
+		);
+
 		global $wpdb;
 		$wpdb->query( 'SET autocommit=0' );
 		wp_defer_term_counting( true );
@@ -41,11 +63,12 @@ class CalendarBench {
 			10,
 			6
 		);
-		$repetitions     = [];
-		$daysBeforeStart =
-		$start           = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
-		$end             = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
-		$end->modify( self::BOOKINGS_PER_ITEM . ' days' );
+		$repetitions = [];
+		// every day has exactly one booking
+		$start = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$start->modify( '- ' . self::BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE . ' days' );
+		$end = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$end->modify( self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' );
 		$period = new \DatePeriod( $start, new \DateInterval( 'P1D' ), $end );
 		foreach ( $period as $date ) {
 			$startTs = $date->getTimestamp();

@@ -19,7 +19,7 @@ class GeoHelperTest extends BaseTestCase {
 	 *
 	 * @return Location|null
 	 */
-	private static function mockedLocation(): ?Location {
+	public static function mockedLocation(): ?Location {
 		$location = new AddressBuilder( 'Mock' );
 		$location->setStreetName( 'Karl-Marx-Straße' )
 				->setStreetNumber( '1' )
