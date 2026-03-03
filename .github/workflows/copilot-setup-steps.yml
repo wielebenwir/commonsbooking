@@ -41,7 +41,7 @@ jobs:
       - name: Install SVN
         run: sudo apt install -y subversion
 
-      - uses: /./github/actions/build-plugin
+      - uses: ./.github/actions/build-plugin
 
       - name: Install test data
         run: |
