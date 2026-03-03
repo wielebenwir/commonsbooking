@@ -1,0 +1,73 @@
+name: Benchmark
+
+on:
+  pull_request:
+    paths-ignore:
+    - 'docs/**'
+    branches:
+    - 'master'
+
+jobs:
+  benchmark:
+    if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+    runs-on: ubuntu-latest-m
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: ./.github/actions/build-plugin
+
+      - name: Run benchmark on PR branch
+        id: pr-benchmark
+        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > pr-benchmark.txt 2>&1 || true
+
+      - name: Checkout master branch
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: ./.github/actions/build-plugin
+
+      - name: Run benchmark on master branch
+        id: master-benchmark
+        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > master-benchmark.txt 2>&1 || true
+
+      - name: Prepare benchmark comment
+        id: prepare-comment
+        run: |
+          {
+            echo "## Benchmark Results"
+            echo ""
+            echo "### PR Branch Results"
+            echo "\`\`\`"
+            cat pr-benchmark.txt
+            echo "\`\`\`"
+            echo ""
+            echo "### Master Branch Results"
+            echo "\`\`\`"
+            cat master-benchmark.txt
+            echo "\`\`\`"
+          } > benchmark-comment.md
+          cat benchmark-comment.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Find existing benchmark comment
+        uses: peter-evans/find-comment@v4
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Benchmark Results'
+
+      - name: Create or update benchmark comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-file: benchmark-comment.md
+          edit-mode: replace
