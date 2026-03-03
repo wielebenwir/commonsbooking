@@ -46,6 +46,14 @@ class Calendar {
 	protected array $timeframes;
 
 	/**
+	 * Restrictions pre-fetched for the full calendar range, passed down to Week and Day
+	 * to avoid one DB query per day.
+	 *
+	 * @var \CommonsBooking\Model\Restriction[]
+	 */
+	protected array $restrictions;
+
+	/**
 	 * Calendar constructor.
 	 *
 	 * @param Day   $startDate
@@ -74,6 +82,16 @@ class Calendar {
 			$this->types,
 			true,
 			[ 'confirmed', 'publish' ]
+		);
+
+		// Pre-fetch all restrictions for the date range once so Week/Day don't each issue their own DB query.
+		$this->restrictions = \CommonsBooking\Repository\Restriction::get(
+			$this->locations,
+			$this->items,
+			null,
+			true,
+			$this->startDate->getStartTimestamp(),
+			[ 'publish', 'confirmed', 'unconfirmed' ]
 		);
 	}
 
@@ -108,7 +126,8 @@ class Calendar {
 					$this->locations,
 					$this->items,
 					$this->types,
-					$this->timeframes
+					$this->timeframes,
+					$this->restrictions
 				);
 				$startDate = strtotime( 'next monday', $startDate );
 			}

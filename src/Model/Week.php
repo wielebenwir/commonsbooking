@@ -47,6 +47,13 @@ class Week {
 	private array $timeframes = [];
 
 	/**
+	 * Pre-fetched restrictions for this week's range.
+	 *
+	 * @var \CommonsBooking\Model\Restriction[]
+	 */
+	private array $possibleRestrictions = [];
+
+	/**
 	 * Week constructor.
 	 *
 	 * @param $year
@@ -55,8 +62,9 @@ class Week {
 	 * @param array       $items
 	 * @param array       $types
 	 * @param Timeframe[] $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
+	 * @param array       $possibleRestrictions Pre-fetched restrictions for the calendar range.
 	 */
-	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
+	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], array $possibleRestrictions = [] ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}
@@ -69,6 +77,8 @@ class Week {
 		if ( ! empty( $possibleTimeframes ) ) {
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
 		}
+
+		$this->possibleRestrictions = $possibleRestrictions;
 	}
 
 	/**
@@ -96,7 +106,7 @@ class Week {
 			$days = array();
 			for ( $i = 0; $i < 7; $i++ ) {
 				$dayDate   = $dto->format( 'Y-m-d' );
-				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $this->timeframes ?: [] );
+				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $this->timeframes ?: [], $this->possibleRestrictions );
 				$dayOfWeek = $dto->format( 'w' );
 				if ( $dayOfWeek === '0' ) {
 					break;
