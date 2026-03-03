@@ -13,10 +13,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-  
+
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
+        php-version: '8.1'
 
     - name: Cache Composer packages
       id: composer-cache
@@ -43,7 +43,7 @@ runs:
       if: ${{ inputs.generate_zip == 'false' }}
       run: bin/build-zip.sh --skip-zip
       shell: bash
-      
+
     - name: Run build script and generate zip file
       if: ${{ inputs.generate_zip == 'true' }}
       run: bin/build-zip.sh

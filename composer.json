@@ -37,7 +37,7 @@
 
   ],
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.1",
     "cmb2/cmb2": "^2.10.1",
     "mustardbees/cmb-field-select2": "^3.0.6",
     "geocoder-php/nominatim-provider": "^5.7",
@@ -48,10 +48,10 @@
     "ext-json": "*",
     "ext-curl": "*",
     "symfony/cache": "^5.4.30",
-    "symfony/service-contracts": "^v2.5.2",
+    "symfony/service-contracts": "^v3.6.1",
     "eluceo/ical": "~2.14.0",
     "phpmailer/phpmailer": "^7.0.0",
-    "ed-itsolutions/cmb2-field-ajax-search": "v2.0.1"
+    "ed-itsolutions/cmb2-field-ajax-search": "v2.0.3"
   },
   "require-dev": {
     "mockery/mockery": "^1.6.6",
@@ -59,7 +59,7 @@
     "yoast/phpunit-polyfills": "^4.0.0",
     "wp-coding-standards/wpcs": "^3.1",
     "phpcompatibility/phpcompatibility-wp": "^2.1.4",
-    "slope-it/clock-mock": "^0.4.0",
+    "slope-it/clock-mock": "^0.5.0",
     "phpunit/php-code-coverage": "^9.2.32",
     "myclabs/deep-copy": "^1.12.0",
     "phpstan/phpstan": "^2.1",
