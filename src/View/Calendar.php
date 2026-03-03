@@ -113,11 +113,13 @@ class Calendar {
 		$itemRowsHTML = '';
 
 		// Fetch all bookable timeframes for the entire date range at once to avoid N+1 DB queries.
+		// Pass only the IDs of the items in the current view to avoid fetching unrelated timeframes.
+		$itemIds       = array_column( $items, 'ID' );
 		$allTimeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
 			strtotime( $today ),
 			strtotime( $last_day ),
 			[],
-			[],
+			$itemIds,
 			[ Timeframe::BOOKABLE_ID ],
 			true
 		);
