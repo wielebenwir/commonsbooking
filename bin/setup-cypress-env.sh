@@ -1,5 +1,5 @@
 #!/bin/bash
-
+wp-env run tests-cli wp plugin install --activate wordpress-importer
 # Install our example posts from a WP export file
 wp-env run tests-cli wp import /var/www/html/wp-content/plugins/commonsbooking/tests/cypress/wordpress-files/content-example.xml --authors=create
 # Switch to Kasimir theme
