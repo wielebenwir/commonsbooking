@@ -6,7 +6,13 @@
  */
 
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
+/**
+ * @see vendor/wordpress/wordpress/wp-tests-config-sample.php
+ * @used-by vendor/wordpress/wordpress/tests/phpunit/includes/bootstrap.php
+ */
+define( 'WP_TESTS_CONFIG_FILE_PATH', dirname( __DIR__, 2 )  . '/wp-tests-config.php' );
+
+$_tests_dir = getenv( 'WP_TESTS_DIR' ) ?: dirname( __DIR__, 2 ) . '/vendor/wordpress/wordpress/tests/phpunit/';
 
 if ( ! $_tests_dir ) {
 	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';

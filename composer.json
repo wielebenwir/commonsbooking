@@ -25,17 +25,20 @@
       "CommonsBooking\\Tests\\": "tests/php/"
     }
   },
-  "repositories": [
-    {
+  "repositories": {
+    "wordpress/wordpress-develop": {
+      "type": "git",
+      "url": "https://github.com/wordpress/wordpress-develop"
+    },
+    "0": {
       "type": "vcs",
       "url": "https://github.com/wielebenwir/cmb-field-select2"
     },
-    {
+    "1": {
       "type": "vcs",
       "url": "https://github.com/wielebenwir/cmb2-field-ajax-search"
     }
-
-  ],
+  },
   "require": {
     "php": ">=8.1",
     "cmb2/cmb2": "^2.10.1",
@@ -68,7 +71,8 @@
     "phpstan/extension-installer": "^1.4",
     "ext-libxml": "*",
     "ext-dom": "*",
-    "phpbench/phpbench": "^1.4"
+    "phpbench/phpbench": "^1.4",
+    "wordpress/wordpress": "*"
   },
   "scripts": {
     "post-install-cmd": [
