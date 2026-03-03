@@ -49,9 +49,9 @@ class Week {
 	/**
 	 * Pre-fetched restrictions for this week's range.
 	 *
-	 * @var \CommonsBooking\Model\Restriction[]
+	 * @var \CommonsBooking\Model\Restriction[]|null
 	 */
-	private array $possibleRestrictions = [];
+	private ?array $possibleRestrictions = null;
 
 	/**
 	 * Week constructor.
@@ -62,9 +62,9 @@ class Week {
 	 * @param array       $items
 	 * @param array       $types
 	 * @param Timeframe[] $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
-	 * @param array       $possibleRestrictions Pre-fetched restrictions for the calendar range.
+	 * @param array|null  $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB).
 	 */
-	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], array $possibleRestrictions = [] ) {
+	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], ?array $possibleRestrictions = null ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}

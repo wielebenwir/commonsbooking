@@ -43,12 +43,14 @@ class Wordpress {
 		$wpPosts = [];
 		$ids     = [];
 		foreach ( $posts as $post ) {
-			// Populate the WP post object cache directly from the already-fetched raw data,
-			// avoiding a redundant SELECT per post.
+			// Build WP_Post from raw data and prime the post object cache directly,
+			// avoiding a redundant SELECT per post. sanitize_post('raw') casts integer
+			// fields (ID, menu_order, …) and sets filter = 'raw', matching get_post().
 			$wpPost = new \WP_Post( $post );
-			wp_cache_add( $post->ID, $wpPost, 'posts' );
+			sanitize_post( $wpPost, 'raw' );
+			wp_cache_add( $wpPost->ID, $wpPost, 'posts' );
 			$wpPosts[] = $wpPost;
-			$ids[]     = (int) $post->ID;
+			$ids[]     = $wpPost->ID;
 		}
 
 		// Prime the post-meta cache in one batch query so that all subsequent
