@@ -67,14 +67,14 @@ class Day {
 	/**
 	 * Day constructor.
 	 *
-	 * @param string $date
-	 * @param array  $locations
-	 * @param array  $items
-	 * @param array  $types
-	 * @param array  $possibleTimeframes
-	 * @param array  $possibleRestrictions Pre-fetched restrictions for the calendar range; filtered to this day here.
+	 * @param string      $date
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param array       $types
+	 * @param array       $possibleTimeframes
+	 * @param array|null  $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB; [] = explicitly none).
 	 */
-	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], array $possibleRestrictions = [] ) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [], ?array $possibleRestrictions = null ) {
 		$this->date      = $date;
 		$this->locations = array_map(
 			function ( $location ) {
@@ -96,12 +96,15 @@ class Day {
 			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
 		}
 
-		if ( ! empty( $possibleRestrictions ) ) {
-			$this->restrictions = \CommonsBooking\Repository\Restriction::filterRestrictionsForDate( $possibleRestrictions, $this->getDate() );
-		} elseif ( is_array( $possibleRestrictions ) ) {
-			// An explicitly passed empty array means "there are no restrictions" — skip the DB query.
-			$this->restrictions = [];
+		if ( $possibleRestrictions !== null ) {
+			if ( ! empty( $possibleRestrictions ) ) {
+				$this->restrictions = \CommonsBooking\Repository\Restriction::filterRestrictionsForDate( $possibleRestrictions, $this->getDate() );
+			} else {
+				// Calendar pre-fetched 0 matching restrictions — skip the DB query.
+				$this->restrictions = [];
+			}
 		}
+		// When $possibleRestrictions === null, leave $this->restrictions = null so getRestrictions() queries the DB.
 	}
 
 	/**
