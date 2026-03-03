@@ -25,7 +25,7 @@ jobs:
 
       - name: Run benchmark on PR branch
         id: pr-benchmark
-        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > pr-benchmark.txt 2>&1 || true
+        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > pr-benchmark.txt
 
       - name: Checkout master branch
         uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
 
       - name: Run benchmark on master branch
         id: master-benchmark
-        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > master-benchmark.txt 2>&1 || true
+        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > master-benchmark.txt
 
       - name: Prepare benchmark comment
         id: prepare-comment
