@@ -42,7 +42,7 @@ jobs:
       - name: Run benchmark on PR branch
         run: |
           composer dump-autoload -o
-          php vendor/bin/phpbench run tests/benchmark --report=aggregate > pr-benchmark.txt
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/pr-benchmark.txt
 
       - name: Checkout master branch
         uses: actions/checkout@v6
@@ -53,11 +53,11 @@ jobs:
         run: |
           bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
           composer install --prefer-dist --no-progress
-          
+
       - name: Run benchmark on master branch
         run: |
           composer dump-autoload -o
-          php vendor/bin/phpbench run tests/benchmark --report=aggregate > master-benchmark.txt
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/master-benchmark.txt
 
       - name: Prepare benchmark comment
         id: prepare-comment
@@ -67,12 +67,12 @@ jobs:
             echo ""
             echo "### PR Branch Results"
             echo "\`\`\`"
-            cat pr-benchmark.txt
+            cat /tmp/pr-benchmark.txt
             echo "\`\`\`"
             echo ""
             echo "### Master Branch Results"
             echo "\`\`\`"
-            cat master-benchmark.txt
+            cat /tmp/master-benchmark.txt
             echo "\`\`\`"
           } > benchmark-comment.md
           cat benchmark-comment.md >> $GITHUB_STEP_SUMMARY
