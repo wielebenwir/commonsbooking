@@ -21,22 +21,42 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+
+      # This is needed for the WordPress test suite installation ( bin/install-wp-tests.sh)
+      - name: Install SVN
+        run: sudo apt install -y subversion
+
       - uses: ./.github/actions/build-plugin
 
+      - name: Install test dependencies
+        run: |
+          bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
+          composer install --prefer-dist --no-progress
+
       - name: Run benchmark on PR branch
-        id: pr-benchmark
-        run: php vendor/bin/phpbench run tests/benchmark --report=aggregate > pr-benchmark.txt
+        run: |
+          composer dump-autoload -o
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > pr-benchmark.txt
 
       - name: Checkout master branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: master
+
+      - name: Install test dependencies (again for )
+        run: |
+          bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
+          composer install --prefer-dist --no-progress
 
       - uses: ./.github/actions/build-plugin
 
       - name: Run benchmark on master branch
-        id: master-benchmark
-        run: php vendor/bin/phpbench run tests/benchmark --report=aggregate > master-benchmark.txt
+        run: |
+          composer dump-autoload -o
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > master-benchmark.txt
 
       - name: Prepare benchmark comment
         id: prepare-comment
