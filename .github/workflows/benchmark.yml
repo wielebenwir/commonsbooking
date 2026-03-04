@@ -49,13 +49,11 @@ jobs:
         with:
           ref: master
 
-      - name: Install test dependencies (again for )
+      - name: Install test dependencies (again for master branch)
         run: |
           bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
           composer install --prefer-dist --no-progress
-
-      - uses: ./.github/actions/build-plugin
-
+          
       - name: Run benchmark on master branch
         run: |
           composer dump-autoload -o
