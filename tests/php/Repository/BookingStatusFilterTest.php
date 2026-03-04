@@ -85,7 +85,7 @@ class BookingStatusFilterTest extends CustomPostTypeTest {
 	public function testGetEndingBookingsByDate_excludesCbOutdatedByDefault() {
 		$endTs = strtotime( 'midnight' );
 
-		$this->createBooking(
+		$bookingId = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-2 days' ),
@@ -96,9 +96,9 @@ class BookingStatusFilterTest extends CustomPostTypeTest {
 		);
 
 		$bookings = Booking::getEndingBookingsByDate( $endTs );
-		foreach ( $bookings as $booking ) {
-			$this->assertNotEquals( 'cb-outdated', $booking->post_status );
-		}
+		$ids      = array_map( fn( $b ) => $b->ID, $bookings );
+
+		$this->assertNotContains( $bookingId, $ids );
 	}
 
 	/**
@@ -135,7 +135,7 @@ class BookingStatusFilterTest extends CustomPostTypeTest {
 	public function testGetBeginningBookingsByDate_excludesCbOutdatedByDefault() {
 		$startTs = strtotime( 'midnight' );
 
-		$this->createBooking(
+		$bookingId = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
 			$startTs,
@@ -146,9 +146,9 @@ class BookingStatusFilterTest extends CustomPostTypeTest {
 		);
 
 		$bookings = Booking::getBeginningBookingsByDate( $startTs );
-		foreach ( $bookings as $booking ) {
-			$this->assertNotEquals( 'cb-outdated', $booking->post_status );
-		}
+		$ids      = array_map( fn( $b ) => $b->ID, $bookings );
+
+		$this->assertNotContains( $bookingId, $ids );
 	}
 
 	/**
