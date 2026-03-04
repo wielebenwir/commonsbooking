@@ -10,7 +10,7 @@ on:
 jobs:
   benchmark:
     if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-    runs-on: ubuntu-latest-m
+    runs-on: self-hosted
     permissions:
       contents: read
       pull-requests: write
@@ -21,18 +21,19 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Set up MySQL
-        run: |
-          sudo /etc/init.d/mysql start
+      # Not needed on self-hosted runners
+      # - name: Set up MySQL
+      #  run: |
+      #    sudo /etc/init.d/mysql start
 
       # This is needed for the WordPress test suite installation ( bin/install-wp-tests.sh)
-      - name: Install SVN
-        run: sudo apt install -y subversion
+      # - name: Install SVN
+      #  run: sudo apt install -y subversion
 
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.4
-          extensions: uopz
+      # - uses: shivammathur/setup-php@v2
+      #  with:
+      #    php-version: 8.4
+      #    extensions: uopz
 
       - name: Install test dependencies
         run: |
