@@ -58,9 +58,9 @@ class Week {
 	 *
 	 * @param $year
 	 * @param $dayOfYear
-	 * @param array       $locations
-	 * @param array       $items
-	 * @param array       $types
+	 * @param array            $locations
+	 * @param array            $items
+	 * @param array            $types
 	 * @param Timeframe[]|null $possibleTimeframes Timeframes pre-fetched for the calendar range (null = not provided, query DB per day).
 	 * @param array|null       $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB).
 	 */

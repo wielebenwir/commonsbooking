@@ -67,12 +67,12 @@ class Day {
 	/**
 	 * Day constructor.
 	 *
-	 * @param string      $date
-	 * @param array       $locations
-	 * @param array       $items
-	 * @param array       $types
-	 * @param array|null  $possibleTimeframes Pre-fetched timeframes for the calendar range (null = not provided, query DB; [] = pre-fetched but none apply).
-	 * @param array|null  $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB; [] = explicitly none).
+	 * @param string     $date
+	 * @param array      $locations
+	 * @param array      $items
+	 * @param array      $types
+	 * @param array|null $possibleTimeframes Pre-fetched timeframes for the calendar range (null = not provided, query DB; [] = pre-fetched but none apply).
+	 * @param array|null $possibleRestrictions Pre-fetched restrictions for the calendar range (null = not provided, query DB; [] = explicitly none).
 	 */
 	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], ?array $possibleTimeframes = null, ?array $possibleRestrictions = null ) {
 		$this->date      = $date;
@@ -525,7 +525,7 @@ class Day {
 
 	public function getStartTimestamp(): int {
 		if ( $this->startTimestampCached === null ) {
-			$dt                        = new DateTime( $this->getDate() );
+			$dt = new DateTime( $this->getDate() );
 			$dt->modify( 'midnight' );
 			$this->startTimestampCached = $dt->getTimestamp();
 		}
@@ -535,7 +535,7 @@ class Day {
 
 	public function getEndTimestamp(): int {
 		if ( $this->endTimestampCached === null ) {
-			$dt                      = new DateTime( $this->getDate() );
+			$dt = new DateTime( $this->getDate() );
 			$dt->modify( '23:59:59' );
 			$this->endTimestampCached = $dt->getTimestamp();
 		}

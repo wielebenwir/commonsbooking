@@ -115,9 +115,9 @@ class Calendar {
 		// Fetch ALL timeframe types for ALL items in a single query. This is used both to
 		// determine which items/locations are active (bookable subset) and to populate each
 		// per-item/location Calendar without additional DB queries.
-		$allItemIds          = array_map( fn( $item ) => $item->ID, $items );
-		$calendarEndDate     = date( 'Y-m-d', strtotime( '+' . ( $days + 1 ) . ' days', current_time( 'timestamp' ) ) );
-		$allTimeframesAll    = \CommonsBooking\Repository\Timeframe::getInRange(
+		$allItemIds       = array_map( fn( $item ) => $item->ID, $items );
+		$calendarEndDate  = date( 'Y-m-d', strtotime( '+' . ( $days + 1 ) . ' days', current_time( 'timestamp' ) ) );
+		$allTimeframesAll = \CommonsBooking\Repository\Timeframe::getInRange(
 			strtotime( $today ),
 			strtotime( $calendarEndDate ),
 			[],
