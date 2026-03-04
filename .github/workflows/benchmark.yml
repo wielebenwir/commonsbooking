@@ -21,22 +21,43 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - uses: ./.github/actions/build-plugin
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+
+      # This is needed for the WordPress test suite installation ( bin/install-wp-tests.sh)
+      - name: Install SVN
+        run: sudo apt install -y subversion
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: uopz
+
+      - name: Install test dependencies
+        run: |
+          bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
+          composer install --prefer-dist --no-progress
 
       - name: Run benchmark on PR branch
-        id: pr-benchmark
-        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > pr-benchmark.txt 2>&1 || true
+        run: |
+          composer dump-autoload -o
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/pr-benchmark.txt
 
       - name: Checkout master branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: master
 
-      - uses: ./.github/actions/build-plugin
+      - name: Install test dependencies (again for master branch)
+        run: |
+          bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
+          composer install --prefer-dist --no-progress
 
       - name: Run benchmark on master branch
-        id: master-benchmark
-        run: ./vendor/bin/phpbench run tests/benchmark --report=aggregate > master-benchmark.txt 2>&1 || true
+        run: |
+          composer dump-autoload -o
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/master-benchmark.txt
 
       - name: Prepare benchmark comment
         id: prepare-comment
@@ -46,12 +67,12 @@ jobs:
             echo ""
             echo "### PR Branch Results"
             echo "\`\`\`"
-            cat pr-benchmark.txt
+            cat /tmp/pr-benchmark.txt
             echo "\`\`\`"
             echo ""
             echo "### Master Branch Results"
             echo "\`\`\`"
-            cat master-benchmark.txt
+            cat /tmp/master-benchmark.txt
             echo "\`\`\`"
           } > benchmark-comment.md
           cat benchmark-comment.md >> $GITHUB_STEP_SUMMARY
