@@ -40,6 +40,42 @@ class Booking {
 		}
 	}
 
+	/**
+	 * Transitions confirmed bookings whose end date is in the past to 'cb-outdated'.
+	 * Run daily via Scheduler so that past bookings are excluded from active queries.
+	 *
+	 * @return void
+	 */
+	public static function markOutdatedBookings(): void {
+		$midnight = strtotime( 'midnight' );
+
+		$args = [
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+			'post_status'    => 'confirmed',
+			'meta_query'     => [
+				'relation' => 'AND',
+				[
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+					'value'   => $midnight,
+					'compare' => '<',
+					'type'    => 'numeric',
+				],
+				[
+					'key'     => 'type',
+					'value'   => Timeframe::BOOKING_ID,
+					'compare' => '=',
+				],
+			],
+			'posts_per_page' => 500,
+			'fields'         => 'ids',
+		];
+
+		$query = new WP_Query( $args );
+		foreach ( $query->posts as $id ) {
+			wp_update_post( [ 'ID' => $id, 'post_status' => 'cb-outdated' ] );
+		}
+	}
+
 	private static function sendMessagesForDay( int $tsDate, bool $onStartDate, Message $message ) {
 		if ( $onStartDate ) {
 			$bookings = \CommonsBooking\Repository\Booking::getBeginningBookingsByDate( $tsDate );
