@@ -29,7 +29,10 @@ jobs:
       - name: Install SVN
         run: sudo apt install -y subversion
 
-      - uses: ./.github/actions/build-plugin
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: uopz
 
       - name: Install test dependencies
         run: |
