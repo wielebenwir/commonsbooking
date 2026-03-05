@@ -444,7 +444,7 @@ class Timeframe extends PostRepository {
 		}
 		$multiLocationQuery   = "(
 					$joinAlias.meta_key = '" . $multiEntityKey . "' AND
-					(" . implode( ' OR ', $multiLocationQueries ) . ') 
+					(" . implode( ' OR ', $multiLocationQueries ) . ')
 				)';
 		$locationQueryParts[] = $multiLocationQuery;
 
@@ -835,8 +835,8 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array    $locations
-	 * @param array    $items
+	 * @param int[]    $locations
+	 * @param int[]    $items
 	 * @param array    $types
 	 * @param bool     $returnAsModel
 	 * @param string[] $postStatus
@@ -905,8 +905,8 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array    $locations
-	 * @param array    $items
+	 * @param int[]    $locations
+	 * @param int[]    $items
 	 * @param array    $types
 	 * @param bool     $returnAsModel
 	 * @param string[] $postStatus
