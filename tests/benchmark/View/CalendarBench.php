@@ -28,9 +28,6 @@ class CalendarBench {
 	const LOCATIONS_DISCONNECTED = 20; // locations without a timeframe, see #2084
 	const USER_ID                = 1; // The user that owns all of those bookings
 
-	private int $benchItemId;
-	private int $benchLocationId;
-
 	/**
 	 * @Iterations(3)
 	 * @Revs(3)
@@ -44,7 +41,7 @@ class CalendarBench {
 	/**
 	 * @Iterations(3)
 	 * @Revs(3)
-	 * @BeforeMethods({"setUpFew"})
+	 * @BeforeMethods({"setUp"})
 	 * @AfterMethods({"tearDown"})
 	 * @return void
 	 * @throws \Exception
@@ -52,13 +49,15 @@ class CalendarBench {
 	public function benchGetCalendarDataArrayFewItems(): void {
 		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
 		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
-		Calendar::getCalendarDataArray( $this->benchItemId, $this->benchLocationId, $startDate, $endDate );
+		foreach ( array_slice( $this->itemIds, 0, self::ITEMS_FEW ) as $i => $itemId ) {
+			Calendar::getCalendarDataArray( $itemId, $this->locationIds[ $i ], $startDate, $endDate );
+		}
 	}
 
 	/**
 	 * @Iterations(3)
 	 * @Revs(3)
-	 * @BeforeMethods({"setUp50"})
+	 * @BeforeMethods({"setUp"})
 	 * @AfterMethods({"tearDown"})
 	 * @return void
 	 * @throws \Exception
@@ -66,7 +65,9 @@ class CalendarBench {
 	public function benchGetCalendarDataArray50Items(): void {
 		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
 		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
-		Calendar::getCalendarDataArray( $this->benchItemId, $this->benchLocationId, $startDate, $endDate );
+		foreach ( array_slice( $this->itemIds, 0, 50 ) as $i => $itemId ) {
+			Calendar::getCalendarDataArray( $itemId, $this->locationIds[ $i ], $startDate, $endDate );
+		}
 	}
 
 	/**
@@ -80,25 +81,9 @@ class CalendarBench {
 	public function benchGetCalendarDataArrayAllItems(): void {
 		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
 		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
-		Calendar::getCalendarDataArray( $this->benchItemId, $this->benchLocationId, $startDate, $endDate );
-	}
-
-	/**
-	 * Set up benchmark environment with a small number of items (ITEMS_FEW).
-	 */
-	public function setUpFew(): void {
-		[ $repetitions, $start ] = $this->initBenchmarkEnvironment();
-		$this->createBenchmarkItems( self::ITEMS_FEW, $repetitions, $start );
-		$this->finishBenchmarkEnvironment();
-	}
-
-	/**
-	 * Set up benchmark environment with 50 items and locations.
-	 */
-	public function setUp50(): void {
-		[ $repetitions, $start ] = $this->initBenchmarkEnvironment();
-		$this->createBenchmarkItems( 50, $repetitions, $start );
-		$this->finishBenchmarkEnvironment();
+		foreach ( array_slice( $this->itemIds, 0, self::ITEMS_TOTAL ) as $i => $itemId ) {
+			Calendar::getCalendarDataArray( $itemId, $this->locationIds[ $i ], $startDate, $endDate );
+		}
 	}
 
 	public function setUp(): void {
@@ -177,11 +162,10 @@ class CalendarBench {
 
 	/**
 	 * Create $count items and locations, each with a timeframe and bookings.
-	 * The first item/location pair is stored in $benchItemId / $benchLocationId.
 	 *
-	 * @param int      $count       Number of item/location pairs to create.
-	 * @param array    $repetitions Booking date ranges to create per item.
-	 * @param \DateTime $start      Start DateTime for the timeframe.
+	 * @param int       $count       Number of item/location pairs to create.
+	 * @param array     $repetitions Booking date ranges to create per item.
+	 * @param \DateTime $start       Start DateTime for the timeframe.
 	 */
 	private function createBenchmarkItems( int $count, array $repetitions, \DateTime $start ): void {
 		for ( $i = 0; $i < $count; $i++ ) {
@@ -200,10 +184,6 @@ class CalendarBench {
 					$repetition['start'],
 					$repetition['end']
 				);
-			}
-			if ( $i === 0 ) {
-				$this->benchItemId     = $item;
-				$this->benchLocationId = $location;
 			}
 		}
 	}
