@@ -47,6 +47,8 @@ class Booking {
 	 * @return void
 	 */
 	public static function markOutdatedBookings(): void {
+		global $wpdb;
+
 		$midnight = strtotime( 'midnight' );
 
 		$args = [
@@ -71,8 +73,22 @@ class Booking {
 		];
 
 		$query = new WP_Query( $args );
-		foreach ( $query->posts as $id ) {
-			wp_update_post( [ 'ID' => $id, 'post_status' => 'cb-outdated' ] );
+		$ids   = $query->posts;
+
+		if ( empty( $ids ) ) {
+			return;
+		}
+
+		// Bulk-update in a single SQL statement instead of one wp_update_post()
+		// per row — critical for performance when thousands of bookings age out.
+		$placeholders = implode( ', ', array_fill( 0, count( $ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = 'cb-outdated' WHERE ID IN ($placeholders)", $ids ) );
+
+		// Flush the per-post object cache so subsequent get_post() calls
+		// reflect the new status without a stale cache hit.
+		foreach ( $ids as $id ) {
+			clean_post_cache( $id );
 		}
 	}
 
