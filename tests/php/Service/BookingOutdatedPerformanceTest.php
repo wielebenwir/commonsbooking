@@ -268,4 +268,13 @@ class BookingOutdatedPerformanceTest extends BookingOutdatedScaleTest {
 	public function testWith5000PastBookings(): void {
 		$this->runTimedScenario( 5000 );
 	}
+
+	public function testWith6000PastBookings(): void {
+		$this->runTimedScenario( 6000 );
+	}
+
+	public function testWith7000PastBookings(): void {
+		$this->runTimedScenario( 7000 );
+	}
+
 }
