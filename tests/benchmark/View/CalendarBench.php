@@ -21,12 +21,16 @@ class CalendarBench {
 
 	const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77; // Simulate bookings that are in the past
 	const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33; // Simulate bookings in the future
-	const ITEMS_TOTAL                          = 40;
-	const USER_ID                              = 1; // The user that owns all of those bookings
+	const ITEMS_TOTAL                          = 100; // The total amount of items that are connected with a timeframe
+
+	const ITEMS_DISCONNECTED     = 20; // items without a timeframe, see #2084
+	const LOCATIONS_DISCONNECTED = 20; // locations without a timeframe, see #2084
+	const USER_ID                = 1; // The user that owns all of those bookings
 
 
 	/**
-	 * @Revs(1)
+	 * @Iterations(3)
+	 * @Revs(3)
 	 * @return void
 	 * @throws \Exception
 	 */

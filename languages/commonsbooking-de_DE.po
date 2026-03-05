@@ -1332,7 +1332,7 @@ msgstr "Die Datei wird als .txt Datei durch Tabstopp getrennt exportiert, sodass
 msgid "Booking codes list"
 msgstr "Liste der Buchungscodes"
 
-#: src/View/Calendar.php:223
+#: src/View/Calendar.php:233
 #: src/Wordpress/CustomPostType/Booking.php:449
 #: src/Wordpress/CustomPostType/Booking.php:763
 #: src/Wordpress/CustomPostType/Booking.php:991
@@ -1344,11 +1344,11 @@ msgstr "Liste der Buchungscodes"
 msgid "Item"
 msgstr "Artikel"
 
-#: src/View/Calendar.php:167
+#: src/View/Calendar.php:177
 msgid "No items found."
 msgstr "Keine Artikel gefunden."
 
-#: src/View/Calendar.php:224
+#: src/View/Calendar.php:234
 #: src/Wordpress/CustomPostType/Booking.php:450
 #: src/Wordpress/CustomPostType/Booking.php:769
 #: src/Wordpress/CustomPostType/Booking.php:987
