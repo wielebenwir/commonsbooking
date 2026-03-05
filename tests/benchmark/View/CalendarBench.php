@@ -22,11 +22,14 @@ class CalendarBench {
 	const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77; // Simulate bookings that are in the past
 	const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33; // Simulate bookings in the future
 	const ITEMS_TOTAL                          = 100; // The total amount of items that are connected with a timeframe
+	const ITEMS_FEW                            = 5; // A small number of items for fast benchmarks
 
 	const ITEMS_DISCONNECTED     = 20; // items without a timeframe, see #2084
 	const LOCATIONS_DISCONNECTED = 20; // locations without a timeframe, see #2084
 	const USER_ID                = 1; // The user that owns all of those bookings
 
+	private int $benchItemId;
+	private int $benchLocationId;
 
 	/**
 	 * @Iterations(3)
@@ -38,8 +41,92 @@ class CalendarBench {
 		$calendar = Calendar::renderTable( [] );
 	}
 
+	/**
+	 * @Iterations(3)
+	 * @Revs(3)
+	 * @BeforeMethods({"setUpFew"})
+	 * @AfterMethods({"tearDown"})
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function benchGetCalendarDataArrayFewItems(): void {
+		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
+		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
+		Calendar::getCalendarDataArray( $this->benchItemId, $this->benchLocationId, $startDate, $endDate );
+	}
+
+	/**
+	 * @Iterations(3)
+	 * @Revs(3)
+	 * @BeforeMethods({"setUp50"})
+	 * @AfterMethods({"tearDown"})
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function benchGetCalendarDataArray50Items(): void {
+		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
+		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
+		Calendar::getCalendarDataArray( $this->benchItemId, $this->benchLocationId, $startDate, $endDate );
+	}
+
+	/**
+	 * @Iterations(3)
+	 * @Revs(3)
+	 * @BeforeMethods({"setUp"})
+	 * @AfterMethods({"tearDown"})
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function benchGetCalendarDataArrayAllItems(): void {
+		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
+		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
+		Calendar::getCalendarDataArray( $this->benchItemId, $this->benchLocationId, $startDate, $endDate );
+	}
+
+	/**
+	 * Set up benchmark environment with a small number of items (ITEMS_FEW).
+	 */
+	public function setUpFew(): void {
+		[ $repetitions, $start ] = $this->initBenchmarkEnvironment();
+		$this->createBenchmarkItems( self::ITEMS_FEW, $repetitions, $start );
+		$this->finishBenchmarkEnvironment();
+	}
+
+	/**
+	 * Set up benchmark environment with 50 items and locations.
+	 */
+	public function setUp50(): void {
+		[ $repetitions, $start ] = $this->initBenchmarkEnvironment();
+		$this->createBenchmarkItems( 50, $repetitions, $start );
+		$this->finishBenchmarkEnvironment();
+	}
+
 	public function setUp(): void {
-		error_reporting( E_ALL & ~E_DEPRECATED ); // do not warn about deprecations, deprecations make benchmarks fails
+		[ $repetitions, $start ] = $this->initBenchmarkEnvironment();
+		$this->createBenchmarkItems( self::ITEMS_TOTAL, $repetitions, $start );
+
+		for ( $i = 0; $i < self::ITEMS_DISCONNECTED; $i++ ) {
+			$this->createItem( "Benchmark Disconnected Item $i" );
+		}
+
+		for ( $i = 0; $i < self::LOCATIONS_DISCONNECTED; $i++ ) {
+			$this->createLocation( "Benchmark Disconnected Location $i" );
+		}
+
+		$this->finishBenchmarkEnvironment();
+	}
+
+	public function tearDown(): void {
+		$this->tearDownAllPosts();
+	}
+
+	/**
+	 * Initialise WordPress environment tweaks shared by all setup methods.
+	 *
+	 * @return array{0: array, 1: \DateTime} A tuple of [repetitions, $start DateTime].
+	 */
+	private function initBenchmarkEnvironment(): array {
+		error_reporting( E_ALL & ~E_DEPRECATED ); // do not warn about deprecations, deprecations make benchmarks fail
 		// prevent calling geocoder on startup
 		$sut = new class() implements GeoCodeService {
 			public function getAddressData( string $addressString ): ?GeocoderLocation {
@@ -67,6 +154,7 @@ class CalendarBench {
 			10,
 			6
 		);
+
 		$repetitions = [];
 		// every day has exactly one booking
 		$start = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
@@ -83,10 +171,23 @@ class CalendarBench {
 				'end' => $endTs,
 			];
 		}
-		for ( $i = 0; $i < self::ITEMS_TOTAL; $i++ ) {
-			$item      = $this->createItem( "Benchmark Item $i" );
-			$location  = $this->createLocation( "Benchmark Location $i" );
-			$timeframe = $this->createTimeframe(
+
+		return [ $repetitions, $start ];
+	}
+
+	/**
+	 * Create $count items and locations, each with a timeframe and bookings.
+	 * The first item/location pair is stored in $benchItemId / $benchLocationId.
+	 *
+	 * @param int      $count       Number of item/location pairs to create.
+	 * @param array    $repetitions Booking date ranges to create per item.
+	 * @param \DateTime $start      Start DateTime for the timeframe.
+	 */
+	private function createBenchmarkItems( int $count, array $repetitions, \DateTime $start ): void {
+		for ( $i = 0; $i < $count; $i++ ) {
+			$item     = $this->createItem( "Benchmark Item $i" );
+			$location = $this->createLocation( "Benchmark Location $i" );
+			$this->createTimeframe(
 				$location,
 				$item,
 				$start->getTimestamp(),
@@ -100,17 +201,18 @@ class CalendarBench {
 					$repetition['end']
 				);
 			}
+			if ( $i === 0 ) {
+				$this->benchItemId     = $item;
+				$this->benchLocationId = $location;
+			}
 		}
+	}
 
-		for ( $i = 0; $i < self::ITEMS_DISCONNECTED; $i++ ) {
-			$this->createItem( "Benchmark Disconnected Item $i" );
-		}
-
-		for ( $i = 0; $i < self::LOCATIONS_DISCONNECTED; $i++ ) {
-			$this->createLocation( "Benchmark Disconnected Location $i" );
-		}
-
-		// disable performance tweaks
+	/**
+	 * Restore WordPress environment tweaks after benchmark setup.
+	 */
+	private function finishBenchmarkEnvironment(): void {
+		global $wpdb;
 		wp_defer_term_counting( false );
 		wp_defer_comment_counting( false );
 		$wpdb->query( 'COMMIT;' );
@@ -119,9 +221,5 @@ class CalendarBench {
 			'pre_wp_unique_post_slug',
 			fn( $override_slug, $slug, $post_id, $post_status, $post_type, $post_parent ) => Helper::generateRandomString()
 		);
-	}
-
-	public function tearDown(): void {
-		$this->tearDownAllPosts();
 	}
 }
