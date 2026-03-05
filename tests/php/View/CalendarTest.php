@@ -222,15 +222,20 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertStringContainsString( $item->post_title, $calendar );
 		$this->assertStringContainsString( $location->post_title, $calendar );
 
-
-		//when a category is set, it should only show items of that category
+		// when a category is set, it should only show items of that category
 		$taxonomyItem = $this->createItem( 'Taxonomy Item' );
-		$term = wp_create_term( 'Test Category', Item::getTaxonomyName() );
-		wp_set_post_terms( $taxonomyItem, [ $term['term_id'] ], Item::getTaxonomyName() );
-		$termObj = get_term_by( 'id', $term['term_id'], Item::getTaxonomyName() );
-		$slug = $termObj->slug;
-		$timeframe = $this->createBookableTimeFrameIncludingCurrentDay( $this->locationId, $taxonomyItem );
-		$calendar = Calendar::renderTable( [ 'itemcat' => $slug ] );
+		$taxonomyItem = new \CommonsBooking\Model\Item( $taxonomyItem );
+		$term         = wp_create_term( 'Test Category', Item::getTaxonomyName() );
+		wp_set_post_terms( $taxonomyItem->ID, [ $term['term_id'] ], Item::getTaxonomyName() );
+		$termObj   = get_term_by( 'id', $term['term_id'], Item::getTaxonomyName() );
+		$slug      = $termObj->slug;
+		$timeframe = $this->createTimeframe(
+			$this->locationId,
+			$taxonomyItem->ID,
+			strtotime( '+' . self::timeframeStart . ' days midnight', $this->now ),
+			strtotime( '+' . self::timeframeEnd . ' days midnight', $this->now )
+		);
+		$calendar  = Calendar::renderTable( [ 'itemcat' => $slug ] );
 		$this->assertStringContainsString( $taxonomyItem->post_title, $calendar );
 		$this->assertStringNotContainsString( $item->post_title, $calendar );
 
