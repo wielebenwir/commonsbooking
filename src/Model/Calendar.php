@@ -46,15 +46,24 @@ class Calendar {
 	protected array $timeframes;
 
 	/**
+	 * Restrictions pre-fetched for the full calendar range, passed down to Week and Day
+	 * to avoid one DB query per day.
+	 *
+	 * @var \CommonsBooking\Model\Restriction[]
+	 */
+	protected array $restrictions;
+
+	/**
 	 * Calendar constructor.
 	 *
 	 * @param Day   $startDate
 	 * @param Day   $endDate
 	 * @param int[] $locations
 	 * @param int[] $items
+	 * @param array $preloadedTimeframes When non-empty, these are used directly instead of querying the DB.
 	 * @param array $types
 	 */
-	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $preloadedTimeframes = [], array $types = [] ) {
 		// check, that it spans at least two days
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
@@ -66,14 +75,28 @@ class Calendar {
 		$this->locations = $locations;
 		$this->types     = $types;
 
-		$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
-			$this->startDate->getStartTimestamp(),
-			$this->endDate->getEndTimestamp(),
+		if ( ! empty( $preloadedTimeframes ) ) {
+			$this->timeframes = $preloadedTimeframes;
+		} else {
+			$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+				$this->startDate->getStartTimestamp(),
+				$this->endDate->getEndTimestamp(),
+				$this->locations,
+				$this->items,
+				$this->types,
+				true,
+				[ 'confirmed', 'publish' ]
+			);
+		}
+
+		// Pre-fetch all restrictions for the date range once so Week/Day don't each issue their own DB query.
+		$this->restrictions = \CommonsBooking\Repository\Restriction::get(
 			$this->locations,
 			$this->items,
-			$this->types,
+			null,
 			true,
-			[ 'confirmed', 'publish' ]
+			$this->startDate->getStartTimestamp(),
+			[ 'publish', 'confirmed', 'unconfirmed' ]
 		);
 	}
 
@@ -108,7 +131,8 @@ class Calendar {
 					$this->locations,
 					$this->items,
 					$this->types,
-					$this->timeframes
+					! empty( $this->timeframes ) ? $this->timeframes : null,
+					$this->restrictions
 				);
 				$startDate = strtotime( 'next monday', $startDate );
 			}
