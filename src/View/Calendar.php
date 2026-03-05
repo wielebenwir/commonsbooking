@@ -354,7 +354,10 @@ class Calendar {
 			throw new \Exception( 'invalid date format' );
 		}
 
-		if ( ! $item || ! $location ) {
+		$items     = is_array( $item ) ? $item : [ $item ];
+		$locations = is_array( $location ) ? $location : [ $location ];
+
+		if ( empty( $items ) || empty( $locations ) ) {
 			return [];
 		}
 
@@ -364,8 +367,8 @@ class Calendar {
 		$lastBookableDate   = null;
 		$firstBookableDay   = null;
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
-			[ $location ],
-			[ $item ],
+			$locations,
+			$items,
 			null,
 			true,
 			Helper::getLastFullHourTimestamp()
@@ -407,7 +410,7 @@ class Calendar {
 			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay );
+		return self::prepareJsonResponse( $startDate, $endDate, $locations, $items, $advanceBookingDays, $lastBookableDate, $firstBookableDay );
 	}
 
 	/**

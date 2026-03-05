@@ -49,9 +49,12 @@ class CalendarBench {
 	public function benchGetCalendarDataArrayFewItems(): void {
 		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
 		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
-		foreach ( array_slice( $this->itemIds, 0, self::ITEMS_FEW ) as $i => $itemId ) {
-			Calendar::getCalendarDataArray( $itemId, $this->locationIds[ $i ], $startDate, $endDate );
-		}
+		Calendar::getCalendarDataArray(
+			array_slice( $this->itemIds, 0, self::ITEMS_FEW ),
+			array_slice( $this->locationIds, 0, self::ITEMS_FEW ),
+			$startDate,
+			$endDate
+		);
 	}
 
 	/**
@@ -65,9 +68,12 @@ class CalendarBench {
 	public function benchGetCalendarDataArray50Items(): void {
 		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
 		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
-		foreach ( array_slice( $this->itemIds, 0, 50 ) as $i => $itemId ) {
-			Calendar::getCalendarDataArray( $itemId, $this->locationIds[ $i ], $startDate, $endDate );
-		}
+		Calendar::getCalendarDataArray(
+			array_slice( $this->itemIds, 0, 50 ),
+			array_slice( $this->locationIds, 0, 50 ),
+			$startDate,
+			$endDate
+		);
 	}
 
 	/**
@@ -81,9 +87,12 @@ class CalendarBench {
 	public function benchGetCalendarDataArrayAllItems(): void {
 		$startDate = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) );
 		$endDate   = date( 'Y-m-d', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE . ' + ' . self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' ) );
-		foreach ( array_slice( $this->itemIds, 0, self::ITEMS_TOTAL ) as $i => $itemId ) {
-			Calendar::getCalendarDataArray( $itemId, $this->locationIds[ $i ], $startDate, $endDate );
-		}
+		Calendar::getCalendarDataArray(
+			array_slice( $this->itemIds, 0, self::ITEMS_TOTAL ),
+			array_slice( $this->locationIds, 0, self::ITEMS_TOTAL ),
+			$startDate,
+			$endDate
+		);
 	}
 
 	public function setUp(): void {
