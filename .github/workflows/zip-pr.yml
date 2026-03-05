@@ -62,7 +62,7 @@ jobs:
          edit-mode: replace
 
      - name: Upload zip as artifact (for those without permission)
-       uses: actions/upload-artifact@v6
+       uses: actions/upload-artifact@v7
        with:
         name: commonsbooking.zip
         path: commonsbooking.zip
