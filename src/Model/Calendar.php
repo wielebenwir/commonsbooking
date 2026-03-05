@@ -48,13 +48,15 @@ class Calendar {
 	/**
 	 * Calendar constructor.
 	 *
-	 * @param Day   $startDate
-	 * @param Day   $endDate
-	 * @param int[] $locations
-	 * @param int[] $items
-	 * @param array $types
+	 * @param Day        $startDate
+	 * @param Day        $endDate
+	 * @param int[]      $locations
+	 * @param int[]      $items
+	 * @param array      $types
+	 * @param Timeframe[] $timeframes Optional preloaded timeframes. When provided, the database
+	 *                                query inside the constructor is skipped, saving a DB trip.
 	 */
-	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [], array $timeframes = [] ) {
 		// check, that it spans at least two days
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
@@ -66,15 +68,19 @@ class Calendar {
 		$this->locations = $locations;
 		$this->types     = $types;
 
-		$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
-			$this->startDate->getStartTimestamp(),
-			$this->endDate->getEndTimestamp(),
-			$this->locations,
-			$this->items,
-			$this->types,
-			true,
-			[ 'confirmed', 'publish' ]
-		);
+		if ( ! empty( $timeframes ) ) {
+			$this->timeframes = $timeframes;
+		} else {
+			$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+				$this->startDate->getStartTimestamp(),
+				$this->endDate->getEndTimestamp(),
+				$this->locations,
+				$this->items,
+				$this->types,
+				true,
+				[ 'confirmed', 'publish' ]
+			);
+		}
 	}
 
 	/**
