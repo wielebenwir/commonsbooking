@@ -66,3 +66,4 @@ jobs:
        with:
         name: commonsbooking.zip
         path: commonsbooking.zip
+        archive: false
