@@ -78,6 +78,20 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertTrue( $maxBookableDays == ( self::bookingDaysInAdvance - self::timeframeStart - 1 ) );
 	}
 
+	public function testEmptyCalendar() {
+		$inFiveYears = new \DateTime( self::CURRENT_DATE );
+		$inFiveYears->modify( '+5 years' );
+		$startDate    = date( 'Y-m-d', strtotime( 'midnight', $inFiveYears->getTimestamp() ) );
+		$endDate      = date( 'Y-m-d', strtotime( '+60 days midnight', $inFiveYears->getTimestamp() ) );
+		$jsonresponse = Calendar::getCalendarDataArray(
+			$this->itemId,
+			$this->locationId,
+			$startDate,
+			$endDate
+		);
+		$this->assertEmpty( $jsonresponse['days'] );
+	}
+
 	public function testClosestBookableTimeFrameFuntion() {
 		$startDate = date( 'Y-m-d', strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ) );
 		$endDate   = date( 'Y-m-d', strtotime( '+60 days midnight', strtotime( self::CURRENT_DATE ) ) );
