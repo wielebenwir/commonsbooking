@@ -21,8 +21,11 @@ class CalendarBench {
 
 	const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77; // Simulate bookings that are in the past
 	const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33; // Simulate bookings in the future
-	const ITEMS_TOTAL                          = 100;
-	const USER_ID                              = 1; // The user that owns all of those bookings
+	const ITEMS_TOTAL                          = 100; // The total amount of items that are connected with a timeframe
+
+	const ITEMS_DISCONNECTED     = 20; // items without a timeframe, see #2084
+	const LOCATIONS_DISCONNECTED = 20; // locations without a timeframe, see #2084
+	const USER_ID                = 1; // The user that owns all of those bookings
 
 
 	/**
@@ -98,6 +101,15 @@ class CalendarBench {
 				);
 			}
 		}
+
+		for ( $i = 0; $i < self::ITEMS_DISCONNECTED; $i++ ) {
+			$this->createItem( "Benchmark Disconnected Item $i" );
+		}
+
+		for ( $i = 0; $i < self::LOCATIONS_DISCONNECTED; $i++ ) {
+			$this->createLocation( "Benchmark Disconnected Location $i" );
+		}
+
 		// disable performance tweaks
 		wp_defer_term_counting( false );
 		wp_defer_comment_counting( false );
