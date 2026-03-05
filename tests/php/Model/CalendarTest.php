@@ -22,13 +22,15 @@ class CalendarTest extends CustomPostTypeTest {
 	public function testGetDays() {
 		$this->calendar = new Calendar( new Day( '2023-05-01' ), new Day( '2023-06-01' ) );
 		$this->assertEquals( 5, count( $this->calendar->getWeeks() ) );
+		// Calendar pre-fetches restrictions (empty [] here since no items/locations) and passes them to Week.
+		// Use explicit [] for possibleRestrictions to match the actual internal state.
 		$this->assertEquals(
 			array(
-				new Week( 2023, 120 ),
-				new Week( 2023, 127 ),
-				new Week( 2023, 134 ),
-				new Week( 2023, 141 ),
-				new Week( 2023, 148 ),
+				new Week( 2023, 120, [], [], [], null, [] ),
+				new Week( 2023, 127, [], [], [], null, [] ),
+				new Week( 2023, 134, [], [], [], null, [] ),
+				new Week( 2023, 141, [], [], [], null, [] ),
+				new Week( 2023, 148, [], [], [], null, [] ),
 			),
 			$this->calendar->getWeeks()
 		);
