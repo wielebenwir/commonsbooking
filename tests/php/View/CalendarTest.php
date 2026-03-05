@@ -34,7 +34,7 @@ class CalendarTest extends CustomPostTypeTest {
 			$this->itemId,
 			$this->locationId,
 			$startDate,
-			date( 'Y-m-d', strtotime( '+20 days', strtotime( self::CURRENT_DATE ) ) ),
+			date( 'Y-m-d', strtotime( '+100 days', strtotime( self::CURRENT_DATE ) ) ),
 			true
 		);
 

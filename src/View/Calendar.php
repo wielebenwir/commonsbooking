@@ -527,7 +527,6 @@ class Calendar {
 	 * @param array $items <int|string>
 	 *
 	 * @return array
-	 * @throws Exception
 	 */
 	public static function prepareJsonResponse(
 		Day $startDate,
@@ -553,13 +552,6 @@ class Calendar {
 		}
 
 		if ( ! ( $jsonResponse = Plugin::getCacheItem( $customCacheKey ) ) ) {
-			$calendar = new \CommonsBooking\Model\Calendar(
-				$startDate,
-				$endDate,
-				$locations,
-				$items
-			);
-
 			$jsonResponse = [
 				'minDate'                 => $startDate->getFormattedDate( 'Y-m-d' ),
 				'startDate'               => $startDate->getFormattedDate( 'Y-m-d' ),
@@ -614,12 +606,22 @@ class Calendar {
 				$jsonResponse['countLockDaysMaxDays'] = (int) $countLockdaysMaximum;
 			}
 
-			/** @var Week $week */
-			foreach ( $calendar->getWeeks() as $week ) {
-				/** @var Day $day */
-				foreach ( $week->getDays() as $day ) {
-					self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay );
+			try {
+				$calendar = new \CommonsBooking\Model\Calendar(
+					$startDate,
+					$endDate,
+					$locations,
+					$items
+				);
+				/** @var Week $week */
+				foreach ( $calendar->getWeeks() as $week ) {
+					/** @var Day $day */
+					foreach ( $week->getDays() as $day ) {
+						self::mapDay( $day, $lastBookableDate, $endDate, $jsonResponse, $firstBookableDay );
+					}
 				}
+			} catch ( \InvalidArgumentException $e ) {
+				// do nothing, this usually just means that the calendar has no bookable timeframes. therefore, leave the days array empty
 			}
 
 			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature

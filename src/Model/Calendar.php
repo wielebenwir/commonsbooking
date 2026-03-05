@@ -53,6 +53,7 @@ class Calendar {
 	 * @param int[] $locations
 	 * @param int[] $items
 	 * @param array $types
+	 * @throws \InvalidArgumentException|\Exception
 	 */
 	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
 		// check, that it spans at least two days
@@ -75,6 +76,10 @@ class Calendar {
 			true,
 			[ 'confirmed', 'publish' ]
 		);
+
+		if ( empty( $this->timeframes ) ) {
+			throw new \InvalidArgumentException( 'No timeframes found for the given calendar parameters' );
+		}
 	}
 
 	/**

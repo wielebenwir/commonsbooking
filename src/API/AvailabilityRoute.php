@@ -41,15 +41,18 @@ class AvailabilityRoute extends BaseRoute {
 	 * @param bool $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
 	 *
 	 * @return array
-	 * @throws Exception
 	 */
 	public function getItemData( $id = false ): array {
-		$calendar = new Calendar(
-			new Day( date( 'Y-m-d', time() ) ),
-			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
-			[],
-			$id ? [ $id ] : []
-		);
+		try {
+			$calendar = new Calendar(
+				new Day( date( 'Y-m-d', time() ) ),
+				new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
+				[],
+				$id ? [ $id ] : []
+			);
+		} catch ( \InvalidArgumentException $e ) {
+			return [];
+		}
 
 		return $calendar->getAvailabilitySlots();
 	}

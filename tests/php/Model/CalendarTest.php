@@ -20,6 +20,13 @@ class CalendarTest extends CustomPostTypeTest {
 	private \DateTime $now;
 
 	public function testGetDays() {
+		//we need at least one timeframe, otherwise the calender won't build
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '2023-05-01' ),
+			strtotime( '2023-06-01' )
+		);
 		$this->calendar = new Calendar( new Day( '2023-05-01' ), new Day( '2023-06-01' ) );
 		$this->assertEquals( 5, count( $this->calendar->getWeeks() ) );
 		$this->assertEquals(

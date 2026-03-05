@@ -55,7 +55,6 @@ class StationStatus extends BaseRoute {
 	 * @param int $locationId
 	 *
 	 * @return int
-	 * @throws \Exception
 	 */
 	private function getItemCountAtLocation( $locationId ): int {
 		$items            = Item::getByLocation( $locationId, true );
@@ -63,13 +62,17 @@ class StationStatus extends BaseRoute {
 		$availableCounter = 0;
 		foreach ( $items as $item ) {
 			// we have to make our calendar span at least one day, otherwise we get no results
-			$itemCalendar      = new Calendar(
-				new Day( date( 'Y-m-d', time() ) ),
-				new Day( date( 'Y-m-d', strtotime( '+1 day' ) ) ),
-				[ $locationId ],
-				[ $item->ID ]
-			);
-			$availabilitySlots = $itemCalendar->getAvailabilitySlots();
+			try {
+				$itemCalendar      = new Calendar(
+					new Day( date( 'Y-m-d', time() ) ),
+					new Day( date( 'Y-m-d', strtotime( '+1 day' ) ) ),
+					[ $locationId ],
+					[ $item->ID ]
+				);
+				$availabilitySlots = $itemCalendar->getAvailabilitySlots();
+			} catch ( \InvalidArgumentException $e ) {
+				$availabilitySlots = []; // An exception here usually means, that no bookable timeframes for the calendar were found
+			}
 			// we have to iterate over multiple slots because the calendar will give us more than we asked for
 			foreach ( $availabilitySlots as $availabilitySlot ) {
 				// match our exact current time to the slot
