@@ -4,6 +4,7 @@ namespace CommonsBooking\Tests\View;
 
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\View\Calendar;
 use DateTime;
 use SlopeIt\ClockMock\ClockMock;
@@ -220,6 +221,18 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertStringContainsString( '<table', $calendar );
 		$this->assertStringContainsString( $item->post_title, $calendar );
 		$this->assertStringContainsString( $location->post_title, $calendar );
+
+
+		//when a category is set, it should only show items of that category
+		$taxonomyItem = $this->createItem( 'Taxonomy Item' );
+		$term = wp_create_term( 'Test Category', Item::getTaxonomyName() );
+		wp_set_post_terms( $taxonomyItem, [ $term['term_id'] ], Item::getTaxonomyName() );
+		$termObj = get_term_by( 'id', $term['term_id'], Item::getTaxonomyName() );
+		$slug = $termObj->slug;
+		$timeframe = $this->createBookableTimeFrameIncludingCurrentDay( $this->locationId, $taxonomyItem );
+		$calendar = Calendar::renderTable( [ 'itemcat' => $slug ] );
+		$this->assertStringContainsString( $taxonomyItem->post_title, $calendar );
+		$this->assertStringNotContainsString( $item->post_title, $calendar );
 
 		// in a year, all timeframes will have expired -> calendar should be empty
 		$inAYear = new \DateTime();
