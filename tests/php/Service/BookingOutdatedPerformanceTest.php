@@ -221,7 +221,7 @@ class BookingOutdatedPerformanceTest extends BookingOutdatedScaleTest {
 		);
 
 		// ── 3. markOutdatedBookings() — loop until all past slots covered ────
-		/*$batches      = (int) ceil( $count / 500 );
+		$batches      = (int) ceil( $count / 500 );
 		$t            = $this->tick();
 		for ( $i = 0; $i < $batches; $i++ ) {
 			BookingService::markOutdatedBookings();
@@ -238,7 +238,7 @@ class BookingOutdatedPerformanceTest extends BookingOutdatedScaleTest {
 				"Booking at index $i (ID {$pastIds[$i]}) should be cb-outdated"
 			);
 		}
-		$this->assertEquals( 'confirmed', get_post( $futureId )->post_status, 'Future booking must remain confirmed' );*/
+		$this->assertEquals( 'confirmed', get_post( $futureId )->post_status, 'Future booking must remain confirmed' );
 
 		// ── 5. Query timing — the key perf measurement ───────────────────────
 		$rangeStart = $slots[0]['start'];
