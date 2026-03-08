@@ -6,7 +6,6 @@ use CommonsBooking\Geocoder\Location as GeocoderLocation;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\View\Calendar;
-use CommonsBooking\Tests\CPTCreationTrait;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\Helper\GeoHelperTest;
 
@@ -17,7 +16,6 @@ use CommonsBooking\Tests\Helper\GeoHelperTest;
  */
 class CalendarBench {
 
-	use CPTCreationTrait;
 
 	const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77; // Simulate bookings that are in the past
 	const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33; // Simulate bookings in the future

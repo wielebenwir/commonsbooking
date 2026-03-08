@@ -56,6 +56,38 @@ class GeneratedFixtureValidationTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @group failing44
+	 */
+	public function testThatBookingsCountIsCorrect(): void {
+
+		$NUMBER_OF_BOOKINGS = 100;
+		$NUMBER_OF_LOCATIONS = 1;
+		$NUMBER_OF_ITEMS = 1;
+
+		$bookings = \CommonsBooking\Repository\Booking::get();
+
+		$this->assertNotEmpty($bookings);
+		$this->assertTrue( count( $bookings ) == $NUMBER_OF_BOOKINGS, "number of bookings was " . count( $bookings ) . "
+and not " . $NUMBER_OF_BOOKINGS );
+
+		$locations = \CommonsBooking\Repository\Location::get();
+
+		$this->assertNotEmpty($locations);
+		$this->assertTrue( count( $locations ) == $NUMBER_OF_LOCATIONS );
+
+		$items = \CommonsBooking\Repository\Item::get();
+
+		$this->assertNotEmpty($items);
+		$this->assertTrue( count( $items ) == $NUMBER_OF_ITEMS );
+
+		$bookings_for_location = \CommonsBooking\Repository\Booking::get( [ $locations[0]->ID ] );
+
+		$this->assertNotEmpty( $bookings_for_location );
+		$this->assertTrue( count( $bookings_for_location ) == $NUMBER_OF_BOOKINGS, "number of bookings for location " .
+			$locations[0]->ID . " was not " . $NUMBER_OF_BOOKINGS . " but " . count( $bookings_for_location ) );
+	}
+
+	/**
 	 * Verify that locations were created with the correct post type.
 	 */
 	public function testLocationsExist(): void {
