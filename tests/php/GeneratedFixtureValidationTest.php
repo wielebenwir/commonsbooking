@@ -143,11 +143,11 @@ class GeneratedFixtureValidationTest extends WP_UnitTestCase {
 			$this->assertGreaterThan( 0, (int) $repStart );
 			$this->assertGreaterThanOrEqual( (int) $repStart, (int) $repEnd );
 
-			// Check selection types are set
+			// Check selection types are set (value "0" = SELECTION_MANUAL_ID is valid)
 			$itemSelect     = get_post_meta( $tfId, Timeframe::META_ITEM_SELECTION_TYPE, true );
 			$locationSelect = get_post_meta( $tfId, Timeframe::META_LOCATION_SELECTION_TYPE, true );
-			$this->assertNotEmpty( $itemSelect, "Timeframe $tfId missing item-select" );
-			$this->assertNotEmpty( $locationSelect, "Timeframe $tfId missing location-select" );
+			$this->assertTrue( $itemSelect !== false && $itemSelect !== '', "Timeframe $tfId missing item-select" );
+			$this->assertTrue( $locationSelect !== false && $locationSelect !== '', "Timeframe $tfId missing location-select" );
 		}
 	}
 
