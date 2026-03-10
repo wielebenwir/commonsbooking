@@ -1,16 +1,11 @@
-#  Buchungsliste
+# Booking list
 
+Using the shortcode `[cb_bookings]`, you can display the booking list on any page.
 
-Über den Shortcode [cb_bookings] kannst Du auf einer beliebigen Seite die
-Buchungsliste anzeigen.
+It is recommended to create a page titled "Bookings" and insert the shortcode there.
 
-Es empfiehlt sich eine Seite mit dem Titel "Buchungen" anzulegen und dort dann
-den Shortcode einzufügen.
+The booking list will then be automatically generated and always displays the bookings that the currently logged-in user has access to.
 
-Die Buchungsliste wird dann automatisch generiert und zeigt immer die
-Buchungen an, auf die der jeweils angemeldete Nutzer*in Zugriff hat.
-
-  * Nutzende mit der Rollen “Abonnent” -> sehen ihre eigenen Buchugen 
-  * Nutzende mit der Rolle “cb_manager / CommonsBooking Manager” -> sehen alle Buchungen der Standorte, denen sie als Manager zugewiesen sind 
-  * Nutzende mit der Rolle “Administrator” -> sehen alle Buchungen 
-
+  * Users with the role "Subscriber" -> see their own bookings
+  * Users with the role "cb_manager / CommonsBooking Manager" -> see all bookings of the locations to which they are assigned as managers
+  * Users with the role "Administrator" -> see all bookings

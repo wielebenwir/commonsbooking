@@ -1,9 +1,9 @@
-# Wie verhindere ich Spam Registrierungen
+# How do I prevent spam registrations
 
-Dafür gibt es verschiedene Möglichkeiten (Vorschläge aus der Community):
+There are several ways to do this (suggestions from the community):
 
-* Ein HoneyPot lenkt Bots ab, ohne Menschen zu nerven: https://wordpress.org/plugins/honeypot/
+* A honeypot diverts bots without bothering people: https://wordpress.org/plugins/honeypot/
 
-* "Ich hatte mal für **UltimateMember ein winziges Plugin geschrieben mit dem man einfach einen Text eingeben muss um sich zu registrieren**. Barrierearm und hält alle Bots ab: [Download von Github](https://github.com/hansmorb/um-captchaquiz/raw/refs/heads/master/um-captchaquiz.zip). Dazu einfach eine Textbox erstellen und den Metaschlüssel in den Plugin Einstellungen eintragen."
+* "I once wrote a tiny plugin for **UltimateMember where you simply have to enter a text to register**. Accessible and it keeps all bots out: [Download from GitHub](https://github.com/hansmorb/um-captchaquiz/raw/refs/heads/master/um-captchaquiz.zip). Just create a text box and enter the meta key in the plugin settings."
 
-* "Wir nutzen Hcaptcha für wordpress. Nach der installation in den Einstellungen des Plugins die von euch genutzte Registrierung (z.B. UltraMember auswählen, standardmäßig sollte die WordPress-eigene Registrierung gewählt werden). Für die Nutzung muss ein Hcaptcha Account erstellt werden. Sie werben mit Privacy-First und das keine Nutzerdaten verkauft werden. Ich selber habe das nicht geprüft." — [Download aus dem Plugin-Verzeichnis](https://wordpress.org/plugins/hcaptcha-for-forms-and-more)
+* "We use hCaptcha for WordPress. After installation, select the registration you use in the plugin settings (e.g., UltimateMember; by default the built-in WordPress registration should be selected). To use it, you need to create an hCaptcha account. They advertise Privacy-First and that no user data is sold. I have not checked this myself." — [Download from the plugin directory](https://wordpress.org/plugins/hcaptcha-for-forms-and-more)

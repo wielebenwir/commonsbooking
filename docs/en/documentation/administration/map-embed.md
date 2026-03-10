@@ -1,99 +1,81 @@
-#  Karte der Standorte mit Filter
+# Location map with filters
 
+Your items can also be displayed on a map.
 
-Die Darstellung eurer Artikel ist auch über eine Karte möglich.
+With the "Map" feature, you have the option to display your items on an interactive map. Especially for projects in larger cities and with multiple items, the map provides users with a good overview of all available locations.
 
-Mit dem neuen Feature „Karte“ habt Ihr die Möglichkeit, Eure Artikel auch auf
-einer interaktiven Karte darzustellen. Gerade für Projekte in größeren Städten
-und mit mehreren Artikeln bietet die Karte den User*innen eine gute Übersicht
-aller verfügbaren Standorte.
+**How do I create maps?**
 
-**Wie erstelle ich die Karten?**
+In the "Maps" menu item of the CB plugin, you have the option to create a CB map and configure it according to your preferences. You can also create multiple maps that can be embedded at different locations and with different parameters (e.g., filters).
 
-Im Menüpunkt „Karten“ des CB-Plugins habt Ihr die Möglichkeit, eine CB-
-Karte zu erstellen und nach Euren Wünschen zu konfigurieren. Ihr könnt auch
-mehrere Karten anlegen, die an unterschiedlichen Stellen und mit
-unterschiedlichen Parametern (z.B. Filtern) eingebunden werden können.
+**Embedding a map on a website**
 
-**Karte auf einer Website einbauen**
-
-Unter "Kartendarstellung" erhaltet Ihr den [Shortcode](./shortcodes) zur Einbindung in Eure Website.
+Under "Map display", you will receive the [shortcode](./shortcodes) for embedding on your website.
 
 ![](/img/shortcode-cb-map-settings.png)
 
-Im Beispiel lautet der Shortcode: `[cb_map id=7269]`
+In the example, the shortcode is: `[cb_map id=7269]`
 
-Diesen Shortcode könnt Ihr dann in die gewünschte Seite einbinden. Zum
-Beispiel auf die Startseite Eures Projekts, bei den Standorten oder bei den
-Artikeln.
+You can then embed this shortcode on the desired page. For example, on your project's homepage, with the locations or with the items.
 
-In diesem Menüpunkt könnt Ihr auch auswählen, auf welcher Basiskarte von
-OpenStreetMaps (OSM) Eure Karte dargestellt wird und welche Höhe in Pixeln sie
-einnimmt.
+In this menu item, you can also select which OpenStreetMap (OSM) base map your map is displayed on and what height in pixels it should have.
 
 **Zoom**
 
-Hier könnt Ihr die minimale und die maximale Zoomstufe einstellen, ebenso
-wie die anfängliche angezeigte, initiale Zoomstufe.
+Here you can set the minimum and maximum zoom level, as well as the initial zoom level displayed.
 
-**Kartenpositionierung (Mitte) bei Initialisierung**
+**Map positioning (center) on initialization**
 
-Hier tragt Ihr Breitengrad und Längengrad für die Mitte Eurer Karte ein.
+Here you enter the latitude and longitude for the center of your map.
 
-**Adaptiver Kartenabschnitt**
+**Adaptive map section**
 
-Hier kannst Du einstellen, wie sich der Kartenabschnitt automatisch
-anpasst:
+Here you can set how the map section automatically adjusts:
 
-  - Anfängliche Anpassung an Markergrenzen: Wenn die Karte geladen wird, passt sich der Kartenabschnitt automatisch an die Grenzen der angezeigten Marker an.
-  - Anpassung an Markergrenzen am Filter: Die automatische Anpassung der Markergrenzen erfolgt über die Filterung der Nutzer:innen
+  - Initial adjustment to marker bounds: When the map is loaded, the map section automatically adjusts to the bounds of the displayed markers.
+  - Adjustment to marker bounds on filter: The automatic adjustment of marker bounds occurs when users apply filters
 
-**Kartenmarker Tooltip**
+**Marker tooltip**
 
-Über einen Haken kannst Du hier die permanente Anzeige der Marker-Tooltips
-aktivieren.
+You can activate the permanent display of marker tooltips here.
 
-**Marker Popup**
+**Marker popup**
 
-Hier könnt Ihr einstellen, welche Informationen in dem Popup des jeweiligen
-Markers in der Karte angezeigt werden:
+Here you can set which information is displayed in the popup of each marker on the map:
 
-  * Artikelverfügbarkeit anzeigen
-  * Anzahl verfügbare Tage im Popup
+  * Show item availability
+  * Number of available days in popup
 
-**Benutzerdefinierter Marker**
+**Custom marker**
 
-Hier habt Ihr die Möglichkeit, eine Bilddatei für einen benutzerdefinierten
-Marker hochzuladen.
+Here you have the option to upload an image file for a custom marker.
 
 **Cluster**
 
-In diesem Feld könnt Ihr die Marker in einem bestimmten Radius zu einem
-Cluster kombinieren. 0 px = Deaktivierung
+In this field, you can combine markers within a certain radius into a cluster. 0 px = disabled
 
-### **Benutzerdefinierte Cluster-Marker**
+### Custom cluster markers
 
-**Darstellung nach Artikelstatus** In diesem Punkt könnt Ihr einstellen, ob (nur) Entwürfe in der Karte mit
-angezeigt werden.
+**Appearance by item status**
+In this section, you can set whether (only) drafts are also displayed on the map.
 
-**Benutzerdefinierte Artikel-Entwurfsmarkierung** Artikel, die sich noch im Entwurfsstatus befinden, können hier mit einem
-benutzerdefinierten Symbol versehen werden.
+**Custom item draft marker**
+Items that are still in draft status can be provided with a custom icon here.
 
-**Filter für Benutzer** In diesem Menüpunkt könnt Ihr die Suchfilter für die Nutzer:innen
-definieren.
+**Filters for users**
+In this menu item, you can define the search filters for users.
 
-  * Filter für Standort-Entfernung anzeigen: hierüber wird der Filter aktiviert
-  * Bezeichnung für Standortentfernungsfilter: In dieser Box lässt sich der Filter bezeichnen
-  * Begrenzung Adresssuche – links unten
-  * Begrenzung Adresssuche – rechts oben
-  * Artikelverfügbarkeitsfilter anzeigen
-  * Bezeichnung für Artikelverfügbarkeitsfilter: Aktivierung
-  * Bezeichnung für Artikelkategoriefilter: Hier könnt Ihr den Filter für die verschiedenen Kategorien Euer Artikel bezeichnen. Bei Lastenrädern wären das die Ausstattungsmerkmale.
-  * verfügbare Kategorien: zum Beispiel Elektroantrieb, zwei oder drei Räder, Kindertransport etc.
-  * Gruppieren von benutzerdefiniertem Markup für Filter
-  * Filter-Gruppe
+  * Show location distance filter: this activates the filter
+  * Label for location distance filter: In this box you can label the filter
+  * Address search bounds – bottom left
+  * Address search bounds – top right
+  * Show item availability filter
+  * Label for item availability filter: Activation
+  * Label for item category filter: Here you can label the filter for the different categories of your items. For cargo bikes, these would be the equipment features.
+  * Available categories: for example, electric drive, two or three wheels, child transport, etc.
+  * Group custom markup for filters
+  * Filter group
 
-**Filter-Voreinstellungen**
+**Filter presets**
 
-voreingestellte Kategorien
-
+Preset categories

@@ -67,7 +67,7 @@ umsetzen.
 Hierfür muss ein JSON-Objekt an die den Shortcode übergeben werden. Das kann
 z.B. so aussehen:
 
-```
+```json
 [cb_search id="4" layouts="Filter,List" filter-expanded]
 {
   "map": {

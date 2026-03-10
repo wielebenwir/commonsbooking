@@ -164,11 +164,11 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Update-Info', link: 'update-news' }
           ]
       },
-      {
-      text: 'Erste Schritte', base: '/de/documentation/first-steps/',
+        {
+        text: 'Erste Schritte', base: '/de/documentation/first-steps/',
+          link: '/',
           collapsed: true,
           items: [
-              { text: 'Erste Schritte', link: 'index' },
         { text: 'Artikel anlegen', link: 'create-item' },
         { text: 'Stationen anlegen', link: 'create-location' },
         { text: 'Buchungszeiträume verwalten', link: 'booking-timeframes-manage'},
@@ -177,8 +177,9 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Zeitrahmen & Feiertage definieren', link: 'timeframes-holidays' }
           ]
       },
-      {
-      text: 'Einstellungen', base: '/de/documentation/settings/',
+        {
+        text: 'Einstellungen', base: '/de/documentation/settings/',
+          link: '/',
           collapsed: true,
           items: [
         { text: 'Allgemeine Einstellungen', link: 'general-settings' },
@@ -192,6 +193,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
       },
     {
     text: 'Grundlagen', base: '/de/documentation/basics/',
+      link: '/',
       collapsed: true,
       items: [
     { text: 'Begriffe', link: 'concepts' },
@@ -204,6 +206,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
 
     {
       text: 'Buchungen verwalten', base: '/de/documentation/manage-bookings/',
+        link: '/',
         collapsed: true,
       items: [
         { text: 'Buchungen anlegen', link: 'bookings-create' },
@@ -211,15 +214,16 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'iCalendar Feed', link: 'icalendar-feed' }
       ]
     },
-      {
+        {
           text: 'Administration', base: '/de/documentation/administration/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'Leihangebote im Frontend anzeigen', link: 'frontend-show-bookable' },
               { text: 'Buchungsliste', link: 'booking-list' },
               { text: 'Karte einbinden', link: 'map-embed' },
               { text: 'Neue Karte', link: 'new-frontend' },
-              { text: 'Shortcodes', link: 'shortcodes' },
+              { text: 'Shortcodes für Frontend-Darstellung', link: 'shortcodes' },
               { text: 'Template Tags', link: 'template-tags' },
               { text: 'Widget', link: 'widget' },
               { text: 'Datenschutz', link: 'privacy'},
@@ -232,23 +236,25 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
               { text: 'Was ist die CommonsAPI?', link: 'what-is-the-commonsapi' },
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' },
+              { text: 'CommonsBooking API nutzen', link: 'commonsbooking-api' },
               { text: 'GBFS', link: 'gbfs'}
           ]
       },
 
     {
       text: 'Erweiterte Funktionalität', base: '/de/documentation/advanced-functionality/',
+        link: '/',
         collapsed: true,
       items: [
-          { text: 'Caching', link: 'cache' },
-          { text: 'Standardwerte für Zeitrahmen-Erstellung ändern', link: 'change-timeframe-creation-defaults' },
+          { text: 'Cache einstellen', link: 'cache' },
+          { text: 'Standardwerte für Zeitrahmenerstellung ändern', link: 'change-timeframe-creation-defaults' },
           { text: 'Hooks und Filter', link: 'hooks-and-filters' },
       ]
     },
 
     {
       text: 'Roadmap', base: '/de/documentation/roadmap/',
+        link: '/',
         collapsed: true,
       items: [
         { text: 'Übersicht über die Releases', link: 'release-overview' }
@@ -256,14 +262,15 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
     },
     {
       text: 'Informationen zur alten Version 0.9', base: '/de/documentation/version-0-9/',
+        link: '/',
         collapsed: true,
       items: [
-        { text: 'Installation', link: 'setup' },
-        { text: 'Erste Schritte v0.9', link: 'first-steps' },
-        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags' },
-        { text: 'Einstellungen v0.9', link: 'settings' },
-        { text: 'Widgets & Themes v0.9', link: 'widgets-themes' },
-        { text: 'FAQ v0.9', link: 'faq' }
+        { text: 'Installation (Version 0.9.x)', link: 'setup' },
+        { text: 'Erste Schritte (Version 0.9.x)', link: 'first-steps' },
+        { text: 'Frontend-Einbindung (Version 0.9.x)', link: 'bookings-template-tags' },
+        { text: 'Login- und Registrierungsseiten anpassen (Version (0.9.x)', link: 'settings' },
+        { text: 'Widgets & Themes (Version 0.9.x)', link: 'widgets-themes' },
+        { text: 'Häufige Fragen (Version 0.9.x)', link: 'faq' }
       ]
     },
       {
@@ -289,130 +296,118 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
           collapsed: true,
           items: [
               { text: 'Install', link: 'install' },
-              //{ text: 'Migration from CB1', link: 'migration-from-cb1' },
-              //{ text: 'Theme', link: 'theme' },
-              //{ text: 'Update-News', link: 'update-news' }
+              { text: 'Migration from version 0.9.x', link: 'migration-from-cb1' },
+              { text: 'Choose a WordPress theme', link: 'theme' },
+              { text: 'Update information', link: 'update-news' }
           ]
       },
-      {
+        {
           text: 'First steps', base: '/en/documentation/first-steps/',
+          link: '/',
           collapsed: true,
           items: [
-              { text: 'First steps', link: 'index' },
               { text: 'Create item', link: 'create-item' },
               { text: 'Create location', link: 'create-location' },
-              { text: 'Manage booking timeframes', link: 'booking-timeframes-manage'},
-              { text: 'Set up booking rules', link: 'setup-bookingrules' },
-              { text: 'Manage booking restrictions', link: 'manage-booking-restrictions' },
-              { text: 'Configure a location\'s holidays', link: 'timeframes-holidays' }
+              { text: 'Timeframes: Define when an item can be booked', link: 'booking-timeframes-manage'},
+              { text: 'Configure booking rules', link: 'setup-bookingrules' },
+              { text: 'Manage restrictions', link: 'manage-booking-restrictions' },
+              { text: 'Timeframes: Configure a location\'s holidays', link: 'timeframes-holidays' }
           ]
       },
-      {
+        {
           text: 'Settings', base: '/en/documentation/settings/',
+          link: '/',
           collapsed: true,
           items: [
-              { text: 'General Settings', link: 'general-settings' },
+              { text: 'General settings', link: 'general-settings' },
               { text: 'Booking codes', link: 'booking-codes' },
               { text: 'Restrictions', link: 'restrictions' },
               { text: 'Templates', link: 'templates' },
-              { text: 'Reminder', link: 'reminder' },
-              { text: 'Export', link: 'export' },
-              { text: 'Language settings & date format', link: 'language-and-date' }
+              { text: 'Reminder via email concerning bookings', link: 'reminder' },
+              { text: 'Export timeframes and bookings', link: 'export' },
+              { text: 'Language & date format', link: 'language-and-date' }
           ]
       },
-    /*
     {
       text: 'Basics', base: '/en/documentation/basics/',
+      link: '/',
       collapsed: true,
       items: [
         { text: 'Concepts', link: 'concepts' },
         { text: 'Booking codes', link: 'booking-codes' },
-        { text: 'Permission management (CB-Manager)', link: 'permission-management' },
-        { text: 'Configure timeframes', link: 'timeframes-config' }
+        { text: 'Assign access rights (CB Manager)', link: 'permission-management' },
+        { text: 'Timeframe types', link: 'timeframes-config' }
       ]
     },
 
 
     {
       text: 'Manage bookings', base: '/en/documentation/manage-bookings/',
+        link: '/',
         collapsed: true,
       items: [
-        { text: 'Create bookings', link: 'bookings-create' },
-        { text: 'Cancel bookings', link: 'bookings-cancel' },
+        { text: 'Create Bookings & Admin Booking', link: 'bookings-create' },
+        { text: 'Cancel Bookings', link: 'bookings-cancel' },
         { text: 'iCalendar Feed', link: 'icalendar-feed' }
       ]
-    }*/
-      {
+    },
+        {
           text: 'Administration', base: '/en/documentation/administration/',
+          link: '/',
           collapsed: true,
           items: [
-//              { text: 'Booking list', link: 'booking-list' },
-//              { text: 'Embed map', link: 'map-embed' },
-//              { text: 'Show bookable items in the frontend', link: 'frontend-show-bookable' },
-//              { text: 'New Frontend(Beta)', link: 'new-frontend' },
-//              { text: 'Adjust registration page and user fields', link: 'custom-registration-user-fields' },
-//              { text: 'Shortcodes', link: 'shortcodes' },
-//              { text: 'Template Tags', link: 'template-tags' },
-//              { text: 'Widget', link: 'widget' },
-                { text: 'Privacy', link: 'privacy'}
+                { text: 'Displaying lending offers in the frontend', link: 'frontend-show-bookable' },
+                { text: 'Booking list', link: 'booking-list' },
+                { text: 'Location map with filters', link: 'map-embed' },
+                { text: 'New frontend (BETA)', link: 'new-frontend' },
+                { text: 'Shortcodes for frontend display', link: 'shortcodes' },
+                { text: 'Template tags and placeholders for email templates', link: 'template-tags' },
+                { text: 'Integrating the user widget', link: 'widget' },
+                { text: 'Privacy', link: 'privacy' },
+                { text: 'Customizing registration & login', link: 'custom-registration-user-fields' }
           ]
       },
-      /*
       {
           text: 'Extensions / API', base: '/en/documentation/api/',
+          link: '/',
           collapsed: true,
           items: [
               { text: 'What is the CommonsAPI?', link: 'what-is-the-commonsapi' },
-              { text: 'CommonsBooking API', link: 'commonsbooking-api' }
+              { text: 'Using the CommonsBooking API', link: 'commonsbooking-api' },
+              { text: 'GBFS', link: 'gbfs' }
           ]
       },
-*/
     {
       text: 'Advanced functionality', base: '/en/documentation/advanced-functionality/',
+        link: '/',
         collapsed: true,
       items: [
-            { text: 'Caching', link: 'cache' },
+            { text: 'Configure cache', link: 'cache' },
             { text: 'Change default values for timeframe creation', link: 'change-timeframe-creation-defaults' },
             { text: 'Hooks and filters', link: 'hooks-and-filters' },
       ]
     },
-/*
     {
       text: 'Roadmap', base: '/en/documentation/roadmap/',
+        link: '/',
         collapsed: true,
       items: [
-        { text: 'Release overview', link: 'release-overview' }
+        { text: 'Overview of releases and planned further development', link: 'release-overview' }
       ]
     },
-    */
-    /* Won't be added to English version
-    {
-      text: 'Informationen zur alten Version 0.9', base: '/en/documentation/version-0-9/',
-        collapsed: true,
-      items: [
-        { text: 'Bookings Template Tags v0.9', link: 'bookings-template-tags-version-0-9' },
-        { text: 'Einstellungen v0.9', link: 'einstellungen-version-0-9' },
-        { text: 'Erste Schritte v0.9', link: 'erste-schritte' },
-        { text: 'FAQ v0.9', link: 'haeufige-fragen-version-0-9' },
-        { text: 'Installation', link: 'installation' },
-        { text: 'Widgets & Themes v0.9', link: 'widgets-themes-version-0-9' }
-      ]
-    },
-    */
-   /*
       {
           text: 'Frequently Asked Questions (FAQ)', base: '/en/documentation/faq/',
+          link: '/',
           collapsed: true,
           items: [
-              { text: 'My site is very slow', link: 'site-slow' },
+              { text: 'The site is very slow', link: 'site-slow' },
               { text: 'Problems and answers', link: 'problems-and-answers' },
-              { text: 'Add booking comment to email templates', link: 'booking-comment-emails' },
-              { text: 'How to add lock codes in email templates', link: 'lock-codes-email' },
-              { text: 'Make article page look more organised', link: 'organise-article-page' },
-              { text: 'How to avoid spam registrations', link: 'avoid-spam-registrations'}
+              { text: 'How do I show the booking comment on the page and in the email?', link: 'booking-comment-emails' },
+              { text: 'How do I show lock codes in emails?', link: 'lock-codes-email' },
+              { text: 'How can I make the item detail page clearer?', link: 'organise-article-page' },
+              { text: 'How do I prevent spam registrations?', link: 'avoid-spam-registrations'}
           ]
       },
-      */
   ]
 }
 

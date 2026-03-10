@@ -1,22 +1,17 @@
-#  Leihangebote im Frontend anzeigen
+# Displaying lending offers in the frontend
 
+To display the list of items, you need to insert a **shortcode** into the WordPress editor. CommonsBooking offers [various shortcodes for maps, tables and lists](./shortcodes).
 
-Um die Liste der Artikel anzuzeigen musst du einen **Shortcode** in den WordPress-Editor einfügen. CommonsBooking bietet [diverse Shortcodes für Karten, Tabellen und Listen ](./shortcodes) .
+  * First create a page, for example "**My Bikes**".
+  * Now copy the following shortcode into the editor (including the square brackets): `[cb_items]`
+  * If you are using the WordPress Block Editor, you must first insert the "Shortcode" block.
 
-  *  * Lege dazu zuerst eine Seite an, etwa “ **Meine Räder** “.
-  * Kopiere nun folgenden Shortcode in den Editor (inklusive der eckigen Klammern): ` [cb_items] `
-  * Wenn du den Gutenberg-Editor verwendest, musst du zunächst den Block “Shortcode” einfügen.
+## About the item list
 
-##  Über die Artikel-Liste
+The item list shows you all items that are published. If a bookable timeframe is also defined for the item, the bookable period and the location are also displayed.
 
-Die Artikel-Liste zeigt euch alle Artikel an, die veröffentlich sind. Wenn für den Artikel auch ein buchbarer Zeitrahmen hinterlegt ist, wird der buchbare
-Zeitraum und der Standort mit angezeigt.
+Published items that are currently not assigned to a location via a timeframe are also displayed in the list with a note that they are currently not bookable.
 
-Veröffentlichte Artikel, die aktuell keiner Station über einen Zeitrahmen zugewiesen sind, werden in der Liste auch angezeigt mit dem Hinweis, dass sie
-aktuell nicht buchbar sind.
+## Additional options
 
-##  Weitere Möglichkeiten
-
-Weitere Möglichkeiten zur Darstellung der ausleihbaren Artikel wie zum Beispiel Standort-Listen, eine Karte oder eine Verfügbarkeitstabelle findest
-ihr im Artikel [Shortcodes für Frontend-Darstellung](./shortcodes)
-
+You can find more options for displaying bookable items, such as location lists, a map or an availability table, in the article [Shortcodes for frontend display](./shortcodes).
