@@ -960,9 +960,14 @@ class Plugin {
 	}
 
 
+	/**
+	 * This adds custom thumbnail/image sizes to be used throughout WordPress
+	 *
+	 * @return void
+	 */
 	function AddImageSizes() {
 
-		$crop = Settings::getOption( 'commonsbooking_options_templates', 'image_listing_crop' ) == 'on' ? true : false;
+		$crop = Settings::getOption( 'commonsbooking_options_templates', 'image_listing_crop' ) === 'on';
 
 		// image size for small item and location post images in listings
 		add_image_size(
