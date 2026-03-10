@@ -1,6 +1,5 @@
 # Shortcodes für Frontend-Darstellung
 
-
 Die CommonsBooking-Inhalte (z.B. Artikellisten oder Verfügbarkeiten) kannst du auf der Website anzuzeigen, indem du sogenannte Shortcodes verwendest.
 Shortcodes können in jede WordPress Seite eingefügt werden. [Offizielle WordPress Dokumentation](https://en.support.wordpress.com/shortcodes).
 
@@ -11,7 +10,7 @@ Beispiel-Argumente:
   * ` orderby ` : Bestimmt das Attribut nachdem sortiert werden soll z.B. ` orderby=post_title ` für eine Sortierung nach dem Namen eines Posts.
   * ` order ` : Bestimmt die Sortierreihenfolge. Aufsteigend ` ASC ` und absteigend ` DESC ` .
 
-Diese Paramter sind für die folgenden Shortcodes gültig, welche über das CommonsBooking Plugin verfügbar sind:
+Diese Parameter sind für die folgenden Shortcodes gültig, welche über das CommonsBooking Plugin verfügbar sind:
 
 ## Artikel-Liste
 
@@ -19,7 +18,7 @@ Zeigt eine Liste aller veröffentlichen Artikel an mit den Stationen, an denen
 sie sich befinden.
 
   * Shortcode: `[cb_items]`
-  * Argumente:
+  * Parameter:
     * `category_slug`: Kategorie-Filter
     * `p`: Nur einzelnen Artikel anzeigen, wobei 1234 die numerische ID von dem Artikel ist.
       ```
@@ -49,7 +48,7 @@ Beispiel:
 Zeigt einen einzelnen Artikel in der Listenansicht (s.o.) an.
 
 * Shortcode: `[cb_items]`
-* Argumente: `p` die Post-ID von deinem Artikel
+* Parameter: `p` die Post-ID von deinem Artikel
 
 Beispiel:
 ```
@@ -64,7 +63,7 @@ Dafür muss zuerst eine Karte unter "CommonsBooking -> Karten" eingerichtet werd
 [Mehr zur Einrichtung und Konfiguration von Karten](map-embed).
 
   * Shortcode: ` [cb_map] `
-  * Argumente ( **erforderlich!** ): ` id `
+  * Parameter ( **erforderlich!** ): ` id `
 
 ![](/img/shortcode-cb-map.png)
 
@@ -78,11 +77,11 @@ Filter der auf der Karte angewendet wurde hatte keine Auswirkungen auf die
 danebenstehende Artikelliste. Dafür gibt es jetzt den neuen Shortcode
 
   * Shortcode: ` [cb_search] `
-  * Argumente (**erforderlich!**): ` id `
+  * Parameter (**erforderlich!**): ` id `
 
 ![](/img/shortcode-cb-search-map.png)
 
-[ Weitere Argumente und ausführliche Dokumentation
+[ Weitere Parameter und ausführliche Dokumentation
 ](new-frontend)
 
 ## Artikel-Tabelle mit Verfügbarkeit
@@ -91,7 +90,7 @@ Zeigt eine Tabelle aller veröffentlichen Artikel an mit Stationen, an denen
 sie sich befinden und der aktuellen Verfügbarkeit.
 
   * Shortcode: ` [cb_items_table] `
-  * Argumente
+  * Parameter:
     * `days`: Die Anzahl der anzuzeigende Tage ist standardmäßig auf 31 gesetzt. Über das Attribut days kann dieser Wert angepasst werden. Beispiel, um nur 10 Tage anzuzeigen.
 
       Beispiel:

@@ -16,7 +16,7 @@ These parameters are valid for the following shortcodes available through the Co
 Displays a list of all published items with the locations where they are located.
 
   * Shortcode: `[cb_items]`
-  * Arguments:
+  * Parameters:
     * `category_slug`: Category filter
     * `p`: Display only a single item, where 1234 is the numeric ID of the item.
       ```
@@ -43,7 +43,7 @@ Example:
 Displays a single item in list view (see above).
 
 * Shortcode: `[cb_items]`
-* Arguments: `p` the post ID of your item
+* Parameters: `p` the post ID of your item
 
 Example:
 ```
@@ -56,7 +56,7 @@ Displays a map of all published items.
 A map must first be set up under "CommonsBooking -> Maps". [More about setting up and configuring maps](./map-embed).
 
   * Shortcode: `[cb_map]`
-  * Arguments (**required!**): `id`
+  * Parameters (**required!**): `id`
 
 ![](/img/shortcode-cb-map.png)
 
@@ -68,7 +68,7 @@ A map must first be set up under "CommonsBooking -> Maps". [More about setting u
 Previously, each shortcode could only be used independently, meaning a filter applied on the map had no effect on the adjacent item list. For this purpose, there is now the new shortcode
 
   * Shortcode: `[cb_search]`
-  * Arguments (**required!**): `id`
+  * Parameters (**required!**): `id`
 
 ![](/img/shortcode-cb-search-map.png)
 
@@ -79,7 +79,7 @@ Previously, each shortcode could only be used independently, meaning a filter ap
 Displays a table of all published items with the locations where they are located and their current availability.
 
   * Shortcode: `[cb_items_table]`
-  * Arguments
+  * Parameters:
     * `days`: The number of days to display is set to 31 by default. This value can be adjusted using the days attribute. Example to display only 10 days.
 
       Example:
