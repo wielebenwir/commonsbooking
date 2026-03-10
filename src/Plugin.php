@@ -786,6 +786,28 @@ class Plugin {
 
 		// iCal rewrite
 		iCalendar::initRewrite();
+
+		// Reset cb-outdated status when a booking's end date is extended into the future
+		add_action( 'save_post_cb_booking', [ self::class, 'maybeResetOutdatedBooking' ] );
+	}
+
+	/**
+	 * Reverts a 'cb-outdated' booking back to 'confirmed' when its end date has been moved into the future.
+	 *
+	 * @param int $postId
+	 * @return void
+	 */
+	public static function maybeResetOutdatedBooking( int $postId ): void {
+		$post = get_post( $postId );
+		if ( ! $post || $post->post_status !== 'cb-outdated' ) {
+			return;
+		}
+		$end = (int) get_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true );
+		if ( $end >= strtotime( 'midnight' ) ) {
+			remove_action( 'save_post_cb_booking', [ self::class, 'maybeResetOutdatedBooking' ] );
+			wp_update_post( [ 'ID' => $postId, 'post_status' => 'confirmed' ] );
+			add_action( 'save_post_cb_booking', [ self::class, 'maybeResetOutdatedBooking' ] );
+		}
 	}
 
 	/**

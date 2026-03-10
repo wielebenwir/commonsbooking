@@ -53,6 +53,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	public static $bookingStates = [
 		'canceled',
 		'confirmed',
+		'cb-outdated',
 		'unconfirmed',
 	];
 

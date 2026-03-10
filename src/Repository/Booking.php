@@ -43,7 +43,7 @@ class Booking extends PostRepository {
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
-	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [] ): array {
+	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [], array $postStatus = [ 'confirmed', 'unconfirmed' ] ): array {
 		$startTimestamp = self::getStartTimestamp( $timestamp );
 		$endTimestamp   = self::getEndTimestamp( $startTimestamp );
 
@@ -70,7 +70,7 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				),
 			),
-			'post_status' => array( 'confirmed', 'unconfirmed' ),
+			'post_status' => $postStatus,
 			'nopaging'    => true,
 		);
 
@@ -89,7 +89,7 @@ class Booking extends PostRepository {
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
-	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [] ): array {
+	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [], array $postStatus = [ 'confirmed' ] ): array {
 		$startTimestamp = self::getStartTimestamp( $timestamp );
 		$endTimestamp   = self::getEndTimestamp( $startTimestamp );
 
@@ -117,7 +117,7 @@ class Booking extends PostRepository {
 					'type'    => 'numeric',
 				),
 			),
-			'post_status' => array( 'confirmed' ),
+			'post_status' => $postStatus,
 			'nopaging'    => true,
 		);
 
@@ -146,7 +146,7 @@ class Booking extends PostRepository {
 	 * @return null|\CommonsBooking\Model\Booking
 	 * @throws Exception
 	 */
-	public static function getByDate( int $startDateTimestamp, int $endDateTimestamp, int $locationId, int $itemId ): ?\CommonsBooking\Model\Booking {
+	public static function getByDate( int $startDateTimestamp, int $endDateTimestamp, int $locationId, int $itemId, array $postStatus = [ 'confirmed', 'unconfirmed' ] ): ?\CommonsBooking\Model\Booking {
 		// Default query
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
@@ -179,7 +179,7 @@ class Booking extends PostRepository {
 					'compare' => '=',
 				),
 			),
-			'post_status' => array( 'confirmed', 'unconfirmed' ),
+			'post_status' => $postStatus,
 			'nopaging'    => true,
 		);
 
@@ -188,15 +188,15 @@ class Booking extends PostRepository {
 			$posts = $query->get_posts();
 			$posts = array_filter(
 				$posts,
-				function ( $post ) {
-					return in_array( $post->post_status, array( 'confirmed', 'unconfirmed' ) );
+				function ( $post ) use ( $postStatus ) {
+					return in_array( $post->post_status, $postStatus );
 				}
 			);
 
 			// If there is exactly one result, return it.
 			if ( count( $posts ) == 1 ) {
 				$booking = new \CommonsBooking\Model\Booking( $posts[0] );
-				if ( in_array( $booking->getPost()->post_status, array( 'confirmed', 'unconfirmed' ) ) ) {
+				if ( in_array( $booking->getPost()->post_status, $postStatus ) ) {
 					return $booking;
 				}
 			} elseif ( count( $posts ) > 1 ) {
