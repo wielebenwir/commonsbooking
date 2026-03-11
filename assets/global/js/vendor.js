@@ -1,6 +1,15 @@
-;(function(g,f){if(typeof define==="function"&&define.amd){define([],f);}else if(typeof module!=="undefined"&&module.exports){module.exports=f();}else{g.Shuffle=f();}}(typeof globalThis!=="undefined"?globalThis:typeof self!=="undefined"?self:this,function(){
+;(function (g, f) {
+  if (typeof define === "function" && define.amd) {
+    define([], f);
+  } else if (typeof module !== "undefined" && module.exports) {
+    module.exports = f();
+  } else {
+    g.Shuffle = f();
+  }
+}(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function () {
 "use strict";
-var exports={},module={exports:exports};
+var exports = {}, module = { exports: exports };
+
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1689,5 +1698,6 @@ function _movementFinished2() {
   });
 }
 
-return module.exports["default"]||module.exports;
+
+return module.exports["default"] || module.exports;
 }));

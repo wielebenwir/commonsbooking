@@ -163,14 +163,14 @@ module.exports = function (grunt) {
 		},
 		concat: {
 			vendor: {
-				options: {
-					// Wrap the Babel-compiled CommonJS output in a UMD factory.
-					// The factory receives a local `exports` variable, populates it,
-					// and returns the default export so global.Shuffle = ShuffleClass.
-					banner: ';(function(g,f){if(typeof define==="function"&&define.amd){define([],f);}else if(typeof module!=="undefined"&&module.exports){module.exports=f();}else{g.Shuffle=f();}}(typeof globalThis!=="undefined"?globalThis:typeof self!=="undefined"?self:this,function(){\n"use strict";\nvar exports={},module={exports:exports};\n',
-					footer: '\nreturn module.exports["default"]||module.exports;\n}));\n',
-				},
-				src: ['assets/global/js/.shuffle-cjs.js'],
+				// Wrap the Babel-compiled CommonJS output in a UMD factory.
+				// The header creates a local `exports` scope; the footer returns the
+				// default export so that global.Shuffle = ShuffleClass in browsers.
+				src: [
+					'assets/global/js/_umd-header.js',
+					'assets/global/js/.shuffle-cjs.js',
+					'assets/global/js/_umd-footer.js',
+				],
 				dest: 'assets/global/js/vendor.js'
 			}
 		},
