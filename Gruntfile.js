@@ -150,30 +150,6 @@ module.exports = function (grunt) {
 				],
 			},
 		},
-		babel: {
-			options: {
-				sourceMap: false,
-				presets: ['@babel/preset-env']
-			},
-			dist: {
-				files: {
-					'assets/global/js/.shuffle-cjs.js': 'node_modules/shufflejs/dist/shuffle.mjs'
-				}
-			}
-		},
-		concat: {
-			vendor: {
-				// Wrap the Babel-compiled CommonJS output in a UMD factory.
-				// The header creates a local `exports` scope; the footer returns the
-				// default export so that global.Shuffle = ShuffleClass in browsers.
-				src: [
-					'assets/global/js/_umd-header.js',
-					'assets/global/js/.shuffle-cjs.js',
-					'assets/global/js/_umd-footer.js',
-				],
-				dest: 'assets/global/js/vendor.js'
-			}
-		},
 		watch: {
 			'dart-sass': {
 				files: [
@@ -195,7 +171,7 @@ module.exports = function (grunt) {
 					'assets/admin/js/src/**/*.js'
 				],
 				tasks: [
-					'uglify:dev', 'babel'
+					'uglify:dev', 'vendor-shuffle'
 				],
                 options: {
                     livereload: true
@@ -209,8 +185,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-dart-sass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-babel');
 	grunt.registerTask('node_versions', 'Generates a version map for dependencies', function() {
 		const deps = pkg.dependencies;
 		const versionMap = Object.fromEntries(
@@ -222,13 +196,47 @@ module.exports = function (grunt) {
 	})
 
 	// Register tasks
+	grunt.registerTask('vendor-shuffle', 'Compile shufflejs from ESM to a browser UMD bundle', function () {
+		const done = this.async();
+		require('@babel/core').transformFile(
+			'node_modules/shufflejs/dist/shuffle.mjs',
+			{
+				sourceMap: true,
+				presets: ['@babel/preset-env'],
+				plugins: [['@babel/plugin-transform-modules-umd', {
+					globals: { shuffle: 'Shuffle' },
+					exactGlobals: true,
+				}]],
+			},
+			function (err, result) {
+				if (err) { grunt.fail.fatal(err); done(false); return; }
+				// The UMD plugin assigns global.Shuffle = mod.exports, where
+				// mod.exports = { default: ShuffleClass, __esModule: true }.
+				// Rewrite to expose the constructor directly as global.Shuffle.
+				const before = result.code;
+				const code = before.replace(
+					/global\.Shuffle\s*=\s*mod\.exports;/,
+					'global.Shuffle = mod.exports["default"] || mod.exports;'
+				);
+				if (code === before) {
+					grunt.fail.fatal('vendor-shuffle: could not patch global.Shuffle assignment – UMD plugin output may have changed.');
+					done(false);
+					return;
+				}
+				grunt.file.write('assets/global/js/vendor.js', code);
+				if (result.map) {
+					grunt.file.write('assets/global/js/vendor.js.map', JSON.stringify(result.map));
+				}
+				done();
+			}
+		);
+	});
 	grunt.registerTask('default', [
 		'dart-sass:adminDev',
 		'dart-sass:publicDev',
 		'dart-sass:themes',
 		'uglify:dev',
-		'babel',
-		'concat:vendor',
+		'vendor-shuffle',
 		'uglify:dist',
 		'copy',
 		'node_versions',
@@ -238,8 +246,7 @@ module.exports = function (grunt) {
 		'dart-sass:publicDev',
 		'dart-sass:themes',
 		'uglify:dev',
-		'babel',
-		'concat:vendor',
+		'vendor-shuffle',
 		'copy',
 		'node_versions',
 		'watch',
@@ -248,9 +255,8 @@ module.exports = function (grunt) {
 		'dart-sass:admin',
 		'dart-sass:public',
 		'dart-sass:themes',
+		'vendor-shuffle',
 		'uglify:dist',
-		'babel',
-		'concat:vendor',
 		'copy',
 		'node_versions',
 	]);

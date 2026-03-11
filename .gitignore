@@ -30,4 +30,3 @@ tests/cypress/screenshots
 docs/.vitepress/dist
 /vendor-prefixed
 /bin/strauss.phar
-assets/global/js/.shuffle-cjs.js
