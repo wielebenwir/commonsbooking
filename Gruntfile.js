@@ -152,13 +152,26 @@ module.exports = function (grunt) {
 		},
 		babel: {
 			options: {
-				sourceMap: true,
+				sourceMap: false,
 				presets: ['@babel/preset-env']
 			},
 			dist: {
 				files: {
-					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.mjs'
+					'assets/global/js/.shuffle-cjs.js': 'node_modules/shufflejs/dist/shuffle.mjs'
 				}
+			}
+		},
+		concat: {
+			vendor: {
+				options: {
+					// Wrap the Babel-compiled CommonJS output in a UMD factory.
+					// The factory receives a local `exports` variable, populates it,
+					// and returns the default export so global.Shuffle = ShuffleClass.
+					banner: ';(function(g,f){if(typeof define==="function"&&define.amd){define([],f);}else if(typeof module!=="undefined"&&module.exports){module.exports=f();}else{g.Shuffle=f();}}(typeof globalThis!=="undefined"?globalThis:typeof self!=="undefined"?self:this,function(){\n"use strict";\nvar exports={},module={exports:exports};\n',
+					footer: '\nreturn module.exports["default"]||module.exports;\n}));\n',
+				},
+				src: ['assets/global/js/.shuffle-cjs.js'],
+				dest: 'assets/global/js/vendor.js'
 			}
 		},
 		watch: {
@@ -214,8 +227,9 @@ module.exports = function (grunt) {
 		'dart-sass:publicDev',
 		'dart-sass:themes',
 		'uglify:dev',
-		'uglify:dist',
 		'babel',
+		'concat:vendor',
+		'uglify:dist',
 		'copy',
 		'node_versions',
 	]);
@@ -225,6 +239,7 @@ module.exports = function (grunt) {
 		'dart-sass:themes',
 		'uglify:dev',
 		'babel',
+		'concat:vendor',
 		'copy',
 		'node_versions',
 		'watch',
@@ -235,6 +250,7 @@ module.exports = function (grunt) {
 		'dart-sass:themes',
 		'uglify:dist',
 		'babel',
+		'concat:vendor',
 		'copy',
 		'node_versions',
 	]);
