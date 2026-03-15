@@ -286,6 +286,11 @@ class Booking extends Timeframe {
 			$itemId
 		);
 
+		// Reject if the slot is already booked by another user (getExistingBookings excludes this booking by ID)
+		if ( $booking && intval( $booking->post_author ) !== get_current_user_id() ) {
+			throw new BookingDeniedException( __( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking' ) );
+		}
+
 		$existingBookings =
 			\CommonsBooking\Repository\Booking::getExistingBookings(
 				$itemId,
