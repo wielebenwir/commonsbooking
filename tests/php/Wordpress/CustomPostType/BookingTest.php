@@ -474,6 +474,122 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertEmpty( \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
 	}
 
+	/** User cannot book a slot already confirmed by another user (issue #1864) */
+	public function testUserCannotBookSlotConfirmedByAnotherUser() {
+		$date = new \DateTime( self::CURRENT_DATE );
+		$date->modify( '-1 day' );
+		ClockMock::freeze( $date );
+
+		$repetitionStart = strtotime( self::CURRENT_DATE );
+		$repetitionEnd   = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+
+		$user1BookingId     = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			$repetitionStart,
+			$repetitionEnd,
+			null,
+			null
+		);
+		$this->bookingIds[] = $user1BookingId;
+		$postName           = get_post( $user1BookingId )->post_name;
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'confirmed',
+			$user1BookingId,
+			null,
+			$repetitionStart,
+			$repetitionEnd,
+			$postName,
+			null
+		);
+
+		wp_set_current_user( $this->createSecondSubscriber() );
+
+		$thrown = false;
+		try {
+			$result             = Booking::handleBookingRequest(
+				$this->itemId,
+				$this->locationId,
+				'unconfirmed',
+				null,
+				null,
+				$repetitionStart,
+				$repetitionEnd,
+				null,
+				null
+			);
+			$this->bookingIds[] = $result;
+		} catch ( \CommonsBooking\Exception\BookingDeniedException $e ) {
+			$thrown = true;
+		}
+
+		$this->assertTrue( $thrown, 'Expected BookingDeniedException when another user tries to book the same confirmed slot' );
+		$user1BookingAfter = new \CommonsBooking\Model\Booking( $user1BookingId );
+		$this->assertTrue( $user1BookingAfter->isConfirmed(), 'Expected first booking to still be confirmed' );
+	}
+
+	/** User cannot book a slot already held unconfirmed by another user (issue #1864) */
+	public function testDifferentUserCannotBookSlotHeldUnconfirmedByAnotherUser() {
+		$date = new \DateTime( self::CURRENT_DATE );
+		$date->modify( '-1 day' );
+		ClockMock::freeze( $date );
+
+		$repetitionStart = strtotime( self::CURRENT_DATE );
+		$repetitionEnd   = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+
+		$user1BookingId     = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			$repetitionStart,
+			$repetitionEnd,
+			null,
+			null
+		);
+		$this->bookingIds[] = $user1BookingId;
+
+		wp_set_current_user( $this->createSecondSubscriber() );
+
+		$thrown = false;
+		try {
+			$result             = Booking::handleBookingRequest(
+				$this->itemId,
+				$this->locationId,
+				'unconfirmed',
+				null,
+				null,
+				$repetitionStart,
+				$repetitionEnd,
+				null,
+				null
+			);
+			$this->bookingIds[] = $result;
+		} catch ( \CommonsBooking\Exception\BookingDeniedException $e ) {
+			$thrown = true;
+		}
+
+		$this->assertTrue( $thrown, 'Expected BookingDeniedException when another user tries to book the slot held unconfirmed' );
+	}
+
+	/**
+	 * Second subscriber for multi-user booking tests.
+	 * @return int
+	 */
+	private function createSecondSubscriber(): int {
+		$wp_user = get_user_by( 'email', 'b@b.de' );
+		if ( ! $wp_user ) {
+			return wp_create_user( 'seconduser', 'second', 'b@b.de' );
+		}
+		return $wp_user->ID;
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->timeframeModel = new \CommonsBooking\Model\Timeframe(
