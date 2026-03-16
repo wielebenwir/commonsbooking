@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9
 Tested up to: 6.9
-Stable Tag: 2.10.9
+Stable Tag: 2.10.10
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,6 +80,11 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.10 (23.03.2026)
+FIXED: Two users booking same item possible when two users tried to book the same time period (thx @nelarsen)
+FIXED: Location specific sending of booking start / end reminder (for location owners) always sent email, not only when it is checked at location (thx @poilu)
+FIXED: CommonsAPI would issue response in broken format (@thx nelarsen)
 
 ### 2.10.9 (19.02.2026)
 
