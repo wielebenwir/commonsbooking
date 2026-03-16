@@ -354,7 +354,7 @@ class TimeframeExport {
 				}
 
 				// output the column headings
-				fputcsv( $output, $headColumns, ';' );
+				fputcsv( $output, $headColumns, ';', escape: '\\' );
 			}
 
 			// output the column values
@@ -390,7 +390,7 @@ class TimeframeExport {
 				}
 			}
 
-			fputcsv( $output, $valueColumns, ';' );
+			fputcsv( $output, $valueColumns, ';', escape: '\\' );
 		}
 
 		if ( $this->isCron ) {
