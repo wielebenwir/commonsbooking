@@ -17,7 +17,7 @@ class Item extends View {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getTemplateData( WP_Post $post = null ) {
+	public static function getTemplateData( ?WP_Post $post = null ) {
 		if ( $post == null ) {
 			global $post;
 		}

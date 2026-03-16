@@ -39,7 +39,7 @@ class Booking extends View {
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData( int $postsPerPage = 6, \WP_User $user = null ) {
+	public static function getBookingListData( int $postsPerPage = 6, ?\WP_User $user = null ) {
 
 		// sets selected user to current user when no specific user is passed
 		if ( $user == null ) {

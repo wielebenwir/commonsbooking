@@ -187,15 +187,11 @@ class Timeframe extends CustomPost {
 	/**
 	 * Checks if the given user is administrator of item / location or the website and therefore enjoys special booking rights
 	 *
-	 * @param \WP_User|null $user
+	 * @param \WP_User $user
 	 *
 	 * @return bool
 	 */
-	public function isUserPrivileged( \WP_User $user = null ): bool {
-		if ( ! $user ) {
-			$user = wp_get_current_user();
-		}
-
+	public function isUserPrivileged( \WP_User $user ): bool {
 		// these roles are always allowed to book
 		$privilegedRolesDefaults = [ 'administrator' ];
 		/**
