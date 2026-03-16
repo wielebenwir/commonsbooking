@@ -371,6 +371,7 @@ class UpgradeTest extends CustomPostTypeTest {
 		$this->testTasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'upgradeTasks' );
 		$this->testTasks->setAccessible( true );
 		$this->testTasks->setValue(
+			null,
 			[
 				'2.5.2' => [
 					[ self::class, 'fakeUpdateFunctionA' ],
@@ -382,7 +383,7 @@ class UpgradeTest extends CustomPostTypeTest {
 		// empty AJAX tasks
 		$this->ajaxTasks = new \ReflectionProperty( '\CommonsBooking\Service\Upgrade', 'ajaxUpgradeTasks' );
 		$this->ajaxTasks->setAccessible( true );
-		$this->ajaxTasks->setValue( [] );
+		$this->ajaxTasks->setValue( null, [] );
 	}
 
 	protected function tearDown(): void {
