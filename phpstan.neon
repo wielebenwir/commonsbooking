@@ -1,7 +1,9 @@
 includes:
   - phpstan-baseline.neon
 parameters:
-  phpVersion: 70400
+  phpVersion:
+    min: 80134
+    max: 80503
   scanFiles:
     - commonsbooking.php
   scanDirectories:
