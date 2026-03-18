@@ -513,7 +513,7 @@ class Booking extends PostRepository {
 	 * It however will also show bookings whose corresponding timeframe has been shortened,
 	 * and therefore do not have a valid timeframe anymore.
 	 *
-	 * @param int|null $startTimestamp
+	 * @param int|null $minTimestamp
 	 * @param int[]    $items
 	 * @param int[]    $locations
 	 *
@@ -521,16 +521,15 @@ class Booking extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function getOrphaned(
-		?int $startTimestamp = null,
+		?int $minTimestamp = null,
 		array $items = [],
 		array $locations = []
 	): ?array {
-		$startTimestamp ??= time(); // set start to now when no start is defined
+		$minTimestamp ??= time(); // default to now if not provided
 
-		$bookings = self::get( $locations, $items, null, true, $startTimestamp, [ 'confirmed' ] );
+		$bookings = self::get( $locations, $items, null, true, $minTimestamp, [ 'confirmed' ] );
 
 		// check for bookings where location does not exist anymore
-
 		$bookings = array_filter(
 			$bookings,
 			function ( $booking ) {
