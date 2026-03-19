@@ -74,7 +74,7 @@ class TimeframeExportTest extends CustomPostTypeTest {
 		$header    = null;
 		$firstLine = null;
 		$file      = fopen( $this->fileUnderTest, 'r' );
-		while ( ( $line = fgetcsv( $file ) ) !== false ) {
+		while ( ( $line = fgetcsv( $file, escape: '\\' ) ) !== false ) {
 			if ( $i == 0 ) {
 				$header = $line[0];
 			}
@@ -153,14 +153,14 @@ class TimeframeExportTest extends CustomPostTypeTest {
 
 	public static function csvStringToStdObjects( $csvString ): array {
 		$rows   = explode( "\n", $csvString );
-		$header = str_getcsv( array_shift( $rows ), ';' );
+		$header = str_getcsv( array_shift( $rows ), ';', escape: '\\' );
 
 		$result = [];
 		foreach ( $rows as $row ) {
 			if ( empty( $row ) ) {
 				continue;
 			}
-			$data = str_getcsv( $row, ';' );
+			$data = str_getcsv( $row, ';', escape: '\\' );
 			$obj  = new stdClass();
 
 			foreach ( $header as $index => $field ) {

@@ -539,42 +539,47 @@ class Plugin {
 		}
 	}
 
+	/**
+	 * Version string for a packaged asset (from dist.json when present, else '0').
+	 */
+	private static function packagedVersion( string $key ): string {
+		static $versions = null;
+		if ( $versions === null ) {
+			$path     = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
+			$fromFile = is_readable( $path ) ? json_decode( (string) file_get_contents( $path ), true ) : null;
+			$versions = is_array( $fromFile ) ? $fromFile : [];
+		}
+		return $versions[ $key ] ?? '0';
+	}
 
 	public static function registerScriptsAndStyles() {
 		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
 
-		$version_file_path    = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
-		$version_file_content = file_get_contents( $version_file_path );
-		$versions             = json_decode( $version_file_content, true );
-		if ( JSON_ERROR_NONE !== json_last_error() ) {
-			trigger_error( "Unable to parse commonsbooking asset version file in $version_file_path." );
-		}
-
 		// spin.js
-		wp_register_script( 'cb-spin', $base . 'spin-js/spin.min.js', [], $versions['spin.js'] );
+		wp_register_script( 'cb-spin', $base . 'spin-js/spin.min.js', [], self::packagedVersion( 'spin.js' ) );
 
 		// leaflet
-		wp_register_script( 'cb-leaflet', $base . 'leaflet/leaflet.js', [], $versions['leaflet'] );
-		wp_register_style( 'cb-leaflet', $base . 'leaflet/leaflet.css', [], $versions['leaflet'] );
+		wp_register_script( 'cb-leaflet', $base . 'leaflet/leaflet.js', [], self::packagedVersion( 'leaflet' ) );
+		wp_register_style( 'cb-leaflet', $base . 'leaflet/leaflet.css', [], self::packagedVersion( 'leaflet' ) );
 
 		// leaflet markercluster
 		wp_register_script(
 			'cb-leaflet-markercluster',
 			$base . 'leaflet-markercluster/leaflet.markercluster.js',
 			[ 'cb-leaflet' ],
-			$versions['leaflet.markercluster']
+			self::packagedVersion( 'leaflet.markercluster' )
 		);
 		wp_register_style(
 			'cb-leaflet-markercluster-base',
 			$base . 'leaflet-markercluster/MarkerCluster.css',
 			[],
-			$versions['leaflet.markercluster']
+			self::packagedVersion( 'leaflet.markercluster' )
 		);
 		wp_register_style(
 			'cb-leaflet-markercluster',
 			$base . 'leaflet-markercluster/MarkerCluster.Default.css',
 			[ 'cb-leaflet-markercluster-base' ],
-			$versions['leaflet.markercluster']
+			self::packagedVersion( 'leaflet.markercluster' )
 		);
 
 		// leaflet-easybutton
@@ -582,13 +587,13 @@ class Plugin {
 			'cb-leaflet-easybutton',
 			$base . 'leaflet-easybutton/easy-button.js',
 			[ 'cb-leaflet' ],
-			$versions['leaflet-easybutton']
+			self::packagedVersion( 'leaflet-easybutton' )
 		);
 		wp_register_style(
 			'cb-leaflet-easybutton',
 			$base . 'leaflet-easybutton/easy-button.css',
 			[ 'cb-leaflet' ],
-			$versions['leaflet-easybutton']
+			self::packagedVersion( 'leaflet-easybutton' )
 		);
 
 		// leaflet-spin
@@ -596,7 +601,7 @@ class Plugin {
 			'cb-leaflet-spin',
 			$base . 'leaflet-spin/leaflet.spin.min.js',
 			[ 'cb-leaflet', 'cb-spin' ],
-			$versions['leaflet-spin']
+			self::packagedVersion( 'leaflet-spin' )
 		);
 
 		// leaflet-messagebox
@@ -642,20 +647,20 @@ class Plugin {
 		);
 
 		// vue
-		wp_register_script( 'cb-vue', $base . 'vue/vue.runtime.global.prod.js', [], $versions['vue'] );
+		wp_register_script( 'cb-vue', $base . 'vue/vue.runtime.global.prod.js', [], self::packagedVersion( 'vue' ) );
 
 		// commons-search
 		wp_register_script(
 			'cb-commons-search',
 			$base . 'commons-search/commons-search.umd.js',
 			[ 'cb-leaflet', 'cb-leaflet-markercluster', 'cb-vue' ],
-			$versions['@commonsbooking/frontend']
+			self::packagedVersion( '@commonsbooking/frontend' )
 		);
 		wp_register_style(
 			'cb-commons-search',
 			$base . 'commons-search/style.css',
 			[ 'cb-leaflet', 'cb-leaflet-markercluster' ],
-			$versions['@commonsbooking/frontend']
+			self::packagedVersion( '@commonsbooking/frontend' )
 		);
 	}
 

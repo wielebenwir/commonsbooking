@@ -125,12 +125,12 @@ class TimeframeExport {
 		string $exportType,
 		string $exportStartDate,
 		string $exportEndDate,
-		array $locationFields = null,
-		array $itemFields = null,
-		array $userFields = null,
-		int $lastProcessedPage = null,
-		int $totalPosts = null,
-		string $transientName = null
+		?array $locationFields = null,
+		?array $itemFields = null,
+		?array $userFields = null,
+		?int $lastProcessedPage = null,
+		?int $totalPosts = null,
+		?string $transientName = null
 	) {
 
 		if ( ! array_key_exists( $exportType, \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes( true ) ) ) {
@@ -307,7 +307,7 @@ class TimeframeExport {
 	 * @return string
 	 * @throws ExportException
 	 */
-	public function getCSV( string $exportPath = null ): string {
+	public function getCSV( ?string $exportPath = null ): string {
 		$inputFields = [
 			'location' => self::getInputFields( 'location-fields' ),
 			'item'     => self::getInputFields( 'item-fields' ),
@@ -354,7 +354,7 @@ class TimeframeExport {
 				}
 
 				// output the column headings
-				fputcsv( $output, $headColumns, ';' );
+				fputcsv( $output, $headColumns, ';', escape: '\\' );
 			}
 
 			// output the column values
@@ -390,7 +390,7 @@ class TimeframeExport {
 				}
 			}
 
-			fputcsv( $output, $valueColumns, ';' );
+			fputcsv( $output, $valueColumns, ';', escape: '\\' );
 		}
 
 		if ( $this->isCron ) {

@@ -697,11 +697,14 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param WP_User|null $user
 	 * @return bool
 	 */
-	public function isUserPrivileged( WP_User $user = null ): bool {
-		$user ??= $this->getUserData();
+	public function isBookingOwnerPrivileged(): bool {
+		$user = $this->getUserData();
+		if ( ! $user instanceof \WP_User ) {
+			return false; // no user / deleted user: not privileged
+		}
+
 		return parent::isUserPrivileged( $user );
 	}
 
