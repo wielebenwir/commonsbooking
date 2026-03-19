@@ -157,7 +157,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: {
-					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.js'
+					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.mjs'
 				}
 			}
 		},
