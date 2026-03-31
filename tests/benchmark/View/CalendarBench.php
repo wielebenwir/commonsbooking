@@ -9,11 +9,14 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Tests\CPTCreationTrait;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\Helper\GeoHelperTest;
+use WP_Query;
 
 /**
  *
+ * @BeforeClassMethods({"setUpBeforeClass"})
+ * @AfterClassMethods({"tearDownAfterClass"})
  * @BeforeMethods({"setUp"})
- * @AfterMethods({"tearDown"})
+ * 
  */
 class CalendarBench {
 
@@ -35,12 +38,22 @@ class CalendarBench {
 	 * @throws \Exception
 	 */
 	public function benchRenderTable() {
+		//ClockMock::freeze(new \DateTime(\CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE));
 		$calendar = Calendar::renderTable( [] );
+		file_put_contents("cal.txt",$calendar);
+		//ClockMock::reset();
 	}
 
 	public function setUp(): void {
+		add_filter('commonsbooking_disableCache', function() {
+			return true;
+		} ); //always disable cache so caching doesn't influence our performance metrics
+	}
+
+	public static function setUpBeforeClass(): void {
 		error_reporting( E_ALL & ~E_DEPRECATED ); // do not warn about deprecations, deprecations make benchmarks fails
 		// prevent calling geocoder on startup
+		// geocoder always gets called upon creating new locations
 		$sut = new class() implements GeoCodeService {
 			public function getAddressData( string $addressString ): ?GeocoderLocation {
 				return GeoHelperTest::mockedLocation();
@@ -48,6 +61,7 @@ class CalendarBench {
 		};
 		GeoHelper::setGeoCodeServiceInstance( $sut );
 
+		$benchmark = new self();
 		// make sure that caching is disabled
 		add_filter(
 			'commonsbooking_disableCache',
@@ -69,9 +83,9 @@ class CalendarBench {
 		);
 		$repetitions = [];
 		// every day has exactly one booking
-		$start = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$start = new \DateTime();
 		$start->modify( '- ' . self::BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE . ' days' );
-		$end = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$end = new \DateTime();
 		$end->modify( self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' );
 		$period = new \DatePeriod( $start, new \DateInterval( 'P1D' ), $end );
 		foreach ( $period as $date ) {
@@ -84,16 +98,16 @@ class CalendarBench {
 			];
 		}
 		for ( $i = 0; $i < self::ITEMS_TOTAL; $i++ ) {
-			$item      = $this->createItem( "Benchmark Item $i" );
-			$location  = $this->createLocation( "Benchmark Location $i" );
-			$timeframe = $this->createTimeframe(
+			$item      = $benchmark->createItem( "Benchmark Item $i" );
+			$location  = $benchmark->createLocation( "Benchmark Location $i" );
+			$timeframe = $benchmark->createTimeframe(
 				$location,
 				$item,
 				$start->getTimestamp(),
 				null // Make timeframe infinite
 			);
 			foreach ( $repetitions as $repetition ) {
-				$this->createBooking(
+				$benchmark->createBooking(
 					$location,
 					$item,
 					$repetition['start'],
@@ -103,11 +117,11 @@ class CalendarBench {
 		}
 
 		for ( $i = 0; $i < self::ITEMS_DISCONNECTED; $i++ ) {
-			$this->createItem( "Benchmark Disconnected Item $i" );
+			$benchmark->createItem( "Benchmark Disconnected Item $i" );
 		}
 
 		for ( $i = 0; $i < self::LOCATIONS_DISCONNECTED; $i++ ) {
-			$this->createLocation( "Benchmark Disconnected Location $i" );
+			$benchmark->createLocation( "Benchmark Disconnected Location $i" );
 		}
 
 		// disable performance tweaks
@@ -121,7 +135,21 @@ class CalendarBench {
 		);
 	}
 
-	public function tearDown(): void {
-		$this->tearDownAllPosts();
+	public static function tearDownAfterClass(): void {
+		$query = [
+			'post_type' => [
+				\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType,
+				\CommonsBooking\Wordpress\CustomPostType\Item::$postType,
+				\CommonsBooking\Wordpress\CustomPostType\Location::$postType
+			],
+			'posts_per_page' => -1,
+			'post_status' => ['confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit']
+		];
+		$query = new WP_Query($query);
+		$posts = $query->get_posts();
+		foreach ($posts as $post) {
+			wp_delete_post($post->ID, true);
+		}
 	}
 }
