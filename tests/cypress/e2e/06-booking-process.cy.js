@@ -3,7 +3,7 @@ describe('test booking process', () => {
     let dt = new Date();
     var test = new Date(dt.getTime()),
         month = test.getMonth();
-  
+
     test.setDate(test.getDate() + 1);
     if (test.getMonth() !== month ) {
       dt.setDate(dt.getDate() + 1);
@@ -60,4 +60,28 @@ describe('test booking process', () => {
         cy.get('.cb-notice').contains('Your booking has been canceled');
         cy.screenshot('booking-form_booking-canceled');
     } )
+
+    it('can have booking cancelled by admin', function()  {
+        cy.get('.is-today').click();
+        cy.get('.is-start-date').next('.day-item').click();
+        cy.get('#booking-form > [type="submit"]').click();
+        cy.get('.cb-notice').contains('Please check your booking and click confirm booking');
+        // save current URL
+        cy.url().as('bookingUrl');
+
+        cy.get('.cb-action-confirmed').click();
+        cy.get('.cb-notice').contains('Your booking is confirmed');
+
+        // login as admin and try to cancel the booking
+        cy.logout();
+        cy.loginAs('admin');
+
+        // reuse saved URL
+        cy.get('@bookingUrl').then((url) => {
+            cy.visit(url);
+        });
+
+        cy.get('.cb-action-canceled').click();
+        cy.get('.cb-notice').contains('Your booking has been canceled');
+        } )
 })
