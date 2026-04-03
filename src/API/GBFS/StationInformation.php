@@ -81,6 +81,8 @@ class StationInformation extends BaseRoute {
 			} else {
 				throw new Exception( 'Location address missing. (ID: ' . $item->ID . ')' );
 			}
+		} else {
+			throw new Exception( 'Location address missing. (ID: ' . $item->ID . ')' );
 		}
 
 		return new WP_REST_Response( $preparedItem );
