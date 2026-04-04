@@ -117,21 +117,40 @@ class Calendar {
 
 		$itemIDs = array_map( fn( $item ) => $item->ID, $items );
 
-		/* @var Timeframe[] $allTimeframes */
-		$allTimeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
+		// Load all timeframe types for all items in a single DB query to avoid per-item/location
+		// DB trips later. Bookings, holidays and repairs need to be included so that the Calendar
+		// can correctly mark days as booked/locked.
+		/* @var \CommonsBooking\Model\Timeframe[] $allTimeframes */
+		$allTimeframes = \CommonsBooking\Repository\Timeframe::getInRange(
 			strtotime( $today ),
 			strtotime( $last_day ),
 			[],
 			$itemIDs,
-			[ Timeframe::BOOKABLE_ID ],
-			true
+			[],
+			true,
+			[ 'confirmed', 'publish' ]
 		);
 
-		// group by item ID
+		// group bookable timeframes (allowed for current user) by item ID
 		$timeframeByItemID = [];
 		foreach ( $allTimeframes as $timeframe ) {
+			if ( $timeframe->getLocationID() === null || ! self::isBookableForCurrentUser( $timeframe ) ) {
+				continue;
+			}
 			foreach ( $timeframe->getItemIDs() as $itemID ) {
 				$timeframeByItemID[ $itemID ][] = $timeframe;
+			}
+		}
+
+		// group ALL timeframes by (item ID, location ID) for use as preloaded data in the Calendar
+		$allTimeframesByItemAndLocation = [];
+		foreach ( $allTimeframes as $timeframe ) {
+			$locationID = $timeframe->getLocationID();
+			if ( $locationID === null ) {
+				continue;
+			}
+			foreach ( $timeframe->getItemIDs() as $itemID ) {
+				$allTimeframesByItemAndLocation[ $itemID ][ $locationID ][] = $timeframe;
 			}
 		}
 
@@ -164,7 +183,16 @@ class Calendar {
 							}
 						}
 
-						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+						$locationHtml = self::renderItemLocationRow(
+							$item,
+							$locationId,
+							$locationName,
+							$today,
+							$last_day,
+							$days,
+							$days_display,
+							$allTimeframesByItemAndLocation[ $item->ID ][ $locationId ] ?? []
+						);
 						Plugin::setCacheItem( $locationHtml, [ strval( $item->ID ), strval( $locationId ) ], $customCacheKey );
 						$rowHtml .= $locationHtml;
 					}
@@ -244,11 +272,13 @@ class Calendar {
 	 * @param $last_day
 	 * @param $days
 	 * @param $days_display
+	 * @param \CommonsBooking\Model\Timeframe[] $preloadedTimeframes Optional preloaded timeframes (all
+	 *                                                               types) for this item/location pair.
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display ): string {
+	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display, array $preloadedTimeframes = [] ): string {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -262,7 +292,8 @@ class Calendar {
 				$locationId,
 				$today,
 				date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) ),
-				true
+				true,
+				$preloadedTimeframes
 			);
 
 			$gotStartDate = false;
@@ -332,16 +363,21 @@ class Calendar {
 	/**
 	 * Returns calendar data
 	 *
-	 * @param WP_Post|int|string|CustomPost $item
-	 * @param WP_Post|int|string|CustomPost $location
-	 * @param string                        $startDateString YYYY-MM-DD Format
-	 * @param string                        $endDateString YYYY-MM-DD Format
-	 * @param bool                          $keepDaterange
+	 * @param WP_Post|int|string|CustomPost   $item
+	 * @param WP_Post|int|string|CustomPost   $location
+	 * @param string                          $startDateString YYYY-MM-DD Format
+	 * @param string                          $endDateString YYYY-MM-DD Format
+	 * @param bool                            $keepDaterange
+	 * @param \CommonsBooking\Model\Timeframe[] $preloadedTimeframes Optional preloaded timeframes (all
+	 *                                                               types) for this item/location pair.
+	 *                                                               When provided, avoids extra DB queries
+	 *                                                               for bookable timeframes and the
+	 *                                                               Calendar constructor.
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false ): array {
+	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false, array $preloadedTimeframes = [] ): array {
 		if ( $item instanceof WP_Post || $item instanceof CustomPost ) {
 			$item = $item->ID;
 		}
@@ -363,13 +399,25 @@ class Calendar {
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
 		$firstBookableDay   = null;
-		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
-			[ $location ],
-			[ $item ],
-			null,
-			true,
-			Helper::getLastFullHourTimestamp()
-		);
+
+		if ( ! empty( $preloadedTimeframes ) ) {
+			// Filter bookable timeframes for the current user from the preloaded set,
+			// avoiding an extra DB query per item/location pair.
+			$bookableTimeframes = array_values(
+				array_filter(
+					$preloadedTimeframes,
+					fn( $tf ) => self::isBookableForCurrentUser( $tf )
+				)
+			);
+		} else {
+			$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
+				[ $location ],
+				[ $item ],
+				null,
+				true,
+				Helper::getLastFullHourTimestamp()
+			);
+		}
 
 		if ( count( $bookableTimeframes ) ) {
 			$closestBookableTimeframe = self::getClosestBookableTimeFrameForToday( $bookableTimeframes );
@@ -407,7 +455,7 @@ class Calendar {
 			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay, $preloadedTimeframes );
 	}
 
 	/**
@@ -498,6 +546,19 @@ class Calendar {
 	}
 
 	/**
+	 * Returns true when the given timeframe is of the bookable type and the current user is
+	 * allowed to book it.
+	 *
+	 * @param \CommonsBooking\Model\Timeframe $timeframe
+	 *
+	 * @return bool
+	 */
+	private static function isBookableForCurrentUser( \CommonsBooking\Model\Timeframe $timeframe ): bool {
+		return $timeframe->getType() === Timeframe::BOOKABLE_ID
+			&& commonsbooking_isCurrentUserAllowedToBook( $timeframe->ID );
+	}
+
+	/**
 	 * The value for the amount of months shown in the Litepicker mobile view portrait mode.
 	 * Fixes #1103, an issue where one instance has issues with switching the months on mobile.
 	 * This value is configurable through a filter hook only.
@@ -521,10 +582,12 @@ class Calendar {
 	/**
 	 * Returns JSON-Data for Litepicker calendar.
 	 *
-	 * @param Day   $startDate
-	 * @param Day   $endDate
-	 * @param array $locations []
-	 * @param array $items <int|string>
+	 * @param Day                             $startDate
+	 * @param Day                             $endDate
+	 * @param array                           $locations []
+	 * @param array                           $items <int|string>
+	 * @param \CommonsBooking\Model\Timeframe[] $timeframes Optional preloaded timeframes to avoid an
+	 *                                                      extra DB query inside the Calendar constructor.
 	 *
 	 * @return array
 	 * @throws Exception
@@ -536,7 +599,8 @@ class Calendar {
 		array $items,
 		$advanceBookingDays = null,
 		$lastBookableDate = null,
-		$firstBookableDay = null
+		$firstBookableDay = null,
+		array $timeframes = []
 	): array {
 
 		$current_user   = wp_get_current_user();
@@ -557,7 +621,9 @@ class Calendar {
 				$startDate,
 				$endDate,
 				$locations,
-				$items
+				$items,
+				[],
+				$timeframes
 			);
 
 			$jsonResponse = [
