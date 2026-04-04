@@ -66,6 +66,33 @@ jobs:
         with:
           name: cypress-screenshots-${{ matrix.php }}_${{ matrix.core.name }}
           path: ${{ github.workspace }}/tests/cypress/screenshots/
+
+      - name: Enable API
+        run: |
+          wp-env run tests-cli wp option patch insert commonsbooking_options_api api-activated on
+          wp-env run tests-cli wp option patch insert commonsbooking_options_api apikey_not_required on
+
+      - name: Checkout GBFS validator
+        uses: actions/checkout@v6
+        with:
+          repository: MobilityData/gbfs-validator
+          path: gbfs-validator
+
+      - name: Install GBFS validator dependencies
+        working-directory: gbfs-validator
+        run: yarn
+
+      - name: Run GBFS validator
+        working-directory: gbfs-validator
+        run: |
+          NODE_TLS_REJECT_UNAUTHORIZED=0 node ./gbfs-validator/cli.js \
+            -u http://localhost:1001/index.php?rest_route=/commonsbooking/v1/gbfs.json \
+            -s report.json
+
+      - name: Assert GBFS feed is valid
+        working-directory: gbfs-validator
+        run: jq -e '.summary.hasErrors == false' report.json
+
   rerun-on-failure:
     needs: e2e
     if: failure() && fromJSON(github.run_attempt) < 3

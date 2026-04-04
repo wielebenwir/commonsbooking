@@ -111,6 +111,8 @@ describe( 'Visit backend sites', function() {
         //api tab
         cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_api' );
         cy.screenshot( 'wp-admin-cb-settings-api' )
+        //we save the API options here, so that we can update / enable them via CLI later (see .github/workflows/e2e.yml)
+        cy.get('#submit-cmb').click();
 
         //advanced options tab
         cy.visit( '/wp-admin/admin.php?page=commonsbooking_options_advanced-options' );
