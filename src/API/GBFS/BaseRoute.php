@@ -54,7 +54,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		foreach ( $locations as $location ) {
 			try {
 				$itemdata = $this->prepare_item_for_response( $location, $request );
-				$data[]   = $itemdata;
+				$data[]   = $itemdata->data;
 			} catch ( Exception $exception ) {
 				if ( WP_DEBUG ) {
 					error_log( $exception->getMessage() );
