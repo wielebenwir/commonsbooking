@@ -76,7 +76,7 @@ receives a value, modifies it, and then returns it.
 
 ### Overview of all filter hooks
 
-  * [commonsbooking_isCurrentUserAdmin](../basics/permission-management#filterhook-isCurrentUserAdmin)
+  * [commonsbooking_isUserAdmin](../basics/permission-management#filterhook-isUserAdmin)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
   * commonsbooking_template_tag
