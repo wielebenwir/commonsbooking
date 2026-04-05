@@ -1040,16 +1040,18 @@ function init() {
     }
     function isHoliday(date, region) {
         checkRegion(region);
-        const year = getYearInGermanTimezone(date);
-        const internalDate = toGermanTimezoneTimestamp(date);
+        const inputDate = normalizeDateInput(date);
+        const year = getYearInGermanTimezone(inputDate);
+        const internalDate = toGermanTimezoneTimestamp(inputDate);
         const holidays = getHolidaysAsGermanTimezoneTimestamps(year, region);
         return holidays.indexOf(internalDate) !== -1;
     }
     function getHolidayByDate(date, region = "ALL") {
         checkRegion(region);
-        const year = getYearInGermanTimezone(date);
+        const inputDate = normalizeDateInput(date);
+        const year = getYearInGermanTimezone(inputDate);
         const holidays = getHolidaysOfYear(year, region);
-        const dateInGermanTz = toGermanTimezoneTimestamp(date);
+        const dateInGermanTz = toGermanTimezoneTimestamp(inputDate);
         return holidays.find(holiday => {
             const holidayInGermanTz = toGermanTimezoneTimestamp(holiday.date);
             return holidayInGermanTz === dateInGermanTz;
@@ -1074,9 +1076,10 @@ function init() {
     function isSpecificHoliday(date, holidayName, region = "ALL") {
         checkRegion(region);
         checkHolidayType(holidayName);
-        const year = getYearInGermanTimezone(date);
+        const inputDate = normalizeDateInput(date);
+        const year = getYearInGermanTimezone(inputDate);
         const holidays = getHolidaysOfYear(year, region);
-        const dateInGermanTz = toGermanTimezoneTimestamp(date);
+        const dateInGermanTz = toGermanTimezoneTimestamp(inputDate);
         const foundHoliday = holidays.find(holiday => {
             const holidayInGermanTz = toGermanTimezoneTimestamp(holiday.date);
             return holidayInGermanTz === dateInGermanTz;
@@ -1099,6 +1102,23 @@ function init() {
     function getHolidaysAsGermanTimezoneTimestamps(year, region) {
         const holidays = getHolidaysOfYear(year, region);
         return holidays.map(holiday => toGermanTimezoneTimestamp(holiday.date));
+    }
+    function normalizeDateInput(date) {
+        if (date instanceof Date) {
+            return date;
+        }
+        const dateOnlyMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+        if (dateOnlyMatch) {
+            const year = parseInt(dateOnlyMatch[1], 10);
+            const month = parseInt(dateOnlyMatch[2], 10);
+            const day = parseInt(dateOnlyMatch[3], 10);
+            return makeDate(year, month, day);
+        }
+        const parsedDate = new Date(date);
+        if (Number.isNaN(parsedDate.getTime())) {
+            throw new TypeError(`Invalid date input: ${date}. Expected a Date or a string like YYYY-MM-DD.`);
+        }
+        return parsedDate;
     }
     function getHolidaysOfYear(year, region) {
         const easterDate = getEasterDate(year);
@@ -1252,27 +1272,87 @@ function init() {
         return normalizedDate.toISOString().slice(0, 10);
     }
     function getYearInGermanTimezone(date) {
-        const formatter = new Intl.DateTimeFormat("en-US", {
-            timeZone: "Europe/Berlin",
-            year: "numeric"
-        });
-        const parts = formatter.formatToParts(date);
-        return parseInt(parts.find(p => p.type === "year").value, 10);
+        try {
+            const formatter = new Intl.DateTimeFormat("en-US", {
+                timeZone: "Europe/Berlin",
+                year: "numeric"
+            });
+            const parts = formatter.formatToParts(date);
+            const yearPart = parts.find(p => p.type === "year");
+            if (yearPart) {
+                const year = parseInt(yearPart.value, 10);
+                const fallbackYear = getYearInGermanTimezoneFallback(date);
+                if (!Number.isNaN(year) && year === fallbackYear) return year;
+            }
+        } catch (_a) {}
+        return getYearInGermanTimezoneFallback(date);
+    }
+    function getYearInGermanTimezoneFallback(date) {
+        const utcMidnight = toGermanTimezoneTimestampFallback(date);
+        const offsetMs = getBerlinOffsetMs(utcMidnight);
+        const localMs = utcMidnight + offsetMs;
+        return new Date(localMs).getUTCFullYear();
+    }
+    const MS_PER_HOUR = 3600 * 1e3;
+    const OFFSET_CET_MS = 1 * MS_PER_HOUR;
+    const OFFSET_CEST_MS = 2 * MS_PER_HOUR;
+    function getLastSundayUtc(year, month) {
+        const lastDay = new Date(Date.UTC(year, month, 0));
+        const dayOfWeek = lastDay.getUTCDay();
+        return lastDay.getUTCDate() - dayOfWeek;
+    }
+    function getBerlinOffsetMs(utcMs) {
+        const d = new Date(utcMs);
+        const y = d.getUTCFullYear();
+        const lastSunMar = getLastSundayUtc(y, 3);
+        const lastSunOct = getLastSundayUtc(y, 10);
+        const marTransition = Date.UTC(y, 2, lastSunMar, 1, 0, 0, 0);
+        const octTransition = Date.UTC(y, 9, lastSunOct, 1, 0, 0, 0);
+        if (utcMs < marTransition) return OFFSET_CET_MS;
+        if (utcMs < octTransition) return OFFSET_CEST_MS;
+        return OFFSET_CET_MS;
+    }
+    function toGermanTimezoneTimestampFallback(date) {
+        const utcMs = date.getTime();
+        let offsetMs = getBerlinOffsetMs(utcMs);
+        let localMs = utcMs + offsetMs;
+        const dayMs = 24 * MS_PER_HOUR;
+        const localDayStartMs = Math.floor(localMs / dayMs) * dayMs;
+        for (let i = 0; i < 3; i++) {
+            const utcMidnight = localDayStartMs - offsetMs;
+            const offsetAtMidnight = getBerlinOffsetMs(utcMidnight);
+            if (offsetAtMidnight === offsetMs) return utcMidnight;
+            offsetMs = offsetAtMidnight;
+        }
+        return localDayStartMs - offsetMs;
     }
     function toGermanTimezoneTimestamp(date) {
-        const formatter = new Intl.DateTimeFormat("en-US", {
-            timeZone: "Europe/Berlin",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: false
-        });
-        const parts = formatter.formatToParts(date);
-        const hour = parseInt(parts.find(p => p.type === "hour").value, 10);
-        const minute = parseInt(parts.find(p => p.type === "minute").value, 10);
-        const second = parseInt(parts.find(p => p.type === "second").value, 10);
-        const millisecondsFromMidnight = hour * 3600 * 1e3 + minute * 60 * 1e3 + second * 1e3;
-        return date.getTime() - millisecondsFromMidnight;
+        try {
+            const formatter = new Intl.DateTimeFormat("en-US", {
+                timeZone: "Europe/Berlin",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+                hourCycle: "h23"
+            });
+            const parts = formatter.formatToParts(date);
+            const hourPart = parts.find(p => p.type === "hour");
+            const minutePart = parts.find(p => p.type === "minute");
+            const secondPart = parts.find(p => p.type === "second");
+            if (hourPart && minutePart && secondPart) {
+                const hour = parseInt(hourPart.value, 10);
+                const minute = parseInt(minutePart.value, 10);
+                const second = parseInt(secondPart.value, 10);
+                if (!Number.isNaN(hour) && !Number.isNaN(minute) && !Number.isNaN(second)) {
+                    const millisecondsFromMidnight = hour * 3600 * 1e3 + minute * 60 * 1e3 + second * 1e3;
+                    const result = date.getTime() - millisecondsFromMidnight;
+                    const fallback = toGermanTimezoneTimestampFallback(date);
+                    if (Math.abs(result - fallback) < 6e4) return result;
+                }
+            }
+        } catch (_a) {}
+        return toGermanTimezoneTimestampFallback(date);
     }
     function toUtcTimestamp(date) {
         const internalDate = new Date(date);
