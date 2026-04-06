@@ -84,6 +84,7 @@ zurückgibt.
 
 ###  Alle Filter Hooks im Überblick:
 
+  * commonsbooking_custom_metadata
   * [commonsbooking_isCurrentUserAdmin](../basics/permission-management#filterhook-isCurrentUserAdmin)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
@@ -103,6 +104,29 @@ Mehr dazu: [Zugriffsrechte vergeben (CB-Manager)](../basics/permission-managemen
 
 Darüber hinaus gibt es Filter Hooks, mit denen du die voreingestellten
 Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu [hier](../advanced-functionality/change-timeframe-creation-defaults):
+
+### Filter Hook: commonsbooking_custom_metadata
+
+Über diesen Hook lassen sich neue [CMB2-Metadaten-Felder](https://cmb2.io) zu einem
+der [Custom-Post-Types von CommonsBooking](../basics/concepts) hinzufügen.
+Diese Felder können dann üblicherweise über den Admin-Bereich gepflegt werden.
+Beachtung benötigt dabei die Struktur des übergebenen `$metaDataFields`, ein
+verschachteltes assoziatives Array.
+
+```
+array => [
+  "cb_bookings" => [
+    [ "id" => ..., "name" => ..., "type" => ..., "desc" => ..., ...],
+    ...
+  ],
+  ...
+]
+```
+
+Da zur ordentlichen Erweiterung der Felder technische Expertise nötig ist, verweisen wir an dieser Stelle
+auf die [Quelldatei `OptionsArray.php`](https://github.com/wielebenwir/commonsbooking/blob/master/includes/OptionsArray.php)
+als Referenz für die Nutzung von CMB2-Feldern in CommonsBooking.
+
 ###  Filter Hook: commonsbooking_tag_$key_$property
 
 ::: tip INFO

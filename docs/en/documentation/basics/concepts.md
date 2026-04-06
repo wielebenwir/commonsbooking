@@ -13,4 +13,5 @@ Here are some general terms that may need explanation, but do not apply only to 
   * **Frontend**: The part of a website visible to visitors. The opposite is the backend or admin area.
 
   * **Admin dashboard / backend** : The part of a website that is used solely for administration purposes, usually with protected access.
-  
+
+  * **Custom-Post-Types**: Customized post objects; these are essential in the context of WordPress ([see the official documentation](https://learn.wordpress.org/lesson/custom-post-types/)). They are an important part of tailoring the functionality of WordPress to your needs. CommonsBooking leverages them to extend post objects for aforementioned items, locations, timeframes, bookings etc. and lets website users configure and access them via admin backend.
