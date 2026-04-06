@@ -100,7 +100,7 @@ values when creating timeframes. More about that [here](../advanced-functionalit
 
 Using this hook, you can add [CMB2 meta fields](https://cmb2.io) to one of the
 [custom post types of CommonsBooking](../basics/concepts). The fields can be accessed via the
-admin backend. Note that there is a special structure of the paramter
+admin backend. Note that there is a special structure of the parameter
 `$metaDataFields`, a nested assoc array.
 
 ```
@@ -113,7 +113,7 @@ array => [
 ]
 ```
 
-Since extending this fields requires technical expertise, we want to point you to the source file
+Since extending these fields requires technical expertise, we want to point you to the source file
 [`OptionsArray.php`](https://github.com/wielebenwir/commonsbooking/blob/master/includes/OptionsArray.php)
 as additional reference for the usage of cmb2 fields in the plugin.
 
