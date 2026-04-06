@@ -107,7 +107,7 @@ Standardwerte bei der Zeitrahmenerstellung ändern kannst, mehr dazu [hier](../a
 
 ### Filter Hook: commonsbooking_custom_metadata
 
-Über diesen Hook lassen sich neue [CMB2-Metadaten-Felder](https://cmb.io) zu einem
+Über diesen Hook lassen sich neue [CMB2-Metadaten-Felder](https://cmb2.io) zu einem
 der [Custom-Post-Types von CommonsBooking](../basics/concepts) hinzufügen.
 Diese Felder können dann üblicherweise über den Admin-Bereich gepflegt werden.
 Beachtung benötigt dabei die Struktur des übergebenen `$metaDataFields`, ein
