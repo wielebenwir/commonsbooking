@@ -16,5 +16,6 @@ Allgemeine Begriffe die vielleicht erklärungsbedürftig sind, aber nicht spezie
   * **Frontend** : Teil einer Website den Besucher der Website einsehen könen. Gegenteil zum Backend oder Admin-Bereich.
   * **Admin-Bereich oder Backend**: Teil einer Website der nur für die Administration genutzt wird, meist geschützter
     Zugriff.
-  * **Custom-Post-Types**: Benutzerdefinierte Post-Objekte, wichtig im Kontext von WordPress. Eine wichtige Art und
-    Weise die Funktionen von Wordpress zu erweitern. CommonsBooking nutzt diese Art und Weise um erweiterte Post-Objekte für die o.g. Artikel, Standorte, Zeitrahmen, Buchungen etc. zu konfigurieren und durch die Website-User erfassen zu lassen.
+  * **Custom-Post-Types**: Benutzerdefinierte Post-Objekte, wichtig im Kontext von WordPress ([siehe dazu die offizielle Dokumentation](https://learn.wordpress.org/lesson/custom-post-types/)).
+    Eine wichtige Art und Weise die Funktionen von Wordpress zu erweitern. CommonsBooking nutzt diese Art und Weise um erweiterte Post-Objekte für die o.g. Artikel, Standorte, Zeitrahmen,
+    Buchungen etc. zu konfigurieren und durch die Website-User erfassen zu lassen.
