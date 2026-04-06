@@ -263,8 +263,10 @@ trait Cache {
 				$tags = [ 'misc' ];
 			}
 
-			// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
-			if ( $expirationString == 'midnight' ) {
+			if ( is_numeric( $expirationString ) ) {
+				$expiration = intval( $expirationString );
+			} elseif ( $expirationString === 'midnight' ) {
+				// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
 				$datetime   = current_time( 'timestamp' );
 				$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
 			}
