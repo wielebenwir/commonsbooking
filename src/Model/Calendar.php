@@ -80,6 +80,8 @@ class Calendar {
 	/**
 	 * Returns weeks for calendar time range.
 	 *
+	 * Uses cache and expires at midnight on a daily basis.
+	 *
 	 * @return array
 	 */
 	public function getWeeks(): array {

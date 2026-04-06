@@ -8,7 +8,9 @@ You can find the cache settings for your site in the **"CommonsBooking->Options-
 The cache stores data of frequently requested queries and optimizes response times of your web server.
 
 * The file-based cache is enabled by default.
-* Alternatively you can enable the [Redis](http://redis.io) based cache. You need to provide the DSN for this. You can ask your web host for support.
+    * All retrieval operations that use the cache are configured with 7 days of [expiration](https://symfony.com/doc/current/components/cache/cache_items.html#cache-expiration-date).
+    * Only the calendar of individual item-timeframe combinations expires at midnight and invalidates on a daily basis.
+* Alternatively you can enable the [Redis](http://redis.io) based cache. You need to provide the [DSN](https://en.wikipedia.org/wiki/Data_source_name) for this. You can ask your web host for support.
 * We generally do not recommend disabling the cache, but if you wish to do so, you can select "Cache disabled" as the cache adapter.
 
 When CommonsBooking fails to activate due to an issue with the cache, you can disable the cache by default

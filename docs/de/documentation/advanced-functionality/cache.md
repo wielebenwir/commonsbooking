@@ -10,7 +10,9 @@ Unter **"CommonsBooking > Einstellungen > Erweiterte Optionen"** befinden sich d
 Der Cache hält Ausleih-Daten zu häufig gestellten Anfragen vor und soll so die Antwortzeiten optimieren.
 
 * Standardmäßig ist der dateibasierte Cache aktiviert.
-* Alternativ kann ein Cache basierend auf [REDIS](http://redis.io) konfiguriert werden. Du benötigst dazu die DSN. Frage dazu z.B. deinen Webhoster nach Support.
+  * Alle Code-Operationen, die den Cache nutzen, halten die Einträge im Cache mindestens 7 Tage ([Expiration](https://symfony.com/doc/current/components/cache/cache_items.html#cache-expiration-date)) vor.
+  * Nur die Kalender der einzelnen Artikel-Zeitrahmen Kombinationen werden bis maximal Mitternacht vorgehalten und laufen dann automatisch ab.
+* Alternativ kann ein Cache basierend auf [REDIS](http://redis.io) konfiguriert werden. Du benötigst dazu den [DSN](https://en.wikipedia.org/wiki/Data_source_name). Frage dazu z.B. deinen Webhoster nach Support. Die Konfiguration der Ablaufzeiten bleibt bei der Nutzung von Redis unverändert.
 * Wir empfehlen es grundsätzlich nicht den Cache zu deaktivieren, sollte das dennoch gewünscht sein, kannst du als Cache Adapter "Cache deaktiviert" auswählen.
 
 Falls CommonsBooking aufgrund eines Problems mit dem Cache nicht aktiviert werden kann, kannst du den Cache standardmäßig
