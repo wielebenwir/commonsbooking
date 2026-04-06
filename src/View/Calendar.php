@@ -521,6 +521,8 @@ class Calendar {
 	/**
 	 * Returns JSON-Data for Litepicker calendar.
 	 *
+	 * Uses cache which expires at midnight on a daily basis.
+	 *
 	 * @param Day   $startDate
 	 * @param Day   $endDate
 	 * @param array $locations []

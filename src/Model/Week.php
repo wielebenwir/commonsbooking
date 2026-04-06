@@ -72,6 +72,10 @@ class Week {
 	}
 
 	/**
+	 * Helper function for Calendar.
+	 *
+	 * Uses the cache and expires at midnight on a daily basis.
+	 *
 	 * @return array
 	 * @throws Exception
 	 */
