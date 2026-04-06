@@ -33,15 +33,6 @@ module.exports = function (grunt) {
 					dest: 'assets/public/css',
 				}],
 			},
-			global: {
-				files: [{
-					expand: true,
-					src: ['*.scss'],
-					ext: '.css',
-					cwd: 'assets/global/sass',
-					dest: 'assets/global/css'
-				}]
-			},
 			adminDev: {
 				options: {
 					outputStyle: 'expanded',
@@ -66,19 +57,6 @@ module.exports = function (grunt) {
 					dest: 'assets/public/css',
 				}],
 			},
-			globalDev: {
-				options: {
-					outputStyle: 'expanded',
-					sourceMap: true,
-				},
-				files: [{
-					expand: true,
-					src: ['*.scss'],
-					ext: '.css',
-					cwd: 'assets/global/sass',
-					dest: 'assets/global/css'
-				}]
-			}
 		},
 		// concat and minify our JS
 		uglify: {
@@ -223,7 +201,7 @@ module.exports = function (grunt) {
 					'assets/public/sass/**/*.scss'
 				],
 				tasks: [
-					'dart-sass:adminDev', 'dart-sass:publicDev', 'dart-sass:globalDev'
+					'dart-sass:adminDev', 'dart-sass:publicDev',
 				],
                 options: {
                     livereload: true
@@ -267,7 +245,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', [
 		'dart-sass:adminDev',
 		'dart-sass:publicDev',
-		'dart-sass:globalDev',
 		'dart-sass:themes',
 		'uglify:dev',
 		'uglify:dist',
@@ -278,7 +255,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('dev', [
 		'dart-sass:adminDev',
 		'dart-sass:publicDev',
-		'dart-sass:globalDev',
 		'dart-sass:themes',
 		'uglify:dev',
 		'babel',
@@ -290,7 +266,6 @@ module.exports = function (grunt) {
 		'clean',
 		'dart-sass:admin',
 		'dart-sass:public',
-		'dart-sass:global',
 		'dart-sass:themes',
 		'babel',
 		'uglify:dist',
