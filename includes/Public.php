@@ -48,13 +48,6 @@ function commonsbooking_public() {
 		'1.0.0'
 	);
 
-	wp_enqueue_style(
-		'cb-styles-vendor',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'global/css/vendor.css',
-		array(),
-		COMMONSBOOKING_VERSION
-	);
-
 	wp_enqueue_style( 'cb-styles-select2' );
 	wp_enqueue_script( 'cb-scripts-select2' );
 	wp_enqueue_script( 'cb-scripts-moment' );
