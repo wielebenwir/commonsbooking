@@ -34,13 +34,13 @@ class StationStatus extends BaseRoute {
 	 * @throws \Exception
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
-		$preparedItem                      = new stdClass();
-		$preparedItem->station_id          = $item->ID . '';
-		$preparedItem->num_bikes_available = $this->getItemCountAtLocation( $item->ID );
-		$preparedItem->is_installed        = true;
-		$preparedItem->is_renting          = true;
-		$preparedItem->is_returning        = true;
-		$preparedItem->last_reported       = time();
+		$preparedItem                         = new stdClass();
+		$preparedItem->station_id             = $item->ID . '';
+		$preparedItem->num_vehicles_available = $this->getItemCountAtLocation( $item->ID );
+		$preparedItem->is_installed           = true;
+		$preparedItem->is_renting             = true;
+		$preparedItem->is_returning           = true;
+		$preparedItem->last_reported          = date( 'c' ); // ISO-8601 timestamp
 
 		return new WP_REST_Response( $preparedItem );
 	}
