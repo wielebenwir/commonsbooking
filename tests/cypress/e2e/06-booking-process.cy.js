@@ -1,27 +1,27 @@
 describe('test booking process', () => {
-  function getTestDate() {
-    let dt = new Date();
-    var test = new Date(dt.getTime()),
-        month = test.getMonth();
+    function getTestDate() {
+        let dt = new Date();
+        var test = new Date(dt.getTime()),
+            month = test.getMonth();
 
-    test.setDate(test.getDate() + 1);
-    if (test.getMonth() !== month ) {
-      dt.setDate(dt.getDate() + 1);
+        test.setDate(test.getDate() + 1);
+        if (test.getMonth() !== month) {
+            dt.setDate(dt.getDate() + 1);
+        }
+
+        return dt.getTime();
     }
 
-    return dt.getTime();
-  }
+    beforeEach(function () {
+        cy.clock(getTestDate());
+        cy.loginAs('subscriber');
+        cy.visit('/?cb_item=basictest-noadmin&cb-location=32');
+    });
 
-  beforeEach( function() {
-    cy.clock(getTestDate());
-    cy.loginAs( 'subscriber' );
-    cy.visit('/?cb_item=basictest-noadmin&cb-location=32');
-  } );
-
-  it('grays out button when no date is selected', () => {
-    cy.screenshot('booking-form_no-date-selected');
-    cy.get('#booking-form > [type="submit"]').should('be.disabled');
-  })
+    it('grays out button when no date is selected', () => {
+        cy.screenshot('booking-form_no-date-selected');
+        cy.get('#booking-form > [type="submit"]').should('be.disabled');
+    });
     it('makes button clickable when dates are selected', () => {
         //we have to do different assertions when we are in the last day of the current month
         //this is because the next date available in the calendar is the first day of the next month
@@ -32,9 +32,9 @@ describe('test booking process', () => {
         cy.get('#booking-form > [type="submit"]').should('not.be.disabled');
         cy.get('#booking-form > [type="submit"]').contains('Continue to booking confirmation');
         cy.screenshot('booking-form_dates-selected');
-    } )
+    });
 
-    it ('can abort booking process early', function () {
+    it('can abort booking process early', function () {
         cy.get('.is-today').click();
         //just click next directly adjacent day
         cy.get('.is-start-date').next('.day-item').click();
@@ -44,8 +44,8 @@ describe('test booking process', () => {
         cy.get('.cb-action-delete_unconfirmed').click();
         cy.get('.cb-notice').contains('Booking canceled');
         cy.screenshot('booking-form_booking-delete-unconfirmed');
-    } )
-    it('can book an item', function()  {
+    });
+    it('can book an item', function () {
         cy.get('.is-today').click();
         //just click next directly adjacent day
         cy.get('.is-start-date').next('.day-item').click();
@@ -59,9 +59,9 @@ describe('test booking process', () => {
         cy.get('.cb-action-canceled').click();
         cy.get('.cb-notice').contains('Your booking has been canceled');
         cy.screenshot('booking-form_booking-canceled');
-    } )
+    });
 
-    it('can have booking cancelled by admin', function()  {
+    it('can have booking cancelled by admin', function () {
         cy.get('.is-today').click();
         cy.get('.is-start-date').next('.day-item').click();
         cy.get('#booking-form > [type="submit"]').click();
@@ -83,5 +83,5 @@ describe('test booking process', () => {
 
         cy.get('.cb-action-canceled').click();
         cy.get('.cb-notice').contains('Your booking has been canceled');
-        } )
-})
+    });
+});
