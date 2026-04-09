@@ -39,20 +39,18 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$feeds[] = $this->get_feed( 'station_information' );
 		$feeds[] = $this->get_feed( 'station_status' );
 
-		$lang                     = get_bloginfo( 'language' );
-		$data                     = new stdClass();
-		$data->data               = new stdClass();
-		$data->data->$lang        = new stdClass();
-		$data->data->$lang->feeds = $feeds;
-		$data->last_updated       = current_time( 'timestamp' );
-		$data->ttl                = 86400;
-		$data->version            = '2.3';
+		$response               = new stdClass();
+		$response->data         = new stdClass();
+		$response->data->feeds  = $feeds;
+		$response->last_updated = date( 'c' ); // ISO-8601 timestamp
+		$response->ttl          = 86400;
+		$response->version      = '3.1-RC2';
 
 		if ( WP_DEBUG ) {
-			$this->validateData( $data );
+			$this->validateData( $response );
 		}
 
-		return new WP_REST_Response( $data, 200 );
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	private function get_feed( $name ): stdClass {

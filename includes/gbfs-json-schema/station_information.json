@@ -1,16 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id":
-    "https://github.com/MobilityData/gbfs/blob/v2.3/gbfs.md",
+    "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC2/station_information.json",
   "description":
     "List of all stations, their capacities and locations. REQUIRED of systems utilizing docks.",
   "type": "object",
   "properties": {
     "last_updated": {
       "description":
-        "Last time the data in the feed was updated in POSIX time.",
-      "type": "integer",
-      "minimum": 1450155600
+        "Last time the data in the feed was updated in RFC3339 format.",
+      "type": "string",
+      "format": "date-time"
     },
     "ttl": {
       "description":
@@ -22,7 +22,7 @@
       "description":
         "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
       "type": "string",
-      "const": "2.3"
+      "const": "3.1-RC2"
     },
     "data": {
       "description":
@@ -40,11 +40,41 @@
               },
               "name": {
                 "description": "Public name of the station.",
-                "type": "string"
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "description": "The translated text.",
+                      "type": "string"
+                    },
+                    "language": {
+                      "description": "IETF BCP 47 language code.",
+                      "type": "string",
+                      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+                    }
+                  },
+                  "required": ["text", "language"]
+                }
               },
               "short_name": {
                 "description": "Short name or other type of identifier.",
-                "type": "string"
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "description": "The translated text.",
+                      "type": "string"
+                    },
+                    "language": {
+                      "description": "IETF BCP 47 language code.",
+                      "type": "string",
+                      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+                    }
+                  },
+                  "required": ["text", "language"]
+                }
               },
               "lat": {
                 "description": "The latitude of the station.",
@@ -74,6 +104,14 @@
               },
               "post_code": {
                 "description": "Postal code where station is located.",
+                "type": "string"
+              },
+              "city": {
+                "description": "City where station is located. (added in v3.1-RC2)",
+                "type": "string"
+              },
+              "station_opening_hours": {
+                "description": "Hours of operation for the station in OSM opening_hours format.",
                 "type": "string"
               },
               "rental_methods": {
@@ -153,12 +191,48 @@
                 "type": "integer",
                 "minimum": 0
               },
-              "vehicle_capacity": {
-                "description":
-                  "An object where each key is a vehicle_type_id and the value is a number presenting the total number of vehicles of this type that can park within the station_area (added in v2.1-RC).",
-                "type": "object",
-                "additionalProperties": {
-                  "type": "number"
+              "vehicle_types_capacity": {
+                "description": "This field's value is an array of objects containing the keys vehicle_type_ids and count defined below. These objects are used to model the parking capacity of virtual stations (defined using the is_virtual_station field) for each vehicle type that can be returned to this station.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "vehicle_type_ids": {
+                      "description": "The vehicle_type_ids, as defined in vehicle_types.json, that may park at the virtual station.",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "count": {
+                      "description": "A number representing the total number of vehicles of the specified vehicle_type_ids that can park within the virtual station.",
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": ["vehicle_type_ids","count"]
+                }
+              },
+              "vehicle_docks_capacity": {
+                "description": "This field's value is an array of objects containing the keys vehicle_type_ids and count defined below. These objects are used to model the total docking capacity of a station, both available and unavailable, for each type of vehicle that may dock at this station.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "vehicle_type_ids": {
+                      "description": "An array of strings where each string represents a vehicle_type_id that is able to use a particular type of dock at the station.",
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "count": {
+                      "description": "A number representing the total number of docks at the station, both available and unavailable, that may accept the vehicle types specified by vehicle_type_ids.",
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": ["vehicle_type_ids","count"]
                 }
               },
               "is_valet_station": {
@@ -194,14 +268,6 @@
                     "type": "string",
                     "format": "uri"
                   }
-                }
-              },
-              "vehicle_type_capacity": {
-                "description":
-                  "An object where each key is a vehicle_type_id and the value is a number representing the total docking points installed at this station for each vehicle type (added in v2.1-RC).",
-                "type": "object",
-                "additionalProperties": {
-                  "type": "number"
                 }
               }
             },
