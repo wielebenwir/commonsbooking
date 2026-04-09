@@ -602,7 +602,7 @@ class Plugin {
 			'cb-styles-select2',
 			$base . 'select2/css/select2.min.css',
 			array(),
-			$versions['select2']
+			self::packagedVersion( 'select2' )
 		);
 
 		// Select 2 (JS)
@@ -610,7 +610,7 @@ class Plugin {
 			'cb-scripts-select2',
 			$base . 'select2/js/select2.min.js',
 			array( 'jquery' ),
-			$versions['select2']
+			self::packagedVersion( 'select2' )
 		);
 
 		// Moment.js
@@ -618,7 +618,7 @@ class Plugin {
 			'cb-scripts-moment',
 			$base . 'moment/moment.min.js',
 			array(),
-			$versions['moment'],
+			self::packagedVersion( 'moment' ),
 			true
 		);
 
