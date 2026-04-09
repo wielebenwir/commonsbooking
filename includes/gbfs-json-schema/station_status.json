@@ -1,15 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://github.com/MobilityData/gbfs/blob/v2.3/gbfs.md",
+  "$id": "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC2/station_status.json",
   "description":
     "Describes the capacity and rental availability of the station",
   "type": "object",
   "properties": {
     "last_updated": {
       "description":
-        "Last time the data in the feed was updated in POSIX time.",
-      "type": "integer",
-      "minimum": 1450155600
+        "Last time the data in the feed was updated in RFC3339 format.",
+      "type": "string",
+      "format": "date-time"
     },
     "ttl": {
       "description":
@@ -21,7 +21,7 @@
       "description":
         "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
       "type": "string",
-      "const": "2.3"
+      "const": "3.1-RC2"
     },
     "data": {
       "description":
@@ -37,7 +37,7 @@
                 "description": "Identifier of a station.",
                 "type": "string"
               },
-              "num_bikes_available": {
+              "num_vehicles_available": {
                 "description":
                   "Number of vehicles of any type physically available for rental at the station.",
                 "type": "integer",
@@ -65,7 +65,7 @@
                   "required": ["vehicle_type_id", "count"]
                 }
               },
-              "num_bikes_disabled": {
+              "num_vehicles_disabled": {
                 "description":
                   "Number of disabled vehicles of any type at the station.",
                 "type": "integer",
@@ -97,9 +97,9 @@
               },
               "last_reported": {
                 "description":
-                  "The last time this station reported its status to the operator's backend in POSIX time.",
-                "type": "integer",
-                "minimum": 1450155600
+                  "The last time this station reported its status to the operator's backend in RFC3339 format.",
+                "type": "string",
+                "format": "date-time"
               },
               "vehicle_docks_available": {
                 "description":
@@ -129,7 +129,7 @@
             },
             "required": [
               "station_id",
-              "num_bikes_available",
+              "num_vehicles_available",
               "is_installed",
               "is_renting",
               "is_returning",
