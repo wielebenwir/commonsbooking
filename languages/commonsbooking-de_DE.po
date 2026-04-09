@@ -1264,7 +1264,7 @@ msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht ge
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:442
+#: src/Service/Cache.php:444
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
@@ -3356,11 +3356,11 @@ msgid "(not planned)"
 msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1597
-#: src/Service/Cache.php:476
+#: src/Service/Cache.php:478
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:471
+#: src/Service/Cache.php:473
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
@@ -4236,11 +4236,11 @@ msgstr "REDIS"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: src/Service/Cache.php:451
+#: src/Service/Cache.php:453
 msgid "Cache is disabled."
 msgstr "Cache ist deaktiviert."
 
-#: src/Service/Cache.php:454
+#: src/Service/Cache.php:456
 msgid "Cache adapter successfully connected."
 msgstr "Cache Adapter erfolgreich verbunden."
 
@@ -4306,7 +4306,7 @@ msgstr ""
 "\t\t\t\twerden alle betroffenen Buchungen nach Aktivierung dieser Einschränkung und nach Anklicken des Senden-Buttons der Informations-E-Mail automatisch storniert.\r\n"
 "\t\t\t\t"
 
-#: src/Service/Cache.php:448
+#: src/Service/Cache.php:450
 msgid "Cache was disabled through external setting. Please see the documentation for more information."
 msgstr "Cache wurde durch externe Einstellungen deaktiviert. Mehr Informationen dazu findest du in der Dokumentation."
 
