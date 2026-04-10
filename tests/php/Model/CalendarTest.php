@@ -259,6 +259,111 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertEquals( $expectedSlotsObject, $availabilitySlots );
 	}
 
+	public function testGetAvailabilitySlots_multiItemLocation() {
+		$otherItem     = $this->createItem( 'M2i' );
+		$otherLocation = $this->createLocation( 'M2l' );
+
+		// create bookable timeframes for both item/location combinations
+		$this->createBookableTimeFrameIncludingCurrentDay( $this->locationId, $this->itemId );
+		$this->createBookableTimeFrameIncludingCurrentDay( $otherLocation, $otherItem );
+
+		$today       = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
+		$todayEnd    = $this->getEndOfDayTimestamp( self::CURRENT_DATE );
+		$tomorrow    = date( 'Y-m-d', strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ) );
+		$tomorrowEnd = $this->getEndOfDayTimestamp( $tomorrow );
+
+		$this->calendar = new Calendar(
+			new Day( $today, [ $this->locationId, $otherLocation ], [ $this->itemId, $otherItem ] ),
+			new Day( $tomorrow, [ $this->locationId, $otherLocation ], [ $this->itemId, $otherItem ] ),
+			[ $this->locationId, $otherLocation ],
+			[ $this->itemId, $otherItem ]
+		);
+
+		$availabilitySlots = $this->calendar->getAvailabilitySlots();
+
+		// expect 4 slots (2 days × 2 item/location pairs)
+		$this->assertEquals( 4, count( $availabilitySlots ) );
+
+		$expectedSlotObject = [
+			// today - original
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( self::CURRENT_DATE ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $todayEnd ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId,
+			],
+			// today - other
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( self::CURRENT_DATE ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $todayEnd ),
+				'itemId'     => $otherItem,
+				'locationId' => $otherLocation,
+			],
+			// tomorrow - original
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId,
+			],
+			// tomorrow - other
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
+				'itemId'     => $otherItem,
+				'locationId' => $otherLocation,
+			],
+		];
+
+		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
+
+		// book one combination for today
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( $today ),
+			$todayEnd
+		);
+
+		$this->calendar = new Calendar(
+			new Day( $today, [ $this->locationId, $otherLocation ], [ $this->itemId, $otherItem ] ),
+			new Day( $tomorrow, [ $this->locationId, $otherLocation ], [ $this->itemId, $otherItem ] ),
+			[ $this->locationId, $otherLocation ],
+			[ $this->itemId, $otherItem ]
+		);
+
+		$availabilitySlots = $this->calendar->getAvailabilitySlots();
+
+		// expect 3 slots remaining
+		$this->assertEquals( 3, count( $availabilitySlots ) );
+
+		$expectedSlotObject = [
+			// today - other (still available)
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( self::CURRENT_DATE ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $todayEnd ),
+				'itemId'     => $otherItem,
+				'locationId' => $otherLocation,
+			],
+			// tomorrow - original
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
+				'itemId'     => $this->itemId,
+				'locationId' => $this->locationId,
+			],
+			// tomorrow - other
+			(object) [
+				'start'      => date( 'Y-m-d\TH:i:sP', strtotime( $tomorrow ) ),
+				'end'        => date( 'Y-m-d\TH:i:sP', $tomorrowEnd ),
+				'itemId'     => $otherItem,
+				'locationId' => $otherLocation,
+			],
+		];
+
+		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->now = new \DateTime( self::CURRENT_DATE );

@@ -168,12 +168,51 @@ class Day {
 	/**
 	 * Returns grid for the day defined by the timeframes.
 	 *
+	 * When multiple item/location pairs are present, a separate grid is computed for each
+	 * pair and the results are concatenated, so that all combinations are represented.
+	 *
 	 * @see Day::getTimeframeSlots()
 	 * @return array
 	 * @throws Exception
 	 */
 	public function getGrid(): array {
-		return $this->getTimeframeSlots();
+		// Group timeframes by (locationId, itemId) pair to detect multiple combinations.
+		$pairs = [];
+		foreach ( $this->getTimeframes() as $timeframe ) {
+			$locationId = $timeframe->getLocationID();
+			$itemId     = $timeframe->getItemID();
+			if ( $locationId && $itemId ) {
+				$key             = (int) $locationId . '_' . (int) $itemId;
+				$pairs[ $key ] ??= [
+					'locationId' => $locationId,
+					'itemId'     => $itemId,
+					'timeframes' => [],
+				];
+				$pairs[ $key ]['timeframes'][] = $timeframe;
+			}
+		}
+
+		// Single (or no) pair: use existing behaviour unchanged.
+		if ( count( $pairs ) <= 1 ) {
+			return $this->getTimeframeSlots();
+		}
+
+		// Multiple pairs: compute an independent grid for each and merge the results.
+		$allSlots = [];
+		foreach ( $pairs as $pair ) {
+			$subDay = new Day(
+				$this->date,
+				[ $pair['locationId'] ],
+				[ $pair['itemId'] ],
+				$this->types,
+				$pair['timeframes']
+			);
+			foreach ( $subDay->getGrid() as $slot ) {
+				$allSlots[] = $slot;
+			}
+		}
+
+		return $allSlots;
 	}
 
 	/**
