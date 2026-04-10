@@ -9,7 +9,7 @@
                 }
             });
             return newItems;
-        }
+        };
 
         /**
          * Hides set-elements.
@@ -33,16 +33,16 @@
 
         const timeframeForm = $('#cmb2-metabox-cb_timeframe-custom-fields');
 
-        const BOOKABLE_ID = "2";
-        const HOLIDAYS_ID = "3";
-        const REPAIR_ID = "5";
+        const BOOKABLE_ID = '2';
+        const HOLIDAYS_ID = '3';
+        const REPAIR_ID = '5';
 
-        const REPETITION_NONE = "norep";
-        const REPETITION_MANUAL = "manual";
-        const REPETITION_DAILY = "d";
-        const REPETITION_WEEKLY = "w";
-        const REPETITION_MONTHLY = "m";
-        const REPETITION_YEARLY = "y";
+        const REPETITION_NONE = 'norep';
+        const REPETITION_MANUAL = 'manual';
+        const REPETITION_DAILY = 'd';
+        const REPETITION_WEEKLY = 'w';
+        const REPETITION_MONTHLY = 'm';
+        const REPETITION_YEARLY = 'y';
 
         // the assigned numbers for the location selection input
         const SELECTION_MANUAL = 0;
@@ -71,8 +71,8 @@
             const createBookingCodesInput = $('#create-booking-codes');
             const bookingCodesDownload = $('#booking-codes-download');
             const bookingCodesList = $('#booking-codes-list');
-            const emailBookingCodesList = $("#email-booking-codes-list");
-            const cronEmailBookingCodesList = $("#cron-email-booking-code");
+            const emailBookingCodesList = $('#email-booking-codes-list');
+            const cronEmailBookingCodesList = $('#cron-email-booking-code');
 
             // The links for sending booking codes for part of the timeframe
             const boxSendEntireTimeframeCodes = $('#timeframe-bookingcodes-sendall');
@@ -80,29 +80,64 @@
             const linkSendCurrentMonth = $('#email-booking-codes-list-current');
             const linkSendNextMonth = $('#email-booking-codes-list-next');
 
-
             const singleLocationSelection = $('.cmb2-id-location-id');
-            const multiLocationSelection = $(".cmb2-id-location-id-list");
+            const multiLocationSelection = $('.cmb2-id-location-id-list');
             const singleItemSelection = $('.cmb2-id-item-id');
-            const multiItemSelection = $(".cmb2-id-item-id-list");
+            const multiItemSelection = $('.cmb2-id-item-id-list');
             const categoryLocationSelection = $('.cmb2-id-location-category-ids');
             const categoryItemSelection = $('.cmb2-id-item-category-ids');
             const holidayField = $('.cmb2-id--cmb2-holiday');
             const holidayInput = $('#timeframe_manual_date');
-            const manualDatePicker = $("#cmb2_multiselect_datepicker");
+            const manualDatePicker = $('#cmb2_multiselect_datepicker');
             const manualDateField = $('.cmb2-id-timeframe-manual-date');
             const maxDaysSelect = $('#timeframe-max-days');
             const advanceBookingDays = $('#timeframe-advance-booking-days');
-            const bookingStartDayOffset = $('#booking-startday-offset');const bookingConfigurationTitle = $('#title-bookings-config');
+            const bookingStartDayOffset = $('#booking-startday-offset');
+            const bookingConfigurationTitle = $('#title-bookings-config');
             const allowUserRoles = $('#allowed_user_roles');
-            const repSet = [repConfigTitle, fullDayInput, startTimeInput, endTimeInput, weekdaysInput, repetitionStartInput, repetitionEndInput, gridInput];
-            const noRepSet = [fullDayInput, startTimeInput, endTimeInput, gridInput, repetitionStartInput, repetitionEndInput];
+            const repSet = [
+                repConfigTitle,
+                fullDayInput,
+                startTimeInput,
+                endTimeInput,
+                weekdaysInput,
+                repetitionStartInput,
+                repetitionEndInput,
+                gridInput,
+            ];
+            const noRepSet = [
+                fullDayInput,
+                startTimeInput,
+                endTimeInput,
+                gridInput,
+                repetitionStartInput,
+                repetitionEndInput,
+            ];
             const repTimeFieldsSet = [gridInput, startTimeInput, endTimeInput];
-            const bookingCodeSet = [createBookingCodesInput, bookingCodesList, bookingCodesDownload, showBookingCodes, emailBookingCodesList, cronEmailBookingCodesList];
-            const bookingCodeConfigSet = [showBookingCodes, bookingCodesList, bookingCodesDownload, emailBookingCodesList, cronEmailBookingCodesList];
+            const bookingCodeSet = [
+                createBookingCodesInput,
+                bookingCodesList,
+                bookingCodesDownload,
+                showBookingCodes,
+                emailBookingCodesList,
+                cronEmailBookingCodesList,
+            ];
+            const bookingCodeConfigSet = [
+                showBookingCodes,
+                bookingCodesList,
+                bookingCodesDownload,
+                emailBookingCodesList,
+                cronEmailBookingCodesList,
+            ];
 
             const form = $('input[name=post_type][value=cb_timeframe]').parent('form');
-            const bookingConfigSet = [maxDaysSelect, advanceBookingDays, bookingStartDayOffset, allowUserRoles, bookingConfigurationTitle];
+            const bookingConfigSet = [
+                maxDaysSelect,
+                advanceBookingDays,
+                bookingStartDayOffset,
+                allowUserRoles,
+                bookingConfigurationTitle,
+            ];
 
             /**
              * Show repetition fields.
@@ -110,7 +145,7 @@
             const showRepFields = function () {
                 showFieldset(repSet);
                 hideFieldset(arrayDiff(repSet, noRepSet));
-            }
+            };
 
             /**
              * Show no-repetition fields.
@@ -118,7 +153,7 @@
             const showNoRepFields = function () {
                 showFieldset(noRepSet);
                 hideFieldset(arrayDiff(noRepSet, repSet));
-            }
+            };
 
             /**
              * Uncheck checkboxes.
@@ -126,16 +161,15 @@
              */
             const uncheck = function (checkboxes) {
                 $.each(checkboxes, function () {
-                    $(this).prop("checked", false);
+                    $(this).prop('checked', false);
                 });
-            }
+            };
 
             /**
              * "Moves" selection from single item /location selection to multiselect.
              * Currently only for holidays, holidays used to only have one assignable single selection.
              */
             const migrateSingleSelection = () => {
-
                 if (typeInput.val() != HOLIDAYS_ID) {
                     return;
                 }
@@ -143,31 +177,36 @@
                 const singleItemSelectionOption = singleItemSelection.find('option:selected');
 
                 // if it has a value, remove selection from single select and activate checkbox in multiselect
-                if(singleItemSelectionOption.prop('value')) {
-                    const multiItemSelectionOption = multiItemSelection.find(`input[value=${singleItemSelectionOption.prop('value')}]`);
-                    if(multiItemSelectionOption) {
+                if (singleItemSelectionOption.prop('value')) {
+                    const multiItemSelectionOption = multiItemSelection.find(
+                        `input[value=${singleItemSelectionOption.prop('value')}]`,
+                    );
+                    if (multiItemSelectionOption) {
                         multiItemSelectionOption.prop('checked', true);
                     }
                     singleItemSelectionOption.prop('selected', false);
                 }
 
-                const singleLocationSelectionOption = singleLocationSelection.find('option:selected');
+                const singleLocationSelectionOption =
+                    singleLocationSelection.find('option:selected');
                 if (singleLocationSelectionOption.prop('value')) {
-                    const multiLocationSelectionOption = multiLocationSelection.find(`input[value=${singleLocationSelectionOption.prop('value')}]`);
-                    if(multiLocationSelectionOption) {
+                    const multiLocationSelectionOption = multiLocationSelection.find(
+                        `input[value=${singleLocationSelectionOption.prop('value')}]`,
+                    );
+                    if (multiLocationSelectionOption) {
                         multiLocationSelectionOption.prop('checked', true);
                     }
                     singleLocationSelectionOption.prop('selected', false);
                 }
-            }
+            };
             migrateSingleSelection();
 
             /**
              * Shows/hides max day selection and user role restriction depending on timeframe type (for bookings).
              */
             const handleTypeSelection = function () {
-                const selectedType =  $("option:selected", typeInput).val();
-                const selectedRepetition = $("option:selected", timeframeRepetitionInput).val()
+                const selectedType = $('option:selected', typeInput).val();
+                const selectedRepetition = $('option:selected', timeframeRepetitionInput).val();
                 if (selectedType === BOOKABLE_ID) {
                     showFieldset(bookingConfigSet);
                     showFieldset(bookingCodeTitle);
@@ -191,7 +230,7 @@
                     itemSelectionInput.hide();
                     locationSelectionInput.hide();
                 }
-            }
+            };
             handleTypeSelection();
             typeInput.change(function () {
                 handleTypeSelection();
@@ -203,25 +242,23 @@
              * Shows/hides selection options for locations
              */
             const handleLocationSelection = function () {
-                const selectedType = $("option:selected", typeInput).val();
+                const selectedType = $('option:selected', typeInput).val();
                 //disable the mass selection for all timeframes except holidays
                 if (selectedType == HOLIDAYS_ID) {
                     singleLocationSelection.hide();
                     //handle different selection types
-                    const selectedOption = $("option:selected", locationSelectionInput).val();
+                    const selectedOption = $('option:selected', locationSelectionInput).val();
                     if (selectedOption == SELECTION_MANUAL) {
                         multiLocationSelection.show();
                         categoryLocationSelection.hide();
-                    } else if (selectedOption == SELECTION_CATEGORY){
+                    } else if (selectedOption == SELECTION_CATEGORY) {
                         categoryLocationSelection.show();
                         multiLocationSelection.hide();
-                    }
-                    else if (selectedOption == SELECTION_ALL) {
+                    } else if (selectedOption == SELECTION_ALL) {
                         multiLocationSelection.hide();
                         categoryLocationSelection.hide();
                     }
-                }
-                else {
+                } else {
                     singleLocationSelection.show();
                     multiLocationSelection.hide();
                     categoryLocationSelection.hide();
@@ -236,25 +273,23 @@
              * Shows/hides selection options for items
              */
             const handleItemSelection = function () {
-                const selectedType = $("option:selected", typeInput).val();
+                const selectedType = $('option:selected', typeInput).val();
                 //disable the mass selection for all timeframes except holidays (for now)
                 if (selectedType == HOLIDAYS_ID) {
                     singleItemSelection.hide();
                     //handle different selection types
-                    const selectedOption = $("option:selected", itemSelectionInput).val();
+                    const selectedOption = $('option:selected', itemSelectionInput).val();
                     if (selectedOption == SELECTION_MANUAL) {
                         multiItemSelection.show();
                         categoryItemSelection.hide();
-                    } else if (selectedOption == SELECTION_CATEGORY){
+                    } else if (selectedOption == SELECTION_CATEGORY) {
                         categoryItemSelection.show();
                         multiItemSelection.hide();
-                    }
-                    else if (selectedOption == SELECTION_ALL) {
+                    } else if (selectedOption == SELECTION_ALL) {
                         multiItemSelection.hide();
                         categoryItemSelection.hide();
                     }
-                }
-                else {
+                } else {
                     singleItemSelection.show();
                     multiItemSelection.hide();
                     categoryItemSelection.hide();
@@ -269,15 +304,15 @@
              * Shows/hides grid selection depending on checked-state.
              */
             const handleFullDaySelection = function () {
-                const selectedRep = $("option:selected", timeframeRepetitionInput).val();
+                const selectedRep = $('option:selected', timeframeRepetitionInput).val();
                 // Full-day setting
-                if (fullDayInput.prop("checked")) {
-                    gridInput.prop("selected", false);
+                if (fullDayInput.prop('checked')) {
+                    gridInput.prop('selected', false);
                     hideFieldset(repTimeFieldsSet);
                 } else {
                     showFieldset(repTimeFieldsSet);
                 }
-            }
+            };
             handleFullDaySelection();
             fullDayInput.change(function () {
                 handleFullDaySelection();
@@ -288,7 +323,7 @@
              */
             const handleRepetitionSelection = function () {
                 const selectedRepetition = $('option:selected', timeframeRepetitionInput).val();
-                const selectedTimeframeType = $("option:selected", typeInput).val();
+                const selectedTimeframeType = $('option:selected', typeInput).val();
 
                 if (selectedRepetition) {
                     if (selectedRepetition == REPETITION_NONE) {
@@ -304,8 +339,7 @@
                         hideFieldset(repetitionEndInput);
                         if (selectedTimeframeType == HOLIDAYS_ID) {
                             holidayField.show();
-                        }
-                        else {
+                        } else {
                             holidayField.hide();
                         }
                     } else {
@@ -327,19 +361,17 @@
                     hideFieldset(noRepSet);
                     hideFieldset(repSet);
                 }
-
-            }
+            };
             handleRepetitionSelection();
             timeframeRepetitionInput.change(function () {
                 handleRepetitionSelection();
-            })
+            });
 
             const handleBookingCodesSelection = function () {
                 const fullday = fullDayInput.prop('checked'),
-                type = typeInput.val(),
-                repStart = repetitionStartInput.val(),
-                repEnd = repetitionEndInput.val();
-
+                    type = typeInput.val(),
+                    repStart = repetitionStartInput.val(),
+                    repEnd = repetitionEndInput.val();
 
                 hideFieldset(bookingCodeSet);
 
@@ -350,19 +382,16 @@
                     if (!createBookingCodesInput.prop('checked')) {
                         hideFieldset(bookingCodeConfigSet);
                         showBookingCodes.prop('checked', false);
-                    }
-                    else {
+                    } else {
                         showFieldset(bookingCodeConfigSet);
                     }
 
                     // If no end-date is selected, we hide the option to send codes for the entire timeframe
                     if (!repEnd) {
                         boxSendEntireTimeframeCodes.hide();
-                    }
-                    else {
+                    } else {
                         boxSendEntireTimeframeCodes.show();
                     }
-
                 }
             };
             handleBookingCodesSelection();
@@ -380,15 +409,13 @@
                 repetitionEndInput,
                 fullDayInput,
                 typeInput,
-                createBookingCodesInput
+                createBookingCodesInput,
             ];
             $.each(bookingCodeSelectionInputs, function (key, input) {
-                input.change(
-                    function () {
-                        handleBookingCodesSelection();
-                    }
-                );
-            })
+                input.change(function () {
+                    handleBookingCodesSelection();
+                });
+            });
         }
     });
 })(jQuery);

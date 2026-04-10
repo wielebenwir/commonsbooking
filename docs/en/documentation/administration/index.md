@@ -1,19 +1,15 @@
-#  Administration
+# Administration
 
-__
+In this section you will find information about specific administration functions and features.
 
-In diesem Abschnitt erhältst du Informationen zu bestimmten
-Administrationsfunktionen und Merkmalen.
+###  Pages
 
-###  Artikel
-
-  * [ Leihangebote im Frontend anzeigen ](/dokumentation/einstellungen/leihangebote-im-frontend-anzeigen)
-  * [ Shortcodes für Frontend-Darstellung ](/dokumentation/einstellungen/shortcodes)
-  * [ User-Widget einbinden ](/dokumentation/einstellungen/widget)
-  * [ Template Tags und Platzhalter für E-Mail-Vorlagen ](/dokumentation/einstellungen/template-tags)
-  * [ Karte der Standorte mit Filter ](/dokumentation/einstellungen/karte-einbinden)
-  * [ Registrierung & Login anpassen ](/dokumentation/einstellungen/registrierungs-seiten-und-benutzerfelder-anpassen)
-  * [ Buchungsliste ](/dokumentation/einstellungen/buchungsliste)
-  * [ Hooks und Filter ](/dokumentation/einstellungen/hooks-und-filter)
-  * [ Neues Frontend (BETA) ](/dokumentation/einstellungen/neues-frontend-beta)
-
+  * [Displaying lending offers in the frontend](frontend-show-bookable)
+  * [Shortcodes for frontend display](shortcodes)
+  * [Integrating the user widget](widget)
+  * [Template tags and placeholders for email templates](template-tags)
+  * [Location map with filters](map-embed)
+  * [Customizing registration & login](custom-registration-user-fields)
+  * [Booking list](booking-list)
+  * [Privacy](privacy)
+  * [New frontend (BETA)](new-frontend)

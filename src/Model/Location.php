@@ -7,7 +7,7 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
-use Geocoder\Exception\Exception;
+use CommonsBooking\Geocoder\Exception\Exception;
 
 /**
  * This is the logical wrapper for the location custom post type.
@@ -230,6 +230,7 @@ class Location extends BookablePost {
 	 *
 	 *  TODO: This currently includes the author of the location as an admin.
 	 *        This does not make sense in all contexts and should be changed.
+	 *        Duplicated implementation in Model/Item.php
 	 *
 	 * @return array|mixed|string[]
 	 */

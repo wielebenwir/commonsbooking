@@ -212,7 +212,6 @@ class CustomPost {
 		return get_userdata( $this->post_author );
 	}
 
-
 	/**
 	 * Checks if the given user is the author of the current post.
 	 *
@@ -222,16 +221,5 @@ class CustomPost {
 	 */
 	public function isAuthor( \WP_User $user ): bool {
 		return $user->ID === intval( $this->post_author );
-	}
-
-	/**
-	 * @param string|null $date Date-String
-	 *
-	 * @return CustomPost
-	 */
-	public function setDate( string $date = null ) {
-		$this->date = $date;
-
-		return $this;
 	}
 }

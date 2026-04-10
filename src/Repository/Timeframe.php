@@ -103,7 +103,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @return int[]|\WP_Post[]|\CommonsBooking\Model\Timeframe[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
-	 * @throws \Psr\Cache\InvalidArgumentException|\Psr\Cache\CacheException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException|\CommonsBooking\Psr\Cache\CacheException
 	 */
 	public static function get(
 		array $locations = [],
@@ -230,7 +230,7 @@ class Timeframe extends PostRepository {
 	 */
 	public static function getInRangePaginated(
 		int $minTimestamp,
-		int $maxTimestamp = null,
+		?int $maxTimestamp = null,
 		int $page = 1,
 		int $perPage = 10,
 		array $types = [
@@ -330,7 +330,7 @@ class Timeframe extends PostRepository {
 	 * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
 	 * @return string[]|int[]
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
 
@@ -444,7 +444,7 @@ class Timeframe extends PostRepository {
 		}
 		$multiLocationQuery   = "(
 					$joinAlias.meta_key = '" . $multiEntityKey . "' AND
-					(" . implode( ' OR ', $multiLocationQueries ) . ') 
+					(" . implode( ' OR ', $multiLocationQueries ) . ')
 				)';
 		$locationQueryParts[] = $multiLocationQuery;
 
@@ -646,7 +646,7 @@ class Timeframe extends PostRepository {
 	 * @param string|null $date string format: YYYY-mm-dd
 	 *
 	 * @return array
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	private static function filterTimeframesByConfiguredDays( array $posts, ?string $date ): array {
 		$cacheItem = Plugin::getCacheItem();
@@ -835,8 +835,8 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array    $locations
-	 * @param array    $items
+	 * @param int[]    $locations
+	 * @param int[]    $items
 	 * @param array    $types
 	 * @param bool     $returnAsModel
 	 * @param string[] $postStatus
@@ -905,8 +905,8 @@ class Timeframe extends PostRepository {
 	 *
 	 * @param $minTimestamp
 	 * @param $maxTimestamp
-	 * @param array    $locations
-	 * @param array    $items
+	 * @param int[]    $locations
+	 * @param int[]    $items
 	 * @param array    $types
 	 * @param bool     $returnAsModel
 	 * @param string[] $postStatus

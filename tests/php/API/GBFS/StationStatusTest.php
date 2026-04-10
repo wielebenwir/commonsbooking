@@ -26,23 +26,23 @@ class StationStatusTest extends CustomPostTypeTest {
 		);
 		$stationStatus     = $routeObject->prepare_item_for_response( $locationObject, null )->get_data();
 		$this->assertEquals( $this->locationId, $stationStatus->station_id );
-		$this->assertEquals( 1, $stationStatus->num_bikes_available );
+		$this->assertEquals( 1, $stationStatus->num_vehicles_available );
 		$this->assertTrue( $stationStatus->is_installed );
 		$this->assertTrue( $stationStatus->is_renting );
 		$this->assertTrue( $stationStatus->is_returning );
-		$this->assertEquals( time(), $stationStatus->last_reported );
+		$this->assertEquals( date( 'c' ), $stationStatus->last_reported );
 
 		// now let's book the current day and check, that the station is empty
 		$tf    = $this->createConfirmedBookingStartingToday();
 		$model = new Timeframe( $tf );
 		// echo "This is a booking: " . $model->getStartDateDateTime()->format( 'Y-m-d\TH:i:sP' ) . " " . $model->getEndDateDateTime()->format( 'Y-m-d\TH:i:sP' );
 		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
-		// $this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		// $this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_vehicles_available );
 
 		// the timeframe has ended now, so the station should be empty
 		$currDate->modify( '+11 days' );
 		ClockMock::freeze( $currDate );
-		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_vehicles_available );
 
 		// very important for GBFS: when bookings are only allowed with a certain offset (time difference between booking and start of booking), the station should be empty
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
@@ -67,10 +67,10 @@ class StationStatusTest extends CustomPostTypeTest {
 			30,
 			2
 		);
-		$this->assertEquals( 0, $routeObject->prepare_item_for_response( new Location( $otherLocationId ), null )->get_data()->num_bikes_available );
+		$this->assertEquals( 0, $routeObject->prepare_item_for_response( new Location( $otherLocationId ), null )->get_data()->num_vehicles_available );
 		// remove the offset and the station should have the item
 		update_post_meta( $timeframeID, 'booking-startday-offset', 0 );
-		$this->assertEquals( 1, $routeObject->prepare_item_for_response( new Location( $otherLocationId ), null )->get_data()->num_bikes_available );
+		$this->assertEquals( 1, $routeObject->prepare_item_for_response( new Location( $otherLocationId ), null )->get_data()->num_vehicles_available );
 	}
 
 	public function testPrepare_item_for_response_hourly() {
@@ -91,12 +91,12 @@ class StationStatusTest extends CustomPostTypeTest {
 			'8:00 AM',
 			'11:59 PM'
 		);
-		$this->assertEquals( 1, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		$this->assertEquals( 1, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_vehicles_available );
 
 		// before 08:00AM the bike is not available
 		$currDate->setTime( 6, 0, 0 );
 		ClockMock::freeze( $currDate );
-		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_vehicles_available );
 
 		// now let's book two hours out of the timeframe and check that the station is empty for those two hours
 		$startBooking = new \DateTime( self::CURRENT_DATE );
@@ -112,12 +112,12 @@ class StationStatusTest extends CustomPostTypeTest {
 			'01:00 PM'
 		);
 		ClockMock::freeze( $startBooking );
-		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_vehicles_available );
 		$startBooking->modify( '+1 hour' );
 		ClockMock::freeze( $startBooking );
-		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		$this->assertEquals( 0, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_vehicles_available );
 		ClockMock::freeze( $endBooking );
-		$this->assertEquals( 1, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_bikes_available );
+		$this->assertEquals( 1, $routeObject->prepare_item_for_response( $locationObject, null )->get_data()->num_vehicles_available );
 	}
 
 	protected function setUp(): void {

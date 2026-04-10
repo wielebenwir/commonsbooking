@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
     $(function () {
-        const mapSettingsForm = $("#cmb2-metabox-cb_map-custom-fields");
+        const mapSettingsForm = $('#cmb2-metabox-cb_map-custom-fields');
 
         const hideFieldset = function (set) {
             $.each(set, function () {
@@ -32,7 +32,7 @@
                     button.disabled = false;
                 }, 2000);
             });
-        }
+        };
 
         const copyToClipboardButton = $('#shortcode-field').find('.button');
         copyToClipboardButton.on('click', function () {
@@ -50,7 +50,7 @@
 
             handleSelectCustomMarker();
 
-            const observerConfig = {attributes: true, childList: false, subtree: false};
+            const observerConfig = { attributes: true, childList: false, subtree: false };
             const observer = new MutationObserver(function (mutations) {
                 mutations.forEach(function (mutation) {
                     if (mutation.attributeName === 'value') {
@@ -62,30 +62,22 @@
         }
 
         if (mapSettingsForm.length) {
-            handleCustomFileInput(
-                '#custom_marker_media',
-                [
-                    $('#marker_icon_width'),
-                    $('#marker_icon_height'),
-                    $('#marker_icon_anchor_x'),
-                    $('#marker_icon_anchor_y')
-                ]);
-            handleCustomFileInput(
-                '#custom_marker_cluster_media',
-                [
-                    $('#marker_cluster_icon_width'),
-                    $('#marker_cluster_icon_height')
-                ]
-            );
-            handleCustomFileInput(
-                '#marker_item_draft_media',
-                [
-                    $('#marker_item_draft_icon_width'),
-                    $('#marker_item_draft_icon_height'),
-                    $('#marker_item_draft_icon_anchor_x'),
-                    $('#marker_item_draft_icon_anchor_y')
-                    ]
-            );
+            handleCustomFileInput('#custom_marker_media', [
+                $('#marker_icon_width'),
+                $('#marker_icon_height'),
+                $('#marker_icon_anchor_x'),
+                $('#marker_icon_anchor_y'),
+            ]);
+            handleCustomFileInput('#custom_marker_cluster_media', [
+                $('#marker_cluster_icon_width'),
+                $('#marker_cluster_icon_height'),
+            ]);
+            handleCustomFileInput('#marker_item_draft_media', [
+                $('#marker_item_draft_icon_width'),
+                $('#marker_item_draft_icon_height'),
+                $('#marker_item_draft_icon_anchor_x'),
+                $('#marker_item_draft_icon_anchor_y'),
+            ]);
         }
     });
 })(jQuery);

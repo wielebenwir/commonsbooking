@@ -17,7 +17,7 @@ class Location extends View {
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getTemplateData( WP_Post $post = null ): array {
+	public static function getTemplateData( ?WP_Post $post = null ): array {
 		if ( $post == null ) {
 			global $post;
 		}
@@ -139,7 +139,7 @@ class Location extends View {
 	 *
 	 * @return void
 	 */
-	public static function renderLocationMap( \CommonsBooking\Model\Location $post = null ) {
+	public static function renderLocationMap( \CommonsBooking\Model\Location $post ) {
 		// renders map for location-calendar-header template, only renders when set as option
 		if ( $post->getMeta( 'loc_showmap' ) ) {
 			$latitude  = $post->getMeta( 'geo_latitude' );

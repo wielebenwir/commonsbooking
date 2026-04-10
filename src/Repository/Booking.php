@@ -355,7 +355,7 @@ class Booking extends PostRepository {
 	 * @param array       $items
 	 * @param string|null $date Date-String in format YYYY-mm-dd
 	 * @param bool        $returnAsModel if true, returns booking model, if false return int array (defaults to false)
-	 * @param $minTimestamp
+	 * @param int|null    $minTimestamp
 	 * @param array       $postStatus
 	 *
 	 * @return int[]|\CommonsBooking\Model\Booking[]
@@ -366,7 +366,7 @@ class Booking extends PostRepository {
 		array $items = [],
 		?string $date = null,
 		bool $returnAsModel = false,
-		int $minTimestamp = null,
+		?int $minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		return \CommonsBooking\Repository\Timeframe::get(
@@ -513,7 +513,7 @@ class Booking extends PostRepository {
 	 * It however will also show bookings whose corresponding timeframe has been shortened,
 	 * and therefore do not have a valid timeframe anymore.
 	 *
-	 * @param int|null $startdate
+	 * @param int|null $minTimestamp
 	 * @param int[]    $items
 	 * @param int[]    $locations
 	 *
@@ -521,16 +521,15 @@ class Booking extends PostRepository {
 	 * @throws Exception
 	 */
 	public static function getOrphaned(
-		int $startdate = null,
+		?int $minTimestamp = null,
 		array $items = [],
 		array $locations = []
 	): ?array {
-		$startdate = $startdate ? $startdate : time(); // set startdate to now when no startdate is defined
+		$minTimestamp ??= time(); // default to now if not provided
 
-		$bookings = self::get( $locations, $items, null, true, $startdate, [ 'confirmed' ] );
+		$bookings = self::get( $locations, $items, null, true, $minTimestamp, [ 'confirmed' ] );
 
 		// check for bookings where location does not exist anymore
-
 		$bookings = array_filter(
 			$bookings,
 			function ( $booking ) {

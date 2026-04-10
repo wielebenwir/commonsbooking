@@ -3,7 +3,7 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Model\MessageRecipient;
-use PHPMailer\PHPMailer\PHPMailer;
+use CommonsBooking\PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use function commonsbooking_parse_template;
 
@@ -193,9 +193,9 @@ abstract class Message {
 		string $template_body,
 		string $template_subject,
 		string $from_headers,
-		string $bcc_adresses = null,
+		?string $bcc_adresses = null,
 		array $objects = [],
-		array $attachment = null
+		?array $attachment = null
 	): void {
 		// Setup email: Recipient
 		$this->to = sprintf( '%s <%s>', $recipientUser->getNiceName(), $recipientUser->getEmail() );

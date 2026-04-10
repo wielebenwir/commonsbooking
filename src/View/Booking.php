@@ -39,7 +39,7 @@ class Booking extends View {
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData( int $postsPerPage = 6, \WP_User $user = null ) {
+	public static function getBookingListData( int $postsPerPage = 6, ?\WP_User $user = null ) {
 
 		// sets selected user to current user when no specific user is passed
 		if ( $user == null ) {
@@ -242,13 +242,28 @@ class Booking extends View {
 					 * Default assoc array of row data and the booking object, which gets added to the booking list data result.
 					 *
 					 * NOTE: Upon using this filter hook, the schema of associative array keys needs to be adhered to in order to not break the booking list.
+					 * See $rowData in this function, for the valid keys.
 					 *
-					 * @since 2.7.3
-					 *
-					 * @param array                         $rowData assoc array of one row booking data
+					 * @param array|mixed|null              $rowData assoc array of one row booking data
 					 * @param \CommonsBooking\Model\Booking $booking booking model of one row booking data
+					 *
+					 *@since 2.7.3
 					 */
-					$bookingDataArray['data'][] = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
+					$filteredRowData = apply_filters( 'commonsbooking_booking_filter', $rowData, $booking );
+
+					// Only includes non-null array row data objects
+					if ( isset( $filteredRowData ) && is_array( $filteredRowData ) ) {
+						if ( WP_DEBUG ) {
+							// Logs absent keys, relative to the original row data keys, could cause problems
+							$absentKeys = array_diff_key( $filteredRowData, $rowData );
+							if ( count( $absentKeys ) > 0 ) {
+								error_log( 'After commonsbooking_booking_filter: Filtered rows have missing keys: ' . join( ',', array_keys( $absentKeys ) ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+							}
+						}
+					} else {
+						continue;
+					}
+					$bookingDataArray['data'][] = $filteredRowData;
 				}
 			}
 
@@ -488,10 +503,16 @@ class Booking extends View {
 	 * @throws Exception
 	 */
 	public static function getBookingListiCal( $user = null ) {
-		$eventTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
-		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
+		$userBookingTitle_unparsed            = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+		$userBookingDescription_unparsed      = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+		$otherUserBookingTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+		$otherUserBookingDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
-		$user = get_user_by( 'id', $user );
+		if ( $user == null ) {
+			$user = wp_get_current_user();
+		} else {
+			$user = get_user_by( 'id', $user );
+		}
 
 		if ( ! $user ) {
 			return false;
@@ -506,22 +527,27 @@ class Booking extends View {
 
 		$calendar = new iCalendar();
 
-		foreach ( $bookingList['data'] as $booking ) {
-			$booking_model = new \CommonsBooking\Model\Booking( $booking['postID'] );
-			if ( ! $booking_model->isConfirmed() ) {
+		foreach ( $bookingList['data'] as $bookingData ) {
+			$booking = \CommonsBooking\Repository\Booking::getPostById( $bookingData['postID'] );
+			if ( ! $booking->isConfirmed() ) {
 				continue;
 			}
+
+			$bookingUser      = $booking->getUserData();
+			$isOwnBooking     = $bookingUser->ID === $user->ID;
 			$template_objects = [
-				'booking'  => $booking_model,
-				'item'     => $booking_model->getItem(),
-				'location' => $booking_model->getLocation(),
-				'user'     => $booking_model->getUserData(),
+				'booking'  => $booking,
+				'item'     => $booking->getItem(),
+				'location' => $booking->getLocation(),
+				'user'     => $booking->getUserData(),
 			];
 
-			$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle_unparsed, $template_objects ) );
-			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription_unparsed, $template_objects ) ) );
+			$eventTitle_unparsed       = $isOwnBooking ? $userBookingTitle_unparsed : $otherUserBookingTitle_unparsed;
+			$eventDescription_unparsed = $isOwnBooking ? $userBookingDescription_unparsed : $otherUserBookingDescription_unparsed;
+			$eventTitle                = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle_unparsed, $template_objects ) );
+			$eventDescription          = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription_unparsed, $template_objects ) ) );
 
-			$calendar->addBookingEvent( $booking_model, $eventTitle, $eventDescription );
+			$calendar->addBookingEvent( $booking, $eventTitle, $eventDescription );
 		}
 
 		return $calendar->getCalendarData();

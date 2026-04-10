@@ -4,7 +4,9 @@
     background-color: var(--litepickerDayColorBg);
     text-align: center;
     text-decoration: none;
-    transition: color 0.3s, border 0.3s;
+    transition:
+        color 0.3s,
+        border 0.3s;
     border-color: var(--litePickerDayBorderColor);
     border-radius: 0px;
     box-sizing: border-box;
@@ -49,7 +51,7 @@
         //color: var(--litepickerDayColor);
         box-shadow: 0px 0px 0px 1px var(--litePickerDayTodayBorderColor) inset;
         &:hover {
-            box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover); 
+            box-shadow: inset 0 0 0 1px var(--litepickerDayColorHover);
         }
     }
 
@@ -88,7 +90,17 @@
 
 @mixin day-is-holiday {
     color: var(--litepickerDayIsHolidayColor);
-    background: linear-gradient(135deg, var(--litepickerDayIsHolidayColorBg) 11.25%, #ffff 11.25%, #ffff 38.75%, var(--litepickerDayIsHolidayColorBg) 38.75%, var(--litepickerDayIsHolidayColorBg) 61.25%, #ffff 61.25%, #ffff 88.75%, var(--litepickerDayIsHolidayColorBg) 88.75%);
+    background: linear-gradient(
+        135deg,
+        var(--litepickerDayIsHolidayColorBg) 11.25%,
+        #ffff 11.25%,
+        #ffff 38.75%,
+        var(--litepickerDayIsHolidayColorBg) 38.75%,
+        var(--litepickerDayIsHolidayColorBg) 61.25%,
+        #ffff 61.25%,
+        #ffff 88.75%,
+        var(--litepickerDayIsHolidayColorBg) 88.75%
+    );
     background-size: 5px 5px;
     &:hover {
         cursor: not-allowed;
@@ -97,18 +109,29 @@
 }
 
 @mixin day-is-partially-booked-start {
-    background: linear-gradient(to bottom right, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%,
-            var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+    background: linear-gradient(
+        to bottom right,
+        var(--litepickerDayColorBg) 0%,
+        var(--litepickerDayColorBg) 50%,
+        var(--litepickerDayIsBookedColorBg) 50%,
+        var(--litepickerDayIsBookedColorBg) 100%
+    );
 }
 
 @mixin day-is-partially-booked-end {
-    background: linear-gradient(to top left, var(--litepickerDayColorBg) 0%, var(--litepickerDayColorBg) 50%,
-            var(--litepickerDayIsBookedColorBg) 50%, var(--litepickerDayIsBookedColorBg) 100%);
+    background: linear-gradient(
+        to top left,
+        var(--litepickerDayColorBg) 0%,
+        var(--litepickerDayColorBg) 50%,
+        var(--litepickerDayIsBookedColorBg) 50%,
+        var(--litepickerDayIsBookedColorBg) 100%
+    );
 }
 
 @mixin day-is-partially-booked {
     color: var(--litepickerDayIsPartiallyLockedColor);
-    background: linear-gradient(to bottom right,
+    background: linear-gradient(
+        to bottom right,
         var(--litepickerDayIsPartiallyLockedColorBgOne) 0%,
         var(--litepickerDayIsPartiallyLockedColorBgOne) 50%,
         var(--litepickerDayIsPartiallyLockedColorBgTwo) 50%,
@@ -118,7 +141,8 @@
     &:hover {
         cursor: pointer;
         color: var(--litepickerDayIsPartiallyLockedColor);
-        background: linear-gradient(to bottom right,
+        background: linear-gradient(
+            to bottom right,
             lightgreen 0%,
             lightgreen 50%,
             lightgray 50%,

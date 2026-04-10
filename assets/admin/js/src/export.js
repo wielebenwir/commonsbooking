@@ -24,9 +24,10 @@
                 exportStartDate: exportTimerangeStart.val(),
                 exportEndDate: exportTimerangeEnd.val(),
             };
-            let progress = "0/0 bookings exported";
+            let progress = '0/0 bookings exported';
             let data = {
-                settings: settings, progress: progress
+                settings: settings,
+                progress: progress,
             };
 
             // Initialize visibility
@@ -34,31 +35,36 @@
             failedSpan.hide();
             inProgress.show();
 
-
             const runExport = (data) => {
-                $.post(cb_ajax_export_timeframes.ajax_url, {
-                    _ajax_nonce: cb_ajax_export_timeframes.nonce, action: "cb_export_timeframes", data: data
-                }, function (data) {
-                    if (data.success) {
-                        done.show();
-                        doneSpan.text(data.message);
-                        inProgress.hide();
-                        const blob = new Blob([data.csv]);
-                        const filename = data.filename;
-                        const link = document.createElement('a');
-                        link.href = URL.createObjectURL(blob);
-                        link.download = filename;
-                        link.click();
-                    } else if (data.error) {
-                        failed.show();
-                        failedSpan.text(data.message);
-                        inProgress.hide();
-                    } else {
-                        inProgressSpan.text(data.progress);
-                        //run the export until it's done
-                        runExport(data);
-                    }
-                });
+                $.post(
+                    cb_ajax_export_timeframes.ajax_url,
+                    {
+                        _ajax_nonce: cb_ajax_export_timeframes.nonce,
+                        action: 'cb_export_timeframes',
+                        data: data,
+                    },
+                    function (data) {
+                        if (data.success) {
+                            done.show();
+                            doneSpan.text(data.message);
+                            inProgress.hide();
+                            const blob = new Blob([data.csv]);
+                            const filename = data.filename;
+                            const link = document.createElement('a');
+                            link.href = URL.createObjectURL(blob);
+                            link.download = filename;
+                            link.click();
+                        } else if (data.error) {
+                            failed.show();
+                            failedSpan.text(data.message);
+                            inProgress.hide();
+                        } else {
+                            inProgressSpan.text(data.progress);
+                            //run the export until it's done
+                            runExport(data);
+                        }
+                    },
+                );
             };
             runExport(data);
         });

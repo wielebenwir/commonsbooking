@@ -7,6 +7,8 @@ use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\RestrictionMessage;
 use DateTime;
+use Psr\Cache\CacheException;
+use Psr\Cache\InvalidArgumentException;
 
 /**
  * Timeframe for restricting access to an item.
@@ -19,6 +21,7 @@ use DateTime;
  *       This should be kept in mind when processing/rendering information in user templates.
  */
 class Restriction extends CustomPost {
+
 
 	/**
 	 * Referred to in the frontend as "total breakdown".
@@ -123,7 +126,7 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns true if the restriction has an enddate.
 	 *
-	 * As far as I know, this is never used.
+	 * Used in timeframe-calendar.php template
 	 *
 	 * @return bool
 	 */
@@ -319,6 +322,54 @@ class Restriction extends CustomPost {
 	 */
 	public function getType() {
 		return $this->getMeta( self::META_TYPE );
+	}
+
+	/**
+	 * Will return a list of user IDs that may edit this restriction.
+	 *
+	 * This is only true, when a user is either administrator or is assigned the item or location as cb_manager.
+	 *
+	 * See https://github.com/wielebenwir/commonsbooking/discussions/1999
+	 *
+	 * TODO:
+	 *      Duplicated implementation in Model/Timeframe.php
+	 *
+	 * @return array
+	 */
+	public function getAdmins() {
+
+		$itemAdminIds     = [];
+		$locationAdminIds = [];
+
+		try {
+			$location = \CommonsBooking\Repository\Location::getPostById( $this->getLocationId() );
+		} catch ( InvalidArgumentException | CacheException $e ) {
+			$location = null;
+		}
+		if ( ! empty( $location ) ) {
+			$locationAdminIds = $location->getAdmins();
+		}
+		try {
+			$item = \CommonsBooking\Repository\Item::getPostById( $this->getItemId() );
+		} catch ( InvalidArgumentException | CacheException $e ) {
+			$item = null;
+		}
+		if ( ! empty( $item ) ) {
+			$itemAdminIds = $item->getAdmins();
+		}
+
+		// this will probably never occur, because getAdmins also returns the postAuthor, which every post naturally has.
+		if ( empty( $locationAdminIds ) && empty( $itemAdminIds ) ) {
+			return [];
+		}
+		if ( empty( $locationAdminIds ) ) {
+			return $itemAdminIds;
+		}
+		if ( empty( $itemAdminIds ) ) {
+			return $locationAdminIds;
+		}
+
+		return array_unique( array_merge( $locationAdminIds, $itemAdminIds ) );
 	}
 
 	/**

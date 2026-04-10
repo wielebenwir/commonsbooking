@@ -3,25 +3,24 @@
 namespace CommonsBooking\Tests\Service;
 
 use CommonsBooking\Service\Upgrade;
+use CommonsBooking\Tests\Wordpress\CustomPostType_AJAX_Test;
 
 /**
  * We need this as a separate testing class because we need to inherit the WP_Ajax_UnitTestCase
  */
-class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
+class Upgrade_AJAX_Test extends CustomPostType_AJAX_Test {
 
-	const ACTION                          = 'cb_run_upgrade';
+	protected $hooks                      = [
+		'cb_run_upgrade' => array(
+			\CommonsBooking\Service\Upgrade::class,
+			'runAJAXUpgradeTasks',
+		),
+	];
 	private static int $functionCounter   = 1;
 	private static bool $secondTaskHasRun = false;
 
 	public function testRunAJAXUpgradeTasks() {
-		try {
-			$this->_handleAjax( self::ACTION );
-		} catch ( \WPAjaxDieContinueException $e ) {
-			// We expect this exception to be thrown
-		}
-
-		$firstResponse = $this->_last_response;
-		$response      = json_decode( $firstResponse );
+		$response = $this->runHook();
 		$this->assertEquals( 2, self::$functionCounter );
 		$this->assertEquals( 2, $response->progress->page );
 		$this->assertEquals( 0, $response->progress->task );
@@ -34,14 +33,7 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 				'page' => $response->progress->page,
 			],
 		];
-		try {
-			$this->_handleAjax( self::ACTION );
-		} catch ( \WPAjaxDieContinueException $e ) {
-			// We expect this exception to be thrown
-		}
-		// trim the first response away, for some reason, the responses are just appended to each other
-		$secondResponse = substr( $this->_last_response, strlen( $firstResponse ) );
-		$response       = json_decode( $secondResponse );
+		$response      = $this->runHook();
 		$this->assertEquals( 3, self::$functionCounter );
 		$this->assertEquals( 3, $response->progress->page );
 		$this->assertEquals( 0, $response->progress->task );
@@ -54,13 +46,7 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 				'page' => $response->progress->page,
 			],
 		];
-		try {
-			$this->_handleAjax( self::ACTION );
-		} catch ( \WPAjaxDieContinueException $e ) {
-			// We expect this exception to be thrown
-		}
-		$thirdResponse = substr( $this->_last_response, strlen( $firstResponse ) + strlen( $secondResponse ) );
-		$response      = json_decode( $thirdResponse );
+		$response      = $this->runHook();
 		$this->assertFalse( $response->success );
 		$this->assertEquals( 4, self::$functionCounter );
 		$this->assertEquals( 1, $response->progress->task );
@@ -72,14 +58,7 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 				'page' => $response->progress->page,
 			],
 		];
-		try {
-			$this->_handleAjax( self::ACTION );
-		} catch ( \WPAjaxDieContinueException $e ) {
-			// We expect this exception to be thrown
-		}
-
-		$finalResponse = substr( $this->_last_response, strlen( $firstResponse ) + strlen( $secondResponse ) + strlen( $thirdResponse ) );
-		$response      = json_decode( $finalResponse );
+		$response      = $this->runHook();
 		$this->assertTrue( $response->success );
 		$this->assertEquals( COMMONSBOOKING_VERSION, get_option( Upgrade::VERSION_OPTION ) );
 	}
@@ -120,9 +99,7 @@ class Upgrade_AJAX_Test extends \WP_Ajax_UnitTestCase {
 	public function set_up() {
 		parent::set_up();
 		update_option( Upgrade::VERSION_OPTION, '2.5.1' );
-		add_action( 'wp_ajax_' . self::ACTION, array( \CommonsBooking\Service\Upgrade::class, 'runAJAXUpgradeTasks' ) );
-		$_POST['_wpnonce'] = wp_create_nonce( self::ACTION );
-		$_POST['data']     = [
+		$_POST['data'] = [
 			'task' => '0',
 			'page' => '1',
 		];

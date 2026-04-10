@@ -42,6 +42,7 @@ class Item extends BookablePost {
 	 *
 	 * TODO: This currently includes the author of the item as an admin.
 	 *       This does not make sense in all contexts and should be fixed.
+	 *       Duplicated implementation in Model/Location.php
 	 *
 	 * @return array|mixed|string[]
 	 */

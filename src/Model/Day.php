@@ -98,10 +98,12 @@ class Day {
 	}
 
 	/**
+	 * Gets the date in Y-m-d format.
+	 *
 	 * @return string local date
 	 */
 	public function getDate(): string {
-		return $this->date;
+		return date( 'Y-m-d', strtotime( $this->date ) );
 	}
 
 	/**
@@ -555,12 +557,13 @@ class Day {
 		} else {
 			$slots       = [];
 			$slotsPerDay = 24;
+			$timeFormat  = esc_html( get_option( 'time_format' ) );
 
 			// Init Slots
 			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
 				$slots[ $i ] = [
-					'timestart'      => gmdate( esc_html( get_option( 'time_format' ) ), $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timeend'        => gmdate( esc_html( get_option( 'time_format' ) ), ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timestart'      => gmdate( $timeFormat, $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timeend'        => gmdate( $timeFormat, ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
 					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
 					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i ),
 				];

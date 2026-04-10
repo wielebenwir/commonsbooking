@@ -1,11 +1,14 @@
 includes:
   - phpstan-baseline.neon
 parameters:
-  phpVersion: 70400
+  phpVersion:
+    min: 80134
+    max: 80503
   scanFiles:
     - commonsbooking.php
   scanDirectories:
     - vendor/cmb2/cmb2/includes
+    - vendor-prefixed
   paths:
     - commonsbooking.php
     - src/
@@ -15,9 +18,6 @@ parameters:
     - '#Constant (COMMONSBOOKING.*|WP_DEBUG_LOG) not found.#'
 #    - '#Instantiated class (CommonsBooking.*CB_Data) not found.#'
     - '#Function cb_object_to_array not found.#'
-    # As long as symfony exceptions do not extend from throwable
-    - '#Psr\\Cache\\InvalidArgumentException is not subtype of Throwable#'
-    - '#Psr\\Cache\\CacheException is not subtype of Throwable#'
 # Maybe this will be useful in the next phpstan level (because we have a very unusual way of dealing with psr/cache exceptions, bc we throw them all the way up, but the seem to be unchecked exceptions)
 #  exceptions:
 #    uncheckedExceptionRegexes:

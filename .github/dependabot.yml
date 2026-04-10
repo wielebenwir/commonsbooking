@@ -8,6 +8,7 @@ updates:
 
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
+    open-pull-requests-limit: 10
     directory: "/"
     schedule:
       interval: "weekly"

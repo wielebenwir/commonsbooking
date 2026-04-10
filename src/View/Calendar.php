@@ -110,27 +110,37 @@ class Calendar {
 			)
 		);
 
+		// filter out items not in our categories
+		if ( $itemCategory ) {
+			$items = array_filter( $items, fn( $item ) => has_term( $itemCategory, Item::getTaxonomyName(), $item->ID ) );
+		}
+
+		$itemIDs = array_map( fn( $item ) => $item->ID, $items );
+
+		/* @var Timeframe[] $allTimeframes */
+		$allTimeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
+			strtotime( $today ),
+			strtotime( $last_day ),
+			[],
+			$itemIDs,
+			[ Timeframe::BOOKABLE_ID ],
+			true
+		);
+
+		// group by item ID
+		$timeframeByItemID = [];
+		foreach ( $allTimeframes as $timeframe ) {
+			foreach ( $timeframe->getItemIDs() as $itemID ) {
+				$timeframeByItemID[ $itemID ][] = $timeframe;
+			}
+		}
+
 		$itemRowsHTML = '';
 
 		foreach ( $items as $item ) {
-			// Check for category term
-			if ( $itemCategory ) {
-				if ( ! has_term( $itemCategory, Item::getTaxonomyName(), $item->ID ) ) {
-					continue;
-				}
-			}
-
 			$rowHtml = ' ';
 
-			// Get timeframes for item
-			$timeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
-				strtotime( $today ),
-				strtotime( $last_day ),
-				[],
-				[ $item->ID ],
-				[ Timeframe::BOOKABLE_ID ],
-				true
-			);
+			$timeframes = $timeframeByItemID[ $item->ID ] ?? [];
 
 			if ( $timeframes ) {
 				// Collect unique locations from timeframes
@@ -510,6 +520,8 @@ class Calendar {
 
 	/**
 	 * Returns JSON-Data for Litepicker calendar.
+	 *
+	 * Uses cache which expires at midnight on a daily basis.
 	 *
 	 * @param Day   $startDate
 	 * @param Day   $endDate

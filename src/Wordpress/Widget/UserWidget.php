@@ -109,8 +109,8 @@ class UserWidget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( '', 'commonsbooking' );
-		$text  = ! empty( $instance['text'] ) ? $instance['text'] : esc_html__( '', 'commonsbooking' );
+		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
+		$text  = ! empty( $instance['text'] ) ? $instance['text'] : '';
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php echo esc_html__( 'Title:', 'commonsbooking' ); ?></label>

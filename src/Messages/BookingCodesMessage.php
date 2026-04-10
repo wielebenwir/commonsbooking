@@ -31,12 +31,12 @@ class BookingCodesMessage extends Message {
 	private ?array $locationAdmins = null; // TODO remove nullable, never is set to null anyway
 
 	/**
-	 * @param int      $postId       ID or Post of timeframe
-	 * @param string   $action    Message action
-	 * @param int|null $tsFrom  Timestamp of first Booking Code
-	 * @param int|null $tsTo    Timestamp of last Booking Code
+	 * @param int    $postId       ID or Post of timeframe
+	 * @param string $action    Message action
+	 * @param int    $tsFrom  Timestamp of first Booking Code
+	 * @param int    $tsTo    Timestamp of last Booking Code
 	 */
-	public function __construct( $postId, string $action, int $tsFrom = null, int $tsTo = null ) {
+	public function __construct( int $postId, string $action, int $tsFrom, int $tsTo ) {
 		parent::__construct( $postId, $action );
 		$this->tsFrom = $tsFrom;
 		$this->tsTo   = $tsTo;
@@ -219,6 +219,7 @@ class BookingCodesMessage extends Message {
 			$title = apply_filters( 'commonsbooking_emailcodes_icalevent_title', $unfilteredTitle, $bookingCode );
 
 			$unfilteredDesc = sprintf(
+				// translators: %1$s item name, %2$s booking code value
 				__( 'booking code for item "%1$s": %2$s', 'commonsbooking' ),
 				$bookingCode->getItemName(),
 				$bookingCode->getCode()
