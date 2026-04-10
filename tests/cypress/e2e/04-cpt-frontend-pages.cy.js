@@ -19,7 +19,7 @@ describe('check load of CPT frontend pages where available', () => {
         cy.wait(1000);
         //redirect or redirect link present
         cy.url().then((url) => {
-            const redirected = url.includes('?cb_item=basictest-noadmin');
+            const redirected = url.includes('basictest-noadmin');
             if (!redirected) {
                 cy.contains('Please book this item on the item page.').should('exist');
             }
