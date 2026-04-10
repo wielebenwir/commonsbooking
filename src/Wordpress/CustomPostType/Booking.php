@@ -820,7 +820,7 @@ class Booking extends Timeframe {
 				'id'               => 'booking_user',
 				'type'             => 'user_ajax_search',
 				'multiple-items'   => true,
-				'default'          => array( self::class, 'getFrontendBookingUser' ),
+				'default_cb'          => array( self::class, 'getFrontendBookingUser' ),
 				'desc'             => commonsbooking_sanitizeHTML(
 					__(
 						'Here you must select the user for whom the booking is made.<br>
