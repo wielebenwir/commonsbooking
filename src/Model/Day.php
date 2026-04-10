@@ -18,7 +18,7 @@ use WP_Post;
 class Day {
 
 	/**
-	 * @var string
+	 * @var string $date local date
 	 */
 	protected $date;
 
@@ -45,7 +45,7 @@ class Day {
 	/**
 	 * Day constructor.
 	 *
-	 * @param string $date
+	 * @param string $date local time date
 	 * @param array  $locations
 	 * @param array  $items
 	 * @param array  $types
@@ -75,6 +75,8 @@ class Day {
 	}
 
 	/**
+	 * Returns day of week as string from local date
+	 *
 	 * @return false|string
 	 */
 	public function getDayOfWeek() {
@@ -82,17 +84,23 @@ class Day {
 	}
 
 	/**
-	 * @return DateTime
-	 * @throws Exception
+	 * Returns utc
+	 *
+	 * @return int
+	 * @throws \DateMalformedStringException
 	 */
-	public function getDateObject(): DateTime {
-		return Wordpress::getUTCDateTime( $this->getDate() );
+	public function getStartTimestamp(): int {
+		$dt = new DateTime( $this->getDate() ); // instantiated as local time
+		$dt->modify( 'midnight' );
+		$dt->setTimezone( new \DateTimeZone( 'UTC' ) );
+
+		return $dt->getTimestamp();
 	}
 
 	/**
 	 * Gets the date in Y-m-d format.
 	 *
-	 * @return string
+	 * @return string local date
 	 */
 	public function getDate(): string {
 		return date( 'Y-m-d', strtotime( $this->date ) );
@@ -132,7 +140,7 @@ class Day {
 				$this->locations,
 				$this->items,
 				$this->types,
-				$this->getDate(),
+				$this->getDate(), // TODO this needs to be in non-local date
 				true,
 				null,
 				[ 'publish', 'confirmed' ]
@@ -318,20 +326,22 @@ class Day {
 	 * @throws Exception
 	 */
 	public function isInTimeframe( \CommonsBooking\Model\Timeframe $timeframe ): bool {
-
+		// TODO test this method for utc and date ...
 		if ( $timeframe->getRepetition() ) {
 			switch ( $timeframe->getRepetition() ) {
 				// Weekly Rep
 				case 'w':
 					$dayOfWeek         = intval( $this->getDateObject()->format( 'w' ) );
-					$timeframeWeekdays = get_post_meta( $timeframe->ID, 'weekdays', true );
+					$timeframeWeekdays = array_map( 'intval', get_post_meta( $timeframe->ID, 'weekdays', true ) );
 
 					// Because of different day of week calculation we need to recalculate
-					if ( $dayOfWeek == 0 ) {
+					if ( $dayOfWeek === 0 ) {
 						$dayOfWeek = 7;
 					}
 
-					if ( is_array( $timeframeWeekdays ) && in_array( $dayOfWeek, $timeframeWeekdays ) ) {
+					$timeframeWeekdaysString = join( ', ', $timeframeWeekdays );
+					echo "Weekly rep with $timeframeWeekdaysString weekday(s) and the $dayOfWeek day of week\n";
+					if ( is_array( $timeframeWeekdays ) && in_array( $dayOfWeek, $timeframeWeekdays, true ) ) {
 						return true;
 					} else {
 						return false;
@@ -469,16 +479,10 @@ class Day {
 		}
 	}
 
-	public function getStartTimestamp(): int {
-		$dt = new DateTime( $this->getDate() );
-		$dt->modify( 'midnight' );
-
-		return $dt->getTimestamp();
-	}
-
 	public function getEndTimestamp(): int {
 		$dt = new DateTime( $this->getDate() );
 		$dt->modify( '23:59:59' );
+		$dt->setTimezone( new \DateTimeZone( 'UTC' ) );
 
 		return $dt->getTimestamp();
 	}
@@ -558,8 +562,8 @@ class Day {
 			// Init Slots
 			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
 				$slots[ $i ] = [
-					'timestart'      => date( $timeFormat, $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timeend'        => date( $timeFormat, ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timestart'      => gmdate( $timeFormat, $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
+					'timeend'        => gmdate( $timeFormat, ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
 					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
 					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i ),
 				];
@@ -601,5 +605,13 @@ class Day {
 	 */
 	protected function getSlotTimestampEnd( $slotsPerDay, $slotNr ) {
 		return strtotime( $this->getDate() ) + ( ( $slotNr + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ) - 1;
+	}
+
+	/**
+	 * @return DateTime
+	 * @throws Exception
+	 */
+	public function getDateObject(): DateTime {
+		return Wordpress::getUTCDateTime( $this->getDate() );
 	}
 }

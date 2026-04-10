@@ -103,10 +103,10 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( self::META_END );
-		$endDate       = Wordpress::getUTCDateTime();
+		$endDate       = new DateTime();
 
 		if ( $endTimeString ) {
-			$endTime = Wordpress::getUTCDateTime();
+			$endTime = new DateTime();
 			$endTime->setTimestamp( (int) $endTimeString );
 			$endDate->setTime( (int) $endTime->format( 'H' ), (int) $endTime->format( 'i' ) );
 		} else {
@@ -195,7 +195,7 @@ class Restriction extends CustomPost {
 	 * @return string if META_START is not null.
 	 */
 	public function getFormattedStartDateTime() {
-		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() );
+		return Helper::FormattedDateTime( $this->getStartTimeDateTime()->getTimestamp() + $this->getStartTimeDateTime()->getOffset() );
 	}
 
 	/**
@@ -206,7 +206,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::META_START );
-		$startDate       = Wordpress::getUTCDateTime();
+		$startDate       = new DateTime( 'now' );
 		$startDate->setTimestamp( (int) $startDateString );
 
 		return $startDate;
@@ -218,7 +218,7 @@ class Restriction extends CustomPost {
 	 * @return string if META_END is not null.
 	 */
 	public function getFormattedEndDateTime() {
-		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() );
+		return Helper::FormattedDateTime( $this->getEndDateDateTime()->getTimestamp() + $this->getEndDateDateTime()->getOffset() );
 	}
 
 	/**
@@ -229,7 +229,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::META_END ) );
-		$endDate       = Wordpress::getUTCDateTime();
+		$endDate       = new DateTime( 'now' );
 		$endDate->setTimestamp( $endDateString );
 
 		return $endDate;

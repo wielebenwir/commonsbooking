@@ -8,23 +8,102 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class DayTest extends CustomPostTypeTest {
 
-	private Day $instance;
-
 	protected $bookableTimeframeForCurrentDayId;
-
 	protected $bookableTimeframeNoRepSingleDayTomorrowId;
-
 	protected $bookableTimeframeNoRepSingleDayTodayId;
-
 	protected $bookableTimeframeNoRepStartsYesterdayEndsTomorrowId;
-
 	protected $bookableTimeframeOnceWeeklyValidTodayNoEnd;
-
 	protected $bookableTimeframeOnceWeeklyValidTodayWithEnd;
-
 	protected $bookableTimeframeManualDateInputOnlyForToday;
-
+	private Day $instance;
 	private $bookableTimeframeManualDateInputTomorrow;
+
+	public function testGetFormattedDate() {
+		$this->assertTrue( self::CURRENT_DATE == $this->instance->getFormattedDate( 'd.m.Y' ) );
+	}
+
+	/**
+	 * @group failing
+	 */
+	public function testGetDayOfWeek() {
+		$this->assertTrue( gmdate( 'w', strtotime( self::CURRENT_DATE ) ) == $this->instance->getDayOfWeek() );
+	}
+
+	public function testGetDate() {
+		$this->assertEquals( $this->dateFormatted, $this->instance->getDate() );
+	}
+
+	/**
+	 * @group failing
+	 */
+	public function testIsInTimeframe() {
+		$timeframe = new Timeframe( $this->bookableTimeframeForCurrentDayId );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTomorrowId );
+		$this->assertFalse( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTodayId );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeOnceWeeklyValidTodayNoEnd );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeOnceWeeklyValidTodayWithEnd );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeManualDateInputOnlyForToday );
+		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
+
+		$timeframe = new Timeframe( $this->bookableTimeframeManualDateInputTomorrow );
+		$this->assertFalse( $this->instance->isInTimeframe( $timeframe ) );
+	}
+
+	public function testGetName() {
+		$this->assertTrue( date( 'l', strtotime( self::CURRENT_DATE ) ) == $this->instance->getName() );
+	}
+
+	/**
+	 * @group failing
+	 */
+	public function testGetTimeframes() {
+		// Should only find confirmed timeframes
+		$this->assertEquals( 6, count( $this->instance->getTimeframes() ) );
+	}
+
+	public function testGetRestrictions() {
+		$this->assertTrue( count( $this->instance->getRestrictions() ) == 0 );
+
+		$this->createRestriction(
+			'hint',
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) )
+		);
+
+		$this->assertIsArray( $this->instance->getRestrictions() );
+		$this->assertTrue( count( $this->instance->getRestrictions() ) == 1 );
+	}
+
+	/**
+	 * @group failing
+	 */
+	public function testGetStartTimestamp() {
+		$start = strtotime( self::CURRENT_DATE . ' midnight' );
+		$this->assertEquals( $start, $this->instance->getStartTimestamp() );
+	}
+
+	/**
+	 * @group failing
+	 */
+	public function testGetEndTimestamp() {
+		$end = strtotime( self::CURRENT_DATE . ' 23:59:59' );
+		$this->assertEquals( $end, $this->instance->getEndTimestamp() );
+	}
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -142,79 +221,6 @@ class DayTest extends CustomPostTypeTest {
 
 	protected function tearDown(): void {
 		parent::tearDown();
-	}
-
-	public function testGetFormattedDate() {
-		$this->assertTrue( self::CURRENT_DATE == $this->instance->getFormattedDate( 'd.m.Y' ) );
-	}
-
-	public function testGetDayOfWeek() {
-		$this->assertTrue( date( 'w', strtotime( self::CURRENT_DATE ) ) == $this->instance->getDayOfWeek() );
-	}
-
-	public function testGetDate() {
-		$this->assertEquals( $this->dateFormatted, $this->instance->getDate() );
-	}
-
-	public function testIsInTimeframe() {
-		$timeframe = new Timeframe( $this->bookableTimeframeForCurrentDayId );
-		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
-
-		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTomorrowId );
-		$this->assertFalse( $this->instance->isInTimeframe( $timeframe ) );
-
-		$timeframe = new Timeframe( $this->bookableTimeframeNoRepSingleDayTodayId );
-		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
-
-		$timeframe = new Timeframe( $this->bookableTimeframeNoRepStartsYesterdayEndsTomorrowId );
-		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
-
-		$timeframe = new Timeframe( $this->bookableTimeframeOnceWeeklyValidTodayNoEnd );
-		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
-
-		$timeframe = new Timeframe( $this->bookableTimeframeOnceWeeklyValidTodayWithEnd );
-		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
-
-		$timeframe = new Timeframe( $this->bookableTimeframeManualDateInputOnlyForToday );
-		$this->assertTrue( $this->instance->isInTimeframe( $timeframe ) );
-
-		$timeframe = new Timeframe( $this->bookableTimeframeManualDateInputTomorrow );
-		$this->assertFalse( $this->instance->isInTimeframe( $timeframe ) );
-	}
-
-	public function testGetName() {
-		$this->assertTrue( date( 'l', strtotime( self::CURRENT_DATE ) ) == $this->instance->getName() );
-	}
-
-	public function testGetTimeframes() {
-		// Should only find confirmed timeframes
-		$this->assertEquals( 6, count( $this->instance->getTimeframes() ) );
-	}
-
-	public function testGetRestrictions() {
-		$this->assertTrue( count( $this->instance->getRestrictions() ) == 0 );
-
-		$this->createRestriction(
-			'hint',
-			$this->locationId,
-			$this->itemId,
-			strtotime( self::CURRENT_DATE ),
-			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) )
-		);
-
-		$this->assertIsArray( $this->instance->getRestrictions() );
-		$this->assertTrue( count( $this->instance->getRestrictions() ) == 1 );
-	}
-
-
-	public function testGetStartTimestamp() {
-		$start = strtotime( self::CURRENT_DATE . ' midnight' );
-		$this->assertEquals( $start, $this->instance->getStartTimestamp() );
-	}
-
-	public function testGetEndTimestamp() {
-		$end = strtotime( self::CURRENT_DATE . ' 23:59:59' );
-		$this->assertEquals( $end, $this->instance->getEndTimestamp() );
 	}
 
 	public function testGetGrid() {

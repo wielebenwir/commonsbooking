@@ -11,5 +11,11 @@ class BaseTestCase extends TestCase {
 
 		// Default case: Tests should work offline
 		GeoHelperTest::setUpGeoHelperMock( $this );
+
+		date_default_timezone_set( 'Europe/Berlin' );
+	}
+
+	protected function tearDown(): void {
+		date_default_timezone_set( 'UTC' );
 	}
 }

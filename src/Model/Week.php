@@ -58,7 +58,7 @@ class Week {
 	 */
 	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
 		if ( $year === null ) {
-			$year = date( 'Y' );
+			$year = gmdate( 'Y' );
 		}
 		$this->year      = $year;
 		$this->dayOfYear = $dayOfYear;
@@ -95,7 +95,9 @@ class Week {
 			$yearTimestamp = $this->getYearTimestamp();
 			$dayOfYear     = $this->dayOfYear;
 			$timestamp     = strtotime( "+ $dayOfYear days", $yearTimestamp );
-			$dto           = Wordpress::getUTCDateTimeByTimestamp( $timestamp );
+			$dto           = Wordpress::getUTCDateTimeByUnixTimestamp( $timestamp );
+
+			$dto->setTimezone( new \DateTimeZone( date_default_timezone_get() ) );
 
 			$days = array();
 			for ( $i = 0; $i < 7; $i++ ) {
@@ -142,9 +144,16 @@ class Week {
 	}
 
 	/**
-	 * @return false|int
+	 * @return false|int utc timestamp
 	 */
 	private function getYearTimestamp() {
 		return mktime( 0, 0, 0, 1, 1, $this->year );
+	}
+
+	public function __toString(): string {
+		$start = ( new \DateTime( 'now', new \DateTimeZone( 'UTC' ) ) )->setTimestamp( $this->getStartTimestamp() );
+		$end   = ( new \DateTime( 'now', new \DateTimeZone( 'UTC' ) ) )->setTimestamp( $this->getEndTimestamp() );
+
+		return "Week {$this->year} ({$this->dayOfYear}, {$start->format( 'Y-m-d' )}, {$end->format( 'Y-m-d' )})' )}";
 	}
 }
