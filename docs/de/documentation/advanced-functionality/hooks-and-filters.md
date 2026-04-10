@@ -95,6 +95,7 @@ zurückgibt.
   * commonsbooking_mail_subject
   * commonsbooking_mail_body
   * commonsbooking_mail_attachment
+  * commonsbooking_send_booking_message_to_locations_enabled
   * commonsbooking_disableCache
 
 Es gibt auch Filter Hooks, mit denen du zusätzliche Benutzerrollen, die
@@ -182,4 +183,13 @@ Nutzungs-Beispiel:
 ```php
 // Sets the mobile calendar view to display 2 month
 add_filter('commonsbooking_mobile_calendar_month_count', fn(): int => 2);
+```
+
+### Filter `commonsbooking_send_booking_message_to_locations_enabled`
+
+Mit diesem Filter kannst du BCC-Empfaenger von Stations-E-Mails fuer Buchungs-Mails aktivieren oder deaktivieren.
+
+```php
+// Deaktiviert Stations-BCC fuer alle Buchungs-Mails.
+add_filter( 'commonsbooking_send_booking_message_to_locations_enabled', '__return_false' );
 ```
