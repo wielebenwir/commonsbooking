@@ -249,8 +249,8 @@ class Timeframe extends CustomPost {
 		$format = self::getDateFormat();
 		$today  = strtotime( 'now' );
 
-		$startDateFormatted = date_i18n( $format, $startDate );
-		$endDateFormatted   = date_i18n( $format, $endDate );
+		$startDateFormatted = wp_date( $format, $startDate );
+		$endDateFormatted   = wp_date( $format, $endDate );
 
 		$label           = commonsbooking_sanitizeHTML( __( 'Available here', 'commonsbooking' ) );
 		$availableString = '';
@@ -1062,7 +1062,7 @@ class Timeframe extends CustomPost {
 		if ( $this->isFullDay() ) {
 			return Wordpress::getUTCDateTimeByTimestamp( $startDateString );
 		}
-		return Wordpress::convertTimestampToUTCDatetime( intval( $startDateString ) );
+		return intval( $startDateString );
 	}
 
 	/**
@@ -1140,7 +1140,7 @@ class Timeframe extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getEndTime();
-		$endDate       = Wordpress::getUTCDateTime();
+		$endDate       = Wordpress::getDateTime();
 
 		if ( $endTimeString ) {
 			$endTime = Wordpress::getUTCDateTimeByTimestamp( strtotime( $endTimeString ) );

@@ -537,8 +537,8 @@ class TimeframeExport {
 	 */
 	protected static function getPeriod( $start, $end ) {
 		// Timerange
-		$begin = Wordpress::getUTCDateTime( $start );
-		$end   = Wordpress::getUTCDateTime( $end );
+		$begin = Wordpress::getDateTime( $start );
+		$end   = Wordpress::getDateTime( $end );
 
 		$interval = DateInterval::createFromDateString( '1 day' );
 
