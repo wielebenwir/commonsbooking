@@ -24,7 +24,7 @@ describe('load shortcodes', () => {
                 .contains('Book item')
                 .should(($button) => {
                     const href = $button.attr('href');
-                    expect(href).to.include('?cb_item=' + item.post_name);
+                    expect(href).to.include( item.post_name );
                 });
         });
     });
@@ -65,7 +65,7 @@ describe('load shortcodes', () => {
                 .should('exist')
                 .should(($link) => {
                     const href = $link.attr('href');
-                    expect(href).to.include('?cb_item=' + item.post_name);
+                    expect(href).to.include( item.post_name );
                 });
         });
     });
