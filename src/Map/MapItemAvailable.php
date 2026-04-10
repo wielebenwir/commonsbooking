@@ -57,9 +57,9 @@ class MapItemAvailable {
 		$endDay   = new Day( $date_end );
 
 		$filter_period = new DatePeriod(
-			Wordpress::getUTCDateTime( $date_start ),
+			Wordpress::getDateTime( $date_start ),
 			new DateInterval( 'P1D' ),
-			Wordpress::getUTCDateTime( $date_end . ' +1 day' )
+			Wordpress::getDateTime( $date_end . ' +1 day' )
 		);
 
 		foreach ( $locations as $location_id => &$location ) {

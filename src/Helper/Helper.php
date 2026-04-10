@@ -37,7 +37,7 @@ class Helper {
 
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
-		return date_i18n( $date_format, $timestamp );
+		return wp_date( $date_format, $timestamp );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Helper {
 
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
-		return date_i18n( $time_format, $timestamp );
+		return wp_date( $time_format, $timestamp );
 	}
 
 	/**
