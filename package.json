@@ -29,7 +29,7 @@
 		"medium-zoom": "^1.1.0",
 		"sass": "^1.97.3",
 		"vitepress": "^1.6.4",
-		"prettier": "^3.3.3"
+		"prettier": "^3.8.2"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
