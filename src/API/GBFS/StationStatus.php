@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\API\GBFS;
 
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Location;
@@ -34,13 +35,13 @@ class StationStatus extends BaseRoute {
 	 * @throws \Exception
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
-		$preparedItem                      = new stdClass();
-		$preparedItem->station_id          = $item->ID . '';
-		$preparedItem->num_bikes_available = $this->getItemCountAtLocation( $item->ID );
-		$preparedItem->is_installed        = true;
-		$preparedItem->is_renting          = true;
-		$preparedItem->is_returning        = true;
-		$preparedItem->last_reported       = time();
+		$preparedItem                         = new stdClass();
+		$preparedItem->station_id             = $item->ID . '';
+		$preparedItem->num_vehicles_available = $this->getItemCountAtLocation( $item->ID );
+		$preparedItem->is_installed           = true;
+		$preparedItem->is_renting             = true;
+		$preparedItem->is_returning           = true;
+		$preparedItem->last_reported          = date( 'c' ); // ISO-8601 timestamp
 
 		return new WP_REST_Response( $preparedItem );
 	}
@@ -59,12 +60,12 @@ class StationStatus extends BaseRoute {
 	 */
 	private function getItemCountAtLocation( $locationId ): int {
 		$items            = Item::getByLocation( $locationId, true );
-		$nowDT            = new \DateTime();
+		$nowDT            = Wordpress::getUTCDateTimeByTimestamp( current_time( 'timestamp' ) );
 		$availableCounter = 0;
 		foreach ( $items as $item ) {
 			// we have to make our calendar span at least one day, otherwise we get no results
 			$itemCalendar      = new Calendar(
-				new Day( date( 'Y-m-d', time() ) ),
+				new Day( date( 'Y-m-d', strtotime( '-1 day' ) ) ),
 				new Day( date( 'Y-m-d', strtotime( '+1 day' ) ) ),
 				[ $locationId ],
 				[ $item->ID ]

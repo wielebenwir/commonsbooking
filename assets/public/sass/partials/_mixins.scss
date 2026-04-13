@@ -3,73 +3,73 @@
  */
 
 @mixin transition($args...) {
-  -webkit-transition: $args;
-  -moz-transition: $args;
-  -ms-transition: $args;
-  -o-transition: $args;
-  transition: $args;
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -ms-transition: $args;
+    -o-transition: $args;
+    transition: $args;
 }
 
 @mixin rounded($radius) {
-  -webkit-border-radius: var(--commonsbooking-radius);
-  -moz-border-radius: var(--commonsbooking-radius);
-  border-radius: var(--commonsbooking-radius);
+    -webkit-border-radius: var(--commonsbooking-radius);
+    -moz-border-radius: var(--commonsbooking-radius);
+    border-radius: var(--commonsbooking-radius);
 }
 
-@mixin border-radius ($radius) {
-  -webkit-border-radius: var(--commonsbooking-radius);
-  -moz-border-radius:    var(--commonsbooking-radius);
-  border-radius:         var(--commonsbooking-radius);
+@mixin border-radius($radius) {
+    -webkit-border-radius: var(--commonsbooking-radius);
+    -moz-border-radius: var(--commonsbooking-radius);
+    border-radius: var(--commonsbooking-radius);
 
-  -moz-background-clip:    padding;
-  -webkit-background-clip: padding-box;
-  background-clip:         padding-box;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
 }
-@mixin border-radiuses ($topright: 0, $bottomright: 0, $bottomleft: 0, $topleft: 0) {
-  -webkit-border-top-right-radius:    $topright;
-  -webkit-border-bottom-right-radius: $bottomright;
-  -webkit-border-bottom-left-radius:  $bottomleft;
-  -webkit-border-top-left-radius:     $topleft;
+@mixin border-radiuses($topright: 0, $bottomright: 0, $bottomleft: 0, $topleft: 0) {
+    -webkit-border-top-right-radius: $topright;
+    -webkit-border-bottom-right-radius: $bottomright;
+    -webkit-border-bottom-left-radius: $bottomleft;
+    -webkit-border-top-left-radius: $topleft;
 
-  -moz-border-radius-topright:        $topright;
-  -moz-border-radius-bottomright:     $bottomright;
-  -moz-border-radius-bottomleft:      $bottomleft;
-  -moz-border-radius-topleft:         $topleft;
+    -moz-border-radius-topright: $topright;
+    -moz-border-radius-bottomright: $bottomright;
+    -moz-border-radius-bottomleft: $bottomleft;
+    -moz-border-radius-topleft: $topleft;
 
-  border-top-right-radius:            $topright;
-  border-bottom-right-radius:         $bottomright;
-  border-bottom-left-radius:          $bottomleft;
-  border-top-left-radius:             $topleft;
+    border-top-right-radius: $topright;
+    border-bottom-right-radius: $bottomright;
+    border-bottom-left-radius: $bottomleft;
+    border-top-left-radius: $topleft;
 
-  -moz-background-clip:    padding;
-  -webkit-background-clip: padding-box;
-  background-clip:         padding-box;
-}
-
-@mixin selection-end-round( $radius ) {
-  -webkit-border-top-right-radius:    var(--commonsbooking-radius);
-  -webkit-border-bottom-right-radius: var(--commonsbooking-radius);
-
-  -moz-border-radius-topright:        var(--commonsbooking-radius);
-  -moz-border-radius-bottomright:     var(--commonsbooking-radius);
-
-  border-top-right-radius:            var(--commonsbooking-radius);
-  border-bottom-right-radius:         var(--commonsbooking-radius);
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
 }
 
-@mixin selection-start-round( $radius ) {
-  -webkit-border-top-left-radius:    var(--commonsbooking-radius);
-  -webkit-border-bottom-left-radius: var(--commonsbooking-radius);
+@mixin selection-end-round($radius) {
+    -webkit-border-top-right-radius: var(--commonsbooking-radius);
+    -webkit-border-bottom-right-radius: var(--commonsbooking-radius);
 
-  -moz-border-radius-topleft:        var(--commonsbooking-radius);
-  -moz-border-radius-bottomleft:     var(--commonsbooking-radius);
+    -moz-border-radius-topright: var(--commonsbooking-radius);
+    -moz-border-radius-bottomright: var(--commonsbooking-radius);
 
-  border-top-left-radius:            var(--commonsbooking-radius);
-  border-bottom-left-radius:         var(--commonsbooking-radius);
+    border-top-right-radius: var(--commonsbooking-radius);
+    border-bottom-right-radius: var(--commonsbooking-radius);
 }
 
-@mixin box-shadow( $horiz : .5em , $vert : .5em , $blur : 0px , $spread : 0px , $color : #000000 ){
-  -webkit-box-shadow: $horiz $vert $blur $spread $color;
-  -moz-box-shadow: $horiz $vert $blur $spread $color;
-  box-shadow: $horiz $vert $blur $spread $color;
+@mixin selection-start-round($radius) {
+    -webkit-border-top-left-radius: var(--commonsbooking-radius);
+    -webkit-border-bottom-left-radius: var(--commonsbooking-radius);
+
+    -moz-border-radius-topleft: var(--commonsbooking-radius);
+    -moz-border-radius-bottomleft: var(--commonsbooking-radius);
+
+    border-top-left-radius: var(--commonsbooking-radius);
+    border-bottom-left-radius: var(--commonsbooking-radius);
+}
+
+@mixin box-shadow($horiz: 0.5em, $vert: 0.5em, $blur: 0px, $spread: 0px, $color: #000000) {
+    -webkit-box-shadow: $horiz $vert $blur $spread $color;
+    -moz-box-shadow: $horiz $vert $blur $spread $color;
+    box-shadow: $horiz $vert $blur $spread $color;
 }

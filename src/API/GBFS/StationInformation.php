@@ -36,7 +36,12 @@ class StationInformation extends BaseRoute {
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem                   = new stdClass();
 		$preparedItem->station_id       = $item->ID . '';
-		$preparedItem->name             = $item->post_title;
+		$preparedItem->name             = [
+			(object) [
+				'text' => $item->post_title,
+				'language' => get_bloginfo( 'language' ),
+			],
+		];
 		$preparedItem->address          = $item->formattedAddressOneLine();
 		$preparedItem->rental_uris      = new stdClass();
 		$preparedItem->rental_uris->web = get_permalink( $item->ID );
@@ -81,6 +86,8 @@ class StationInformation extends BaseRoute {
 			} else {
 				throw new Exception( 'Location address missing. (ID: ' . $item->ID . ')' );
 			}
+		} else {
+			throw new Exception( 'Location address missing. (ID: ' . $item->ID . ')' );
 		}
 
 		return new WP_REST_Response( $preparedItem );

@@ -254,7 +254,7 @@ trait Cache {
 		try {
 			// Set a default expiration to make sure, that we get rid of stale items, if there are some
 			// too much space
-			$expiration = 604800;
+			$expiration = 604800; // 7 days
 
 			$tags = array_map( 'strval', $tags );
 			$tags = array_filter( $tags );
@@ -263,8 +263,10 @@ trait Cache {
 				$tags = [ 'misc' ];
 			}
 
-			// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
-			if ( $expirationString == 'midnight' ) {
+			if ( is_numeric( $expirationString ) ) {
+				$expiration = intval( $expirationString );
+			} elseif ( $expirationString === 'midnight' ) {
+				// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
 				$datetime   = current_time( 'timestamp' );
 				$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
 			}

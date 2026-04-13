@@ -11,83 +11,81 @@
 * @copyright 2020 wielebenwir
 */
 
-@use "../../../global/sass/partials/extends";
-@use "layouts";
+@use '../../../global/sass/partials/extends';
+@use 'layouts';
 
 /* main wrapper */
 .cb-wrapper {
-	
-	position: relative;
-	clear: both;
-	display: block;
-	margin-top: var(--commonsbooking-spacer-big);
+    position: relative;
+    clear: both;
+    display: block;
+    margin-top: var(--commonsbooking-spacer-big);
     color: var(--commonsbooking-textcolor-dark);
-	@extend .cb-box ;
-	
-	.cb-list-content.cb-pickupinstructions div {
-		white-space: pre-wrap; // enable line break in content from meta textfields 
-	}
+    @extend .cb-box;
 
-	.cb-address.cb-location-pickupinstructions {
-		white-space: pre-wrap; // enable line break in content from meta textfields
-		margin-top: 0;
-		border-left: green;
-		border-width: 1px;
-	}
+    .cb-list-content.cb-pickupinstructions div {
+        white-space: pre-wrap; // enable line break in content from meta textfields
+    }
 
-	/* headline */
-	h1, h2, h3, h4 {
-		margin: 0;
-		padding-bottom: var(--commonsbooking-spacer);
-		padding-top: 0;
-	}
-	
-	.cb-title {
-		color: var(--commonsbooking-color-primary);
-	}
+    .cb-address.cb-location-pickupinstructions {
+        white-space: pre-wrap; // enable line break in content from meta textfields
+        margin-top: 0;
+        border-left: green;
+        border-width: 1px;
+    }
 
-	.cb-location-title a{
-		color: var(--commonsbooking-color-primary);
-		text-decoration: none;
-	}
+    /* headline */
+    h1,
+    h2,
+    h3,
+    h4 {
+        margin: 0;
+        padding-bottom: var(--commonsbooking-spacer);
+        padding-top: 0;
+    }
 
-	.cb-item-title a{
-		color: var(--commonsbooking-color-primary);
-		text-decoration: none;
-	}
+    .cb-title {
+        color: var(--commonsbooking-color-primary);
+    }
 
-	/* sub lists wrapper */
-	> .cb-wrapper {
-		overflow: hidden;
-		@extend .cb-box-inner ;
-	
-		
-		> div { /* sub list items */
-			padding: var(--commonsbooking-spacer-small) 0;
-			&:last-of-type {
-				border-bottom: none;
-			}
-		}
-	}
+    .cb-location-title a {
+        color: var(--commonsbooking-color-primary);
+        text-decoration: none;
+    }
 
-	.template-timeframe-withitem,
-	.template-timeframe-withlocation,
-	.template-item-withlocation
-	 {
-		@extend .cb-col-auto ;
-	}
-	.cb-list-header {
-		@extend .cb-col-auto ;
-	}
-	.cb-list-header img{
-		
-	}
-	.cb-action {
-		background: transparent;
-		.cb-button {
-			display: inline-block;
-		}
-	}
+    .cb-item-title a {
+        color: var(--commonsbooking-color-primary);
+        text-decoration: none;
+    }
 
+    /* sub lists wrapper */
+    > .cb-wrapper {
+        overflow: hidden;
+        @extend .cb-box-inner;
+
+        > div {
+            /* sub list items */
+            padding: var(--commonsbooking-spacer-small) 0;
+            &:last-of-type {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .template-timeframe-withitem,
+    .template-timeframe-withlocation,
+    .template-item-withlocation {
+        @extend .cb-col-auto;
+    }
+    .cb-list-header {
+        @extend .cb-col-auto;
+    }
+    .cb-list-header img {
+    }
+    .cb-action {
+        background: transparent;
+        .cb-button {
+            display: inline-block;
+        }
+    }
 }
-

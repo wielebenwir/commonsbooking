@@ -26,18 +26,18 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 	 * @return WP_REST_Response
 	 */
 	public function get_items( $request ): WP_REST_Response {
-		$data                 = new stdClass();
-		$data->data           = new stdClass();
-		$data->data->stations = $this->getItemData( $request );
-		$data->last_updated   = time();
-		$data->ttl            = 60;
-		$data->version        = '2.3';
+		$response                 = new stdClass();
+		$response->data           = new stdClass();
+		$response->data->stations = $this->getItemData( $request );
+		$response->last_updated   = date( 'c' ); // ISO-8601 timestamp
+		$response->ttl            = 60;
+		$response->version        = '3.1-RC2';
 
 		if ( WP_DEBUG ) {
-			$this->validateData( $data );
+			$this->validateData( $response );
 		}
 
-		return new WP_REST_Response( $data, 200 );
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		foreach ( $locations as $location ) {
 			try {
 				$itemdata = $this->prepare_item_for_response( $location, $request );
-				$data[]   = $itemdata;
+				$data[]   = $itemdata->data;
 			} catch ( Exception $exception ) {
 				if ( WP_DEBUG ) {
 					error_log( $exception->getMessage() );

@@ -1233,13 +1233,13 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:369
-#: src/Plugin.php:370
+#: src/Plugin.php:384
+#: src/Plugin.php:385
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:379
-#: src/Plugin.php:380
+#: src/Plugin.php:394
+#: src/Plugin.php:395
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
@@ -1264,7 +1264,7 @@ msgstr "Es konnten keine Buchungscodes erstellt werden, da der Standort nicht ge
 msgid "No booking codes could be created because the item of the timeframe could not be found."
 msgstr "Es konnten keine Buchungscodes erstellt werden, da der Artikel nicht gefunden wurde."
 
-#: src/Service/Cache.php:442
+#: src/Service/Cache.php:444
 msgid "Connection status:"
 msgstr "Aktueller Verbindungsstatus:"
 
@@ -3029,8 +3029,8 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:680
-#: src/Plugin.php:695
+#: src/Plugin.php:720
+#: src/Plugin.php:735
 #: src/Wordpress/CustomPostType/Booking.php:936
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
@@ -3356,11 +3356,11 @@ msgid "(not planned)"
 msgstr "(nichts geplant)"
 
 #: includes/OptionsArray.php:1597
-#: src/Service/Cache.php:476
+#: src/Service/Cache.php:478
 msgid "Clear Cache"
 msgstr "Cache leeren"
 
-#: src/Service/Cache.php:471
+#: src/Service/Cache.php:473
 msgid "Clear all cache items"
 msgstr "Alle Cache-Elemente löschen"
 
@@ -3938,8 +3938,8 @@ msgstr ""
 msgid "This will create the specified booking and send out the booking confirmation email."
 msgstr "Dadurch wird die angegebene Buchung erstellt und die Buchungsbestätigung per E-Mail verschickt."
 
-#: src/Plugin.php:389
-#: src/Plugin.php:390
+#: src/Plugin.php:404
+#: src/Plugin.php:405
 msgid "Mass Operations"
 msgstr "Massenverarbeitung"
 
@@ -4236,11 +4236,11 @@ msgstr "REDIS"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: src/Service/Cache.php:451
+#: src/Service/Cache.php:453
 msgid "Cache is disabled."
 msgstr "Cache ist deaktiviert."
 
-#: src/Service/Cache.php:454
+#: src/Service/Cache.php:456
 msgid "Cache adapter successfully connected."
 msgstr "Cache Adapter erfolgreich verbunden."
 
@@ -4306,7 +4306,7 @@ msgstr ""
 "\t\t\t\twerden alle betroffenen Buchungen nach Aktivierung dieser Einschränkung und nach Anklicken des Senden-Buttons der Informations-E-Mail automatisch storniert.\r\n"
 "\t\t\t\t"
 
-#: src/Service/Cache.php:448
+#: src/Service/Cache.php:450
 msgid "Cache was disabled through external setting. Please see the documentation for more information."
 msgstr "Cache wurde durch externe Einstellungen deaktiviert. Mehr Informationen dazu findest du in der Dokumentation."
 

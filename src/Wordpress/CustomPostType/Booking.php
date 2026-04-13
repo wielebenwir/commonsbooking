@@ -287,7 +287,7 @@ class Booking extends Timeframe {
 		);
 
 		// Reject if the slot is already booked by another user (getExistingBookings excludes this booking by ID)
-		if ( $booking && intval( $booking->post_author ) !== get_current_user_id() ) {
+		if ( $booking && ! commonsbooking_isCurrentUserAllowedToEdit( $booking ) ) {
 			throw new BookingDeniedException( __( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking' ) );
 		}
 
@@ -820,7 +820,7 @@ class Booking extends Timeframe {
 				'id'               => 'booking_user',
 				'type'             => 'user_ajax_search',
 				'multiple-items'   => true,
-				'default'          => array( self::class, 'getFrontendBookingUser' ),
+				'default_cb'          => array( self::class, 'getFrontendBookingUser' ),
 				'desc'             => commonsbooking_sanitizeHTML(
 					__(
 						'Here you must select the user for whom the booking is made.<br>

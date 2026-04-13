@@ -229,6 +229,21 @@ class Plugin {
 	}
 
 	/**
+	 * Returns assoc array of dependencies to their version numbers
+	 *
+	 * @return array<string, string>|null
+	 */
+	public static function getManagedDepsVersions(): ?array {
+		$version_file_path    = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
+		$version_file_content = file_get_contents( $version_file_path );
+		$versions             = json_decode( $version_file_content, true );
+		if ( JSON_ERROR_NONE !== json_last_error() ) {
+			trigger_error( "Unable to parse commonsbooking asset version file in $version_file_path." );
+		}
+		return $versions;
+	}
+
+	/**
 	 * Tests if a given post belongs to our CPTs
 	 *
 	 * @param $post int|\WP_Post - post id or post object
@@ -582,6 +597,31 @@ class Plugin {
 			self::packagedVersion( 'leaflet.markercluster' )
 		);
 
+		// Select 2 (Styles)
+		wp_register_style(
+			'cb-styles-select2',
+			$base . 'select2/css/select2.min.css',
+			array(),
+			self::packagedVersion( 'select2' )
+		);
+
+		// Select 2 (JS)
+		wp_register_script(
+			'cb-scripts-select2',
+			$base . 'select2/js/select2.min.js',
+			array( 'jquery' ),
+			self::packagedVersion( 'select2' )
+		);
+
+		// Moment.js
+		wp_register_script(
+			'cb-scripts-moment',
+			$base . 'moment/moment.min.js',
+			array(),
+			self::packagedVersion( 'moment' ),
+			true
+		);
+
 		// leaflet-easybutton
 		wp_register_script(
 			'cb-leaflet-easybutton',
@@ -604,7 +644,7 @@ class Plugin {
 			self::packagedVersion( 'leaflet-spin' )
 		);
 
-		// leaflet-messagebox
+		// leaflet-messagebox (not tracked by NPM)
 		wp_register_script(
 			'cb-leaflet-messagebox',
 			COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.js',
@@ -618,7 +658,7 @@ class Plugin {
 			'1.1'
 		);
 
-		// jquery overscroll
+		// jquery overscroll (not tracked by NPM)
 		wp_register_script(
 			'cb-jquery-overscroll',
 			COMMONSBOOKING_MAP_ASSETS_URL . 'overscroll/jquery.overscroll.min.js',

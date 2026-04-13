@@ -11,136 +11,136 @@
  */
 
 /* -------------------- Boxes -------------------- */
-@use "mixins";
-@use "variables";
+@use 'mixins';
+@use 'variables';
 
 .cb-box {
-	background: var(--commonsbooking-color-gray-background);
+    background: var(--commonsbooking-color-gray-background);
 
     overflow: hidden;
     border-radius: var(--commonsbooking-radius);
     margin-bottom: var(--commonsbooking-spacer);
 
-	padding: var(--commonsbooking-spacer-small) / 2 var(--commonsbooking-spacer-small);
-	@include mixins.breakpoint(phablet) {
-		padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
-	}
+    padding: var(--commonsbooking-spacer-small) / 2 var(--commonsbooking-spacer-small);
+    @include mixins.breakpoint(phablet) {
+        padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
+    }
 }
 
 .cb-box-inner {
-	background: variables.$color-white;
+    background: variables.$color-white;
 
     border-radius: var(--commonsbooking-radius);
 
-	padding: var(--commonsbooking-spacer-small);
-	@include mixins.breakpoint(phablet) {
-		padding: var(--commonsbooking-spacer);
-	}
+    padding: var(--commonsbooking-spacer-small);
+    @include mixins.breakpoint(phablet) {
+        padding: var(--commonsbooking-spacer);
+    }
 }
 
 /* -------------------- Typography -------------------- */
 
 .cb-big {
-	font-size: var(--commonsbooking-font-size-big);
-	font-weight: bold;
+    font-size: var(--commonsbooking-font-size-big);
+    font-weight: bold;
 }
 
 /* -------------------- Boxes -------------------- */
 
 .shadow {
-	box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
+    box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.22);
 }
 
 .shadow-small {
-	box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
 }
 
 .cb-hover {
-	@extend .shadow-small;
-	border: 1px solid variables.$color-blue-dark;
-	border-radius: var(--commonsbooking-radius);
+    @extend .shadow-small;
+    border: 1px solid variables.$color-blue-dark;
+    border-radius: var(--commonsbooking-radius);
 }
 
 .cb-thumbnail {
-	border-radius: var(--commonsbooking-radius);
+    border-radius: var(--commonsbooking-radius);
 }
 
 /* -------------------- Buttons -------------------- */
 
 .cb-button {
-	border-radius: var(--commonsbooking-radius);
-	font-size: var(--commonsbooking-font-size-normal);
-	line-height: var(--commonsbooking-font-size-normal);
-	background-color: var(--commonsbooking-color-buttons);
-	border: none !important; /* TwentyFifteen theme fix */
-	text-decoration: none !important;
-	word-break: normal !important; /* TwentyTwenty theme fix */
-	white-space: nowrap;
-	color: variables.$color-white;
-	padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
-	font-weight: bold;
+    border-radius: var(--commonsbooking-radius);
+    font-size: var(--commonsbooking-font-size-normal);
+    line-height: var(--commonsbooking-font-size-normal);
+    background-color: var(--commonsbooking-color-buttons);
+    border: none !important; /* TwentyFifteen theme fix */
+    text-decoration: none !important;
+    word-break: normal !important; /* TwentyTwenty theme fix */
+    white-space: nowrap;
+    color: variables.$color-white;
+    padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
+    font-weight: bold;
 
-	&.small {
-		padding: var(--commonsbooking-spacer);
-		font-size: var(--commonsbooking-font-size-small);
-	}
+    &.small {
+        padding: var(--commonsbooking-spacer);
+        font-size: var(--commonsbooking-font-size-small);
+    }
 
-	&:hover {
-		@extend .shadow-small;
-		background: var(--commonsbooking-color-secondary);
-		color: variables.$color-white; /* Various themes fix */
-	}
-
-	&:visited {
-		color: variables.$color-white;
-	}
-
-	&.big {
-		padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
-		font-size: var(--commonsbooking-font-size-big);
-		line-height: var(--commonsbooking-font-size-big);
-	}
-	&.secondary {
-		background-color: variables.$color-white;
-		color: var(--commonsbooking-color-error);
-	}
-
-	&.cancel {
-		background-color: var(--commonsbooking-color-error);
-	}
-
-	&.confirm {
-		background-color: var(--commonsbooking-color-success);
-	}
-
-	&.delete {
-		background-color: var(--commonsbooking-color-error);
-	}
-
-	&[disabled=disabled] {
-		background-color: var(--commonsbooking-color-greyedout);
-		color: var(--commonsbooking-textcolor-light);
+    &:hover {
         @extend .shadow-small;
-	}
+        background: var(--commonsbooking-color-secondary);
+        color: variables.$color-white; /* Various themes fix */
+    }
 
-	&.no-right-radius {
-		border-radius: var(--commonsbooking-radius) 0 ;
-	}	
-	&.no-left-radius {
-		border-radius: 0  var(--commonsbooking-radius);
-	}
+    &:visited {
+        color: variables.$color-white;
+    }
+
+    &.big {
+        padding: var(--commonsbooking-spacer) var(--commonsbooking-spacer-big);
+        font-size: var(--commonsbooking-font-size-big);
+        line-height: var(--commonsbooking-font-size-big);
+    }
+    &.secondary {
+        background-color: variables.$color-white;
+        color: var(--commonsbooking-color-error);
+    }
+
+    &.cancel {
+        background-color: var(--commonsbooking-color-error);
+    }
+
+    &.confirm {
+        background-color: var(--commonsbooking-color-success);
+    }
+
+    &.delete {
+        background-color: var(--commonsbooking-color-error);
+    }
+
+    &[disabled='disabled'] {
+        background-color: var(--commonsbooking-color-greyedout);
+        color: var(--commonsbooking-textcolor-light);
+        @extend .shadow-small;
+    }
+
+    &.no-right-radius {
+        border-radius: var(--commonsbooking-radius) 0;
+    }
+    &.no-left-radius {
+        border-radius: 0 var(--commonsbooking-radius);
+    }
 }
 
 .cb-button-container a {
-	@extend .cb-button;
+    @extend .cb-button;
 }
 .cb-pill {
-	border-radius: var(--commonsbooking-radius-pill);
-	padding: 0;
-	margin: 0;
-	a {
-		text-decoration: none;
-		color: variables.$color-white;
-		padding: var(--commonsbooking-spacer-small) var(--commonsbooking-spacer);
-	}
+    border-radius: var(--commonsbooking-radius-pill);
+    padding: 0;
+    margin: 0;
+    a {
+        text-decoration: none;
+        color: variables.$color-white;
+        padding: var(--commonsbooking-spacer-small) var(--commonsbooking-spacer);
+    }
 }
