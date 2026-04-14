@@ -25,6 +25,7 @@
 		"grunt-contrib-watch": "^1.1.0",
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
+		"prettier": "^3.0.0",
 		"sass": "^1.66.1"
 	},
 	"scripts": {
@@ -36,7 +37,10 @@
 		"cypress:setup": "./bin/setup-cypress-env.sh",
 		"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
 		"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js",
-		"dist": "grunt dist"
+		"dist": "grunt dist",
+		"lint:php": "vendor/bin/phpcbf",
+		"lint:js": "prettier --check 'assets/**/*.js'",
+		"lint": "npm run lint:php && npm run lint:js"
 	},
 	"dependencies": {
 		"@commonsbooking/frontend": "^0.1.0-beta.6",
