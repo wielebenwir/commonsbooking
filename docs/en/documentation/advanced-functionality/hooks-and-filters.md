@@ -88,6 +88,7 @@ receives a value, modifies it, and then returns it.
   * commonsbooking_mail_body
   * commonsbooking_mail_attachment
   * commonsbooking_disableCache
+  * commonsbooking_gbfs_feeds
 
 There are also filter hooks that allow you to add additional user roles
 akin to the CB Manager that can manage items and locations.
