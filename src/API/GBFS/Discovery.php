@@ -38,6 +38,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$feeds[] = $this->get_feed( 'system_information' );
 		$feeds[] = $this->get_feed( 'station_information' );
 		$feeds[] = $this->get_feed( 'station_status' );
+		$feeds[] = $this->get_feed( 'vehicle_availability' );
 
 		$response               = new stdClass();
 		$response->data         = new stdClass();
