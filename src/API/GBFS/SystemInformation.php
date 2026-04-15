@@ -45,10 +45,6 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 		$response->ttl                      = 86400;
 		$response->version                  = '3.1-RC2';
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $response );
-		}
-
-		return new WP_REST_Response( $response, 200 );
+		return $this->respond_with_validation( $response );
 	}
 }
