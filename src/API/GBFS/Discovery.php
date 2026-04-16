@@ -34,11 +34,25 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 	 */
 	public function get_items( $request ): WP_REST_Response {
 
-		$feeds   = array();
-		$feeds[] = $this->get_feed( 'system_information' );
-		$feeds[] = $this->get_feed( 'station_information' );
-		$feeds[] = $this->get_feed( 'station_status' );
-		$feeds[] = $this->get_feed( 'vehicle_availability' );
+		/**
+		 * The names of the feeds that are available in the GBFS route.
+		 * They will be announced through the gbfs.json.
+		 * The routes still need to be registered using register_rest_route.
+		 *
+		 * @since 2.11
+		 *
+		 * @param String[] $raw_feeds the names of the feeds without a .json suffix
+		 */
+		$raw_feeds = apply_filters(
+			'commonsbooking_gbfs_feeds',
+			[
+				'system_information',
+				'station_information',
+				'station_status',
+				'vehicle_availability'
+			]
+		);
+		$feeds     = array_map( fn( $feed ) => $this->get_feed( $feed ), $raw_feeds );
 
 		$response               = new stdClass();
 		$response->data         = new stdClass();
@@ -47,11 +61,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$response->ttl          = 86400;
 		$response->version      = '3.1-RC2';
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $response );
-		}
-
-		return new WP_REST_Response( $response, 200 );
+		return $this->respond_with_validation( $response );
 	}
 
 	private function get_feed( $name ): stdClass {
