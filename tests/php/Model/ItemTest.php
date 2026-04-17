@@ -26,16 +26,16 @@ class ItemTest extends CustomPostTypeTest {
 
 	public function testGetAdmins() {
 		// Case: No admins
-		//$this->assertEquals([], $this->itemModel->getAdmins()); - Currently this function includes the post author
-		$this->assertEquals([self::USER_ID], $this->itemModel->getAdmins());
+		// $this->assertEquals([], $this->itemModel->getAdmins()); - Currently this function includes the post author
+		$this->assertEquals( [ self::USER_ID ], $this->itemModel->getAdmins() );
 
-		//Case: CB Manager as admin
+		// Case: CB Manager as admin
 		$this->createCBManager();
 		$adminItemModel = new Item(
-			$this->createItem("Testitem2",'publish', [$this->cbManagerUserID])
+			$this->createItem( 'Testitem2', 'publish', [ $this->cbManagerUserID ] )
 		);
-		//$this->assertEquals([$this->cbManagerUserID], $adminItemModel->getAdmins()); - Currently this function includes the post author
-		$this->assertEquals([$this->cbManagerUserID, self::USER_ID], $adminItemModel->getAdmins());
+		// $this->assertEquals([$this->cbManagerUserID], $adminItemModel->getAdmins()); - Currently this function includes the post author
+		$this->assertEquals( [ $this->cbManagerUserID, self::USER_ID ], $adminItemModel->getAdmins() );
 	}
 
 
@@ -55,23 +55,21 @@ class ItemTest extends CustomPostTypeTest {
 	}
 	*/
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(
 			Restriction::META_HINT,
 			$this->locationId,
 			$this->itemId,
-			strtotime(self::CURRENT_DATE),
+			strtotime( self::CURRENT_DATE ),
 			null
 		);
-		$this->timeframeModel = new Timeframe($this->createBookableTimeFrameIncludingCurrentDay());
-		$this->itemModel = new Item($this->itemId);
+		$this->timeframeModel   = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay() );
+		$this->itemModel        = new Item( $this->itemId );
 		$this->createSubscriber();
-
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
-
 }

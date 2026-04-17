@@ -7,17 +7,17 @@ namespace CommonsBooking\Messages;
  */
 class AdminMessage {
 
-    
-    private string $message;
-    
-    private string $notice_type;
+	private string $message;
+
+	private string $notice_type;
 
 
 	/**
 	 * __construct
 	 *
 	 * @param mixed $message message text
-	 * @param mixed $notice_type admin_notice type (can be: info, warning, success, error)
+	 * @param mixed $notice_type admin_notice type (can be: info, warning, success, error) and corresponds to the
+	 *                           css class `notice-*` in the rendered element.
 	 *
 	 * @return void
 	 */
@@ -42,5 +42,4 @@ class AdminMessage {
 		echo '</p>';
 		echo '</div>';
 	}
-
 }

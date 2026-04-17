@@ -70,7 +70,7 @@ class HelperTest extends TestCase {
 		$this->assertCount( 2, $arrayOfBookableDates );
 
 		$this->assertEquals( $arrayOfBookableDates[0]['start_date'], self::dt_to_ts( '2020-01-01T12:00:00+00:00' ) );
-		$this->assertEquals( $arrayOfBookableDates[1]['end_date'],   self::dt_to_ts( '2020-01-04T12:00:00+00:00' ) );
+		$this->assertEquals( $arrayOfBookableDates[1]['end_date'], self::dt_to_ts( '2020-01-04T12:00:00+00:00' ) );
 	}
 
 	public function test_whenThreeTimeFramesOverlap_returnOneTimeframe() {

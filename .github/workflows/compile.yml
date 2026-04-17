@@ -5,19 +5,20 @@ on:
       - master
       - 'release/**'
     paths-ignore:
+      - 'docs/**'
       - '**.md'
       - '**.txt'
-    
+
 jobs:
   i18n-coverage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     name: Check i18n coverage
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
 
       - name: Install WP-CLI
         run: |
@@ -27,7 +28,7 @@ jobs:
 
       - name: Generate pot files
         run: bin/update-pot.sh
-        
+
       - name: Commit changes
         uses: elstudio/actions-js-build/commit@v4
         with:
@@ -41,20 +42,20 @@ jobs:
           ignore-languages: 'en'
 
   grunt:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     name: Run grunt and commit changes
     needs: i18n-coverage
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         ref: ${{ github.ref }} # checkout the latest commit so that we can push changes
 
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
+        php-version: '8.1'
 
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v6
       with:
         node-version-file: '.nvmrc'
         cache: 'npm'
@@ -64,13 +65,7 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate
 
-
     - name: Compile with Grunt
       uses: elstudio/actions-js-build/build@v4
       with:
         args: build
-
-    - name: Commit changes
-      uses: elstudio/actions-js-build/commit@v4
-      with:
-        commitMessage: Ran grunt 

@@ -5,10 +5,10 @@ function commonsbooking_admin() {
 	wp_enqueue_script( 'jquery' );
 
 	// Datepicker extension
-	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-datepicker', '', array( 'jquery' ) );
 
 	// Tooltip extension
-	wp_enqueue_script( 'jquery-ui-tooltip', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-tooltip', '', array( 'jquery' ) );
 
 	wp_enqueue_style( 'admin-styles', COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/css/admin.css', array(), COMMONSBOOKING_VERSION );
 
@@ -18,7 +18,7 @@ function commonsbooking_admin() {
 			'cb-scripts-admin',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/admin.js',
 			array(),
-			time()
+			(string) time()
 		);
 	} else {
 		wp_enqueue_script(
@@ -28,13 +28,6 @@ function commonsbooking_admin() {
 			COMMONSBOOKING_VERSION
 		);
 	}
-
-    // Map marker upload scripts
-    // TODO needs to be evaluated. Maybe not working on all systems
-    if ( get_current_screen()->id == 'cb_map' ) {
-        $script_path = COMMONSBOOKING_MAP_ASSETS_URL . 'js/cb-map-marker-upload.js';
-        wp_enqueue_script( 'cb-map-marker-upload_js', $script_path );
-    }
 
 	// CB 0.X migration
 	wp_localize_script(
@@ -56,13 +49,42 @@ function commonsbooking_admin() {
 		)
 	);
 
+	// AJAX action for exporting timeframes to CSV
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_export_timeframes',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_export_timeframes' ),
+		)
+	);
+
+	// \CommonsBooking\Service\Upgrade Ajax tasks
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_run_upgrade',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_run_upgrade' ),
+		)
+	);
+
 	// Additional info for CMB2 to handle booking rules
 	wp_add_inline_script(
 		'cb-scripts-admin',
-'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
+		'cb_booking_rules=' . \CommonsBooking\Service\BookingRule::getRulesJSON() . ';'
 		. 'cb_applied_booking_rules=' . \CommonsBooking\Service\BookingRuleApplied::getRulesJSON() . ';',
 	);
 
+	// orphaned bookings migration - re-assign booking when timeframe has changed
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_orphaned_booking_migration',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_orphaned_booking_migration' ),
+		)
+	);
 	/**
 	 * Ajax - cache warmup
 	 */
@@ -72,6 +94,30 @@ function commonsbooking_admin() {
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
+		)
+	);
+
+	/**
+	 * Ajax - get location for item
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_get_bookable_location',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_get_bookable_location' ),
+		)
+	);
+
+	/**
+	 * Ajax - get booking code for backend booking
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_get_booking_code',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_get_booking_code' ),
 		)
 	);
 }
@@ -89,7 +135,7 @@ add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 function commonsbooking_sanitizeHTML( $string ): string {
 	global $allowedposttags;
 
-	if ( empty ( $string ) ) {
+	if ( empty( $string ) ) {
 		return '';
 	}
 	$allowed_atts = array(
@@ -182,6 +228,16 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 	} else {
 		$filterName    = sprintf( 'commonsbooking_defaults_%s', $field_args['id'] );
 		$default_value = array_key_exists( 'default_value', $field_args ) ? $field_args['default_value'] : '';
+
+		/**
+		 * Default value for cmb2 fields.
+		 *
+		 * The last part of the filter is the cmb2 field id.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param mixed $default_value default value for the field.
+		 */
 		return apply_filters( $filterName, $default_value );
 	}
 }
@@ -189,7 +245,8 @@ function commonsbooking_filter_from_cmb2( $field_args ) {
 /**
  * Only return default value if we don't have a post ID (in the 'post' query variable)
  *
- * @param  bool  $default On/Off (true/false)
+ * @since 2.10.3 removed non-existent param from phpdoc
+ *
  * @return mixed          Returns true or '', the blank default
  */
 function cmb2_set_checkbox_default_for_new_post() {
@@ -203,25 +260,23 @@ function cmb2_set_checkbox_default_for_new_post() {
 /**
  * Recursive sanitation for text or array
  *
- * @param mixed  array_or_string (array|string)
- * @param string $sanitize_function name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
+ * @param array|string $data
+ * @param string       $sanitizeFunction name of the sanitziation function, default = sanitize_text_field. You can use any method that accepts a string as parameter
  *
- * See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
+ *       See more wordpress sanitization functions: https://developer.wordpress.org/themes/theme-security/data-sanitization-escaping/
  *
  * @return array|string
  */
+function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanitize_text_field' ) {
+	if ( is_array( $data ) ) {
+		foreach ( $data as $key => $value ) {
+			$data[ $key ] = commonsbooking_sanitizeArrayorString( $value, $sanitizeFunction );
+		}
+	} else {
+		$data = call_user_func( $sanitizeFunction, $data );
+	}
 
-function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanitize_text_field'  ) {
-    if ( is_array( $data ) ) {
-        foreach ( $data as $key => $value ) {
-            $data[ $key ] = commonsbooking_sanitizeArrayorString( $value, $sanitizeFunction );
-        }
-    } else {
-        $data = call_user_func( $sanitizeFunction, $data );
-    }   
-    
-    return $data;
-
+	return $data;
 }
 
 
@@ -230,29 +285,28 @@ function commonsbooking_sanitizeArrayorString( $data, $sanitizeFunction = 'sanit
  * only active if DEBUG_LOG is on
  *
  * @param mixed $log can be a string, array or object
- * @param bool $backtrace if set true the file-path and line of the calling file will be added to the error message
+ * @param bool  $backtrace if set true the file-path and line of the calling file will be added to the error message
  *
- * @return string logmessage 
+ * @return void
  */
 function commonsbooking_write_log( $log, $backtrace = true ) {
 
-    if ( ! WP_DEBUG_LOG ) {
-        return;
-    }
+	if ( ! WP_DEBUG_LOG ) {
+		return;
+	}
 
-    if ( is_array( $log ) || is_object( $log ) ) {
+	if ( is_array( $log ) || is_object( $log ) ) {
 		$logmessage = ( print_r( $log, true ) );
 	} else {
-		$logmessage =  $log ;
+		$logmessage = $log;
 	}
 
 	if ( $backtrace ) {
-		$bt   = debug_backtrace();
-		$file = $bt[0]['file'];
-		$line = $bt[0]['line'];
-		$logmessage  = $file . ':' . $line . ' ' . $logmessage;
+		$bt         = debug_backtrace();
+		$file       = $bt[0]['file'];
+		$line       = $bt[0]['line'];
+		$logmessage = $file . ':' . $line . ' ' . $logmessage;
 	}
 
-    error_log( $logmessage ) ;
-
+	error_log( $logmessage );
 }

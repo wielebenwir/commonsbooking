@@ -16,13 +16,13 @@ class CB_REST_UnitTestCase extends \WP_UnitTestCase {
 
 	protected $ENDPOINT;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 		GeoHelperTest::setUpGeoHelperMock( $this );
 
 		/** @var WP_REST_Server $wp_rest_server */
 		global $wp_rest_server;
-		$this->server = $wp_rest_server = new \WP_REST_Server;
+		$this->server = $wp_rest_server = new \WP_REST_Server();
 
 		// Enables api
 		Settings::updateOption( 'commonsbooking_options_api', 'api-activated', 'on' );

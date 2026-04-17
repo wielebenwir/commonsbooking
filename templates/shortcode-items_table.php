@@ -5,8 +5,6 @@
  * Model: Calendar
  *
  * Shows an availability table for items
- *
- *
  */
 
 
@@ -16,7 +14,7 @@ echo $templateData['data'];
 ?>
 
 <div id="cb-table-footnote">
-    <?php
-    commonsbooking_get_template_part( 'calendar', 'key'); // file: calendar-key.php
-    ?>
+	<?php
+	commonsbooking_get_template_part( 'calendar', 'key' ); // file: calendar-key.php
+	?>
 </div>

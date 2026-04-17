@@ -1,0 +1,53 @@
+name: PHPStan
+
+on:
+  # Run on all pushes and on all pull requests.
+  # Prevent the build from running when there are only irrelevant changes.
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '**.txt'
+      - '**.xml'
+  pull_request:
+      paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '**.txt'
+      - '**.xml'
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+
+jobs:
+  phpstan:
+    name: 'WP latest on PHP 8.5'
+
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v6
+
+    # TODO Use the composer action below
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.5'
+        extensions: uopz
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies (other PHP versions)
+      run: |
+        composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+    - name: Run static suite
+      run: |
+        composer dump-autoload -o
+
+    #- uses: actions/checkout@v6
+    #- uses: php-actions/composer@v6
+
+    - name: PHPStan Static Analysis
+      uses: php-actions/phpstan@v3
+      with:
+        configuration: phpstan.neon

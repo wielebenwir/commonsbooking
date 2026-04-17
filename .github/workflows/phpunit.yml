@@ -6,11 +6,14 @@ on:
       - 'master'
       - 'release/**'
     paths-ignore:
+      - 'docs/**'
       - '**.md'
       - '**.txt'
   pull_request:
     branches:
       - 'master'
+    paths-ignore:
+      - 'docs/**'
 
 
 env:
@@ -20,17 +23,22 @@ env:
 
 jobs:
   phpunit:
+    name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
         php:
-          - '7.4'
-          - '8.2'
+          - '8.1'
+          - '8.4'
+        core:
+          - { name: 'latest', version: 'latest' }
+          - { name: 'minimum', version: '5.9' }
+          - { name: 'trunk', version: 'trunk' }
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Set up MySQL
       run: |
@@ -41,38 +49,52 @@ jobs:
         php-version: ${{ matrix.php }}
         extensions: uopz
 
+    # This is needed for the WordPress test suite installation ( bin/install-wp-tests.sh )
+    - name: Install SVN
+      run: sudo apt install -y subversion
+
+
     - name: Validate composer.json and composer.lock
       run: composer validate
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies (PHP 7.4)
-      if: matrix.php == '7.4'
+    - name: Install dependencies (PHP 8.1)
+      if: matrix.php == '8.1'
       run: |
-        bash bin/install-wp-tests.sh wordpress_test root root localhost latest
+        bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.core.version }}
         composer install --prefer-dist --no-progress
 
     - name: Install dependencies (other PHP versions)
-      if: matrix.php != '7.4'
+      if: matrix.php != '8.1'
       run: |
-        bash bin/install-wp-tests.sh wordpress_test root root localhost latest
+        bash bin/install-wp-tests.sh wordpress_test root root localhost ${{ matrix.core.version }}
         composer install --prefer-dist --no-progress --ignore-platform-reqs
 
     - name: Run test suite
       run: |
         composer dump-autoload -o
-        curl -ksSfL -o ~/phpunit-9.phar https://phar.phpunit.de/phpunit-9.phar
-        php ~/phpunit-9.phar
+        php vendor/bin/phpunit
 
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v6
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./build/logs/clover.xml
+  rerun-on-failure:
+    needs: phpunit
+    if: failure() && fromJSON(github.run_attempt) < 3
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          GH_DEBUG: api
+        run: gh workflow run rerun.yml -r ${{ github.head_ref || github.ref_name }} -F run_id=${{ github.run_id }}

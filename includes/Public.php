@@ -9,7 +9,6 @@ use CommonsBooking\View\View;
 
 function commonsbooking_public() {
 
-
 	wp_enqueue_style(
 		'cb-styles-public',
 		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/public.css',
@@ -18,19 +17,19 @@ function commonsbooking_public() {
 	);
 
 	$colorScheme_css = View::getColorCSS();
-	if ($colorScheme_css) { //if custom color variables exist, import them after importing the rest of the CSS, overwriting existing defaults
-		wp_add_inline_style('cb-styles-public',$colorScheme_css);
+	if ( $colorScheme_css ) { // if custom color variables exist, import them after importing the rest of the CSS, overwriting existing defaults
+		wp_add_inline_style( 'cb-styles-public', $colorScheme_css );
 	}
 
 	// Template specific styles
-	$template = wp_get_theme()->template;
+	$template            = wp_get_theme()->template;
 	$customizedTemplates = [
 		'graphene',
 		'kasimir',
 		'twentytwenty',
-		'twentynineteen'
+		'twentynineteen',
 	];
-	if(in_array($template, $customizedTemplates)) {
+	if ( in_array( $template, $customizedTemplates ) ) {
 		wp_enqueue_style(
 			'cb-styles-public-theme',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/' . $template . '.css',
@@ -40,7 +39,7 @@ function commonsbooking_public() {
 	}
 
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-datepicker', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery-ui-datepicker', '', array( 'jquery' ) );
 
 	wp_enqueue_script(
 		'cb-scripts-vendor',
@@ -49,45 +48,9 @@ function commonsbooking_public() {
 		'1.0.0'
 	);
 
-	wp_enqueue_style(
-		'cb-styles-vendor',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'global/css/vendor.css', array(), COMMONSBOOKING_VERSION
-	);
-
-	// Daterangepicker
-	wp_enqueue_style(
-		'cb-styles-daterangepicker',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/daterangepicker/daterangepicker.css', array(), COMMONSBOOKING_VERSION
-	);
-
-	wp_enqueue_script(
-		'cb-scripts-daterangepicker',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/daterangepicker.min.js',
-		array(),
-		'1.0.0'
-	);
-
-	// Select 2
-	wp_enqueue_style(
-		'cb-styles-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/css/themes/select2/select2.min.css', array(), COMMONSBOOKING_VERSION
-	);
-
-	wp_enqueue_script(
-		'cb-scripts-select2',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/select2.min.js',
-		array( 'jquery' ),
-		'1.0.0'
-	);
-
-	// Moment.js
-	wp_enqueue_script(
-		'cb-scripts-moment',
-		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/vendor/moment.min.js',
-		array(),
-		'1.0.1',
-		true
-	);
+	wp_enqueue_style( 'cb-styles-select2' );
+	wp_enqueue_script( 'cb-scripts-select2' );
+	wp_enqueue_script( 'cb-scripts-moment' );
 
 	/**
 	 * Public scripts
@@ -97,7 +60,7 @@ function commonsbooking_public() {
 			'cb-scripts-public',
 			COMMONSBOOKING_PLUGIN_ASSETS_URL . 'public/js/public.js',
 			array( 'jquery' ),
-			time(),
+			(string) time(),
 			true
 		);
 	} else {
@@ -160,8 +123,18 @@ add_action( 'wp_ajax_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'wa
 add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
 
 if ( is_admin() ) {
+	// migration AJAX
 	add_action( 'wp_ajax_cb_start_migration', array( Migration::class, 'migrateAll' ) );
 	add_action( 'wp_ajax_cb_start_booking_migration', array( \CommonsBooking\Migration\Booking::class, 'ajaxMigrate' ) );
+	add_action( 'wp_ajax_cb_run_upgrade', array( \CommonsBooking\Service\Upgrade::class, 'runAJAXUpgradeTasks' ) );
+	add_action( 'wp_ajax_cb_export_timeframes', array( \CommonsBooking\Service\TimeframeExport::class, 'ajaxExportCsv' ) );
+
+	// getting bookable Location for item AJAX
+	add_action( 'wp_ajax_cb_get_bookable_location', array( \CommonsBooking\View\Booking::class, 'getLocationForItem_AJAX' ) );
+
+	// getting booking code for new backend booking AJAX
+	add_action( 'wp_ajax_cb_get_booking_code', array( \CommonsBooking\View\Booking::class, 'getBookingCode_AJAX' ) );
+	add_action( 'wp_ajax_cb_orphaned_booking_migration', array( \CommonsBooking\Service\MassOperations::class, 'ajaxMigrateOrphaned' ) );
 }
 
 // Map ajax

@@ -14,7 +14,7 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns 0:00 timestamp for day of $timestamp.
-     *
+	 *
 	 * @param $timestamp
 	 *
 	 * @return false|int
@@ -25,7 +25,7 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns 23:59 timestamp for day of $timestamp.
-     *
+	 *
 	 * @param $startTimestamp
 	 *
 	 * @return false|int
@@ -36,11 +36,11 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns bookings ending at day of timestamp.
-     *
+	 *
 	 * @param int   $timestamp
 	 * @param array $customArgs
 	 *
-	 * @return array|int[]|WP_Post[]
+	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function getEndingBookingsByDate( int $timestamp, array $customArgs = [] ): array {
@@ -82,11 +82,11 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns bookings beginning at day of timestamp.
-     *
+	 *
 	 * @param int   $timestamp
 	 * @param array $customArgs
 	 *
-	 * @return array|int[]|WP_Post[]
+	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function getBeginningBookingsByDate( int $timestamp, array $customArgs = [] ): array {
@@ -130,7 +130,7 @@ class Booking extends PostRepository {
 			foreach ( $posts as &$post ) {
 				$post = new \CommonsBooking\Model\Booking( $post );
 			}
-
+			/** @var \CommonsBooking\Model\Booking[] $posts */
 			return $posts;
 		}
 
@@ -187,11 +187,11 @@ class Booking extends PostRepository {
 		if ( $query->have_posts() ) {
 			$posts = $query->get_posts();
 			$posts = array_filter(
-                $posts,
-                function ( $post ) {
-                    return in_array( $post->post_status, array( 'confirmed', 'unconfirmed' ) );
-                }
-            );
+				$posts,
+				function ( $post ) {
+					return in_array( $post->post_status, array( 'confirmed', 'unconfirmed' ) );
+				}
+			);
 
 			// If there is exactly one result, return it.
 			if ( count( $posts ) == 1 ) {
@@ -209,12 +209,12 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * @param $startDate int
-	 * @param $endDate int
+	 * @param int   $startDate
+	 * @param int   $endDate
 	 * @param $locationId
 	 * @param $itemId
-	 * @param array         $customArgs
-	 * @param array         $postStatus
+	 * @param array $customArgs
+	 * @param array $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -222,11 +222,11 @@ class Booking extends PostRepository {
 	public static function getByTimerange(
 		int $startDate,
 		int $endDate,
-		$locationId,
-		$itemId,
+		$locationId = null,
+		$itemId = null,
 		array $customArgs = [],
 		array $postStatus = [ 'confirmed', 'unconfirmed' ]
-	): ?array {
+	): array {
 		// Default query
 		$args = array(
 			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
@@ -273,26 +273,25 @@ class Booking extends PostRepository {
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );
 
-
 		return self::getModelsFromQuery( $args );
 	}
 
 	/**
 	 * Returns all bookings, allowed to see for user.
 	 *
-	 * @param bool $asModel
-	 * @param null $minTimestamp
+	 * @param bool     $asModel if true, returns as Booking array, if false, return int array (defaults to false)
+	 * @param int|null $minTimestamp
 	 *
-	 * @return array
+	 * @return \CommonsBooking\Model\Booking[]|int[]
 	 * @throws Exception
 	 */
 	public static function getForUser(
 		\WP_User $user,
 		bool $asModel = false,
 		$minTimestamp = null,
-		array $postStatus = [ 'canceled', 'confirmed', 'unconfirmed']
+		array $postStatus = [ 'canceled', 'confirmed', 'unconfirmed' ]
 	): array {
-		$customId = $user->ID;
+		$customId  = $user->ID;
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -308,11 +307,11 @@ class Booking extends PostRepository {
 			if ( $posts ) {
 				// Check if it is the main query and one of our custom post types
 				$posts = array_filter(
-                    $posts,
-                    function ( $post ) use ( $user ) {
-                        return commonsbooking_isUserAllowedToSee( $post, $user );
-                    }
-                );
+					$posts,
+					function ( $post ) use ( $user ) {
+						return commonsbooking_isUserAllowedToSee( $post, $user );
+					}
+				);
 			}
 
 			Plugin::setCacheItem(
@@ -345,21 +344,21 @@ class Booking extends PostRepository {
 
 		$current_user = wp_get_current_user();
 
-		return self::getForUser( $current_user, $asModel, $startDate ,$postStatus );
+		return self::getForUser( $current_user, $asModel, $startDate, $postStatus );
 	}
 
 	/**
 	 * Returns bookings. This uses the CommonsBooking\Repository\Timeframe::get() method which
 	 * is not based on the WP_Query class but will perform its own SQL query.
 	 *
-	 * @param array        $locations
-	 * @param array        $items
-	 * @param string|null  $date
-	 * @param bool         $returnAsModel
-	 * @param $minTimestamp
-	 * @param array        $postStatus
+	 * @param array       $locations
+	 * @param array       $items
+	 * @param string|null $date Date-String in format YYYY-mm-dd
+	 * @param bool        $returnAsModel if true, returns booking model, if false return int array (defaults to false)
+	 * @param int|null    $minTimestamp
+	 * @param array       $postStatus
 	 *
-	 * @return array
+	 * @return int[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function get(
@@ -367,7 +366,7 @@ class Booking extends PostRepository {
 		array $items = [],
 		?string $date = null,
 		bool $returnAsModel = false,
-		int $minTimestamp = null,
+		?int $minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		return \CommonsBooking\Repository\Timeframe::get(
@@ -387,34 +386,34 @@ class Booking extends PostRepository {
 	 * this function will use the WP_Query class to perform the query allowing us to use the pagination features of WP_Query.
 	 *
 	 * @param \WP_User $user The user for which to get the bookings.
-	 * @param int $page The current page that is processed.
-	 * @param int $perPage The number of bookings per page. A lower number will result in faster queries.
-	 * @param array $customArgs Valid WP_Query args array.
+	 * @param int      $page The current page that is processed.
+	 * @param int      $perPage The number of bookings per page. A lower number will result in faster queries.
+	 * @param array    $customArgs Valid WP_Query args array.
 	 *
-	 * @return Booking[] An array of Booking models.
+	 * @return \CommonsBooking\Model\Booking[] An array of Booking models.
 	 */
 	public static function getForUserPaginated(
 		\WP_User $user,
 		int $page = 1,
 		int $perPage = 10,
 		$customArgs = [],
-		$postStatus = [ 'confirmed', 'unconfirmed', 'canceled' , 'publish', 'inherit' ]
+		$postStatus = [ 'confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit' ]
 	): array {
 		$args = array(
-			'author'      => $user->ID,
-			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
-			'meta_query'  => array(
+			'author'         => $user->ID,
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+			'meta_query'     => array(
 				array(
 					'key'     => 'type',
 					'value'   => Timeframe::BOOKING_ID,
 					'compare' => '=',
 				),
 			),
-			'post_status' => $postStatus,
+			'post_status'    => $postStatus,
 			'posts_per_page' => $perPage,
-			'paged' => $page,
-			'orderby' => 'ID',
-			'order' => 'ASC',
+			'paged'          => $page,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
 		);
 		// Overwrite args with passed custom args
 		$args = array_merge( $args, $customArgs );
@@ -425,10 +424,9 @@ class Booking extends PostRepository {
 	/**
 	 * Gets all bookings that are affected by the given restriction.
 	 *
-	 *
 	 * @param \CommonsBooking\Model\Restriction $restriction
 	 *
-	 * @return \WP_Post[]|null
+	 * @return \CommonsBooking\Model\Booking[]|null
 	 * @throws Exception
 	 */
 	public static function getByRestriction( \CommonsBooking\Model\Restriction $restriction ): ?array {
@@ -449,16 +447,15 @@ class Booking extends PostRepository {
 	 *
 	 * @param $itemId
 	 * @param $locationId
-	 * @param $startDate
-	 * @param $endDate
-	 * @param null       $postId
+	 * @param int      $startDate
+	 * @param int      $endDate
+	 * @param int|null $postId
 	 *
-	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @return \CommonsBooking\Model\Booking[] empty array if none are found
 	 */
-	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): ?array {
+	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): array {
 
 		// Get existing bookings for defined parameters
-		/** @var \CommonsBooking\Model\Booking $existingBookingsinRange */
 		$existingBookingsInRange = self::getByTimerange(
 			$startDate,
 			$endDate,
@@ -467,15 +464,14 @@ class Booking extends PostRepository {
 		);
 
 		// remove the given $postID from result
-		      // remove the given $postID from result
-        foreach ( $existingBookingsInRange as $key => $val ) {
-            if ( $val->ID === $postId ) {
-                unset( $existingBookingsInRange[ $key ] );
-            }
-        }
+		// remove the given $postID from result
+		foreach ( $existingBookingsInRange as $key => $val ) {
+			if ( $val->ID === $postId ) {
+				unset( $existingBookingsInRange[ $key ] );
+			}
+		}
 
 		return $existingBookingsInRange;
-
 	}
 
 	/**
@@ -503,10 +499,48 @@ class Booking extends PostRepository {
 				$post = new \CommonsBooking\Model\Booking( $post );
 			}
 
+			/** @var \CommonsBooking\Model\Booking[] $posts */
 			return $posts;
 		}
 
 		return [];
 	}
 
+	/**
+	 * Returns bookings for location and / or item that don't have a corresponding timeframe
+	 * Will only consider bookings in the future
+	 * This function is used to find orphaned bookings due to moving a location.
+	 * It however will also show bookings whose corresponding timeframe has been shortened,
+	 * and therefore do not have a valid timeframe anymore.
+	 *
+	 * @param int|null $minTimestamp
+	 * @param int[]    $items
+	 * @param int[]    $locations
+	 *
+	 * @return \CommonsBooking\Model\Booking[]|null
+	 * @throws Exception
+	 */
+	public static function getOrphaned(
+		?int $minTimestamp = null,
+		array $items = [],
+		array $locations = []
+	): ?array {
+		$minTimestamp ??= time(); // default to now if not provided
+
+		$bookings = self::get( $locations, $items, null, true, $minTimestamp, [ 'confirmed' ] );
+
+		// check for bookings where location does not exist anymore
+		$bookings = array_filter(
+			$bookings,
+			function ( $booking ) {
+				if ( $booking->getBookableTimeFrame() ) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		);
+
+		return $bookings;
+	}
 }

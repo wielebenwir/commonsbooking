@@ -3,9 +3,7 @@
 
 namespace CommonsBooking\Repository;
 
-
 use CommonsBooking\Plugin;
-use Exception;
 use WP_Post;
 
 abstract class PostRepository {
@@ -17,8 +15,8 @@ abstract class PostRepository {
 	 * @param $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|mixed|WP_Post
-	 * @throws \Psr\Cache\CacheException
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \CommonsBooking\Psr\Cache\CacheException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostById( $postId ) {
 		$cacheItem = Plugin::getCacheItem();
@@ -31,9 +29,9 @@ abstract class PostRepository {
 				if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
 					$type = get_post_meta( $post->ID, 'type', true );
 					switch ( $type ) {
-						case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID: //booking
+						case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID: // booking
 							return new \CommonsBooking\Model\Booking( $post );
-						case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID: //booking canceled
+						case \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID: // booking canceled
 							return new \CommonsBooking\Model\Booking( $post );
 					}
 				}
@@ -54,10 +52,9 @@ abstract class PostRepository {
 					return new \CommonsBooking\Model\Booking( $post );
 				}
 			}
-			Plugin::setCacheItem( $post, [$postId] );
+			Plugin::setCacheItem( $post, [ $postId ] );
 
 			return $post;
 		}
 	}
-
 }

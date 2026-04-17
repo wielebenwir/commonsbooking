@@ -6,12 +6,14 @@ on:
       - 'master'
       - 'release/**'
     paths-ignore:
+      - 'docs/**'
       - '**.md'
       - '**.txt'
   pull_request:
     branches:
       - 'master'
-
+    paths-ignore:
+      - 'docs/**'
 
 env:
   DB_DATABASE: wordpress_test
@@ -21,33 +23,31 @@ env:
 jobs:
   e2e:
     name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     strategy:
-      fail-fast: false
       matrix:
         php:
-          - '7.4'
-          - '8.2'
+          - '8.1'
+          - '8.5'
         core:
           - {name: 'tested', version: 'null'}
-          - {name: 'minimum', version: 'WordPress/WordPress#5.6'}
+          - {name: 'minimum', version: 'WordPress/WordPress#5.9'}
           - {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: ./.github/actions/build-plugin
 
-      - name: Overwrite PHP versions & core for wp-env 
+      - name: Install wp-env systemwide
+        shell: bash
+        run: npm -g i @wordpress/env
+
+      - name: Overwrite PHP versions & core for wp-env
         if: matrix.core.version != 'null'
         run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
-      - name: setup wp env
-        run: npm run env:start
 
-      - name: Overwrite PHP version for wp-env
-        if: matrix.core.version == 'null'
-        run: jq '. + {"phpVersion":"${{ matrix.php }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
       - name: setup wp env
         run: npm run env:start
 
@@ -55,14 +55,51 @@ jobs:
         run: npm run cypress:setup
 
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           install: false
           config-file: tests/cypress/cypress.config.js
 
       - name: Upload Cypress screenshots
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cypress-screenshots-${{ matrix.php }}_${{ matrix.core.name }}
           path: ${{ github.workspace }}/tests/cypress/screenshots/
+
+      - name: Enable API
+        run: |
+          wp-env run tests-cli wp option patch insert commonsbooking_options_api api-activated on
+          wp-env run tests-cli wp option patch insert commonsbooking_options_api apikey_not_required on
+
+      - name: Checkout GBFS validator
+        uses: actions/checkout@v6
+        with:
+          repository: MobilityData/gbfs-validator
+          path: gbfs-validator
+
+      - name: Install GBFS validator dependencies
+        working-directory: gbfs-validator
+        run: yarn
+
+      - name: Run GBFS validator
+        working-directory: gbfs-validator
+        run: |
+          NODE_TLS_REJECT_UNAUTHORIZED=0 node ./gbfs-validator/cli.js \
+            -u http://localhost:1001/index.php?rest_route=/commonsbooking/v1/gbfs.json \
+            -s report.json
+
+      - name: Assert GBFS feed is valid
+        working-directory: gbfs-validator
+        run: jq -e '.summary.hasErrors == false' report.json
+
+  rerun-on-failure:
+    needs: e2e
+    if: failure() && fromJSON(github.run_attempt) < 3
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          GH_DEBUG: api
+        run: gh workflow run rerun.yml -r ${{ github.head_ref || github.ref_name }} -F run_id=${{ github.run_id }}

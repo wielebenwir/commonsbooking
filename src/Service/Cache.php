@@ -7,23 +7,35 @@ use CommonsBooking\View\Calendar;
 use CommonsBooking\Settings\Settings;
 use Exception;
 use CMB2_Field;
-use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
-use Symfony\Component\Cache\CacheItem;
+use CommonsBooking\Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
+use CommonsBooking\Symfony\Component\Cache\Adapter\RedisTagAwareAdapter;
+use CommonsBooking\Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use CommonsBooking\Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
+use CommonsBooking\Symfony\Component\Cache\Adapter\NullAdapter;
+use CommonsBooking\Symfony\Component\Cache\Exception\CacheException;
 
+/**
+ * Cache service wrapper around Symfony Cache Adapters.
+ * Fails silently on exceptions during read or write operations.
+ *
+ * Use via {@see Cache::getCache()}, {@see Cache::getCacheItem()} and {@see Cache::setCacheItem()}.
+ */
 trait Cache {
+
+
+	/**
+	 * TODO: Refactor to constant after PHP 8.2
+	 *
+	 * @var string
+	 */
+	private static string $clearCacheHook = COMMONSBOOKING_PLUGIN_SLUG . '_clear_cache';
 
 	/**
 	 * Returns cache item based on calling class, function and args.
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return mixed
-	 * @throws InvalidArgumentException
 	 */
 	public static function getCacheItem( $custom_id = null ) {
 		if ( WP_DEBUG ) {
@@ -31,34 +43,39 @@ trait Cache {
 		}
 
 		try {
-			/** @var CacheItem $cacheItem */
 			$cacheKey  = self::getCacheId( $custom_id );
 			$cacheItem = self::getCache()->getItem( $cacheKey );
 			if ( $cacheItem->isHit() ) {
 				return $cacheItem->get();
 			}
-		} catch (\Exception $exception) {}
+		} catch ( \CommonsBooking\Psr\Cache\CacheException $exception ) {
+			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
+		} catch ( Exception $exception ) {
+			commonsbooking_write_log( sprintf( 'Could not get cache item (params $custom_id = %s): message: %s, traceback %s', $custom_id, $exception->getMessage(), $exception->getTraceAsString() ) );
+		}
 
 		return false;
 	}
 
 	/**
 	 * Returns cache id, based on calling class, function and args.
-     *
-     * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
 	 *
-	 * @param null $custom_id
+	 * @param mixed|null $custom_id
 	 *
 	 * @return string
+	 * @since 2.7.2 added Plugin_Dir to Namespace to avoid conflicts on multiple instances on same server
+	 * @since 2.9.4 added support for multisite caches
 	 */
 	public static function getCacheId( $custom_id = null ): string {
 		$backtrace     = debug_backtrace()[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
-        $namespace     = COMMONSBOOKING_PLUGIN_DIR;
-		$namespace     .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
-		$namespace     .= '_' . $backtrace['function'];
+		$namespace     = COMMONSBOOKING_VERSION; // To account for changes in the installed plugin versions
+		$namespace    .= COMMONSBOOKING_PLUGIN_DIR; // To account for multiple instances on same server
+		$namespace    .= '_' . get_current_blog_id(); // To account for WP Multisite
+		$namespace    .= '_' . str_replace( '\\', '_', strtolower( $backtrace['class'] ) );
+		$namespace    .= '_' . $backtrace['function'];
 		$backtraceArgs = $backtrace['args'];
-		$namespace     .= '_' . serialize( $backtraceArgs );
+		$namespace    .= '_' . serialize( $backtraceArgs );
 		if ( $custom_id ) {
 			$namespace .= $custom_id;
 		}
@@ -73,8 +90,8 @@ trait Cache {
 	 */
 	private static function sanitizeArgsArray( $backtrace ) {
 		if ( array_key_exists( 'args', $backtrace ) &&
-		     count( $backtrace['args'] ) &&
-		     is_array( $backtrace['args'][0] )
+			count( $backtrace['args'] ) &&
+			is_array( $backtrace['args'][0] )
 		) {
 			if ( array_key_exists( 'taxonomy', $backtrace['args'][0] ) ) {
 				unset( $backtrace['args'][0]['taxonomy'] );
@@ -91,87 +108,183 @@ trait Cache {
 	}
 
 	/**
-	 * Creates cache based on user settings or defaults.
-	 * 
-	 * At the moment filesystem and redis cache are supported.
+	 * Returns an opinionated cache instance based on user settings or defaults.
+	 * Falls back to filebased cache with default settings on {@see \Psr\Cache\CacheException}.
+	 *
+	 * Cache location and cache adapter can be configured via user {@see Settings}.
 	 *
 	 * @param string $namespace
-	 * @param int $defaultLifetime
-	 * @param string|null $directory
+	 * @param int    $defaultLifetime
+	 * @param string $location Depending on the type of adapter, this can be a filesystem path, a REDIS DSN,...
 	 *
 	 * @return TagAwareAdapterInterface
 	 */
-	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $directory = null ): TagAwareAdapterInterface {
-		if ( $directory === null ){
-			$customCachePath = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' ) );
-			if ( $customCachePath ){
-				$directory = $customCachePath;
-			}
-			//Since this is the default cache path by Symfony we'd rather set it to null so that Symfony can take over with it's own default value.
-			else if ( $customCachePath == '/tmp/symfony-cache/' ) {
-				$directory = null;
-			}
-		}
+	public static function getCache( string $namespace = '', int $defaultLifetime = 0, string $location = '' ): TagAwareAdapterInterface {
 
-		if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on'){
+		if ( $location === '' ) {
+			$location = commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_location' ) );
+		}
+		$identifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' ) ?: 'filesystem';
+		try {
+			$adapter = self::getAdapter(
+				$identifier,
+				$namespace,
+				$defaultLifetime,
+				$location
+			);
+		} catch ( \CommonsBooking\Psr\Cache\CacheException $e ) {
+			// fall back to generic filesystem adapter, if it fails
 			try {
-				$adapter = new RedisTagAwareAdapter(
-					RedisAdapter::createConnection( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' ) ),
-					$namespace,
-					$defaultLifetime
-				);
-				return $adapter;
-			}
-			catch (Exception $e) {
-				commonsbooking_write_log( $e . 'Falling back to Filesystem adapter' );
-				set_transient( COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error', $e->getMessage() );
+				commonsbooking_write_log( $e->getMessage() . '\n' . 'Falling back to Filesystem adapter' );
+				$adapter = new FilesystemTagAwareAdapter( $namespace, $defaultLifetime );
+			} catch ( \Exception $e ) {
+				commonsbooking_write_log( 'Falling back to filesystem adapter failed with error message' . '\n' . $e->getMessage() . '\n' . 'Cache has been disabled' );
+				$adapter = self::getNullAdapter();
 			}
 		}
-		$adapter = new TagAwareAdapter(
-			new FilesystemAdapter( $namespace, $defaultLifetime, $directory )
-		);
 		return $adapter;
+	}
+
+	/**
+	 * Will get all the available adapters for the cache.
+	 * Adapters need to implement the AdapterInterface.
+	 * When we select it from a menu, we only need to pass the labels.
+	 *
+	 * @param bool $onlyLabels Will get associative array with adapter identifier as key and translated label as value
+	 * @return array
+	 */
+	public static function getAdapters( $onlyLabels = false ): array {
+		$adapters = [
+			'filesystem' => [
+				'label' => __( 'Filesystem', 'commonsbooking' ),
+				'factory' => function ( array $config ) {
+					$location = $config['cacheLocation'] ?: sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'symfony-cache';
+					if ( ! is_writable( $location ) ) {
+						throw new CacheException(
+							// translators: %s directory path of the operating system
+							sprintf( commonsbooking_sanitizeHTML( __( 'Directory %s could not be written to.', 'commonsbooking' ) ), $config['cacheLocation'] )
+						);
+					}
+					return new FilesystemTagAwareAdapter(
+						$config['namespace'],
+						$config['defaultLifetime'],
+						$config['cacheLocation']
+					);
+				},
+			],
+			'redis' => [
+				'label' => __( 'Redis', 'commonsbooking' ),
+				'factory' => function ( array $config ) {
+					return new RedisTagAwareAdapter(
+						RedisTagAwareAdapter::createConnection( $config['cacheLocation'] ),
+						$config['namespace'],
+						$config['defaultLifetime']
+					);
+				},
+			],
+			'disabled' => [
+				'label' => __( 'Disabled', 'commonsbooking' ),
+				'factory' => \Closure::fromCallable( [ self::class, 'getNullAdapter' ] ),
+			],
+		];
+
+		if ( $onlyLabels ) {
+			$labels = [];
+			foreach ( $adapters as $identifier => $label ) {
+				$labels[ $identifier ] = $label['label'];
+			}
+			return $labels;
+		} else {
+			return $adapters;
+		}
+	}
+
+	/**
+	 * This will get an adapter by the adapter identifier.
+	 *
+	 * @param $identifier
+	 * @param $namespace
+	 * @param $defaultLifetime
+	 * @param string $cacheLocation
+	 * @return TagAwareAdapterInterface
+	 * @throws \CommonsBooking\Psr\Cache\CacheException
+	 */
+	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
+		if ( self::isDisabled() ) {
+			return self::getNullAdapter();
+		}
+		$adapters = self::getAdapters();
+		if ( ! array_key_exists( $identifier, $adapters ) ) {
+			throw new CacheException( sprintf( 'Adapter %s not found', $identifier ) ); // Not translated bc this is a developer error
+		}
+		try {
+			return $adapters[ $identifier ]['factory'](
+				[
+					'namespace' => $namespace,
+					'defaultLifetime' => $defaultLifetime,
+					'cacheLocation' => $cacheLocation,
+				]
+			);
+		} catch ( Exception $e ) { // Symfony adapters do not always throw CacheException, for example the REDIS adapter can throw InvalidArgumentException
+			throw new CacheException( $e->getMessage() . $e->getTraceAsString() );
+		}
+	}
+
+	/**
+	 * Returns a NullAdapter wrapped in TagAwareAdapterInterface.
+	 * This is the adapter used when caching is disabled.
+	 *
+	 * @return TagAwareAdapterInterface
+	 */
+	private static function getNullAdapter(): TagAwareAdapterInterface {
+		return new TagAwareAdapter( new NullAdapter() );
 	}
 
 	/**
 	 * Saves cache item based on calling class, function and args.
 	 *
 	 * @param $value
-	 * @param array $tags
-	 * @param null $custom_id
+	 * @param array       $tags
+	 * @param mixed|null  $custom_id
 	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
-	 * @throws InvalidArgumentException
-	 * @throws \Psr\Cache\CacheException
 	 */
 	public static function setCacheItem( $value, array $tags, $custom_id = null, ?string $expirationString = null ): bool {
-		// Set a default expiration to make sure, that we get rid of stale items, if there are some
-		// too much space
-		$expiration = 604800;
+		try {
+			// Set a default expiration to make sure, that we get rid of stale items, if there are some
+			// too much space
+			$expiration = 604800; // 7 days
 
-		$tags = array_map('strval', $tags);
-		$tags = array_filter($tags);
+			$tags = array_map( 'strval', $tags );
+			$tags = array_filter( $tags );
 
-		if(!count($tags)) {
-			$tags = ['misc'];
+			if ( ! count( $tags ) ) {
+				$tags = [ 'misc' ];
+			}
+
+			if ( is_numeric( $expirationString ) ) {
+				$expiration = intval( $expirationString );
+			} elseif ( $expirationString === 'midnight' ) {
+				// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
+				$datetime   = current_time( 'timestamp' );
+				$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
+			}
+
+			$cache     = self::getCache( '', intval( $expiration ) );
+			$cacheKey  = self::getCacheId( $custom_id );
+			$cacheItem = $cache->getItem( $cacheKey );
+			$cacheItem->tag( $tags );
+			$cacheItem->set( $value );
+			$cacheItem->expiresAfter( intval( $expiration ) );
+
+			return $cache->save( $cacheItem );
+		} catch ( \CommonsBooking\Psr\Cache\CacheException $e ) {
+			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
+		} catch ( Exception $e ) {
+			commonsbooking_write_log( sprintf( 'Could not set cache item (params $val = %s, $tags = %s, $custom_id = %s, $expirationString = %s): message: %s, traceback: %s', $value, implode( ', ', $tags ), $custom_id, $expirationString, $e->getMessage(), $e->getTraceAsString() ) );
 		}
-
-		// if expiration is set to 'midnight' we calculate the duration in seconds until midnight
-		if ( $expirationString == 'midnight' ) {
-			$datetime   = current_time( 'timestamp' );
-			$expiration = strtotime( 'tomorrow', $datetime ) - $datetime;
-		}
-
-		$cache = self::getCache( '', intval( $expiration ) );
-		/** @var CacheItem $cacheItem */
-		$cacheKey  = self::getCacheId( $custom_id );
-		$cacheItem = $cache->getItem( $cacheKey );
-		$cacheItem->tag($tags);
-		$cacheItem->set( $value );
-		$cacheItem->expiresAfter(intval( $expiration ));
-
-		return $cache->save( $cacheItem );
+		return false;
 	}
 
 	/**
@@ -179,32 +292,50 @@ trait Cache {
 	 *
 	 * @param array $tags
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	public static function clearCache( array $tags = [] ) {
-		if(!count($tags)) {
+		if ( ! count( $tags ) ) {
 			self::getCache()->clear();
 		} else {
-			self::getCache()->invalidateTags($tags);
+			self::getCache()->invalidateTags( $tags );
 		}
 
 		// Delete expired cache items (only for Pruneable Interfaces)
-		if (is_a(self::getCache(),'Symfony\Component\Cache\PruneableInterface')) {
+		if ( is_a( self::getCache(), 'CommonsBooking\Symfony\Component\Cache\PruneableInterface' ) ) {
 			self::getCache()->prune();
 		}
 
-		set_transient("clearCacheHasBeenDone", true, 45);
+		set_transient( 'clearCacheHasBeenDone', true, 45 );
+	}
+
+	/**
+	 * Calls clearCache using WP Cron.
+	 * Why? ClearCache can be resource intensive on larger instances and should be offloaded.
+	 *
+	 * @param array $tags to clear cache for
+	 *
+	 * @return void
+	 */
+	public static function scheduleClearCache( array $tags = [] ) {
+		$event = wp_schedule_single_event( time(), self::$clearCacheHook, [ $tags ], true );
+		// TODO document why only on wp-error, why this can fail, why we don't re-try or do other things, instead of forcing the execution of this resource intensive task?
+		if ( is_wp_error( $event ) ) {
+			// runs the event right away, when scheduling fails
+			self::clearCache( $tags );
+		}
 	}
 
 	/**
 	 * Add js to frontend on cache clear.
+	 *
 	 * @return void
 	 */
 	public static function addWarmupAjaxToOutput() {
-		if(get_transient("clearCacheHasBeenDone")) {
-			delete_transient("clearCacheHasBeenDone");
-			wp_register_script( 'cache_warmup', '', array("jquery"), '', true );
-			wp_enqueue_script( 'cache_warmup'  );
+		if ( get_transient( 'clearCacheHasBeenDone' ) ) {
+			delete_transient( 'clearCacheHasBeenDone' );
+			wp_register_script( 'cache_warmup', '', array( 'jquery' ), '', true );
+			wp_enqueue_script( 'cache_warmup' );
 			wp_add_inline_script(
 				'cache_warmup',
 				'
@@ -226,107 +357,109 @@ trait Cache {
 			$table_posts = $wpdb->prefix . 'posts';
 
 			// First get all pages with cb shortcodes
-			$sql = "SELECT post_content FROM $table_posts WHERE 
-		      post_content LIKE '%cb_items%' OR
-			  post_content LIKE '%cb_locations%' OR
-		      post_content LIKE '%cb_map%' OR
-			  post_content LIKE '%cb_items_table%' OR
-			  post_content LIKE '%cb_bookings%'";
+			$sql   = "SELECT post_content FROM $table_posts WHERE
+			  post_content LIKE '%[cb_%]%' AND
+			  post_type = 'page' AND
+			  post_status = 'publish'";
 			$pages = $wpdb->get_results( $sql );
 
-			// Now extract shortcode calles incl. attributes
+			$shortcodeNamesToCache = array_keys( self::$cbShortCodeFunctions );
+
+			$regex = get_shortcode_regex( $shortcodeNamesToCache ); // robust shortcode-regex generator from WordPress
+
+			// Now extract shortcode calls including attributes and bodies
 			$shortCodeCalls = [];
-			foreach($pages as $page) {
-				// Get cb_ shortcodes
-				preg_match_all('/\[.*(cb\_.*)\]/i', $page->post_content, $cbShortCodes);
+			foreach ( $pages as $page ) {
+				preg_match_all( "/$regex/", $page->post_content, $shortcodeMatches, PREG_SET_ORDER );
 
-				// If there was found something between the brackets we continue
-				if(count($cbShortCodes) > 1) {
-					$cbShortCodes = $cbShortCodes[1];
+				// Process each matched shortcode
+				foreach ( $shortcodeMatches as $match ) {
+					$shortCode        = $match[2]; // shortcode name e.g., "cb_search"
+					$attributesString = isset( $match[3] ) ? $match[3] : ''; // e.g., " id=123"
 
-					// each result will be prepared and added as shortcode call
-					foreach ($cbShortCodes as $shortCode) {
-						list($shortCode, $args) = self::getShortcodeAndAttributes($shortCode);
-						$shortCodeCalls[][$shortCode] = $args;
-					}
+					$shortCodeCalls[] = [
+						'shortcode'  => $shortCode,
+						'attributes' => self::getShortcodeAndAttributes( $shortCode . $attributesString )[1],
+						'body'       => isset( $match[5] ) ? trim( $match[5] ) : '',
+					];
 				}
 			}
 
 			// Filter duplicate calls
-			$shortCodeCalls = array_intersect_key(
-				$shortCodeCalls,
-				array_unique(array_map('serialize', $shortCodeCalls))
-			);
+			$shortCodeCalls = array_unique( $shortCodeCalls, SORT_REGULAR );
 
-			self::runShortcodeCalls($shortCodeCalls);
-
-			wp_send_json("cache successfully warmed up");
-		} catch (\Exception $exception) {
-			wp_send_json("something went wrong with cache warm up");
+			self::runShortcodeCalls( $shortCodeCalls );
+		} catch ( \Exception $exception ) {
+			if ( WP_DEBUG ) {
+				wp_send_json(
+					array(
+						'success' => false,
+						'error'   => true,
+						'message' => sprintf( 'cache warmup failed with message: %s, trace: %s', $exception->getMessage(), $exception->getTraceAsString() ),
+					)
+				);
+			} else {
+				wp_send_json(
+					array(
+						'success' => false,
+						'error'   => true,
+						'message' => 'cache warmup failed',
+					)
+				);
+			}
 		}
+		wp_send_json(
+			array(
+				'success' => true,
+				'error'   => false,
+				'message' => 'cache successfully warmed up',
+			)
+		);
 	}
 
 	/**
-     * Renders little connections status information for REDIS database
-	 * @param array $field_args
+	 * Renders connection status information for the cache adapter settings view.
+	 *
+	 * @param array      $field_args
 	 * @param CMB2_Field $field
 	 */
-	public static function renderREDISConnectionStatus( array $field_args, CMB2_Field $field ){
+	public static function renderCacheStatus( array $field_args, CMB2_Field $field ) {
+		$success           = true;
+		$errorMessage      = '';
+		$adapterIdentifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' );
+		try {
+			$adapter = self::getAdapter(
+				$adapterIdentifier,
+				'',
+				0,
+				commonsbooking_sanitizeArrayorString( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_location' ) )
+			);
+		} catch ( CacheException $e ) {
+			$success      = false;
+			$errorMessage = commonsbooking_sanitizeArrayorString( $e->getMessage() );
+		}
 		?>
 		<div class="cmb-row cmb-type-text table-layout">
 			<div class="cmb-th">
-                <?php  echo __('Connection status:', 'commonsbooking'); ?>
-            </div>
+				<?php echo __( 'Connection status:', 'commonsbooking' ); ?>
+			</div>
 			<div class="cmb-th">
 				<?php
-				if (Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled') =='on'){
-					if (is_a(self::getCache(),'Symfony\Component\Cache\Adapter\RedisTagAwareAdapter')){
-						echo '<div style="color:green">';
-							echo __('Successfully connected to REDIS database!', 'commonsbooking');
-						echo '</div>';
-					}
-					else {
-						echo '<div style="color:red">';
-							echo get_transient(COMMONSBOOKING_PLUGIN_SLUG . '_adapter-error');
-						echo '</div>';
-					}
-				}
-				else {
+				if ( self::isDisabled() ) {
 					echo '<div style="color:orange">';
-						echo __('REDIS database not enabled','commonsbooking');
-					echo '</div>';
-				}
-				?>
-			</div>
-		</div>
-		<?php
-	}
-
-	public static function renderFilesystemStatus( array $field_ars, CMB2_Field $field){
-		?>
-		<div class="cmb-row cmb-type-text table-layout">
-			<div class="cmb-th">
-				Directory status:
-			</div>
-			<div class="cmb-th">
-				<?php
-				$cachePath = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' );
-				if (empty($cachePath)){
-					$cachePath = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'symfony-cache';
-				}
-				else {
-					$cachePath = realpath($cachePath) ?: $cachePath;
-				}
-				if (is_writable($cachePath)){
+					echo __( 'Cache was disabled through external setting. Please see the documentation for more information.', 'commonsbooking' );
+				} elseif ( $adapterIdentifier === 'disabled' ) {
+					echo '<div style="color:orange">';
+					echo __( 'Cache is disabled.', 'commonsbooking' );
+				} elseif ( $success ) {
 					echo '<div style="color:green">';
-					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s is writeable.', 'commonsbooking') ), $cachePath);
-					echo '</div>';
-				}
-				else {
+					echo __( 'Cache adapter successfully connected.', 'commonsbooking' );
+				} else {
 					echo '<div style="color:red">';
-					echo sprintf( commonsbooking_sanitizeHTML(__('Directory %s could not be written to.', 'commonsbooking') ), $cachePath);
-					echo '</div>';
+					echo $errorMessage;
 				}
+				echo '</div>';
+
 				?>
 			</div>
 		</div>
@@ -341,73 +474,101 @@ trait Cache {
 			</div>
 			<div class="cmb-td">
 				<button type="submit" id="clear-cache-button" class="button button-secondary" name="submit-cmb"
-				        value="clear-cache">
+						value="clear-cache">
 					<?php echo esc_html__( 'Clear Cache', 'commonsbooking' ); ?>
 				</button>
 			</div>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
-	 * Iterates through array and executes shortcodecalls.
-	 * @param $shortCodeCalls
+	 * Iterates through array and statically executes given functions.
+	 *
+	 * @param array<array{shortcode: string, attributes: array, body: string}> $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
 	 *
 	 * @return void
 	 */
-	private static function runShortcodeCalls($shortCodeCalls) {
-		foreach($shortCodeCalls as $shortcode) {
-			$shortcodeFunction = array_keys($shortcode)[0];
-			$attributes = $shortcode[$shortcodeFunction];
+	private static function runShortcodeCalls( array $shortCodeCalls ): void {
+		foreach ( $shortCodeCalls as $shortCodeCall ) {
+			$shortcodeFunction = $shortCodeCall['shortcode'];
+			$attributes        = $shortCodeCall['attributes'];
+			$shortcodeBody     = $shortCodeCall['body'];
 
-			if(array_key_exists($shortcodeFunction, self::$cbShortCodeFunctions)) {
-				list($class, $function) = self::$cbShortCodeFunctions[$shortcodeFunction];
-				$class::$function($attributes);
+			if ( array_key_exists( $shortcodeFunction, self::$cbShortCodeFunctions ) ) {
+				list($class, $function) = self::$cbShortCodeFunctions[ $shortcodeFunction ];
+
+				try {
+					$class::$function( $attributes, $shortcodeBody );
+				} catch ( Exception $e ) {
+					// Writes error to log anyway
+					error_log( (string) $e ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				}
 			}
 		}
 	}
 
 	/**
 	 * Extracts shortcode and attributes from shortcode string.
+	 *
 	 * @param $shortCode
 	 *
 	 * @return array
 	 */
-	private static function getShortcodeAndAttributes($shortCode) {
-		$shortCodeParts = explode(' ', $shortCode);
+	private static function getShortcodeAndAttributes( $shortCode ) {
+		$shortCodeParts = explode( ' ', $shortCode );
 		$shortCodeParts = array_map(
-			function($part) {
-				$trimmed = trim($part);
-				$trimmed = str_replace("\xc2\xa0", '', $trimmed);
+			function ( $part ) {
+				$trimmed = trim( $part );
+				$trimmed = str_replace( "\xc2\xa0", '', $trimmed );
 				return $trimmed;
-			}, $shortCodeParts);
+			},
+			$shortCodeParts
+		);
 
-		$shortCode = array_shift($shortCodeParts);
+		$shortCode = array_shift( $shortCodeParts );
 
 		$args = [];
-		foreach ($shortCodeParts as $part) {
-			$parts = explode('=', $part);
-			$key = $parts[0];
-			$value = "";
-			if(count($parts) > 1) {
+		foreach ( $shortCodeParts as $part ) {
+			$parts = explode( '=', $part );
+			$key   = $parts[0];
+			$value = '';
+			if ( count( $parts ) > 1 ) {
 				$value = $parts[1];
-				if(preg_match('/^".*"$/', $value)) {
-					$value = substr($value,1,-1);
+				if ( preg_match( '/^".*"$/', $value ) ) {
+					$value = substr( $value, 1, -1 );
 				}
 			}
 
-			$args[$key] = $value;
+			$args[ $key ] = $value;
 		}
 
-		return [$shortCode, $args];
+		return [ $shortCode, $args ];
 	}
 
 	private static $cbShortCodeFunctions = [
-		"cb_items" => array( \CommonsBooking\View\Item::class, 'shortcode' ),
+		'cb_items' => array( \CommonsBooking\View\Item::class, 'shortcode' ),
 		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
-		"cb_locations" => array( \CommonsBooking\View\Location::class, 'shortcode' ),
-		"cb_map" => array( MapShortcode::class, 'execute' ),
-		'cb_items_table' => array( Calendar::class, 'renderTable' )
+		'cb_locations' => array( \CommonsBooking\View\Location::class, 'shortcode' ),
+		'cb_map' => array( MapShortcode::class, 'execute' ),
+		'cb_search' => array( \CommonsBooking\Map\SearchShortcode::class, 'execute' ),
+		'cb_items_table' => array( Calendar::class, 'renderTable' ),
 	];
 
+	/**
+	 * Tells if the cache is disabled externally.
+	 * This is usually the case, when WP_DEBUG is enabled or the commonsbooking_disableCache filter is
+	 * used as an override. This is sometimes necessary when the filesystem adapter,
+	 * which is the default adapter, crashes upon initialization. (Causes fatal error).
+	 *
+	 * When the user has selected "disabled" as cache adapter,
+	 * this will return false bc this function only considers external disablement.
+	 *
+	 * @return bool
+	 */
+	private static function isDisabled(): bool {
+		$isDisabled = WP_DEBUG;
+
+		return apply_filters( 'commonsbooking_disableCache', $isDisabled );
+	}
 }

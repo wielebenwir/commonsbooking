@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Exception\BookingCodeException;
+use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Wordpress;
 use Exception;
 
@@ -37,11 +38,16 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	const META_OVERBOOKED_DAYS = 'days-overbooked';
 
-    public const ERROR_TYPE = 'BookingValidationFailed';
+	/**
+	 * Usually not set, only set when changing a timeframe orphans the current booking.
+	 */
+	const META_LAST_TIMEFRAME = 'last-connected-timeframe';
+
+	public const ERROR_TYPE = 'BookingValidationFailed';
 
 	/**
 	 * Booking states.
-     *
+	 *
 	 * @var string[]
 	 */
 	public static $bookingStates = [
@@ -52,7 +58,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Returns the booking code as a string.
-     *
+	 *
 	 * @return mixed
 	 */
 	public function getBookingCode() {
@@ -60,37 +66,34 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 
-    /**
-     * Determines if a current booking can be cancelled or not by the current user.
-     * Bookings which do not belong to the current user or the user is not admin of cannot be edited.
+	/**
+	 * Determines if a current booking can be cancelled or not by the current user.
+	 * Bookings which do not belong to the current user or the user is not admin of cannot be edited.
 	 *
-     * Returns true if booking can be cancelled.
-     * False if booking may not be cancelled.
+	 * Returns true if booking can be cancelled.
+	 * False if booking may not be cancelled.
 	 *
-     * @return bool
-     */
-    public function canCancel():bool {
-        if ($this->isPast() ){
-            return false;
-        }
+	 * @return bool
+	 */
+	public function canCancel(): bool {
+		if ( $this->isPast() ) {
+			return false;
+		}
 
-        if ( intval( $this->post_author ) === get_current_user_id() ){
-            return true;
-        }
-        elseif (commonsbooking_isCurrentUserAllowedToEdit($this->post)){
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    }
+		if ( intval( $this->post_author ) === get_current_user_id() ) {
+			return true;
+		} elseif ( commonsbooking_isCurrentUserAllowedToEdit( $this->post ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Cancel the current booking and send a cancellation mail to the user.
 	 * Because we are directly updating the database, we need another function to flush the database cache (wp_cache_flush()) to test this function.
 	 */
-	public function cancel() : void {
+	public function cancel(): void {
 
 		// check if booking has ended
 		if ( $this->isPast() ) {
@@ -122,7 +125,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Returns rendered booking code for using in email-template (booking confirmation mail).
 	 * If booking code is not set, it returns an empty string.
-     *
+	 *
 	 * @return string
 	 * @throws Exception
 	 */
@@ -144,7 +147,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Returns true if booking codes shall be shown in frontend.
-     *
+	 *
 	 * @return bool
 	 */
 	public function showBookingCodes(): bool {
@@ -154,7 +157,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	/**
 	 * Returns the corresponding Timeframe object for booking.
 	 * If no timeframe is found, it returns null.
-     *
+	 *
 	 * @return null|\CommonsBooking\Model\Timeframe
 	 * @throws Exception
 	 */
@@ -180,7 +183,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Assigns relevant meta fields from related bookable timeframe to booking.
 	 * We have to do this, because bookings used to be just a type of timeframe post.
 	 * This leads to a lot of post meta for bookings that only make sense in a timeframe context.
-     *
+	 *
 	 * @throws Exception
 	 */
 	public function assignBookableTimeframeFields() {
@@ -219,7 +222,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 					date( 'Y-m-d', $this->getStartDate() )
 				);
 			} catch ( BookingCodeException $e ) {
-				//do nothing, just set the booking code to null
+				// do nothing, just set the booking code to null
 				$bookingCode = null;
 			}
 
@@ -244,8 +247,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $previous ) {
 			$startDate = $this->getStartDateDateTime()->modify( '-2 minutes' )->getTimestamp();
 			$endDate   = $this->getStartDateDateTime()->modify( '-1 minute' )->getTimestamp();
-		}
-		else {
+		} else {
 			$startDate = $this->getEndDateDateTime()->modify( '+1 minute' )->getTimestamp();
 			$endDate   = $this->getEndDateDateTime()->modify( '+2 minutes' )->getTimestamp();
 		}
@@ -257,13 +259,11 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			[],
 			[ 'confirmed' ]
 		);
-		if (count($adjacentBookings) == 1){
-			return reset($adjacentBookings);
-		}
-		elseif (count($adjacentBookings) > 1){
-			throw new Exception("Overlapping booking detected.");
-		}
-		else {
+		if ( count( $adjacentBookings ) == 1 ) {
+			return reset( $adjacentBookings );
+		} elseif ( count( $adjacentBookings ) > 1 ) {
+			throw new Exception( 'Overlapping booking detected.' );
+		} else {
 			return null;
 		}
 	}
@@ -277,9 +277,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @throws Exception
 	 */
 	public function getAdjacentBookings(): ?array {
-		$previousAdjacent = $this->adjacent();
+		$previousAdjacent  = $this->adjacent();
 		$followingAdjacent = $this->adjacent( false );
-		return array_filter([$previousAdjacent, $followingAdjacent]);
+		return array_filter( [ $previousAdjacent, $followingAdjacent ] );
 	}
 
 	/**
@@ -290,27 +290,27 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @param WP_User $user
 	 * @return array
 	 */
-	public function getBookingChain(WP_User $user): array {
-		$bookingChain = [];
+	public function getBookingChain( WP_User $user ): array {
+		$bookingChain    = [];
 		$previousBooking = $this->adjacent();
-		if ($previousBooking && $previousBooking->getUserData()->ID != $user->ID){
+		if ( $previousBooking && $previousBooking->getUserData()->ID != $user->ID ) {
 			$previousBooking = null;
 		}
 		$followingBooking = $this->adjacent( false );
-		if ($followingBooking && $followingBooking->getUserData()->ID != $user->ID){
+		if ( $followingBooking && $followingBooking->getUserData()->ID != $user->ID ) {
 			$followingBooking = null;
 		}
-		while ($previousBooking != null){
-			$bookingChain[] = $previousBooking;
+		while ( $previousBooking != null ) {
+			$bookingChain[]  = $previousBooking;
 			$previousBooking = $previousBooking->adjacent();
-			if ($previousBooking && $previousBooking->getUserData()->ID != $user->ID){
+			if ( $previousBooking && $previousBooking->getUserData()->ID != $user->ID ) {
 				$previousBooking = null;
 			}
 		}
-		while ($followingBooking != null){
-			$bookingChain[] = $followingBooking;
+		while ( $followingBooking != null ) {
+			$bookingChain[]   = $followingBooking;
 			$followingBooking = $followingBooking->adjacent( false );
-			if ($followingBooking && $followingBooking->getUserData()->ID != $user->ID){
+			if ( $followingBooking && $followingBooking->getUserData()->ID != $user->ID ) {
 				$followingBooking = null;
 			}
 		}
@@ -356,6 +356,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * Gets the corresponding location object for this booking.
 	 * If no location is found, it returns null.
 	 * This should not happen, because a booking is always based on a location. But this might happen if the location was deleted.
+	 *
 	 * @return ?Location
 	 * @throws Exception
 	 */
@@ -377,20 +378,21 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @param int $rawDaysOverbooked The raw days a booking spans over a locked / holiday.
 	 * @return int The amount of those days that were not counted towards the maximum booking length.
 	 */
-	public function setOverbookedDays(int $rawDaysOverbooked): int {
-		$location = $this->getLocation();
-		$countLockdaysInRange = $location->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range') === 'on';
-		$countLockdaysMaximum = $location->getMeta(COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum');
+	public function setOverbookedDays( int $rawDaysOverbooked ): int {
+		$location             = $this->getLocation();
+		$countLockdaysInRange = $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range' ) === 'on';
+		// Evaluate to 0 even if getMeta returns '' (valid but non-existent meta-key for the post) or false (post-id invalid)
+		$countLockdaysMaximum = intval( $location->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum' ) );
 
-		if (!$countLockdaysInRange) {
+		if ( ! $countLockdaysInRange ) {
 			$days = $rawDaysOverbooked;
-		} elseif ($countLockdaysMaximum == 0) {
+		} elseif ( $countLockdaysMaximum === 0 ) {
 			$days = 0;
 		} else {
-			$days = max(0, $rawDaysOverbooked - $countLockdaysMaximum);
+			$days = max( 0, $rawDaysOverbooked - $countLockdaysMaximum );
 		}
 
-		update_post_meta($this->post->ID, self::META_OVERBOOKED_DAYS, $days);
+		update_post_meta( $this->post->ID, self::META_OVERBOOKED_DAYS, $days );
 		return $days;
 	}
 
@@ -406,8 +408,19 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( ! $metaField ) {
 			return 0;
 		}
-		return intval ( $metaField );
+		return intval( $metaField );
 	}
+
+	public function getFormattedStartDate(): string {
+		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
+		return date_i18n( $date_format, $this->getStartDate() );
+	}
+
+	public function getFormattedEndDate(): string {
+		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
+		return date_i18n( $date_format, $this->getRawEndDate() );
+	}
+
 	/**
 	 * Get the booking date in a human-readable format.
 	 * This is used in the booking confirmation email as a template tag.
@@ -415,17 +428,16 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return string
 	 */
 	public function formattedBookingDate(): string {
-		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 
-		$startdate = date_i18n( $date_format, $this->getStartDate() );
-		$enddate   = date_i18n( $date_format, $this->getRawEndDate() );
+		$startdate = $this->getFormattedStartDate();
+		$enddate   = $this->getFormattedEndDate();
 
 		if ( $startdate === $enddate ) {
 			/* translators: %s = date in WordPress defined format */
-			return sprintf( sanitize_text_field( __( ' on %s ', 'commonsbooking' ) ), $startdate );
+			return sprintf( sanitize_text_field( __( 'on %s', 'commonsbooking' ) ), $startdate );
 		} else {
 			/* translators: %1 = startdate, %2 = enddate in WordPress defined format */
-			return sprintf( sanitize_text_field( __( ' from %1$s until %2$s ', 'commonsbooking' ) ), $startdate, $enddate );
+			return sprintf( sanitize_text_field( __( 'from %1$s until %2$s', 'commonsbooking' ) ), $startdate, $enddate );
 		}
 	}
 
@@ -443,7 +455,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		$repetitionStart = $this->getStartDate();
-		$repetitionEnd = $this->getEndDate();
+		$repetitionEnd   = $this->getEndDate();
 
 		$date_start = date_i18n( $date_format, $repetitionStart );
 		$time_start = date_i18n( $time_format, $repetitionStart );
@@ -455,11 +467,14 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 		$grid = $this->getGrid();
 
+		// the pickup and return time is not obvious from the booking. For example, if the
+		// booking spans over two different slot based timeframes we would need to save one start-time and end-time for the pickup and one for the return
+		// this is why we consult the underlying timeframe to get the slot duration. (See #1865)
 		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
-			if ( $timeframeGridSize ) {
-				$grid = $timeframeGridSize;
+			if ( is_numeric( $timeframeGridSize ) ) {
+				$grid = intval( $timeframeGridSize );
 			}
 		}
 
@@ -477,14 +492,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return string
 	 */
-
 	public function returnDatetime(): string {
 		$date_format = commonsbooking_sanitizeHTML( get_option( 'date_format' ) );
 		$time_format = commonsbooking_sanitizeHTML( get_option( 'time_format' ) );
 
 		$date_end   = date_i18n( $date_format, $this->getRawEndDate() );
 		$time_end   = date_i18n( $time_format, $this->getRawEndDate() + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
-		$time_start = date_i18n( $time_format, strtotime( $this->getStartTime() ) );
+		$time_start = date_i18n( $time_format, $this->getStartDate() );
 
 		if ( $this->isFullDay() ) {
 			return $date_end;
@@ -495,8 +509,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		if ( $grid === 0 ) { // if grid is set to slot duration
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
-			if ( $timeframeGridSize ) {
-				$grid = $timeframeGridSize;
+			if ( is_numeric( $timeframeGridSize ) ) {
+				$grid = intval( $timeframeGridSize );
 			}
 		}
 
@@ -515,9 +529,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * TODO: Clarify why this implementation is different from the one in the parent class.
 	 *
-	 * @return mixed|string
+	 * @return int
 	 */
-	public function getStartDate() : int {
+	public function getStartDate(): int {
 		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
 	}
 
@@ -528,17 +542,17 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * TODO: Clarify why this implementation is different from the one in the parent class.
 	 *
-	 * @return mixed|string
+	 * @return int
 	 */
-	public function getEndDate() : int{
-		return intval($this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ));
+	public function getEndDate(): int {
+		return intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_END ) );
 	}
 
 	/**
 	 * Returns comment field text.
 	 * The booking comment is a field that can be filled in by the user when booking (when enabled).
 	 * The content of the field is not publicly visible and is only visible to the admin(s) and the user who made the booking.
-     *
+	 *
 	 * @return string
 	 */
 	public function returnComment(): string {
@@ -563,7 +577,8 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		} elseif ( $this->isCancelled() ) {
 			if ( $cancellationTime ) {
 				$cancellationTimeFormatted = Helper::FormattedDateTime( $cancellationTime );
-				$noticeText                = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
+				// translators: %s cancellation time as formatted date-time
+				$noticeText = sprintf( commonsbooking_sanitizeHTML( __( 'Your booking has been canceled at %s.', 'commonsbooking' ) ), $cancellationTimeFormatted );
 			} else {
 				$noticeText = commonsbooking_sanitizeHTML( __( 'Your booking has been canceled', 'commonsbooking' ) );
 			}
@@ -577,13 +592,74 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	}
 
 	/**
+	 * Will check if a backend booking is valid.
+	 * Throws a TimeframeInvalidException containing the error message if the booking is not valid.
+	 *
+	 * @return true if booking is valid
+	 * @throws TimeframeInvalidException
+	 */
+	public function isValid(): bool {
+		if ( $this->getStartDate() > $this->getEndDate() ) {
+			throw new TimeframeInvalidException( 'Start date is after end date' );
+		}
+
+		try {
+			$item = $this->getItem();
+			if ( ! $item ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( __( 'Item not found', 'commonsbooking' ) );
+		}
+
+		try {
+			$location = $this->getLocation();
+			if ( ! $location ) {
+				throw new Exception();
+			}
+		} catch ( Exception $e ) {
+			throw new TimeframeInvalidException( __( 'Location not found', 'commonsbooking' ) );
+		}
+
+		$timeframe = $this->getBookableTimeFrame();
+		if ( $timeframe === null ) {
+			throw new TimeframeInvalidException( __( 'There is no timeframe for this booking. Please create a timeframe first.', 'commonsbooking' ) );
+		}
+
+		// validate if overlapping bookings exist
+		$overlappingBookings = \CommonsBooking\Repository\Booking::getExistingBookings(
+			$item->ID,
+			$location->ID,
+			$this->getStartDate(),
+			$this->getEndDate(),
+			$this->ID
+		);
+
+		if ( count( $overlappingBookings ) >= 1 ) {
+			foreach ( $overlappingBookings as $overlappingBooking ) {
+				$overlappingBookingLinks[] = $overlappingBooking->getFormattedEditLink();
+			}
+
+			$formattedOverlappingLinks = implode( '<br>', $overlappingBookingLinks );
+
+			throw new TimeframeInvalidException(
+				__( 'There are one ore more overlapping bookings within the chosen timerange', 'commonsbooking' ) . PHP_EOL .
+				__( 'Please adjust the start- or end-date.', 'commonsbooking' ) . PHP_EOL .
+				// translators: %s list of urls to one or more booking pages
+				sprintf( __( 'Affected Bookings: %s', 'commonsbooking' ), commonsbooking_sanitizeHTML( $formattedOverlappingLinks ) ),
+			);
+		}
+		return true;
+	}
+
+	/**
 	 * Render HTML Link to booking.
 	 * This is not just the URL but a complete HTML link with corresponding text.
 	 * This function is used in the booking confirmation email via template tags.
 	 *
 	 * @TODO: optimize booking link to support different permalink settings or set individual slug (e.g. booking instead of cb_timeframe)
 	 *
-	 * @param null $linktext
+	 * @param string|null $linktext
 	 *
 	 * @return string
 	 */
@@ -594,7 +670,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			$linktext = esc_html__( 'Link to your booking', 'commonsbooking' );
 		}
 
-		return sprintf( '<a href="%1$s">%2$s</a>', $this->bookingLinkUrl() , $linktext );
+		return sprintf( '<a href="%1$s">%2$s</a>', $this->bookingLinkUrl(), $linktext );
 	}
 
 	/**
@@ -621,12 +697,34 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param WP_User|null $user
 	 * @return bool
 	 */
-	public function isUserPrivileged( WP_User $user = null): bool {
-		$user ??= $this->getUserData();
-		return parent::isUserPrivileged($user);
+	public function isBookingOwnerPrivileged(): bool {
+		$user = $this->getUserData();
+		if ( ! $user instanceof \WP_User ) {
+			return false; // no user / deleted user: not privileged
+		}
+
+		return parent::isUserPrivileged( $user );
+	}
+
+	/**
+	 * Will indicate if booking is orphaned meaning that the booking is not connectable to a bookable timeframe.
+	 * This can happen when a bookable timeframe is deleted but the booking is still in the database,
+	 * when a bookable timeframe has a location changed and the booking is still in the database,
+	 * or when a bookable timeframe is changed to a non-bookable timeframe and the booking is still in the database.
+	 *
+	 * This can also happen when a booking is created without a bookable timeframe, e.g. when a booking is created through the backend.
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function isOrphaned(): bool {
+		if ( $this->getBookableTimeFrame() === null ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -654,16 +752,15 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 */
 	public function termsApply( $term ): bool {
 		try {
-			$item = $this->getItem();
+			$item     = $this->getItem();
 			$location = $this->getLocation();
-		}
-		catch ( Exception $e ) {
-			//terms are not applicable if either location or item is not found
+		} catch ( Exception $e ) {
+			// terms are not applicable if either location or item is not found
 			return false;
 		}
-		$isInItemCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::$postType . 's_category', $item->getPost() );
-		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::$postType . 's_category', $location->getPost() );
-		return ( $isInItemCat || $isInLocationCat);
+		$isInItemCat     = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName(), $item->getPost() );
+		$isInLocationCat = has_term( $term, \CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName(), $location->getPost() );
+		return ( $isInItemCat || $isInLocationCat );
 	}
 
 	/**
@@ -678,32 +775,27 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return int
 	 */
-	public function getDuration(): int{
+	public function getDuration(): int {
 		$interval = null;
 		if ( $this->isUnconfirmed() || $this->isConfirmed() ) {
-			$interval = $this->getStartDateDateTime()->diff($this->getEndDateDateTime()->modify("+5 min"));
-		}
-		elseif ($this->isCancelled()){
-			$startDate = $this->getStartDateDateTime();
+			$interval = $this->getStartDateDateTime()->diff( $this->getEndDateDateTime()->modify( '+5 min' ) );
+		} elseif ( $this->isCancelled() ) {
+			$startDate        = $this->getStartDateDateTime();
 			$cancellationDate = $this->getCancellationDateDateTime();
-			//count as 0 days when booking is cancelled before it has started
-			if ($cancellationDate < $startDate){
+			// count as 0 days when booking is cancelled before it has started
+			if ( $cancellationDate < $startDate ) {
 				return 0;
 			}
-			$interval  = $startDate->diff( $cancellationDate );
-		}
-		else {
-			//Booking has no valid status
+			$interval = $startDate->diff( $cancellationDate );
+		} else {
+			// Booking has no valid status
 			return 0;
 		}
-		if ($interval === null){
-			//no interval created
-			return 0;
-		}
+
 		$days = $interval->d;
-		//when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
-		if ($interval->h > 0){
-			$days++;
+		// when we have already moved into the next day for more one hour,it is counted as another day even if it is not completed
+		if ( $interval->h > 0 ) {
+			++$days;
 		}
 		return $days - $this->getOverbookedDays();
 	}
@@ -755,40 +847,89 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		);
 	}
 
-    /**
-     * Returns formatted user info based on the template field in settings -> templates
-     *
-     * @return void
-     */
-    public static function getFormattedUserInfo() {
-        return commonsbooking_parse_template(
-            Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
-        );
-    }
+	/**
+	 * Will return if a booking is affected by a total breakdown ( the booked item is not usable ).
+	 * Because since #866 not all total breakdowns are cancelled, we need a way to make sure that the user
+	 * will not be notified about their upcoming bookings or asked to give feedback because they might not have used the item.
+	 *
+	 * @return bool true if booking is affected by a total breakdown
+	 */
+	public function hasTotalBreakdown(): bool {
+		$itemID       = $this->getItem()->ID;
+		$locationID   = $this->getLocation()->ID;
+		$restrictions = \CommonsBooking\Repository\Restriction::get(
+			[ $locationID ],
+			[ $itemID ],
+			null,
+			true,
+			$this->getStartDate()
+		);
+		foreach ( $restrictions as $restriction ) {
+			if (
+				$restriction->getType() == Restriction::TYPE_REPAIR ) {
+				$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $restriction );
+				foreach ( $bookings as $booking ) {
+					if ( $booking->ID == $this->ID ) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
-    /**
-     * Returns formatted backend edit link of current booking
-     *
-     * @return string
-     */
-    public function getFormattedEditLink() {
-        return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
-    }
+	/**
+	 * Returns formatted user info based on the template field in settings -> templates
+	 *
+	 * @return mixed
+	 */
+	public static function getFormattedUserInfo() {
+		return commonsbooking_parse_template(
+			Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'user_details_template' )
+		);
+	}
 
-    /**
-     * Updates internal booking comment by adding new comment in a new line
-     *
-     * @param  string $comment
-     * @param  int $userID
-     * @return void
-     */
-    public function appendToInternalComment( string $comment, int $userID ) {
-        $existing_comment = $this->getMeta( 'internal-comment' );
-        $dateTimeInfo = current_datetime()->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
-        $meta_string = $dateTimeInfo . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
-        $new_comment = $existing_comment . "\n" . $meta_string . $comment . "\n--------------------";
-        update_post_meta( $this->ID, 'internal-comment', $new_comment );
-    }
+	/**
+	 * Returns formatted backend edit link of current booking
+	 *
+	 * @return string
+	 */
+	public function getFormattedEditLink() {
+		return '<a href=" ' . get_edit_post_link( $this->ID ) . '"> Booking #' . $this->ID . ' : ' . $this->formattedBookingDate() . ' | User: ' . $this->getUserData()->user_nicename . '</a>';
+	}
+
+	/**
+	 * Will return a location where an orphaned booking can be moved to. This is
+	 * the new location of the timeframe the booking was previously attached to.
+	 *
+	 * @return ?Location
+	 */
+	public function getMoveableLocation(): ?Location {
+		if ( ! $this->isOrphaned() ) {
+			return null;
+		}
+		$attachedTFMeta = intval( get_post_meta( $this->ID, self::META_LAST_TIMEFRAME, true ) );
+		if ( empty( $attachedTFMeta ) ) {
+			throw new Exception( 'No attached timeframe found for orphaned booking.' );
+		}
+		$attachedTF = new \CommonsBooking\Model\Timeframe( $attachedTFMeta );
+		return $attachedTF->getLocation();
+	}
+
+	/**
+	 * Updates internal booking comment by adding new comment in a new line
+	 *
+	 * @param  string $comment
+	 * @param  int    $userID
+	 * @return void
+	 */
+	public function appendToInternalComment( string $comment, int $userID ) {
+		$existing_comment = $this->getMeta( 'internal-comment' );
+		$dateTimeInfo     = current_datetime()->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+		$meta_string      = $dateTimeInfo . ' / ' . get_the_author_meta( 'user_login', $userID ) . "\n";
+		$new_comment      = $existing_comment . "\n" . $meta_string . $comment . "\n--------------------";
+		update_post_meta( $this->ID, 'internal-comment', $new_comment );
+	}
 
 
 	/**
@@ -796,7 +937,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	public function isConfirmed() : bool {
+	public function isConfirmed(): bool {
 		return $this->post_status === 'confirmed';
 	}
 
@@ -805,7 +946,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @return bool
 	 */
-	public function isUnconfirmed() : bool {
+	public function isUnconfirmed(): bool {
 		return $this->post_status === 'unconfirmed';
 	}
 
@@ -814,12 +955,12 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param   \CommonsBooking\Model\Booking[]  $bookings
-	 * @return void
+	 * @param \CommonsBooking\Model\Booking[] $bookings
+	 * @return int
 	 */
-	public static function getTotalDuration ( array $bookings ): int {
+	public static function getTotalDuration( array $bookings ): int {
 		$totalDurationOfDays = 0;
-		foreach ($bookings as $booking){
+		foreach ( $bookings as $booking ) {
 			$totalDurationOfDays += $booking->getDuration();
 		}
 		return $totalDurationOfDays;
@@ -833,23 +974,22 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param Booking[] $bookings The booking to check
+	 * @param Booking[]   $bookings The booking to check
 	 * @param array|false $terms The terms that the bookings are filtered against
 	 * @return array|null
 	 */
-	public static function filterTermsApply ( array $bookings, $terms ): ?array {
-		if ( ! empty($terms) ){
-			$filteredBookingsArray = array_filter($bookings,
-				fn( Booking $booking ) => $booking->termsApply($terms)
+	public static function filterTermsApply( array $bookings, $terms ): ?array {
+		if ( ! empty( $terms ) ) {
+			$filteredBookingsArray = array_filter(
+				$bookings,
+				fn( Booking $booking ) => $booking->termsApply( $terms )
 			);
-			if ( ! empty ($filteredBookingsArray) ){
+			if ( ! empty( $filteredBookingsArray ) ) {
 				return $filteredBookingsArray;
-			}
-			else {
+			} else {
 				return null;
 			}
-		}
-		else {
+		} else {
 			return $bookings;
 		}
 	}
@@ -860,12 +1000,13 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param   array     $bookings
-	 * @param WP_User  $user
+	 * @param   array   $bookings
+	 * @param WP_User $user
 	 * @return array|null
 	 */
-	public static function filterForUser ( array $bookings, WP_User $user): ?array {
-		 return array_filter( $bookings,
+	public static function filterForUser( array $bookings, WP_User $user ): ?array {
+		return array_filter(
+			$bookings,
 			fn( Booking $booking ) => $booking->getUserData()->ID == $user->ID
 		);
 	}
@@ -873,9 +1014,10 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 
 	/**
 	 * Will get the status of a booking as a human-readable string
+	 *
 	 * @return string
 	 */
-	public function getStatus() : string {
+	public function getStatus(): string {
 		if ( $this->isConfirmed() ) {
 			return __( 'Confirmed', 'commonsbooking' );
 		} elseif ( $this->isUnconfirmed() ) {

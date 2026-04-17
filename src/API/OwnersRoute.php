@@ -3,12 +3,12 @@
 
 namespace CommonsBooking\API;
 
-
 use CommonsBooking\Repository\UserRepository;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_User;
 
 /**
  * Endpoint for item/location owners data
@@ -33,7 +33,7 @@ class OwnersRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'assets/schemas/commons-api/commons-api.owners.schema.json';
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.owners.schema.json';
 
 	/**
 	 * Returns raw data collection.
@@ -52,28 +52,34 @@ class OwnersRoute extends BaseRoute {
 		return $data;
 	}
 
-	public function prepare_item_for_response( $owner, $request ): stdClass {
+	/**
+	 * @param WP_User         $owner
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function prepare_item_for_response( $owner, $request ): WP_REST_Response {
 		$ownerObject       = new stdClass();
-		$ownerObject->id   = "" . $owner->ID;
+		$ownerObject->id   = '' . $owner->ID;
 		$ownerObject->name = get_user_meta( $owner->ID, 'first_name', true ) . ' ' . get_user_meta( $owner->ID, 'last_name', true );
 		$ownerObject->url  = $owner->user_url;
 
-//        if($items = \CommonsBooking\Repository\Item::getByUserId($owner->ID, true)) {
-//            $ownerObject->items = [];
-//            $itemsRoute = new ItemsRoute();
-//            foreach($items as $item) {
-//                $ownerObject->items[] = $itemsRoute->prepare_item_for_response($item, new \WP_REST_Request());
-//            }
-//        }
-//
-//        if($locations = \CommonsBooking\Repository\Location::getByUserId($owner->ID, true)) {
-//            $ownerObject->locations = [];
-//            $locationsRoute = new LocationsRoute();
-//            foreach($locations as $location) {
-//                $ownerObject->locations[] = $locationsRoute->prepare_item_for_response($location, new \WP_REST_Request());
-//            }
-//        }
-		return $ownerObject;
+		// if($items = \CommonsBooking\Repository\Item::getByUserId($owner->ID, true)) {
+		// $ownerObject->items = [];
+		// $itemsRoute = new ItemsRoute();
+		// foreach($items as $item) {
+		// $ownerObject->items[] = $itemsRoute->prepare_item_for_response($item, new \WP_REST_Request());
+		// }
+		// }
+		//
+		// if($locations = \CommonsBooking\Repository\Location::getByUserId($owner->ID, true)) {
+		// $ownerObject->locations = [];
+		// $locationsRoute = new LocationsRoute();
+		// foreach($locations as $location) {
+		// $ownerObject->locations[] = $locationsRoute->prepare_item_for_response($location, new \WP_REST_Request());
+		// }
+		// }
+		return new WP_REST_Response( $ownerObject );
 	}
 
 
@@ -81,7 +87,7 @@ class OwnersRoute extends BaseRoute {
 	 * Get a single item
 	 */
 	public function get_item( $request ): WP_REST_Response {
-		//get parameters from request
+		// get parameters from request
 		$params         = $request->get_params();
 		$owner          = get_user_by( 'id', $params['id'] );
 		$data           = new stdClass();
@@ -104,8 +110,10 @@ class OwnersRoute extends BaseRoute {
 		return new WP_REST_Response( $data, 200 );
 	}
 
+	/**
+	 * TODO investigate why we overwrite this method
+	 */
 	public function prepare_response_for_collection( $itemdata ) {
-		return $itemdata;
+		return $itemdata; // @phpstan-ignore return.type
 	}
-
 }

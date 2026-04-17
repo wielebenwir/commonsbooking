@@ -1,15 +1,15 @@
 === CommonsBooking ===
 Contributors: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
-Donate link: https://www.wielebenwir.de/verein/unterstutzen  
+Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
-Requires at least: 5.6  
-Tested up to: 6.4.1
-Stable Tag: 2.9
-Requires PHP: 7.4
-License: GPLv2 or later  
-License URI: http://www.gnu.org/licenses/gpl-2.0.html  
+Requires at least: 5.9
+Tested up to: 6.9
+Stable Tag: 2.10.10
+Requires PHP: 8.1
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-CommonsBooking is a plugin for management and booking of common goods. 
+CommonsBooking is a plugin for the management and booking of common goods.
 
 ## Description
 
@@ -21,8 +21,8 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 * Items can be assigned to different locations for the duration of a timeframe, each with their own contact information. You can display all locations via shortcode as an interactive map.
 * Simple booking process:  bookable timeframes can be configured with hourly slots oder daily slots.
-* Auto-accept bookings: A registered user can book items without the need for administration. 
-* Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking. 
+* Auto-accept bookings: A registered user can book items without the need for administration.
+* Codes: The plugin automatically generates booking codes, which are used at the station to validate the booking.
 * Managers can set holidays or repair slots to prevent items from beeing booked.
 
 
@@ -34,19 +34,20 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 **Plugin websites**
 
 * [Official Website](https://commonsbooking.org)
-* [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues) 
+* [Official Documentation](https://commonsbooking.org/documentation)
+* [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug)
 
 
 ## Installation
 
-### Using The WordPress Dashboard 
+### Using The WordPress Dashboard
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Search for 'commonsbooking'
 3. Click 'Install Now'
 4. Activate the plugin on the Plugin dashboard
 
-### Uploading in WordPress Dashboard 
+### Uploading in WordPress Dashboard
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Navigate to the 'Upload' area
@@ -64,10 +65,11 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Frequently Asked Questions
 
-### Where can i find help/report bugs?
+### Where can I find help/report bugs?
 
+* [Documentation](https://commonsbooking.org/documentation)
 * [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues)
-* [Support](https://commonsbooking.org/kontakt/)
+* [Support](https://commonsbooking.org/contact/)
 
 
 ## Screenshots
@@ -78,6 +80,112 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.10.10 (23.03.2026)
+FIXED: Two users booking same item possible when two users tried to book the same time period (thx @nelarsen)
+FIXED: Location specific sending of booking start / end reminder (for location owners) always sent email, not only when it is checked at location (thx @poilu)
+FIXED: CommonsAPI would issue response in broken format (@thx nelarsen)
+
+### 2.10.9 (19.02.2026)
+
+ENHANCED: Add object context to commonbooking_tag filter hook
+FIXED: Filter widgets not updating in cb_bookings shortcode
+FIXED: Bookings not shown when timeframes had manual repetition, slot based timeframes
+FIXED: CB-Manager couldn't see Restrictions / Timeframes created by other users
+FIXED: commonsbooking_booking filter hook can be used to empty booking list now without crashing
+FIXED: Missing value could break map
+FIXED: Links to the documentation (thx @sbomsdorf)
+
+### 2.10.8 (27.01.2026)
+ENHANCED: Password protecting an item will now also password protect the booking calendar
+ENHANCED: Post IDs and models will now be passed to action hooks
+FIXED: Cache breaking after update
+FIXED: Incompatibility with MP3 Audio Player – Music Player, Podcast Player & Radio by Sonaar. The MP3 media player plugin also needs to be at least at version 5.10
+FIXED: Cache can now be disabled through filter hook before plugin starts
+FIXED: WP 6.9 compatibility
+UPDATED: Dependencies
+
+### 2.10.7 (16.10.2025)
+ENHANCED: Restrictions can now be created for all items / locations again
+ENHANCED: Lead time for bookings now mentioned in footnote under calendar
+FIXED: Timeframes that should block a few hours per day would block a whole day
+FIXED: Booking export would cut off when trying to export too many bookings
+
+### 2.10.6 (22.08.2025)
+FIXED: Removed deferred cache clearing in order to avoid double booking
+FIXED: Wrong pickup / return time displayed (thx @janschoenherr)
+
+### 2.10.5 (03.07.2025)
+ADDED: Filter Hook to change pages displayed in mobile calendar
+ENHANCED: Cache can now be disabled (not recommended)
+ENHANCED: Cache can now be configured to warm up regularly via cronjob
+FIXED: CB Manager not able to access timeframes of type "blocked"
+FIXED: Calendar now using translated text instead of German text
+UPDATED: Dependencies
+
+### 2.10.4 (25.04.2025)
+FIXED: cb_bookings shortcode crashing when location was deleted
+FIXED: CB Manager can no longer create holiday timeframe for all items in instance
+FIXED: HTML field attributes (thx @janschoenherr)
+
+### 2.10.3 (19.03.2025)
+FIXED: Cache not warming up correctly (thx @nelarsen)
+FIXED: Backend booking list crashing when user was deleted
+UPDATED: Dependencies
+Thanks to @janschoenherr and @nelarsen for maintenance / warning fixes.
+
+### 2.10.2 (14.01.2025)
+
+FIXED: Language features used that were incompatible with PHP 7.4
+
+### 2.10.1 (09.01.2025)
+FIXED: Fatal error when loading map with certain timeframe configurations
+UPDATED: Dependencies
+
+### 2.10 (09.01.2025)
+ADDED: When changing the location of an item you will now be given the option to move the bookings to the new location.
+ENHANCED: Export of timeframes no longer time out.
+ENHANCED: Total breakdowns cancelling all bookings can now be disabled.
+ENHANCED: Map filter groups are now easier to configure.
+ENHANCED: Loading the map should now be significantly faster.
+ENHANCED: Greatly simplified booking codes; they will also not be generated for the past anymore. (thx @nelarsen)
+ENHANCED: Show past bookings in [cb_bookings] overview.
+FIXED: Booking codes now truly random. (thx @nelarsen)
+FIXED: Map sometimes not rendering on certain aspects ratios. (thx @kmohrf)
+FIXED: Saving posts should now be faster.
+FIXED: Cache warmup not working in some cases.
+FIXED: In certain overlapping timeframe configurations timeframes were not shown as bookable. (thx @nelarsen)
+FIXED: Disabled restriction creation for all items / locations because of a missing permission check.
+UPDATED: Dependencies
+
+
+### 2.9.4 (17.07.2024)
+FIXED: Plugin not usable in multisite mode
+
+### 2.9.3 (31.05.2024)
+ADDED: Download ics file directly from booking details page
+ENHANCED: Taxonomies will now be shown in item / location overview in the backend
+ENHANCE: If iCalendar attachments are enabled: The cancellation email will now contain a calendar event that will cancel the booking in the user's calendar
+FIXED: Restriction emails button not working in some instances
+FIXED: Unexpected behavior when booking expires before confirmation
+FIXED: German translation and typos
+
+### 2.9.2 (26.04.2024)
+ADDED: You can now configure reminder emails that are sent to the location before the start and before the end of a booking. (thanks @poilu)
+ENHANCED: You can now disable sending a copy of the booking confirmation email to the location.
+ENHANCED: New filter hooks for metaboxes
+FIXED: Excerpt of item now shown in map popup
+FIXED: Issue with special characters in booking email (Thanks @nelarsen)
+FIXED: Admin Booking was not sending emails for CB_Manager
+FIXED: API will even return response if the schema is not met and WP_DEBUG is enabled
+FIXED: Incompatibility with "Futurio Extra" plugin
+
+### 2.9.1 (17.03.2024)
+FIXED: Timeframe export was not working
+FIXED: GBFS Schema was inaccesible
+FIXED: API Routes not working when WP_DEBUG is enabled
+FIXED: cb_search map not working on some servers
+ENHANCED: Minor string changes
 
 ### 2.9 (23.02.2024)
 NEW: You can now schedule automated emails with booking codes to be sent to stations in custom intervals. (Thanks @printpagestopdf)
@@ -115,7 +223,7 @@ ENHANCED: Made items, locations & taxonomies searchable (thanks @flegfleg)
 ### 2.8.3 (25.08.2023)
 ENHANCED: Booking codes are now available for timeframes without a configured end-date
 ENHANCED: Added option to change directory of filesystem cache
-ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/docs/grundlagen/rechte-des-commonsbooking-manager/ )
+ENHANCED: Fixed permission system to allow for creation of custom roles ( see  https://commonsbooking.org/documentation/grundlagen/rechte-des-commonsbooking-manager/ )
 ENHANCED: Added filter to allow selecting other roles to be assigned to items / locations
 FIXED: Location map view not working since 2.8.1
 FIXED: Booking offset should work again
@@ -173,7 +281,7 @@ FIXED: Location map sometimes not properly rendered on location edit screen
 ### 2.7.1 (05.05.2022)
 FIXED: Fixed Fatal error when PHP Version is < 7.4 / we recommend updating you PHP version to 7.4. because 7.3 is no longer maintained. Please ask you hosting provider for support.
 FIXED: Migration did not work properly
-ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}} 
+ADDED: You can now add html text-snippets before and after an email template tag. This allows to add e.g. a label that is only shown when the template variable has content. Syntax: Add optional text in square brackets [xxx] directly before and after the template tag. Example: {{[optional text before ]item:post_title[optional text after]}}
 ENHANCED: Unified filter hooks. New hook prefix is commonsbooking_xxx . Please check your custom filters.
 
 ### 2.7 (26.04.2022)
@@ -191,18 +299,18 @@ FIXED: Issues with already past bookings where cancellation was still possible
 FIXED: Wrong time displayed in cancellation messages
 
 ### 2.6.12 (27.02.2022)
-FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails 
+FIXED: Fixes issue that prevents user meta data (.e.g phone number etc.) to be shown in booking emails
 
 ### 2.6.11 (23.02.2022)
-FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version. 
+FIXED: Some users reported that bookings were no longer possible. After clicking on "continue to booking check" the expected booking page was not loaded. Since this only occurred on some systems and sporadically, it was not possible to determine the cause in the individual cases. However, our analysis showed that it was likely related to a Wordpress function for validating user input. We have adjusted this in the current version.
 
 ### 2.6.10 (20.02.2022)
-FIXED: With certain time frame settings it could happen that the calendar was only displayed starting with the next month. This is now fixed. 
+FIXED: With certain time frame settings it could happen that the calendar was only displayed starting with the next month. This is now fixed.
 FIXED: The map on the location page always showed a default location. It now shows the correct location.
-FIXED: In some systems, bookings could not be executed because the booking confirmation page did not load.   
+FIXED: In some systems, bookings could not be executed because the booking confirmation page did not load.
 
 ### 2.6.9 (18.02.2022)
-FIXED: When an a href link was included in the site pickup instructions, it caused the booking calendar to not load correctly. 
+FIXED: When an a href link was included in the site pickup instructions, it caused the booking calendar to not load correctly.
 
 ### 2.6.8 (14.02.2022)
 FIXED: fixed sanitzing issues
@@ -217,7 +325,7 @@ FIXED: fixed issue of missing user data in booking and restriction related email
 MODIFIED: Internal refactoring of codebase
 
 ### 2.6.4 (10.02.2022)
-FIXED: fixed issue that produces an error when sending restriction mails in some environments and cases 
+FIXED: fixed issue that produces an error when sending restriction mails in some environments and cases
 
 ### 2.6.3 (10.02.2022)
 FIXED: fixed issue with classic editor and gps button on location editor
@@ -232,7 +340,7 @@ FIXED: Map geo-coordinates are not updated after saving location without page re
 Notice: Version 2.5 was only a release candidate is skipped as a stable release to to technial reasons
 
 #### New
-* Bookings as a separate menu item, better overview in the backend. The bookings are no longer listed under menu item "time frame" They moved to  a new menu item "Bookings". 
+* Bookings as a separate menu item, better overview in the backend. The bookings are no longer listed under menu item "time frame" They moved to  a new menu item "Bookings".
 * Dashboard: Revision of the dashboard. Now shows today's pickups and returns.
 * Reminder emails: Users will receive reminder and feedback emails before and after a booking.* Manage Usage Restrictions: Restrictions can now be managed. These can be notifications of broken or missing parts or the declaration of a total breakdown (e.g. due to a repair). Bookings that are within the affected time frame are automatically cancelled in case of a total breakdown and an info email is sent to users and CB managers. Notices are displayed in the booking calendar and users can be notified about changes.
 * A map view can now be set for the location page. The setting can be activated via the location editor.
@@ -268,15 +376,15 @@ Notice: Version 2.5 was only a release candidate is skipped as a stable release 
 * FIXED: New booking codes could not be generated in some cases.
 
 
-### 2.4.4 (26.04.2021) 
+### 2.4.4 (26.04.2021)
 * NEW: Added category filter in items and locations shortcode. You can use [cb_items category_slug=category_slug] to show items by a single category.
 * NEW: Added the p attribute to cb_items shortcode, so you can display a single item by using [cb_items p=POSTID]
-* CHANGED: Item and location list in select dropdown in timeframe editor is not restricted to published elements anymore. 
+* CHANGED: Item and location list in select dropdown in timeframe editor is not restricted to published elements anymore.
 * ENHANCED: template improvements: not available notice now in separate line in item/location lists
 * ENHANCED: pickupinstructions now inclueded in the location section on the booking page (changed template: booking-single.php)
 * ENHANCED: inlcuded pickupinstructions in the following templates: location-calendar-header.php / location-single-meta.php
 * ENHANCED: Changed the standard image thumbnail size in listings
-* FIXED: If multiple timeframes are set the calendar only showed the last timeframe in booking calendar. 
+* FIXED: If multiple timeframes are set the calendar only showed the last timeframe in booking calendar.
 * FIXED: Fixed some issues with map category filter
 * FIXED: fixed interaction issues with calender when using timeslots. pickup field resets when selecting pickup time (fixed issues #629 and #619)
 
@@ -297,7 +405,7 @@ Notice: Version 2.5 was only a release candidate is skipped as a stable release 
 * FIXED: calendar not shown in edge / explorer in some versions. Thanks to @danielappelt for fixing it
 * FIXED: Added tooltips in map configuration
 * FIXED: Multiple categories are not imported during migration.
-* TEMPLATES: modification in templates: booking-single-form.php and booking-single.php 
+* TEMPLATES: modification in templates: booking-single-form.php and booking-single.php
 * ENHANCED: Make CommonsBooking Menu entry fit better in WP Admin für Wordpress 5.7 #593
 
 ### 2.4.2 (15.02.2021)
@@ -308,7 +416,7 @@ Notice: Version 2.5 was only a release candidate is skipped as a stable release 
 
 ### 2.4.0 (12.02.2021)
 * NEW: Booking list for frontend users now available (my bookings)
-* NEW: Booking Widget now available (Widget display links to my bookings, login, logout) 
+* NEW: Booking Widget now available (Widget display links to my bookings, login, logout)
 * MODIFIED: Permissions changed so that only administrators can assign CBManagers to locations and items. #478
 * ENHANCED: Implementent message if backend users try to open preview of timeframes other than bookings
 * ENHANCED: Interface and layout map filter optimized

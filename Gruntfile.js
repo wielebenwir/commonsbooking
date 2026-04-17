@@ -1,61 +1,70 @@
 module.exports = function (grunt) {
-	const pkg = grunt.file.readJSON('package.json')
-	const nodePackagesDestDir = 'assets/packaged/'
+	const pkg = grunt.file.readJSON('package.json');
+	const nodePackagesDestDir = 'assets/packaged/';
 	grunt.util.linefeed = '\n';
-	grunt.initConfig(
-		{
+	grunt.initConfig({
 		pkg: pkg,
 		'dart-sass': {
 			admin: {
-				files: [{
-					expand: true,
-					src: ['*.scss'],
-					ext: '.css',
-					cwd: 'assets/admin/sass',
-					dest: 'assets/admin/css',
-				}],
+				files: [
+					{
+						expand: true,
+						src: ['*.scss'],
+						ext: '.css',
+						cwd: 'assets/admin/sass',
+						dest: 'assets/admin/css',
+					},
+				],
 			},
 			themes: {
-				files: [{
-					expand: true,
-					src: ['*.scss'],
-					ext: '.css',
-					cwd: 'assets/public/sass/themes',
-					dest: 'assets/public/css/themes',
-				}],
+				files: [
+					{
+						expand: true,
+						src: ['*.scss'],
+						ext: '.css',
+						cwd: 'assets/public/sass/themes',
+						dest: 'assets/public/css/themes',
+					},
+				],
 			},
 			public: {
-				files: [{
-					expand: true,
-					src: ['*.scss'],
-					ext: '.css',
-					cwd: 'assets/public/sass',
-					dest: 'assets/public/css',
-				}],
+				files: [
+					{
+						expand: true,
+						src: ['*.scss'],
+						ext: '.css',
+						cwd: 'assets/public/sass',
+						dest: 'assets/public/css',
+					},
+				],
 			},
 			adminDev: {
 				options: {
 					outputStyle: 'expanded',
 				},
-				files: [{
-					expand: true,
-					src: ['*.scss'],
-					ext: '.css',
-					cwd: 'assets/admin/sass',
-					dest: 'assets/admin/css',
-				}],
+				files: [
+					{
+						expand: true,
+						src: ['*.scss'],
+						ext: '.css',
+						cwd: 'assets/admin/sass',
+						dest: 'assets/admin/css',
+					},
+				],
 			},
 			publicDev: {
 				options: {
 					outputStyle: 'expanded',
 				},
-				files: [{
-					expand: true,
-					src: ['*.scss'],
-					ext: '.css',
-					cwd: 'assets/public/sass',
-					dest: 'assets/public/css',
-				}],
+				files: [
+					{
+						expand: true,
+						src: ['*.scss'],
+						ext: '.css',
+						cwd: 'assets/public/sass',
+						dest: 'assets/public/css',
+					},
+				],
 			},
 		},
 		// concat and minify our JS
@@ -64,7 +73,7 @@ module.exports = function (grunt) {
 				options: {
 					beautify: true,
 					mangle: false,
-					compress: false
+					compress: false,
 				},
 				files: {
 					'assets/public/js/public.js': [
@@ -74,27 +83,30 @@ module.exports = function (grunt) {
 					'assets/admin/js/admin.js': [
 						/* add path to js dependencies (ie in node_modules) here */
 						'assets/admin/js/src/*.js',
-						'node_modules/feiertagejs/build/feiertage.umd.js'
-					]
-				}
+						'node_modules/feiertagejs/build/feiertage.umd.cjs',
+					],
+				},
 			},
 			dist: {
 				options: {
 					mangle: true,
-					compress: true
+					compress: true,
 				},
 				files: {
-					'assets/public/js/public.min.js': [
-						'assets/public/js/public.js'
+					'assets/public/js/public.js': [
+						/* add path to js dependencies (ie in node_modules) here */
+						'assets/public/js/src/**/*.js',
 					],
-					'assets/admin/js/admin.min.js': [
-						'assets/admin/js/admin.js'
+					'assets/admin/js/admin.js': [
+						/* add path to js dependencies (ie in node_modules) here */
+						'assets/admin/js/src/*.js',
+						'node_modules/feiertagejs/build/feiertage.umd.cjs',
 					],
-					'assets/global/js/vendor.min.js': [
-						'assets/global/js/vendor.js'
-					]
-				}
-			}
+					'assets/public/js/public.min.js': ['assets/public/js/public.js'],
+					'assets/admin/js/admin.min.js': ['assets/admin/js/admin.js'],
+					'assets/global/js/vendor.min.js': ['assets/global/js/vendor.js'],
+				},
+			},
 		},
 		copy: {
 			main: {
@@ -121,13 +133,13 @@ module.exports = function (grunt) {
 						dest: nodePackagesDestDir + 'leaflet-spin/',
 						expand: true,
 						cwd: 'node_modules/leaflet-spin/',
-						src: '**'
+						src: '**',
 					},
 					{
 						dest: nodePackagesDestDir + 'spin-js/',
 						expand: true,
 						cwd: 'node_modules/spin.js/',
-						src: 'spin.min.js'
+						src: 'spin.min.js',
 					},
 					{
 						dest: nodePackagesDestDir + 'commons-search/',
@@ -141,69 +153,89 @@ module.exports = function (grunt) {
 						cwd: 'node_modules/vue/dist/',
 						src: 'vue.runtime.global.prod.js',
 					},
-                    {
-                        dest: 'includes/commons-api-json-schema/',
-                        expand: true,
-                        cwd: 'node_modules/commons-api/',
-                        src: '**schema.json',
-                    }
+					{
+						dest: 'includes/commons-api-json-schema/',
+						expand: true,
+						cwd: 'node_modules/commons-api/',
+						src: '**schema.json',
+					},
+					{
+						dest: nodePackagesDestDir + 'select2/',
+						expand: true,
+						cwd: 'node_modules/select2/dist/',
+						src: ['**/select2.min.js', '**/select2.min.css'],
+					},
+					{
+						dest: nodePackagesDestDir + 'moment/',
+						expand: true,
+						cwd: 'node_modules/moment/min/',
+						src: ['moment.min.js'],
+					},
 				],
 			},
+		},
+		clean: {
+			dist: [
+				'assets/packaged/*',
+				'assets/admin/css/*',
+				'assets/public/css/*',
+				'assets/public/js/public.*',
+				'assets/global/js/vendor.*',
+				'assets/admin/js/admin.*',
+			],
 		},
 		babel: {
 			options: {
 				sourceMap: true,
-				presets: ['@babel/preset-env']
+				presets: ['@babel/preset-env'],
 			},
 			dist: {
 				files: {
-					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.js'
-				}
-			}
+					'assets/global/js/vendor.js': 'node_modules/shufflejs/dist/shuffle.js',
+				},
+			},
 		},
 		watch: {
 			'dart-sass': {
 				files: [
 					'assets/admin/sass/**/*.scss',
 					'assets/global/sass/**/*.scss',
-					'assets/public/sass/**/*.scss'
+					'assets/public/sass/**/*.scss',
 				],
-				tasks: [
-					'dart-sass:adminDev', 'dart-sass:publicDev'
-				]
+				tasks: ['dart-sass:adminDev', 'dart-sass:publicDev'],
+				options: {
+					livereload: true,
+				},
 			},
 			js: {
 				files: [
 					'assets/public/js/src/**/*.js',
 					'assets/global/js/src/**/*.js',
-					'assets/admin/js/src/**/*.js'
+					'assets/admin/js/src/**/*.js',
 				],
-				tasks: [
-					'uglify:dev', 'babel'
-				],
-                options: {
-                    livereload: true
-                }
-			}
-		}
+				tasks: ['uglify:dev', 'babel'],
+				options: {
+					livereload: true,
+				},
+			},
+		},
 	});
 
 	// Load tasks
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-dart-sass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-babel');
-	grunt.registerTask('node_versions', 'Generates a version map for dependencies', function() {
+	grunt.registerTask('node_versions', 'Generates a version map for dependencies', function () {
 		const deps = pkg.dependencies;
 		const versionMap = Object.fromEntries(
-			Object
-				.entries(deps)
-				.map(([name, version]) => [name, version.replace(/^\D/, '')])
-		)
-		grunt.file.write(nodePackagesDestDir + 'dist.json', JSON.stringify(versionMap))
-	})
+			Object.entries(deps).map(([name, version]) => [name, version.replace(/^\D/, '')]),
+		);
+		grunt.file.write(nodePackagesDestDir + 'dist.json', JSON.stringify(versionMap));
+	});
 
 	// Register tasks
 	grunt.registerTask('default', [
@@ -227,11 +259,12 @@ module.exports = function (grunt) {
 		'watch',
 	]);
 	grunt.registerTask('dist', [
+		'clean',
 		'dart-sass:admin',
 		'dart-sass:public',
 		'dart-sass:themes',
-		'uglify:dist',
 		'babel',
+		'uglify:dist',
 		'copy',
 		'node_versions',
 	]);

@@ -1,0 +1,95 @@
+name: Benchmark
+
+on:
+  pull_request:
+    paths-ignore:
+    - 'docs/**'
+    branches:
+    - 'master'
+
+jobs:
+  benchmark:
+    if: ${{ !startsWith(github.head_ref, 'dependabot') }}
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+
+      # Not needed on self-hosted runners
+      # - name: Set up MySQL
+      #  run: |
+      #    sudo /etc/init.d/mysql start
+
+      # This is needed for the WordPress test suite installation ( bin/install-wp-tests.sh)
+      # - name: Install SVN
+      #  run: sudo apt install -y subversion
+
+      # - uses: shivammathur/setup-php@v2
+      #  with:
+      #    php-version: 8.4
+      #    extensions: uopz
+
+      - name: Install test dependencies
+        run: |
+          bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
+          composer install --prefer-dist --no-progress
+
+      - name: Run benchmark on PR branch
+        run: |
+          composer dump-autoload -o
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/pr-benchmark.txt
+
+      - name: Checkout master branch
+        uses: actions/checkout@v6
+        with:
+          ref: master
+
+      - name: Install test dependencies (again for master branch)
+        run: |
+          bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
+          composer install --prefer-dist --no-progress
+
+      - name: Run benchmark on master branch
+        run: |
+          composer dump-autoload -o
+          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/master-benchmark.txt
+
+      - name: Prepare benchmark comment
+        id: prepare-comment
+        run: |
+          {
+            echo "## Benchmark Results"
+            echo ""
+            echo "### PR Branch Results"
+            echo "\`\`\`"
+            cat /tmp/pr-benchmark.txt
+            echo "\`\`\`"
+            echo ""
+            echo "### Master Branch Results"
+            echo "\`\`\`"
+            cat /tmp/master-benchmark.txt
+            echo "\`\`\`"
+          } > benchmark-comment.md
+          cat benchmark-comment.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Find existing benchmark comment
+        uses: peter-evans/find-comment@v4
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Benchmark Results'
+
+      - name: Create or update benchmark comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-file: benchmark-comment.md
+          edit-mode: replace

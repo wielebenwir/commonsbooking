@@ -8,12 +8,10 @@ updates:
 
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
+    open-pull-requests-limit: 10
     directory: "/"
     schedule:
       interval: "weekly"
-    allow:
-      - dependency-name: "*"
-        dependency-type: "production"
     commit-message:
       prefix: "npm"
       include: "scope"
@@ -23,9 +21,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    allow:
-      - dependency-name: "*"
-        dependency-type: "production"
     commit-message:
       prefix: "composer"
       include: "scope"

@@ -12,17 +12,17 @@ class BookingList {
 
         this.startDate = document.querySelector('.filter-startdate input');
         jQuery('#startDate-datepicker').datepicker({
-            dateFormat: "yy-mm-dd",
-            altFormat: "@",
-            altField: "#startDate"
+            dateFormat: 'yy-mm-dd',
+            altFormat: '@',
+            altField: '#startDate',
         });
-        jQuery('#startDate-datepicker').datepicker("setDate", new Date());
+        jQuery('#startDate-datepicker').datepicker('setDate', new Date());
 
         this.endDate = document.querySelector('.filter-enddate input');
         jQuery('#endDate-datepicker').datepicker({
-            dateFormat: "yy-mm-dd",
-            altFormat: "@",
-            altField: "#endDate"
+            dateFormat: 'yy-mm-dd',
+            altFormat: '@',
+            altField: '#endDate',
         });
 
         this.filters = {
@@ -31,8 +31,8 @@ class BookingList {
             locations: [],
             startDate: [],
             endDate: [],
-            states: []
-        }
+            states: [],
+        };
 
         this.shuffle = new Shuffle(element);
 
@@ -48,162 +48,174 @@ class BookingList {
      */
     _resetListParams() {
         this.listParams = new FormData();
-        this.listParams.append("_ajax_nonce", cb_ajax_bookings.nonce);
-        this.listParams.append("action", "cb_bookings_data");
-        this.listParams.append("page", 1);
-    };
+        this.listParams.append('_ajax_nonce', cb_ajax_bookings.nonce);
+        this.listParams.append('action', 'cb_bookings_data');
+        this.listParams.append('page', 1);
+    }
 
     _bindEventListeners() {
         this._onFilterReset = this._handleFilterReset.bind(this);
         const $filterReset = jQuery('#reset-filters');
-        if($filterReset) $filterReset.on('click', this._onFilterReset);
+        if ($filterReset) $filterReset.on('click', this._onFilterReset);
 
         this._onFilter = this.filter.bind(this);
         const $filter = jQuery('#filter');
-        if($filter) $filter.on('click', this._onFilter);
+        if ($filter) $filter.on('click', this._onFilter);
 
         this._onUserChange = this._handleUserChange.bind(this);
         const userSelect = document.querySelectorAll('.filter-users select');
-        if(userSelect) userSelect.item(0).addEventListener('change', this._onUserChange);
+        if (userSelect) userSelect.item(0).addEventListener('change', this._onUserChange);
 
         this._onItemChange = this._handleItemChange.bind(this);
         const itemSelect = document.querySelectorAll('.filter-items select');
-        if(itemSelect) itemSelect.item(0).addEventListener('change', this._onItemChange);
+        if (itemSelect) itemSelect.item(0).addEventListener('change', this._onItemChange);
 
         this._onLocationChange = this._handleLocationChange.bind(this);
         const locationSelect = document.querySelectorAll('.filter-locations select');
-        if(locationSelect) locationSelect.item(0).addEventListener('change', this._onLocationChange);
+        if (locationSelect)
+            locationSelect.item(0).addEventListener('change', this._onLocationChange);
 
         this._onStatusChange = this._handleStatusChange.bind(this);
         const statusSelect = document.querySelectorAll('.filter-statuss select');
-        if(statusSelect) statusSelect.item(0).addEventListener('change', this._onStatusChange);
+        if (statusSelect) statusSelect.item(0).addEventListener('change', this._onStatusChange);
 
         this._onStartDateChange = this._handleStartDateChange.bind(this);
         const $startDatePicker = jQuery('#startDate-datepicker');
-        if($startDatePicker) {
-            $startDatePicker.datepicker("option", "onSelect", this._onStartDateChange);
+        if ($startDatePicker) {
+            $startDatePicker.datepicker('option', 'onSelect', this._onStartDateChange);
             $startDatePicker.change(this._onStartDateChange);
         }
 
         this._onEndDateChange = this._handleEndDateChange.bind(this);
         const $endDatePicker = jQuery('#endDate-datepicker');
-        if($endDatePicker) {
-            $endDatePicker.datepicker("option", "onSelect", this._onEndDateChange);
+        if ($endDatePicker) {
+            $endDatePicker.datepicker('option', 'onSelect', this._onEndDateChange);
             $endDatePicker.change(this._onEndDateChange);
         }
         this._onMenuButton = this._handleMenuButton.bind(this);
         const $menuButton = jQuery('#cb-bookingdropbtn');
-        if($menuButton) $menuButton.on('click', this._onMenuButton);
-    };
+        if ($menuButton) $menuButton.on('click', this._onMenuButton);
+    }
 
     _handleStartDateChange() {
         this.filters.startDate = [];
 
-        if(jQuery('#startDate-datepicker').datepicker( "getDate" )) {
+        if (jQuery('#startDate-datepicker').datepicker('getDate')) {
             const timezoneOffsetGermany = 3600;
-            let startDate = parseInt(document.querySelector('#startDate').value.slice(0,-3)) + timezoneOffsetGermany;
+            let startDate =
+                parseInt(document.querySelector('#startDate').value.slice(0, -3)) +
+                timezoneOffsetGermany;
             this.filters.startDate = [startDate + ''];
         }
-    };
+    }
 
     _handleEndDateChange() {
         this.filters.endDate = [];
 
-        if(jQuery('#endDate-datepicker').datepicker( "getDate" )) {
+        if (jQuery('#endDate-datepicker').datepicker('getDate')) {
             const timezoneOffsetGermany = 3600;
-            let endDate = parseInt(document.querySelector('#endDate').value.slice(0,-3)) + timezoneOffsetGermany;
+            let endDate =
+                parseInt(document.querySelector('#endDate').value.slice(0, -3)) +
+                timezoneOffsetGermany;
             this.filters.endDate = [endDate + ''];
         }
-    };
+    }
 
     _handleUserChange() {
         this.filters.users = this._getCurrentUserFilters();
         if (this.filters.users[0] == 'all') {
             this.filters.users = [];
         }
-    };
+    }
 
     _getCurrentUserFilters() {
-        return this.users.filter(function (input) {
-            return input.selected;
-        }).map(function (input) {
-            return input.value;
-        });
-    };
+        return this.users
+            .filter(function (input) {
+                return input.selected;
+            })
+            .map(function (input) {
+                return input.value;
+            });
+    }
 
     _handleItemChange() {
         this.filters.items = this._getCurrentItemFilters();
         if (this.filters.items[0] == 'all') {
             this.filters.items = [];
         }
-    };
+    }
 
     _getCurrentItemFilters() {
-        return this.items.filter(
-            function (input) {
+        return this.items
+            .filter(function (input) {
                 return input.selected;
-            }).map(function (input) {
-            return input.value;
-        });
-    };
+            })
+            .map(function (input) {
+                return input.value;
+            });
+    }
 
     _handleLocationChange() {
         this.filters.locations = this._getCurrentLocationFilters();
         if (this.filters.locations[0] == 'all') {
             this.filters.locations = [];
         }
-    };
+    }
 
     _getCurrentLocationFilters() {
-        return this.locations.filter(function (input) {
-            return input.selected;
-        }).map(function (input) {
-            return input.value;
-        });
-    };
+        return this.locations
+            .filter(function (input) {
+                return input.selected;
+            })
+            .map(function (input) {
+                return input.value;
+            });
+    }
 
     _handleStatusChange() {
         this.filters.states = this._getCurrentStatusFilters();
         if (this.filters.states[0] == 'all') {
             this.filters.states = [];
         }
-    };
+    }
 
     _getCurrentStatusFilters() {
-        return this.states.filter(function (input) {
-            return input.selected;
-        }).map(function (input) {
-            return input.value;
-        });
-    };
+        return this.states
+            .filter(function (input) {
+                return input.selected;
+            })
+            .map(function (input) {
+                return input.value;
+            });
+    }
 
     /**
      * Resets all Filters
      * @private
      */
     _handleFilterReset() {
-        if(typeof this.filters !== "undefined") {
+        if (typeof this.filters !== 'undefined') {
             for (const [filter] of Object.entries(this.filters)) {
-
-                let select  = document.getElementById('filter-' + filter.substring(0,filter.length - 1));
-                if(select && typeof select != "undefined") {
+                let select = document.getElementById(
+                    'filter-' + filter.substring(0, filter.length - 1),
+                );
+                if (select && typeof select != 'undefined') {
                     // Remove all option, but all
-                    var length = select .options.length;
-                    for (var i = length-1; i >= 0; i--) {
-
+                    var length = select.options.length;
+                    for (var i = length - 1; i >= 0; i--) {
                         const optionValue = select.options[i].value;
                         select.options[i].style.display = 'inline';
                         select.options[i].selected = false;
-                        if(optionValue == 'all') {
+                        if (optionValue == 'all') {
                             select.options[i].selected = true;
                         }
                     }
                 } else {
-                    console.log('filter-' + filter.substring(0,filter.length - 1));
+                    console.log('filter-' + filter.substring(0, filter.length - 1));
                 }
 
-                this.startDate.value = "";
-                this.endDate.value = "";
+                this.startDate.value = '';
+                this.endDate.value = '';
 
                 this.filters[filter] = [];
             }
@@ -212,29 +224,48 @@ class BookingList {
     }
 
     /**
-     * Hides options which aren't available based on selected filters.
+     * Hides options which aren't available based on selected filters and adds new options when new items / locations / users are part of the list
      * @param response
      * @private
      */
     _handleFilterUpdate(response) {
-        if(typeof response.filters !== "undefined") {
+        if (typeof response.filters !== 'undefined') {
             for (const [filter, values] of Object.entries(response.filters)) {
+                let select = document.getElementById('filter-' + filter);
 
-                let select  = document.getElementById('filter-' + filter);
-
-                // Remove all option, but all
-                var length = select .options.length;
-                for (var i = length-1; i >= 0; i--) {
-
+                // Remove all options, except for "all"
+                var length = select.options.length;
+                for (var i = length - 1; i >= 0; i--) {
                     const optionValue = select.options[i].value;
 
-                    if(optionValue !== 'all' && !values.includes(optionValue) ) {
+                    if (optionValue !== 'all' && !values.includes(optionValue)) {
                         select.options[i].style.display = 'none';
                     } else {
                         select.options[i].style.display = 'inline';
                     }
-
                 }
+                // iterate over object_entries to add missing options
+                for (let value of values) {
+                    let found = false;
+                    for (var i = length - 1; i >= 0; i--) {
+                        const optionValue = select.options[i].value;
+                        if (optionValue === value) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        let option = document.createElement('option');
+                        option.text = value;
+                        option.value = value;
+                        select.add(option);
+                    }
+                }
+
+                // re-load variables for filters
+                this.users = Array.from(document.querySelectorAll('.filter-users option'));
+                this.items = Array.from(document.querySelectorAll('.filter-items option'));
+                this.locations = Array.from(document.querySelectorAll('.filter-locations option'));
+                this.states = Array.from(document.querySelectorAll('.filter-statuss option'));
             }
         }
     }
@@ -250,7 +281,7 @@ class BookingList {
 
         fetch(cb_ajax_bookings.ajax_url, {
             method: 'POST',
-            body: this.listParams
+            body: this.listParams,
         })
             .then(function (response) {
                 return response.json();
@@ -278,7 +309,7 @@ class BookingList {
                     sizer: '.my-sizer-element',
                 });
             });
-    };
+    }
 
     /**
      * Renders pagination list.
@@ -298,23 +329,15 @@ class BookingList {
                     active = ' class="active" ';
                 }
 
-                if(
+                if (
                     i == 1 ||
                     i == pages ||
-                    (
-                        i < (parseInt(currentPage) + 3 ) &&
-                        i > (parseInt(currentPage) - 3 )
-                    )
-
+                    (i < parseInt(currentPage) + 3 && i > parseInt(currentPage) - 3)
                 ) {
                     markup += '<li data-page="' + i + '"' + active + '>' + i + '</li>';
                 }
 
-                if(
-                    i == (parseInt(currentPage) + 3 ) ||
-                    i == (parseInt(currentPage) - 3 )
-
-                ) {
+                if (i == parseInt(currentPage) + 3 || i == parseInt(currentPage) - 3) {
                     markup += '<li >...</li>';
                 }
             }
@@ -334,7 +357,7 @@ class BookingList {
         var pages = document.querySelectorAll('#booking-list--pagination ul li');
 
         pages.forEach(function (page) {
-            if(page.dataset.page) {
+            if (page.dataset.page) {
                 page.addEventListener('click', self._onPageChange);
             }
         });
@@ -346,7 +369,7 @@ class BookingList {
         this._reloadData();
     }
 
-    _handleMenuButton(){
+    _handleMenuButton() {
         jQuery('.cb-dropdown-content').toggle();
     }
 
@@ -356,7 +379,6 @@ class BookingList {
     filter() {
         jQuery('#filter').addClass('loading');
         if (this.hasActiveFilters()) {
-
             if (this.filters.startDate.length) {
                 this.listParams.set('startDate', this.filters.startDate);
             } else {
@@ -401,7 +423,7 @@ class BookingList {
             this._reloadData();
         }
         jQuery('#filter').removeClass('loading');
-    };
+    }
 
     /**
      * If any of the arrays in the `filters` property have a length of more than zero,
@@ -412,7 +434,7 @@ class BookingList {
         return Object.keys(this.filters).some(function (key) {
             return this.filters[key].length > 0;
         }, this);
-    };
+    }
 
     /**
      * Determine whether an element passes the current filters.
@@ -420,7 +442,6 @@ class BookingList {
      * @return {boolean} Whether it satisfies all current filters.
      */
     itemPassesFilters(element) {
-
         var users = this.filters.users;
         var items = this.filters.items;
         var locations = this.filters.locations;
@@ -447,7 +468,7 @@ class BookingList {
         }
 
         return true;
-    };
+    }
 
     _initItemElement(item) {
         var itemElement = document.createElement('div');
@@ -462,22 +483,22 @@ class BookingList {
 
     _initHeadlineElement(item) {
         let headline = document.createElement('p');
-        headline.classList.add('js-item--headline')
+        headline.classList.add('js-item--headline');
 
         let date = document.createElement('span');
-        date.classList.add('cb-date')
+        date.classList.add('cb-date');
         date.innerText = item.startDateFormatted + ' - ' + item.endDateFormatted;
 
         let title = document.createElement('span');
-        title.classList.add('cb-title')
+        title.classList.add('cb-title');
         title.innerText = item.item + ' @ ' + item.location;
 
         headline.append(date);
         headline.append(title);
 
-        if(item.bookingCode) {
+        if (item.bookingCode) {
             let bookingCode = document.createElement('span');
-            bookingCode.classList.add('cb-booking-code')
+            bookingCode.classList.add('cb-booking-code');
             bookingCode.innerText = item.bookingCode.label + ': ' + item.bookingCode.value;
             headline.append(bookingCode);
         }
@@ -490,13 +511,12 @@ class BookingList {
         contentElement.classList.add('js-item--infos');
 
         let html = '';
-        for(const [key, contentItem] of Object.entries(item.content)) {
+        for (const [key, contentItem] of Object.entries(item.content)) {
             html += '<span>' + contentItem.label + ': ' + contentItem.value + '</span>';
         }
         html += '';
         contentElement.innerHTML = html;
         return contentElement;
-
     }
 
     _initActionsElement(item) {
@@ -535,7 +555,7 @@ class BookingList {
      */
     _getItemMarkup(items) {
         let self = this;
-        if(items) {
+        if (items) {
             return items.reduce(function (str, item) {
                 return str + self._getMarkupFromData(item);
             }, '');
@@ -577,12 +597,11 @@ class BookingList {
         this.listParams.set('order', orderSelectedOption);
         this._reloadData();
     }
-
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     var bookingList = document.getElementById('booking-list--results');
-    if(bookingList) {
+    if (bookingList) {
         window.demo = new BookingList(bookingList);
     }
 

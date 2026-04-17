@@ -24,14 +24,14 @@ class Calendar {
 	protected Day $endDate;
 
 	/**
-	 * @var array
+	 * @var int[]
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
-	 * @var array
+	 * @var int[]
 	 */
-	protected $locations;
+	protected array $locations;
 
 	/**
 	 * @var array
@@ -39,21 +39,23 @@ class Calendar {
 	protected $types;
 
 	/**
-	 * @var
+	 * The timeframes that are relevant for this calendar.
+	 *
+	 * @var Timeframe[]
 	 */
-	protected $weeks;
+	protected array $timeframes;
 
 	/**
 	 * Calendar constructor.
 	 *
-	 * @param Day $startDate
-	 * @param Day $endDate
-	 * @param array $locations
-	 * @param array $items
+	 * @param Day   $startDate
+	 * @param Day   $endDate
+	 * @param int[] $locations
+	 * @param int[] $items
 	 * @param array $types
 	 */
 	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
-		//check, that it spans at least two days
+		// check, that it spans at least two days
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
 		}
@@ -63,10 +65,22 @@ class Calendar {
 		$this->items     = $items;
 		$this->locations = $locations;
 		$this->types     = $types;
+
+		$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+			$this->startDate->getStartTimestamp(),
+			$this->endDate->getEndTimestamp(),
+			$this->locations,
+			$this->items,
+			$this->types,
+			true,
+			[ 'confirmed', 'publish' ]
+		);
 	}
 
 	/**
 	 * Returns weeks for calendar time range.
+	 *
+	 * Uses cache and expires at midnight on a daily basis.
 	 *
 	 * @return array
 	 */
@@ -82,7 +96,6 @@ class Calendar {
 			serialize( $this->types )
 		);
 
-
 		$cacheItem = Plugin::getCacheItem( $customId );
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -96,7 +109,8 @@ class Calendar {
 					$dayOfYear,
 					$this->locations,
 					$this->items,
-					$this->types
+					$this->types,
+					$this->timeframes
 				);
 				$startDate = strtotime( 'next monday', $startDate );
 			}
@@ -119,7 +133,7 @@ class Calendar {
 	 * @throws \Exception
 	 */
 	public function getAvailabilitySlots(): array {
-		$slots    = [];
+		$slots     = [];
 		$doneSlots = [];
 		/** @var Week $week */
 		foreach ( $this->getWeeks() as $week ) {
@@ -129,12 +143,12 @@ class Calendar {
 					$timeframe     = new Timeframe( $slot['timeframe'] );
 					$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
 
-					//Skip everything where the most important slot is not bookable. We are only interested in direct availability.
+					// Skip everything where the most important slot is not bookable. We are only interested in direct availability.
 					if ( $timeFrameType != \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID ) {
 						continue;
 					}
 
-					//Skip timeframes that are not bookable today
+					// Skip timeframes that are not bookable today
 					if ( $timeframe->getFirstBookableDay() > $day->getDate() ) {
 						continue;
 					}
@@ -142,23 +156,23 @@ class Calendar {
 					$availabilitySlot = new stdClass();
 
 					// Init DateTime object for start
-					$dateTimeStart = Wordpress::getUTCDateTime('now');
+					$dateTimeStart = Wordpress::getUTCDateTime( 'now' );
 					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
 					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
 
 					// Init DateTime object for end
-					$dateTimeend = Wordpress::getUTCDateTime('now');
+					$dateTimeend = Wordpress::getUTCDateTime( 'now' );
 					$dateTimeend->setTimestamp( $slot['timestampend'] );
 					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
 
-					$availabilitySlot->locationId = "";
+					$availabilitySlot->locationId = '';
 					if ( $timeframe->getLocation() ) {
-						$availabilitySlot->locationId = $timeframe->getLocationID() . "";
+						$availabilitySlot->locationId = $timeframe->getLocationID() . '';
 					}
 
-					$availabilitySlot->itemId = "";
+					$availabilitySlot->itemId = '';
 					if ( $timeframe->getItem() ) {
-						$availabilitySlot->itemId = $timeframe->getItemID() . "";
+						$availabilitySlot->itemId = $timeframe->getItemID() . '';
 					}
 
 					$slotId = md5( serialize( $availabilitySlot ) );
@@ -171,5 +185,4 @@ class Calendar {
 		}
 		return $slots;
 	}
-    
 }

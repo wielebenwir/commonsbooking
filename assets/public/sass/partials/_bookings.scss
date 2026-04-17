@@ -5,6 +5,8 @@
 *
 */
 
+@use '../../../global/sass/partials/variables';
+
 #ui-datepicker-div {
     display: none;
     background-color: white;
@@ -54,7 +56,7 @@
         }
 
         .filter-wrapper {
-            @include font-default;
+            @include variables.font-default;
             margin-top: 10px;
             flex-basis: 220px;
 
@@ -94,7 +96,6 @@
                 cursor: pointer;
             }
         }
-
     }
 
     &--filters.hide {
@@ -102,7 +103,7 @@
     }
 
     #booking-list--results {
-        @include font-default;
+        @include variables.font-default;
         width: 100%;
 
         @media (min-width: 400px) {
@@ -113,12 +114,13 @@
             background-color: white;
 
             .content-wrapper {
+                margin-bottom: 5px;
+                font-size: 0.9em;
+
                 display: flex;
                 @media only screen and (max-width: 600px) {
                     display: block;
                 }
-                margin-bottom: 5px;
-                font-size: 0.9em;
 
                 & > p,
                 & > div {
@@ -134,7 +136,6 @@
                         padding: 4px 0;
                     }
 
-
                     &:last-child {
                         border: none;
                         align-items: center;
@@ -149,7 +150,6 @@
                             font-size: 0.8em;
                         }
                     }
-
                 }
 
                 h4 {
@@ -189,7 +189,6 @@
                 //}
             }
 
-
             @media only screen and (max-width: 600px) {
                 &--headline,
                 &--infos,
@@ -205,7 +204,6 @@
     }
 
     .cb-dropdown {
-
         position: relative;
         display: inline-block;
 
@@ -216,14 +214,14 @@
             border: none;
             cursor: pointer;
         }
-    
+
         .cb-dropdown-content {
-            display:none;
-            position:absolute;
+            display: none;
+            position: absolute;
             right: 0;
             background-color: var(--commonsbooking-color-bg);
             filter: brightness(95%);
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             overflow: auto;
             min-width: 160px;
             z-index: 1;
@@ -233,8 +231,8 @@
             border-color: var(--commonsbooking-color-bg);
             border-width: 10px;
 
-            &:hover{
-                filter:brightness(90%);
+            &:hover {
+                filter: brightness(90%);
             }
         }
 
@@ -259,15 +257,14 @@
         }
 
         #icallink_text:hover:after {
-            color:white;
+            color: white;
             background: var(--commonsbooking-color-primary);
             border-color: white;
         }
-
     }
 
     #booking-list--pagination {
-        @include font-default;
+        @include variables.font-default;
 
         ul {
             display: flex;
@@ -284,15 +281,13 @@
                 }
 
                 &:hover {
-                    color: #84AE53;
+                    color: #84ae53;
                 }
-
             }
 
             li[data-page] {
                 cursor: pointer;
             }
-
         }
     }
 }

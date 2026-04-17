@@ -17,7 +17,7 @@ class Location extends BookablePost {
 	 * @throws Exception
 	 */
 	public static function getByItem( $itemId, bool $bookable = false ): array {
-		return self::getByRelatedPost($itemId, 'item', 'location', $bookable);
+		return self::getByRelatedPost( $itemId, 'item', 'location', $bookable );
 	}
 
 	/**
@@ -28,12 +28,19 @@ class Location extends BookablePost {
 	}
 
 	/**
+	 * @return string
+	 */
+	protected static function getTaxonomyName() {
+		return \CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName();
+	}
+
+	/**
 	 * This is the model class that belongs to the post type.
 	 * With the model class, you are able to perform additional functions on the post type.
+	 *
 	 * @return string
 	 */
 	protected static function getModelClass(): string {
 		return \CommonsBooking\Model\Location::class;
 	}
-
 }

@@ -3,14 +3,13 @@
 
 namespace CommonsBooking\API;
 
-
 use stdClass;
 use WP_REST_Response;
 
 /**
  * Endpoint for information about the lending organisation.
- * Infos like site name, description etc. is retrieved from general Wordpress settings @see https://wordpress.com/support/general-settings/
- * 
+ * Infos like site name, description etc. is retrieved from general WordPress settings @see https://wordpress.com/support/general-settings/
+ *
  * Full schema see, @see https://github.com/wielebenwir/commons-api/blob/master/commons-api.projects.schema.json
  */
 class ProjectsRoute extends BaseRoute {
@@ -27,7 +26,7 @@ class ProjectsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'assets/schemas/commons-api/commons-api.projects.schema.json';
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.projects.schema.json';
 
 	/**
 	 * Get one item from the collection
@@ -43,27 +42,23 @@ class ProjectsRoute extends BaseRoute {
 		$data           = new stdClass();
 		$data->projects = $this->getItemData();
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $data );
 	}
 
 	/**
 	 * Returns raw data collection.
+	 *
 	 * @return object[]
 	 */
 	public function getItemData(): array {
 		return [
 			(object) [
-				"id"          => "1",
-				"name"        => get_bloginfo( 'name' ),
-				"url"         => get_bloginfo( 'url' ),
-				"description" => get_bloginfo( 'description' ),
-				"language"    => get_bloginfo( 'language' ),
-			]
+				'id'          => '1',
+				'name'        => get_bloginfo( 'name' ),
+				'url'         => get_bloginfo( 'url' ),
+				'description' => get_bloginfo( 'description' ),
+				'language'    => get_bloginfo( 'language' ),
+			],
 		];
 	}
-
 }

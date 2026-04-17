@@ -12,8 +12,8 @@ use SlopeIt\ClockMock\ClockMock;
  * TODO: Test the case, where one user creates an unconfirmed booking and an admin creates a booking for the same item, location and timeframe.
  *       Right now, it will show the booking of the user to the admin. Instead, the admin should be notified that there is already a booking for this timeframe.
  */
-class BookingTest extends CustomPostTypeTest
-{
+class BookingTest extends CustomPostTypeTest {
+
 
 	private \CommonsBooking\Model\Timeframe $timeframeModel;
 
@@ -24,7 +24,7 @@ class BookingTest extends CustomPostTypeTest
 	 */
 	public function testHandleBookingRequest_Default() {
 		$date = new \DateTime( self::CURRENT_DATE );
-		$date->modify('-1 day');
+		$date->modify( '-1 day' );
 		ClockMock::freeze( $date );
 		// Case 1: We create an unconfirmed booking for a bookable timeframe. The unconfirmed booking should be created
 		$bookingId = Booking::handleBookingRequest(
@@ -38,7 +38,7 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
-		//add this to the array so it can be destroyed later
+		// add this to the array so it can be destroyed later
 		$this->bookingIds[] = $bookingId;
 
 		$this->assertIsInt( $bookingId );
@@ -50,7 +50,7 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertFalse( $bookingModel->isConfirmed() );
 
 		// Case 2: We now confirm the booking. The booking should be confirmed
-		$newBookingId = Booking::handleBookingRequest(
+		$newBookingId       = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'confirmed',
@@ -71,9 +71,9 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
 
 		// Case 3: We now try to cancel our booking a little bit later. The booking should be cancelled.
-		$date->modify('+ 5 hours');
+		$date->modify( '+ 5 hours' );
 		ClockMock::freeze( $date );
-		$canceledId = Booking::handleBookingRequest(
+		$canceledId         = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'canceled',
@@ -92,22 +92,22 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertFalse( $bookingModel->isConfirmed() );
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
 
-		//check, if the cancel time is correct
+		// check, if the cancel time is correct
 		$cancelDate = $bookingModel->getCancellationDateDateTime();
-		$this->assertEquals( $date->format('Y-m-d H:i:s'), $cancelDate->format('Y-m-d H:i:s') );
+		$this->assertEquals( $date->format( 'Y-m-d H:i:s' ), $cancelDate->format( 'Y-m-d H:i:s' ) );
 	}
 
 	public function testHandleBookingRequest_deleteUnconfirmed() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		//  We create an unconfirmed booking and then cancel the booking. The booking should be canceled
-		$bookingId = Booking::handleBookingRequest(
+		// We create an unconfirmed booking and then cancel the booking. The booking should be canceled
+		$bookingId          = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
 			null,
 			null,
-			strtotime('+1 day'),
-			strtotime('+2 days'),
+			strtotime( '+1 day' ),
+			strtotime( '+2 days' ),
 			null,
 			null
 		);
@@ -125,18 +125,18 @@ class BookingTest extends CustomPostTypeTest
 			'delete_unconfirmed',
 			$bookingId,
 			null,
-			strtotime('+1 day'),
-			strtotime('+2 days'),
+			strtotime( '+1 day' ),
+			strtotime( '+2 days' ),
 			$postName,
 			null
 		);
 	}
 
 	public function testHandleBookingRequest_Overbooking() {
-		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_in_range', 'on' );
-		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX. 'count_lockdays_maximum', '1' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_in_range', 'on' );
+		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'count_lockdays_maximum', '1' );
 		$date = new \DateTime( self::CURRENT_DATE );
-		$date->modify('-1 day');
+		$date->modify( '-1 day' );
 		ClockMock::freeze( $date );
 		// 3 Days are overbooked, that means that the Litepicker had 3 locked / holidays in range
 		$bookingId = Booking::handleBookingRequest(
@@ -151,7 +151,7 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			3
 		);
-		//add this to the array so it can be destroyed later
+		// add this to the array so it can be destroyed later
 		$this->bookingIds[] = $bookingId;
 
 		$this->assertIsInt( $bookingId );
@@ -163,7 +163,7 @@ class BookingTest extends CustomPostTypeTest
 		$this->assertFalse( $bookingModel->isConfirmed() );
 
 		// The overbooked days are not present anymore when confirming the booking cause they are only calculated on the Litepicker screen
-		$newBookingId = Booking::handleBookingRequest(
+		$newBookingId       = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'confirmed',
@@ -182,8 +182,8 @@ class BookingTest extends CustomPostTypeTest
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$this->assertTrue( $bookingModel->isConfirmed() );
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
-		//two of those days are counted as overbooked, first day is still counted to maximum quota
-		$this->assertEquals(2, $bookingModel->getOverbookedDays() );
+		// two of those days are counted as overbooked, first day is still counted to maximum quota
+		$this->assertEquals( 2, $bookingModel->getOverbookedDays() );
 	}
 
 	public function testBookingWithoutLoc() {
@@ -281,13 +281,13 @@ class BookingTest extends CustomPostTypeTest
 			null,
 			null
 		);
-		//add this to the array so it can be destroyed later
+		// add this to the array so it can be destroyed later
 		$this->bookingIds[] = $bookingId;
 
 		$this->assertIsInt( $bookingId );
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$this->assertTrue( $bookingModel->isUnconfirmed() );
-		$sameBookingId = Booking::handleBookingRequest(
+		$sameBookingId      = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
 			'unconfirmed',
@@ -307,11 +307,52 @@ class BookingTest extends CustomPostTypeTest
 	}
 
 	/**
+	 * This test is meant to test a bunch of behaviour that can occur
+	 * when a booking is created as unconfirmed first, then deleted by the cronjob and then either confirmed or canceled.
+	 * Issue: #1584
+	 *
+	 * @return void
+	 */
+	public function testHandleBookingRequest_deleted_confirm() {
+		$bookingId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			'6'
+		);
+		$postName  = get_post( $bookingId )->post_name;
+
+		// delete the post just like the cronjob would
+		wp_delete_post( $bookingId, true );
+
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessage( 'Your reservation has expired, please try to book again' );
+
+		// now we try to confirm the booking
+		$confirmedId = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'confirmed',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			$postName,
+			'6'
+		);
+	}
+
+	/**
 	 * This will check if the bookings can be exported through the WordPress personal data export tool
 	 * @return void
 	 */
 	public function testExportUserBookingsByEmail() {
-		$booking = new \CommonsBooking\Model\Booking(
+		$booking    = new \CommonsBooking\Model\Booking(
 			$this->createBooking(
 				$this->itemId,
 				$this->locationId,
@@ -323,56 +364,56 @@ class BookingTest extends CustomPostTypeTest
 				$this->subscriberId
 			)
 		);
-		$fullExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email );
+		$fullExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
 		$this->assertIsArray( $fullExport );
-		$this->assertCount(1, $fullExport['data']);
+		$this->assertCount( 1, $fullExport['data'] );
 		$this->assertTrue( $fullExport['done'] );
 		$data = $fullExport['data'][0]['data'];
 		$this->assertEquals( $booking->pickupDatetime(), $data[0]['value'] );
 
-		//get empty export when e-mail is unknown
+		// get empty export when e-mail is unknown
 		$emptyExport = Booking::exportUserBookingsByEmail( 'doi@knowy.ou' );
 		$this->assertIsArray( $emptyExport );
-		$this->assertCount(0, $emptyExport['data']);
+		$this->assertCount( 0, $emptyExport['data'] );
 		$this->assertTrue( $emptyExport['done'] );
 
-		//make sure, that the export does not contain any other bookings (like bookings that are not the user's own)
+		// make sure, that the export does not contain any other bookings (like bookings that are not the user's own)
 		$this->createAdministrator();
-		$emptyExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->adminUserID)->user_email );
+		$emptyExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->adminUserID )->user_email );
 		$this->assertIsArray( $emptyExport );
-		$this->assertCount(0, $emptyExport['data']);
+		$this->assertCount( 0, $emptyExport['data'] );
 		$this->assertTrue( $emptyExport['done'] );
 
-		//now, we test the proper export of multiple bookings with pagination
+		// now, we test the proper export of multiple bookings with pagination
 		$bookingIds = [ $booking->ID ];
-		for ($i = 0; $i < 20; $i++) {
+		for ( $i = 0; $i < 20; $i++ ) {
 			$bookingIds[] = $this->createBooking(
 				$this->itemId,
 				$this->locationId,
-				strtotime( '+'.($i+10).' day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+'.($i+11).' days', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+' . ( $i + 10 ) . ' day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+' . ( $i + 11 ) . ' days', strtotime( self::CURRENT_DATE ) ),
 				'08:00 AM',
 				'12:00 PM',
 				'confirmed',
 				$this->subscriberId
 			);
 		}
-		$partialExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email );
+		$partialExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
 		$this->assertIsArray( $partialExport );
-		$this->assertCount(10, $partialExport['data']);
+		$this->assertCount( 10, $partialExport['data'] );
 		$this->assertFalse( $partialExport['done'] );
-		$otherPartialExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email, 2 );
+		$otherPartialExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 2 );
 		$this->assertIsArray( $otherPartialExport );
-		$this->assertCount(10, $otherPartialExport['data']);
+		$this->assertCount( 10, $otherPartialExport['data'] );
 		$this->assertFalse( $otherPartialExport['done'] );
-		$lastPartialExport = Booking::exportUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email, 3 );
+		$lastPartialExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 3 );
 		$this->assertIsArray( $lastPartialExport );
-		$this->assertCount(1, $lastPartialExport['data']);
+		$this->assertCount( 1, $lastPartialExport['data'] );
 		$this->assertTrue( $lastPartialExport['done'] );
 	}
 
 	public function testRemoveUserBookingsByEmail() {
-		$booking = new \CommonsBooking\Model\Booking(
+		$booking   = new \CommonsBooking\Model\Booking(
 			$this->createBooking(
 				$this->itemId,
 				$this->locationId,
@@ -384,53 +425,169 @@ class BookingTest extends CustomPostTypeTest
 				$this->subscriberId
 			)
 		);
-		$deleteAll = Booking::removeUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email );
+		$deleteAll = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
 		$this->assertIsArray( $deleteAll );
 		$this->assertTrue( $deleteAll['items_removed'] );
 		$this->assertFalse( $deleteAll['items_retained'] );
 		$this->assertEmpty( $deleteAll['messages'] );
 		$this->assertTrue( $deleteAll['done'] );
 
-		//now we create a bunch of bookings and delete them in chunks
+		// now we create a bunch of bookings and delete them in chunks
 		$bookingIds = [];
-		for ($i = 0; $i < 21; $i++) {
+		for ( $i = 0; $i < 21; $i++ ) {
 			$bookingIds[] = $this->createBooking(
 				$this->itemId,
 				$this->locationId,
-				strtotime( '+'.($i+10).' day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+'.($i+11).' days', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+' . ( $i + 10 ) . ' day', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+' . ( $i + 11 ) . ' days', strtotime( self::CURRENT_DATE ) ),
 				'08:00 AM',
 				'12:00 PM',
 				'confirmed',
 				$this->subscriberId
 			);
 		}
-		//quickly test if the bookings are there
-		$this->assertCount(21, \CommonsBooking\Repository\Booking::getForUser( get_user_by('ID',$this->subscriberId) ) );
+		// quickly test if the bookings are there
+		$this->assertCount( 21, \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
 
-		$deleteFirstPage = Booking::removeUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email );
+		$deleteFirstPage = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
 		$this->assertIsArray( $deleteFirstPage );
 		$this->assertTrue( $deleteFirstPage['items_removed'] );
 		$this->assertFalse( $deleteFirstPage['items_retained'] );
 		$this->assertEmpty( $deleteFirstPage['messages'] );
 		$this->assertFalse( $deleteFirstPage['done'] );
-		$this->assertCount(11, \CommonsBooking\Repository\Booking::getForUser( get_user_by('ID',$this->subscriberId) ) );
+		$this->assertCount( 11, \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
 
-		$deleteSecondPage = Booking::removeUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email, 2 );
-		$this->assertCount(1, \CommonsBooking\Repository\Booking::getForUser( get_user_by('ID',$this->subscriberId) ) );
+		$deleteSecondPage = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 2 );
+		$this->assertCount( 1, \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
 		$this->assertIsArray( $deleteSecondPage );
 		$this->assertTrue( $deleteSecondPage['items_removed'] );
 		$this->assertFalse( $deleteSecondPage['items_retained'] );
 		$this->assertEmpty( $deleteSecondPage['messages'] );
 		$this->assertFalse( $deleteSecondPage['done'] );
 
-		$deleteThirdPage = Booking::removeUserBookingsByEmail( get_user_by('ID',$this->subscriberId)->user_email, 3 );
+		$deleteThirdPage = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 3 );
 		$this->assertIsArray( $deleteThirdPage );
 		$this->assertTrue( $deleteThirdPage['items_removed'] );
 		$this->assertFalse( $deleteThirdPage['items_retained'] );
 		$this->assertEmpty( $deleteThirdPage['messages'] );
 		$this->assertTrue( $deleteThirdPage['done'] );
-		$this->assertEmpty( \CommonsBooking\Repository\Booking::getForUser( get_user_by('ID',$this->subscriberId) ) );
+		$this->assertEmpty( \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
+	}
+
+	/** User cannot book a slot already confirmed by another user (issue #1864) */
+	public function testUserCannotBookSlotConfirmedByAnotherUser() {
+		$date = new \DateTime( self::CURRENT_DATE );
+		$date->modify( '-1 day' );
+		ClockMock::freeze( $date );
+
+		$repetitionStart = strtotime( self::CURRENT_DATE );
+		$repetitionEnd   = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+
+		$user1BookingId     = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			$repetitionStart,
+			$repetitionEnd,
+			null,
+			null
+		);
+		$this->bookingIds[] = $user1BookingId;
+		$postName           = get_post( $user1BookingId )->post_name;
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'confirmed',
+			$user1BookingId,
+			null,
+			$repetitionStart,
+			$repetitionEnd,
+			$postName,
+			null
+		);
+
+		wp_set_current_user( $this->createSecondSubscriber() );
+
+		$thrown = false;
+		try {
+			$result             = Booking::handleBookingRequest(
+				$this->itemId,
+				$this->locationId,
+				'unconfirmed',
+				null,
+				null,
+				$repetitionStart,
+				$repetitionEnd,
+				null,
+				null
+			);
+			$this->bookingIds[] = $result;
+		} catch ( \CommonsBooking\Exception\BookingDeniedException $e ) {
+			$thrown = true;
+		}
+
+		$this->assertTrue( $thrown, 'Expected BookingDeniedException when another user tries to book the same confirmed slot' );
+		$user1BookingAfter = new \CommonsBooking\Model\Booking( $user1BookingId );
+		$this->assertTrue( $user1BookingAfter->isConfirmed(), 'Expected first booking to still be confirmed' );
+	}
+
+	/** User cannot book a slot already held unconfirmed by another user (issue #1864) */
+	public function testDifferentUserCannotBookSlotHeldUnconfirmedByAnotherUser() {
+		$date = new \DateTime( self::CURRENT_DATE );
+		$date->modify( '-1 day' );
+		ClockMock::freeze( $date );
+
+		$repetitionStart = strtotime( self::CURRENT_DATE );
+		$repetitionEnd   = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+
+		$user1BookingId     = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			$repetitionStart,
+			$repetitionEnd,
+			null,
+			null
+		);
+		$this->bookingIds[] = $user1BookingId;
+
+		wp_set_current_user( $this->createSecondSubscriber() );
+
+		$thrown = false;
+		try {
+			$result             = Booking::handleBookingRequest(
+				$this->itemId,
+				$this->locationId,
+				'unconfirmed',
+				null,
+				null,
+				$repetitionStart,
+				$repetitionEnd,
+				null,
+				null
+			);
+			$this->bookingIds[] = $result;
+		} catch ( \CommonsBooking\Exception\BookingDeniedException $e ) {
+			$thrown = true;
+		}
+
+		$this->assertTrue( $thrown, 'Expected BookingDeniedException when another user tries to book the slot held unconfirmed' );
+	}
+
+	/**
+	 * Second subscriber for multi-user booking tests.
+	 * @return int
+	 */
+	private function createSecondSubscriber(): int {
+		$wp_user = get_user_by( 'email', 'b@b.de' );
+		if ( ! $wp_user ) {
+			return wp_create_user( 'seconduser', 'second', 'b@b.de' );
+		}
+		return $wp_user->ID;
 	}
 
 	protected function setUp(): void {

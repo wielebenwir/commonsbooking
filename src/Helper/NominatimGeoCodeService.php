@@ -2,12 +2,12 @@
 
 namespace CommonsBooking\Helper;
 
-use Geocoder\Exception\Exception;
-use Geocoder\Location;
-use Geocoder\Provider\Nominatim\Nominatim;
-use Geocoder\Query\GeocodeQuery;
-use Geocoder\StatefulGeocoder;
-use Http\Client\Curl\Client;
+use CommonsBooking\Geocoder\Exception\Exception;
+use CommonsBooking\Geocoder\Location;
+use CommonsBooking\Geocoder\Provider\Nominatim\Nominatim;
+use CommonsBooking\Geocoder\Query\GeocodeQuery;
+use CommonsBooking\Geocoder\StatefulGeocoder;
+use CommonsBooking\Http\Client\Curl\Client;
 
 /**
  * Implementation of geocoding web service calls.
@@ -16,12 +16,22 @@ use Http\Client\Curl\Client;
 class NominatimGeoCodeService implements GeoCodeService {
 
 	/**
+	 * NOTE: This uses the english locale since we only use the coordinates of the returned address objects
+	 *
 	 * @param $addressString
 	 *
 	 * @return ?Location
+	 * @throws \Exception
 	 */
 	public function getAddressData( $addressString ): ?Location {
-		$defaultUserAgent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0';
+
+		// The Nomination service requires the curl extension to be installed
+		if ( ! function_exists( 'curl_version' ) ) {
+			throw new \Exception( 'Could not get address data because of missing curl extension.' );
+		}
+
+		$defaultUserAgent = 'CommonsBooking v.' . COMMONSBOOKING_VERSION . ' Contact: mail@commonsbooking.org';
+		$defaultReferer   = get_site_url();
 
 		$client = new Client(
 			null,
@@ -34,7 +44,8 @@ class NominatimGeoCodeService implements GeoCodeService {
 
 		$provider = Nominatim::withOpenStreetMapServer(
 			$client,
-			array_key_exists( 'HTTP_USER_AGENT', $_SERVER ) ? $_SERVER['HTTP_USER_AGENT'] : $defaultUserAgent
+			$defaultUserAgent,
+			$defaultReferer,
 		);
 		$geoCoder = new StatefulGeocoder( $provider, 'en' );
 
@@ -44,7 +55,7 @@ class NominatimGeoCodeService implements GeoCodeService {
 				return $addresses->first();
 			}
 		} catch ( Exception $exception ) {
-			// Nothing to do in this case
+			error_log( $exception->getMessage() );
 		}
 
 		return null;

@@ -3,12 +3,11 @@
 
 namespace CommonsBooking\API;
 
-
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use Exception;
-use Geocoder\Geocoder;
-use Geocoder\Provider\Provider;
+use CommonsBooking\Geocoder\Geocoder;
+use CommonsBooking\Geocoder\Provider\Provider;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
@@ -33,17 +32,7 @@ class LocationsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'assets/schemas/commons-api/commons-api.locations.schema.json';
-
-	/**
-	 * @var Provider
-	 */
-	protected $provider;
-
-	/**
-	 * @var Geocoder
-	 */
-	protected $geocoder;
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.locations.schema.json';
 
 	/**
 	 * Get one item from the collection
@@ -67,16 +56,12 @@ class LocationsRoute extends BaseRoute {
 		$data            = new stdClass();
 		$data->locations = $this->getItemData( $request );
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $data );
 	}
 
 	public function getItemData( $request ) {
 		$data       = new stdClass();
-		$data->type = "FeatureCollection";
+		$data->type = 'FeatureCollection';
 
 		$params = $request->get_params();
 		$args   = [];
@@ -92,7 +77,7 @@ class LocationsRoute extends BaseRoute {
 		foreach ( $locations as $location ) {
 			try {
 				$itemdata   = $this->prepare_item_for_response( $location, $request );
-				$features[] = $itemdata;
+				$features[] = $itemdata->get_data();
 			} catch ( Exception $exception ) {
 				if ( WP_DEBUG ) {
 					error_log( $exception->getMessage() );
@@ -109,15 +94,15 @@ class LocationsRoute extends BaseRoute {
 	 * @param $item Location
 	 * @param $request
 	 *
-	 * @return stdClass
-	 * @throws \Geocoder\Exception\Exception
+	 * @return WP_REST_Response
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
-	public function prepare_item_for_response( $item, $request ) {
+	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem             = new stdClass();
 		$preparedItem->type       = 'Feature';
 		$preparedItem->properties = new stdClass();
 
-		$preparedItem->properties->id                 = $item->ID . "";
+		$preparedItem->properties->id                 = $item->ID . '';
 		$preparedItem->properties->name               = $item->post_title;
 		$preparedItem->properties->description        = $this->escapeJsonString( $item->post_content );
 		$preparedItem->properties->url                = get_permalink( $item->ID );
@@ -127,10 +112,10 @@ class LocationsRoute extends BaseRoute {
 		$latitude  = get_post_meta( $item->ID, 'geo_latitude', true );
 		$longitude = get_post_meta( $item->ID, 'geo_longitude', true );
 
-		// If we have latitude and longitude definec, we use them.
+		// If we have latitude and longitude defined, we use them.
 		if ( $latitude && $longitude ) {
 			$preparedItem->geometry              = new stdClass();
-			$preparedItem->geometry->type        = "Point";
+			$preparedItem->geometry->type        = 'Point';
 			$preparedItem->geometry->coordinates = [
 				floatval( $longitude ),
 				floatval( $latitude ),
@@ -139,7 +124,7 @@ class LocationsRoute extends BaseRoute {
 			$address = GeoHelper::getAddressData( $item->formattedAddressOneLine() );
 			if ( $address !== null ) {
 				$preparedItem->geometry              = new stdClass();
-				$preparedItem->geometry->type        = "Point";
+				$preparedItem->geometry->type        = 'Point';
 				$preparedItem->geometry->coordinates = $address->getCoordinates()->toArray();
 
 				// Save data to items
@@ -158,7 +143,6 @@ class LocationsRoute extends BaseRoute {
 			}
 		}
 
-		return $preparedItem;
+		return new WP_REST_Response( $preparedItem );
 	}
-
 }

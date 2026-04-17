@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\Model;
 
-
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
@@ -43,6 +42,7 @@ class Item extends BookablePost {
 	 *
 	 * TODO: This currently includes the author of the item as an admin.
 	 *       This does not make sense in all contexts and should be fixed.
+	 *       Duplicated implementation in Model/Location.php
 	 *
 	 * @return array|mixed|string[]
 	 */
@@ -60,7 +60,7 @@ class Item extends BookablePost {
 
 		return array_values(
 			array_unique(
-				array_map('intval', $itemAdminIds )
+				array_map( 'intval', $itemAdminIds )
 			)
 		);
 	}
@@ -69,16 +69,16 @@ class Item extends BookablePost {
 	 * Returns all applicable restrictions for this item.
 	 *
 	 * This function is not used anywhere yet.
+	 *
 	 * @return array
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {
 		return \CommonsBooking\Repository\Restriction::get(
 			[],
-			[$this->ID],
+			[ $this->ID ],
 			null,
 			true
 		);
 	}
-
 }

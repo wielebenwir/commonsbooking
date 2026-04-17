@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Helper;
 
-use Geocoder\Location;
+use CommonsBooking\Geocoder\Location;
 
 /**
  * Wrapper for calling the geoCoder service.
@@ -16,6 +16,7 @@ class GeoHelper {
 	private static GeoCodeService $geoCodeService;
 
 	/**
+	 * @see NominatimGeoCodeService::getAddressData() for default values and more information
 	 * @param string $addressString
 	 *
 	 * @return Location|null
@@ -34,11 +35,11 @@ class GeoHelper {
 	 *
 	 * @return void
 	 */
-	public static function setGeoCodeServiceInstance( GeoCodeService $instance ) : void {
+	public static function setGeoCodeServiceInstance( GeoCodeService $instance ): void {
 		self::$geoCodeService = $instance;
 	}
 
-	public static function resetGeoCoder() : void {
-		GeoHelper::setGeoCodeServiceInstance( new NominatimGeoCodeService() );
+	public static function resetGeoCoder(): void {
+		self::setGeoCodeServiceInstance( new NominatimGeoCodeService() );
 	}
 }

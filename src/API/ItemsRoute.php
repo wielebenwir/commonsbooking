@@ -3,7 +3,6 @@
 
 namespace CommonsBooking\API;
 
-
 use CommonsBooking\Repository\Item;
 use stdClass;
 use WP_Error;
@@ -22,13 +21,14 @@ class ItemsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $rest_base = "items";
+	protected $rest_base = 'items';
 
 	/**
 	 * Commons-API schema definition.
+	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . "assets/schemas/commons-api/commons-api.items.schema.json";
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.items.schema.json';
 
 	/**
 	 * Returns raw data collection.
@@ -45,14 +45,14 @@ class ItemsRoute extends BaseRoute {
 		$args   = [];
 		if ( array_key_exists( 'id', $params ) ) {
 			$args = [
-				'p' => $params['id']
+				'p' => $params['id'],
 			];
 		}
 
 		$items = Item::get( $args );
 		foreach ( $items as $item ) {
 			$itemdata      = $this->prepare_item_for_response( $item, $request );
-			$data->items[] = $this->prepare_response_for_collection( $itemdata );
+			$data->items[] = $itemdata->get_data();
 		}
 
 		return $data;
@@ -66,44 +66,39 @@ class ItemsRoute extends BaseRoute {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		//get parameters from request
+		// get parameters from request
 		$params = $request->get_params();
 
 		$data = $this->getItemData( $request );
 
 		// Add owners data
-//        if(!array_key_exists('owners', $params) || $params['owners'] != "false") {
-//            $ownersRoute = new OwnersRoute();
-//            $data->owners = $ownersRoute->getItemData($request);
-//        }
+		// if(!array_key_exists('owners', $params) || $params['owners'] != "false") {
+		// $ownersRoute = new OwnersRoute();
+		// $data->owners = $ownersRoute->getItemData($request);
+		// }
 
 		// Add projects data
-		if ( ! array_key_exists( 'projects', $params ) || $params['projects'] != "false" ) {
+		if ( ! array_key_exists( 'projects', $params ) || $params['projects'] != 'false' ) {
 			$projectsRoute  = new ProjectsRoute();
 			$data->projects = $projectsRoute->getItemData();
 		}
 
 		// Add locations data
-		if ( ! array_key_exists( 'locations', $params ) || $params['locations'] != "false" ) {
+		if ( ! array_key_exists( 'locations', $params ) || $params['locations'] != 'false' ) {
 			$locationsRoute  = new LocationsRoute();
 			$data->locations = $locationsRoute->getItemData( $request );
 		}
 
 		// Add availability data
-		if ( ! array_key_exists( 'availability', $params ) || $params['availability'] != "false" ) {
+		if ( ! array_key_exists( 'availability', $params ) || $params['availability'] != 'false' ) {
 			$data->availability = [];
 			foreach ( $data->items as $item ) {
 				$availabilityRoute  = new AvailabilityRoute();
 				$data->availability = array_merge( $data->availability, $availabilityRoute->getItemData( $item->id ) );
 			}
-
 		}
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $data );
 	}
 
 	/**
@@ -115,27 +110,29 @@ class ItemsRoute extends BaseRoute {
 	 */
 	public function get_item( $request ): WP_REST_Response {
 		$data = $this->getItemData( $request );
-		return new WP_REST_Response( $data, 200 );
+
+		return $this->respond_with_validation( $data );
 	}
 
 	/**
-	 * @param mixed $item
+	 * @param mixed           $item
 	 * @param WP_REST_Request $request
 	 *
-	 * @return stdClass
+	 * @return WP_REST_Response
 	 */
-	public function prepare_item_for_response( $item, $request ): stdClass {
+	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem              = new stdClass();
 		$preparedItem->id          = $item->ID . '';
 		$preparedItem->name        = $item->post_title;
 		$preparedItem->url         = get_permalink( $item->ID );
 		$preparedItem->description = $this->escapeJsonString( $item->post_content );
-		$preparedItem->projectId = "1";
+		$preparedItem->ownerId     = '';  // not implemented, but currently required by schema
+		$preparedItem->projectId   = '1'; // not implemented, but currently required by schema
 
 		$thumbnailId = get_post_thumbnail_id( $item->ID );
 		if ( $thumbnailId ) {
-			$preparedItem->image = wp_get_attachment_image_url( $thumbnailId, 'full' );
-			$preparedItem->	images = [
+			$preparedItem->image  = wp_get_attachment_image_url( $thumbnailId, 'full' );
+			$preparedItem->images = [
 				'thumbnail' => wp_get_attachment_image_src( $thumbnailId, 'thumbnail' ),
 				'medium'    => wp_get_attachment_image_src( $thumbnailId, 'medium' ),
 				'large'     => wp_get_attachment_image_src( $thumbnailId, 'large' ),
@@ -143,7 +140,6 @@ class ItemsRoute extends BaseRoute {
 			];
 		}
 
-		return $preparedItem;
+		return new WP_REST_Response( $preparedItem );
 	}
-
 }
