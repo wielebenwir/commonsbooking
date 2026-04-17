@@ -69,7 +69,7 @@ echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 }
 </style>
 
-<div class="cb-pending-banner" id="cb-pending-banner">
+<div class="cb-pending-banner" id="cb-pending-banner" data-expiry="<?php echo (int) $expiry_ts; ?>">
 	<span class="cb-pulse-dot"></span>
 	<span>
 		<?php echo esc_html__( 'Please confirm your booking — reserved for', 'commonsbooking' ); ?>
