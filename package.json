@@ -45,7 +45,7 @@
 		"dist": "grunt dist",
     "docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
-		"docs:preview": "vitepress preview docs"
+		"docs:preview": "vitepress preview docs",
 		"lint:php": "vendor/bin/phpcbf",
 		"lint:js": "prettier --check 'assets/**/*.js'",
 		"lint": "npm run lint:php && npm run lint:js"
