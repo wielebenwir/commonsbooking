@@ -25,6 +25,8 @@
 		"grunt-contrib-uglify": "^5.2.2",
 		"grunt-contrib-watch": "^1.1.0",
 		"grunt-dart-sass": "^2.0.1",
+		"husky": "^9.0.0",
+		"lint-staged": "^15.0.0",
 		"matchdep": "^2.0.0",
 		"medium-zoom": "^1.1.0",
 		"sass": "^1.97.3",
@@ -32,6 +34,7 @@
 		"prettier": "^3.3.3"
 	},
 	"scripts": {
+		"prepare": "husky",
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
 		"env": "wp-env",
 		"env:start": "wp-env start",
@@ -40,9 +43,16 @@
 		"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
 		"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js",
 		"dist": "grunt dist",
-		"docs:dev": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
-		"docs:preview": "vitepress preview docs"
+		"docs:preview": "vitepress preview docs",
+		"lint:php": "vendor/bin/phpcbf",
+		"lint:js": "prettier --check 'assets/**/*.js'",
+		"lint": "npm run lint:php && npm run lint:js"
+	},
+	"lint-staged": {
+		"*.php": "vendor/bin/phpcbf",
+		"assets/**/*.js": "prettier --write"
 	},
 	"dependencies": {
 		"@commonsbooking/frontend": "^0.1.0-beta.7",
