@@ -47,7 +47,7 @@ In addition, CommonsBooking Managers have no special permissions regarding other
   * Change the site design
   * etc.
 
-## Make a CommonsBooking Manager a manager for all items / locations {#filterhook-isCurrentUserAdmin}
+## Make a CommonsBooking Manager a manager for all items / locations {#filterhook-isUserAdmin}
 
 With a [filter hook](../advanced-functionality/hooks-and-filters) you can set a specific role so that it automatically becomes a manager for all items / locations.
 The example below does this for the role 'cb_manager', i.e. it configures the CB Manager to be automatically assigned to all items and locations in the instance.
@@ -55,7 +55,7 @@ If this should happen with a different role, that role must also be added to the
 
 ```php
 add_filter(
-  'commonsbooking_isCurrentUserAdmin',
+  'commonsbooking_isUserAdmin',
   function ( bool $isAdmin, WP_User $user ) {
     return in_array( 'cb_manager', $user->roles, true ) ? true : $isAdmin;
   },
