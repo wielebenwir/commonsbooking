@@ -177,10 +177,9 @@ class CustomPost {
 
 	/**
 	 * Return Thumbnail with rendered div class="cb-thumbnail"
-	 * uses custom defined image sizes (defined in AddImageSizes()
-	 * Custom sizes: cb_listing_small or cb_listing_medium
+	 * uses custom defined image sizes (defined in {@see Plugin::AddImageSizes()})
 	 *
-	 * @param string|int[] $size
+	 * @param string|int[] $size Custom sizes are cb_listing_small or cb_listing_medium
 	 *
 	 * @return string
 	 */
