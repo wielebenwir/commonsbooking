@@ -156,12 +156,12 @@ class Calendar {
 					$availabilitySlot = new stdClass();
 
 					// Init DateTime object for start
-					$dateTimeStart = Wordpress::getUTCDateTime( 'now' );
+					$dateTimeStart = Wordpress::getDateTime( 'now' );
 					$dateTimeStart->setTimestamp( $slot['timestampstart'] );
 					$availabilitySlot->start = $dateTimeStart->format( 'Y-m-d\TH:i:sP' );
 
 					// Init DateTime object for end
-					$dateTimeend = Wordpress::getUTCDateTime( 'now' );
+					$dateTimeend = Wordpress::getDateTime( 'now' );
 					$dateTimeend->setTimestamp( $slot['timestampend'] );
 					$availabilitySlot->end = $dateTimeend->format( 'Y-m-d\TH:i:sP' );
 
