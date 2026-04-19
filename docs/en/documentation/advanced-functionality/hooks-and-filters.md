@@ -87,6 +87,7 @@ receives a value, modifies it, and then returns it.
   * commonsbooking_mail_subject
   * commonsbooking_mail_body
   * commonsbooking_mail_attachment
+  * commonsbooking_send_booking_message_to_locations_enabled
   * commonsbooking_disableCache
   * commonsbooking_gbfs_feeds
 
@@ -167,4 +168,13 @@ How many months are displayed in the mobile calendar view can be adjusted using 
 ```php
 // Sets the mobile calendar view to display 2 months
 add_filter('commonsbooking_mobile_calendar_month_count', fn(): int => 2);
+```
+
+### Filter `commonsbooking_send_booking_message_to_locations_enabled`
+
+Use this filter to enable or disable location BCC recipients for booking mails.
+
+```php
+// Disable location BCC for all booking mails.
+add_filter( 'commonsbooking_send_booking_message_to_locations_enabled', '__return_false' );
 ```
