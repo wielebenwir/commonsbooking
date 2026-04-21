@@ -32,7 +32,16 @@ class VehicleAvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 	}
 
 	public function testHourlyAvailability() {
-		unset_post_meta( $this->timeframe, 'full-day', 'on' );
+		delete_post_meta( $this->timeframe, 'full-day', 'on' );
+		update_post_meta( $this->timeframe, 'grid', 1 ); // hourly grid
+		update_post_meta( $this->timeframe, 'start-time', '08:00 AM' );
+		update_post_meta( $this->timeframe, 'end-time', '01:00 PM' );
+
+		$startDT = new \DateTime();
+		$startDT->modify( '08:00 AM' );
+		$endDT = new \DateTime();
+		$endDT->modify( '01:00 PM' );
+		$endDT->modify( '-1 second' ); // timeframes always have one second cut
 
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 		$response = rest_do_request( $request );
@@ -42,7 +51,9 @@ class VehicleAvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertNotEmpty( $data->vehicles );
 		$this->assertCount( 1, $data->vehicles );
 		$availabilities = $data->vehicles[0]->availabilities;
-		$this->assertCount( 1, $availabilities );
+		$this->assertCount( 2, $availabilities ); // today and tomorrow
+		$this->assertEquals( $startDT->format( 'c' ), $availabilities[0]->from );
+		$this->assertEquals( $endDT->format( 'c' ), $availabilities[0]->until );
 	}
 
 	public function setUp(): void {

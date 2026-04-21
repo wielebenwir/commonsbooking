@@ -217,7 +217,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param array $args WP Post args
 	 * @param bool  $bookable
 	 *
-	 * @return \CommonsBooking\Model\BookablePost[]
+	 * @return \CommonsBooking\Model\Location[]|\CommonsBooking\Model\Item[]
 	 */
 	public static function get( array $args = array(), bool $bookable = false ): array {
 		$posts             = [];
