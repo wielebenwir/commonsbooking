@@ -56,7 +56,7 @@ class CustomPost {
 		} else {
 			throw new Exception( 'Invalid post param. Needed WP_Post or ID (int)' );
 		}
-		$this->ID = $post->ID;
+		$this->ID = $this->post->ID;
 	}
 
 	/**
