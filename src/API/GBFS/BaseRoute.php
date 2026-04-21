@@ -20,6 +20,7 @@ use WP_REST_Response;
  *      - implement $rest_base
  *      - implement $schemaUrl
  *      - (if necessary) overwrite getRepository
+ *      - (if necessary) overwrite getListName
  */
 class BaseRoute extends \CommonsBooking\API\BaseRoute {
 
