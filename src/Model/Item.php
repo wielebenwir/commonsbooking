@@ -81,4 +81,34 @@ class Item extends BookablePost {
 			true
 		);
 	}
+
+	/**
+	 * Will get the location that the item is currently stationed at and bookable.
+	 * Will take into account the current time, the item can have timeframes
+	 * at multiple locations but can only be at one location at a time.
+	 *
+	 * @return ?Location will return null when no Location was found
+	 */
+	public function getLocation(): ?Location {
+		$locations = \CommonsBooking\Repository\Location::getByItem( $this->ID, true );
+
+		if ( empty( $locations ) ) {
+			return null;
+		}
+
+		if ( count( $locations ) === 1 ) {
+			return reset( $locations );
+		}
+
+		$timeframes = [];
+		foreach ( $locations as $location ) {
+			$timeframes = array_merge(
+				$timeframes,
+				$location->getBookableTimeframesByItem( $this->ID, true )
+			);
+		}
+		$closestTimeframe = \CommonsBooking\View\Calendar::getClosestBookableTimeFrameForToday( $timeframes );
+
+		return $closestTimeframe?->getLocation();// why I used a deprecated method here: https://github.com/wielebenwir/commonsbooking/issues/507#issuecomment-4235848408
+	}
 }

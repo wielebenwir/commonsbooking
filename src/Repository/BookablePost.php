@@ -217,9 +217,9 @@ abstract class BookablePost extends PostRepository {
 	 * @param array $args WP Post args
 	 * @param bool  $bookable
 	 *
-	 * @return array
+	 * @return \CommonsBooking\Model\Location[]|\CommonsBooking\Model\Item[]
 	 */
-	public static function get( array $args = array(), bool $bookable = false ) {
+	public static function get( array $args = array(), bool $bookable = false ): array {
 		$posts             = [];
 		$args['post_type'] = static::getPostType();
 		$args['nopaging']  = true;
@@ -273,7 +273,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $relatedType
 	 * @param bool $bookable
 	 *
-	 * @return int[] Array of post ids
+	 * @return \CommonsBooking\Model\Location[] | \CommonsBooking\Model\Item[]
 	 * @throws Exception
 	 */
 	protected static function getByRelatedPost( $postId, $originType, $relatedType, bool $bookable = false ): array {

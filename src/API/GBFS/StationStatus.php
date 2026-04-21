@@ -36,7 +36,7 @@ class StationStatus extends BaseRoute {
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem                         = new stdClass();
-		$preparedItem->station_id             = $item->ID . '';
+		$preparedItem->station_id             = strval( $item->ID );
 		$preparedItem->num_vehicles_available = $this->getItemCountAtLocation( $item->ID );
 		$preparedItem->is_installed           = true;
 		$preparedItem->is_renting             = true;

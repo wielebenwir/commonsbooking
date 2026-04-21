@@ -38,12 +38,12 @@ class AvailabilityRoute extends BaseRoute {
 	/**
 	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
 	 *
-	 * @param bool $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
+	 * @param ?int $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getItemData( $id = false ): array {
+	public static function getItemData( $id = null ): array {
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
 			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
