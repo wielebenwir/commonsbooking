@@ -89,11 +89,13 @@ class StationStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$response = rest_do_request( $request );
 		$data     = $response->get_data()->data;
 
-		$relevantStation = array_find(
-			$data->stations,
-			function ( $station ) use ( $otherLocationId ) {
-				return $station->station_id === (string) $otherLocationId;
-			}
+		$relevantStation = current(
+			array_filter(
+				$data->stations,
+				function ( $station ) use ( $otherLocationId ) {
+					return $station->station_id === (string) $otherLocationId;
+				}
+			)
 		);
 		$this->assertEquals( 0, $relevantStation->num_vehicles_available );
 
@@ -102,11 +104,13 @@ class StationStatusRouteTest extends CB_REST_Route_UnitTestCase {
 
 		$response        = rest_do_request( $request );
 		$data            = $response->get_data()->data;
-		$relevantStation = array_find(
-			$data->stations,
-			function ( $station ) use ( $otherLocationId ) {
-				return $station->station_id === (string) $otherLocationId;
-			}
+		$relevantStation = current(
+			array_filter(
+				$data->stations,
+				function ( $station ) use ( $otherLocationId ) {
+					return $station->station_id === (string) $otherLocationId;
+				}
+			)
 		);
 		$this->assertEquals( 1, $relevantStation->num_vehicles_available );
 	}
