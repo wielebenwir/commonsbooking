@@ -29,6 +29,83 @@ do_action( 'commonsbooking_before_booking-single', $booking->ID, $booking );
 
 echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 
+<?php if ( $current_status === 'unconfirmed' ) :
+	$expiry_ts = strtotime( $booking->post_date ) + 10 * 60;
+?>
+<style>
+@keyframes cb-pulse {
+	0%, 100% { opacity: 1; transform: scale(1); }
+	50%       { opacity: .4; transform: scale(1.35); }
+}
+.cb-pending-banner {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: var(--commonsbooking-spacer-big, 15px);
+	margin-bottom: var(--commonsbooking-spacer-big, 15px);
+	background: var(--commonsbooking-color-noticebg, #fff9c5);
+	border-radius: var(--commonsbooking-radius, 8px);
+	font-size: var(--commonsbooking-font-size-normal, 14px);
+	flex-wrap: wrap;
+}
+.cb-pulse-dot {
+	width: 12px; height: 12px;
+	border-radius: 50%;
+	background: var(--commonsbooking-color-warning, #ff9218);
+	flex-shrink: 0;
+	animation: cb-pulse 1.4s ease-in-out infinite;
+}
+.cb-pending-banner.cb-expired {
+	background: var(--commonsbooking-color-error, #d5425c);
+	color: #fff;
+}
+.cb-pending-banner.cb-expired .cb-pulse-dot {
+	background: #fff;
+	animation: none;
+}
+#cb-countdown-timer {
+	font-weight: bold;
+	font-variant-numeric: tabular-nums;
+}
+</style>
+
+<div class="cb-pending-banner" id="cb-pending-banner" data-expiry="<?php echo (int) $expiry_ts; ?>">
+	<span class="cb-pulse-dot"></span>
+	<span>
+		<?php echo esc_html__( 'Please confirm your booking — reserved for', 'commonsbooking' ); ?>
+		<span id="cb-countdown-timer">10:00</span>
+	</span>
+</div>
+
+<script>
+(function () {
+	var expiry  = <?php echo (int) $expiry_ts; ?> * 1000;
+	var banner  = document.getElementById('cb-pending-banner');
+	var display = document.getElementById('cb-countdown-timer');
+	if (!banner || !display) return;
+
+	function pad(n) { return n < 10 ? '0' + n : n; }
+
+	function tick() {
+		var remaining = Math.max(0, Math.floor((expiry - Date.now()) / 1000));
+		var m = Math.floor(remaining / 60);
+		var s = remaining % 60;
+		display.textContent = pad(m) + ':' + pad(s);
+
+		if (remaining <= 0) {
+			banner.classList.add('cb-expired');
+			display.parentElement.textContent =
+				'<?php echo esc_js( __( 'This reservation has expired. Please start a new booking.', 'commonsbooking' ) ); ?>';
+			clearInterval(timer);
+		}
+	}
+
+	tick();
+	var timer = setInterval(tick, 1000);
+})();
+</script>
+<?php endif; ?>
+
 	<div class="cb-wrapper cb-booking-item">
 		<div class="cb-list-header">
 			<?php echo commonsbooking_sanitizeHTML( $item->thumbnail( 'cb_listing_small' ) ); ?>
