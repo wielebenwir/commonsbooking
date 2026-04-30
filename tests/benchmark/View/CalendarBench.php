@@ -6,7 +6,6 @@ use CommonsBooking\Geocoder\Location as GeocoderLocation;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\View\Calendar;
-use CommonsBooking\Tests\CPTCreationTrait;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\Helper\GeoHelperTest;
 
@@ -17,7 +16,6 @@ use CommonsBooking\Tests\Helper\GeoHelperTest;
  */
 class CalendarBench {
 
-	use CPTCreationTrait;
 
 	const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77; // Simulate bookings that are in the past
 	const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33; // Simulate bookings in the future
@@ -67,48 +65,11 @@ class CalendarBench {
 			10,
 			6
 		);
-		$repetitions = [];
-		// every day has exactly one booking
-		$start = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
-		$start->modify( '- ' . self::BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE . ' days' );
-		$end = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
-		$end->modify( self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' );
-		$period = new \DatePeriod( $start, new \DateInterval( 'P1D' ), $end );
-		foreach ( $period as $date ) {
-			$startTs = $date->getTimestamp();
-			$date->modify( '23:59:59' );
-			$endTs         = $date->getTimestamp();
-			$repetitions[] = [
-				'start' => $startTs,
-				'end' => $endTs,
-			];
-		}
-		for ( $i = 0; $i < self::ITEMS_TOTAL; $i++ ) {
-			$item      = $this->createItem( "Benchmark Item $i" );
-			$location  = $this->createLocation( "Benchmark Location $i" );
-			$timeframe = $this->createTimeframe(
-				$location,
-				$item,
-				$start->getTimestamp(),
-				null // Make timeframe infinite
-			);
-			foreach ( $repetitions as $repetition ) {
-				$this->createBooking(
-					$location,
-					$item,
-					$repetition['start'],
-					$repetition['end']
-				);
-			}
-		}
-
-		for ( $i = 0; $i < self::ITEMS_DISCONNECTED; $i++ ) {
-			$this->createItem( "Benchmark Disconnected Item $i" );
-		}
-
-		for ( $i = 0; $i < self::LOCATIONS_DISCONNECTED; $i++ ) {
-			$this->createLocation( "Benchmark Disconnected Location $i" );
-		}
+		error_log('[fixture] Import files ...');
+		require_once __DIR__ . '/../fixtures/benchmark-data.php';
+		error_log('Load data ...');
+		cb_benchmark_load_fixtures();
+		error_log('Done loading.');
 
 		// disable performance tweaks
 		wp_defer_term_counting( false );
@@ -122,6 +83,7 @@ class CalendarBench {
 	}
 
 	public function tearDown(): void {
-		$this->tearDownAllPosts();
+		cb_benchmark_cleanup_fixtures();
+		// $this->tearDownAllPosts();
 	}
 }
