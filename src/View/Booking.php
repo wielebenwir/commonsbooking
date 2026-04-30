@@ -344,9 +344,7 @@ class Booking extends View {
 
 		try {
 			$itemModel = new \CommonsBooking\Model\Item( $itemID );
-			$location  = \CommonsBooking\Repository\Location::getByItem( $itemID, true );
-			// pick the first location, no matter what
-			$location  = reset( $location );
+			$location  = $itemModel->getLocation();
 			$timeframe = Timeframe::getBookable(
 				[ $location->ID ],
 				[ $itemID ],
