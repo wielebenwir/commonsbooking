@@ -60,14 +60,14 @@ Folgende Dinge darf der CommonsBooking Manager zum Beispiel nicht:
   * Das Design der Seite ändern
   * usw.
 
-## CommonsBooking Manager zum Manager für alle Artikel / Standorte machen {#filterhook-isCurrentUserAdmin}
+## CommonsBooking Manager zum Manager für alle Artikel / Standorte machen {#filterhook-isUserAdmin}
 
 Mithilfe eines [Filter Hooks](../advanced-functionality/hooks-and-filters) kannst du eine bestimmte Rolle so einstellen,
 dass sie automatisch Manager für alle Artikel / Standorte wird. Das unten genannte Beispiel macht das mit der Rolle 'cb_manager', also konfiguriert den CB-Manager so, dass er automatisch allen Artikeln und Standorten der Instanz zugerechnet wird. Falls das mit einer anderen Rolle passieren soll, muss diese Rolle auch den Manager Rollen mit einem [weiteren Codeschnipsel hinzugefügt werden](#filterhook-manager-roles).
 
 ```php
 add_filter(
-	'commonsbooking_isCurrentUserAdmin',
+	'commonsbooking_isUserAdmin',
 	function ( bool $isAdmin, WP_User $user ) {
 		return in_array( 'cb_manager', $user->roles, true ) ? true : $isAdmin;
 	},
