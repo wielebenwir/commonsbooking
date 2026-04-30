@@ -302,10 +302,10 @@ class BookingCodes {
 		if ( ! $timeframe->bookingCodesApplicable() ) {
 			return false;
 		}
-		$begin = Wordpress::getUTCDateTime();
+		$begin = Wordpress::getDateTime();
 		$begin->setTimestamp( $timeframe->getStartDate() );
 		if ( $timeframe->getRawEndDate() ) {
-			$end = Wordpress::getUTCDateTime();
+			$end = Wordpress::getDateTime();
 			$end->setTimestamp( $timeframe->getRawEndDate() );
 			// set $end's time > 00:00:00 such that DatePeriod-iteration will include $end:
 			$end->setTime( 0, 0, 1 );

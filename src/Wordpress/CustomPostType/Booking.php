@@ -224,7 +224,8 @@ class Booking extends Timeframe {
 	 * @param string|null $repetitionEnd
 	 * @param string|null $requestedPostName
 	 * @param string|null $postType
-	 *
+	 * @param int         $overbookedDays
+	 * @param bool        $timeZoneConversion because the litepicker returns a timezone agnostic timestamp, we need to convert it to true UNIX times. When calling it with the correct UNIX timestamp, we want to skip conversion.
 	 * @return int - the post id of the created booking
 	 * @throws BookingDeniedException - if the booking is not possible, message contains translated text for the user
 	 */
@@ -238,7 +239,8 @@ class Booking extends Timeframe {
 		?string $repetitionEnd,
 		?string $requestedPostName,
 		?string $postType,
-		int $overbookedDays = 0
+		int $overbookedDays = 0,
+		bool $timeZoneConversion = true
 	): int {
 
 		if ( isset( $_POST['calendar-download'] ) ) {
@@ -270,6 +272,16 @@ class Booking extends Timeframe {
 		$locationId      = (int) $locationId;
 		$repetitionStart = (int) $repetitionStart;
 		$repetitionEnd   = (int) $repetitionEnd;
+
+		if ( $timeZoneConversion ) {
+			// convert localized timestamp to UNIX timestamp
+			$dt = new \DateTime( $repetitionStart );
+			// gets the offset from the current timezone to GMT (why not UTC, I don't know)
+			$offset = wp_timezone()->getOffset( $dt );
+			// subtract the offset, now we have a UNIX timestamp
+			$repetitionStart = $repetitionStart - $offset;
+			$repetitionEnd   = $repetitionEnd - $offset;
+		}
 
 		if ( $post_ID != null && ! get_post( $post_ID ) ) {
 			throw new BookingDeniedException(

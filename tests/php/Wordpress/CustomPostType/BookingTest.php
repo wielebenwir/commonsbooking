@@ -36,7 +36,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 		// add this to the array so it can be destroyed later
 		$this->bookingIds[] = $bookingId;
@@ -59,7 +61,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			$postName,
-			null
+			null,
+			0,
+			false
 		);
 		$this->bookingIds[] = $newBookingId;
 
@@ -82,7 +86,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			$postName,
-			null
+			null,
+			0,
+			false
 		);
 		$this->bookingIds[] = $canceledId;
 
@@ -109,7 +115,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( '+1 day' ),
 			strtotime( '+2 days' ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 		$this->bookingIds[] = $bookingId;
 
@@ -128,7 +136,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( '+1 day' ),
 			strtotime( '+2 days' ),
 			$postName,
-			null
+			null,
+			0,
+			false
 		);
 	}
 
@@ -149,7 +159,8 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( '+5 day', strtotime( self::CURRENT_DATE ) ),
 			null,
 			null,
-			3
+			3,
+			false
 		);
 		// add this to the array so it can be destroyed later
 		$this->bookingIds[] = $bookingId;
@@ -172,7 +183,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+5 day', strtotime( self::CURRENT_DATE ) ),
 			$postName,
-			null
+			null,
+			0,
+			false
 		);
 		$this->bookingIds[] = $newBookingId;
 
@@ -199,7 +212,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 	}
 	public function testBookingWithoutItem() {
@@ -215,7 +230,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 	}
 	public function testBookingWithoutStart() {
@@ -231,7 +248,9 @@ class BookingTest extends CustomPostTypeTest {
 			null,
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 	}
 	public function testBookingWithoutEnd() {
@@ -247,7 +266,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			null,
 			null,
-			null
+			null,
+			0,
+			false
 		);
 	}
 	public function testBookingOverlapping() {
@@ -264,7 +285,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 	}
 
@@ -279,7 +302,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 		// add this to the array so it can be destroyed later
 		$this->bookingIds[] = $bookingId;
@@ -296,7 +321,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			null
+			null,
+			0,
+			false
 		);
 		$this->bookingIds[] = $sameBookingId;
 
@@ -323,7 +350,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			null,
-			'6'
+			'6',
+			0,
+			false
 		);
 		$postName  = get_post( $bookingId )->post_name;
 
@@ -343,7 +372,9 @@ class BookingTest extends CustomPostTypeTest {
 			strtotime( self::CURRENT_DATE ),
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
 			$postName,
-			'6'
+			'6',
+			0,
+			false
 		);
 	}
 
@@ -492,7 +523,9 @@ class BookingTest extends CustomPostTypeTest {
 			$repetitionStart,
 			$repetitionEnd,
 			null,
-			null
+			null,
+			0,
+			false
 		);
 		$this->bookingIds[] = $user1BookingId;
 		$postName           = get_post( $user1BookingId )->post_name;
@@ -505,7 +538,9 @@ class BookingTest extends CustomPostTypeTest {
 			$repetitionStart,
 			$repetitionEnd,
 			$postName,
-			null
+			null,
+			0,
+			false
 		);
 
 		wp_set_current_user( $this->createSecondSubscriber() );
@@ -521,7 +556,9 @@ class BookingTest extends CustomPostTypeTest {
 				$repetitionStart,
 				$repetitionEnd,
 				null,
-				null
+				null,
+				0,
+				false
 			);
 			$this->bookingIds[] = $result;
 		} catch ( \CommonsBooking\Exception\BookingDeniedException $e ) {
@@ -551,7 +588,9 @@ class BookingTest extends CustomPostTypeTest {
 			$repetitionStart,
 			$repetitionEnd,
 			null,
-			null
+			null,
+			0,
+			false
 		);
 		$this->bookingIds[] = $user1BookingId;
 
@@ -568,7 +607,9 @@ class BookingTest extends CustomPostTypeTest {
 				$repetitionStart,
 				$repetitionEnd,
 				null,
-				null
+				null,
+				0,
+				false
 			);
 			$this->bookingIds[] = $result;
 		} catch ( \CommonsBooking\Exception\BookingDeniedException $e ) {

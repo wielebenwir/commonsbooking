@@ -313,11 +313,8 @@ class Wordpress {
 		return $dto;
 	}
 
-	public static function getUTCDateTime( $datetime = 'now' ): DateTime {
-		$dto = new DateTime( $datetime );
-		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
-
-		return $dto;
+	public static function getDateTime( $datetime = 'now' ): DateTime {
+		return new DateTime( $datetime );
 	}
 
 	public static function getLocalDateTime( $timestamp ): DateTime {
