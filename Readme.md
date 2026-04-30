@@ -139,6 +139,23 @@ wp i18n make-pot . languages/commonsbooking.pot
 ```
 command in the plugin directory. Make sure that all of your strings use the `__` function with the domain `commonsbooking`. Then you can use `poedit` to open the `commonsbooking-de_DE.po` and update the strings from the `pot` file.
 
+### Linting
+
+The project uses [phpcs/phpcbf](https://github.com/squizlabs/PHP_CodeSniffer) for PHP code style and [Prettier](https://prettier.io/) for JavaScript formatting.
+
+Run all linting checks manually:
+```bash
+npm run lint
+```
+
+Or run them separately:
+```bash
+npm run lint:php   # PHP code style via phpcbf
+npm run lint:js    # JS formatting check via prettier
+```
+
+**Pre-commit hook:** [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/okonet/lint-staged) are configured to automatically run linting on staged files before every commit. `phpcbf` will auto-fix staged `.php` files and `prettier` will auto-format staged `.js` files. The hook is installed automatically when you run `npm install`.
+
 ### Build plugin zip
 
 To create the plugin zip file for uploading to a development server:
