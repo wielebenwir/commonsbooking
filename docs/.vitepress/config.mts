@@ -273,19 +273,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Häufige Fragen (Version 0.9.x)', link: 'faq' }
       ]
     },
-      {
-          text: 'Häufige Fragen (FAQ)', base: '/de/documentation/faq/',
-          link: '/',
-          collapsed: true,
-          items: [
-              { text: 'Die Seite ist sehr langsam', link: 'site-slow' },
-              { text: 'Probleme und Antworten', link: 'problems-and-answers' },
-              { text: 'Wie bekomme ich den Buchungskommentar ...', link: 'booking-comment-emails' },
-              { text: 'Kann ich Zahlenschloss-Codes in E-Mails einfügen?', link: 'lock-codes-email' },
-              { text: 'Artikeldetailseite übersichtlicher gestalten', link: 'organise-article-page' },
-              { text: 'Wie verhindere ich Spam Registrierungen', link: 'avoid-spam-registrations'}
-          ]
-      },
+      { text: 'Häufige Fragen (FAQ)', link: '/de/documentation/faq/' },
   ]
 }
 
@@ -395,19 +383,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         { text: 'Overview of releases and planned further development', link: 'release-overview' }
       ]
     },
-      {
-          text: 'Frequently Asked Questions (FAQ)', base: '/en/documentation/faq/',
-          link: '/',
-          collapsed: true,
-          items: [
-              { text: 'The site is very slow', link: 'site-slow' },
-              { text: 'Problems and answers', link: 'problems-and-answers' },
-              { text: 'How do I show the booking comment on the page and in the email?', link: 'booking-comment-emails' },
-              { text: 'How do I show lock codes in emails?', link: 'lock-codes-email' },
-              { text: 'How can I make the item detail page clearer?', link: 'organise-article-page' },
-              { text: 'How do I prevent spam registrations?', link: 'avoid-spam-registrations'}
-          ]
-      },
+      { text: 'Frequently Asked Questions (FAQ)', link: '/en/documentation/faq/' },
   ]
 }
 
