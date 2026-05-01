@@ -1,5 +1,8 @@
 # The site is very slow
 
+## The site is very slow
+
+::: details Expand for answer
 If your CommonsBooking site is very slow, there may be several underlying causes.
 We use a technology called caching, which keeps frequently requested data
 in temporary storage to save server resources.  
@@ -11,3 +14,4 @@ Caching may not work under certain conditions, for example when:
     * If that is also not possible: Go to your Site Health screen at (http://YOUR-URL/wp-admin/site-health.php?tab=debug). There you will find the path to your WordPress directory under **Directories**. Alternatively, choose a folder in the format `YOUR_DIRECTORY/symfony` as the cache target. **Warning:** This can cause your WordPress directory to grow very large.
 
 Alternatively, you can install [Redis](https://redis.io) on your server and let Redis manage the cache. Since Redis stores the cache in RAM instead of the filesystem, it is usually a bit faster.
+:::

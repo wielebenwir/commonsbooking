@@ -1,5 +1,8 @@
-#  Die Seite ist sehr langsam
+# Die Seite ist sehr langsam
 
+## Die Seite ist sehr langsam
+
+::: details Antwort anzeigen
 Wenn deine CommonsBooking Seite sehr langsam ist, kann das verschiedene Gründe haben.
 Wir nutzen eine Technologie namens Caching, mit der wir häufig gestellte Anfragen in einem Zwischenspeicher
 zurückhalten, um Serverkapazitäten einzusparen.
@@ -17,6 +20,7 @@ Das Caching kann unter Umständen nicht funktionieren, wenn:
 
 Alternativ kannst du auch [REDIS](https://redis.io) auf deinem Server installieren und den Cache durch REDIS verwalten lassen.
 Da REDIS den Cache im RAM speichert, statt im Dateisystem, ist das meistens etwas schneller.
+:::
 
 ## Troubleshooting
 
