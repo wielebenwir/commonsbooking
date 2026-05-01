@@ -1,5 +1,7 @@
 # Häufige Fragen (FAQ)
 
+Diese Seite ist in zwei Bereiche unterteilt: allgemeine **FAQ** mit häufigen Fragen zur Nutzung, und **Plugin- und Theme-Inkompatibilitäten** mit bekannten Problemen durch Drittanbieter-Software.
+
 ## Wie bekomme ich den Buchungskommentar auf die Seite und in die Email?
 
 ::: details Antwort anzeigen

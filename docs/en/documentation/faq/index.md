@@ -1,5 +1,7 @@
 # Frequently Asked Questions (FAQ)
 
+This page is split into two sections: general **FAQ** with common how-to questions, and **Plugin & Theme Incompatibilities** listing known issues with third-party software.
+
 ## How do I show the booking comment on the page and in the email?
 
 ::: details Expand for answer
