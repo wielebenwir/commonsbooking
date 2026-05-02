@@ -1024,15 +1024,6 @@ class Timeframe extends CustomPost {
 	}
 
 	/**
-	 * Returns true if booking codes were enabled for this timeframe
-	 *
-	 * @return bool
-	 */
-	public function hasBookingCodes(): bool {
-		return $this->getMeta( 'create-booking-codes' ) == 'on';
-	}
-
-	/**
 	 * Returns repetition-start \DateTime.
 	 * This function contains a weird hotfix for full day timeframes.
 	 * This is because it is mainly used by the iCalendar export where if we don't convert the timestamp to a UTC Datetime we will get the wrong starting time.
