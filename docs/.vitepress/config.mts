@@ -273,7 +273,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Häufige Fragen (Version 0.9.x)', link: 'faq' }
       ]
     },
-      { text: 'Häufige Fragen (FAQ)', link: '/de/documentation/faq/' },
+      { text: 'Häufige Fragen (FAQ)', link: '/de/documentation/faq/', items: [] },
   ]
 }
 
@@ -383,7 +383,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
         { text: 'Overview of releases and planned further development', link: 'release-overview' }
       ]
     },
-      { text: 'Frequently Asked Questions (FAQ)', link: '/en/documentation/faq/' },
+      { text: 'Frequently Asked Questions (FAQ)', link: '/en/documentation/faq/', items: [] },
   ]
 }
 
