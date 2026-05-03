@@ -18,7 +18,7 @@ Hier empfiehlt sich ein Plugin wie [Show-Hide/Collapse-Expand](https://de.wordpr
 ![](/img/item-collapse.png)
 :::
 
-## Meine Seite ist sehr langsam – was kann ich tun?
+## Meine Seite ist sehr langsam – was kann ich tun? {#my-site-is-very-slow-what-can-i-do}
 
 :::: details Antwort anzeigen
 Wenn deine CommonsBooking Seite sehr langsam ist, kann das verschiedene Gründe haben.

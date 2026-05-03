@@ -36,7 +36,7 @@ A misconfigured cache can slow down your site!
   working properly. In that case, try a different path for the cache or a different cache adapter.
 
 * If your site is very slow, this may also indicate a problem with the cache.
-  More about this: [The site is very slow](../faq/site-slow).
+  More about this: [The site is very slow](../faq/index#my-site-is-very-slow-what-can-i-do).
 
 * **Periodical cache warmup through cron job**:
   :::warning
