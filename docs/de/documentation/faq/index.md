@@ -1,6 +1,12 @@
 # Häufige Fragen (FAQ)
 
+<script setup>
+import ExpandAll from '/.vitepress/components/ExpandAll.vue'
+</script>
+
 Diese Seite ist in zwei Bereiche unterteilt: allgemeine **FAQ** mit häufigen Fragen zur Nutzung, und **Plugin- und Theme-Inkompatibilitäten** mit bekannten Problemen durch Drittanbieter-Software.
+
+<ExpandAll label-expand="Alle anzeigen" label-collapse="Alle ausblenden" />
 
 ## Wie bekomme ich den Buchungskommentar auf die Seite und in die Email?
 

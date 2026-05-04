@@ -1,6 +1,12 @@
 # Frequently Asked Questions (FAQ)
 
+<script setup>
+import ExpandAll from '/.vitepress/components/ExpandAll.vue'
+</script>
+
 This page is split into two sections: general **FAQ** with common how-to questions, and **Plugin & Theme Incompatibilities** listing known issues with third-party software.
+
+<ExpandAll label-expand="Expand all" label-collapse="Collapse all" />
 
 ## How do I show the booking comment on the page and in the email?
 
