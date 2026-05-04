@@ -4,9 +4,11 @@
 import ExpandAll from '/.vitepress/components/ExpandAll.vue'
 </script>
 
-This page is split into two sections: general **FAQ** with common how-to questions, and **Plugin & Theme Incompatibilities** listing known issues with third-party software.
+This page is split into two sections: [general **FAQ**](#faq) with common how-to questions, and [**Plugin & Theme Incompatibilities**](#plugin-incompatibilities) listing known issues with third-party software.
 
 <ExpandAll label-expand="Expand all" label-collapse="Collapse all" />
+
+## General FAQ {#faq}
 
 ## How do I show the booking comment on the page and in the email?
 
@@ -94,7 +96,7 @@ There are several ways to do this (suggestions from the community):
 * "We use hCaptcha for WordPress. After installation, select the registration you use in the plugin settings (e.g., UltimateMember; by default the built-in WordPress registration should be selected). To use it, you need to create an hCaptcha account. They advertise Privacy-First and that no user data is sold. I have not checked this myself." - [Download from the plugin directory](https://wordpress.org/plugins/hcaptcha-for-forms-and-more)
 :::
 
-## Plugin & Theme Incompatibilities
+## Plugin & Theme Incompatibilities {#plugin-incompatibilities}
 
 ### Lightstart
 

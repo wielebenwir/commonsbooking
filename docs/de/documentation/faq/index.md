@@ -4,9 +4,11 @@
 import ExpandAll from '/.vitepress/components/ExpandAll.vue'
 </script>
 
-Diese Seite ist in zwei Bereiche unterteilt: allgemeine **FAQ** mit häufigen Fragen zur Nutzung, und **Plugin- und Theme-Inkompatibilitäten** mit bekannten Problemen durch Drittanbieter-Software.
+Diese Seite ist in zwei Bereiche unterteilt: [allgemeine **FAQ**](#faq) mit häufigen Fragen zur Nutzung, und [**Plugin- und Theme-Inkompatibilitäten**](#plugin-incompatibilities) mit bekannten Problemen durch Drittanbieter-Software.
 
 <ExpandAll label-expand="Alle anzeigen" label-collapse="Alle ausblenden" />
+
+## Allgemeine FAQ {#faq}
 
 ## Wie bekomme ich den Buchungskommentar auf die Seite und in die Email?
 
@@ -110,7 +112,7 @@ Dafür gibt es verschiedene Möglichkeiten (Vorschläge aus der Community):
 * "Wir nutzen Hcaptcha für wordpress. Nach der Installation in den Einstellungen des Plugins die von euch genutzte Registrierung (z.B. UltimateMember) auswählen. Für die Nutzung muss ein Hcaptcha Account erstellt werden. Sie werben mit Privacy-First und das keine Nutzerdaten verkauft werden. Ich selber habe das nicht geprüft." - [Download aus dem Plugin-Verzeichnis](https://wordpress.org/plugins/hcaptcha-for-forms-and-more)
 :::
 
-## Plugin- und Theme-Inkompatibilitäten
+## Plugin- und Theme-Inkompatibilitäten {#plugin-incompatibilities}
 
 ### Lightstart
 
