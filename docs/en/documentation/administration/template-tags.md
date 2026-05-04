@@ -66,6 +66,27 @@ The following template tags are included in the templates created by default dur
 | Expected restriction end date incl. time                                                                            |   <span v-pre>`{{restriction:formattedEndDateTime}}`</span>   |
 | Notice text that was entered in the restriction                                                                     |           <span v-pre>`{{restriction:hint}}`</span>           |
 
+## Weather forecast tags (optional)
+
+When the *Weather forecast in emails* feature is enabled under **Settings → Advanced Options → Weather forecast in emails**, the following template tags become available in any email that has a booking in scope. Data is fetched from the [BrightSky API](https://brightsky.dev) (DWD) for the booking's location and start date and cached for one hour. The location must have `geo_latitude` / `geo_longitude` set, otherwise the tags resolve to an empty string.
+
+| Field                                                                                  |                  Template tag                  |
+|----------------------------------------------------------------------------------------|:----------------------------------------------:|
+| Human-readable summary (low/high/average)                                              |    <span v-pre>`{{booking:weatherForecast}}`</span>     |
+| Same as `weatherForecast` (alias)                                                      |     <span v-pre>`{{booking:weatherSummary}}`</span>     |
+| Warning text — only emitted when extreme temperatures are forecast (else empty)        |     <span v-pre>`{{booking:weatherWarning}}`</span>     |
+| Lowest forecast temperature (°C, numeric)                                              |       <span v-pre>`{{booking:weatherMin}}`</span>       |
+| Highest forecast temperature (°C, numeric)                                             |       <span v-pre>`{{booking:weatherMax}}`</span>       |
+| Mean forecast temperature (°C, numeric)                                                |      <span v-pre>`{{booking:weatherMean}}`</span>      |
+
+The low- and high-temperature thresholds that trigger `weatherWarning` are configurable in the same settings panel (defaults: 4 °C / 30 °C).
+
+Tip: combine with the conditional brackets so the surrounding text is hidden when no warning applies:
+
+```text
+{{[<strong>Notice: </strong>]booking:weatherWarning}}
+```
+
 ## Other meta fields
 
 When using CommonsBooking in combination with other plugins, their plugin prefix for meta fields must be used so that they are correctly referenced. The following is a non-exhaustive list:

@@ -1587,6 +1587,45 @@ User Email: {{user:user_email}}',
 					),
 				],
 			),
+			'weather' => array(
+				'title'  => commonsbooking_sanitizeHTML( __( 'Weather forecast in emails', 'commonsbooking' ) ),
+				'id'     => 'weather_group',
+				'desc'   => commonsbooking_sanitizeHTML(
+					__(
+						'Adds weather forecast template tags that can be used in email templates: <code>{{booking:weatherForecast}}</code>, <code>{{booking:weatherWarning}}</code>, <code>{{booking:weatherMin}}</code>, <code>{{booking:weatherMax}}</code>, <code>{{booking:weatherMean}}</code>. Data is fetched from the BrightSky API (DWD) for the booking\'s location and start date. Requires <code>geo_latitude</code> and <code>geo_longitude</code> on the location.',
+						'commonsbooking'
+					)
+				),
+				'fields' => array(
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Enable weather template tags', 'commonsbooking' ) ),
+						'desc' => commonsbooking_sanitizeHTML( __( 'When enabled, weather template tags resolve to live data; otherwise they resolve to an empty string.', 'commonsbooking' ) ),
+						'id'   => 'weather_enabled',
+						'type' => 'checkbox',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Low-temperature threshold (°C)', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'A {{booking:weatherWarning}} is emitted when forecast temperatures drop below this value.', 'commonsbooking' ) ),
+						'id'      => 'weather_threshold_low',
+						'type'    => 'text_small',
+						'default' => '4',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'High-temperature threshold (°C)', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'A {{booking:weatherWarning}} is emitted when forecast temperatures rise above this value.', 'commonsbooking' ) ),
+						'id'      => 'weather_threshold_high',
+						'type'    => 'text_small',
+						'default' => '30',
+					),
+					array(
+						'name'    => commonsbooking_sanitizeHTML( __( 'Weather API endpoint', 'commonsbooking' ) ),
+						'desc'    => commonsbooking_sanitizeHTML( __( 'BrightSky-compatible weather endpoint. Leave at default unless you self-host BrightSky.', 'commonsbooking' ) ),
+						'id'      => 'weather_api_endpoint',
+						'type'    => 'text',
+						'default' => 'https://api.brightsky.dev/weather',
+					),
+				),
+			),
 			'experimental' => array(
 				'title'  => commonsbooking_sanitizeHTML( __( 'Advanced caching settings', 'commonsbooking' ) ),
 				'id'     => 'caching_group',

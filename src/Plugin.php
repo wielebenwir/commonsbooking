@@ -15,6 +15,7 @@ use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Service\Upgrade;
+use CommonsBooking\Service\WeatherService;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
@@ -831,6 +832,9 @@ class Plugin {
 
 		// iCal rewrite
 		iCalendar::initRewrite();
+
+		// Register weather template tag filters ({{booking:weatherForecast}} etc.)
+		WeatherService::initHooks();
 	}
 
 	/**
