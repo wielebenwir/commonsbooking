@@ -27,8 +27,13 @@ class ItemTest extends CustomPostTypeTest {
 		$cloakedId = $itemModel->getCloakedId();
 		$this->assertEquals( $this->itemId, Item::getByCloakedId( $cloakedId )->ID );
 
-		// with booking
-		$this->createConfirmedBookingEndingToday();
+		// with booking in past
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
+		);
 		$bookingCloakedId = $itemModel->getCloakedId();
 		$this->assertNotEquals( $bookingCloakedId, $cloakedId );
 		$this->assertEquals( $this->itemId, Item::getByCloakedId( $bookingCloakedId )->ID );

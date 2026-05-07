@@ -65,8 +65,13 @@ class VehicleAvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		$data = $response->get_data()->data;
 		$id   = $data->vehicles[0]->vehicle_id;
 
-		// add a trip
-		$this->createConfirmedBookingStartingToday( $this->locationId, $this->itemId );
+		// add a trip in the past
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
+		);
 
 		// after the trip, the vehicle ID should have changed
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );

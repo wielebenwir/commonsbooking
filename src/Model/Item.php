@@ -124,7 +124,7 @@ class Item extends BookablePost {
 	/**
 	 * Gets the closest Booking for a given Item.
 	 *
-	 * @return ?Booking the booking that is either past or currently active closest to the current time, null if no booking is present
+	 * @return ?Booking the booking that is past and closest to the current time, null if no booking is present
 	 */
 	public function getClosestBooking(): ?Booking {
 
@@ -142,9 +142,30 @@ class Item extends BookablePost {
 			[ 'confirmed' ]
 		);
 
-		$closestBooking = \CommonsBooking\View\Calendar::getClosestBookableTimeFrameForToday( $allBookings );
+		$allBookings = array_filter( $allBookings, fn( $b ) => $b->isPast() );
 
-		return ( $closestBooking instanceof Booking ) ? $closestBooking : null; // This also checks if the value is null
+		if ( empty( $allBookings ) ) {
+			return null;
+		}
+
+		usort(
+			$allBookings,
+			function ( $a, $b ) {
+				$aStartDate = $a->getStartDate();
+				$bStartDate = $b->getStartDate();
+
+				if ( $aStartDate == $bStartDate ) {
+					$aStartTimeDT = $a->getStartTimeDateTime();
+					$bStartTimeDT = $b->getStartTimeDateTime();
+
+					return $aStartTimeDT <=> $bStartTimeDT;
+				}
+
+				return $aStartDate <=> $bStartDate;
+			}
+		);
+
+		return array_pop( $allBookings );
 	}
 
 	/**
