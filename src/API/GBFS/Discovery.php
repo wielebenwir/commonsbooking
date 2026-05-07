@@ -49,6 +49,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 				'system_information',
 				'station_information',
 				'station_status',
+				'vehicle_availability',
 				'vehicle_status',
 			]
 		);
