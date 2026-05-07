@@ -202,6 +202,14 @@ class Scheduler {
 			'update_option_commonsbooking_options_export'
 		);
 
+		// Mark past confirmed bookings as outdated (performance: excludes them from active queries)
+		new Scheduler(
+			'mark_outdated_bookings',
+			[ \CommonsBooking\Service\Booking::class, 'markOutdatedBookings' ],
+			'daily',
+			'tomorrow midnight'
+		);
+
 		// Init cache warmup job
 		$cacheWarmupSetting = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'warmup_cron' );
 		if ( $cacheWarmupSetting ) {

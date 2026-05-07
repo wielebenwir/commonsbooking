@@ -1,0 +1,80 @@
+# Results from local run
+
+## With cb-outdated status set
+```
+❯ php8.1 vendor/bin/phpunit --bootstrap tests/php/bootstrap.php tests/php/Service/BookingOutdatedPerformanceTest.php
+Installing...
+Running as single site... To run multisite, use -c tests/phpunit/multisite.xml
+Not running ajax tests. To execute these, use --group ajax.
+Not running ms-files tests. To execute these, use --group ms-files.
+Not running external-http tests. To execute these, use --group external-http.
+PHPUnit 9.6.33 by Sebastian Bergmann and contributors.
+
+
+  ┌ BookingOutdatedPerformanceTest  N = 2000 ┐
+  │ Phase                           Time (s)  ms / booking │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Create 2000 bookings               3.094        1.55 │
+  │ markOutdatedBookings()             2.029        1.01 │
+  │ Batches (×500)                    4.000             │
+  │ getByTimerange()                   0.009             │
+  │ getExistingBookings()              0.002             │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Total                              5.169             │
+  └─────────────────────────────────────────────┘
+
+.
+  ┌ BookingOutdatedPerformanceTest  N = 5000 ┐
+  │ Phase                           Time (s)  ms / booking │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Create 5000 bookings               6.879        1.38 │
+  │ markOutdatedBookings()            15.879        3.18 │
+  │ Batches (×500)                   10.000             │
+  │ getByTimerange()                   0.066             │
+  │ getExistingBookings()              0.002             │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Total                             22.868             │
+  └─────────────────────────────────────────────┘
+
+....                                                               5 / 5 (100%)
+
+``
+
+
+## Without cb-outdated status set
+```
+❯ php8.1 vendor/bin/phpunit --bootstrap tests/php/bootstrap.php tests/php/Service/BookingOutdatedPerformanceTest.php
+Installing...
+Running as single site... To run multisite, use -c tests/phpunit/multisite.xml
+Not running ajax tests. To execute these, use --group ajax.
+Not running ms-files tests. To execute these, use --group ms-files.
+Not running external-http tests. To execute these, use --group external-http.
+PHPUnit 9.6.33 by Sebastian Bergmann and contributors.
+
+
+  ┌ BookingOutdatedPerformanceTest  N = 2000 ┐
+  │ Phase                           Time (s)  ms / booking │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Create 2000 bookings               6.484        3.24 │
+  │ markOutdatedBookings()          0         0          │
+  │ Batches (×500)                 0                    │
+  │ getByTimerange()                   4.874             │
+  │ getExistingBookings()           0                    │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Total                           0                    │
+  └─────────────────────────────────────────────┘
+
+F
+  ┌ BookingOutdatedPerformanceTest  N = 5000 ┐
+  │ Phase                           Time (s)  ms / booking │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Create 5000 bookings              15.680        3.14 │
+  │ markOutdatedBookings()          0         0          │
+  │ Batches (×500)                 0                    │
+  │ getByTimerange()                  28.206             │
+  │ getExistingBookings()           0                    │
+  │ ──────────────────────────────  ──────────  ────────────── │
+  │ Total                           0                    │
+  └─────────────────────────────────────────────┘
+
+```

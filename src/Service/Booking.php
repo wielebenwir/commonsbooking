@@ -40,6 +40,58 @@ class Booking {
 		}
 	}
 
+	/**
+	 * Transitions confirmed bookings whose end date is in the past to 'cb-outdated'.
+	 * Run daily via Scheduler so that past bookings are excluded from active queries.
+	 *
+	 * @return void
+	 */
+	public static function markOutdatedBookings(): void {
+		global $wpdb;
+
+		$midnight = strtotime( 'midnight' );
+
+		$args = [
+			'post_type'      => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+			'post_status'    => 'confirmed',
+			'meta_query'     => [
+				'relation' => 'AND',
+				[
+					'key'     => \CommonsBooking\Model\Timeframe::REPETITION_END,
+					'value'   => $midnight,
+					'compare' => '<',
+					'type'    => 'numeric',
+				],
+				[
+					'key'     => 'type',
+					'value'   => Timeframe::BOOKING_ID,
+					'compare' => '=',
+				],
+			],
+			'posts_per_page' => 500,
+			'fields'         => 'ids',
+		];
+
+		$query = new WP_Query( $args );
+		$ids   = $query->posts;
+
+		if ( empty( $ids ) ) {
+			return;
+		}
+
+		// Bulk-update in a single SQL statement instead of one wp_update_post()
+		// per row — critical for performance when thousands of bookings age out.
+		$placeholders = implode( ', ', array_fill( 0, count( $ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_status = 'cb-outdated' WHERE ID IN ($placeholders)", $ids ) );
+
+		// Flush the per-post object cache so subsequent get_post() calls
+		// reflect the new status without a stale cache hit.
+		foreach ( $ids as $id ) {
+			clean_post_cache( $id );
+		}
+	}
+
 	private static function sendMessagesForDay( int $tsDate, bool $onStartDate, Message $message ) {
 		if ( $onStartDate ) {
 			$bookings = \CommonsBooking\Repository\Booking::getBeginningBookingsByDate( $tsDate );
