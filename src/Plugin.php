@@ -831,6 +831,9 @@ class Plugin {
 
 		// iCal rewrite
 		iCalendar::initRewrite();
+
+		// permalink resolution rewrite
+		\CommonsBooking\Repository\Item::initRewrite();
 	}
 
 	/**
@@ -918,6 +921,7 @@ class Plugin {
 					new \CommonsBooking\API\GBFS\Discovery(),
 					new \CommonsBooking\API\GBFS\StationInformation(),
 					new \CommonsBooking\API\GBFS\StationStatus(),
+					new \CommonsBooking\API\GBFS\VehicleStatus(),
 					new \CommonsBooking\API\GBFS\SystemInformation(),
 
 				];

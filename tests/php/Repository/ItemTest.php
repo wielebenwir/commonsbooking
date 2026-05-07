@@ -4,19 +4,37 @@ namespace CommonsBooking\Tests\Repository;
 
 use CommonsBooking\Repository\Item;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class ItemTest extends CustomPostTypeTest {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		// Create timeframe with location and item, so that we can search vor it
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		// Create timeframe with location and item, so that we can search for it
 		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( 'midnight' ),
-			strtotime( '+90 days' )
+			strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+90 days', strtotime( self::CURRENT_DATE ) )
 		);
+	}
+
+	public function testGetByCloakedId(): void {
+		$itemModel = new \CommonsBooking\Model\Item( $this->itemId );
+
+		// basic test, without any booking
+		$cloakedId = $itemModel->getCloakedId();
+		$this->assertEquals( $this->itemId, Item::getByCloakedId( $cloakedId )->ID );
+
+		// with booking
+		$this->createConfirmedBookingEndingToday();
+		$bookingCloakedId = $itemModel->getCloakedId();
+		$this->assertNotEquals( $bookingCloakedId, $cloakedId );
+		$this->assertEquals( $this->itemId, Item::getByCloakedId( $bookingCloakedId )->ID );
+
+		// test for invalid cloaked id
+		$this->assertNull( Item::getByCloakedId( 'invalid-cloaked-id' ) );
 	}
 
 	public function testGetByLocation(): void {

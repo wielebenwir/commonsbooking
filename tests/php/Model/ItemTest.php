@@ -6,6 +6,7 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class ItemTest extends CustomPostTypeTest {
 
@@ -112,6 +113,69 @@ class ItemTest extends CustomPostTypeTest {
 		$dt->modify( 'friday' );
 		ClockMock::freeze( $dt );
 		$this->assertEquals( $locationB, $movingItemModel->getLocation()->ID );
+	}
+
+	public function testGetCloakedID() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$cloakedID = $this->itemModel->getCloakedId();
+		$this->assertIsString( $cloakedID );
+		// create a booking, assert that it has changed
+		$this->createConfirmedBookingEndingToday();
+		$cloakedIDWithBooking = $this->itemModel->getCloakedId();
+		$this->assertNotEquals( $cloakedID, $cloakedIDWithBooking );
+		$booking                  = $this->createConfirmedBookingStartingToday();
+		$cloakedIDwithTwoBookings = $this->itemModel->getCloakedId();
+		$this->assertNotEquals( $cloakedIDWithBooking, $cloakedIDwithTwoBookings );
+
+		// delete second booking, ID should revert to previous one
+		wp_delete_post( $booking, true );
+		$this->assertEquals( $cloakedIDWithBooking, $this->itemModel->getCloakedId() );
+	}
+
+	public function testGetClosestBooking() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		// no booking present
+		$this->assertNull( $this->itemModel->getClosestBooking() );
+
+		// one past booking
+		$bookingEndingToday = $this->createConfirmedBookingEndingToday();
+		$closestBooking     = $this->itemModel->getClosestBooking();
+		$this->assertEquals( $bookingEndingToday, $closestBooking->ID );
+
+		// newer booking in front of that
+		$bookingStartingToday = $this->createConfirmedBookingStartingToday();
+		$closestBooking       = $this->itemModel->getClosestBooking();
+		$this->assertEquals( $bookingStartingToday, $closestBooking->ID );
+
+		// booking in future (should not affect)
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+3 days' ),
+			strtotime( '+4 days' )
+		);
+		$this->assertEquals( $bookingStartingToday, $this->itemModel->getClosestBooking()->ID );
+	}
+
+	// Test case where last booking is way in the past but other booking is in the nearer future. Should still return booking in the past
+	public function testGetClosestBooking_notIncludingFutureBookings() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		// one past booking
+		$pastBooking = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-7 days' ),
+			strtotime( '-5 days' )
+		);
+		// one future booking
+		$bookingStartingTomorrow = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day' ),
+			strtotime( '+2 days' )
+		);
+		$closestBooking          = $this->itemModel->getClosestBooking();
+		$this->assertEquals( $pastBooking, $closestBooking->ID );
 	}
 
 	public function testIsCurrentlyFreeAtLocation() {

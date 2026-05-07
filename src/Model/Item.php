@@ -4,6 +4,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Helper\Helper;
+use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
@@ -81,6 +82,71 @@ class Item extends BookablePost {
 			true
 		);
 	}
+
+	/**
+	 * Will get a rotating ID by which the vehicle can be identified.
+	 * The ID rotates after every trip and can be used to publish a vehicle ID to the GBFS API.
+	 *
+	 * The GBFS spec demands, that a vehicle ID must be rotated after each trip so that the users cannot be profiled.
+	 * This needs to be deterministic and reversible.
+	 *
+	 * The ID should be reversible, so that we can get a deep link to the item that you found in the feed.
+	 *
+	 * Inspired by: https://tier.engineering/How-we-anonymize-user-trips-on-public-APIs
+	 * Difference: We don't care about anonymity as much, because we don't offer A -> B trips.
+	 *
+	 * This function is probably not secure, wp_hash uses md5 encryption.
+	 *
+	 * @return string - a rotating ID for a vehicle
+	 */
+	public function getCloakedId(): string {
+		$closestBooking = $this->getClosestBooking();
+		$secondHash     = $closestBooking->post_name ?? $this->post_name; // If there is a booking, hash that. Otherwise, get the post name of the item as second hash item
+
+		return wp_hash( $this->ID . $secondHash );
+	}
+
+	/**
+	 * Gets the permalink for an item as a cloaked URL to be published in the API.
+	 *
+	 * @return string
+	 */
+	public function getCloakedURL(): string {
+		return add_query_arg(
+			array(
+				\CommonsBooking\Repository\Item::QUERY_VEHICLE_ID => $this->getCloakedId(),
+				\CommonsBooking\Repository\Item::URL_SLUG => true,
+			),
+			get_site_url() . '/'
+		);
+	}
+
+	/**
+	 * Gets the closest Booking for a given Item.
+	 *
+	 * @return ?Booking the booking that is either past or currently active closest to the current time, null if no booking is present
+	 */
+	public function getClosestBooking(): ?Booking {
+
+		$location = $this->getLocation();
+		if ( $location === null ) {
+			return null;
+		}
+
+		$allBookings = \CommonsBooking\Repository\Booking::get(
+			[ $location->ID ],
+			[ $this->ID ],
+			null,
+			true,
+			null,
+			[ 'confirmed' ]
+		);
+
+		$closestBooking = \CommonsBooking\View\Calendar::getClosestBookableTimeFrameForToday( $allBookings );
+
+		return ( $closestBooking instanceof Booking ) ? $closestBooking : null; // This also checks if the value is null
+	}
+
 	/**
 	 * Will get the location that the item is currently stationed at and bookable.
 	 * Will take into account the current time, the item can have timeframes
