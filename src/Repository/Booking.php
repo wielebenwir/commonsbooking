@@ -351,8 +351,8 @@ class Booking extends PostRepository {
 	 * Returns bookings. This uses the CommonsBooking\Repository\Timeframe::get() method which
 	 * is not based on the WP_Query class but will perform its own SQL query.
 	 *
-	 * @param array       $locations
-	 * @param array       $items
+	 * @param array       $locations an array of post IDs
+	 * @param array       $items an array of post IDs
 	 * @param string|null $date Date-String in format YYYY-mm-dd
 	 * @param bool        $returnAsModel if true, returns booking model, if false return int array (defaults to false)
 	 * @param int|null    $minTimestamp
