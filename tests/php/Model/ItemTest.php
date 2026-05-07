@@ -114,6 +114,63 @@ class ItemTest extends CustomPostTypeTest {
 		$this->assertEquals( $locationB, $movingItemModel->getLocation()->ID );
 	}
 
+	public function testIsCurrentlyFreeAtLocation() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		// Item has a bookable timeframe including today, should be free
+		$this->assertTrue( $this->itemModel->isCurrentlyFreeAtLocation( $this->locationId ) );
+
+		// A confirmed booking starting today means the item is now rented
+		$this->createConfirmedBookingStartingToday();
+		$this->assertFalse( $this->itemModel->isCurrentlyFreeAtLocation( $this->locationId ) );
+
+		// In two weeks, the timeframe is expired, should no longer be free
+		$dt = new \DateTime( self::CURRENT_DATE );
+		$dt->modify( '+2 weeks' );
+		ClockMock::freeze( $dt );
+		$this->assertFalse( $this->itemModel->isCurrentlyFreeAtLocation( $this->locationId ) );
+
+		// Wrong location should not be free
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$otherLocationId = $this->createLocation( 'other location' );
+		$this->assertFalse( $this->itemModel->isCurrentlyFreeAtLocation( $otherLocationId ) );
+	}
+
+	public function testIsCurrentlyFreeAtLocation_withBookingOffset() {
+		$otherLocationId = $this->createLocation( 'Other Location' );
+		$otherItemId     = $this->createItem( 'Other Item' );
+		$otherItemModel  = new Item( $otherItemId );
+
+		$timeframeId = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			'',
+			CustomPostTypeTest::USER_ID,
+			3,   // booking start day offset
+			30,
+			2
+		);
+
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		// With offset → item is still free, it's just not possible to pick it up right now
+		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId ) );
+
+		// Remove offset → still free, no change in rental status
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, 0 );
+		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId ) );
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(

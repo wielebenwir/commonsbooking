@@ -111,4 +111,37 @@ class Item extends BookablePost {
 		return $closestTimeframe?->getLocation();// why I used a deprecated method here: https://github.com/wielebenwir/commonsbooking/issues/507#issuecomment-4235848408
 	}
 
+	/**
+	 * Determines whether this item is currently free at a given location.
+	 * Free is the opposite of rented. Checks against live availability slots, so it excludes items with Holiday
+	 * Timeframes or overbooking-only availability, although they are technically not rented during these periods.
+	 *
+	 * This method will include items that may only be booked in advance (\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS),
+	 * because they are technically available at this location. Just not for pickup right now.
+	 *
+	 * @param int $locationId
+	 *
+	 * @return bool true if the item is free right now, false otherwise
+	 * @throws \Exception
+	 */
+	public function isCurrentlyFreeAtLocation( int $locationId ): bool {
+		$nowDT        = Wordpress::getUTCDateTimeByTimestamp( current_time( 'timestamp' ) );
+		$itemCalendar = new Calendar(
+			new Day( date( 'Y-m-d', strtotime( '-1 day' ) ) ),
+			new Day( date( 'Y-m-d', strtotime( '+1 day' ) ) ),
+			[ $locationId ],
+			[ $this->ID ]
+		);
+		$itemCalendar->setIgnoreStartDayOffset( true );
+
+		foreach ( $itemCalendar->getAvailabilitySlots() as $availabilitySlot ) {
+			$startDT = new \DateTime( $availabilitySlot->start );
+			$endDT   = new \DateTime( $availabilitySlot->end );
+			if ( $nowDT >= $startDT && $nowDT <= $endDT ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

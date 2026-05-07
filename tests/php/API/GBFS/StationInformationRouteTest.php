@@ -53,7 +53,7 @@ class StationInformationRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->locationId = $this->createLocation( 'Test Location', 'publish' );
 		$this->itemId     = $this->createItem( 'TestItem', 'publish' );
 
-		$this->timeframe = $this->createTimeframe(
+		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
