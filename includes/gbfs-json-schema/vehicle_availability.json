@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC2/vehicle_availability.json",
+  "description": "Describes the vehicle availabilities of the system.",
+  "type": "object",
+  "properties": {
+    "last_updated": {
+      "description": "Last time the data in the feed was updated in RFC3339 format.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "ttl": {
+      "description": "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed).",
+      "type": "integer",
+      "minimum": 0
+    },
+    "version": {
+      "description": "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
+      "type": "string",
+      "const": "3.1-RC2"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "vehicles": {
+          "type": "array",
+          "description": "Contains one object per vehicle.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "vehicle_id": {
+                "type": "string",
+                "description": "Identifier of a vehicle"
+              },
+              "vehicle_type_id": {
+                "type": "string",
+                "description": "Unique identifier of a vehicle type as defined in vehicle_types.json"
+              },
+              "station_id": {
+                "type": "string",
+                "description": " The id of the station where this vehicle is located when available"
+              },
+              "pricing_plan_id": {
+                "type": "string",
+                "description": "The plan_id of the pricing plan this vehicle is eligible for"
+              },
+              "vehicle_equipment": {
+                "type": "array",
+                "description": "List of vehicle equipment provided by the operator",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "availabilities": {
+                "type": "array",
+                "description": "Array of time slots during which the specified vehicle is available.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "string",
+                      "description": "Start date and time of available time slot.",
+                      "format": "date-time"
+                    },
+                    "until": {
+                      "type": "string",
+                      "description": "End date and time of available time slot.",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": ["from"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "vehicle_id",
+              "station_id",
+              "availabilities"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["vehicles"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["last_updated", "ttl", "version", "data"],
+  "additionalProperties": false
+}

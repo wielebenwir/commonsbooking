@@ -46,6 +46,14 @@ class Calendar {
 	protected array $timeframes;
 
 	/**
+	 * When this is enabled, @see Timeframe::META_BOOKING_START_DAY_OFFSET is ignored.
+	 * This is used for the API routes, where we want to show the actual availability of the items, regardless of the booking start day offset.
+	 *
+	 * @var bool
+	 */
+	protected bool $ignoreStartDayOffset = false;
+
+	/**
 	 * Calendar constructor.
 	 *
 	 * @param Day   $startDate
@@ -149,7 +157,7 @@ class Calendar {
 					}
 
 					// Skip timeframes that are not bookable today
-					if ( $timeframe->getFirstBookableDay() > $day->getDate() ) {
+					if ( ! $this->ignoreStartDayOffset && $timeframe->getFirstBookableDay() > $day->getDate() ) {
 						continue;
 					}
 
@@ -184,5 +192,9 @@ class Calendar {
 			}
 		}
 		return $slots;
+	}
+
+	public function setIgnoreStartDayOffset( bool $ignoreStartDayOffset ): void {
+		$this->ignoreStartDayOffset = $ignoreStartDayOffset;
 	}
 }

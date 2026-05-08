@@ -84,7 +84,7 @@ class StationStatusRouteTest extends CB_REST_Route_UnitTestCase {
 			2
 		);
 
-		// with offset → unavailable
+		// with offset → still counted as available because it is not booked
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 		$response = rest_do_request( $request );
 		$data     = $response->get_data()->data;
@@ -97,9 +97,9 @@ class StationStatusRouteTest extends CB_REST_Route_UnitTestCase {
 				}
 			)
 		);
-		$this->assertEquals( 0, $relevantStation->num_vehicles_available );
+		$this->assertEquals( 1, $relevantStation->num_vehicles_available );
 
-		// remove offset → available
+		// remove offset → still available
 		update_post_meta( $timeframeID, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, 0 );
 
 		$response        = rest_do_request( $request );
@@ -123,7 +123,7 @@ class StationStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->locationId = $this->createLocation( 'Testlocation', 'publish' );
 		$this->itemId     = $this->createItem( 'TestItem', 'publish' );
 
-		$this->timeframe = $this->createTimeframe(
+		$this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
 			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
