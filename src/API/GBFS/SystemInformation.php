@@ -3,6 +3,8 @@
 
 namespace CommonsBooking\API\GBFS;
 
+use CommonsBooking\CB\CB;
+use CommonsBooking\Repository\Timeframe;
 use stdClass;
 use WP_REST_Response;
 
@@ -36,7 +38,7 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 				'language' => get_bloginfo( 'language' ),
 			],
 		];
-		$response->data->opening_hours      = '24/7'; // TODO: Close, when no items are available
+		$response->data->opening_hours      = $this->isOpen() ? '24/7' : '24/7 closed';
 		$response->data->system_id          = sha1( site_url() );
 		$response->data->feed_contact_email = get_bloginfo( 'admin_email' );
 		$response->data->languages          = [ get_bloginfo( 'language' ) ];
@@ -46,5 +48,14 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 		$response->version                  = '3.1-RC2';
 
 		return $this->respond_with_validation( $response );
+	}
+
+	private function isOpen(): bool {
+		$timeframes = Timeframe::getBookable(
+			[],
+			[],
+			date( CB::getInternalDateFormat(), current_time( 'timestamp' ) ),
+		);
+		return count( $timeframes ) > 0;
 	}
 }
