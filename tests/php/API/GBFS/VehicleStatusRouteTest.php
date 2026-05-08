@@ -30,6 +30,12 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertTrue( $data->vehicles[0]->is_reserved );
 	}
 
+	/**
+	 * This does not test is_disabled for when there is no timeframe.
+	 * This is, because there is no way for us to get a location for an item
+	 * when there is no active timeframe.
+	 * @return void
+	 */
 	public function testIsDisabled() {
 		// base case, not disabled
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
@@ -38,14 +44,14 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$data = $response->get_data()->data;
 		$this->assertFalse( $data->vehicles[0]->is_disabled );
 
-		// timeframe expired: is disabled
+		// timeframe expired: item vanishes from feed
 		$future = $this->end->modify( '+1 day' );
 		ClockMock::freeze( $future );
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 		$response = rest_do_request( $request );
 		$this->assertSame( 200, $response->get_status() );
 		$data = $response->get_data()->data;
-		$this->assertTrue( $data->vehicles[0]->is_disabled );
+		$this->assertEmpty( $data->vehicles );
 	}
 
 	public function setUp(): void {
