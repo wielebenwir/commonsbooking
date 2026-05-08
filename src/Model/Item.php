@@ -95,7 +95,7 @@ class Item extends BookablePost {
 	 * Inspired by: https://tier.engineering/How-we-anonymize-user-trips-on-public-APIs
 	 * Difference: We don't care about anonymity as much, because we don't offer A -> B trips.
 	 *
-	 * This function is probably not secure, wp_hash uses md5 encryption.
+	 * This function uses wp_hash to get a hashed identifier, this uses md5 hashing internally.
 	 *
 	 * @return string - a rotating ID for a vehicle
 	 */
