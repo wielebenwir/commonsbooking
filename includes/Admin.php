@@ -125,6 +125,48 @@ function commonsbooking_admin() {
 add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
 
 /**
+ * Enqueues the availability wizard script and its localised data.
+ * Only loaded on the cb-availability-wizard admin page.
+ *
+ * @return void
+ */
+function commonsbooking_enqueue_availability_wizard() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- page detection only, no data processing.
+	if ( ! isset( $_GET['page'] ) || 'cb-availability-wizard' !== $_GET['page'] ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'cb-availability-wizard',
+		COMMONSBOOKING_PLUGIN_ASSETS_URL . 'admin/js/src/availability-wizard.js',
+		array( 'jquery' ),
+		WP_DEBUG ? (string) time() : COMMONSBOOKING_VERSION,
+		true
+	);
+
+	wp_localize_script(
+		'cb-availability-wizard',
+		'cbWizardData',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'cb_availability_wizard' ),
+			'list_url' => admin_url( 'admin.php?page=cb-availability' ),
+			'i18n'     => array(
+				'item_required'       => esc_html__( 'Please select or create an item before continuing.', 'commonsbooking' ),
+				'location_required'   => esc_html__( 'Please select or create a location before continuing.', 'commonsbooking' ),
+				'title_required'      => esc_html__( 'A title is required.', 'commonsbooking' ),
+				'start_date_required' => esc_html__( 'A start date is required.', 'commonsbooking' ),
+				'cancel_create'       => esc_html__( 'Cancel', 'commonsbooking' ),
+				'create_new_item'     => esc_html__( 'Create new item', 'commonsbooking' ),
+				'create_new_location' => esc_html__( 'Create new location', 'commonsbooking' ),
+				'unknown_error'       => esc_html__( 'An unexpected error occurred. Please try again.', 'commonsbooking' ),
+			),
+		)
+	);
+}
+add_action( 'admin_enqueue_scripts', 'commonsbooking_enqueue_availability_wizard' );
+
+/**
  * commonsbooking_sanitizeHTML
  * Filters text content and strips out disallowed HTML.
  *

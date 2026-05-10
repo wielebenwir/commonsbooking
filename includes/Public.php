@@ -135,6 +135,12 @@ if ( is_admin() ) {
 	// getting booking code for new backend booking AJAX
 	add_action( 'wp_ajax_cb_get_booking_code', array( \CommonsBooking\View\Booking::class, 'getBookingCode_AJAX' ) );
 	add_action( 'wp_ajax_cb_orphaned_booking_migration', array( \CommonsBooking\Service\MassOperations::class, 'ajaxMigrateOrphaned' ) );
+
+	// Availability wizard: quick-create Item or Location
+	add_action( 'wp_ajax_cb_quick_create_post', array( \CommonsBooking\View\Admin\AvailabilityWizard::class, 'ajaxCreatePost' ) );
+
+	// Availability wizard: create final Timeframe
+	add_action( 'wp_ajax_cb_create_timeframe_wizard', array( \CommonsBooking\View\Admin\AvailabilityWizard::class, 'ajaxCreateTimeframe' ) );
 }
 
 // Map ajax

@@ -17,6 +17,8 @@ use CommonsBooking\Service\iCalendar;
 use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Repository\BookingCodes;
+use CommonsBooking\View\Admin\AvailabilityView;
+use CommonsBooking\View\Admin\AvailabilityWizard;
 use CommonsBooking\View\Dashboard;
 use CommonsBooking\View\MassOperations;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
@@ -406,6 +408,28 @@ class Plugin {
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
 				'cb-mass-operations',
 				array( MassOperations::class, 'index' )
+			);
+
+			// Availability combined list view
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Availability', 'commonsbooking' ),
+				esc_html__( 'Availability', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				'cb-availability',
+				array( AvailabilityView::class, 'index' ),
+				0
+			);
+
+			// Availability creation wizard (hidden from menu, reachable via the list view)
+			add_submenu_page(
+				'cb-dashboard',
+				esc_html__( 'Add Availability', 'commonsbooking' ),
+				esc_html__( 'Add Availability', 'commonsbooking' ),
+				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
+				'cb-availability-wizard',
+				array( AvailabilityWizard::class, 'index' ),
+				1
 			);
 		}
 	}
