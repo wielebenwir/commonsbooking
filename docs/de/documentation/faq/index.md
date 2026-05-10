@@ -1,4 +1,4 @@
-# Häufige Fragen (FAQ)
+# Häufige Fragen (FAQ) {#faq}
 
 <script setup>
 import ExpandAll from '/.vitepress/components/ExpandAll.vue'
@@ -7,8 +7,6 @@ import ExpandAll from '/.vitepress/components/ExpandAll.vue'
 Diese Seite ist in zwei Bereiche unterteilt: [allgemeine **FAQ**](#faq) mit häufigen Fragen zur Nutzung, und [**Plugin- und Theme-Inkompatibilitäten**](#plugin-incompatibilities) mit bekannten Problemen durch Drittanbieter-Software.
 
 <ExpandAll label-expand="Alle anzeigen" label-collapse="Alle ausblenden" />
-
-## Allgemeine FAQ {#faq}
 
 ## Wie bekomme ich den Buchungskommentar auf die Seite und in die Email?
 
@@ -112,9 +110,9 @@ Dafür gibt es verschiedene Möglichkeiten (Vorschläge aus der Community):
 * "Wir nutzen Hcaptcha für wordpress. Nach der Installation in den Einstellungen des Plugins die von euch genutzte Registrierung (z.B. UltimateMember) auswählen. Für die Nutzung muss ein Hcaptcha Account erstellt werden. Sie werben mit Privacy-First und das keine Nutzerdaten verkauft werden. Ich selber habe das nicht geprüft." - [Download aus dem Plugin-Verzeichnis](https://wordpress.org/plugins/hcaptcha-for-forms-and-more)
 :::
 
-## Plugin- und Theme-Inkompatibilitäten {#plugin-incompatibilities}
+# Plugin- und Theme-Inkompatibilitäten {#plugin-incompatibilities}
 
-### Lightstart
+## Plugin: Lightstart
 
 ::: details Antwort anzeigen
 Treten Probleme bei der Anzeige des Kalenders im Admin-Bereich der Buchungen auf (sog. Admin-Backend), kann eine mögliche Lösung sein, das [Plugin "Lightstart" (wp-maintenance-mode)](https://wordpress.org/plugins/wp-maintenance-mode) zu deaktivieren oder zu entfernen und neu zu installieren. Das Problem ist eine Inkompatibilität von Lightstart mit CommonsBooking und kein Fehler im Code von CommonsBooking. Das Problem tritt nicht mehr auf, wenn eine Neuinstallation von Lightstart vorgenommen wurde. Mehr dazu auf [Github im CommonsBooking Quellcode-Repository](https://github.com/wielebenwir/commonsbooking/issues/1646).
@@ -122,13 +120,13 @@ Treten Probleme bei der Anzeige des Kalenders im Admin-Bereich der Buchungen auf
 ![](/img/backend-booking-list-bug.png)
 :::
 
-### GridBulletin
+## Theme: GridBulletin
 
 ::: details Antwort anzeigen
 In der letzten Version von [GridBulletin](https://wordpress.org/themes/gridbulletin) kommt es zu einer Inkompatibilität mit CommonsBooking. Probleme tauchen auf, wenn der Footer aktiviert ist. Konkrete Probleme sind z.B. das Fehlen des Buchungs-Kalenders auf der Artikelseite. Aus technischer Sicht liegt es daran, dass die nötigen Javascript-Quellen von CommonsBooking nicht ausgeliefert werden. Der Grund innerhalb des GridBulletin Themes oder eine Lösung konnte bisher nicht gefunden werden.
 :::
 
-### All-in-one-Event
+## Plugin: All-in-one-Event
 
 :::: details Antwort anzeigen
 :::info Behoben seit 2.7.2 (06.2022)
@@ -144,7 +142,7 @@ Wir haben einiges versucht, um eine parallele Nutzung zu ermöglichen, leider ab
 Wenn ihr das Problem auch habt, schreibt gerne direkt an den Support des Plugins, vielleicht passen sie ihr Plugin doch noch irgendwann an.
 ::::
 
-### REDIS Object Cache
+## Plugin: REDIS Object Cache
 
 ::: details Antwort anzeigen
 Im Zusammenhang mit dem [Cache](../advanced-functionality/) gab es in der Vergangenheit bereits Probleme mit anderen Wordpress-Plugins wie z.B. 'REDIS Object Cache'. Aus diesem Grund raten wir von der Nutzung solcher Plugins ab.
@@ -152,13 +150,13 @@ Im Zusammenhang mit dem [Cache](../advanced-functionality/) gab es in der Vergan
 Die von CommonsBooking generierten Seiten sollten von der Optimierung durch Dritt-Plugins ausgenommen werden. CommonsBooking verwendet ein eigenes Caching.
 :::
 
-### Ultimate Member
+## Plugin: Ultimate Member
 
 ::: details Antwort anzeigen
 Wenn ihr das Plugin Ultimate Member benutzt und die Benutzerrolle "CommonsBooking Manager" nutzen möchtet, müsst ihr in Ultimate Member für die Rolle `cb_manager` noch ein Häkchen setzen, um diese für den Admin-Zugang zu aktivieren.
 :::
 
-### Autoptimize / Caching-Plugins
+## Plugin: Autoptimize / Caching-Plugins
 
 :::: details Antwort anzeigen
 Optimierungs-Plugins oder weitere Caching-Plugins können dazu führen, dass CommonsBooking nicht alle Seiten korrekt anzeigen kann.
