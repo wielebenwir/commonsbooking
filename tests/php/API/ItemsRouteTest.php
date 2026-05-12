@@ -81,4 +81,16 @@ class ItemsRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertCount( 1, $data->items );
 		$this->assertEquals( (string) $this->itemId, $data->items[0]->id );
 	}
+
+	public function testExcludedIfBoxChecked() {
+		update_post_meta( $this->itemId, COMMONSBOOKING_METABOX_PREFIX . 'api_exclude', 'on' );
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT . '/' . $this->itemId );
+		$response = rest_do_request( $request );
+
+		$this->assertSame( 200, $response->get_status() );
+
+		$data = $response->get_data();
+
+		$this->assertEmpty( $data->items );
+	}
 }

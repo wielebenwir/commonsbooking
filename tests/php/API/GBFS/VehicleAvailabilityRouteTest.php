@@ -137,6 +137,15 @@ class VehicleAvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertNotEquals( $id, $data->vehicles[0]->vehicle_id );
 	}
 
+	public function testExcludedIfBoxChecked() {
+		update_post_meta( $this->itemId, COMMONSBOOKING_METABOX_PREFIX . 'api_exclude', 'on' );
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data = $response->get_data()->data;
+		$this->assertEmpty( $data->vehicles );
+	}
+
 	public function setUp(): void {
 		parent::setUp();
 
