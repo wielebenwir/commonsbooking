@@ -1243,8 +1243,8 @@ msgstr "Artikel-Kategorien"
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
-#: src/Wordpress/CustomPostType/Item.php:324
-#: src/Wordpress/CustomPostType/Item.php:344
+#: src/Wordpress/CustomPostType/Item.php:334
+#: src/Wordpress/CustomPostType/Item.php:354
 msgid "Item Category"
 msgstr "Artikel-Kategorie"
 
@@ -1792,7 +1792,7 @@ msgstr "E-Mail-Adresse des Artikelbetreuers"
 msgid "Email addresses to which notifications about a change of item status (restriction, breakdown) shall be sent. You can enter multiple addresses separated by commas."
 msgstr "E-Mail-Adressen die benachrichtigt werden soll, wenn eine Nutzungseinschränkung für den Artikel eingerichtet wurde (Hinweis oder Totalausfall). Es können mehrere Adressen durch Komma getrennt eingeben werden."
 
-#: src/Wordpress/CustomPostType/Item.php:293
+#: src/Wordpress/CustomPostType/Item.php:303
 msgid "Item Meta-Data"
 msgstr "Artikel Metadaten"
 
@@ -4006,11 +4006,11 @@ msgstr "Buchungen bei Totalausfall nicht stornieren"
 msgid "If checked, bookings will not be cancelled if the item has broken down. The user will be notified and once the item becomes available again, the old bookings are still valid."
 msgstr "Wenn ausgewählt, werden Buchungen nicht storniert, wenn ein Totalausfall für den Artikel gesetzt ist. Der / die Benutzer*in wird benachrichtigt und sobald der Artikel wieder verfügbar ist, sind die alten Buchungen weiterhin gültig."
 
-#: src/Wordpress/CustomPostType/Item.php:353
+#: src/Wordpress/CustomPostType/Item.php:363
 msgid "Add custom title for filter"
 msgstr "Benutzerdefinierten Titel für Filtergruppe hinzufügen"
 
-#: src/Wordpress/CustomPostType/Item.php:356
+#: src/Wordpress/CustomPostType/Item.php:366
 msgid "Define name that should be used for the category if it is displayed in the map as a filter group. You can also use this to add custom HTML to the category name. When left empty, the defined name of the category will be used."
 msgstr "Legt den Namen fest, der für die Kategorie verwendet werden soll, wenn sie in der Karte als Teil der Filtergruppe angezeigt wird. Hier kann auch benutzerdefinierter HTML-Code zum Kategorienamen hinzugefügt werden. Bleibt der Eintrag leer, wird der Standard Name der Kategorie verwendet."
 
@@ -4477,4 +4477,12 @@ msgid ""
 "Return date: {{booking:returnDatetime}}\n"
 "Booking code: {{booking:formattedBookingCode}}\n"
 "User Email: {{user:user_email}}"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:287
+msgid "Exclude from API"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Item.php:288
+msgid "When this box is checked, the item will not appear in any of the API shares."
 msgstr ""
