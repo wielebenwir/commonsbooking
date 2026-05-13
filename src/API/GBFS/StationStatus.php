@@ -37,7 +37,7 @@ class StationStatus extends BaseRoute {
 		$preparedItem->num_vehicles_available = count(
 			array_filter(
 				Item::getByLocation( $location->ID, true ),
-				fn( $item ) => $item->isCurrentlyFreeAtLocation( $location->ID )
+				fn( $item ) => $item->isCurrentlyFreeAtLocation( $location->ID ) && ! $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'api_exclude' ) == 'on'
 			)
 		);
 		$preparedItem->is_installed           = true;

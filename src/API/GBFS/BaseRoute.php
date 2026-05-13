@@ -54,6 +54,9 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		$items = static::getRepository()::get();
 
 		foreach ( $items as $item ) {
+			if ( $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'api_exclude' ) == 'on' ) {
+				continue;
+			}
 			try {
 				$itemdata = $this->prepare_item_for_response( $item, $request );
 				$data[]   = $itemdata->data;

@@ -115,6 +115,15 @@ class StationStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertEquals( 1, $relevantStation->num_vehicles_available );
 	}
 
+	public function testNotCountedWhenItemExcluded() {
+		update_post_meta( $this->itemId, COMMONSBOOKING_METABOX_PREFIX . 'api_exclude', 'on' );
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$data     = $response->get_data()->data;
+		$station  = $data->stations[0];
+		$this->assertEquals( 0, $station->num_vehicles_available );
+	}
+
 	public function setUp(): void {
 		parent::setUp();
 
