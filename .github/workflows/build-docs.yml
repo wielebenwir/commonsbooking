@@ -44,7 +44,7 @@ jobs:
 
       - name: Upload documentation
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.CBPAGE_SERVER }}
           username: ${{ secrets.CBPAGE_USER }}
