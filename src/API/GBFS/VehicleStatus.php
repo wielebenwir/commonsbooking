@@ -36,12 +36,13 @@ class VehicleStatus extends BaseRoute {
 			throw new \Exception( 'No location for item. (ID: ' . $item->ID . ')' );
 		}
 
-		$preparedItem              = new stdClass();
-		$preparedItem->vehicle_id  = strval( $item->getCloakedId() );
-		$preparedItem->station_id  = strval( $location->ID );
-		$preparedItem->is_reserved = ! $item->isCurrentlyFreeAtLocation( intval( $preparedItem->station_id ) );
-		$preparedItem->is_disabled = false; // This never happens, when the item is disabled it does not have a location and is therefore skipped
-		$preparedItem->rental_uris = (object) [
+		$preparedItem                  = new stdClass();
+		$preparedItem->vehicle_id      = strval( $item->getCloakedId() );
+		$preparedItem->vehicle_type_id = VehicleTypes::DEFAULT_NAME;
+		$preparedItem->station_id      = strval( $location->ID );
+		$preparedItem->is_reserved     = ! $item->isCurrentlyFreeAtLocation( intval( $preparedItem->station_id ) );
+		$preparedItem->is_disabled     = false; // This never happens, when the item is disabled it does not have a location and is therefore skipped
+		$preparedItem->rental_uris     = (object) [
 			'web' => $item->getCloakedURL(),
 		];
 		// $preparedItem->available_until //TODO: The date and time when any rental of the vehicle must be completed. The vehicle must be returned and made available for the next user by this time. If this field is empty, it indicates that the vehicle is available indefinitely. This field SHOULD be published by carsharing or other mobility systems where vehicles can be booked in advance for future travel.

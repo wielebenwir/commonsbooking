@@ -923,6 +923,7 @@ class Plugin {
 					new \CommonsBooking\API\GBFS\StationStatus(),
 					new \CommonsBooking\API\GBFS\VehicleAvailability(),
 					new \CommonsBooking\API\GBFS\VehicleStatus(),
+					new \CommonsBooking\API\GBFS\VehicleTypes(),
 					new \CommonsBooking\API\GBFS\SystemInformation(),
 
 				];

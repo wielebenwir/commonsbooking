@@ -32,18 +32,26 @@ class StationStatus extends BaseRoute {
 	 * @throws \Exception
 	 */
 	public function prepare_item_for_response( $location, $request ): WP_REST_Response {
-		$preparedItem                         = new stdClass();
-		$preparedItem->station_id             = strval( $location->ID );
-		$preparedItem->num_vehicles_available = count(
+		$availableItems = count(
 			array_filter(
 				Item::getByLocation( $location->ID, true ),
 				fn( $item ) => $item->isCurrentlyFreeAtLocation( $location->ID ) && ! $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'api_exclude' ) == 'on'
 			)
 		);
-		$preparedItem->is_installed           = true;
-		$preparedItem->is_renting             = true;
-		$preparedItem->is_returning           = true;
-		$preparedItem->last_reported          = date( 'c' ); // ISO-8601 timestamp
+
+		$preparedItem                          = new stdClass();
+		$preparedItem->station_id              = strval( $location->ID );
+		$preparedItem->num_vehicles_available  = $availableItems;
+		$preparedItem->vehicle_types_available = [
+			(object) [
+				'vehicle_type_id' => VehicleTypes::DEFAULT_NAME,
+				'count'           => $availableItems,
+			],
+		];
+		$preparedItem->is_installed            = true;
+		$preparedItem->is_renting              = true;
+		$preparedItem->is_returning            = true;
+		$preparedItem->last_reported           = date( 'c' ); // ISO-8601 timestamp
 
 		return new WP_REST_Response( $preparedItem );
 	}
