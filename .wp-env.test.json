@@ -10,7 +10,7 @@
     "https://downloads.wordpress.org/plugin/jsm-show-post-meta.zip",
     "https://downloads.wordpress.org/plugin/disable-welcome-messages-and-tips.zip"
   ],
-  "port" : 1000,
+  "port" : 1001,
   "testsEnvironment" : false,
   "config" : {
     "WP_DEBUG" : true,
