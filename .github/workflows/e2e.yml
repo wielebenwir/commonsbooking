@@ -44,12 +44,16 @@ jobs:
         shell: bash
         run: npm -g i @wordpress/env
 
-      - name: Overwrite PHP versions & core for wp-env
-        if: matrix.core.version != 'null'
-        run: jq '. + {"phpVersion":"${{ matrix.php }}","core":"${{ matrix.core.version }}"}' tests/cypress/wordpress-files/e2e-override.json > .wp-env.override.json
+      - name: Overwrite PHP version & core for wp-env
+        run: >
+          jq
+          --arg php "${{ matrix.php }}"
+          --arg core "${{ matrix.core.version }}"
+          '. + {"phpVersion": $php} + (if $core == "null" then {} else {"core": $core} end)'
+          tests/cypress/wordpress-files/e2e-override.json > .wp-env.test.override.json
 
       - name: setup wp env
-        run: npm run env:start
+        run: npm run env:test:start
 
       - name: install test data for e2e test
         run: npm run cypress:setup
@@ -69,8 +73,8 @@ jobs:
 
       - name: Enable API
         run: |
-          wp-env run tests-cli wp option patch insert commonsbooking_options_api api-activated on
-          wp-env run tests-cli wp option patch insert commonsbooking_options_api apikey_not_required on
+          wp-env --config=.wp-env.test.json run cli wp option patch insert commonsbooking_options_api api-activated on
+          wp-env --config=.wp-env.test.json run cli wp option patch insert commonsbooking_options_api apikey_not_required on
 
       - name: Checkout GBFS validator
         uses: actions/checkout@v6

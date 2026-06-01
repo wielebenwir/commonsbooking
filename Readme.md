@@ -112,7 +112,7 @@ php ~/phpunit.phar --bootstrap tests/php/bootstrap.php
 
 E2E (end to end) tests are written in [cypress](https://www.cypress.io/). To run them you need to install cypress and start the wordpress environment:
 ```bash
-npm run env:start
+npm run env:test:start
 ```
 Now, install the test data needed for the tests:
 ```bash
