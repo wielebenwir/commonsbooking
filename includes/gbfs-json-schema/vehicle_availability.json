@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC2/vehicle_availability.json",
+  "$id": "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC3/vehicle_availability.json",
   "description": "Describes the vehicle availabilities of the system.",
   "type": "object",
   "properties": {
@@ -17,7 +17,7 @@
     "version": {
       "description": "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
       "type": "string",
-      "const": "3.1-RC2"
+      "const": "3.1-RC3"
     },
     "data": {
       "type": "object",

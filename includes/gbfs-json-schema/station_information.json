@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id":
-    "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC2/station_information.json",
+    "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC3/station_information.json",
   "description":
     "List of all stations, their capacities and locations. REQUIRED of systems utilizing docks.",
   "type": "object",
@@ -22,7 +22,7 @@
       "description":
         "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
       "type": "string",
-      "const": "3.1-RC2"
+      "const": "3.1-RC3"
     },
     "data": {
       "description":
@@ -107,7 +107,7 @@
                 "type": "string"
               },
               "city": {
-                "description": "City where station is located. (added in v3.1-RC2)",
+                "description": "City where station is located. (added in v3.1-RC3)",
                 "type": "string"
               },
               "station_opening_hours": {

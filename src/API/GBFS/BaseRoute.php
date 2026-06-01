@@ -37,7 +37,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		$response->data->{static::getListName()} = $this->getItemData( $request );
 		$response->last_updated                  = date( 'c' ); // ISO-8601 timestamp
 		$response->ttl                           = 60;
-		$response->version                       = '3.1-RC2';
+		$response->version                       = '3.1-RC3';
 
 		return $this->respond_with_validation( $response );
 	}

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC2/station_status.json",
+  "$id": "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC3/station_status.json",
   "description":
     "Describes the capacity and rental availability of the station",
   "type": "object",
@@ -21,7 +21,7 @@
       "description":
         "GBFS version number to which the feed conforms, according to the versioning framework (added in v1.1).",
       "type": "string",
-      "const": "3.1-RC2"
+      "const": "3.1-RC3"
     },
     "data": {
       "description":
