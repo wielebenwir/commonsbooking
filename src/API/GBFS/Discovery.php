@@ -51,6 +51,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 				'station_status',
 				'vehicle_availability',
 				'vehicle_status',
+				'vehicle_types',
 			]
 		);
 		$feeds     = array_map( fn( $feed ) => $this->get_feed( $feed ), $raw_feeds );

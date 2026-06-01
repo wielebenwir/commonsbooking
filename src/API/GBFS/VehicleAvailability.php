@@ -37,10 +37,11 @@ class VehicleAvailability extends BaseRoute {
 			throw new \Exception( 'No location for item. (ID: ' . $item->ID . ')' );
 		}
 
-		$preparedItem                 = new stdClass();
-		$preparedItem->vehicle_id     = strval( $item->getCloakedId() );
-		$preparedItem->station_id     = strval( $location->ID ); // This is what you could consider the home location. Regardless if the item is there atm or not.
-		$preparedItem->availabilities = self::getAvailabilities( $item );
+		$preparedItem                  = new stdClass();
+		$preparedItem->vehicle_id      = strval( $item->getCloakedId() );
+		$preparedItem->vehicle_type_id = VehicleTypes::DEFAULT_NAME;
+		$preparedItem->station_id      = strval( $location->ID ); // This is what you could consider the home location. Regardless if the item is there atm or not.
+		$preparedItem->availabilities  = self::getAvailabilities( $item );
 
 		return new WP_REST_Response( $preparedItem );
 	}
