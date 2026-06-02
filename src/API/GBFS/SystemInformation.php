@@ -39,7 +39,7 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 			],
 		];
 		$response->data->opening_hours      = $this->isOpen() ? '24/7' : '24/7 closed';
-		$response->data->system_id          = sha1( site_url() );
+		$response->data->system_id          = COMMONSBOOKING_PLUGIN_SLUG . '_' . strtolower( preg_replace( '/\s+/', '_', get_bloginfo( 'name' ) ) );
 		$response->data->feed_contact_email = get_bloginfo( 'admin_email' );
 		$response->data->languages          = [ get_bloginfo( 'language' ) ];
 		$response->data->timezone           = $tz;
