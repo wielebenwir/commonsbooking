@@ -7,6 +7,7 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\View\Calendar;
 use DateTime;
+use Override;
 use SlopeIt\ClockMock\ClockMock;
 
 /**
@@ -476,6 +477,8 @@ class CalendarTest extends CustomPostTypeTest {
 	protected function setUp(): void {
 		parent::setUp();
 
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
 		$this->now         = time();
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
@@ -499,5 +502,11 @@ class CalendarTest extends CustomPostTypeTest {
 			strtotime( '+14 days midnight' ),
 			strtotime( '+300 days midnight' )
 		);
+	}
+
+	protected function tearDown(): void
+	{
+		ClockMock::reset();
+		parent::tearDown();
 	}
 }
