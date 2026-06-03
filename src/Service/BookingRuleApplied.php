@@ -42,8 +42,8 @@ class BookingRuleApplied extends BookingRule {
 			$rule->description,
 			$rule->errorMessage,
 			$rule->validationFunction,
-			$rule->params ?? [],
-			$rule->selectParam ?? [],
+			empty( $rule->params ) ? [] : $rule->params,
+			empty( $rule->selectParam ) ? [] : $rule->selectParam,
 			$rule->errorFromArgs ?? null
 		);
 	}

@@ -547,7 +547,6 @@ HTML;
 			2
 		);
 
-		// @phpstan-ignore deadCode.unreachable (false positive, covered by unit tests)
 		$booking_msg = new BookingCodesMessage( $timeframeId, 'codes', $tsFrom, $tsTo );
 		$booking_msg->sendMessage();
 

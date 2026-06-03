@@ -316,7 +316,7 @@ class Booking extends Timeframe {
 						array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostName &&
 						intval( array_values( $existingBookings )[0]->getPost()->post_author ) === get_current_user_id();
 
-			if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status !== 'canceled' ) {
+			if ( ! $isEdit && $post_status !== 'canceled' ) {
 				if ( $booking ) {
 					$post_status = 'unconfirmed';
 				} else {
@@ -749,7 +749,7 @@ class Booking extends Timeframe {
                     <li>Click on the <strong>Submit booking</strong> button at the end of the page to submit a new booking.</li>
                 </ul>
 				<strong>Please note</strong>: Only a few basic checks against existing bookings are performed. Please be wary of overlapping bookings.
-                </p> 
+                </p>
 				',
 						'commonsbooking'
 					) . '</p></div>'
@@ -890,7 +890,7 @@ class Booking extends Timeframe {
 		As an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated
 		and checked. Use this function with care.<br>
 		Click on preview to show booking details in frontend<br>
-		To search and filter bookings please integrate the frontend booking list via shortcode. 
+		To search and filter bookings please integrate the frontend booking list via shortcode.
 		See here %1$sHow to display the booking list%2$s',
 					'commonsbooking'
 				),
