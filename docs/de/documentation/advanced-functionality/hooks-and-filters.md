@@ -85,7 +85,7 @@ zurückgibt.
 ###  Alle Filter Hooks im Überblick:
 
   * commonsbooking_custom_metadata
-  * [commonsbooking_isCurrentUserAdmin](../basics/permission-management#filterhook-isCurrentUserAdmin)
+  * [commonsbooking_isUserAdmin](../basics/permission-management#filterhook-isUserAdmin)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
   * commonsbooking_template_tag
