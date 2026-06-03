@@ -33,7 +33,7 @@ class CB1UserFields {
 	/**
 	 * @var array|mixed
 	 */
-	private $user_vars; // @phpstan-ignore property.onlyWritten
+	private $user_vars;
 
 	public function __construct() {
 
