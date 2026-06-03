@@ -3318,11 +3318,11 @@ msgstr "Fehlende ID des Zeitrahmens"
 msgid "Error sending booking codes"
 msgstr "Fehler beim Senden von Buchungscodes"
 
-#: src/View/BookingCodes.php:556
+#: src/View/BookingCodes.php:555
 msgid "An unknown error occured"
 msgstr "Ein unbekannter Fehler ist aufgetreten"
 
-#: src/View/BookingCodes.php:557
+#: src/View/BookingCodes.php:556
 msgid "Email booking codes"
 msgstr "Buchungscodes per E-Mail versenden"
 
@@ -3892,26 +3892,6 @@ msgstr "Das Startdatum fehlt. Ein Startdatum muss eingegeben werden, damit der Z
 msgid "Submit booking"
 msgstr "Buchung abschicken"
 
-#: src/Wordpress/CustomPostType/Booking.php:745
-msgid ""
-"<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>\n"
-"\t\t\t\t<ul>\n"
-"                    <li>Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.</li>\n"
-"                    <li>Click on the <strong>Submit booking</strong> button at the end of the page to submit a new booking.</li>\n"
-"                </ul>\n"
-"\t\t\t\t<strong>Please note</strong>: Only a few basic checks against existing bookings are performed. Please be wary of overlapping bookings.\n"
-"                </p> \n"
-"\t\t\t\t"
-msgstr ""
-"<h1>Achtung</h1><p> In dieser Ansicht kannst du als Administrator*in Buchungen erstellen oder ändern. Bitte nutze die Möglichkeit mit Vorsicht. <br>\n"
-"\t\t\t\t<ul>\n"
-"                    <li>Klicke auf die <strong>Vorschau-Schaltfläche auf der rechten Seite</strong>, um weitere Buchungsdetails zu sehen und die Buchung über die Schaltfläche „Stornieren“ zu stornieren.</li>\n"
-"                    <li>Klicke auf den <strong>Buchung abschicken</strong> Knopf am Ende der Seite um die Buchung zu bestätigen.</li>\n"
-"                </ul>\n"
-"\t\t\t\t<strong>Bitte beachte: </strong>Es werden nur grundlegende Überprüfungen gegen bestehende Buchungen durchgeführt. Bitte prüfe, ob es keine Buchungskonflikte mit anderen Buchungen gibt. \n"
-"                </p> \n"
-"\t\t\t\t"
-
 #: src/Wordpress/CustomPostType/Booking.php:773
 msgid "Book full day"
 msgstr "Ganztägig buchen"
@@ -4408,23 +4388,6 @@ msgstr "Wenn diese Option ausgewählt ist, ist die API ohne API-Schlüssel zugä
 msgid "You can define on or more API shares. Read the documentation for more information about API shares and configuration %1$sAPI documentation%2$s"
 msgstr "Du kannst ein oder mehrere API-Freigaben definieren. Weitere Informationen zu API-Freigaben und zur Konfiguration findest du in der %1$sAPI-Dokumentation%2$s"
 
-#: src/Wordpress/CustomPostType/Booking.php:888
-#, php-format
-msgid ""
-"Bookings should be created via frontend booking calendar. <br>\n"
-"\t\tAs an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated\n"
-"\t\tand checked. Use this function with care.<br>\n"
-"\t\tClick on preview to show booking details in frontend<br>\n"
-"\t\tTo search and filter bookings please integrate the frontend booking list via shortcode. \n"
-"\t\tSee here %1$sHow to display the booking list%2$s"
-msgstr ""
-"Buchungen sollten über den Frontend-Buchungskalender erstellt werden. <br>\r\n"
-"\t\tAls Admin kannst du über diese Admin-Oberfläche Buchungen anlegen. Bitte beachte, dass Admin-Buchungen nicht validiert\r\n"
-"\t\tund überprüft werden. Verwende diese Funktion mit Vorsicht.<br>\r\n"
-"\t\tKlicke auf Vorschau, um die Buchungsdetails im Frontend anzuzeigen.<br>\r\n"
-"\t\tZur Suche und Filterung von Buchungen, binde bitte die Frontend-Buchungsliste per Shortcode ein. \r\n"
-"\t\tMehr dazu %1$sBinde die Buchungsliste im Frontend ein.%2$s"
-
 #: src/Wordpress/CustomPostType/Location.php:540
 #, php-format
 msgid "If selected, all not selected days in any bookable timeframe that is connected to this location can be overbooked. Read the documentation %1$sCreate Locations%2$s for more information."
@@ -4485,4 +4448,27 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Item.php:288
 msgid "When this box is checked, the item will not appear in any of the API shares."
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:745
+msgid ""
+"<h1>Notice</h1><p>In this view, you as an admin can create or modify existing bookings. Please use it with caution. <br>\n"
+"\t\t\t\t<ul>\n"
+"                    <li>Click on the <strong>preview button on the right panel</strong> to view more booking details and to cancel the booking via the cancel button.</li>\n"
+"                    <li>Click on the <strong>Submit booking</strong> button at the end of the page to submit a new booking.</li>\n"
+"                </ul>\n"
+"\t\t\t\t<strong>Please note</strong>: Only a few basic checks against existing bookings are performed. Please be wary of overlapping bookings.\n"
+"                </p>\n"
+"\t\t\t\t"
+msgstr ""
+
+#: src/Wordpress/CustomPostType/Booking.php:888
+#, php-format
+msgid ""
+"Bookings should be created via frontend booking calendar. <br>\n"
+"\t\tAs an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated\n"
+"\t\tand checked. Use this function with care.<br>\n"
+"\t\tClick on preview to show booking details in frontend<br>\n"
+"\t\tTo search and filter bookings please integrate the frontend booking list via shortcode.\n"
+"\t\tSee here %1$sHow to display the booking list%2$s"
 msgstr ""
