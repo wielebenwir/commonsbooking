@@ -9,6 +9,7 @@ assets/packaged
 tests/cypress/screenshots
 docs/.vitepress/dist
 /vendor-prefixed
+/bin/strauss.phar
 
 # Pre-Build dist only sources
 assets/admin/js/admin.js
