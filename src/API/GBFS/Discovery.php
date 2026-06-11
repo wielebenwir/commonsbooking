@@ -70,6 +70,10 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$feed       = new stdClass();
 		$feed->name = $name;
 		$feed->url  = get_rest_url() . 'commonsbooking/v1/' . $name . '.json';
+		$apiKey     = array_key_exists( self::API_KEY_PARAM, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ self::API_KEY_PARAM ] ) : false;
+		if ( $apiKey ) {
+			$feed->url .= '?apikey=' . $apiKey;
+		}
 		return $feed;
 	}
 }
