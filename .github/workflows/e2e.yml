@@ -82,6 +82,14 @@ jobs:
           repository: MobilityData/gbfs-validator
           path: gbfs-validator
 
+      - name: Cache GBFS validator dependencies
+        uses: actions/cache@v5
+        with:
+          path: gbfs-validator/node_modules
+          key: ${{ runner.os }}-gbfs-validator-${{ hashFiles('gbfs-validator/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gbfs-validator-
+
       - name: Install GBFS validator dependencies
         working-directory: gbfs-validator
         run: yarn
