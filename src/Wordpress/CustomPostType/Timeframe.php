@@ -1115,7 +1115,7 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES,
 		];
 		// remove multi-select postmeta if not relevant (#507)
-		$onlyRelevantForHolidays = [
+		$onlyRelevantForHolidaysOrRepair = [
 			\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
 			\CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS,
@@ -1124,14 +1124,15 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
 		];
 
-		if ( $timeframe->getType() != self::BOOKABLE_ID ) {
+		$type = $timeframe->getType();
+		if ( $type !== self::BOOKABLE_ID ) {
 			foreach ( $onlyRelevantForBookable as $metaKey ) {
 				delete_post_meta( $timeframe->ID, $metaKey );
 			}
 		}
 
-		if ( $timeframe->getType() != self::HOLIDAYS_ID ) {
-			foreach ( $onlyRelevantForHolidays as $metaKey ) {
+		if ( ! ( $type === self::HOLIDAYS_ID || $type === self::REPAIR_ID ) ) {
+			foreach ( $onlyRelevantForHolidaysOrRepair as $metaKey ) {
 				delete_post_meta( $timeframe->ID, $metaKey );
 			}
 			// reset to manual selection
