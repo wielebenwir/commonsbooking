@@ -258,6 +258,7 @@ class Location extends BookablePost {
 	/**
 	 * Will get the currently applicable restrictions for the location.
 	 *
+	 * @deprecated since 2.11, removal in 2.12
 	 * @return Restriction[]
 	 * @throws \Exception
 	 */

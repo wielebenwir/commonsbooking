@@ -8,6 +8,9 @@ namespace CommonsBooking\CB;
 
 use CommonsBooking\Settings\Settings;
 
+/**
+ * @deprecated since 2.11, to be removed in 2.12
+ */
 class CB1UserFields {
 
 	/**
@@ -226,7 +229,7 @@ class CB1UserFields {
 	/**
 	 * Sets a flat array of user field/value pairs
 	 *
-	 * @since    2.10 deprecated (cb_object_to_array is unspecified)
+	 * @since    2.10 deprecated (cb_object_to_array is unspecified), removal in 2.12
 	 * @since    0.6
 	 */
 	public function set_basic_user_vars( $user_id ) {
@@ -248,6 +251,7 @@ class CB1UserFields {
 	/**
 	 * Add addiotinal key/value pairs to the user_vars array
 	 *
+	 * @deprecated since 2.11, removal in 2.12
 	 * @since    0.5.3
 	 */
 	public function add_user_vars( $key, $value ) {
