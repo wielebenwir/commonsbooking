@@ -1563,7 +1563,7 @@ msgstr "Buchungen"
 #: src/Wordpress/CustomPostType/Item.php:118
 #: src/Wordpress/CustomPostType/Location.php:140
 #: src/Wordpress/CustomPostType/Restriction.php:307
-#: src/Wordpress/CustomPostType/Timeframe.php:1152
+#: src/Wordpress/CustomPostType/Timeframe.php:1153
 msgid "Add new"
 msgstr "Neu hinzufügen"
 
@@ -1589,7 +1589,7 @@ msgstr "Buchungen anzeigen"
 msgid "Search bookings"
 msgstr "Buchungen suchen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1159
+#: src/Wordpress/CustomPostType/Timeframe.php:1160
 msgid "Timeframes not found"
 msgstr "Zeitrahmen wurden nicht gefunden"
 
@@ -1606,12 +1606,12 @@ msgid "All bookings"
 msgstr "Alle Buchungen"
 
 #: src/Wordpress/CustomPostType/Booking.php:536
-#: src/Wordpress/CustomPostType/Timeframe.php:1163
+#: src/Wordpress/CustomPostType/Timeframe.php:1164
 msgid "Timeframe archive"
 msgstr "Zeitrahmenarchiv"
 
 #: src/Wordpress/CustomPostType/Booking.php:537
-#: src/Wordpress/CustomPostType/Timeframe.php:1164
+#: src/Wordpress/CustomPostType/Timeframe.php:1165
 msgid "Timeframe attributes"
 msgstr "Zeitrahmenattribute"
 
@@ -1624,7 +1624,7 @@ msgid "Added to booking"
 msgstr "Zur Buchung hinzugefügt"
 
 #: src/Wordpress/CustomPostType/Booking.php:540
-#: src/Wordpress/CustomPostType/Timeframe.php:1167
+#: src/Wordpress/CustomPostType/Timeframe.php:1168
 msgid "Timeframe image"
 msgstr "Zeitrahmenbild"
 
@@ -1641,8 +1641,8 @@ msgid "use as booking image"
 msgstr "als Buchungsbild verwenden"
 
 #: src/Wordpress/CustomPostType/Booking.php:544
-#: src/Wordpress/CustomPostType/Timeframe.php:1150
-#: src/Wordpress/CustomPostType/Timeframe.php:1171
+#: src/Wordpress/CustomPostType/Timeframe.php:1151
+#: src/Wordpress/CustomPostType/Timeframe.php:1172
 #: templates/dashboard-index.php:37
 msgid "Timeframes"
 msgstr "Zeitrahmen"
@@ -2185,7 +2185,7 @@ msgid "Blocked (not overbookable)"
 msgstr "Geblockt (nicht überbuchbar)"
 
 #: src/Wordpress/CustomPostType/Timeframe.php:420
-#: src/Wordpress/CustomPostType/Timeframe.php:1151
+#: src/Wordpress/CustomPostType/Timeframe.php:1152
 msgid "Timeframe"
 msgstr "Zeitrahmen"
 
@@ -2364,56 +2364,56 @@ msgstr "Monatlich"
 msgid "Yearly"
 msgstr "Jährlich"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1153
-#: src/Wordpress/CustomPostType/Timeframe.php:1155
+#: src/Wordpress/CustomPostType/Timeframe.php:1154
+#: src/Wordpress/CustomPostType/Timeframe.php:1156
 msgid "Add new timeframe"
 msgstr "Hinzufügen eines neuen Zeitrahmens"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1154
+#: src/Wordpress/CustomPostType/Timeframe.php:1155
 msgid "Edit timeframe"
 msgstr "Zeitrahmen bearbeiten"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1156
+#: src/Wordpress/CustomPostType/Timeframe.php:1157
 msgid "Show timeframe"
 msgstr "Zeitrahmen anzeigen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1157
+#: src/Wordpress/CustomPostType/Timeframe.php:1158
 msgid "Show timeframes"
 msgstr "Zeitrahmen anzeigen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1158
+#: src/Wordpress/CustomPostType/Timeframe.php:1159
 msgid "Search timeframes"
 msgstr "Zeitrahmen suchen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1160
+#: src/Wordpress/CustomPostType/Timeframe.php:1161
 msgid "No timeframes found in trash"
 msgstr "Keine Zeitrahmen im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1161
+#: src/Wordpress/CustomPostType/Timeframe.php:1162
 msgid "Parent timeframes:"
 msgstr "Übergeordnete Zeitrahmen:"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1162
+#: src/Wordpress/CustomPostType/Timeframe.php:1163
 msgid "All timeframes"
 msgstr "Alle Zeitrahmen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1165
+#: src/Wordpress/CustomPostType/Timeframe.php:1166
 msgid "Add to timeframe"
 msgstr "Zum Zeitrahmen hinzufügen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1166
+#: src/Wordpress/CustomPostType/Timeframe.php:1167
 msgid "Added to timeframe"
 msgstr "Zum Zeitrahmen hinzugefügt"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1168
+#: src/Wordpress/CustomPostType/Timeframe.php:1169
 msgid "set timeframe image"
 msgstr "Festlegen des Zeitrahmenbilds"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1169
+#: src/Wordpress/CustomPostType/Timeframe.php:1170
 msgid "remove timeframe image"
 msgstr "Zeitrahmenbild entfernen"
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1170
+#: src/Wordpress/CustomPostType/Timeframe.php:1171
 msgid "use as timeframe image"
 msgstr "Verwendung als Zeitrahmenbild"
 

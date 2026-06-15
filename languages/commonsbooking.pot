@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-03T16:34:23+00:00\n"
+"POT-Creation-Date: 2026-06-15T14:16:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -2421,7 +2421,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Item.php:118
 #: src/Wordpress/CustomPostType/Location.php:140
 #: src/Wordpress/CustomPostType/Restriction.php:307
-#: src/Wordpress/CustomPostType/Timeframe.php:1152
+#: src/Wordpress/CustomPostType/Timeframe.php:1153
 msgid "Add new"
 msgstr ""
 
@@ -2464,12 +2464,12 @@ msgid "All bookings"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:536
-#: src/Wordpress/CustomPostType/Timeframe.php:1163
+#: src/Wordpress/CustomPostType/Timeframe.php:1164
 msgid "Timeframe archive"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:537
-#: src/Wordpress/CustomPostType/Timeframe.php:1164
+#: src/Wordpress/CustomPostType/Timeframe.php:1165
 msgid "Timeframe attributes"
 msgstr ""
 
@@ -2482,7 +2482,7 @@ msgid "Added to booking"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:540
-#: src/Wordpress/CustomPostType/Timeframe.php:1167
+#: src/Wordpress/CustomPostType/Timeframe.php:1168
 msgid "Timeframe image"
 msgstr ""
 
@@ -2499,8 +2499,8 @@ msgid "use as booking image"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:544
-#: src/Wordpress/CustomPostType/Timeframe.php:1150
-#: src/Wordpress/CustomPostType/Timeframe.php:1171
+#: src/Wordpress/CustomPostType/Timeframe.php:1151
+#: src/Wordpress/CustomPostType/Timeframe.php:1172
 #: templates/dashboard-index.php:37
 msgid "Timeframes"
 msgstr ""
@@ -3651,7 +3651,7 @@ msgid "Select Dates:"
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Timeframe.php:420
-#: src/Wordpress/CustomPostType/Timeframe.php:1151
+#: src/Wordpress/CustomPostType/Timeframe.php:1152
 msgid "Timeframe"
 msgstr ""
 
@@ -3936,60 +3936,60 @@ msgstr ""
 msgid "Orphaned bookings found, can migrate. <a href=\"admin.php?page=cb-mass-operations\"> Click here to migrate </a>"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1153
-#: src/Wordpress/CustomPostType/Timeframe.php:1155
+#: src/Wordpress/CustomPostType/Timeframe.php:1154
+#: src/Wordpress/CustomPostType/Timeframe.php:1156
 msgid "Add new timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1154
+#: src/Wordpress/CustomPostType/Timeframe.php:1155
 msgid "Edit timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1156
+#: src/Wordpress/CustomPostType/Timeframe.php:1157
 msgid "Show timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1157
+#: src/Wordpress/CustomPostType/Timeframe.php:1158
 msgid "Show timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1158
+#: src/Wordpress/CustomPostType/Timeframe.php:1159
 msgid "Search timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1159
+#: src/Wordpress/CustomPostType/Timeframe.php:1160
 msgid "Timeframes not found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1160
+#: src/Wordpress/CustomPostType/Timeframe.php:1161
 msgid "No timeframes found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1161
+#: src/Wordpress/CustomPostType/Timeframe.php:1162
 msgid "Parent timeframes:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1162
+#: src/Wordpress/CustomPostType/Timeframe.php:1163
 msgid "All timeframes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1165
+#: src/Wordpress/CustomPostType/Timeframe.php:1166
 msgid "Add to timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1166
+#: src/Wordpress/CustomPostType/Timeframe.php:1167
 msgid "Added to timeframe"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1168
+#: src/Wordpress/CustomPostType/Timeframe.php:1169
 msgid "set timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1169
+#: src/Wordpress/CustomPostType/Timeframe.php:1170
 msgid "remove timeframe image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Timeframe.php:1170
+#: src/Wordpress/CustomPostType/Timeframe.php:1171
 msgid "use as timeframe image"
 msgstr ""
 
