@@ -170,7 +170,7 @@
              * Currently only for holidays, holidays used to only have one assignable single selection.
              */
             const migrateSingleSelection = () => {
-                if (typeInput.val() != HOLIDAYS_ID) {
+                if (typeInput.val() != HOLIDAYS_ID || typeInput.val() != REPAIR_ID) {
                     return;
                 }
                 // get single selection
@@ -222,7 +222,7 @@
                 }
 
                 //we migrate the single selection to the multiselect (new holiday timeframes do not have a single selection anymore)
-                if (selectedType == HOLIDAYS_ID) {
+                if (selectedType == HOLIDAYS_ID || selectedType == REPAIR_ID) {
                     itemSelectionInput.show();
                     locationSelectionInput.show();
                     migrateSingleSelection();
@@ -244,7 +244,7 @@
             const handleLocationSelection = function () {
                 const selectedType = $('option:selected', typeInput).val();
                 //disable the mass selection for all timeframes except holidays
-                if (selectedType == HOLIDAYS_ID) {
+                if (selectedType == HOLIDAYS_ID || selectedType == REPAIR_ID) {
                     singleLocationSelection.hide();
                     //handle different selection types
                     const selectedOption = $('option:selected', locationSelectionInput).val();
@@ -275,7 +275,7 @@
             const handleItemSelection = function () {
                 const selectedType = $('option:selected', typeInput).val();
                 //disable the mass selection for all timeframes except holidays (for now)
-                if (selectedType == HOLIDAYS_ID) {
+                if (selectedType == HOLIDAYS_ID || selectedType == REPAIR_ID) {
                     singleItemSelection.hide();
                     //handle different selection types
                     const selectedOption = $('option:selected', itemSelectionInput).val();
