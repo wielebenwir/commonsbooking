@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-17T13:27:47+00:00\n"
+"POT-Creation-Date: 2026-06-17T13:53:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -1299,71 +1299,71 @@ msgstr ""
 msgid "Every day"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:69
+#: src/CB/CB1UserFields.php:72
 msgid "First Name"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:72
+#: src/CB/CB1UserFields.php:75
 msgid "Please enter your first name"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:76
+#: src/CB/CB1UserFields.php:79
 msgid "Last Name"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:79
+#: src/CB/CB1UserFields.php:82
 msgid "Please enter your last name"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:83
+#: src/CB/CB1UserFields.php:86
 msgid "Phone Number"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:86
+#: src/CB/CB1UserFields.php:89
 msgid "Please enter your phone number"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:90
-#: src/CB/CB1UserFields.php:279
+#: src/CB/CB1UserFields.php:93
+#: src/CB/CB1UserFields.php:283
 #: src/Wordpress/CustomPostType/Location.php:237
 #: templates/booking-single.php:77
 msgid "Address"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:93
+#: src/CB/CB1UserFields.php:96
 msgid "Please enter your address"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:96
+#: src/CB/CB1UserFields.php:99
 msgid "Terms and Conditions"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:99
+#: src/CB/CB1UserFields.php:102
 msgid "I accept the terms & conditions"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:100
+#: src/CB/CB1UserFields.php:103
 msgid "Please accept the terms & conditions"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:188
+#: src/CB/CB1UserFields.php:191
 #, php-format
 msgid "<a href=\"%s\" target=_blank\">Read the terms and services</a>"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:267
+#: src/CB/CB1UserFields.php:271
 msgid "Extra Fields"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:271
+#: src/CB/CB1UserFields.php:275
 msgid "Phone number"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:287
+#: src/CB/CB1UserFields.php:291
 msgid "Terms and conditions"
 msgstr ""
 
-#: src/CB/CB1UserFields.php:297
+#: src/CB/CB1UserFields.php:301
 msgid "Accepted Terms & Conditions"
 msgstr ""
 
@@ -1559,8 +1559,8 @@ msgstr ""
 msgid "Please contact the contact persons at the location directly if you have any questions regarding collection or return:"
 msgstr ""
 
-#: src/Model/Restriction.php:244
-#: src/Model/Restriction.php:268
+#: src/Model/Restriction.php:248
+#: src/Model/Restriction.php:275
 msgid "Not set"
 msgstr ""
 
