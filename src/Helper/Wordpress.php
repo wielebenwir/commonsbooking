@@ -320,6 +320,14 @@ class Wordpress {
 		return $dto;
 	}
 
+	/**
+	 * UNUSED
+	 *
+	 * @deprecated since 2.11, to be removed in 2.12
+	 * @param $timestamp
+	 * @return DateTime
+	 * @throws \DateInvalidTimeZoneException
+	 */
 	public static function getLocalDateTime( $timestamp ): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(

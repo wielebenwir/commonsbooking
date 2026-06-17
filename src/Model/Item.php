@@ -71,6 +71,7 @@ class Item extends BookablePost {
 	 *
 	 * This function is not used anywhere yet.
 	 *
+	 * @deprecated since 2.11, removal in 2.12.
 	 * @return array
 	 * @throws Exception
 	 */
