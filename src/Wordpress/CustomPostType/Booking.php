@@ -291,6 +291,19 @@ class Booking extends Timeframe {
 			throw new BookingDeniedException( __( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking' ) );
 		}
 
+		// The initial calendar flow always submits post_status=unconfirmed without a post_ID.
+		// If an exact-slot booking already exists for the current user, redirect to that booking
+		// instead of downgrading it back to unconfirmed via the update path below.
+		if ( $booking && $post_status === 'unconfirmed' && $post_ID === null ) {
+			return $booking->ID;
+		}
+
+		// Frontend requests should never reopen an existing booking as unconfirmed by ID.
+		// Treat this as an invalid request instead of mutating the current booking state.
+		if ( $post_status === 'unconfirmed' && $post_ID !== null ) {
+			throw new BookingDeniedException( __( 'Invalid booking request. Please try again from the calendar.', 'commonsbooking' ) );
+		}
+
 		$existingBookings =
 			\CommonsBooking\Repository\Booking::getExistingBookings(
 				$itemId,
