@@ -301,7 +301,7 @@ class Booking extends Timeframe {
 		// Frontend requests should never reopen an existing booking as unconfirmed by ID.
 		// Treat this as an invalid request instead of mutating the current booking state.
 		if ( $post_status === 'unconfirmed' && $post_ID !== null ) {
-			throw new BookingDeniedException( __( 'Invalid booking request. Please try again from the calendar.', 'commonsbooking' ) );
+			throw new BookingDeniedException( __( 'Invalid booking request. Please try again.', 'commonsbooking' ) );
 		}
 
 		$existingBookings =
