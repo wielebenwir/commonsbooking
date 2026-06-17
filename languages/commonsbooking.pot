@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-17T11:57:44+00:00\n"
+"POT-Creation-Date: 2026-06-17T13:27:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -2367,7 +2367,7 @@ msgid "There is already a booking in this time-range. This notice may also appea
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:304
-msgid "Invalid booking request. Please try again from the calendar."
+msgid "Invalid booking request. Please try again."
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:320

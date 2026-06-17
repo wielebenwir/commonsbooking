@@ -4474,5 +4474,5 @@ msgid ""
 msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:304
-msgid "Invalid booking request. Please try again from the calendar."
+msgid "Invalid booking request. Please try again."
 msgstr ""
