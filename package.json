@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.29.7",
-		"@wordpress/env": "^11.8.0",
+		"@wordpress/env": "^11.8.1",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
 		"cypress": "^15.17.0",
 		"editorconfig": "^3.0.2",
