@@ -36,7 +36,7 @@ jobs:
           - {name: 'trunk', version: 'WordPress/WordPress#master'}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ./.github/actions/build-plugin
 
@@ -77,7 +77,7 @@ jobs:
           wp-env --config=.wp-env.test.json run cli wp option patch insert commonsbooking_options_api apikey_not_required on
 
       - name: Checkout GBFS validator
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: MobilityData/gbfs-validator
           path: gbfs-validator
