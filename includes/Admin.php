@@ -1,6 +1,32 @@
 <?php
 
-function commonsbooking_admin() {
+function commonsbooking_admin( $hook ) {
+	$screen = get_current_screen();
+
+	if ( ! $screen ) {
+		return;
+	}
+
+	$cb_post_types = [
+		\CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
+		\CommonsBooking\Wordpress\CustomPostType\Item::$postType,
+		\CommonsBooking\Wordpress\CustomPostType\Location::$postType,
+		\CommonsBooking\Wordpress\CustomPostType\Map::$postType,
+		\CommonsBooking\Wordpress\CustomPostType\Restriction::$postType,
+		\CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType,
+	];
+
+	$is_cb_page = in_array( $screen->post_type, $cb_post_types )
+		|| in_array( $screen->taxonomy, [
+			\CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName(),
+			\CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName(),
+		] )
+		|| strpos( $screen->id, 'cb-' ) !== false;
+
+	if ( ! $is_cb_page ) {
+		return;
+	}
+
 	// jQuery
 	wp_enqueue_script( 'jquery' );
 
