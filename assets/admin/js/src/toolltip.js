@@ -9,6 +9,6 @@
 (function ($) {
     'use strict';
     $(function () {
-        $(document).tooltip();
+        $('body.cb-admin').tooltip();
     });
 })(jQuery);
