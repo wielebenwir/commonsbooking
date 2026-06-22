@@ -20,16 +20,23 @@ class PostStatus {
 	protected $public;
 
 	/**
+	 * @var array
+	 */
+	protected $post_types;
+
+	/**
 	 * PostStatus constructor.
 	 *
 	 * @param $name
 	 * @param $label
-	 * @param bool $public
+	 * @param bool  $public
+	 * @param array $post_types Post types this status should appear on. Empty means all.
 	 */
-	public function __construct( $name, $label, bool $public = true ) {
-		$this->name   = $name;
-		$this->label  = $label;
-		$this->public = $public;
+	public function __construct( $name, $label, bool $public = true, array $post_types = [] ) {
+		$this->name       = $name;
+		$this->label      = $label;
+		$this->public     = $public;
+		$this->post_types = $post_types;
 
 		$this->registerPostStatus();
 		$this->addActions();
@@ -66,25 +73,37 @@ class PostStatus {
 	public function addOption() {
 		global $post;
 
-		$active = '';
-		if ( $post ) {
-			if ( $post->post_status == $this->name ) {
-				$active = "jQuery( '#post-status-display' ).text( '" . $this->label . "' ); jQuery( 'select[name=\"post_status\"]' ).val('" . $this->name . "');";
-			}
+		if ( ! $post ) {
+			return;
+		}
 
-			echo "<script>
+		if ( ! empty( $this->post_types ) && ! in_array( $post->post_type, $this->post_types, true ) ) {
+			return;
+		}
+
+		$active = '';
+		if ( $post->post_status == $this->name ) {
+			$active = "jQuery( '#post-status-display' ).text( '" . $this->label . "' ); jQuery( 'select[name=\"post_status\"]' ).val('" . $this->name . "');";
+		}
+
+		echo "<script>
             jQuery(document).ready( function() {
                 jQuery( 'select[name=\"post_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . '">' . commonsbooking_sanitizeHTML( $this->label ) . "</option>' );
                 " . commonsbooking_sanitizeHTML( $active ) . '
             });
         </script>';
-		}
 	}
 
 	/**
 	 * Adds poststatus quickedit to backend.
 	 */
 	public function addQuickedit() {
+		global $typenow;
+
+		if ( ! empty( $this->post_types ) && ! in_array( $typenow, $this->post_types, true ) ) {
+			return;
+		}
+
 		echo "<script>
                 jQuery(document).ready( function() {
                     jQuery( 'select[name=\"_status\"]' ).append( '<option value=\"" . commonsbooking_sanitizeHTML( $this->name ) . '">' . commonsbooking_sanitizeHTML( $this->label ) . "</option>' );
