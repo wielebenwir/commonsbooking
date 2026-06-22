@@ -336,6 +336,14 @@ trait Cache {
 			delete_transient( 'clearCacheHasBeenDone' );
 			wp_register_script( 'cache_warmup', '', array( 'jquery' ), '', true );
 			wp_enqueue_script( 'cache_warmup' );
+			wp_localize_script(
+				'cache_warmup',
+				'cb_ajax_cache_warmup',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'nonce'    => wp_create_nonce( 'cb_cache_warmup' ),
+				)
+			);
 			wp_add_inline_script(
 				'cache_warmup',
 				'
