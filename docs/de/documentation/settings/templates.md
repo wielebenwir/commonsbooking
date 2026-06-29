@@ -27,6 +27,10 @@ enthaltenen nicht ausreichen.
 CommonsBooking ist in der Lage aus den getätigten Buchungen eine .ics Datei zu generieren, die mit den meisten digitalen Kalendern kompatibel ist. Du kannst hier, genau wie in den E-Mail Vorlagen, die entsprechenden Template Tags verwenden. Die resultierende Kalenderdatei wird an die E-Mail angehängt und die Nutzenden können sie in ihren digitalen Kalender importieren. Die meisten E-Mail Programme unterstützen diesen Import mit einem Klick. Aktuell löscht die Stornierung einer Buchung noch nicht den erzeugten Kalendereintrag.
 Darüber hinaus kannst du auch einen abonnierbaren Kalender erstellen, mehr dazu : [iCalendar Feed](../manage-bookings/icalendar-feed) .
 
+##  Ausleihformular-PDF
+
+CommonsBooking kann an die Bestätigungsmail einer Buchung zusätzlich ein PDF-Ausleihformular anhängen. Du aktivierst und gestaltest es ebenfalls hier im Reiter **Vorlagen**. Mehr dazu : [Ausleihformular-PDF](booking-form-pdf) .
+
 ##  Template und Buchungsprozess-Meldungen
 
 In diesem Abschnitt findest du verschiedene Textbausteine, die an
