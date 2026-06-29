@@ -186,6 +186,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Buchungscodes', link: 'booking-codes' },
         { text: 'Einschränkungen', link: 'restrictions' },
         { text: 'E-Mail Vorlagen', link: 'templates' },
+        { text: 'Ausleihformular-PDF', link: 'booking-form-pdf' },
         { text: 'Erinnerungs-E-Mail', link: 'reminder' },
               { text: 'Export', link: 'export' },
         { text: 'Spracheinstellung & Datumsformat', link: 'language-and-date' }
