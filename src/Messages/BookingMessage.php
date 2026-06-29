@@ -5,6 +5,7 @@ namespace CommonsBooking\Messages;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Repository\Booking;
+use CommonsBooking\Service\BookingPdf;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 
@@ -82,6 +83,17 @@ class BookingMessage extends Message {
 				'type' => 'text/calendar', // File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
 				'disposition' => 'attachment', // Disposition to use (defaults to 'attachment')
 			];
+		}
+
+		if (
+			$this->getAction() === 'confirmed' &&
+			Settings::getOption( 'commonsbooking_options_templates', BookingPdf::OPTION_ATTACH ) === 'on'
+		) {
+			try {
+				$attachments[] = BookingPdf::getAttachmentForBooking( $booking );
+			} catch ( \Throwable $e ) {
+				BookingPdf::reportAttachmentFailure( $booking, $e );
+			}
 		}
 
 		$this->prepareMail(
