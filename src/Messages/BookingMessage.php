@@ -20,6 +20,11 @@ class BookingMessage extends Message {
 	 */
 	protected $validActions = [ 'confirmed', 'canceled' ];
 
+	/**
+	 * Send the booking message for the configured action.
+	 *
+	 * @return void
+	 */
 	public function sendMessage() {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
@@ -36,7 +41,7 @@ class BookingMessage extends Message {
 		// get location email adresses to send them bcc copies
 		$location          = get_post( $booking->getMetaInt( 'location-id' ) );
 		$location_emails   = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ); /*  email addresses, comma-seperated  */
-		$location_bcc_copy = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', $location ) == 'on'; /*  email addresses, comma-seperated  */
+		$location_bcc_copy = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', $location ) === 'on'; /*  email addresses, comma-seperated  */
 		if ( $location_emails && $location_bcc_copy ) {
 			$bcc_adresses = str_replace( ' ', '', $location_emails );
 		} else {
@@ -61,16 +66,16 @@ class BookingMessage extends Message {
 			sanitize_email( Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) )
 		);
 
-		// generate attachment when set in settings
-		$attachment = null;
-		if ( ( Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on' ) ) {
+		// generate attachments when set in settings
+		$attachments = [];
+		if ( Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) === 'on' ) {
 			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 			$eventTitle = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
 
 			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
-			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
+			$eventDescription = commonsbooking_sanitizeHTML( wp_strip_all_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
 
-			$attachment = [
+			$attachments[] = [
 				'string' => $booking->getiCal( $eventTitle, $eventDescription ), // String attachment data (required)
 				'filename' => $booking->post_name . '.ics', // Name of the attachment (required)
 				'encoding' => 'base64', // File encoding (defaults to 'base64')
@@ -86,8 +91,27 @@ class BookingMessage extends Message {
 			$fromHeaders,
 			$bcc_adresses,
 			$template_objects,
-			$attachment
+			$this->getAttachmentsForMail( $attachments )
 		);
 		$this->sendNotificationMail();
+	}
+
+	/**
+	 * Preserve the historical single-attachment shape while allowing multiple attachments.
+	 *
+	 * @param array $attachments Attachment data arrays.
+	 *
+	 * @return array|null
+	 */
+	private function getAttachmentsForMail( array $attachments ): ?array {
+		if ( empty( $attachments ) ) {
+			return null;
+		}
+
+		if ( count( $attachments ) === 1 ) {
+			return reset( $attachments );
+		}
+
+		return $attachments;
 	}
 }
