@@ -266,11 +266,11 @@ class ItemTest extends CustomPostTypeTest {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 
 		// With offset → item is still free, it's just not possible to pick it up right now
-		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId ) );
+		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId, true ) );
 
 		// Remove offset → still free, no change in rental status
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, 0 );
-		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId ) );
+		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId, true ) );
 	}
 
 	protected function setUp(): void {

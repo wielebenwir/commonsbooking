@@ -207,12 +207,13 @@ class Item extends BookablePost {
 	 * This method will include items that may only be booked in advance (\CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS),
 	 * because they are technically available at this location. Just not for pickup right now.
 	 *
-	 * @param int $locationId
-	 *
+	 * @param int  $locationId
+	 * @param bool $ignoreStartDayOffset
+	 * @param bool $ignoreRestrictions
 	 * @return bool true if the item is free right now, false otherwise
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function isCurrentlyFreeAtLocation( int $locationId ): bool {
+	public function isCurrentlyFreeAtLocation( int $locationId, bool $ignoreStartDayOffset = false, bool $ignoreRestrictions = false ): bool {
 		$nowDT        = Wordpress::getUTCDateTimeByTimestamp( current_time( 'timestamp' ) );
 		$itemCalendar = new Calendar(
 			new Day( date( 'Y-m-d', strtotime( '-1 day' ) ) ),
@@ -220,7 +221,8 @@ class Item extends BookablePost {
 			[ $locationId ],
 			[ $this->ID ]
 		);
-		$itemCalendar->setIgnoreStartDayOffset( true );
+		$itemCalendar->setIgnoreStartDayOffset( $ignoreStartDayOffset );
+		$itemCalendar->setIgnoreRestrictions( $ignoreRestrictions );
 
 		foreach ( $itemCalendar->getAvailabilitySlots() as $availabilitySlot ) {
 			$startDT = new \DateTime( $availabilitySlot->start );

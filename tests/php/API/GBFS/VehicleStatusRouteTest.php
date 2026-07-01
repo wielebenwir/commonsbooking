@@ -12,7 +12,7 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 	private $end;
 	private $timeframe;
 
-	public function testIsReserved() {
+	public function testIsBooked() {
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 		$response = rest_do_request( $request );
 
@@ -20,23 +20,22 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 
 		$data = $response->get_data()->data;
 
-		$this->assertFalse( $data->vehicles[0]->is_reserved );
+		$this->assertCount( 1, $data->vehicles );
 
 		$this->createConfirmedBookingStartingToday();
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 		$response = rest_do_request( $request );
 		$this->assertSame( 200, $response->get_status() );
 		$data = $response->get_data()->data;
-		$this->assertTrue( $data->vehicles[0]->is_reserved );
+		$this->assertEmpty( $data->vehicles );
 	}
 
 	/**
-	 * This does not test is_disabled for when there is no timeframe.
-	 * This is, because there is no way for us to get a location for an item
-	 * when there is no active timeframe.
+	 * Item should not appear, when it is currently not available for rent.
+	 *
 	 * @return void
 	 */
-	public function testIsDisabled() {
+	public function testNoTimeframe() {
 		// base case, not disabled
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
 		$response = rest_do_request( $request );
@@ -52,6 +51,90 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertSame( 200, $response->get_status() );
 		$data = $response->get_data()->data;
 		$this->assertEmpty( $data->vehicles );
+	}
+
+	/**
+	 * This field is used to indicate vehicles that are in the field but not available for rental due to a mechanical issue or low battery etc.
+	 * Publishing this data may prevent users from attempting to rent vehicles that are disabled and not available for rental.
+	 * This field SHOULD NOT be set to true when the system is closed for vehicles that would otherwise be rentable.
+	 *
+	 * In CB, this is handled through restrictions. When a total breakdown is present, the item is disabled.
+	 * @return void
+	 */
+	public function testIsDisabled() {
+		// base case, not disabled
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data = $response->get_data()->data;
+		$this->assertFalse( $data->vehicles[0]->is_disabled );
+
+		// restriction present: should not disappear from feed, but is considered disabled
+		$this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
+		);
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data = $response->get_data()->data;
+		$this->assertCount( 1, $data->vehicles );
+		$this->assertTrue( $data->vehicles[0]->is_disabled );
+	}
+
+	public function testIsDisabled_hint() {
+		// hints should not affect availability
+		$this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_HINT,
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+		);
+
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data = $response->get_data()->data;
+		$this->assertFalse( $data->vehicles[0]->is_disabled );
+	}
+
+	public function testIsDisabled_inFuture() {
+		// restrictions in the future should not affect current state
+		$this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+		);
+
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data = $response->get_data()->data;
+		$this->assertFalse( $data->vehicles[0]->is_disabled );
+	}
+
+	public function testIsDisabled_inactiveRestriction() {
+		// inactive restrictions should also not trigger
+		$this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			null,
+			\CommonsBooking\Model\Restriction::STATE_SOLVED
+		);
+
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data = $response->get_data()->data;
+		$this->assertFalse( $data->vehicles[0]->is_disabled );
 	}
 
 	public function testExclusion() {
