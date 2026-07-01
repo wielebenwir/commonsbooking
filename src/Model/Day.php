@@ -43,6 +43,17 @@ class Day {
 	protected ?array $timeframes = null;
 
 	/**
+	 * When this is enabled, restrictions are ignored when creating availabilities.
+	 * This is useful when you want to differentiate between an item that is booked / not available
+	 * and an item that would be bookable but is in repair.
+	 *
+	 * Used in @see \CommonsBooking\API\GBFS\VehicleStatus to differentiate between booked items and disabled items
+	 *
+	 * @var bool
+	 */
+	protected bool $ignoreRestrictions = false;
+
+	/**
 	 * Day constructor.
 	 *
 	 * @param string $date
@@ -151,7 +162,7 @@ class Day {
 	/**
 	 * Returns array with restrictions.
 	 *
-	 * @return array
+	 * @return Restriction[]
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {
@@ -545,7 +556,7 @@ class Day {
 	 * @throws Exception
 	 */
 	protected function getTimeframeSlots(): array {
-		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations );
+		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations ) . serialize( $this->ignoreRestrictions );
 		$customCacheKey = md5( $customCacheKey );
 		$cacheItem      = Plugin::getCacheItem( $customCacheKey );
 		if ( $cacheItem ) {
@@ -566,7 +577,9 @@ class Day {
 			}
 
 			$this->mapTimeFrames( $slots );
-			$this->mapRestrictions( $slots );
+			if ( ! $this->ignoreRestrictions ) {
+				$this->mapRestrictions( $slots );
+			}
 			$this->sanitizeSlots( $slots );
 
 			Plugin::setCacheItem(
@@ -601,5 +614,9 @@ class Day {
 	 */
 	protected function getSlotTimestampEnd( $slotsPerDay, $slotNr ) {
 		return strtotime( $this->getDate() ) + ( ( $slotNr + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ) - 1;
+	}
+
+	public function setIgnoreRestrictions( bool $ignoreRestrictions ): void {
+		$this->ignoreRestrictions = $ignoreRestrictions;
 	}
 }
