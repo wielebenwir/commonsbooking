@@ -871,6 +871,7 @@ HTML;
 	public static function previewAction(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			self::dieWithPreviewError( esc_html__( 'You are not allowed to preview booking PDFs.', 'commonsbooking' ), 403 );
+			return;
 		}
 
 		$nonce = array_key_exists( '_wpnonce', $_GET ) ? sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -879,6 +880,7 @@ HTML;
 				esc_html__( 'The PDF preview link has expired. Reload the CommonsBooking settings page and try again.', 'commonsbooking' ),
 				403
 			);
+			return;
 		}
 
 		try {
@@ -886,6 +888,7 @@ HTML;
 			$pdf     = self::renderForBooking( $booking );
 		} catch ( RuntimeException $e ) {
 			self::dieWithPreviewError( $e->getMessage(), 400 );
+			return;
 		} catch ( \Throwable $e ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 				error_log( 'CommonsBooking booking PDF preview failed: ' . $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -894,6 +897,7 @@ HTML;
 				esc_html__( 'The booking form PDF could not be rendered. Check the saved template and try again.', 'commonsbooking' ),
 				500
 			);
+			return;
 		}
 
 		$filename = self::getFilenameForBooking( $booking );
@@ -1248,7 +1252,7 @@ HTML;
 		$urls      = [
 			home_url( '/' ),
 			site_url( '/' ),
-			$uploadDir['baseurl'] ?? '',
+			$uploadDir['baseurl'],
 		];
 
 		$hosts = array_filter(
