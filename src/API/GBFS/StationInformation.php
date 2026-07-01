@@ -38,7 +38,7 @@ class StationInformation extends BaseRoute {
 		$preparedItem->station_id       = strval( $item->ID );
 		$preparedItem->name             = [
 			(object) [
-				'text' => $this->decodeTitle( $item->post_title ),
+				'text' => $this->decodeApiTitle( $item->post_title ),
 				'language' => get_bloginfo( 'language' ),
 			],
 		];

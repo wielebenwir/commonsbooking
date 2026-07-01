@@ -83,7 +83,7 @@ class ItemsRouteTest extends CB_REST_Route_UnitTestCase {
 	}
 
 	public function testTitleHtmlEntitiesAreDecoded() {
-		$entityItemId = $this->createItem( 'Bohrmaschine &amp; Akkuschrauber', 'publish' );
+		$entityItemId = $this->createItem( 'Bohrmaschine &amp; Akkuschrauber &apos;Pro&apos;', 'publish' );
 
 		// Sanity check: WordPress stores the title with the encoded entity.
 		$this->assertStringContainsString( '&amp;', get_post( $entityItemId )->post_title );
@@ -94,7 +94,7 @@ class ItemsRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertSame( 200, $response->get_status() );
 
 		$item = $response->get_data()->items[0];
-		$this->assertEquals( 'Bohrmaschine & Akkuschrauber', $item->name );
+		$this->assertEquals( 'Bohrmaschine & Akkuschrauber \'Pro\'', $item->name );
 	}
 
 	public function testExcludedIfBoxChecked() {

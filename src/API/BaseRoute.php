@@ -189,8 +189,8 @@ class BaseRoute extends WP_REST_Controller {
 	 *
 	 * @return string
 	 */
-	public function decodeTitle( string $title ): string {
-		return html_entity_decode( $title, ENT_QUOTES, 'UTF-8' );
+	protected function decodeApiTitle( string $title ): string {
+		return html_entity_decode( $title, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8' );
 	}
 
 	/**
