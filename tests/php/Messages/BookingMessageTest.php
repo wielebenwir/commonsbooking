@@ -101,6 +101,15 @@ class BookingMessageTest extends Email_Test_Case {
 		$this->assertNotNull( $this->getAttachmentByType( $attachments, 'text/calendar' ) );
 	}
 
+	public function testDefaultPdfTemplateIsRendered() {
+		$template = BookingPdf::getDefaultTemplate();
+
+		$this->assertStringContainsString( 'Rental form', $template );
+		$this->assertStringContainsString( 'width: 100%;', $template );
+		$this->assertStringNotContainsString( '%1$s', $template );
+		$this->assertStringNotContainsString( '100%%', $template );
+	}
+
 	public function testSendMessage_BCCDisabled() {
 		update_post_meta( $this->locationId, COMMONSBOOKING_METABOX_PREFIX . 'location_email_bcc', '' );
 		$this->bookingMessage->sendMessage();
@@ -132,11 +141,6 @@ class BookingMessageTest extends Email_Test_Case {
 		Settings::updateOption( 'commonsbooking_options_templates', BookingPdf::OPTION_ATTACH, '' );
 
 		$this->bookingMessage = new BookingMessage( $this->bookingId, 'confirmed' );
-	}
-
-
-	public function tearDown(): void {
-		parent::tearDown();
 	}
 
 	private function getAttachmentByType( array $attachments, string $type ): ?array {
