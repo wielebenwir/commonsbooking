@@ -50,7 +50,7 @@ Du kannst HTML und CSS verwenden (inklusive eines `<style>`-Blocks). Wichtige Hi
 - **Bilder** werden aus Sicherheitsgründen nur von der eigenen Website geladen.
 
 ::: tip TIPP
-Die Beschriftungen der mitgelieferten Standard-Vorlage werden automatisch in die aktuelle Sprache der Website übersetzt (derzeit Deutsch und Englisch).
+Die Beschriftungen der mitgelieferten Standard-Vorlage nutzen die WordPress-Übersetzungen von CommonsBooking.
 :::
 
 ## Vorschau
