@@ -42,46 +42,7 @@ class BookingPdf {
 
 		$template = self::getDefaultTemplateMarkup();
 
-		$cache[ $locale ] = commonsbooking_sanitizeHTML(
-			sprintf(
-				$template,
-				esc_html__( 'Rental form', 'commonsbooking' ),
-				esc_html__( 'Loan', 'commonsbooking' ),
-				esc_html__( 'Pickup date', 'commonsbooking' ),
-				esc_html__( 'Return date', 'commonsbooking' ),
-				esc_html__( 'Rental item', 'commonsbooking' ),
-				esc_html__( 'Location', 'commonsbooking' ),
-				esc_html__( 'Booking', 'commonsbooking' ),
-				esc_html__( 'Borrower', 'commonsbooking' ),
-				esc_html__( 'Name', 'commonsbooking' ),
-				esc_html__( 'Street and house number', 'commonsbooking' ),
-				esc_html__( 'Postcode and city', 'commonsbooking' ),
-				esc_html__( 'Email', 'commonsbooking' ),
-				esc_html__( 'Booked accessories', 'commonsbooking' ),
-				esc_html__( 'Accessory 1', 'commonsbooking' ),
-				esc_html__( 'Accessory 2', 'commonsbooking' ),
-				esc_html__( 'Accessory 3', 'commonsbooking' ),
-				esc_html__( 'Accessory 4', 'commonsbooking' ),
-				esc_html__( 'Accessory 5', 'commonsbooking' ),
-				esc_html__( 'Other', 'commonsbooking' ),
-				esc_html__( 'I know the return opening hours, accept the applicable terms of use, and agree that my data may be processed for this loan.', 'commonsbooking' ),
-				esc_html__( 'Place, date', 'commonsbooking' ),
-				esc_html__( 'Borrower signature', 'commonsbooking' ),
-				esc_html__( 'To be completed after return', 'commonsbooking' ),
-				esc_html__( 'Damages', 'commonsbooking' ),
-				esc_html__( 'I have reported these damages both to the station and by email to the provider.', 'commonsbooking' ),
-				esc_html__( 'Date, time', 'commonsbooking' ),
-				esc_html__( 'Terms and return notes', 'commonsbooking' ),
-				esc_html__( 'This summary is a template and not legal advice. Please adapt it to your local terms of use before using the form.', 'commonsbooking' ),
-				esc_html__( 'The user is responsible for the rented item for the duration of the loan.', 'commonsbooking' ),
-				esc_html__( 'Passing the rented item on to third parties is not permitted unless your terms explicitly allow it.', 'commonsbooking' ),
-				esc_html__( 'The user must follow the applicable traffic rules and use the rented item carefully.', 'commonsbooking' ),
-				esc_html__( 'The rented item and accessories must be returned completely and on time to the agreed location.', 'commonsbooking' ),
-				esc_html__( 'Damage, loss, or theft must be reported to the provider immediately.', 'commonsbooking' ),
-				esc_html__( 'The user may be liable for costs and damage caused by improper use.', 'commonsbooking' ),
-				self::LOGO_PLACEHOLDER
-			)
-		);
+		$cache[ $locale ] = commonsbooking_sanitizeHTML( strtr( $template, self::getDefaultTemplatePlaceholders() ) );
 
 		return $cache[ $locale ];
 	}
@@ -102,6 +63,51 @@ class BookingPdf {
 		}
 
 		return (string) file_get_contents( $templateFile ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	}
+
+	/**
+	 * Get translated placeholders used by the bundled default template.
+	 *
+	 * @return array
+	 */
+	private static function getDefaultTemplatePlaceholders(): array {
+		return [
+			'{{pdf:title}}'            => esc_html__( 'Rental form', 'commonsbooking' ),
+			'{{pdf:loan}}'             => esc_html__( 'Loan', 'commonsbooking' ),
+			'{{pdf:pickup_date}}'      => esc_html__( 'Pickup date', 'commonsbooking' ),
+			'{{pdf:return_date}}'      => esc_html__( 'Return date', 'commonsbooking' ),
+			'{{pdf:rental_item}}'      => esc_html__( 'Rental item', 'commonsbooking' ),
+			'{{pdf:location}}'         => esc_html__( 'Location', 'commonsbooking' ),
+			'{{pdf:booking}}'          => esc_html__( 'Booking', 'commonsbooking' ),
+			'{{pdf:borrower}}'         => esc_html__( 'Borrower', 'commonsbooking' ),
+			'{{pdf:name}}'             => esc_html__( 'Name', 'commonsbooking' ),
+			'{{pdf:street}}'           => esc_html__( 'Street and house number', 'commonsbooking' ),
+			'{{pdf:postcode_city}}'    => esc_html__( 'Postcode and city', 'commonsbooking' ),
+			'{{pdf:email}}'            => esc_html__( 'Email', 'commonsbooking' ),
+			'{{pdf:accessories}}'      => esc_html__( 'Booked accessories', 'commonsbooking' ),
+			'{{pdf:accessory_1}}'      => esc_html__( 'Accessory 1', 'commonsbooking' ),
+			'{{pdf:accessory_2}}'      => esc_html__( 'Accessory 2', 'commonsbooking' ),
+			'{{pdf:accessory_3}}'      => esc_html__( 'Accessory 3', 'commonsbooking' ),
+			'{{pdf:accessory_4}}'      => esc_html__( 'Accessory 4', 'commonsbooking' ),
+			'{{pdf:accessory_5}}'      => esc_html__( 'Accessory 5', 'commonsbooking' ),
+			'{{pdf:other}}'            => esc_html__( 'Other', 'commonsbooking' ),
+			'{{pdf:consent}}'          => esc_html__( 'I know the return opening hours, accept the applicable terms of use, and agree that my data may be processed for this loan.', 'commonsbooking' ),
+			'{{pdf:place_date}}'       => esc_html__( 'Place, date', 'commonsbooking' ),
+			'{{pdf:signature}}'        => esc_html__( 'Borrower signature', 'commonsbooking' ),
+			'{{pdf:return_heading}}'   => esc_html__( 'To be completed after return', 'commonsbooking' ),
+			'{{pdf:damages}}'          => esc_html__( 'Damages', 'commonsbooking' ),
+			'{{pdf:damages_reported}}' => esc_html__( 'I have reported these damages both to the station and by email to the provider.', 'commonsbooking' ),
+			'{{pdf:date_time}}'        => esc_html__( 'Date, time', 'commonsbooking' ),
+			'{{pdf:terms_heading}}'    => esc_html__( 'Terms and return notes', 'commonsbooking' ),
+			'{{pdf:terms_intro}}'      => esc_html__( 'This summary is a template and not legal advice. Please adapt it to your local terms of use before using the form.', 'commonsbooking' ),
+			'{{pdf:term_responsible}}' => esc_html__( 'The user is responsible for the rented item for the duration of the loan.', 'commonsbooking' ),
+			'{{pdf:term_no_passing}}'  => esc_html__( 'Passing the rented item on to third parties is not permitted unless your terms explicitly allow it.', 'commonsbooking' ),
+			'{{pdf:term_traffic}}'     => esc_html__( 'The user must follow the applicable traffic rules and use the rented item carefully.', 'commonsbooking' ),
+			'{{pdf:term_return}}'      => esc_html__( 'The rented item and accessories must be returned completely and on time to the agreed location.', 'commonsbooking' ),
+			'{{pdf:term_damage}}'      => esc_html__( 'Damage, loss, or theft must be reported to the provider immediately.', 'commonsbooking' ),
+			'{{pdf:term_liability}}'   => esc_html__( 'The user may be liable for costs and damage caused by improper use.', 'commonsbooking' ),
+			'{{pdf:logo}}'             => self::LOGO_PLACEHOLDER,
+		];
 	}
 
 	/**

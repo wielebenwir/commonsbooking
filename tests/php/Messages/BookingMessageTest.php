@@ -106,8 +106,7 @@ class BookingMessageTest extends Email_Test_Case {
 
 		$this->assertStringContainsString( 'Rental form', $template );
 		$this->assertStringContainsString( 'width: 100%;', $template );
-		$this->assertStringNotContainsString( '%1$s', $template );
-		$this->assertStringNotContainsString( '100%%', $template );
+		$this->assertStringNotContainsString( '{{pdf:', $template );
 	}
 
 	public function testSendMessage_BCCDisabled() {

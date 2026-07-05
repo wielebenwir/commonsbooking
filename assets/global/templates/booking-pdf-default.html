@@ -64,7 +64,7 @@ h3 {
 
 table {
 	border-collapse: collapse;
-	width: 100%%;
+	width: 100%;
 }
 
 td {
@@ -74,22 +74,22 @@ td {
 
 .layout-table {
 	table-layout: fixed;
-	width: 100%%;
+	width: 100%;
 }
 
 .column-form {
 	padding-right: 8mm;
-	width: 49%%;
+	width: 49%;
 }
 
 .column-terms {
 	border-left: 1px solid #ddd;
 	padding-left: 7mm;
-	width: 51%%;
+	width: 51%;
 }
 
 .form-table td:first-child {
-	width: 30%%;
+	width: 30%;
 }
 
 .form-table {
@@ -115,7 +115,7 @@ td {
 }
 
 .accessory-label {
-	width: 30%%;
+	width: 30%;
 }
 
 .accessory-check {
@@ -148,7 +148,7 @@ td {
 }
 
 .signature-table td {
-	width: 50%%;
+	width: 50%;
 }
 
 .signature-line {
@@ -195,119 +195,119 @@ td {
 
 <table class="header-table">
 	<tr>
-		<td class="header-logo-cell">%35$s</td>
-		<td class="header-title-cell"><h1>%1$s</h1></td>
+		<td class="header-logo-cell">{{pdf:logo}}</td>
+		<td class="header-title-cell"><h1>{{pdf:title}}</h1></td>
 	</tr>
 </table>
 
 <table class="layout-table">
 	<tr>
 		<td class="column-form">
-		<h2>%2$s</h2>
+		<h2>{{pdf:loan}}</h2>
 		<table class="form-table">
 			<tr>
-				<td>%3$s</td>
+				<td>{{pdf:pickup_date}}</td>
 				<td><div class="field-value">{{booking:pickupDatetime}}</div></td>
 			</tr>
 			<tr>
-				<td>%4$s</td>
+				<td>{{pdf:return_date}}</td>
 				<td><div class="field-value">{{booking:returnDatetime}}</div></td>
 			</tr>
 			<tr>
-				<td>%5$s</td>
+				<td>{{pdf:rental_item}}</td>
 				<td><div class="field-value">{{item:post_title}}</div></td>
 			</tr>
 			<tr>
-				<td>%6$s</td>
+				<td>{{pdf:location}}</td>
 				<td><div class="field-value">{{location:post_title}}</div></td>
 			</tr>
 			<tr>
-				<td>%7$s</td>
+				<td>{{pdf:booking}}</td>
 				<td><div class="field-value">{{booking:post_title}}</div></td>
 			</tr>
 		</table>
 
-		<h2>%8$s</h2>
+		<h2>{{pdf:borrower}}</h2>
 		<table class="form-table">
 			<tr>
-				<td>%9$s</td>
+				<td>{{pdf:name}}</td>
 				<td><div class="field-value">{{user:first_name}} {{user:last_name}}</div></td>
 			</tr>
 			<tr>
-				<td>%10$s</td>
+				<td>{{pdf:street}}</td>
 				<td><div class="fill-line"></div></td>
 			</tr>
 			<tr>
-				<td>%11$s</td>
+				<td>{{pdf:postcode_city}}</td>
 				<td><div class="fill-line"></div></td>
 			</tr>
 			<tr>
-				<td>%12$s</td>
+				<td>{{pdf:email}}</td>
 				<td><div class="field-value">{{user:user_email}}</div></td>
 			</tr>
 		</table>
 
-		<h2>%13$s</h2>
+		<h2>{{pdf:accessories}}</h2>
 		<table class="accessory-table">
 			<tr>
-				<td class="accessory-label">%14$s</td>
+				<td class="accessory-label">{{pdf:accessory_1}}</td>
 				<td class="accessory-check"><span class="checkbox"></span></td>
 			</tr>
 			<tr>
-				<td class="accessory-label">%15$s</td>
+				<td class="accessory-label">{{pdf:accessory_2}}</td>
 				<td class="accessory-check"><span class="checkbox"></span></td>
 			</tr>
 			<tr>
-				<td class="accessory-label">%16$s</td>
+				<td class="accessory-label">{{pdf:accessory_3}}</td>
 				<td class="accessory-check"><span class="checkbox"></span></td>
 			</tr>
 			<tr>
-				<td class="accessory-label">%17$s</td>
+				<td class="accessory-label">{{pdf:accessory_4}}</td>
 				<td class="accessory-check"><span class="checkbox"></span></td>
 			</tr>
 			<tr>
-				<td class="accessory-label">%18$s</td>
+				<td class="accessory-label">{{pdf:accessory_5}}</td>
 				<td class="accessory-check"><span class="checkbox"></span></td>
 			</tr>
 			<tr>
-				<td class="accessory-label">%19$s</td>
+				<td class="accessory-label">{{pdf:other}}</td>
 				<td class="accessory-check"><span class="inline-line"></span></td>
 			</tr>
 		</table>
 
-		<p class="hint">%20$s</p>
+		<p class="hint">{{pdf:consent}}</p>
 
 		<table class="signature-table">
 			<tr>
 				<td>
 					<div class="signature-line"></div>
-					%21$s
+					{{pdf:place_date}}
 				</td>
 				<td>
 					<div class="signature-line"></div>
-					%22$s
+					{{pdf:signature}}
 				</td>
 			</tr>
 		</table>
 
 		<div class="return-box">
-			<h2>%23$s</h2>
+			<h2>{{pdf:return_heading}}</h2>
 			<table class="form-table">
 				<tr>
-					<td>%24$s</td>
+					<td>{{pdf:damages}}</td>
 					<td><div class="fill-line damage-line"></div></td>
 				</tr>
 			</table>
-			<p>%25$s</p>
+			<p>{{pdf:damages_reported}}</p>
 			<table class="signature-table">
 				<tr>
 					<td>
 						<div class="signature-line"></div>
-						%26$s
+						{{pdf:date_time}}
 					</td>
 					<td>
 						<div class="signature-line"></div>
-						%22$s
+						{{pdf:signature}}
 					</td>
 				</tr>
 			</table>
@@ -315,15 +315,15 @@ td {
 		</td>
 
 		<td class="column-terms">
-		<h2>%27$s</h2>
-		<p>%28$s</p>
+		<h2>{{pdf:terms_heading}}</h2>
+		<p>{{pdf:terms_intro}}</p>
 		<ol class="terms-list">
-			<li>%29$s</li>
-			<li>%30$s</li>
-			<li>%31$s</li>
-			<li>%32$s</li>
-			<li>%33$s</li>
-			<li>%34$s</li>
+			<li>{{pdf:term_responsible}}</li>
+			<li>{{pdf:term_no_passing}}</li>
+			<li>{{pdf:term_traffic}}</li>
+			<li>{{pdf:term_return}}</li>
+			<li>{{pdf:term_damage}}</li>
+			<li>{{pdf:term_liability}}</li>
 		</ol>
 		</td>
 	</tr>
