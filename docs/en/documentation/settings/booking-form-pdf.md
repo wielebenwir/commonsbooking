@@ -50,7 +50,7 @@ You can use HTML and CSS (including a `<style>` block). Important notes:
 - **Images** are loaded only from your own website for security reasons.
 
 ::: tip
-The labels of the bundled default template are automatically translated into the current language of the website (currently German and English).
+The labels of the bundled default template use the CommonsBooking WordPress translations. 
 :::
 
 ## Preview
