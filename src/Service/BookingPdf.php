@@ -23,6 +23,7 @@ class BookingPdf {
 	public const OPTION_TEMPLATE   = 'emailtemplates_mail-booking_pdf_body';
 	public const ACTION_PREVIEW    = 'commonsbooking_preview-booking-pdf';
 	public const ERROR_TYPE        = 'commonsbooking-booking-pdf-error';
+	private const DEFAULT_TEMPLATE = 'assets/global/templates/booking-pdf-default.html';
 	private const LOGO_PLACEHOLDER = '%%COMMONSBOOKING_PDF_LOGO%%';
 
 	/**
@@ -65,338 +66,7 @@ class BookingPdf {
 			return $cache[ $locale ];
 		}
 
-		$template = <<<'HTML'
-<style>
-@page {
-	size: A4 landscape;
-	margin: 8mm;
-}
-
-body {
-	color: #111;
-	font-family: DejaVu Sans, sans-serif;
-	font-size: 9.2px;
-	line-height: 1.22;
-}
-
-h1,
-h2,
-h3,
-p {
-	margin-top: 0;
-}
-
-h1 {
-	border-bottom: 1px solid #111;
-	font-size: 14px;
-	margin-bottom: 7px;
-	padding-bottom: 4px;
-}
-
-.header-table {
-	border-bottom: 1px solid #111;
-	margin-bottom: 11px;
-	padding-bottom: 5px;
-}
-
-.header-table h1 {
-	border-bottom: 0;
-	margin: 0;
-	padding: 0;
-}
-
-.header-logo-cell {
-	text-align: left;
-	width: 34px;
-}
-
-.header-logo {
-	max-height: 28px;
-	max-width: 28px;
-	vertical-align: middle;
-}
-
-.header-title-cell {
-	vertical-align: middle;
-}
-
-h2 {
-	font-size: 10.8px;
-	margin: 10px 0 5px;
-}
-
-h3 {
-	font-size: 9.5px;
-	margin: 6px 0 3px;
-}
-
-table {
-	border-collapse: collapse;
-	width: 100%%;
-}
-
-td {
-	padding: 2px 3px;
-	vertical-align: top;
-}
-
-.layout-table {
-	table-layout: fixed;
-	width: 100%%;
-}
-
-.column-form {
-	padding-right: 8mm;
-	width: 49%%;
-}
-
-.column-terms {
-	border-left: 1px solid #ddd;
-	padding-left: 7mm;
-	width: 51%%;
-}
-
-.form-table td:first-child {
-	width: 30%%;
-}
-
-.form-table {
-	margin-bottom: 7px;
-}
-
-.field-value {
-	min-height: 10px;
-	padding: 2px 0;
-}
-
-.fill-line {
-	border-bottom: 1px solid #111;
-	min-height: 10px;
-}
-
-.accessory-table td {
-	padding-bottom: 5px;
-}
-
-.accessory-table {
-	margin-bottom: 18px;
-}
-
-.accessory-label {
-	width: 30%%;
-}
-
-.accessory-check {
-	text-align: left;
-	width: auto;
-}
-
-.checkbox {
-	border: 1px solid #111;
-	display: inline-block;
-	height: 8px;
-	vertical-align: middle;
-	width: 8px;
-}
-
-.inline-line {
-	border-bottom: 1px solid #111;
-	display: inline-block;
-	height: 10px;
-	vertical-align: middle;
-	width: 46mm;
-}
-
-.hint {
-	margin: 12px 0 15px;
-}
-
-.signature-table {
-	margin-top: 13px;
-}
-
-.signature-table td {
-	width: 50%%;
-}
-
-.signature-line {
-	border-bottom: 1px solid #111;
-	height: 13px;
-	margin-bottom: 3px;
-}
-
-.return-box {
-	background: #fafafa;
-	margin-top: 18px;
-	padding: 10px 7px 8px;
-}
-
-.return-box h2 {
-	margin-top: 0;
-}
-
-.return-box .form-table {
-	margin-bottom: 8px;
-}
-
-.return-box td:first-child {
-	padding-left: 0;
-}
-
-.return-box p {
-	margin-bottom: 10px;
-}
-
-.damage-line {
-	min-height: 16px;
-}
-
-.terms-list {
-	margin: 0;
-	padding-left: 18px;
-}
-
-.terms-list li {
-	margin-bottom: 3px;
-}
-</style>
-
-<table class="header-table">
-	<tr>
-		<td class="header-logo-cell">%35$s</td>
-		<td class="header-title-cell"><h1>%1$s</h1></td>
-	</tr>
-</table>
-
-<table class="layout-table">
-	<tr>
-		<td class="column-form">
-		<h2>%2$s</h2>
-		<table class="form-table">
-			<tr>
-				<td>%3$s</td>
-				<td><div class="field-value">{{booking:pickupDatetime}}</div></td>
-			</tr>
-			<tr>
-				<td>%4$s</td>
-				<td><div class="field-value">{{booking:returnDatetime}}</div></td>
-			</tr>
-			<tr>
-				<td>%5$s</td>
-				<td><div class="field-value">{{item:post_title}}</div></td>
-			</tr>
-			<tr>
-				<td>%6$s</td>
-				<td><div class="field-value">{{location:post_title}}</div></td>
-			</tr>
-			<tr>
-				<td>%7$s</td>
-				<td><div class="field-value">{{booking:post_title}}</div></td>
-			</tr>
-		</table>
-
-		<h2>%8$s</h2>
-		<table class="form-table">
-			<tr>
-				<td>%9$s</td>
-				<td><div class="field-value">{{user:first_name}} {{user:last_name}}</div></td>
-			</tr>
-			<tr>
-				<td>%10$s</td>
-				<td><div class="fill-line"></div></td>
-			</tr>
-			<tr>
-				<td>%11$s</td>
-				<td><div class="fill-line"></div></td>
-			</tr>
-			<tr>
-				<td>%12$s</td>
-				<td><div class="field-value">{{user:user_email}}</div></td>
-			</tr>
-		</table>
-
-		<h2>%13$s</h2>
-		<table class="accessory-table">
-			<tr>
-				<td class="accessory-label">%14$s</td>
-				<td class="accessory-check"><span class="checkbox"></span></td>
-			</tr>
-			<tr>
-				<td class="accessory-label">%15$s</td>
-				<td class="accessory-check"><span class="checkbox"></span></td>
-			</tr>
-			<tr>
-				<td class="accessory-label">%16$s</td>
-				<td class="accessory-check"><span class="checkbox"></span></td>
-			</tr>
-			<tr>
-				<td class="accessory-label">%17$s</td>
-				<td class="accessory-check"><span class="checkbox"></span></td>
-			</tr>
-			<tr>
-				<td class="accessory-label">%18$s</td>
-				<td class="accessory-check"><span class="checkbox"></span></td>
-			</tr>
-			<tr>
-				<td class="accessory-label">%19$s</td>
-				<td class="accessory-check"><span class="inline-line"></span></td>
-			</tr>
-		</table>
-
-		<p class="hint">%20$s</p>
-
-		<table class="signature-table">
-			<tr>
-				<td>
-					<div class="signature-line"></div>
-					%21$s
-				</td>
-				<td>
-					<div class="signature-line"></div>
-					%22$s
-				</td>
-			</tr>
-		</table>
-
-		<div class="return-box">
-			<h2>%23$s</h2>
-			<table class="form-table">
-				<tr>
-					<td>%24$s</td>
-					<td><div class="fill-line damage-line"></div></td>
-				</tr>
-			</table>
-			<p>%25$s</p>
-			<table class="signature-table">
-				<tr>
-					<td>
-						<div class="signature-line"></div>
-						%26$s
-					</td>
-					<td>
-						<div class="signature-line"></div>
-						%22$s
-					</td>
-				</tr>
-			</table>
-		</div>
-		</td>
-
-		<td class="column-terms">
-		<h2>%27$s</h2>
-		<p>%28$s</p>
-		<ol class="terms-list">
-			<li>%29$s</li>
-			<li>%30$s</li>
-			<li>%31$s</li>
-			<li>%32$s</li>
-			<li>%33$s</li>
-			<li>%34$s</li>
-		</ol>
-		</td>
-	</tr>
-</table>
-HTML;
+		$template = self::getDefaultTemplateMarkup();
 
 		$cache[ $locale ] = commonsbooking_sanitizeHTML(
 			sprintf(
@@ -440,6 +110,24 @@ HTML;
 		);
 
 		return $cache[ $locale ];
+	}
+
+	/**
+	 * Get the default PDF template markup from the bundled asset file.
+	 *
+	 * @return string
+	 */
+	private static function getDefaultTemplateMarkup(): string {
+		if ( ! defined( 'COMMONSBOOKING_PLUGIN_DIR' ) ) {
+			return '';
+		}
+
+		$templateFile = COMMONSBOOKING_PLUGIN_DIR . self::DEFAULT_TEMPLATE;
+		if ( ! is_readable( $templateFile ) ) {
+			return '';
+		}
+
+		return (string) file_get_contents( $templateFile ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	}
 
 	/**
