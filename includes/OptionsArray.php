@@ -405,7 +405,6 @@ Return date: {{booking:returnDatetime}}
 						'type'      => 'textarea',
 						'desc'      => esc_html__( 'HTML template used for the attached booking form PDF. You can use the same template tags as in booking emails.', 'commonsbooking' ),
 						'default'   => BookingPdf::getDefaultTemplate(),
-						'escape_cb' => array( BookingPdf::class, 'escapeTemplateForDisplay' ),
 					),
 					array(
 						'id'            => 'emailtemplates_mail-booking_pdf_preview',

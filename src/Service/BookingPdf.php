@@ -27,32 +27,6 @@ class BookingPdf {
 	private const LOGO_PLACEHOLDER = '%%COMMONSBOOKING_PDF_LOGO%%';
 
 	/**
-	 * Localize and escape the saved booking PDF template for display in the settings textarea.
-	 *
-	 * The template is a saved option, so older installs may contain the default
-	 * template in the admin language used when it was first saved. Translating
-	 * known default labels at display time keeps the built-in template multilingual
-	 * without requiring users to reset the option manually. This runs as a CMB2
-	 * field escape callback so the frequently-read templates option is not localized
-	 * on every read; the rendered PDF is localized separately in renderForBooking().
-	 *
-	 * @param mixed $value      Saved template value.
-	 * @param array $field_args CMB2 field args.
-	 * @param mixed $field      CMB2 field object.
-	 *
-	 * @return string
-	 */
-	public static function escapeTemplateForDisplay( $value, $field_args, $field ): string {
-		unset( $field_args, $field );
-
-		if ( ! is_string( $value ) || $value === '' ) {
-			return '';
-		}
-
-		return esc_textarea( self::localizeTemplateLabels( $value ) );
-	}
-
-	/**
 	 * Get the localized default template for the booking form PDF.
 	 *
 	 * @return string
@@ -128,160 +102,6 @@ class BookingPdf {
 		}
 
 		return (string) file_get_contents( $templateFile ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	}
-
-	/**
-	 * Translate known built-in template labels from any supported default language into the current locale.
-	 *
-	 * This is a best-effort convenience for the built-in template: it string-replaces the
-	 * known default labels, so it only works for plain-text labels and may also touch
-	 * matching words in a heavily customized template. Adding default labels with the same
-	 * wording as common free text is therefore discouraged.
-	 *
-	 * @param string $template Booking PDF template.
-	 *
-	 * @return string
-	 */
-	private static function localizeTemplateLabels( string $template ): string {
-		$replacements = [];
-		foreach ( self::getTemplateLabelTranslations() as $sourceLabels ) {
-			foreach ( $sourceLabels as $key => $sourceLabel ) {
-				$replacement = self::getLocalizedTemplateLabel( $key );
-				if ( $replacement === '' || $sourceLabel === $replacement ) {
-					continue;
-				}
-
-				$replacements[ $sourceLabel ] = $replacement;
-
-				// The built-in template stores labels HTML-escaped (see getDefaultTemplate()),
-				// so also match the escaped form for labels that contain HTML-special characters.
-				$escapedSource = esc_html( $sourceLabel );
-				if ( $escapedSource !== $sourceLabel ) {
-					$replacements[ $escapedSource ] = esc_html( $replacement );
-				}
-			}
-		}
-
-		// Replace longer labels first so a shorter label can never clobber a longer match.
-		uksort(
-			$replacements,
-			static function ( string $left, string $right ): int {
-				return strlen( $right ) <=> strlen( $left );
-			}
-		);
-
-		return strtr( $template, $replacements );
-	}
-
-	/**
-	 * Get default template label message IDs.
-	 *
-	 * @return array
-	 */
-	private static function getTemplateLabelMessages(): array {
-		return [
-			'title'             => 'Rental form',
-			'loan'              => 'Loan',
-			'pickup_date'       => 'Pickup date',
-			'return_date'       => 'Return date',
-			'rental_item'       => 'Rental item',
-			'location'          => 'Location',
-			'booking'           => 'Booking',
-			'borrower'          => 'Borrower',
-			'name'              => 'Name',
-			'street'            => 'Street and house number',
-			'postcode_city'     => 'Postcode and city',
-			'email'             => 'Email',
-			'accessories'       => 'Booked accessories',
-			'accessory_1'       => 'Accessory 1',
-			'accessory_2'       => 'Accessory 2',
-			'accessory_3'       => 'Accessory 3',
-			'accessory_4'       => 'Accessory 4',
-			'accessory_5'       => 'Accessory 5',
-			'other'             => 'Other',
-			'consent'           => 'I know the return opening hours, accept the applicable terms of use, and agree that my data may be processed for this loan.',
-			'place_date'        => 'Place, date',
-			'signature'         => 'Borrower signature',
-			'return_heading'    => 'To be completed after return',
-			'damages'           => 'Damages',
-			'damages_reported'  => 'I have reported these damages both to the station and by email to the provider.',
-			'date_time'         => 'Date, time',
-			'terms_heading'     => 'Terms and return notes',
-			'terms_intro'       => 'This summary is a template and not legal advice. Please adapt it to your local terms of use before using the form.',
-			'term_responsible'  => 'The user is responsible for the rented item for the duration of the loan.',
-			'term_no_passing'   => 'Passing the rented item on to third parties is not permitted unless your terms explicitly allow it.',
-			'term_traffic'      => 'The user must follow the applicable traffic rules and use the rented item carefully.',
-			'term_return'       => 'The rented item and accessories must be returned completely and on time to the agreed location.',
-			'term_damage'       => 'Damage, loss, or theft must be reported to the provider immediately.',
-			'term_liability'    => 'The user may be liable for costs and damage caused by improper use.',
-		];
-	}
-
-	/**
-	 * Get label translations shipped by the built-in default template.
-	 *
-	 * @return array
-	 */
-	private static function getTemplateLabelTranslations(): array {
-		return [
-			'en_US' => self::getTemplateLabelMessages(),
-			'de_DE' => [
-				'title'             => 'Ausleihformular',
-				'loan'              => 'Ausleihe',
-				'pickup_date'       => 'Abholdatum',
-				'return_date'       => 'Rückgabedatum',
-				'rental_item'       => 'Leihgegenstand',
-				'location'          => 'Standort',
-				'booking'           => 'Buchung',
-				'borrower'          => 'Nutzer*in',
-				'name'              => 'Name',
-				'street'            => 'Straße und Hausnummer',
-				'postcode_city'     => 'PLZ und Ort',
-				'email'             => 'E-Mail',
-				'accessories'       => 'Gebuchtes Zubehör',
-				'accessory_1'       => 'Zubehör 1',
-				'accessory_2'       => 'Zubehör 2',
-				'accessory_3'       => 'Zubehör 3',
-				'accessory_4'       => 'Zubehör 4',
-				'accessory_5'       => 'Zubehör 5',
-				'other'             => 'Sonstiges',
-				'consent'           => 'Mir sind die Öffnungszeiten zur Rückgabe bekannt. Ich akzeptiere die geltenden Nutzungsbedingungen und bin damit einverstanden, dass meine Daten im Rahmen der Ausleihe verarbeitet werden.',
-				'place_date'        => 'Ort, Datum',
-				'signature'         => 'Unterschrift Nutzer*in',
-				'return_heading'    => 'Nach vollständiger Rückgabe auszufüllen',
-				'damages'           => 'Schäden',
-				'damages_reported'  => 'Diese Schäden habe ich sowohl der Station als auch per Mail an den Anbieter gemeldet',
-				'date_time'         => 'Datum, Uhrzeit',
-				'terms_heading'     => 'Hinweise zu Nutzung und Rückgabe',
-				'terms_intro'       => 'Diese Zusammenfassung ist eine Vorlage und keine Rechtsberatung. Bitte passe sie vor der Nutzung an eure lokalen Nutzungsbedingungen an.',
-				'term_responsible'  => 'Die nutzende Person ist für die Dauer der Ausleihe für den Leihgegenstand verantwortlich.',
-				'term_no_passing'   => 'Eine Weitergabe an Dritte ist nicht gestattet, sofern eure Bedingungen dies nicht ausdrücklich erlauben.',
-				'term_traffic'      => 'Die nutzende Person muss die geltenden Verkehrsregeln beachten und den Leihgegenstand sorgfältig nutzen.',
-				'term_return'       => 'Leihgegenstand und Zubehör müssen vollständig und rechtzeitig am vereinbarten Standort zurückgegeben werden.',
-				'term_damage'       => 'Schäden, Verlust oder Diebstahl müssen dem Anbieter unverzüglich gemeldet werden.',
-				'term_liability'    => 'Die nutzende Person kann für Kosten und Schäden haften, die durch unsachgemäße Nutzung entstehen.',
-			],
-		];
-	}
-
-	/**
-	 * Get a localized default template label by key.
-	 *
-	 * The English source strings are registered for translation in getDefaultTemplate(),
-	 * where make-pot extracts them; this only resolves the current locale at runtime.
-	 *
-	 * @param string $key Label key.
-	 *
-	 * @return string
-	 */
-	private static function getLocalizedTemplateLabel( string $key ): string {
-		$messages = self::getTemplateLabelMessages();
-		if ( ! isset( $messages[ $key ] ) ) {
-			return '';
-		}
-
-		// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- registered for translation in getDefaultTemplate().
-		return __( $messages[ $key ], 'commonsbooking' );
 	}
 
 	/**
@@ -401,7 +221,6 @@ class BookingPdf {
 			throw new RuntimeException( esc_html__( 'The booking form PDF template is empty. Save a template before opening the preview.', 'commonsbooking' ) );
 		}
 
-		$template = self::localizeTemplateLabels( $template );
 		$html     = commonsbooking_parse_template( $template, self::getTemplateObjects( $booking ) );
 		$html     = self::renderEmptyFieldLines( commonsbooking_sanitizeHTML( $html ) );
 		$html     = self::wrapHtmlDocument( $html );
