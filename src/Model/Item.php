@@ -177,14 +177,20 @@ class Item extends BookablePost {
 	 * @return ?Location will return null when no Location was found
 	 */
 	public function getLocation(): ?Location {
+		return $this->getClosestBookableTimeframe()?->getLocation();// why I used a deprecated method here: https://github.com/wielebenwir/commonsbooking/issues/507#issuecomment-4235848408
+	}
+
+	/**
+	 * Will get the timeframe that is currently applicable for this item.
+	 * When there are multiple timeframes, it wil select the closest.
+	 *
+	 * @return \CommonsBooking\Model\Timeframe
+	 */
+	public function getClosestBookableTimeframe(): ?\CommonsBooking\Model\Timeframe {
 		$locations = \CommonsBooking\Repository\Location::getByItem( $this->ID, true );
 
 		if ( empty( $locations ) ) {
 			return null;
-		}
-
-		if ( count( $locations ) === 1 ) {
-			return reset( $locations );
 		}
 
 		$timeframes = [];
@@ -194,9 +200,7 @@ class Item extends BookablePost {
 				$location->getBookableTimeframesByItem( $this->ID, true )
 			);
 		}
-		$closestTimeframe = \CommonsBooking\View\Calendar::getClosestBookableTimeFrameForToday( $timeframes );
-
-		return $closestTimeframe?->getLocation();// why I used a deprecated method here: https://github.com/wielebenwir/commonsbooking/issues/507#issuecomment-4235848408
+		return \CommonsBooking\View\Calendar::getClosestBookableTimeFrameForToday( $timeframes );
 	}
 
 	/**

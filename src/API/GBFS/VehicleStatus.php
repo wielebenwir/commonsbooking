@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\API\GBFS;
 
+use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Model\Location;
 use CommonsBooking\Model\Restriction;
@@ -39,6 +40,7 @@ class VehicleStatus extends BaseRoute {
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$location = $item->getLocation();
+
 		if ( ! $location ) {
 			throw new \Exception( 'No location for item. (ID: ' . $item->ID . ')' );
 		}
@@ -57,7 +59,7 @@ class VehicleStatus extends BaseRoute {
 		$preparedItem->rental_uris     = (object) [
 			'web' => $item->getCloakedURL(),
 		];
-		// $preparedItem->available_until //TODO: The date and time when any rental of the vehicle must be completed. The vehicle must be returned and made available for the next user by this time. If this field is empty, it indicates that the vehicle is available indefinitely. This field SHOULD be published by carsharing or other mobility systems where vehicles can be booked in advance for future travel.
+		$preparedItem->available_until = $this->getAvailableUntil( $item );
 
 		return new WP_REST_Response( $preparedItem );
 	}
@@ -75,6 +77,43 @@ class VehicleStatus extends BaseRoute {
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * The date and time when any rental of the vehicle must be completed.
+	 * The vehicle must be returned and made available for the next user by this time.
+	 * If this field is empty, it indicates that the vehicle is available indefinitely.
+	 * This field SHOULD be published by carsharing or other mobility systems where vehicles can be booked in advance for future travel.
+	 *
+	 * @param \CommonsBooking\Model\Item $item
+	 * @return string in ISO 8601 notation
+	 */
+	private function getAvailableUntil( \CommonsBooking\Model\Item $item ): string {
+		$timeframe    = $item->getClosestBookableTimeframe();
+		$maxDays      = $timeframe->getMaxDays() - 1; // WHY - 1: Counting from now, the amount of days an item is available includes the current day. So if we, for instance count three full days, the item is bookable today, tomorrow and the day after. Addind three days would put our pointer on the fourth day, where the item is not available anymore. Another option would have been to subtract 1 minute from the end timestamp.
+		$endDt        = new \DateTime( '+' . $maxDays . ' day 23:59:59' );
+		$itemCalendar = new Calendar(
+			new Day( date( 'Y-m-d', strtotime( '-1 day' ) ) ),
+			new Day( date( 'Y-m-d', strtotime( '+' . $maxDays . ' day' ) ) ),
+			[ $item->getLocation()->ID ],
+			[ $item->ID ]
+		);
+		$itemCalendar->setIgnoreStartDayOffset( true );
+
+		$availabilitySlots = $itemCalendar->getAvailabilitySlots();
+		usort(
+			$availabilitySlots,
+			function ( $a, $b ) {
+				return new \DateTime( $a->end ) <=> new \DateTime( $b->end );
+			}
+		);
+		$availabilitySlots = array_filter(
+			$availabilitySlots,
+			fn( $availabilitySlot ) => new \DateTime( $availabilitySlot->end ) <= $endDt
+		);
+
+		$end = new \DateTime( array_pop( $availabilitySlots )->end );
+		return $end->format( 'c' );
 	}
 
 	protected static function getListName(): string {
