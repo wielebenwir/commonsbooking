@@ -273,6 +273,63 @@ class ItemTest extends CustomPostTypeTest {
 		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId, true ) );
 	}
 
+	public function testGetClosestBookableTimeframe() {
+		$dt = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $dt );
+		$this->assertEquals( $this->timeframeModel->ID, $this->itemModel->getClosestBookableTimeframe()->ID );
+		// in two weeks, the timeframe is expired, so the item will not be at the location anymore
+		$dt->modify( '+2 weeks' );
+		ClockMock::freeze( $dt );
+		$this->assertNull( $this->itemModel->getClosestBookableTimeframe() );
+	}
+
+	public function testGetClosestBookableTimeframe_withBookingOffset() {
+		$otherLocationId = $this->createLocation( 'Other Location' );
+		$otherItemId     = $this->createItem( 'Other Item' );
+		$otherItemModel  = new Item( $otherItemId );
+
+		$timeframeId = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			'',
+			CustomPostTypeTest::USER_ID,
+			3,   // booking start day offset
+			30,
+			2
+		);
+
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		// should still show the timeframe as the closest
+		$this->assertEquals( $timeframeId, $otherItemModel->getClosestBookableTimeframe()->ID );
+	}
+
+	public function testGetClosestBookableTimeframe_withSlots() {
+		$otherLocationId = $this->createLocation( 'Other Location' );
+		$otherItemId     = $this->createItem( 'Other Item' );
+		$timeframes      = $this->createTwoBookableTimeframeSlotsIncludingCurrentDay( $otherLocationId, $otherItemId );
+		$otherItemModel  = new Item( $otherItemId );
+		$dt              = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $dt );
+
+		// even though it is not open yet (bc we have midnight), the first slot should be the closest
+		$this->assertEquals( $timeframes[0], $otherItemModel->getClosestBookableTimeframe()->ID );
+
+		// After 3PM, the other one should be picked
+		$dt->modify( '15:01' );
+		ClockMock::freeze( $dt );
+		$this->assertEquals( $timeframes[1], $otherItemModel->getClosestBookableTimeframe()->ID );
+	}
 	protected function setUp(): void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(

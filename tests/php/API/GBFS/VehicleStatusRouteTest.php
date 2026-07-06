@@ -3,6 +3,8 @@
 namespace CommonsBooking\Tests\API\GBFS;
 
 use CommonsBooking\Tests\API\CB_REST_Route_UnitTestCase;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use SlopeIt\ClockMock\ClockMock;
 
 class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
@@ -147,6 +149,114 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertEmpty( $data->vehicles );
 	}
 
+	public function testAvailableUntil_BaseCase() {
+		$rightNow = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $rightNow );
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data        = $response->get_data()->data;
+		$inThreeDays = clone $rightNow;
+		$inThreeDays->modify( '+3 days' );
+		$inThreeDays->modify( '-1 second' ); // because the item is only available exactly three days, not on the fourth
+
+		$this->assertCount( 1, $data->vehicles );
+		$this->assertSame( $inThreeDays->format( 'c' ), $data->vehicles[0]->available_until );
+	}
+
+	public function testAvailableUntil_hourlyBooking() {
+		// delete our original timeframe so we don't have multiple vehicles
+		wp_delete_post( $this->timeframe, true );
+
+		// create a timeframe with hourly availability and one day max booking
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			null,
+			Timeframe::BOOKABLE_ID,
+			'off',
+			'd',
+			1,
+			'8:00 AM',
+			'5:00 PM',
+			'publish',
+			[ '1', '2', '3', '4', '5', '6', '7' ],
+			'',
+			CustomPostTypeTest::USER_ID,
+			1
+		);
+
+		$rightNow = new \DateTime( self::CURRENT_DATE . ' 10:00 AM' );
+		ClockMock::freeze( $rightNow );
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data          = $response->get_data()->data;
+		$sameDayFivePM = clone $rightNow;
+		$sameDayFivePM->modify( '5:00 PM' );
+		$sameDayFivePM->modify( '-1 second' );
+
+		$this->assertCount( 1, $data->vehicles );
+		$this->assertSame( $sameDayFivePM->format( 'c' ), $data->vehicles[0]->available_until );
+	}
+
+	public function testAvailableUntil_slotBased() {
+		// delete our original timeframe so we don't have multiple vehicles
+		wp_delete_post( $this->timeframe, true );
+
+		// create a timeframe a slot based timeframe and one day max booking
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			null,
+			Timeframe::BOOKABLE_ID,
+			'off',
+			'd',
+			0,
+			'8:00 AM',
+			'10:00 AM',
+			'publish',
+			[ '1', '2', '3', '4', '5', '6', '7' ],
+			'',
+			CustomPostTypeTest::USER_ID,
+			1
+		);
+
+		// create another slot for the afternoon
+		$this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			null,
+			Timeframe::BOOKABLE_ID,
+			'off',
+			'd',
+			0,
+			'1:00 PM',
+			'5:00 PM',
+			'publish',
+			[ '1', '2', '3', '4', '5', '6', '7' ],
+			'',
+			CustomPostTypeTest::USER_ID,
+			1
+		);
+
+		$rightNow = new \DateTime( self::CURRENT_DATE . ' 9:00 AM' );
+		ClockMock::freeze( $rightNow );
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$data          = $response->get_data()->data;
+		$sameDayFivePM = clone $rightNow;
+		$sameDayFivePM->modify( '5:00 PM' );
+		$sameDayFivePM->modify( '-1 second' );
+
+		$this->assertCount( 1, $data->vehicles );
+		$this->assertSame( $sameDayFivePM->format( 'c' ), $data->vehicles[0]->available_until );
+	}
+
 	public function setUp(): void {
 		parent::setUp();
 
@@ -157,7 +267,7 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 
 		$mocked      = new \DateTimeImmutable( self::CURRENT_DATE );
 		$this->start = $mocked->modify( '-1 days' );
-		$this->end   = $mocked->modify( '+1 days' );
+		$this->end   = $mocked->modify( '+5 days' );
 
 		$this->timeframe = $this->createTimeframe(
 			$this->locationId,
