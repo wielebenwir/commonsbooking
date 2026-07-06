@@ -184,7 +184,7 @@ class Item extends BookablePost {
 	 * Will get the timeframe that is currently applicable for this item.
 	 * When there are multiple timeframes, it wil select the closest.
 	 *
-	 * @return \CommonsBooking\Model\Timeframe
+	 * @return \CommonsBooking\Model\Timeframe|null
 	 */
 	public function getClosestBookableTimeframe(): ?\CommonsBooking\Model\Timeframe {
 		$locations = \CommonsBooking\Repository\Location::getByItem( $this->ID, true );

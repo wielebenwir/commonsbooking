@@ -95,7 +95,7 @@ class VehicleStatus extends BaseRoute {
 		$itemCalendar = new Calendar(
 			new Day( date( 'Y-m-d', strtotime( '-1 day' ) ) ),
 			new Day( date( 'Y-m-d', strtotime( '+' . $maxDays . ' day' ) ) ),
-			[ $item->getLocation()->ID ],
+			[ $timeframe->getLocation()->ID ],
 			[ $item->ID ]
 		);
 		$itemCalendar->setIgnoreStartDayOffset( true );
