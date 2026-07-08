@@ -257,6 +257,48 @@ class VehicleStatusRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertSame( $sameDayFivePM->format( 'c' ), $data->vehicles[0]->available_until );
 	}
 
+	public function testAvailableUntil_offset() {
+		// delete our original timeframe so we don't have multiple vehicles
+		wp_delete_post( $this->timeframe, true );
+
+		$rightNow = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $rightNow );
+		$otherLocationId = $this->createLocation( 'Other Location', );
+		$otherItemId     = $this->createItem( 'Other Item', );
+
+		$timeframeID = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			'',
+			CustomPostTypeTest::USER_ID,
+			3,
+			30,
+			2
+		);
+
+		// with offset - available until is extended to account for the offset
+		$availableUntil = clone $rightNow;
+		$availableUntil->modify( '+5 days' );
+		$availableUntil->modify( '-1 second' );
+
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+		$data     = $response->get_data()->data;
+
+		$this->assertCount( 1, $data->vehicles );
+		$this->assertSame( $availableUntil->format( 'c' ), $data->vehicles[0]->available_until );
+	}
+
 	public function setUp(): void {
 		parent::setUp();
 
