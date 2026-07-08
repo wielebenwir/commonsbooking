@@ -89,12 +89,13 @@ class VehicleStatus extends BaseRoute {
 	 * @return string in ISO 8601 notation
 	 */
 	private function getAvailableUntil( \CommonsBooking\Model\Item $item ): string {
-		$timeframe    = $item->getClosestBookableTimeframe();
-		$maxDays      = $timeframe->getMaxDays() - 1; // WHY - 1: Counting from now, the amount of days an item is available includes the current day. So if we, for instance count three full days, the item is bookable today, tomorrow and the day after. Addind three days would put our pointer on the fourth day, where the item is not available anymore. Another option would have been to subtract 1 minute from the end timestamp.
-		$endDt        = new \DateTime( '+' . $maxDays . ' day 23:59:59' );
-		$itemCalendar = new Calendar(
+		$timeframe        = $item->getClosestBookableTimeframe();
+		$maxDays          = $timeframe->getMaxDays() - 1; // WHY - 1: Counting from now, the amount of days an item is available includes the current day. So if we, for instance count three full days, the item is bookable today, tomorrow and the day after. Addind three days would put our pointer on the fourth day, where the item is not available anymore. Another option would have been to subtract 1 minute from the end timestamp.
+		$endDt            = new \DateTime( $timeframe->getFirstBookableDay() . ' +' . $maxDays . ' day 23:59:59' );
+		$firstBookableDay = $timeframe->getFirstBookableDay();
+		$itemCalendar     = new Calendar(
 			new Day( date( 'Y-m-d', strtotime( '-1 day' ) ) ),
-			new Day( date( 'Y-m-d', strtotime( '+' . $maxDays . ' day' ) ) ),
+			new Day( date( 'Y-m-d', strtotime( '+' . $maxDays . ' day', strtotime( $firstBookableDay ) ) ) ),
 			[ $timeframe->getLocation()->ID ],
 			[ $item->ID ]
 		);
