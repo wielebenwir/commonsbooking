@@ -187,7 +187,16 @@ class BaseRoute extends WP_REST_Controller {
 		$isApiActive            = Settings::getOption( 'commonsbooking_options_api', 'api-activated' );
 		$anonymousAccessAllowed = Settings::getOption( 'commonsbooking_options_api', 'apikey_not_required' );
 		$apiKey                 = array_key_exists( self::API_KEY_PARAM, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ self::API_KEY_PARAM ] ) : false;
-		$apiShare               = ApiShares::getByKey( $apiKey );
+		if ( ! $apiKey ) {
+			// get apikey from headers (#2251)
+			if ( function_exists( 'getallheaders' ) ) {
+				$allHeaders = array_change_key_case( getallheaders(), CASE_LOWER );
+				$apiKey     = array_key_exists( self::API_KEY_PARAM, $allHeaders ) ? sanitize_text_field( $allHeaders[ self::API_KEY_PARAM ] ) : false;
+			} else {
+				$apiKey = array_key_exists( 'HTTP_' . strtoupper( self::API_KEY_PARAM ), $_SERVER ) ? sanitize_text_field( $_SERVER[ 'HTTP_' . strtoupper( self::API_KEY_PARAM ) ] ) : false;
+			}
+		}
+		$apiShare = ApiShares::getByKey( $apiKey );
 
 		// Only if api is active we return something
 		if ( $isApiActive ) {
