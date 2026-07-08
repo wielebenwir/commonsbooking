@@ -89,32 +89,37 @@ class VehicleStatus extends BaseRoute {
 	 * @return string in ISO 8601 notation
 	 */
 	private function getAvailableUntil( \CommonsBooking\Model\Item $item ): string {
-		$timeframe        = $item->getClosestBookableTimeframe();
-		$maxDays          = $timeframe->getMaxDays() - 1; // WHY - 1: Counting from now, the amount of days an item is available includes the current day. So if we, for instance count three full days, the item is bookable today, tomorrow and the day after. Addind three days would put our pointer on the fourth day, where the item is not available anymore. Another option would have been to subtract 1 minute from the end timestamp.
-		$endDt            = new \DateTime( $timeframe->getFirstBookableDay() . ' +' . $maxDays . ' day 23:59:59' );
+		$timeframe = $item->getClosestBookableTimeframe();
+
+		// Counting from the first bookable day (inclusive), maxDays of 3 means
+		// the item is bookable today, tomorrow, and the day after. Using
+		// maxDays as-is for the offset would incorrectly point to the fourth,
+		// unavailable day, so we subtract 1.
+		$maxDaysOffset    = $timeframe->getMaxDays() - 1;
 		$firstBookableDay = $timeframe->getFirstBookableDay();
-		$itemCalendar     = new Calendar(
+		$latestAllowedEnd = new \DateTime( $firstBookableDay . ' +' . $maxDaysOffset . ' day 23:59:59' );
+
+		$itemCalendar = new Calendar(
 			new Day( date( 'Y-m-d', strtotime( '-1 day' ) ) ),
-			new Day( date( 'Y-m-d', strtotime( '+' . $maxDays . ' day', strtotime( $firstBookableDay ) ) ) ),
+			new Day( date( 'Y-m-d', strtotime( '+' . $maxDaysOffset . ' day', strtotime( $firstBookableDay ) ) ) ),
 			[ $timeframe->getLocation()->ID ],
 			[ $item->ID ]
 		);
 		$itemCalendar->setIgnoreStartDayOffset( true );
 
-		$availabilitySlots = $itemCalendar->getAvailabilitySlots();
-		usort(
-			$availabilitySlots,
-			function ( $a, $b ) {
-				return new \DateTime( $a->end ) <=> new \DateTime( $b->end );
-			}
-		);
-		$availabilitySlots = array_filter(
-			$availabilitySlots,
-			fn( $availabilitySlot ) => new \DateTime( $availabilitySlot->end ) <= $endDt
+		$slotsInRange = array_filter(
+			$itemCalendar->getAvailabilitySlots(),
+			fn( $slot ) => new \DateTime( $slot->end ) <= $latestAllowedEnd
 		);
 
-		$end = new \DateTime( array_pop( $availabilitySlots )->end );
-		return $end->format( 'c' );
+		usort(
+			$slotsInRange,
+			fn( $a, $b ) => new \DateTime( $a->end ) <=> new \DateTime( $b->end )
+		);
+
+		$lastSlot = array_pop( $slotsInRange );
+
+		return ( new \DateTime( $lastSlot->end ) )->format( 'c' );
 	}
 
 	protected static function getListName(): string {
