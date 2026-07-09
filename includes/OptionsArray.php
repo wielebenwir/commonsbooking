@@ -2,6 +2,7 @@
 
 
 use CommonsBooking\Service\BookingRule;
+use CommonsBooking\Service\BookingPdf;
 use CommonsBooking\View\Migration;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\UserRepository;
@@ -391,6 +392,24 @@ Return date: {{booking:returnDatetime}}
 								'commonsbooking'
 							)
 						),
+					),
+					array(
+						'name' => commonsbooking_sanitizeHTML( __( 'Attach booking form PDF to confirmed booking email', 'commonsbooking' ) ),
+						'id'   => BookingPdf::OPTION_ATTACH,
+						'type' => 'checkbox',
+						'desc' => esc_html__( 'Will attach a rendered PDF booking form to confirmed booking emails.', 'commonsbooking' ),
+					),
+					array(
+						'name'      => commonsbooking_sanitizeHTML( __( 'Booking form PDF template', 'commonsbooking' ) ),
+						'id'        => BookingPdf::OPTION_TEMPLATE,
+						'type'      => 'textarea',
+						'desc'      => esc_html__( 'HTML template used for the attached booking form PDF. You can use the same template tags as in booking emails.', 'commonsbooking' ),
+						'default'   => BookingPdf::getDefaultTemplate(),
+					),
+					array(
+						'id'            => 'emailtemplates_mail-booking_pdf_preview',
+						'type'          => 'title',
+						'render_row_cb' => array( BookingPdf::class, 'renderPreviewRow' ),
 					),
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Booking canceled email subject', 'commonsbooking' ) ),

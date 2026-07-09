@@ -186,6 +186,7 @@ export function sidebarDocs_de(): DefaultTheme.SidebarItem[] {
         { text: 'Buchungscodes', link: 'booking-codes' },
         { text: 'Einschränkungen', link: 'restrictions' },
         { text: 'E-Mail Vorlagen', link: 'templates' },
+        { text: 'Ausleihformular-PDF', link: 'booking-form-pdf' },
         { text: 'Erinnerungs-E-Mail', link: 'reminder' },
               { text: 'Export', link: 'export' },
         { text: 'Spracheinstellung & Datumsformat', link: 'language-and-date' }
@@ -311,6 +312,7 @@ export function sidebarDocs_en(): DefaultTheme.SidebarItem[] {
               { text: 'Booking codes', link: 'booking-codes' },
               { text: 'Restrictions', link: 'restrictions' },
               { text: 'Templates', link: 'templates' },
+              { text: 'Booking form PDF', link: 'booking-form-pdf' },
               { text: 'Reminder via email concerning bookings', link: 'reminder' },
               { text: 'Export timeframes and bookings', link: 'export' },
               { text: 'Language & date format', link: 'language-and-date' }

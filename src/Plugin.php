@@ -10,6 +10,7 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Service\BookingPdf;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\Cache;
 use CommonsBooking\Service\Scheduler;
@@ -503,6 +504,7 @@ class Plugin {
 			BookingCode::ERROR_TYPE,
 			OptionsTab::ERROR_TYPE,
 			Model\Booking::ERROR_TYPE,
+			BookingPdf::ERROR_TYPE,
 		];
 
 		foreach ( $errorTypes as $errorType ) {
@@ -768,6 +770,8 @@ class Plugin {
 
 		// admin init tasks
 		add_action( 'admin_init', array( self::class, 'admin_init' ), 30 );
+		add_action( 'admin_action_' . BookingPdf::ACTION_PREVIEW, array( BookingPdf::class, 'previewAction' ), 10, 0 );
+		add_action( 'cmb2_save_options-page_fields', array( BookingPdf::class, 'validateSettingsOnSave' ), 10, 0 );
 
 		// Add menu pages
 		add_action( 'admin_menu', array( self::class, 'addMenuPages' ) );
