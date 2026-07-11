@@ -353,6 +353,7 @@ class Booking extends View {
 					)
 				);
 			}
+			$location  = reset( $location );
 			$timeframe = Timeframe::getBookable(
 				[ $location->ID ],
 				[ $itemID ],
