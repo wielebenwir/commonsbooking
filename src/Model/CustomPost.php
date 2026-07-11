@@ -30,6 +30,13 @@ class CustomPost {
 	protected $post;
 
 	/**
+	 * The post ID of the WordPress post
+	 *
+	 * @var int
+	 */
+	protected int $ID;
+
+	/**
 	 * @var string
 	 */
 	protected $date;
@@ -49,6 +56,10 @@ class CustomPost {
 		} else {
 			throw new Exception( 'Invalid post param. Needed WP_Post or ID (int)' );
 		}
+		if ( ! $this->post instanceof WP_Post ) {
+			throw new Exception( 'Invalid post param. No post found for ID ' . $post );
+		}
+		$this->ID = $this->post->ID;
 	}
 
 	/**
@@ -212,7 +223,6 @@ class CustomPost {
 		return get_userdata( $this->post_author );
 	}
 
-
 	/**
 	 * Checks if the given user is the author of the current post.
 	 *
@@ -222,16 +232,5 @@ class CustomPost {
 	 */
 	public function isAuthor( \WP_User $user ): bool {
 		return $user->ID === intval( $this->post_author );
-	}
-
-	/**
-	 * @param string|null $date Date-String
-	 *
-	 * @return CustomPost
-	 */
-	public function setDate( string $date = null ) {
-		$this->date = $date;
-
-		return $this;
 	}
 }

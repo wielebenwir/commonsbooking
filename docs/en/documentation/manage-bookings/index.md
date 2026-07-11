@@ -1,10 +1,7 @@
-#  Buchungen verwalten
+# Manage bookings
 
-__
+###  Pages
 
-###  Artikel
-
-  * [ Buchungen anlegen & Adminbuchung ](/dokumentation/buchungen-verwalten/buchungen-anlegen)
-  * [ Buchung stornieren ](/dokumentation/buchungen-verwalten/buchung-stornieren)
-  * [ iCalendar Feed ](/dokumentation/buchungen-verwalten/icalendar-feed)
-
+  * [Create Bookings & Admin Booking](./bookings-create)
+  * [Cancel Bookings](./bookings-cancel)
+  * [iCalendar Feed](./icalendar-feed)

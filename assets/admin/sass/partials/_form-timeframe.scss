@@ -31,7 +31,6 @@ a.disabled {
     cursor: default;
 }
 
-
 .cmb2-id-booking-codes-list {
     .cmb-td {
         > table.cmb2-codes-outer-table {
@@ -44,7 +43,7 @@ a.disabled {
                 > td {
                     margin-bottom: unset;
                     padding-bottom: unset;
-                    padding-top: unset;                    
+                    padding-top: unset;
                 }
             }
             table.cmb2-codes-column {
@@ -57,7 +56,7 @@ a.disabled {
                 }
                 tr:nth-child(odd) {
                     background-color: #f2f2f2;
-                }                
+                }
             }
         }
     }

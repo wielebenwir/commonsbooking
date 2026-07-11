@@ -171,17 +171,7 @@ function commonsbooking_isCurrentUserAdmin() {
 		return false; }
 	$user = wp_get_current_user();
 
-	$isAdmin = commonsbooking_isUserAdmin( $user );
-	/**
-	 * Default value if current user is admin.
-	 *
-	 * @since 2.10.0 add $user param
-	 * @since 2.4.3
-	 *
-	 * @param bool         $isAdmin true or false, if current user is admin
-	 * @param null|WP_User $user current user
-	 */
-	return apply_filters( 'commonsbooking_isCurrentUserAdmin', $isAdmin, $user );
+	return commonsbooking_isUserAdmin( $user );
 }
 
 /**
@@ -195,12 +185,24 @@ function commonsbooking_isCurrentUserAdmin() {
  * @return bool
  */
 function commonsbooking_isUserAdmin( \WP_User $user ) {
+	$isAdmin = false;
 	foreach ( \CommonsBooking\Repository\UserRepository::getAdminRoles() as $adminRole ) {
 		if ( in_array( $adminRole, $user->roles ) ) {
-			return true;
+			$isAdmin = true;
+			break;
 		}
 	}
-	return false;
+	/**
+	 * Default value if user is admin.
+	 *
+	 * @since 2.11   changed from commonsbooking_isCurrentUserAdmin to commonsbooking_isUserAdmin
+	 * @since 2.10.0 add $user param
+	 * @since 2.4.3
+	 *
+	 * @param bool         $isAdmin true or false, if current user is admin
+	 * @param null|WP_User $user current user
+	 */
+	return apply_filters( 'commonsbooking_isUserAdmin', $isAdmin, $user );
 }
 
 /**

@@ -13,7 +13,7 @@ class Location extends BookablePost {
 	 *
 	 * @param bool $bookable
 	 *
-	 * @return array
+	 * @return \CommonsBooking\Model\Location[]
 	 * @throws Exception
 	 */
 	public static function getByItem( $itemId, bool $bookable = false ): array {

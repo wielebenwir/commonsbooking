@@ -8,12 +8,8 @@
   "themes": [
     "flegfleg/kasimir-theme"
   ],
-  "env": {
-    "tests": {
-      "mappings": {
-        "wp-content/plugins/commonsbooking": "./build/commonsbooking",
-        "wp-content/plugins/commonsbooking/tests/cypress/wordpress-files": "./tests/cypress/wordpress-files"
-      }
-    }
+  "mappings": {
+    "wp-content/plugins/commonsbooking": "./build/commonsbooking",
+    "wp-content/plugins/commonsbooking/tests/cypress/wordpress-files": "./tests/cypress/wordpress-files"
   }
 }

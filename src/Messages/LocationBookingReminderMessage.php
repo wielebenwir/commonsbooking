@@ -36,6 +36,15 @@ class LocationBookingReminderMessage extends Message {
 			return;
 		}
 
+		// Check if location has opted-in to receive this specific reminder type
+		$reminderMetaKey = 'booking-start-location-reminder' === $this->action
+			? COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_start_reminder'
+			: COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder';
+
+		if ( ! ( CB::get( Location::$postType, $reminderMetaKey, $location ) === 'on' ) ) {
+			return;
+		}
+
 		$location_emails_option = str_replace( ' ', '', $location_emails_option );
 		$location_emails        = explode( ',', $location_emails_option );
 

@@ -34,25 +34,36 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 	 */
 	public function get_items( $request ): WP_REST_Response {
 
-		$feeds   = array();
-		$feeds[] = $this->get_feed( 'system_information' );
-		$feeds[] = $this->get_feed( 'station_information' );
-		$feeds[] = $this->get_feed( 'station_status' );
+		/**
+		 * The names of the feeds that are available in the GBFS route.
+		 * They will be announced through the gbfs.json.
+		 * The routes still need to be registered using register_rest_route.
+		 *
+		 * @since 2.11
+		 *
+		 * @param String[] $raw_feeds the names of the feeds without a .json suffix
+		 */
+		$raw_feeds = apply_filters(
+			'commonsbooking_gbfs_feeds',
+			[
+				'system_information',
+				'station_information',
+				'station_status',
+				'vehicle_availability',
+				'vehicle_status',
+				'vehicle_types',
+			]
+		);
+		$feeds     = array_map( fn( $feed ) => $this->get_feed( $feed ), $raw_feeds );
 
-		$lang                     = get_bloginfo( 'language' );
-		$data                     = new stdClass();
-		$data->data               = new stdClass();
-		$data->data->$lang        = new stdClass();
-		$data->data->$lang->feeds = $feeds;
-		$data->last_updated       = current_time( 'timestamp' );
-		$data->ttl                = 86400;
-		$data->version            = '2.3';
+		$response               = new stdClass();
+		$response->data         = new stdClass();
+		$response->data->feeds  = $feeds;
+		$response->last_updated = date( 'c' ); // ISO-8601 timestamp
+		$response->ttl          = 86400;
+		$response->version      = '3.1-RC3';
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $response );
 	}
 
 	private function get_feed( $name ): stdClass {

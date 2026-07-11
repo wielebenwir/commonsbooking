@@ -42,8 +42,8 @@ class BookingRuleApplied extends BookingRule {
 			$rule->description,
 			$rule->errorMessage,
 			$rule->validationFunction,
-			$rule->params ?? [],
-			$rule->selectParam ?? [],
+			empty( $rule->params ) ? [] : $rule->params,
+			empty( $rule->selectParam ) ? [] : $rule->selectParam,
 			$rule->errorFromArgs ?? null
 		);
 	}
@@ -112,7 +112,7 @@ class BookingRuleApplied extends BookingRule {
 	 * @return array|null - An array of conflicting bookings or an empty array if the booking complies with all rules
 	 */
 	public function checkBookingCompliance( Booking $booking ): ?array {
-		if ( $booking->isUserPrivileged() ) {
+		if ( $booking->isBookingOwnerPrivileged() ) {
 			return null;
 		}
 
@@ -152,7 +152,7 @@ class BookingRuleApplied extends BookingRule {
 			return;
 		}
 
-		if ( $booking->isUserPrivileged() ) {
+		if ( $booking->isBookingOwnerPrivileged() ) {
 			return;
 		}
 

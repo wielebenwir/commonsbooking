@@ -5,19 +5,19 @@
  */
 
 /* Lib: reset.css */
-@use "lib/_reset";
+@use 'lib/_reset';
 
 /* Lib: animate.css */
-@use "lib/_animate";
+@use 'lib/_animate';
 
 /* Variables: colors, widths, padding */
-@use "partials/_variables";
+@use 'partials/_variables';
 
 /* Mixins */
-@use "partials/_mixins";
+@use 'partials/_mixins';
 
 /* Extends */
-@use "partials/_extends";
+@use 'partials/_extends';
 
 /* Utilites */
-@use "partials/_utilities";
+@use 'partials/_utilities';

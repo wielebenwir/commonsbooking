@@ -1,8 +1,5 @@
-#  Roadmap
+# Roadmap
 
-__
+###  Pages
 
-###  Artikel
-
-  * [ Übersicht über bisherige Releases und geplante Weiterentwicklung ](/dokumentation/roadmap/uebersicht-ueber-die-releases)
-
+  * [Overview of releases and planned further development](./release-overview)

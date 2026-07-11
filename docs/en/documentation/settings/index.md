@@ -1,14 +1,13 @@
-#  Einstellungen
+# Settings
 
-__
+The following pages cover the various settings available in CommonsBooking. The settings menu can be found in the WordPress backend under **Settings -> CommonsBooking** or by clicking on "Settings" on the right hand side of the CommonsBooking Dashboard.
 
-###  Artikel
+### Pages
 
-  * [ Allgemeine Einstellungen ](/dokumentation/einstellungen-2/allgemeine-einstellungen)
-  * [ Buchungs-Codes ](/dokumentation/einstellungen-2/buchungscodes)
-  * [ Vorlagen ](/dokumentation/einstellungen-2/e-mail-vorlagen)
-  * [ Einschränkungen ](/dokumentation/einstellungen-2/einschraenkungen)
-  * [ E-Mail-Benachrichtigungen ](/dokumentation/einstellungen-2/erinnerungs-e-mail)
-  * [ Export von Zeitrahmen und Buchungen ](/dokumentation/einstellungen-2/export)
-  * [ Spracheinstellung & Datumsformat ](/dokumentation/einstellungen-2/spracheinstellung-datumsformat)
-
+  * [General settings](general-settings)
+  * [Booking codes](booking-codes)
+  * [Templates](templates)
+  * [Restrictions](restrictions)
+  * [Reminder via email concerning bookings](reminder)
+  * [Export timeframes and bookings](export)
+  * [Language & date format](language-and-date)
