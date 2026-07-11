@@ -145,7 +145,7 @@ class Wordpress {
 	/**
 	 * Returns all post ids in relation to $postId.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return array
 	 * @throws \Exception
