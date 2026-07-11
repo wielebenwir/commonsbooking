@@ -16,6 +16,9 @@ use WP_Post;
 use WP_Query;
 
 /**
+ *
+ * @deprecated since 2.11, will be removed in 2.12
+ *
  * The logic for handling the migration from CB1 to CB2.
  * The CB1 fields are fetched from the @see \CommonsBooking\Repository\CB1 repository and migrated using the
  * respective migration functions in this class.

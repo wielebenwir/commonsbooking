@@ -28,46 +28,119 @@ class Timeframe extends CustomPost {
 	 */
 	public const ERROR_TYPE = 'timeframeValidationFailed';
 
+	/**
+	 * The error type that occurs, when a timeframe has bookings that have been orphaned. through items changing locations.
+	 * The user is notified about this, so that they can move the bookings using Service::MassOperations.
+	 */
 	public const ORPHANED_TYPE = 'timeframehasOrphanedBookings';
 
+	/**
+	 * The metafield that stores the timestamp (int) for when the timeframe starts.
+	 */
 	public const REPETITION_START = 'repetition-start';
 
+	/**
+	 * The metafield that stores the timestamp (int) for when the timeframe ends.
+	 */
 	public const REPETITION_END = 'repetition-end';
 
+	/**
+	 * The meta field for what kind of selection type is used to select the item.
+	 * Value is either one of self::SELECTION_MANUAL_ID , self::SELECTION_CATEGORY_ID or self::SELECTION_ALL_ID
+	 */
 	public const META_ITEM_SELECTION_TYPE = 'item-select';
 
+	/**
+	 * The metafield for the item post id associated with the timeframe.
+	 */
 	public const META_ITEM_ID = 'item-id';
 
+	/**
+	 * The metafield where a serialized array of post IDs (multiple) of items associated with the timeframe is stored
+	 */
 	public const META_ITEM_ID_LIST = 'item-id-list';
 
+	/**
+	 * The metafield where a serialized array of term_ids that make up the categories from which the items associated with the timeframe are stored.
+	 */
 	public const META_ITEM_CATEGORY_IDS = 'item-category-ids';
 
+	/**
+	 * The meta field for what kind of selection type is used to select the location.
+	 * Value is either one of self::SELECTION_MANUAL_ID , self::SELECTION_CATEGORY_ID or self::SELECTION_ALL_ID
+	 */
 	public const META_LOCATION_SELECTION_TYPE = 'location-select';
 
+	/**
+	 * The metafield for the location post id associated with the timeframe.
+	 */
 	public const META_LOCATION_ID = 'location-id';
 
+	/**
+	 * The metafield where a serialized array of post IDs (multiple) of locations associated with the timeframe is stored
+	 */
 	public const META_LOCATION_ID_LIST = 'location-id-list';
 
+	/**
+	 * The metafield where a serialized array of term_ids that make up the categories from which the locaations associated with the timeframe are stored.
+	 */
 	public const META_LOCATION_CATEGORY_IDS = 'location-category-ids';
 
+	/**
+	 * Metafield for what type of repetition the timeframe uses.
+	 * For possible values @see Timeframe::getRepetition()
+	 */
 	public const META_REPETITION = 'timeframe-repetition';
 
+	/**
+	 * Metafield for how many days in advance the item on that timeframe can be booked.
+	 * When this is limited to for example 30 days, only the next 30 days can be booked.
+	 */
 	public const META_TIMEFRAME_ADVANCE_BOOKING_DAYS = 'timeframe-advance-booking-days';
 
+	/**
+	 * Metafield for the maximum length in days a booking on this timeframe may have.
+	 */
 	public const META_MAX_DAYS = 'timeframe-max-days';
 
+	/**
+	 * A possible meta_value for META_ITEM_SELECTION_TYPE and META_LOCATION_SELECTION_TYPE
+	 * This value implies, that posts are individually selected from a list of posts.
+	 */
 	public const SELECTION_MANUAL_ID = 0;
 
+	/**
+	 * A possible meta_value for META_ITEM_SELECTION_TYPE and META_LOCATION_SELECTION_TYPE
+	 * This value implies, that the user selects a category of posts that the timeframe applies to.
+	 */
 	public const SELECTION_CATEGORY_ID = 1;
 
+	/**
+	 * A possible meta_value for META_ITEM_SELECTION_TYPE and META_LOCATION_SELECTION_TYPE
+	 * This value implies, that the timeframe applies to all items / locations of the instance.
+	 */
 	public const SELECTION_ALL_ID = 2;
 
+	/**
+	 * A metafield with an on/off value determining if booking codes shall be created for the timeframe (only bookable timeframes).
+	 */
 	public const META_CREATE_BOOKING_CODES = 'create-booking-codes';
 
+	/**
+	 * A metafield that defines how many days in advance the user HAS to book an item. This means, that the location often needs some kind of
+	 * booking ahead, and that an item cannot be booked at the same day. Integer value in days.
+	 */
 	public const META_BOOKING_START_DAY_OFFSET = 'booking-startday-offset';
 
+	/**
+	 * A metafield with an on/off value determining if the booking codes generated in the timeframe shall also be shown to the user.
+	 */
 	public const META_SHOW_BOOKING_CODES = 'show-booking-codes';
 
+	/**
+	 * A metafield that stores a serialized array of strings with slugs of user roles that are allowed to book this item. When this is empty,
+	 * all user roles may book this item.
+	 */
 	public const META_ALLOWED_USER_ROLES = 'allowed_user_roles';
 
 	/**
@@ -75,7 +148,10 @@ class Timeframe extends CustomPost {
 	 * Example: 2020-01-01,2020-01-02,2020-01-03
 	 */
 	public const META_MANUAL_SELECTION = 'timeframe_manual_date';
-	const MAX_DAYS_DEFAULT             = 3;
+	/**
+	 * The default value for self::META_MAX_DAYS.
+	 */
+	const MAX_DAYS_DEFAULT = 3;
 
 	/**
 	 * null means the data is not fetched yet
@@ -1021,15 +1097,6 @@ class Timeframe extends CustomPost {
 	 */
 	public function usesBookingCodes(): bool {
 		return $this->getMeta( self::META_CREATE_BOOKING_CODES ) == 'on';
-	}
-
-	/**
-	 * Returns true if booking codes were enabled for this timeframe
-	 *
-	 * @return bool
-	 */
-	public function hasBookingCodes(): bool {
-		return $this->getMeta( 'create-booking-codes' ) == 'on';
 	}
 
 	/**

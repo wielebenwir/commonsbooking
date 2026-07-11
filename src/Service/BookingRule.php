@@ -443,7 +443,7 @@ class BookingRule {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
 		// split the period in half, when it is an uneven number, the left side will be one day longer
-		$daysHalf = $periodDays / 2;
+		$daysHalf = floor( $periodDays / 2 );
 		if ( $periodDays % 2 ) {
 			$daysLeft  = $daysHalf + 1;
 			$daysRight = $daysHalf - 1;

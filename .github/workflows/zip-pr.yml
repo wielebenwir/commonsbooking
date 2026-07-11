@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     
-     - uses: actions/checkout@v6
+     - uses: actions/checkout@v7
        with:
         fetch-depth: 0  # Important for getting full commit history
 
@@ -29,7 +29,7 @@ jobs:
 
      - name: Upload zip
        if: ${{ !startsWith(github.head_ref, 'dependabot') }}
-       uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+       uses: SamKirkland/FTP-Deploy-Action@v4.4.0
        with:
          exclude: |
           **

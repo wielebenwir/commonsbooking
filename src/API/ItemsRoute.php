@@ -51,7 +51,10 @@ class ItemsRoute extends BaseRoute {
 
 		$items = Item::get( $args );
 		foreach ( $items as $item ) {
-			$itemdata      = $this->prepare_item_for_response( $item, $request );
+			$itemdata = $this->prepare_item_for_response( $item, $request );
+			if ( $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'api_exclude' ) == 'on' ) {
+				continue;
+			}
 			$data->items[] = $itemdata->get_data();
 		}
 

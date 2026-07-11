@@ -171,8 +171,9 @@ class Restriction extends CustomPost {
 
 	/**
 	 * Returns true if restriction ist active.
-	 * TODO this function seems unused in restriction context. Check if it can be removed @markus-mw
+	 * Unused in restriction context
 	 *
+	 * @deprecated since 2.11, removal in 2.12
 	 * @return bool
 	 */
 	public function isLocked(): bool {
@@ -238,6 +239,9 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns item name for the item that is restricted.
 	 *
+	 * Unused: accessed through {{item:post_title}} template tag over Item Model, not this method
+	 *
+	 * @deprecated since 2.11, removal in 2.12
 	 * @return string
 	 */
 	public function getItemName(): string {
@@ -262,6 +266,9 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns location name for the location that the restricted item is in.
 	 *
+	 * Unused, can be accessed through {{location:post_title}} template tag, not needed here
+	 *
+	 * @deprecated since 2.11, removal in 2.12.
 	 * @return string
 	 */
 	public function getLocationName(): string {

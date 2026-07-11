@@ -61,4 +61,6 @@ abstract class PostRepository {
 			return $post;
 		}
 	}
+
+	abstract public static function get( array $args = array() ): array;
 }

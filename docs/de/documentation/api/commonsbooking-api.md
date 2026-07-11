@@ -29,6 +29,10 @@ Die API erreichst du über _Einstellungen_ -> _CommonsBooking_ -> Tab: _API / Ex
   * Push-URL: Hier könnt ihr die URL des empfangenden Systems eingeben. CommonsBooking wird diese URL bei jeder Änderung der Daten aufrufen, sodass das entfernte System dann über eine Änderung der Daten informiert und diese über einen separaten API-Call abrufen kann. So kann ein Datenaustausch in Echtzeit ermöglicht werden.
   * API-Schlüssel: Hier könnt ihr einen selbstgewählten API-Schlüssel eingeben. Wenn der Schlüssel gesetzt ist, muss das abfragende System in jeder Abfrage den Parameter apikey= _[Schlüssel]_ mitliefern.
 
+## Artikel von der API ausschliessen
+
+Wenn Artikel nicht in der API erscheinen sollen, müssen diese explizit ausgeschlossen werden. Diese Einstellungen kann auf Artikelebene vorgenommen werden, wenn dort der entsprechende Haken gesetzt ist, tauchen diese Artikel nicht in den API Routen auf.
+
 ##  Spezifikation der API-Routen
 
 **Verfügbarkeit**

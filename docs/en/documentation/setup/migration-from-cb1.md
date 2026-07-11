@@ -1,5 +1,10 @@
 # Migration from version 0.9.x
 
+:::danger danger
+With CommonsBooking 2.12 (releasing early 2027), migration support from CommonsBooking 0.9.X to the latest version will end.
+All users of CommonsBooking 0.9.X are urged to **migrate as soon as possible**. We are happy to help with any questions and will support you in migration.
+:::
+
 You can migrate from CB 0.9.x to CB 2.x.x with a single click. The migration imports the following data:
 
   * Items

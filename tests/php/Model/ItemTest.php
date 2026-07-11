@@ -6,6 +6,7 @@ use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class ItemTest extends CustomPostTypeTest {
 
@@ -55,6 +56,280 @@ class ItemTest extends CustomPostTypeTest {
 	}
 	*/
 
+	public function testGetLocation() {
+		$dt = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $dt );
+
+		// just one item that is currently bookable
+		$this->assertEquals( $this->locationId, $this->itemModel->getLocation()->ID );
+
+		// in two weeks, the timeframe is expired, so the item will not be at the location anymore
+		$dt->modify( '+2 weeks' );
+		ClockMock::freeze( $dt );
+		$this->assertNull( $this->itemModel->getLocation() );
+
+		// item that is in location A monday-thursday and in location B friday-sunday. Position should change depending on the day of the week
+		$locationA       = $this->createLocation( 'location a' );
+		$locationB       = $this->createLocation( 'location b' );
+		$movingItem      = $this->createItem( 'location changing item' );
+		$movingItemModel = new Item( $movingItem );
+		$tf1             = new Timeframe(
+			$this->createTimeframe(
+				$locationA,
+				$movingItem,
+				strtotime( '-1 day', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
+				strtotime( '+14 days', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'',
+				'w',
+				0,
+				'8:00 AM',
+				'12:00 PM',
+				'publish',
+				[ '1','2','3','4' ]
+			)
+		);
+		$tf2             = new Timeframe(
+			$this->createTimeframe(
+				$locationB,
+				$movingItem,
+				strtotime( '-1 day', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
+				strtotime( '+14 days', strtotime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'',
+				'w',
+				0,
+				'8:00 AM',
+				'12:00 PM',
+				'publish',
+				[ '5','6','7' ]
+			)
+		);
+		$this->assertFalse( $tf1->overlaps( $tf2 ) );
+		$dt = new \DateTime( self::CURRENT_DATE );
+		$dt->modify( 'monday' );
+		ClockMock::freeze( $dt );
+		$this->assertEquals( $locationA, $movingItemModel->getLocation()->ID );
+		$dt->modify( 'friday' );
+		ClockMock::freeze( $dt );
+		$this->assertEquals( $locationB, $movingItemModel->getLocation()->ID );
+	}
+
+	public function testGetCloakedID() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$cloakedID = $this->itemModel->getCloakedId();
+		$this->assertIsString( $cloakedID );
+		// create a booking, assert that it has changed
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
+		);
+		$cloakedIDWithBooking = $this->itemModel->getCloakedId();
+		$this->assertNotEquals( $cloakedID, $cloakedIDWithBooking );
+
+		// this booking is not in the past, trip has not ended. Therefore it should not affect the ID
+		$booking                  = $this->createConfirmedBookingStartingToday();
+		$cloakedIDwithTwoBookings = $this->itemModel->getCloakedId();
+		$this->assertEquals( $cloakedIDWithBooking, $cloakedIDwithTwoBookings );
+	}
+
+	public function testGetClosestBooking() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		// no booking present
+		$this->assertNull( $this->itemModel->getClosestBooking() );
+
+		// one past booking
+		$bookingInPast  = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-4 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '-3 days', strtotime( self::CURRENT_DATE ) )
+		);
+		$closestBooking = $this->itemModel->getClosestBooking();
+		$this->assertEquals( $bookingInPast, $closestBooking->ID );
+
+		// newer booking in front of that
+		$newerBooking   = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-2 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
+		);
+		$closestBooking = $this->itemModel->getClosestBooking();
+		$this->assertEquals( $newerBooking, $closestBooking->ID );
+
+		// booking in future (should not affect)
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+3 days' ),
+			strtotime( '+4 days' )
+		);
+		$this->assertEquals( $newerBooking, $this->itemModel->getClosestBooking()->ID );
+	}
+
+	// Test case where last booking is way in the past but other booking is in the nearer future. Should still return booking in the past
+	public function testGetClosestBooking_notIncludingFutureBookings() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		// one past booking
+		$pastBooking = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-7 days' ),
+			strtotime( '-5 days' )
+		);
+		// one future booking
+		$bookingStartingTomorrow = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day' ),
+			strtotime( '+2 days' )
+		);
+		$closestBooking          = $this->itemModel->getClosestBooking();
+		$this->assertEquals( $pastBooking, $closestBooking->ID );
+	}
+
+	public function testGetClosestBooking_picksMostRecentPastBooking() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-14 days' ),
+			strtotime( '-12 days' )
+		);
+		$recentPastBooking = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-3 days' ),
+			strtotime( '-1 day' )
+		);
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day' ),
+			strtotime( '+2 days' )
+		);
+
+		$closestBooking = $this->itemModel->getClosestBooking();
+		$this->assertEquals( $recentPastBooking, $closestBooking->ID );
+	}
+
+	public function testIsCurrentlyFreeAtLocation() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		// Item has a bookable timeframe including today, should be free
+		$this->assertTrue( $this->itemModel->isCurrentlyFreeAtLocation( $this->locationId ) );
+
+		// A confirmed booking starting today means the item is now rented
+		$this->createConfirmedBookingStartingToday();
+		$this->assertFalse( $this->itemModel->isCurrentlyFreeAtLocation( $this->locationId ) );
+
+		// In two weeks, the timeframe is expired, should no longer be free
+		$dt = new \DateTime( self::CURRENT_DATE );
+		$dt->modify( '+2 weeks' );
+		ClockMock::freeze( $dt );
+		$this->assertFalse( $this->itemModel->isCurrentlyFreeAtLocation( $this->locationId ) );
+
+		// Wrong location should not be free
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$otherLocationId = $this->createLocation( 'other location' );
+		$this->assertFalse( $this->itemModel->isCurrentlyFreeAtLocation( $otherLocationId ) );
+	}
+
+	public function testIsCurrentlyFreeAtLocation_withBookingOffset() {
+		$otherLocationId = $this->createLocation( 'Other Location' );
+		$otherItemId     = $this->createItem( 'Other Item' );
+		$otherItemModel  = new Item( $otherItemId );
+
+		$timeframeId = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			'',
+			CustomPostTypeTest::USER_ID,
+			3,   // booking start day offset
+			30,
+			2
+		);
+
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		// With offset → item is still free, it's just not possible to pick it up right now
+		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId, true ) );
+
+		// Remove offset → still free, no change in rental status
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_BOOKING_START_DAY_OFFSET, 0 );
+		$this->assertTrue( $otherItemModel->isCurrentlyFreeAtLocation( $otherLocationId, true ) );
+	}
+
+	public function testGetClosestBookableTimeframe() {
+		$dt = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $dt );
+		$this->assertEquals( $this->timeframeModel->ID, $this->itemModel->getClosestBookableTimeframe()->ID );
+		// in two weeks, the timeframe is expired, so the item will not be at the location anymore
+		$dt->modify( '+2 weeks' );
+		ClockMock::freeze( $dt );
+		$this->assertNull( $this->itemModel->getClosestBookableTimeframe() );
+	}
+
+	public function testGetClosestBookableTimeframe_withBookingOffset() {
+		$otherLocationId = $this->createLocation( 'Other Location' );
+		$otherItemId     = $this->createItem( 'Other Item' );
+		$otherItemModel  = new Item( $otherItemId );
+
+		$timeframeId = $this->createTimeframe(
+			$otherLocationId,
+			$otherItemId,
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+10 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on',
+			'd',
+			0,
+			'8:00 AM',
+			'12:00 PM',
+			'publish',
+			[],
+			'',
+			CustomPostTypeTest::USER_ID,
+			3,   // booking start day offset
+			30,
+			2
+		);
+
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		// should still show the timeframe as the closest
+		$this->assertEquals( $timeframeId, $otherItemModel->getClosestBookableTimeframe()->ID );
+	}
+
+	public function testGetClosestBookableTimeframe_withSlots() {
+		$otherLocationId = $this->createLocation( 'Other Location' );
+		$otherItemId     = $this->createItem( 'Other Item' );
+		$timeframes      = $this->createTwoBookableTimeframeSlotsIncludingCurrentDay( $otherLocationId, $otherItemId );
+		$otherItemModel  = new Item( $otherItemId );
+		$dt              = new \DateTime( self::CURRENT_DATE );
+		ClockMock::freeze( $dt );
+
+		// even though it is not open yet (bc we have midnight), the first slot should be the closest
+		$this->assertEquals( $timeframes[0], $otherItemModel->getClosestBookableTimeframe()->ID );
+
+		// After 3PM, the other one should be picked
+		$dt->modify( '15:01' );
+		ClockMock::freeze( $dt );
+		$this->assertEquals( $timeframes[1], $otherItemModel->getClosestBookableTimeframe()->ID );
+	}
 	protected function setUp(): void {
 		parent::setUp();
 		$this->restrictionIds[] = $this->createRestriction(

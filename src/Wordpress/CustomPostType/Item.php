@@ -216,7 +216,7 @@ class Item extends CustomPostType {
 			ob_start();
 			global $post;
 
-			$item         = \CommonsBooking\Repository\Item::getPostById( $post );
+			$item         = \CommonsBooking\Repository\Item::getPostById( $post->ID );
 			$errormessage = \CommonsBooking\View\Booking::getError();
 			set_query_var( 'item', $item );
 			commonsbooking_get_template_part( 'item', 'single' );
@@ -278,6 +278,16 @@ class Item extends CustomPostType {
 					'id'         => COMMONSBOOKING_METABOX_PREFIX . 'item_maintainer_email',
 					'type'       => 'text',
 					'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
+				)
+			);
+
+			// checkbox if item should be excluded from API shares
+			$cmb->add_field(
+				array(
+					'name' => esc_html__( 'Exclude from API', 'commonsbooking' ),
+					'desc' => esc_html__( 'When this box is checked, the item will not appear in any of the API shares.', 'commonsbooking' ),
+					'id' => COMMONSBOOKING_METABOX_PREFIX . 'api_exclude',
+					'type' => 'checkbox',
 				)
 			);
 		}

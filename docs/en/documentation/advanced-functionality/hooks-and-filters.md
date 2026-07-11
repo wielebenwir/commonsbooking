@@ -77,7 +77,7 @@ receives a value, modifies it, and then returns it.
 ### Overview of all filter hooks
 
   * commonsbooking_custom_metadata
-  * [commonsbooking_isCurrentUserAdmin](../basics/permission-management#filterhook-isCurrentUserAdmin)
+  * [commonsbooking_isUserAdmin](../basics/permission-management#filterhook-isUserAdmin)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
   * commonsbooking_template_tag
@@ -88,6 +88,7 @@ receives a value, modifies it, and then returns it.
   * commonsbooking_mail_body
   * commonsbooking_mail_attachment
   * commonsbooking_disableCache
+  * commonsbooking_gbfs_feeds
 
 There are also filter hooks that allow you to add additional user roles
 akin to the CB Manager that can manage items and locations.

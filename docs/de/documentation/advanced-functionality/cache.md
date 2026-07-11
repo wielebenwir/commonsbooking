@@ -36,7 +36,7 @@ Ein falsch konfigurierter Cache kann deine Seite verlangsamen.
   Probiere dann einen anderen Pfad für den Cache oder einen anderen Cache Adapter.
 
 * Falls deine Seite sehr langsam ist, kann das auch auf Problem mit dem Cache hindeuten.
-  Mehr dazu: [Die Seite ist sehr langsam](../faq/site-slow).
+  Mehr dazu: [Die Seite ist sehr langsam](../faq/index#my-site-is-very-slow-what-can-i-do).
 
 * Siehe auch die Seite [Häufige Fragen](../faq/) für bekannte Inkompatibilitäten.
 * **Regelmäßiges Aufwärmen des Caches durch Cronjob**:

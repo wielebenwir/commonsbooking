@@ -247,7 +247,7 @@
                         )
                             t.styleSheet.cssText = o;
                         else {
-                            for (; t.firstChild; ) t.removeChild(t.firstChild);
+                            for (; t.firstChild;) t.removeChild(t.firstChild);
                             t.appendChild(document.createTextNode(o));
                         }
                     }
@@ -826,7 +826,7 @@
                                                     this.datePicked[0].getTime() < k.getTime() &&
                                                         u.push(k);
                                                 }
-                                            for (; h > 0; ) {
+                                            for (; h > 0;) {
                                                 ((h -= 1), (c = c.add(1, 'day')));
                                                 for (var D = 0, v = u; D < v.length; D++)
                                                     v[D].getTime() === c.getTime() &&
@@ -1113,7 +1113,7 @@
                                 if (/^-?\d{10,}$/.test(e))
                                     return t.getDateZeroTime(new Date(Number(e)));
                                 if ('string' == typeof e) {
-                                    for (var n = [], s = null; null != (s = t.regex.exec(i)); )
+                                    for (var n = [], s = null; null != (s = t.regex.exec(i));)
                                         '\\' !== s[1] && n.push(s);
                                     if (n.length) {
                                         var a = {
@@ -1510,7 +1510,7 @@
                             }),
                             (t.prototype.format = function (e, i) {
                                 void 0 === i && (i = 'en-US');
-                                for (var o = '', n = [], s = null; null != (s = t.regex.exec(e)); )
+                                for (var o = '', n = [], s = null; null != (s = t.regex.exec(e));)
                                     '\\' !== s[1] && n.push(s);
                                 if (n.length) {
                                     n[0].index > 0 && (o += e.substring(0, n[0].index));

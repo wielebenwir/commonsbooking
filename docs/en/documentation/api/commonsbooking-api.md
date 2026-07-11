@@ -26,6 +26,10 @@ You can access the API via _Settings_ -> _CommonsBooking_ -> Tab: _API / Export_
   * Push URL: Here you can enter the URL of the receiving system. CommonsBooking will call this URL whenever the data changes, so that the remote system is informed about a data change and can retrieve it via a separate API call. This enables real-time data exchange.
   * API Key: Here you can enter a custom API key. If the key is set, the requesting system must provide the parameter apikey= _[key]_ in every query.
 
+## Excluding items from the API
+
+If you do not want certain items to appear in the API, they must be explicitly excluded. These settings can be configured at item level; if the relevant checkbox is ticked, these items will not appear in the API routes.
+
 ## API route specification
 
 **Availability**

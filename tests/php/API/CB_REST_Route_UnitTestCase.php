@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\API;
 
 use CommonsBooking\Tests\CPTCreationTrait;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 /**
  * Abstract test case which implicitly tests REST Routes
@@ -12,7 +13,7 @@ class CB_REST_Route_UnitTestCase extends CB_REST_UnitTestCase {
 
 	use CPTCreationTrait;
 
-	const CURRENT_DATE = '2021-05-21';
+	const CURRENT_DATE = CustomPostTypeTest::CURRENT_DATE;
 
 	protected $ENDPOINT;
 

@@ -110,6 +110,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		Plugin::clearCache();
+		wp_cache_flush();
+
 		$this->dateFormatted = date( 'Y-m-d', strtotime( self::CURRENT_DATE ) );
 
 		$this->setUpBookingCodesTable();
@@ -142,6 +145,8 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 		ClockMock::reset();
 		$this->tearDownAllPosts();
+		Plugin::clearCache();
+		wp_cache_flush();
 		$this->tearDownBookingCodesTable();
 
 		wp_logout();

@@ -30,6 +30,13 @@ class CustomPost {
 	protected $post;
 
 	/**
+	 * The post ID of the WordPress post
+	 *
+	 * @var int
+	 */
+	protected int $ID;
+
+	/**
 	 * @var string
 	 */
 	protected $date;
@@ -49,6 +56,10 @@ class CustomPost {
 		} else {
 			throw new Exception( 'Invalid post param. Needed WP_Post or ID (int)' );
 		}
+		if ( ! $this->post instanceof WP_Post ) {
+			throw new Exception( 'Invalid post param. No post found for ID ' . $post );
+		}
+		$this->ID = $this->post->ID;
 	}
 
 	/**

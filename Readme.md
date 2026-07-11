@@ -6,12 +6,15 @@
 
 # CommonsBooking
 
-Contributors: wielebenwirteam, m0rb, flegfleg, chriwen
-Donate link: https://www.wielebenwir.de/verein/unterstutzen
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+**Contributors**: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 
-CommonsBooking is a plugin for the management and booking of common goods. This plugin provides associations, groups, and individuals with the ability to share items (such as cargo bikes and tools) among users. It is based on the concept of Commons, where resources are shared for the benefit of the community.
+**Donate link**: https://www.wielebenwir.de/verein/unterstutzen
+
+**License**: GPLv2 or later
+
+**License URI**: http://www.gnu.org/licenses/gpl-2.0.html
+
+CommonsBooking is a plugin for the management and booking of common goods. This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of the commons and sharing resources for the benefit of the community.
 
 ## Links
 
@@ -86,6 +89,7 @@ First, we have to install the necessary dependencies and packages: We can do thi
 npm run start
 ```
 `npm run start` runs `composer install`, `npm install` and then builds assets via `grunt dist`.
+This might take a while, as dependencies are downloaded and namespaces are prefixed using Strauss.
 
 The most easy way to start hacking WordPress plugins in general (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and run this to start the enviroment:
 ```
@@ -105,14 +109,14 @@ To test the code you first run the [preparation scripts](https://github.com/wp-c
 bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
 ```
 
-Testing the plugin code via `phpunit`. At the moment it works only with a manually downloaded phar. We are using PHPUnit 9 and PHP7.4 for the automated tests. The tests might fail if you are using a different version.
+Testing the plugin code via `phpunit`. We are using PHPUnit 9, because it is the latest version currently compatible with the WordPress testing suite.
 ```
-php ~/phpunit.phar --bootstrap tests/php/bootstrap.php
+php vendor/bin/phpunit --bootstrap tests/php/bootstrap.php
 ```
 
 E2E (end to end) tests are written in [cypress](https://www.cypress.io/). To run them you need to install cypress and start the wordpress environment:
 ```bash
-npm run env:start
+npm run env:test:start
 ```
 Now, install the test data needed for the tests:
 ```bash
