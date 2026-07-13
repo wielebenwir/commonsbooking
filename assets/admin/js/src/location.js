@@ -1,7 +1,6 @@
 (function ($) {
     'use strict';
     $(function () {
-
         /**
          * Hides set-elements.
          * @param set
@@ -47,11 +46,11 @@
                 hideFieldset(countLockedDaysCheckbox);
                 hideFieldset(countAmountLockedDays);
             }
-        }
+        };
         handleAllowLockDays();
         allowLockDaysCheckbox.change(function () {
             handleAllowLockDays();
-        } );
+        });
 
         //hide settings if global settings are used
         const handleUseGlobalSettings = function () {
@@ -59,17 +58,15 @@
                 hideFieldset(allowLockDaysCheckbox);
                 hideFieldset(countLockedDaysCheckbox);
                 hideFieldset(countAmountLockedDays);
-            }
-            else {
+            } else {
                 showFieldset(allowLockDaysCheckbox);
                 showFieldset(countLockedDaysCheckbox);
                 handleCountLockedDays();
             }
-        }
+        };
         handleUseGlobalSettings();
         useGlobalSettings.change(function () {
             handleUseGlobalSettings();
         });
-
     });
 })(jQuery);

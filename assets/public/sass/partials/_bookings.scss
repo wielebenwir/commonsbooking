@@ -5,7 +5,7 @@
 *
 */
 
-@use "../../../global/sass/partials/variables";
+@use '../../../global/sass/partials/variables';
 
 #ui-datepicker-div {
     display: none;
@@ -96,7 +96,6 @@
                 cursor: pointer;
             }
         }
-
     }
 
     &--filters.hide {
@@ -137,7 +136,6 @@
                         padding: 4px 0;
                     }
 
-
                     &:last-child {
                         border: none;
                         align-items: center;
@@ -152,7 +150,6 @@
                             font-size: 0.8em;
                         }
                     }
-
                 }
 
                 h4 {
@@ -192,7 +189,6 @@
                 //}
             }
 
-
             @media only screen and (max-width: 600px) {
                 &--headline,
                 &--infos,
@@ -208,7 +204,6 @@
     }
 
     .cb-dropdown {
-
         position: relative;
         display: inline-block;
 
@@ -219,14 +214,14 @@
             border: none;
             cursor: pointer;
         }
-    
+
         .cb-dropdown-content {
-            display:none;
-            position:absolute;
+            display: none;
+            position: absolute;
             right: 0;
             background-color: var(--commonsbooking-color-bg);
             filter: brightness(95%);
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             overflow: auto;
             min-width: 160px;
             z-index: 1;
@@ -236,8 +231,8 @@
             border-color: var(--commonsbooking-color-bg);
             border-width: 10px;
 
-            &:hover{
-                filter:brightness(90%);
+            &:hover {
+                filter: brightness(90%);
             }
         }
 
@@ -262,11 +257,10 @@
         }
 
         #icallink_text:hover:after {
-            color:white;
+            color: white;
             background: var(--commonsbooking-color-primary);
             border-color: white;
         }
-
     }
 
     #booking-list--pagination {
@@ -287,15 +281,13 @@
                 }
 
                 &:hover {
-                    color: #84AE53;
+                    color: #84ae53;
                 }
-
             }
 
             li[data-page] {
                 cursor: pointer;
             }
-
         }
     }
 }

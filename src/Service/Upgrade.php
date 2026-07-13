@@ -8,7 +8,7 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\Options\AdminOptions;
-use Psr\Cache\InvalidArgumentException;
+use CommonsBooking\Psr\Cache\InvalidArgumentException;
 
 /**
  * This class contains migration functionality that is run when the plugin is upgraded
@@ -307,8 +307,8 @@ class Upgrade {
 				<div class="e-major-update-warning__message">
 					<?php
 					printf(
-					/* translators: %1$s Link open tag, %2$s: Link close tag. */
 						commonsbooking_sanitizeHTML(
+						/* translators: %1$s Link open tag, %2$s: Link close tag. */
 							__(
 								'
 					This CommonsBooking update has a lot of new features and changes on some templates.<br>
@@ -317,7 +317,7 @@ class Upgrade {
 								'commonsbooking'
 							)
 						),
-						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
+						'<a target="_blank" href="https://commonsbooking.org/documentation/setup/update-news/">',
 						'</a>'
 					);
 					?>

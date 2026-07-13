@@ -280,6 +280,16 @@ class Item extends CustomPostType {
 					'show_on_cb' => 'cmb2_hide_if_no_cats', // function should return a bool value
 				)
 			);
+
+			// checkbox if item should be excluded from API shares
+			$cmb->add_field(
+				array(
+					'name' => esc_html__( 'Exclude from API', 'commonsbooking' ),
+					'desc' => esc_html__( 'When this box is checked, the item will not appear in any of the API shares.', 'commonsbooking' ),
+					'id' => COMMONSBOOKING_METABOX_PREFIX . 'api_exclude',
+					'type' => 'checkbox',
+				)
+			);
 		}
 
 		// Check if custom meta fields are set in CB Options and generate MetaData-Box and fields

@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Helper;
 
-use Geocoder\Location;
+use CommonsBooking\Geocoder\Location;
 
 /**
  * Wrapper for calling the geoCoder service.

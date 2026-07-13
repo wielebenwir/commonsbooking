@@ -277,6 +277,58 @@ class BookingRuleTest extends CustomPostTypeTest {
 		$this->assertNull( BookingRule::checkMaxBookingDays( $allowedBooking, array( 4, 30 ) ) );
 	}
 
+	/**
+	 * Regression test for #2158
+	 * @return void
+	 */
+	public function testCheckMaxBookingDays_unevenDays() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$testBookingOne = new Booking(
+			get_post(
+				$this->createBooking(
+					$this->locationId,
+					$this->itemId,
+					strtotime( '+1 day' ),
+					strtotime( '+2 days' ),
+					'8:00 AM',
+					'12:00 PM',
+					'confirmed',
+					$this->subscriberId
+				)
+			)
+		);
+		$testBookingTwo = new Booking(
+			get_post(
+				$this->createBooking(
+					$this->locationId,
+					$this->itemId,
+					strtotime( '+4 day' ),
+					strtotime( '+5 days' ),
+					'8:00 AM',
+					'12:00 PM',
+					'confirmed',
+					$this->subscriberId
+				)
+			)
+		);
+
+		$testBookingThree = new Booking(
+			get_post(
+				$this->createBooking(
+					$this->locationId,
+					$this->itemId,
+					strtotime( '+6 day' ),
+					strtotime( '+7 days' ),
+					'8:00 AM',
+					'12:00 PM',
+					'unconfirmed',
+					$this->subscriberId
+				)
+			)
+		);
+		$this->assertBookingsPresent( array( $testBookingOne, $testBookingTwo ), BookingRule::checkMaxBookingDays( $testBookingThree, array( 2, 25 ) ) );
+	}
+
 	public function testCheckMaxBookingDaysPerWeek() {
 		// rule settings
 		$allowedPerWeek = 2;

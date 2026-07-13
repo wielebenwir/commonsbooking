@@ -1,9 +1,9 @@
-#  Schnittstellen / API
+# Interfaces / API
 
-__
+The CommonsBooking plugin provides various interfaces for using the data or interacting with the booking system:
 
-###  Artikel
+* [What is the CommonsAPI?](what-is-the-commonsapi)
+* [Using the CommonsBooking API](commonsbooking-api)
+* [GBFS](gbfs)
 
-  * [ Was ist die CommonsAPI? ](/dokumentation/schnittstellen-api/was-ist-die-commonsapi)
-  * [ Die CommonsBooking API nutzen ](/dokumentation/schnittstellen-api/commonsbooking-api)
-
+Additionally, you can also use the [standard WordPress REST API](https://developer.wordpress.org/rest-api) with some technical understanding.

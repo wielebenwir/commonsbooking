@@ -1,6 +1,6 @@
 {
 	"name": "commonsbooking",
-	"version": "2.10.8",
+	"version": "2.10.10",
 	"description": "Wordpress plugin for managing and booking of common goods.",
 	"author": "The CommonsBooking Team <info@commonsbooking.org>",
 	"license": "SEE LICENSE IN LICENSE.txt",
@@ -9,14 +9,15 @@
 		"url": "https://github.com/wielebenwir/cb"
 	},
 	"devDependencies": {
-		"@babel/preset-env": "^7.28.6",
-		"@wordpress/env": "^10.38.0",
+		"@babel/preset-env": "^7.29.7",
+		"@wordpress/env": "^11.10.0",
 		"commons-api": "git+https://github.com/wielebenwir/commons-api.git",
-		"cypress": "^15.9.0",
-		"editorconfig": "^3.0.1",
-		"grunt": "^1.6.1",
+		"cypress": "^15.18.0",
+		"editorconfig": "^3.0.2",
+		"grunt": "^1.6.2",
 		"grunt-babel": "^8.0.0",
 		"grunt-cli": "^1.5.0",
+		"grunt-contrib-clean": "^2.0.1",
 		"grunt-contrib-concat": "^2.1.0",
 		"grunt-contrib-copy": "^1.0.0",
 		"grunt-contrib-jshint": "^3.2.0",
@@ -25,15 +26,18 @@
 		"grunt-contrib-watch": "^1.1.0",
 		"grunt-dart-sass": "^2.0.1",
 		"matchdep": "^2.0.0",
-		"vitepress": "^1.6.4",
 		"medium-zoom": "^1.1.0",
-		"sass": "^1.97.2"
+		"sass": "^1.101.0",
+		"vitepress": "^1.6.4",
+		"prettier": "^3.8.4"
 	},
 	"scripts": {
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
 		"env": "wp-env",
 		"env:start": "wp-env start",
 		"env:stop": "wp-env stop",
+		"env:test:start": "wp-env start --config=.wp-env.test.json",
+		"env:test:stop": "wp-env stop --config=.wp-env.test.json",
 		"cypress:setup": "./bin/setup-cypress-env.sh",
 		"cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
 		"cypress:run": "cypress run --config-file tests/cypress/cypress.config.js",
@@ -44,14 +48,16 @@
 	},
 	"dependencies": {
 		"@commonsbooking/frontend": "^0.1.0-beta.7",
-		"feiertagejs": "^1.4.1",
+		"feiertagejs": "^1.5.1",
 		"leaflet": "^1.7.1",
 		"leaflet-easybutton": "^2.4.0",
 		"leaflet-spin": "^1.1.2",
 		"leaflet.markercluster": "^1.5.0",
+		"moment": "^2.19.4",
 		"search-insights": "^2.17.3",
+		"select2": "^4.1.0",
 		"shufflejs": "^6.1.1",
 		"spin.js": "^2.3.2",
-		"vue": "^3.5.27"
+		"vue": "^3.5.38"
 	}
 }
