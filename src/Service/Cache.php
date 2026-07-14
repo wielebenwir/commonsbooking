@@ -67,7 +67,7 @@ trait Cache {
 	 * @since 2.9.4 added support for multisite caches
 	 */
 	public static function getCacheId( $custom_id = null ): string {
-		$backtrace     = debug_backtrace()[2];
+		$backtrace     = debug_backtrace( 0, 3 )[2];
 		$backtrace     = self::sanitizeArgsArray( $backtrace );
 		$namespace     = COMMONSBOOKING_VERSION; // To account for changes in the installed plugin versions
 		$namespace    .= COMMONSBOOKING_PLUGIN_DIR; // To account for multiple instances on same server
