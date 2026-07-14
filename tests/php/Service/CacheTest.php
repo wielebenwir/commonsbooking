@@ -26,7 +26,10 @@ class CacheTest extends TestCase {
 
 		uopz_set_return(
 			'debug_backtrace',
-			function ( $options = DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit = 0 ) use (
+			function (
+				$options = DEBUG_BACKTRACE_PROVIDE_OBJECT,
+				$limit = 0
+			) use (
 				&$backtraceOptions,
 				&$backtraceLimit,
 				$backtrace
