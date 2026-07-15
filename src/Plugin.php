@@ -488,7 +488,7 @@ class Plugin {
 	 */
 	public static function registerPostStates() {
 		foreach ( Model\Booking::$bookingStates as $bookingState ) {
-			new PostStatus( $bookingState, __( ucfirst( $bookingState ), 'commonsbooking' ), true, [ CommonsBooking\Wordpress\CustomPostType\Booking::$postType ] );
+			new PostStatus( $bookingState, __( ucfirst( $bookingState ), 'commonsbooking' ), true, [ \CommonsBooking\Wordpress\CustomPostType\Booking::$postType ] );
 		}
 	}
 
