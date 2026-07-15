@@ -17,10 +17,13 @@ function commonsbooking_admin( $hook ) {
 	];
 
 	$is_cb_page = in_array( $screen->post_type, $cb_post_types )
-		|| in_array( $screen->taxonomy, [
-			\CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName(),
-			\CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName(),
-		] )
+		|| in_array(
+			$screen->taxonomy,
+			[
+				\CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName(),
+				\CommonsBooking\Wordpress\CustomPostType\Location::getTaxonomyName(),
+			]
+		)
 		|| strpos( $screen->id, 'cb-' ) !== false;
 
 	if ( ! $is_cb_page ) {
