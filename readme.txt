@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9
 Tested up to: 7.0
-Stable Tag: 2.10.10
+Stable Tag: 2.11
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,6 +80,25 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.11 (13.07.2026)
+ADDED: GBFS routes vehicle_availability.json, vehicle_types.json, vehicle_status.json
+ADDED: Multi-select now also available for timeframes of type repair
+ADDED: Checkbox to exclude individual items from API shares
+ADDED: Filter hook for external plugins to add additional GBFS feeds
+ENHANCED: GBFS updated to version 3.1-RC3
+ENHANCED: iCalendar feed now differentiates between a users own bookings and other users bookings, using two different types of templates
+ENHANCED: Better performance through pre-fetching timeframes for each item
+ENHANCED: API Keys can now also be passed using HTTP headers (using apikey as key and the key as the value)
+ENHANCED: GBFS system_id now uses human-readable format
+FIXED: Admins could not cancel bookings of other users through frontend (thx @nelarsen)
+FIXED: Fixed filter hook commonsbooking_isCurrentUserAdmin and changed to to commonsbooking_isUserAdmin (see documentation)
+FIXED: Updated CMB2 to fix checkboxes breaking with WP 7.0
+FIXED: Users could delete already confirmed bookings (thx @poilu)
+FIXED: GBFS availability of bikes had a timezone issue
+FIXED: GBFS station_information syntax was incorrect
+FIXED: Booking rule "Maximum of bookable days in time period" would not work for uneven amount of days
+FIXED: Better compatibility with other plugins by dependency prefixing using Strauss (thx to @BrianHenryIE)
 
 ### 2.10.10 (23.03.2026)
 FIXED: Two users booking same item possible when two users tried to book the same time period (thx @nelarsen)
