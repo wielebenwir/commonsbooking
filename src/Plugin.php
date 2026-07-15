@@ -487,8 +487,8 @@ class Plugin {
 	 * Registers additional post statuses.
 	 */
 	public static function registerPostStates() {
-		foreach ( Booking::$bookingStates as $bookingState ) {
-			new PostStatus( $bookingState, __( ucfirst( $bookingState ), 'commonsbooking' ), true, [ Booking::$postType ] );
+		foreach ( Model\Booking::$bookingStates as $bookingState ) {
+			new PostStatus( $bookingState, __( ucfirst( $bookingState ), 'commonsbooking' ), true, [ CommonsBooking\Wordpress\CustomPostType\Booking::$postType ] );
 		}
 	}
 
