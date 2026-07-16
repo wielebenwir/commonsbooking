@@ -58,6 +58,21 @@ class LocationsRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertContains( (string) $secondId, $ids );
 	}
 
+	public function testTitleHtmlEntitiesAreDecoded() {
+		$entityLocationId = $this->createLocation( 'Markt &amp; Mehr', 'publish', [] );
+
+		// Sanity check: WordPress stores the title with the encoded entity.
+		$this->assertStringContainsString( '&amp;', get_post( $entityLocationId )->post_title );
+
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT . '/' . $entityLocationId );
+		$response = rest_do_request( $request );
+
+		$this->assertSame( 200, $response->get_status() );
+
+		$feature = $response->get_data()->locations->features[0];
+		$this->assertEquals( 'Markt & Mehr', $feature->properties->name );
+	}
+
 	public function testEmptyLocations() {
 		// Remove the location created in setUp
 		wp_delete_post( array_pop( $this->locationIds ), true );

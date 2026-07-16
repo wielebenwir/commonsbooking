@@ -126,7 +126,7 @@ class ItemsRoute extends BaseRoute {
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem              = new stdClass();
 		$preparedItem->id          = $item->ID . '';
-		$preparedItem->name        = $item->post_title;
+		$preparedItem->name        = $this->decodeApiTitle( $item->post_title );
 		$preparedItem->url         = get_permalink( $item->ID );
 		$preparedItem->description = $this->escapeJsonString( $item->post_content );
 		$preparedItem->ownerId     = '';  // not implemented, but currently required by schema
