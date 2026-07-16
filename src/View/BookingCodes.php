@@ -401,7 +401,7 @@ HTML;
 		// This settings is the amount of booking codes that should be shown to the user
 		$bcToShow = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes-listed-timeframe' );
 		if ( $bcToShow > 0 ) {
-			$tsStart      = max( Wordpress::getUTCDateTime( 'today' )->getTimestamp(), $timeframe->getStartDate() );
+			$tsStart      = max( Wordpress::getDateTime( 'today' )->getTimestamp(), $timeframe->getStartDate() );
 			$tsEnd        = strtotime( ' +' . ( $bcToShow - 1 ) . ' days', $tsStart );
 			$bookingCodes = \CommonsBooking\Repository\BookingCodes::getCodes( $timeframeId, $tsStart, $tsEnd );
 

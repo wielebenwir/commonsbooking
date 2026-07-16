@@ -147,13 +147,13 @@ class MapData {
 	 **/
 	public static function get_settings( $cb_map_id ): array {
 		$map                = new Map( $cb_map_id );
-		$date_min           = Wordpress::getUTCDateTime();
+		$date_min           = Wordpress::getDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );
 		$max_days_in_future = $map->getMeta( 'availability_max_days_to_show' );
 		if ( ! is_numeric( $max_days_in_future ) || $max_days_in_future < 1 ) {
 			$max_days_in_future = 11;
 		}
-		$date_max = Wordpress::getUTCDateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
+		$date_max = Wordpress::getDateTime( $date_min . ' + ' . $max_days_in_future . ' days' );
 		$date_max = $date_max->format( 'Y-m-d' );
 		$maxdays  = $map->getMeta( 'availability_max_day_count' );
 

@@ -103,10 +103,10 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndTimeDateTime( $endDateString = null ): DateTime {
 		$endTimeString = $this->getMeta( self::META_END );
-		$endDate       = Wordpress::getUTCDateTime();
+		$endDate       = Wordpress::getDateTime();
 
 		if ( $endTimeString ) {
-			$endTime = Wordpress::getUTCDateTime();
+			$endTime = Wordpress::getDateTime();
 			$endTime->setTimestamp( (int) $endTimeString );
 			$endDate->setTime( (int) $endTime->format( 'H' ), (int) $endTime->format( 'i' ) );
 		} else {
@@ -207,7 +207,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getStartTimeDateTime(): DateTime {
 		$startDateString = $this->getMeta( self::META_START );
-		$startDate       = Wordpress::getUTCDateTime();
+		$startDate       = Wordpress::getDateTime();
 		$startDate->setTimestamp( (int) $startDateString );
 
 		return $startDate;
@@ -230,7 +230,7 @@ class Restriction extends CustomPost {
 	 */
 	public function getEndDateDateTime(): DateTime {
 		$endDateString = intval( $this->getMeta( self::META_END ) );
-		$endDate       = Wordpress::getUTCDateTime();
+		$endDate       = Wordpress::getDateTime();
 		$endDate->setTimestamp( $endDateString );
 
 		return $endDate;

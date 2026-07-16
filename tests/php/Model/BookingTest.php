@@ -754,7 +754,9 @@ class BookingTest extends CustomPostTypeTest {
 			$beginningTime->getTimestamp(),
 			$endingTime->getTimestamp(),
 			null,
-			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
+			0,
+			false
 		);
 		$this->testBookingSpanningOverTwoSlots = new Booking(
 			$testBookingSpanningOverTwoSlotsID
