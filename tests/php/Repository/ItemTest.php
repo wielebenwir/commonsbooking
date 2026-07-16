@@ -53,16 +53,9 @@ class ItemTest extends CustomPostTypeTest {
 	}
 
 	public function testGetPostByIdDoesNotFallBackToGlobalPostForEmptyId(): void {
-		$restrictionId = $this->createRestriction(
-			'hint',
-			$this->locationId,
-			$this->itemId,
-			strtotime( self::CURRENT_DATE ),
-			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) )
-		);
-		$previousPost  = $GLOBALS['post'] ?? null;
+		$previousPost = $GLOBALS['post'] ?? null;
 		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Reproduce WordPress' empty get_post() fallback.
-		$GLOBALS['post'] = get_post( $restrictionId );
+		$GLOBALS['post'] = get_post( $this->itemId );
 
 		try {
 			$this->assertNull( Item::getPostById( null ) );
