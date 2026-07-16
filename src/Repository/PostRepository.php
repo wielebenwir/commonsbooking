@@ -19,6 +19,10 @@ abstract class PostRepository {
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	public static function getPostById( $postId ) {
+		if ( ! $postId ) {
+			return null;
+		}
+
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
