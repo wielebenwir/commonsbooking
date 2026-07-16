@@ -19,6 +19,145 @@ class UserRepository {
 	}
 
 	/**
+	 * Searches users by ID, login, email, display name, first name and last name.
+	 *
+	 * @param string $term  Search term.
+	 * @param int    $limit Maximum number of users to return.
+	 * @return WP_User[]
+	 */
+	public static function search( string $term, int $limit = 20 ): array {
+		$term = trim( $term );
+		if ( $term === '' || $limit < 1 ) {
+			return [];
+		}
+
+		$usersById   = [];
+		$exactUserId = 0;
+
+		if ( ctype_digit( $term ) ) {
+			$user = get_user_by( 'ID', (int) $term );
+			if ( $user instanceof WP_User ) {
+				$exactUserId            = (int) $user->ID;
+				$usersById[ $user->ID ] = $user;
+			}
+		}
+
+		$coreUsers = get_users(
+			[
+				'number'         => $limit,
+				'orderby'        => 'user_login',
+				'order'          => 'ASC',
+				'search'         => '*' . $term . '*',
+				'search_columns' => [ 'user_login', 'user_email', 'display_name' ],
+			]
+		);
+		foreach ( $coreUsers as $user ) {
+			if ( $user instanceof WP_User ) {
+				$usersById[ $user->ID ] = $user;
+			}
+		}
+
+		$metaQuery = new \WP_User_Query(
+			[
+				'number'     => $limit,
+				'orderby'    => 'user_login',
+				'order'      => 'ASC',
+				'meta_query' => [
+					'relation' => 'OR',
+					[
+						'key'     => 'first_name',
+						'value'   => $term,
+						'compare' => 'LIKE',
+					],
+					[
+						'key'     => 'last_name',
+						'value'   => $term,
+						'compare' => 'LIKE',
+					],
+				],
+			]
+		);
+		foreach ( $metaQuery->get_results() as $user ) {
+			if ( $user instanceof WP_User ) {
+				$usersById[ $user->ID ] = $user;
+			}
+		}
+
+		$users = array_values( $usersById );
+		usort(
+			$users,
+			static function ( WP_User $left, WP_User $right ) use ( $exactUserId ): int {
+				if ( $exactUserId > 0 ) {
+					if ( (int) $left->ID === $exactUserId ) {
+						return -1;
+					}
+					if ( (int) $right->ID === $exactUserId ) {
+						return 1;
+					}
+				}
+
+				return strcasecmp( $left->user_login, $right->user_login );
+			}
+		);
+
+		return array_slice( $users, 0, $limit );
+	}
+
+	/**
+	 * Returns all user IDs matching the supplied search term.
+	 *
+	 * @param string $term Search term.
+	 * @return int[]
+	 */
+	public static function searchIds( string $term ): array {
+		$term = trim( $term );
+		if ( $term === '' ) {
+			return [];
+		}
+
+		$userIds = [];
+		if ( ctype_digit( $term ) ) {
+			$user = get_user_by( 'ID', (int) $term );
+			if ( $user instanceof WP_User ) {
+				$userIds[] = (int) $user->ID;
+			}
+		}
+
+		$userIds = array_merge(
+			$userIds,
+			get_users(
+				[
+					'fields'         => 'ID',
+					'search'         => '*' . $term . '*',
+					'search_columns' => [ 'user_login', 'user_email', 'display_name' ],
+				]
+			)
+		);
+
+		$metaQuery = new \WP_User_Query(
+			[
+				'fields'     => 'ID',
+				'meta_query' => [
+					'relation' => 'OR',
+					[
+						'key'     => 'first_name',
+						'value'   => $term,
+						'compare' => 'LIKE',
+					],
+					[
+						'key'     => 'last_name',
+						'value'   => $term,
+						'compare' => 'LIKE',
+					],
+				],
+			]
+		);
+		$userIds   = array_merge( $userIds, $metaQuery->get_results() );
+
+		return array_values( array_unique( array_map( 'intval', $userIds ) ) );
+	}
+
+	/**
 	 * Returns all valid roles that are considered by CommonsBooking as "Manager" roles.
 	 *
 	 * @return string[]

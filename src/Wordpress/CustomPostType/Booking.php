@@ -8,6 +8,7 @@ use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\iCalendar;
+use CommonsBooking\View\Admin\BookingUserFilter;
 use Exception;
 use function wp_verify_nonce;
 
@@ -63,6 +64,7 @@ class Booking extends Timeframe {
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminDateFilter' ) );
 		add_action( 'restrict_manage_posts', array( static::class, 'addAdminStatusFilter' ) );
 		add_action( 'pre_get_posts', array( static::class, 'filterAdminList' ) );
+		BookingUserFilter::initHooks();
 
 		// show admin notice
 		add_action( 'admin_notices', array( $this, 'displayBookingsAdminListNotice' ) );
