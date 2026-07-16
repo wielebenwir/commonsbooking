@@ -50,6 +50,15 @@ class BookingUserFilter_AJAX_Test extends CustomPostType_AJAX_Test {
 		$this->assertSame( [], $response->data );
 	}
 
+	public function testSearchUsersAcceptsMissingTerm() {
+		$_POST['nonce'] = wp_create_nonce( BookingUserFilter::AJAX_ACTION );
+
+		$response = $this->runHook();
+
+		$this->assertTrue( $response->success );
+		$this->assertSame( [], $response->data );
+	}
+
 	public function set_up() {
 		parent::set_up();
 

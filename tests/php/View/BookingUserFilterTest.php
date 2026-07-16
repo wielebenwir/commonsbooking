@@ -64,6 +64,16 @@ class BookingUserFilterTest extends CustomPostTypeTest {
 		$this->assertSame( '', $html );
 	}
 
+	public function testRenderFilterDoesNotOutputOutsideAdmin() {
+		set_current_screen( 'front' );
+
+		ob_start();
+		BookingUserFilter::renderFilter();
+		$html = ob_get_clean();
+
+		$this->assertSame( '', $html );
+	}
+
 	public function testEnqueueAssetsAddsAutocompleteConfiguration() {
 		wp_register_script( 'cb-scripts-admin', '/admin.js', [], '1.0', false );
 

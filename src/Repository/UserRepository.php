@@ -86,19 +86,20 @@ class UserRepository {
 		$users = array_values( $usersById );
 		usort(
 			$users,
-			static function ( WP_User $left, WP_User $right ) use ( $exactUserId ): int {
-				if ( $exactUserId > 0 ) {
-					if ( (int) $left->ID === $exactUserId ) {
-						return -1;
-					}
-					if ( (int) $right->ID === $exactUserId ) {
-						return 1;
-					}
-				}
-
+			static function ( WP_User $left, WP_User $right ): int {
 				return strcasecmp( $left->user_login, $right->user_login );
 			}
 		);
+		if ( $exactUserId > 0 ) {
+			$exactUser = $usersById[ $exactUserId ];
+			$users     = array_filter(
+				$users,
+				static function ( WP_User $user ) use ( $exactUserId ): bool {
+					return (int) $user->ID !== $exactUserId;
+				}
+			);
+			array_unshift( $users, $exactUser );
+		}
 
 		return array_slice( $users, 0, $limit );
 	}
