@@ -103,13 +103,41 @@ class UserRepositoryTest extends CustomPostTypeTest {
 		);
 	}
 
+	public function testSearchUsersByExactId() {
+		$userId = $this->createSearchUser(
+			'numeric-target',
+			'numeric-target@example.test',
+			'Numeric Target',
+			'Numeric',
+			'Target'
+		);
+		$this->createSearchUser(
+			'user-' . $userId,
+			'user-' . $userId . '@example.test',
+			'User ' . $userId,
+			'Other',
+			'User'
+		);
+
+		$users = UserRepository::search( (string) $userId );
+
+		$this->assertSame( $userId, (int) $users[0]->ID );
+		$this->assertContains( $userId, UserRepository::searchIds( (string) $userId ) );
+	}
+
+	public function testSearchReturnsNoUsersForEmptyTermOrInvalidLimit() {
+		$this->assertSame( [], UserRepository::search( '' ) );
+		$this->assertSame( [], UserRepository::search( 'user', 0 ) );
+		$this->assertSame( [], UserRepository::searchIds( '' ) );
+	}
+
 	private function createSearchUser(
 		string $login,
 		string $email,
 		string $displayName,
 		string $firstName,
 		string $lastName
-	): void {
+	): int {
 		$userId = wp_insert_user(
 			[
 				'user_login'   => $login,
@@ -122,6 +150,8 @@ class UserRepositoryTest extends CustomPostTypeTest {
 		);
 		$this->assertIsInt( $userId );
 		$this->searchUserIds[] = $userId;
+
+		return $userId;
 	}
 
 	protected function setUp(): void {
