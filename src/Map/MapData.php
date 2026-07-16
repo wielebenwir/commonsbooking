@@ -24,7 +24,7 @@ class MapData {
 				$last_call_timestamp = intval( commonsbooking_sanitizeHTML( get_option( 'cb_map_last_nominatim_call', 0 ) ) );
 				$current_timestamp   = time();
 
-				if ( $current_timestamp > $last_call_timestamp + 1 ) {
+				if ( $current_timestamp > $last_call_timestamp + 1 === true ) {
 					$check_capacity = false;
 				} else {
 					sleep( 1 );
