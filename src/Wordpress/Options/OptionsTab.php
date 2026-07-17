@@ -100,11 +100,13 @@ class OptionsTab {
 	public static function prependTitle( array $metabox_group ): array {
 
 		if ( isset( $metabox_group['title'] ) or isset( $metabox_group['desc'] ) ) {
-			$title = $metabox_group['title'] ?? '';
-			$desc  = $metabox_group['desc'] ?? '';
+			$title      = $metabox_group['title'] ?? '';
+			$desc       = $metabox_group['desc'] ?? '';
+			$before_row = $metabox_group['before_row'] ?? '';
 
 			$header_html = sprintf(
-				'<h4>%s</h4>%s',
+				'%s<h4>%s</h4>%s',
+				$before_row,
 				$title,
 				$desc
 			);

@@ -1011,7 +1011,13 @@ class Plugin {
 	}
 
 
+	/**
+	 * @deprecated 2.11.1 Custom listing image sizes will be removed probably in 2.12.0
+	 *             @see https://github.com/commonsbooking/commonsbooking/issues/1066
+	 */
 	function AddImageSizes() {
+
+		_deprecated_function( __METHOD__, '2.11.1' );
 
 		$crop = Settings::getOption( 'commonsbooking_options_templates', 'image_listing_crop' ) == 'on' ? true : false;
 
