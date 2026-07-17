@@ -18,6 +18,8 @@ class RestrictionListColumnsTest extends CustomPostTypeTest {
 		);
 		$postType      = new class() extends RestrictionPostType {
 			protected function getCustomFields(): array {
+				// Regression guard: getCustomFields() loads dynamic location and item options,
+				// so calling it for static type/state columns degrades list rendering performance.
 				throw new \RuntimeException( 'List columns must not build assignment options.' );
 			}
 		};
