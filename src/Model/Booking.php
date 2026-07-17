@@ -161,14 +161,20 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 	 * @return null|\CommonsBooking\Model\Timeframe
 	 * @throws Exception
 	 */
-	public function getBookableTimeFrame(): ?\CommonsBooking\Model\Timeframe {
+	public function getBookableTimeFrame( ?int $timestamp = null ): ?\CommonsBooking\Model\Timeframe {
 		$locationId = $this->getMeta( \CommonsBooking\Model\Timeframe::META_LOCATION_ID );
 		$itemId     = $this->getMeta( \CommonsBooking\Model\Timeframe::META_ITEM_ID );
+
+		// By default we look at the booking's start (pickup) day. Callers may pass a different
+		// timestamp to resolve the timeframe governing another day of the booking (e.g. the return day).
+		if ( $timestamp === null ) {
+			$timestamp = intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) );
+		}
 
 		$response = Timeframe::getBookable(
 			[ $locationId ],
 			[ $itemId ],
-			date( CB::getInternalDateFormat(), intval( $this->getMeta( \CommonsBooking\Model\Timeframe::REPETITION_START ) ) ),
+			date( CB::getInternalDateFormat(), $timestamp ),
 			true
 		);
 
@@ -177,6 +183,31 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Determines whether the given day of this booking is governed by a full-day timeframe.
+	 *
+	 * A booking only stores a single `full-day` value, inherited from the timeframe of its pickup
+	 * day (@see assignBookableTimeframeFields()). When an item has several timeframes that allow
+	 * slot-based and full-day bookings on different days, that single value is not enough to render
+	 * the pickup and return lines correctly: the return day may be a full day even though the pickup
+	 * day is slot-based, and vice versa. Therefore we consult the timeframe that actually governs the
+	 * requested day. If none can be resolved (e.g. the timeframe was deleted), we fall back to the
+	 * booking's own stored value.
+	 *
+	 * @param int $timestamp A timestamp on the day to check (pickup or return day).
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
+	private function isFullDayAt( int $timestamp ): bool {
+		$timeframe = $this->getBookableTimeFrame( $timestamp );
+		if ( $timeframe ) {
+			return $timeframe->isFullDay();
+		}
+
+		return $this->isFullDay();
 	}
 
 	/**
@@ -461,7 +492,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$time_start = date_i18n( $time_format, $repetitionStart );
 		$time_end   = date_i18n( $time_format, $repetitionEnd );
 
-		if ( $this->isFullDay() ) {
+		// Consult the timeframe governing the pickup day: it may be a full day even if the return day
+		// (and thus the booking's inherited full-day value) is slot-based.
+		if ( $this->isFullDayAt( $repetitionStart ) ) {
 			return $date_start;
 		}
 
@@ -500,7 +533,9 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 		$time_end   = date_i18n( $time_format, $this->getRawEndDate() + 60 ); // we add 60 seconds because internal timestamp is set to hh:59
 		$time_start = date_i18n( $time_format, $this->getStartDate() );
 
-		if ( $this->isFullDay() ) {
+		// Consult the timeframe governing the return day: it may be a full day even if the pickup day
+		// (and thus the booking's inherited full-day value) is slot-based.
+		if ( $this->isFullDayAt( $this->getRawEndDate() ) ) {
 			return $date_end;
 		}
 
