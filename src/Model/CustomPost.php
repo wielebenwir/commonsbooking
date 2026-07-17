@@ -11,15 +11,17 @@ use WP_Post;
  * Pseudo extends WP_Post class.
  *
  * All the public methods are available as template tags.
- * * In using magic methods you can retrieve data from model objects, when the model object class derive from this class.
+ * * In using magic methods you can retrieve data from model objects, when the model object class derive from this class. Using identifiers as per https://developer.wordpress.org/reference/classes/wp_post/#Member_Variables_of_WP_Post.
  * * All the public methods are available as template tags.
  *
  * @package CommonsBooking\Model
  *
- * @property int $post_author identifier of the WordPress user.
- * @property string $post_status describes whether the post is published.
- * @property int $ID of the WordPress post.
- * @property string $post_title
+ * @property int|string $post_author {@see WP_Post::$post_author}
+ * @property string $post_status {@see WP_Post::$post_status}
+ * @property int $ID {@see WP_Post::$ID}
+ * @property string $post_title {@see WP_Post::$post_title}
+ * @property string $post_date {@see WP_Post::$post_date}
+ * @property string $post_name {@see WP_Post::$post_name}
  */
 class CustomPost {
 	/**
@@ -28,7 +30,14 @@ class CustomPost {
 	protected $post;
 
 	/**
-	 * @var
+	 * The post ID of the WordPress post
+	 *
+	 * @var int
+	 */
+	protected int $ID;
+
+	/**
+	 * @var string
 	 */
 	protected $date;
 
@@ -47,6 +56,10 @@ class CustomPost {
 		} else {
 			throw new Exception( 'Invalid post param. Needed WP_Post or ID (int)' );
 		}
+		if ( ! $this->post instanceof WP_Post ) {
+			throw new Exception( 'Invalid post param. No post found for ID ' . $post );
+		}
+		$this->ID = $this->post->ID;
 	}
 
 	/**
@@ -70,17 +83,33 @@ class CustomPost {
 	/**
 	 * Returns meta-field value.
 	 *
-	 * @param $field
+	 * @param string $field key of post_meta field for this post
 	 *
-	 * @return string The value of the meta field. An empty string if the field doesn't exist.
+	 * @return string|array The value of the meta field. An empty string if the field doesn't exist.
 	 */
 	public function getMeta( $field ) {
 		return get_post_meta( $this->post->ID, $field, true );
 	}
 
 	/**
+	 * @param string $key of post_meta field for this post
+	 *
+	 * @return int|null int if meta field yields integer value
+	 */
+	public function getMetaInt( string $key ): ?int {
+		$val = $this->getMeta( $key );
+
+		if ( filter_var( $val, FILTER_VALIDATE_INT ) !== false ) {
+			return (int) $val;
+		}
+		return null;
+	}
+
+
+	/**
 	 * When getting a value from a Model Object, we can use this magic method to get the value from the WP_Post object instead.
 	 * This, for example, allows us to use $booking->post_title instead of $booking->post->post_title.
+	 *
 	 * @param $name
 	 *
 	 * @return array|mixed|void
@@ -117,6 +146,7 @@ class CustomPost {
 
 	/**
 	 * Get the corresponding WP_Post object
+	 *
 	 * @return WP_Post
 	 */
 	public function getPost(): WP_Post {
@@ -144,7 +174,7 @@ class CustomPost {
 	 * @return string html
 	 */
 	public function titleLink(): string {
-		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', esc_url(get_the_permalink( $this->ID )), commonsbooking_sanitizeHTML($this->post_title) );
+		return sprintf( '<a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_the_permalink( $this->ID ) ), commonsbooking_sanitizeHTML( $this->post_title ) );
 	}
 
 	/**
@@ -153,7 +183,7 @@ class CustomPost {
 	 * @return string
 	 */
 	public function title(): string {
-		return sprintf( '<span class="cb-title">%s</span>', commonsbooking_sanitizeHTML($this->post_title) );
+		return sprintf( '<span class="cb-title">%s</span>', commonsbooking_sanitizeHTML( $this->post_title ) );
 	}
 
 	/**
@@ -167,8 +197,11 @@ class CustomPost {
 	 */
 	public function thumbnail( $size = 'thumbnail' ): string {
 		if ( has_post_thumbnail( $this->ID ) ) {
-			return '<div class="cb-thumbnail">' . get_the_post_thumbnail( $this->ID, $size,
-					array( 'class' => 'alignleft cb-image' ) ) . '</div>';
+			return '<div class="cb-thumbnail">' . get_the_post_thumbnail(
+				$this->ID,
+				$size,
+				array( 'class' => 'alignleft cb-image' )
+			) . '</div>';
 		}
 
 		return '';
@@ -183,32 +216,21 @@ class CustomPost {
 
 	/**
 	 * Returns user data.
+	 *
 	 * @return false|\WP_User
 	 */
 	public function getUserData() {
 		return get_userdata( $this->post_author );
 	}
 
-
 	/**
 	 * Checks if the given user is the author of the current post.
+	 *
 	 * @param \WP_User $user
 	 *
-	 * @return boolean - true if user is author, false if not.
+	 * @return bool - true if user is author, false if not.
 	 */
-	public function isAuthor (\WP_User $user): bool {
+	public function isAuthor( \WP_User $user ): bool {
 		return $user->ID === intval( $this->post_author );
 	}
-
-	/**
-	 * @param string|null $date Date-String
-	 *
-	 * @return CustomPost
-	 */
-	public function setDate( string $date = null ) {
-		$this->date = $date;
-
-		return $this;
-	}
-
 }

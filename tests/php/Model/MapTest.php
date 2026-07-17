@@ -12,7 +12,7 @@ class MapTest extends CustomPostTypeTest {
 	private Location $geoLocation;
 
 	public function testGet_locations() {
-		//this tests need to take place in the present because only bookable locations are retrieved
+		// this tests need to take place in the present because only bookable locations are retrieved
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$locations = $this->map->get_locations( [] );
 		$this->assertIsArray( $locations );
@@ -20,10 +20,10 @@ class MapTest extends CustomPostTypeTest {
 		$this->assertArrayHasKey( $this->geoLocation->ID, $locations );
 		$this->assertEquals( 50.9413035, $locations[ $this->geoLocation->ID ]['lat'] );
 		$this->assertEquals( 6.9581379978318, $locations[ $this->geoLocation->ID ]['lon'] );
-		$this->assertEquals( "Location with Geo", $locations[ $this->geoLocation->ID ]['location_name'] );
-		$this->assertEquals( "Domkloster 4", $locations[ $this->geoLocation->ID ]['address']['street'] );
-		$this->assertEquals( "Köln", $locations[ $this->geoLocation->ID ]['address']['city'] );
-		$this->assertEquals( "50667", $locations[ $this->geoLocation->ID ]['address']['zip'] );
+		$this->assertEquals( 'Location with Geo', $locations[ $this->geoLocation->ID ]['location_name'] );
+		$this->assertEquals( 'Domkloster 4', $locations[ $this->geoLocation->ID ]['address']['street'] );
+		$this->assertEquals( 'Köln', $locations[ $this->geoLocation->ID ]['address']['city'] );
+		$this->assertEquals( '50667', $locations[ $this->geoLocation->ID ]['address']['zip'] );
 
 		$this->assertEquals( $this->itemId, $locations[ $this->geoLocation->ID ]['items'][0]['id'] );
 	}
@@ -35,13 +35,13 @@ class MapTest extends CustomPostTypeTest {
 		$locations = $this->map->get_locations( [] );
 		$this->assertNotEmpty( $locations );
 		$locations = Map::cleanup_location_data( $locations, '<br>' );
-		$this->assertEquals( "Contact with  HTML  and <br> linebreaks", $locations[ $this->geoLocation->ID ]['contact'] );
+		$this->assertEquals( 'Contact with  HTML  and <br> linebreaks', $locations[ $this->geoLocation->ID ]['contact'] );
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->map         = new Map ( $this->createMap() );
-		$this->geoLocation = new Location ( $this->createLocation( "Location with Geo" ) );
+		$this->map         = new Map( $this->createMap() );
+		$this->geoLocation = new Location( $this->createLocation( 'Location with Geo' ) );
 		update_post_meta( $this->geoLocation->ID, 'geo_latitude', 50.9413035 );
 		update_post_meta( $this->geoLocation->ID, 'geo_longitude', 6.9581379978318 );
 		update_post_meta( $this->geoLocation->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_city', 'Köln' );
@@ -50,6 +50,4 @@ class MapTest extends CustomPostTypeTest {
 		update_post_meta( $this->geoLocation->ID, COMMONSBOOKING_METABOX_PREFIX . 'location_postcode', '50667' );
 		$this->createBookableTimeFrameIncludingCurrentDay( $this->geoLocation->ID );
 	}
-
-
 }

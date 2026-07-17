@@ -43,7 +43,7 @@
 		<wp:category_parent><![CDATA[]]></wp:category_parent>
 		<wp:cat_name><![CDATA[Uncategorized]]></wp:cat_name>
 	</wp:category>
-				
+
 	<generator>https://wordpress.org/?v=6.7</generator>
 
 		<item>
@@ -189,6 +189,14 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[WeeklyRepetition Overbooking CountAll- NoAdmin]]></title>
@@ -257,6 +265,14 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[WeeklyRepetition Overbooking CountOne - NoAdmin ; NoGeo]]></title>
@@ -297,6 +313,14 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[1]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[WeeklyRepetition Overbooking CountOne - NoAdmin]]></title>
@@ -385,6 +409,14 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[DailyRep Holiday Overbooking CountAll- NoAdmin]]></title>
@@ -453,6 +485,14 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[DailyRep Holiday Overbooking CountOne- NoAdmin]]></title>
@@ -521,6 +561,14 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[1]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[WeeklyRepetition Overbooking NoCount - NoAdmin; NoGeo]]></title>
@@ -557,6 +605,14 @@
 		<wp:meta_key><![CDATA[_cb_allow_lockdays_in_range]]></wp:meta_key>
 		<wp:meta_value><![CDATA[on]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[WeeklyRepetition Overbooking NoCount - NoAdmin]]></title>
@@ -617,6 +673,14 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
 							</item>
 					<item>
 		<title><![CDATA[WeeklyRepetition NoOverbooking 1Day - NoAdmin]]></title>
@@ -677,7 +741,15 @@
 		<wp:meta_key><![CDATA[_cb_count_lockdays_maximum]]></wp:meta_key>
 		<wp:meta_value><![CDATA[0]]></wp:meta_value>
 		</wp:postmeta>
-							</item>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_latitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[50.941303500000004]]></wp:meta_value>
+                        </wp:postmeta>
+                        <wp:postmeta>
+                            <wp:meta_key><![CDATA[geo_longitude]]></wp:meta_key>
+                            <wp:meta_value><![CDATA[6.958137997831819]]></wp:meta_value>
+                        </wp:postmeta>
+                        </item>
 					<item>
 		<title><![CDATA[DailyRep Holiday NoOverbooking 1Day – NoAdmin]]></title>
 		<link>http://localhost:1001/?cb_item=dailyrep-holiday-nooverbooking-1day-noadmin</link>
@@ -2287,4 +2359,3 @@
 							</item>
 				</channel>
 </rss>
-	

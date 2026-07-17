@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Exception;
 
-class OverlappingException extends \Exception
-{
+class OverlappingException extends \Exception {
+
 
 }

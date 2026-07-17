@@ -20,14 +20,16 @@ class MapShortcode extends BaseShortcode {
 	}
 
 	protected function inject_script( $cb_map_id ) {
-		wp_add_inline_script( 'cb-map-shortcode',
-			"jQuery(document).ready(function ($) {
+		wp_add_inline_script(
+			'cb-map-shortcode',
+			'jQuery(document).ready(function ($) {
             var cb_map = new CB_Map();
-            cb_map.settings = " . wp_json_encode( MapData::get_settings( $cb_map_id ) ) . ";
-            cb_map.translation = " . wp_json_encode( $this->get_translation( $cb_map_id ) ) . ";
+            cb_map.settings = ' . wp_json_encode( MapData::get_settings( $cb_map_id ) ) . ';
+            cb_map.translation = ' . wp_json_encode( $this->get_translation( $cb_map_id ) ) . ';
             cb_map.init_filters($);
             cb_map.init_map();
-        });" );
+        });'
+		);
 		wp_enqueue_style( 'cb-map-shortcode' );
 		wp_enqueue_script( 'cb-map-shortcode' );
 	}

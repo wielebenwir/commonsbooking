@@ -14,7 +14,7 @@ class Booking {
 		$bookings = Timeframe::getPostIdsByType(
 			[
 				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
-				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_CANCELED_ID,
 			]
 		);
 
@@ -27,10 +27,10 @@ class Booking {
 
 	/**
 	 * Runs migration script and returns booking IDs as json array.
+	 *
 	 * @return void
 	 */
 	public static function ajaxMigrate() {
 		wp_send_json( self::migrate() );
 	}
-
 }

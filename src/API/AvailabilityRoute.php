@@ -40,18 +40,18 @@ class AvailabilityRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.availability.schema.json';
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.availability.schema.json';
 
 	/**
 	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
 	 *
-	 * @param bool $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
-	 * @param int $weeks Number of weeks from today to return (will be rounded up return full weeks Monday-Sunday)
+	 * @param ?int $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
+	 * @param int  $weeks Number of weeks from today to return (will be rounded up return full weeks Monday-Sunday)
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	private function getItemData( $id = false, $weeks): array {
+	private function getItemData( $id = null, $weeks): array {
 		if ( !is_numeric( $weeks ) || $weeks < self::MIN_WEEKS || $weeks > self::MAX_WEEKS ) {
 			$weeks = self::DEFAULT_WEEKS;
 		}
@@ -84,16 +84,15 @@ class AvailabilityRoute extends BaseRoute {
 
 			//return a response or error based on some conditional
 			if ( count( $data->availability ) ) {
-				return new WP_REST_Response( $data, 200 );
+				return $this->respond_with_validation( $data );
 			} else {
 				// This was missing in previous versions. According to the availability spec, we can return a list with no items
 				// TODO this part and the enclosing if-clause can be removed in future version, if no problems arose ...
-				return new WP_REST_Response( $data, 200 );
+				return $this->respond_with_validation( $data );
 			}
 		} catch (Exception $e) {
 			return new WP_Error( 'code', $e->getMessage() );
 		}
-
 	}
 
 	/**
@@ -110,16 +109,16 @@ class AvailabilityRoute extends BaseRoute {
 		$weeks = (int)$request->get_param('weeks');
 
 		// Get all items
-		$items = Item::get([], true);
+		$items = Item::get( [], true );
 
 		// Collect availabilies for each item
-		foreach ($items as $item) {
+		foreach ( $items as $item ) {
 			$data->availability = array_merge(
 				$data->availability,
-				$this->getItemData($item->ID, $weeks)
+				$this->getItemData( $item->ID, $weeks )
 			);
 		}
-		return new WP_REST_Response( $data, 200 );
-	}
 
+		return $this->respond_with_validation( $data );
+	}
 }

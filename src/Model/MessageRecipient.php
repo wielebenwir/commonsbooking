@@ -14,11 +14,13 @@ class MessageRecipient {
 
 	/**
 	 * The email address of the recipient
+	 *
 	 * @var string
 	 */
 	private string $email;
 	/**
 	 * The human-readable name in the "To" field of the email
+	 *
 	 * @var string
 	 */
 	private string $niceName;

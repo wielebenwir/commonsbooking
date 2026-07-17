@@ -8,10 +8,10 @@ use RuntimeException;
 
 use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
-use Opis\JsonSchema\Schema;
-use Opis\JsonSchema\Validator;
-use Opis\JsonSchema\Errors\ErrorFormatter;
+use CommonsBooking\Opis\JsonSchema\Validator;
+use CommonsBooking\Opis\JsonSchema\Errors\ErrorFormatter;
 use WP_REST_Controller;
+use WP_REST_Response;
 use WP_REST_Server;
 
 /**
@@ -28,6 +28,12 @@ use WP_REST_Server;
 class BaseRoute extends WP_REST_Controller {
 
 	const API_KEY_PARAM = 'apikey';
+
+	// prefix of $id used in schemas (currently the URL of the Github repo)
+	const SCHEMA_URL = 'https://github.com/wielebenwir/commons-api/blob/master/';
+
+	// the location of the .schema.json files locally
+	const SCHEMA_PATH = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/';
 
 	protected $schemaUrl;
 
@@ -93,8 +99,13 @@ class BaseRoute extends WP_REST_Controller {
 	public function validateData( $data ) {
 		$validator = new Validator();
 
+		// Opis does not fetch remote $ref targets in getSchemaJson() main schema.
+		// Map schema URLs to local filesystem paths
+		$resolver = $validator->resolver();
+		$resolver->registerPrefix( self::SCHEMA_URL, self::SCHEMA_PATH );
+
 		try {
-			$result = $validator->validate( $data, $this->getSchemaObject() );
+			$result = $validator->validate( $data, $this->getSchemaJson() );
 			if ( $result->hasError() ) {
 				if ( WP_DEBUG ) {
 
@@ -131,35 +142,21 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
-	 * Returns schema-object for current route.
-	 *
-	 * @return Schema
-	 */
-	protected function getSchemaObject(): object {
-		$schemaObject = json_decode( $this->getSchemaJson() );
-		unset( $schemaObject->{'$schema'} );
-		unset( $schemaObject->{'$id'} );
-
-		return $schemaObject;
-	}
-
-	/**
 	 * Returns schema json for current route.
 	 *
 	 * @throws RuntimeException On missing schema files.
 	 * @return string
 	 */
-	protected function getSchemaJson(): string {
-		$schemaArray = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-		if ( $schemaArray ) {
-			return $schemaArray;
-		} else {
+	private function getSchemaJson(): string {
+		$schema = file_get_contents( $this->schemaUrl ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $schema === false ) {
 			throw new RuntimeException( 'Could not retrieve schema json from ' . esc_url( $this->schemaUrl ) );
 		}
+		return $schema;
 	}
 
 	/**
-	 * Adds schema-fields for output to current route.
+	 * Adds schema-fields for output to current route (needed for /.../schema endpoint)
 	 *
 	 * @param array $schema Assoc array of schema json object.
 	 * @return array
@@ -182,15 +179,39 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
+	 * Decodes HTML entities in a post title for API output.
+	 *
+	 * WordPress stores post titles with encoded entities (e.g. "A&amp;B").
+	 * Since the API returns plain text values that consumers render as text,
+	 * we decode them so they receive "A&B" instead of "A&amp;B".
+	 *
+	 * @param string $title
+	 *
+	 * @return string
+	 */
+	protected function decodeApiTitle( string $title ): string {
+		return html_entity_decode( $title, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8' );
+	}
+
+	/**
 	 * Returns true if current request is allowed.
 	 *
 	 * @return bool
 	 */
-	public static function hasPermission() : bool {
+	public static function hasPermission(): bool {
 		$isApiActive            = Settings::getOption( 'commonsbooking_options_api', 'api-activated' );
 		$anonymousAccessAllowed = Settings::getOption( 'commonsbooking_options_api', 'apikey_not_required' );
 		$apiKey                 = array_key_exists( self::API_KEY_PARAM, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ self::API_KEY_PARAM ] ) : false;
-		$apiShare               = ApiShares::getByKey( $apiKey );
+		if ( ! $apiKey ) {
+			// get apikey from headers (#2251)
+			if ( function_exists( 'getallheaders' ) ) {
+				$allHeaders = array_change_key_case( getallheaders(), CASE_LOWER );
+				$apiKey     = array_key_exists( self::API_KEY_PARAM, $allHeaders ) ? sanitize_text_field( $allHeaders[ self::API_KEY_PARAM ] ) : false;
+			} else {
+				$apiKey = array_key_exists( 'HTTP_' . strtoupper( self::API_KEY_PARAM ), $_SERVER ) ? sanitize_text_field( $_SERVER[ 'HTTP_' . strtoupper( self::API_KEY_PARAM ) ] ) : false;
+			}
+		}
+		$apiShare = ApiShares::getByKey( $apiKey );
 
 		// Only if api is active we return something
 		if ( $isApiActive ) {
@@ -208,4 +229,16 @@ class BaseRoute extends WP_REST_Controller {
 		return false;
 	}
 
+	/**
+	 * Validates data against schema (when WP_DEBUG) and returns REST response.
+	 *
+	 * @param object $data The response data to validate and return.
+	 * @return WP_REST_Response
+	 */
+	protected function respond_with_validation( $data ): WP_REST_Response {
+		if ( WP_DEBUG ) {
+			$this->validateData( $data );
+		}
+		return new WP_REST_Response( $data, 200 );
+	}
 }

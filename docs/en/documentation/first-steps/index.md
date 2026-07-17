@@ -1,0 +1,30 @@
+# First steps
+
+After you have finished the [installation](../setup/install), this section will guide you, step by step, to
+create your first interactive booking.
+
+## Overview
+
+We give a brief overview of the different concepts used in the plugin. If this is your first time using CommonsBooking,
+be sure to check out the [Basics](../basics/) section as well.
+
+First, you have to [create items](../first-steps/create-item) and [locations](../first-steps/create-location), and then make them bookable within specific timeframes.
+Availability is defined by setting up [timeframes](../first-steps/booking-timeframes-manage), which can be further restricted using [restrictions](../first-steps/manage-booking-restrictions).
+Locations can be closed using [holiday timeframes](../first-steps/timeframes-holidays).
+Using [booking rules](../first-steps/setup-bookingrules) you can further limit or control the booking process.
+
+:::info
+All of the guides in this section assume that you are logged in to the WordPress backend with administrator rights, and
+that the "CommonsBooking" menu item is selected on the left-hand side.
+:::
+
+## Step-by-step
+
+CommonsBooking is a highly flexible tool, which can feel a bit overwhelming at first. These guides are here to help you get started and to familiarize yourself with the basic concepts of CommonsBooking.
+
+  * [Create location](create-location)
+  * [Create item](create-item)
+  * [Timeframes: Define when an item can be booked](booking-timeframes-manage)
+  * [Optional: Manage restrictions](manage-booking-restrictions)
+  * [Optional: Configure booking rules (since 2.9)](setup-bookingrules)
+  * [Optional: Timeframes: Configure a location's holidays](timeframes-holidays)

@@ -3,13 +3,14 @@
 
 namespace CommonsBooking\Repository;
 
-
 use WP_Query;
 
 /**
  * This class contains methods to query the database for old CB1 data.
  * CB1 is CommonsBooking up to version 0.9.4.18 (https://wordpress.org/plugins/commons-booking/)
  * This class is mainly used to migrate over the old data to CB2.
+ *
+ * @deprecated since 2.11 , removal in 2.12
  */
 class CB1 {
 
@@ -45,7 +46,7 @@ class CB1 {
 	 */
 	public static function isInstalled() {
 		// we check for pages, since they have to be set up for the plugin to function.
-		$option_set_by_cb1 = esc_html(get_option('commons-booking-settings-pages'));
+		$option_set_by_cb1 = esc_html( get_option( 'commons-booking-settings-pages' ) );
 
 		if ( $option_set_by_cb1 ) {
 			return true;
@@ -56,6 +57,7 @@ class CB1 {
 
 	/**
 	 * Get the old CB1 location post type posts
+	 *
 	 * @return array
 	 */
 	public static function getLocations() {
@@ -72,7 +74,7 @@ class CB1 {
 		$args  = array(
 			'post_type'   => $postType,
 			'post_status' => 'any',
-			'nopaging'    => true
+			'nopaging'    => true,
 		);
 		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
@@ -84,6 +86,7 @@ class CB1 {
 
 	/**
 	 * Get the old CB1 item post type posts
+	 *
 	 * @return array
 	 */
 	public static function getItems() {
@@ -92,6 +95,7 @@ class CB1 {
 
 	/**
 	 * Get the old CB1 bookings
+	 *
 	 * @return mixed
 	 */
 	public static function getBookings() {
@@ -103,6 +107,7 @@ class CB1 {
 
 	/**
 	 * Get the old CB1 timeframes
+	 *
 	 * @return mixed
 	 */
 	public static function getTimeframes() {
@@ -114,6 +119,7 @@ class CB1 {
 
 	/**
 	 * Get the old CB1 bookingcodes
+	 *
 	 * @return mixed
 	 */
 	public static function getBookingCodes() {
@@ -148,7 +154,7 @@ class CB1 {
 		global $wpdb;
 		$table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
 
-		$sql = $wpdb->prepare( "SELECT bookingcode FROM $table_bookingcodes WHERE id = %d", $id);
+		$sql    = $wpdb->prepare( "SELECT bookingcode FROM $table_bookingcodes WHERE id = %d", $id );
 		$result = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( $result && count( $result ) > 0 ) {
@@ -169,7 +175,7 @@ class CB1 {
 	}
 
 	/**
-	 * @param int $id
+	 * @param int    $id
 	 * @param string $type
 	 *
 	 * @return false|int
@@ -179,7 +185,7 @@ class CB1 {
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 		$table_posts    = $wpdb->prefix . 'posts';
 
-		$sql = $wpdb->prepare(
+		$sql    = $wpdb->prepare(
 			"SELECT post_id FROM $table_postmeta
             WHERE
                 meta_key = '_cb_cb1_post_post_ID' AND
@@ -189,7 +195,7 @@ class CB1 {
 			$id,
 			$type
 		);
-		$result = $wpdb->get_results($sql);
+		$result = $wpdb->get_results( $sql );
 
 		if ( $result && count( $result ) > 0 ) {
 			return $result[0]->post_id;
@@ -229,11 +235,11 @@ class CB1 {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
-		$sql = $wpdb->prepare(
-			"SELECT meta_value as cb1_id, post_id as cb2_id 
+		$sql    = $wpdb->prepare(
+			"SELECT meta_value as cb1_id, post_id as cb2_id
             FROM $table_postmeta
             WHERE
-                meta_key = '_cb_cb1_post_post_ID' AND 
+                meta_key = '_cb_cb1_post_post_ID' AND
                 meta_value = %s;
         	",
 			$id
@@ -249,6 +255,7 @@ class CB1 {
 
 	/**
 	 * Returns CB1 taxonomies.
+	 *
 	 * @return mixed
 	 */
 	public static function getCB1Taxonomies() {
@@ -261,10 +268,10 @@ class CB1 {
 		return $wpdb->get_results(
 			"
             SELECT
-                tr.*, 
+                tr.*,
                 tt.taxonomy,
                 t.slug as term
-            FROM $table_term_relationships tr 
+            FROM $table_term_relationships tr
             LEFT JOIN $table_term_taxonomy tt ON
                 tr.term_taxonomy_id = tt.term_id
             LEFT JOIN $table_terms t ON
@@ -278,5 +285,4 @@ class CB1 {
         "
 		);
 	}
-
 }

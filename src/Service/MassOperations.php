@@ -25,12 +25,12 @@ class MassOperations {
 		if ( $success ) {
 			$result = array(
 				'success' => true,
-				'message' => __( 'All selected orphaned bookings have been migrated.', 'commonsbooking' )
+				'message' => __( 'All selected orphaned bookings have been migrated.', 'commonsbooking' ),
 			);
 		} else {
 			$result = array(
 				'success' => false,
-				'message' => $errorMessage ?? __( 'An error occurred while moving bookings.', 'commonsbooking' )
+				'message' => ! empty( $errorMessage ) ? $errorMessage : __( 'An error occurred while moving bookings.', 'commonsbooking' ),
 			);
 		}
 
@@ -53,7 +53,7 @@ class MassOperations {
 		}
 
 		$orphanedBookings = \CommonsBooking\Repository\Booking::getOrphaned();
-		//iterate over them and assign them new locations
+		// iterate over them and assign them new locations
 		foreach ( $orphanedBookings as $booking ) {
 			if ( ! in_array( $booking->ID, $bookingIds ) ) {
 				continue;
@@ -61,17 +61,18 @@ class MassOperations {
 			try {
 				$moveLocation = $booking->getMoveableLocation();
 				if ( $moveLocation === null ) {
+					// translators: %s numeric post id
 					throw new \Exception( sprintf( __( 'New location not found for booking with ID %s', 'commonsbooking' ), $booking->ID ) );
 				}
 			} catch ( \Exception $e ) {
+				// translators: %s numeric post id
 				throw new \Exception( sprintf( __( 'New location not found for booking with ID %s', 'commonsbooking' ), $booking->ID ) );
 			}
 			if ( \CommonsBooking\Repository\Booking::getExistingBookings( $booking->getItemID(), $moveLocation->ID, $booking->getStartDate(), $booking->getEndDate() ) ) {
+				// translators: %s numeric post id
 				throw new \Exception( sprintf( __( 'There is already a booking on the new location during the timeframe of booking with ID %s.', 'commonsbooking' ), $booking->ID ) );
 			}
-			if ( $moveLocation !== null ) {
-				update_post_meta( $booking->ID, 'location-id', $moveLocation->ID );
-			}
+			update_post_meta( $booking->ID, 'location-id', $moveLocation->ID );
 		}
 
 		return true;

@@ -7,7 +7,7 @@ use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class LocationTest extends CustomPostTypeTest {
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		// Create timeframe with location and item, so that we can search vor it
@@ -20,7 +20,6 @@ class LocationTest extends CustomPostTypeTest {
 	}
 
 	public function testGetByItem() {
-		$this->assertTrue(count(Location::getByItem($this->itemId, true)) == 1);
+		$this->assertTrue( count( Location::getByItem( $this->itemId, true ) ) == 1 );
 	}
-
 }

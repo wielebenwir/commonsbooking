@@ -46,5 +46,4 @@ class WeekTest extends CustomPostTypeTest {
 			$this->week->getDays()
 		);
 	}
-
 }

@@ -8,7 +8,7 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\Options\AdminOptions;
-use Psr\Cache\InvalidArgumentException;
+use CommonsBooking\Psr\Cache\InvalidArgumentException;
 
 /**
  * This class contains migration functionality that is run when the plugin is upgraded
@@ -35,26 +35,30 @@ class Upgrade {
 	 * you would add a new entry to this array with the key being "2.6.0" and the value being the function that needs to be run.
 	 *
 	 * This is so that once the upgrade from a specific version has been run, it will not be run again.
+	 *
 	 * @var array[]
 	 */
 	private static array $upgradeTasks = [
 		'2.6.0' => [
 			[ \CommonsBooking\Migration\Booking::class, 'migrate' ],
-			[ self::class, 'setAdvanceBookingDaysDefault' ]
+			[ self::class, 'setAdvanceBookingDaysDefault' ],
 		],
 		'2.8.0' => [
-			[ \CommonsBooking\Service\Scheduler::class, 'unscheduleOldEvents' ]
+			[ \CommonsBooking\Service\Scheduler::class, 'unscheduleOldEvents' ],
 		],
 		'2.8.2' => [
 			[ self::class, 'resetBrokenColorScheme' ],
-			[ self::class, 'fixBrokenICalTitle' ]
+			[ self::class, 'fixBrokenICalTitle' ],
 		],
 		'2.9.2' => [
-			[ self::class, 'enableLocationBookingNotification' ]
+			[ self::class, 'enableLocationBookingNotification' ],
 		],
 		'2.10'  => [
-			[ self::class, 'migrateMapSettings' ]
-		]
+			[ self::class, 'migrateMapSettings' ],
+		],
+		'2.10.5' => [
+			[ self::class, 'migrateCacheSettings' ],
+		],
 	];
 
 	/**
@@ -71,20 +75,21 @@ class Upgrade {
 	 */
 	private static array $ajaxUpgradeTasks = [
 		'2.8.5' => [
-			[ self::class, 'removeBreakingPostmeta' ]
+			[ self::class, 'removeBreakingPostmeta' ],
 		],
 		'2.9.0' => [
-			[ self::class, 'setMultiSelectTimeFrameDefault' ]
-		]
+			[ self::class, 'setMultiSelectTimeFrameDefault' ],
+		],
 	];
 
 	/**
 	 * The tasks that will be run upon every upgrade.
+	 *
 	 * @return void
 	 */
 	private function runEveryUpgrade(): void {
 		// set Options default values (e.g. if there are new fields added)
-		AdminOptions::SetOptionsDefaultValues();
+		AdminOptions::setOptionsDefaultValues();
 
 		// flush rewrite rules
 		flush_rewrite_rules();
@@ -98,14 +103,12 @@ class Upgrade {
 		// update version number in options
 		update_option( self::VERSION_OPTION, $this->currentVersion );
 
-
 		// Clear cache
 		try {
 			Plugin::clearCache();
 		} catch ( InvalidArgumentException $e ) {
 			// Do nothing
 		}
-
 	}
 
 	/**
@@ -131,7 +134,7 @@ class Upgrade {
 			if ( $this->previousVersion === $this->currentVersion ) {
 				return false;
 			}
-			//upgrade needs to be run in AJAX
+			// upgrade needs to be run in AJAX
 			if ( $this->getTasksForUpgrade( self::$ajaxUpgradeTasks ) ) {
 				new AdminMessage(
 					'<b>CommonsBooking:</b> ' .
@@ -201,41 +204,40 @@ class Upgrade {
 	/**
 	 *
 	 * Test in @see \CommonsBooking\Tests\Service\UpgradeTest_AJAX
-	 *
 	 */
 	public static function runAJAXUpgradeTasks(): void {
-		//verify nonce
+		// verify nonce
 		check_ajax_referer( 'cb_run_upgrade', 'nonce' );
-		$data = isset ( $_POST['data'] ) ? (array) $_POST['data'] : array();
+		$data = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
 		$data = commonsbooking_sanitizeArrayorString( $data );
 
 		$taskNo = $data['progress']['task'] ?? 0;
 		$page   = $data['progress']['page'] ?? 1;
 
-		$taskNo     = (int) $taskNo;
-		$page       = (int) $page;
-		$upgrade    = new Upgrade(
+		$taskNo                          = (int) $taskNo;
+		$page                            = (int) $page;
+		$upgrade                         = new Upgrade(
 			esc_html( get_option( self::VERSION_OPTION ) ),
 			COMMONSBOOKING_VERSION
 		);
-		$totalTasks = $upgrade->getTasksForUpgrade( self::$ajaxUpgradeTasks );
-		$task       = $totalTasks[ $taskNo ];
+		$totalTasks                      = $upgrade->getTasksForUpgrade( self::$ajaxUpgradeTasks );
+		$task                            = $totalTasks[ $taskNo ];
 		list ( $className, $methodName ) = $task;
-		$page = call_user_func( array( $className, $methodName ), $page );
-		//previous task was successful
+		$page                            = call_user_func( array( $className, $methodName ), $page );
+		// previous task was successful
 		if ( $page === true ) {
-			//check if there are more tasks
+			// check if there are more tasks
 			if ( isset( $totalTasks[ $taskNo + 1 ] ) ) {
 				$response = [
 					'success'  => false,
 					'error'    => false,
 					'progress' => [
 						'task' => $taskNo + 1,
-						'page' => 1
-					]
+						'page' => 1,
+					],
 				];
 			} else {
-				//all tasks are done
+				// all tasks are done
 				$response = [
 					'success' => true,
 					'error'   => false,
@@ -248,12 +250,12 @@ class Upgrade {
 				'error'    => false,
 				'progress' => [
 					'task' => $taskNo,
-					'page' => $page
-				]
+					'page' => $page,
+				],
 			];
 		}
 
-		//run other upgrade actions
+		// run other upgrade actions
 		if ( $response['success'] === true ) {
 			$upgrade->runUpgradeTasks();
 			$upgrade->runEveryUpgrade();
@@ -264,6 +266,7 @@ class Upgrade {
 
 	/**
 	 * Will determine if the latest upgrade needs to run AJAX actions to complete.
+	 *
 	 * @return bool true if AJAX actions are needed, false if not.
 	 */
 	public static function isAJAXUpgrade(): bool {
@@ -304,8 +307,8 @@ class Upgrade {
 				<div class="e-major-update-warning__message">
 					<?php
 					printf(
-					/* translators: %1$s Link open tag, %2$s: Link close tag. */
 						commonsbooking_sanitizeHTML(
+						/* translators: %1$s Link open tag, %2$s: Link close tag. */
 							__(
 								'
 					This CommonsBooking update has a lot of new features and changes on some templates.<br>
@@ -314,7 +317,7 @@ class Upgrade {
 								'commonsbooking'
 							)
 						),
-						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
+						'<a target="_blank" href="https://commonsbooking.org/documentation/setup/update-news/">',
 						'</a>'
 					);
 					?>
@@ -370,6 +373,7 @@ class Upgrade {
 	/**
 	 * sets advance booking days to default value for existing timeframes.
 	 * Advances booking timeframes are available since 2.6 - all timeframes created prior to this version need to have this value set to a default value.
+	 *
 	 * @return void
 	 * @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::ADVANCE_BOOKING_DAYS
 	 *
@@ -438,7 +442,7 @@ class Upgrade {
 
 	/**
 	 * sets the default value for multi selection to manual in all existing timeframes.
-	 * Multi selection for timeframes are available since 2.9 (estimated) - all timeframes created prior to this version need to have a value for selection
+	 * Multi selection for timeframes are available since 2.9 - all timeframes created prior to this version need to have a value for selection
 	 *
 	 * This function is labour intensive and runs in AJAX.
 	 *
@@ -485,20 +489,22 @@ class Upgrade {
 	 * @since 2.10
 	 */
 	public static function migrateMapSettings(): void {
-		$maps = get_posts( [
-			'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Map::$postType,
-			'numberposts' => - 1
-		] );
+		$maps = get_posts(
+			[
+				'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Map::$postType,
+				'numberposts' => - 1,
+			]
+		);
 		foreach ( $maps as $map ) {
 			$options = get_post_meta( $map->ID, 'cb_map_options', true );
-			if ( empty( $options ) ) { //When default map options are empty
+			if ( empty( $options ) ) { // When default map options are empty
 				continue;
 			}
 			if ( get_post_meta( $map->ID, array_key_first( $options ), true ) ) {
-				//if the first key in the options array is already set, we assume that the migration has already been done
+				// if the first key in the options array is already set, we assume that the migration has already been done
 				continue;
 			}
-			//will map to an associative array with key being the option name and the value the default value
+			// will map to an associative array with key being the option name and the value the default value
 			$defaultValues = array_reduce(
 				Map::getCustomFields(),
 				function ( $result, $option ) {
@@ -512,7 +518,7 @@ class Upgrade {
 			);
 			foreach ( $options as $key => $value ) {
 				if ( empty( $value ) && ! empty( $defaultValues[ $key ] ) ) {
-					//fetch from default values when key happens to be empty
+					// fetch from default values when key happens to be empty
 					$value = $defaultValues[ $key ];
 				}
 				if ( ! empty( $value ) ) {
@@ -536,19 +542,19 @@ class Upgrade {
 			}
 			if ( ! empty( $options['cb_items_available_categories'] ) ) {
 				$newCategoryArray     = [];
-				$currentCategoryIndex = -1; //start with -1 so we can increment to 0
+				$currentCategoryIndex = -1; // start with -1 so we can increment to 0
 				foreach ( $options['cb_items_available_categories'] as $key => $value ) {
 					if ( substr( $key, 0, 1 ) == 'g' ) {
-						$currentCategoryIndex ++;
+						++$currentCategoryIndex;
 						$newCategoryArray[ $currentCategoryIndex ] = [
 							'name'        => $value,
 							'type'        => '',
 							'isExclusive' => false,
-							'categories'  => []
+							'categories'  => [],
 						];
 					} else {
 						$newCategoryArray[ $currentCategoryIndex ]['categories'][] = (string) $key;
-						//see if specified name is different from taxonomy name, save differing name in taxonomy meta
+						// see if specified name is different from taxonomy name, save differing name in taxonomy meta
 						if ( get_term( $key )->name != $value ) {
 							update_term_meta( $key, COMMONSBOOKING_METABOX_PREFIX . 'markup', $value );
 						}
@@ -556,6 +562,30 @@ class Upgrade {
 				}
 				update_post_meta( $map->ID, 'filtergroups', $newCategoryArray );
 			}
+		}
+	}
+
+	/**
+	 * Move the old settings for the cache over to the new format.
+	 *
+	 * @return void
+	 * @since 2.10.5
+	 */
+	public static function migrateCacheSettings(): void {
+		if ( Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_enabled' ) === 'on' ) {
+			Settings::updateOption(
+				COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options',
+				'cache_location',
+				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'redis_dsn' )
+			);
+			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter', 'redis' );
+		} else {
+			Settings::updateOption(
+				COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options',
+				'cache_location',
+				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' )
+			);
+			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter', 'filesystem' );
 		}
 	}
 }

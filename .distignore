@@ -8,6 +8,8 @@
 /build/
 /node_modules/
 /tests/
+/docs/
+/vendor/
 composer.*
 Gruntfile.js
 codecov.yml
@@ -23,3 +25,4 @@ README.md
 tsconfig.*
 webpack.config.js
 phpstan.neon
+phpstan-baseline.neon

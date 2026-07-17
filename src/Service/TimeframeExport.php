@@ -8,8 +8,8 @@ use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Settings\Settings;
 use DateInterval;
 use DatePeriod;
-use Psr\Cache\CacheException;
-use Psr\Cache\InvalidArgumentException;
+use CommonsBooking\Psr\Cache\CacheException;
+use CommonsBooking\Psr\Cache\InvalidArgumentException;
 
 /**
  * The TimeframeExport class will export timeframes to a CSV file.
@@ -23,26 +23,84 @@ class TimeframeExport {
 	 * The post type to export.
 	 * This corresponds to the return of @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes()
 	 * The all option is corresponding to 0.
-	 * @var string
+	 *
+	 * @var int
 	 */
 	private int $exportType;
+	/**
+	 * The extra meta fields to export for locations.
+	 *
+	 * @var array|null
+	 */
 	private ?array $locationFields = null;
+	/**
+	 * The extra meta fields to export for items.
+	 *
+	 * @var array|null
+	 */
 	private ?array $itemFields = null;
+	/**
+	 * The extra meta fields to export for users.
+	 *
+	 * @var array|null
+	 */
 	private ?array $userFields = null;
+	/**
+	 * Export start date in whatever string format the WP field provides
+	 *
+	 * @var string
+	 */
 	private string $exportStartDate;
+	/**
+	 * Export end date in whatever string format the WP field provides
+	 *
+	 * @var string
+	 */
 	private string $exportEndDate;
 
+	/**
+	 * The name under which the file will be provided for download.
+	 *
+	 * @var string
+	 */
 	private string $exportFilename;
 
+	/**
+	 * The name of the transient where the relevantTimeframes are intermediately stored.
+	 *
+	 * @var string
+	 */
+	private string $transientName;
+
+	/**
+	 * Flag to indicate if the export data is complete.
+	 *
+	 * @var bool
+	 */
 	private bool $exportDataComplete = false;
+	/**
+	 * Flag set to true, when job is run from cron event
+	 *
+	 * @var bool
+	 */
 	private bool $isCron = false;
 
-	private ?string $lastProcessedPage = null;
-	private ?string $totalPosts;
 	/**
-	 * @var int[]|null Array of timeframe post IDs that are relevant for the export
+	 * Page that has been processed last.
+	 *
+	 * @var int|null
 	 */
-	private ?array $relevantTimeframes = null;
+	private ?int $lastProcessedPage = null;
+	/**
+	 * Total amount of posts in export
+	 *
+	 * @var int|null
+	 */
+	private ?int $totalPosts;
+	/**
+	 * @var int[] Array of timeframe post IDs that are relevant for the export
+	 */
+	private array $relevantTimeframes = [];
 
 	/**
 	 * Defines how many pages will be processed in one iteration. Higher numbers increases the likelihood for a timeout.
@@ -50,16 +108,16 @@ class TimeframeExport {
 	const ITERATION_COUNTS = 100;
 
 	/**
-	 * @param string $exportType
-	 * @param string $exportStartDate
-	 * @param string $exportEndDate
+	 * @param string      $exportType 0 for all, otherwise the post type ID as defined in @see \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes()
+	 * @param string      $exportStartDate Start date string of export
+	 * @param string      $exportEndDate End date string of export
 	 *
-	 * @param array|null $locationFields
-	 * @param array|null $itemFields
-	 * @param array|null $userFields
-	 * @param string|null $lastProcessedPage
-	 * @param string|null $totalPosts
-	 * @param array|null $relevantTimeframes
+	 * @param array|null  $locationFields Metafields of location objects that should be included in the export
+	 * @param array|null  $itemFields Metafields of item objects that should be included in the export
+	 * @param array|null  $userFields Metafields of user objects that should be included in the export
+	 * @param int|null    $lastProcessedPage 0 when starting, otherwise the last processed page from previous run
+	 * @param int|null    $totalPosts Set on previous run, total amount of posts in export
+	 * @param string|null $transientName Set on previous run, name of transient where intermediate results are stored
 	 *
 	 * @throws ExportException
 	 */
@@ -67,61 +125,61 @@ class TimeframeExport {
 		string $exportType,
 		string $exportStartDate,
 		string $exportEndDate,
-		array $locationFields = null,
-		array $itemFields = null,
-		array $userFields = null,
-		string $lastProcessedPage = null,
-		string $totalPosts = null,
-		array $relevantTimeframes = null
+		?array $locationFields = null,
+		?array $itemFields = null,
+		?array $userFields = null,
+		?int $lastProcessedPage = null,
+		?int $totalPosts = null,
+		?string $transientName = null
 	) {
 
 		if ( ! array_key_exists( $exportType, \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTypes( true ) ) ) {
 			throw new ExportException( 'Post type to export not valid' );
-		} else {
-			if ( $exportType === 'all' ) {
+		} elseif ( $exportType === 'all' ) {
 				$exportType = 0;
-			} else {
-				$exportType = intval( $exportType );
-			}
+		} else {
+			$exportType = intval( $exportType );
 		}
 		$startDateTimestamp = strtotime( $exportStartDate );
 		if ( ! $startDateTimestamp ) {
-			throw new ExportException( __( "Invalid start date", 'commonsbooking' ) );
+			throw new ExportException( __( 'Invalid start date', 'commonsbooking' ) );
 		}
 		$endDateTimestamp = strtotime( $exportEndDate );
 		if ( ! $endDateTimestamp ) {
-			throw new ExportException( __( "Invalid end date", 'commonsbooking' ) );
+			throw new ExportException( __( 'Invalid end date', 'commonsbooking' ) );
 		}
 		if ( $startDateTimestamp > $endDateTimestamp ) {
-			throw new ExportException( __( "Start date must not be after the end date.", 'commonsbooking' ) );
+			throw new ExportException( __( 'Start date must not be after the end date.', 'commonsbooking' ) );
 		}
 
-		$this->exportFilename     = 'timeframe-export-' . date( 'Y-m-d-H-i-s' ) . '.csv';
-		$this->exportType         = $exportType;
-		$this->exportStartDate    = $exportStartDate;
-		$this->exportEndDate      = $exportEndDate;
-		$this->locationFields     = $locationFields;
-		$this->itemFields         = $itemFields;
-		$this->userFields         = $userFields;
-		$this->lastProcessedPage  = $lastProcessedPage;
-		$this->totalPosts         = $totalPosts;
-		$this->relevantTimeframes = $relevantTimeframes;
+		$this->exportFilename    = 'timeframe-export-' . date( 'Y-m-d-H-i-s' ) . '.csv';
+		$this->transientName     = $transientName ?? COMMONSBOOKING_PLUGIN_SLUG . '-' . $this->exportFilename;
+		$this->exportType        = $exportType;
+		$this->exportStartDate   = $exportStartDate;
+		$this->exportEndDate     = $exportEndDate;
+		$this->locationFields    = $locationFields;
+		$this->itemFields        = $itemFields;
+		$this->userFields        = $userFields;
+		$this->lastProcessedPage = $lastProcessedPage ? intval( $lastProcessedPage ) : null;
+		$this->totalPosts        = $totalPosts;
+
+		$this->relevantTimeframes = get_transient( $this->transientName ) ?: [];
 	}
 
 
+	/**
+	 * @return void
+	 * @throws CacheException
+	 * @throws InvalidArgumentException
+	 */
 	public static function ajaxExportCsv() {
-		//verify nonce
+		// verify nonce
 		check_ajax_referer( 'cb_export_timeframes', 'nonce' );
 
 		$postData = isset( $_POST['data'] ) ? (array) $_POST['data'] : array();
 		$postData = commonsbooking_sanitizeArrayorString( $postData );
 
 		$postSettings = $postData['settings'];
-
-		$relevantTimeframes = empty ( $postSettings['relevantTimeframes'] ) ? null : $postSettings['relevantTimeframes'];
-		if ( $relevantTimeframes !== null ) {
-			$relevantTimeframes = array_map( 'intval', $relevantTimeframes );
-		}
 
 		try {
 			$exportObject = new self(
@@ -133,41 +191,45 @@ class TimeframeExport {
 				$postSettings['userFields'] ? self::convertInputFields( $postSettings['userFields'] ) : null,
 				$postSettings['lastProcessedPage'] ?? null,
 				$postSettings['totalPages'] ?? null,
-				$relevantTimeframes,
+				$postSettings['transientName'] ?? null
 			);
 		} catch ( ExportException $e ) {
-			wp_send_json( array(
-				'success' => false,
-				'error'   => true,
-				'message' => $e->getMessage()
-			) );
-
-			return;
+			wp_send_json(
+				array(
+					'success' => false,
+					'error'   => true,
+					'message' => $e->getMessage(),
+				)
+			);
 		}
-		$nextPage = $exportObject->lastProcessedPage ? intval( $exportObject->lastProcessedPage ) + 1 : 1;
+		$nextPage = $exportObject->lastProcessedPage ? $exportObject->lastProcessedPage + 1 : 1;
 		$exportObject->getExportData( $nextPage );
 		if ( $exportObject->exportDataComplete ) {
 			try {
 				$csvString = $exportObject->getCSV();
 			} catch ( ExportException $e ) {
-				wp_send_json( array(
-					'success' => false,
-					'error'   => true,
-					'message' => $e->getMessage()
-				) );
-
-				return;
+				wp_send_json(
+					array(
+						'success' => false,
+						'error'   => true,
+						'message' => $e->getMessage(),
+					)
+				);
 			}
-			wp_send_json( array(
-				'success'  => true,
-				'error'    => false,
-				'message'  => __( 'Export finished', 'commonsbooking' ),
-				'csv'      => $csvString,
-				'filename' => $exportObject->exportFilename
-			) );
+			wp_send_json(
+				array(
+					'success'  => true,
+					'error'    => false,
+					'message'  => __( 'Export finished', 'commonsbooking' ),
+					'csv'      => $csvString,
+					'filename' => $exportObject->exportFilename,
+				)
+			);
 		} else {
+			// store intermediate result in transient
+			set_transient( $exportObject->transientName, $exportObject->relevantTimeframes, HOUR_IN_SECONDS );
 			$options = array(
-				'exportType'         => $exportObject->exportType == 0 ? "all" : $exportObject->exportType,
+				'exportType'         => $exportObject->exportType == 0 ? 'all' : $exportObject->exportType,
 				'exportStartDate'    => $exportObject->exportStartDate,
 				'exportEndDate'      => $exportObject->exportEndDate,
 				'locationFields'     => $exportObject->locationFields,
@@ -175,14 +237,16 @@ class TimeframeExport {
 				'userFields'         => $exportObject->userFields,
 				'lastProcessedPage'  => $exportObject->lastProcessedPage,
 				'totalPosts'         => $exportObject->totalPosts,
-				'relevantTimeframes' => $exportObject->relevantTimeframes,
+				'transientName' => $exportObject->transientName,
 			);
-			wp_send_json( array(
-				'success'  => false,
-				'error'    => false,
-				'settings' => $options,
-				'progress' => $exportObject->getProgressString()
-			) );
+			wp_send_json(
+				array(
+					'success'  => false,
+					'error'    => false,
+					'settings' => $options,
+					'progress' => $exportObject->getProgressString(),
+				)
+			);
 		}
 	}
 
@@ -243,24 +307,24 @@ class TimeframeExport {
 	 * @return string
 	 * @throws ExportException
 	 */
-	public function getCSV( string $exportPath = null ): string {
+	public function getCSV( ?string $exportPath = null ): string {
 		$inputFields = [
 			'location' => self::getInputFields( 'location-fields' ),
 			'item'     => self::getInputFields( 'item-fields' ),
-			'user'     => self::getInputFields( 'user-fields' )
+			'user'     => self::getInputFields( 'user-fields' ),
 		];
 
 		if ( ! $this->exportDataComplete ) {
-			throw new ExportException( __( "Export data is not complete. Please complete the process before trying to export.", 'commonsbooking' ) );
+			throw new ExportException( __( 'Export data is not complete. Please complete the process before trying to export.', 'commonsbooking' ) );
 		}
 
-		if ( $this->relevantTimeframes === null ) {
-			throw new ExportException( __( "No data was found for the selected time period", 'commonsbooking' ) );
+		if ( empty( $this->relevantTimeframes ) ) {
+			throw new ExportException( __( 'No data was found for the selected time period', 'commonsbooking' ) );
 		}
 
 		if ( $this->isCron ) {
 			if ( $exportPath === null ) {
-				throw new ExportException( __( "You need to set an export path to execute the export", 'commonsbooking' ) );
+				throw new ExportException( __( 'You need to set an export path to execute the export', 'commonsbooking' ) );
 			}
 			$output = fopen( $exportPath, 'w' );
 		} else {
@@ -273,7 +337,6 @@ class TimeframeExport {
 		$timeframeDataRows = self::getTimeframeData( $this->relevantTimeframes );
 
 		foreach ( $timeframeDataRows as $timeframeDataRow ) {
-
 			if ( ! $headline ) {
 				$headline    = true;
 				$headColumns = array_keys( $timeframeDataRow );
@@ -281,20 +344,23 @@ class TimeframeExport {
 				// Iterate through in put fields
 				foreach ( $inputFields as $type => $fields ) {
 					$columnNames = $fields;
-					array_walk( $columnNames, function ( &$item ) use ( $type ) {
-						$item = $type . ': ' . $item;
-					} );
+					array_walk(
+						$columnNames,
+						function ( &$item ) use ( $type ) {
+							$item = $type . ': ' . $item;
+						}
+					);
 					$headColumns = array_merge( $headColumns, $columnNames );
 				}
 
 				// output the column headings
-				fputcsv( $output, $headColumns, ";" );
+				fputcsv( $output, $headColumns, ';', escape: '\\' );
 			}
 
 			// output the column values
 			$valueColumns = array_values( $timeframeDataRow );
 
-			//TODO #507
+			// TODO #507
 			$timeframeDataPost = new \CommonsBooking\Model\Timeframe( $timeframeDataRow['ID'] );
 
 			// Get values for user defined input fields.
@@ -324,7 +390,7 @@ class TimeframeExport {
 				}
 			}
 
-			fputcsv( $output, $valueColumns, ";" );
+			fputcsv( $output, $valueColumns, ';', escape: '\\' );
 		}
 
 		if ( $this->isCron ) {
@@ -341,17 +407,18 @@ class TimeframeExport {
 	/**
 	 * Gets export fields array from the comma separated string in the settings.
 	 *
-	 * @param $inputString
+	 * @param string|null $inputString
 	 *
-	 * @return false|string[]
+	 * @return string[] returns an empty array when non-string or empty-string input
 	 */
-	private static function convertInputFields( $inputString ) {
+	private static function convertInputFields( $inputString ): array {
 		return array_filter( explode( ',', sanitize_text_field( $inputString ) ) );
 	}
 
 
 	/**
 	 * This will get a formatted string to display the pages that have been processed.
+	 *
 	 * @return string
 	 */
 	private function getProgressString(): string {
@@ -361,7 +428,8 @@ class TimeframeExport {
 		$totalBookings    = $this->totalPosts;
 		$progressBookings = $this->lastProcessedPage * self::ITERATION_COUNTS;
 
-		return sprintf( __( 'Processed %d of %d bookings', 'commonsbooking' ), $progressBookings, $totalBookings );
+		// translators: %1$d actual item number, %2$d total item number
+		return sprintf( __( 'Processed %1$d of %2$d bookings', 'commonsbooking' ), $progressBookings, $totalBookings );
 	}
 
 	/**
@@ -393,7 +461,6 @@ class TimeframeExport {
 		$start = $this->exportStartDate;
 		$end   = $this->exportEndDate;
 
-
 		// Timerange
 		$period = self::getPeriod( $start, $end );
 
@@ -403,14 +470,14 @@ class TimeframeExport {
 			$types = [ $this->exportType ];
 		}
 
-		//some custom arg for WP_Query to improve performance
+		// some custom arg for WP_Query to improve performance
 		$customArgs = [
-			"fields" => "ids",
+			'fields' => 'ids',
 		];
 
-		//when we already know the amount of posts, we can disable the SQL_CALC_FOUND_ROWS flag
+		// when we already know the amount of posts, we can disable the SQL_CALC_FOUND_ROWS flag
 		if ( $this->totalPosts !== null ) {
-			$customArgs["no_found_rows"] = true;
+			$customArgs['no_found_rows'] = true;
 		}
 
 		if ( $page == - 1 ) {
@@ -419,13 +486,13 @@ class TimeframeExport {
 					[],
 					[],
 					$this->exportType ? [ $this->exportType ] : [],
-					$dt->format( "Y-m-d" ),
+					$dt->format( 'Y-m-d' ),
 					false,
 					null,
 					[ 'canceled', 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 				);
 				foreach ( $dayTimeframes as $timeframe ) {
-					if ( ! is_array( $this->relevantTimeframes ) || ! in_array( $timeframe->ID, $this->relevantTimeframes ) ) {
+					if ( ! in_array( $timeframe->ID, $this->relevantTimeframes ) ) {
 						$this->relevantTimeframes[] = $timeframe->ID;
 					}
 				}
@@ -443,14 +510,14 @@ class TimeframeExport {
 				$customArgs
 			);
 			if ( $this->totalPosts === null ) {
-				$this->totalPosts = $relevantTimeframes['totalPosts'];
+				$this->totalPosts = intval( $relevantTimeframes['totalPosts'] );
 			}
 			$this->lastProcessedPage  = $page;
 			$this->exportDataComplete = $relevantTimeframes['done'];
 
-			if ( ! empty ( $relevantTimeframes['posts'] ) ) {
+			if ( ! empty( $relevantTimeframes['posts'] ) ) {
 				foreach ( $relevantTimeframes['posts'] as $timeframeID ) {
-					if ( ! is_array( $this->relevantTimeframes ) || ! in_array( $timeframeID, $this->relevantTimeframes ) ) {
+					if ( ! in_array( $timeframeID, $this->relevantTimeframes ) ) {
 						$this->relevantTimeframes[] = $timeframeID;
 					}
 				}
@@ -480,6 +547,7 @@ class TimeframeExport {
 
 	/**
 	 * Returns selected timeframe type id.
+	 *
 	 * @return int
 	 */
 	protected static function getType(): int {
@@ -489,7 +557,7 @@ class TimeframeExport {
 		if ( array_key_exists( 'export-type', $_REQUEST ) && $_REQUEST['export-type'] !== 'all' ) {
 			$type = intval( $_REQUEST['export-type'] );
 		} else {
-			//cron download
+			// cron download
 			$configuredType = Settings::getOption( 'commonsbooking_options_export', 'export-type' );
 			if ( $configuredType && $configuredType != 'all' ) {
 				$type = intval( $configuredType );
@@ -502,7 +570,7 @@ class TimeframeExport {
 	/**
 	 * Takes an array of timeframe IDs and returns an array of timeframe assoc array data for the table export
 	 *
-	 * @param int[] $timeframeIDs
+	 * @param int[] $timeframeIDs Array of timeframe post IDs
 	 *
 	 * @return array
 	 */
@@ -527,24 +595,26 @@ class TimeframeExport {
 			}
 
 			// Repetition option
-			$repetitions                                                       = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions();
-			$repetitionId                                                      = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_REPETITION );
+			$repetitions  = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getTimeFrameRepetitions();
+			$repetitionId = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_REPETITION );
 			$timeframeData[ \CommonsBooking\Model\Timeframe::META_REPETITION ] = array_key_exists( $repetitionId, $repetitions ) ?
 				$repetitions[ $repetitionId ] : __( 'Unknown', 'commonsbooking' );
 
 			// Grid option
 			$gridOptions           = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getGridOptions();
 			$gridOptionId          = $timeframePost->getGrid();
-			$timeframeData["grid"] = array_key_exists( $gridOptionId, $gridOptions ) ?
+			$timeframeData['grid'] = array_key_exists( $gridOptionId, $gridOptions ) ?
 				$gridOptions[ $gridOptionId ] : __( 'Unknown', 'commonsbooking' );
-
 
 			// get corresponding item title(s)
 			$items = $timeframePost->getItems();
 			if ( $items != null ) {
-				$items_title = array_map( function ( $item ) {
-					return $item->post_title;
-				}, $items );
+				$items_title = array_map(
+					function ( $item ) {
+						return $item->post_title;
+					},
+					$items
+				);
 			} else {
 				$items_title = __( 'Unknown', 'commonsbooking' );
 			}
@@ -552,39 +622,41 @@ class TimeframeExport {
 			// get corresponding location title(s)
 			$locations = $timeframePost->getLocations();
 			if ( $locations != null ) {
-				$locations_title = array_map( function ( $location ) {
-					return $location->post_title;
-				}, $locations );
+				$locations_title = array_map(
+					function ( $location ) {
+						return $location->post_title;
+					},
+					$locations
+				);
 			} else {
 				$locations_title = __( 'Unknown', 'commonsbooking' );
 			}
 			$timeframeOwner = $timeframePost->getUserData();
 
-
 			// populate simple meta fields
-			$timeframeData[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ]    = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_MAX_DAYS );
-			$timeframeData["full-day"]                                          = $timeframePost->getFieldValue( "full-day" );
+			$timeframeData[ \CommonsBooking\Model\Timeframe::META_MAX_DAYS ] = $timeframePost->getFieldValue( \CommonsBooking\Model\Timeframe::META_MAX_DAYS );
+			$timeframeData['full-day']                                       = $timeframePost->getFieldValue( 'full-day' );
 			$timeframeData[ \CommonsBooking\Model\Timeframe::REPETITION_START ] =
 				$timeframePost->getStartDate() ?
 					date( 'c', $timeframePost->getStartDate() ) : '';
 			$timeframeData[ \CommonsBooking\Model\Timeframe::REPETITION_END ]   =
 				$timeframePost->getEndDate() ?
 					date( 'c', $timeframePost->getEndDate() ) : '';
-			$timeframeData["start-time"]                                        = $timeframePost->getStartTime();
-			$timeframeData["end-time"]                                          = $timeframePost->getEndTime();
-			$timeframeData["pickup"]                                            = isset( $booking ) ? $booking->pickupDatetime() : "";
-			$timeframeData["return"]                                            = isset( $booking ) ? $booking->returnDatetime() : "";
-			$timeframeData["booking-code"]                                      = $timeframePost->getFieldValue( "_cb_bookingcode" );
-			$timeframeData["user-firstname"]                                    = $timeframeOwner ? $timeframeOwner->first_name : "";
-			$timeframeData["user-lastname"]                                     = $timeframeOwner ? $timeframeOwner->last_name : "";
-			$timeframeData["user-login"]                                        = $timeframeOwner ? $timeframeOwner->user_login : "";
-			$timeframeData["comment"]                                           = $timeframePost->getFieldValue( 'comment' );
+			$timeframeData['start-time']                                        = $timeframePost->getStartTime();
+			$timeframeData['end-time']       = $timeframePost->getEndTime();
+			$timeframeData['pickup']         = isset( $booking ) ? $booking->pickupDatetime() : '';
+			$timeframeData['return']         = isset( $booking ) ? $booking->returnDatetime() : '';
+			$timeframeData['booking-code']   = $timeframePost->getFieldValue( '_cb_bookingcode' );
+			$timeframeData['user-firstname'] = $timeframeOwner ? $timeframeOwner->first_name : '';
+			$timeframeData['user-lastname']  = $timeframeOwner ? $timeframeOwner->last_name : '';
+			$timeframeData['user-login']     = $timeframeOwner ? $timeframeOwner->user_login : '';
+			$timeframeData['comment']        = $timeframePost->getFieldValue( 'comment' );
 
 			foreach ( $locations_title as $location_title ) {
 				foreach ( $items_title as $item_title ) {
-					$timeframeData["location-post_title"] = $location_title;
-					$timeframeData["item-post_title"]     = $item_title;
-					//every item / location combination is a new row
+					$timeframeData['location-post_title'] = $location_title;
+					$timeframeData['item-post_title']     = $item_title;
+					// every item / location combination is a new row
 					$timeframeDataRows[] = $timeframeData;
 				}
 			}
@@ -594,9 +666,9 @@ class TimeframeExport {
 	}
 
 	/**
-	 * Removes not relevant fields from timeframedata.
+	 * Gets the fields from the timeframe object relevant for the export.
 	 *
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
+	 * @param \CommonsBooking\Model\Timeframe $timeframe The timeframe object to process
 	 *
 	 * @return array
 	 */
@@ -605,14 +677,14 @@ class TimeframeExport {
 		$relevantTimeframeFields = [
 			'ID',
 			'post_title',
-			"post_author",
-			"post_date",
-			"post_date_gmt",
-			"post_content",
-			"comment",
-			"post_excerpt",
-			"post_status",
-			"post_name"
+			'post_author',
+			'post_date',
+			'post_date_gmt',
+			'post_content',
+			'comment',
+			'post_excerpt',
+			'post_status',
+			'post_name',
 		];
 
 		return array_filter(
@@ -626,6 +698,7 @@ class TimeframeExport {
 
 	/**
 	 * Sets the cron flag. This is used to determine if the export is triggered by a cron job.
+	 *
 	 * @return void
 	 */
 	public function setCron(): void {

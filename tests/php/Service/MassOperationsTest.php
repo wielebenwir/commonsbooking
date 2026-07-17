@@ -13,17 +13,21 @@ class MassOperationsTest extends CustomPostTypeTest {
 
 	public function testMigrateOrphaned() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		//create an orphaned booking
-		$orphanMove  = new Booking( $this->createConfirmedBookingStartingToday() ); //this booking should be moved
-		$orphanStay  = new Booking( $this->createConfirmedBookingEndingToday() ); //this booking should stay
-		$newLocation = $this->createLocation( "New Location", 'publish' );
+		// create an orphaned booking
+		$orphanMove  = new Booking( $this->createConfirmedBookingStartingToday() ); // this booking should be moved
+		$orphanStay  = new Booking( $this->createConfirmedBookingEndingToday() ); // this booking should stay
+		$newLocation = $this->createLocation( 'New Location', 'publish' );
 		update_post_meta( $this->testTimeframe->ID, 'location-id', $newLocation );
 
-		//create new booking on new location that does not collide and is not an orphan
-		$noOrphan = new Booking( $this->createBooking( $newLocation,
-			$this->itemId,
-			strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
-			strtotime( '+8 days' ), strtotime( self::CURRENT_DATE ) )
+		// create new booking on new location that does not collide and is not an orphan
+		$noOrphan = new Booking(
+			$this->createBooking(
+				$newLocation,
+				$this->itemId,
+				strtotime( '+7 days', strtotime( self::CURRENT_DATE ) ),
+				strtotime( '+8 days' ),
+				strtotime( self::CURRENT_DATE )
+			)
 		);
 
 		$this->assertTrue( $orphanMove->isOrphaned() );
@@ -36,37 +40,37 @@ class MassOperationsTest extends CustomPostTypeTest {
 		$this->assertTrue( $orphanStay->isOrphaned() );
 		$this->assertEquals( $newLocation, get_post_meta( $orphanMove->ID, 'location-id', true ) );
 		$this->expectExceptionMessage( 'No bookings to move selected.' );
-		//empty array given
+		// empty array given
 		MassOperations::migrateOrphaned( [] );
 	}
 
 	public function testMigrateOrphanedWithExistingBooking() {
-		//test case #1695: there is already an existing booking on the new location
+		// test case #1695: there is already an existing booking on the new location
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		//create an orphaned booking
+		// create an orphaned booking
 		$toOrphan    = new Booking( $this->createConfirmedBookingStartingToday() );
-		$newLocation = $this->createLocation( "New Location", 'publish' );
+		$newLocation = $this->createLocation( 'New Location', 'publish' );
 		update_post_meta( $this->testTimeframe->ID, 'location-id', $newLocation );
 
-		//create a booking on the new location (in the place where we try to move the orphan later)
+		// create a booking on the new location (in the place where we try to move the orphan later)
 		new Booking( $this->createConfirmedBookingStartingToday( $newLocation ) );
 
 		$orphans = \CommonsBooking\Repository\Booking::getOrphaned();
 		$this->assertCount( 1, $orphans );
-		$this->expectExceptionMessage( "There is already a booking on the new location during the timeframe of booking with ID " . $toOrphan->ID );
+		$this->expectExceptionMessage( 'There is already a booking on the new location during the timeframe of booking with ID ' . $toOrphan->ID );
 		MassOperations::migrateOrphaned( [ $toOrphan->ID ] );
 	}
 
 	public function testMigrateOrphanedNoValidLocation() {
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
-		//create an orphaned booking
+		// create an orphaned booking
 		$toOrphan            = new Booking( $this->createConfirmedBookingStartingToday() );
 		$nonExistingLocation = '123456';
 		update_post_meta( $this->testTimeframe->ID, 'location-id', $nonExistingLocation );
 
 		$orphans = \CommonsBooking\Repository\Booking::getOrphaned();
 		$this->assertCount( 1, $orphans );
-		$this->expectExceptionMessage( "New location not found for booking with ID" );
+		$this->expectExceptionMessage( 'New location not found for booking with ID' );
 		MassOperations::migrateOrphaned( [ $toOrphan->ID ] );
 	}
 
