@@ -310,7 +310,7 @@ class BookingTest extends CustomPostTypeTest {
 
 		// Create the booking the "frontend" way so the correct grid sizes and bookable-timeframe
 		// meta fields are assigned, exactly as they would be for a real booking.
-		$bookingId = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
+		$bookingId          = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
 			$item,
 			$location,
 			'confirmed',
