@@ -30,7 +30,6 @@ Translations
 
   * [ Johannes Thies ](https://roesrath-velocity.de)
 
-CommonsBooking uses modules developed by the team of [ flotte Berlin
-](https://github.com/flotte-berlin) .
+CommonsBooking uses modules developed by the team of [flotte Berlin](https://github.com/flotte-berlin) .
 
 ![](/img/logos-supporter.png)

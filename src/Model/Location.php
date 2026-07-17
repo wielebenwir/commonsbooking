@@ -7,7 +7,7 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
-use Geocoder\Exception\Exception;
+use CommonsBooking\Geocoder\Exception\Exception;
 
 /**
  * This is the logical wrapper for the location custom post type.
@@ -258,6 +258,7 @@ class Location extends BookablePost {
 	/**
 	 * Will get the currently applicable restrictions for the location.
 	 *
+	 * @deprecated since 2.11, removal in 2.12
 	 * @return Restriction[]
 	 * @throws \Exception
 	 */

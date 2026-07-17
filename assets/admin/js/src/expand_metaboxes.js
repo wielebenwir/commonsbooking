@@ -1,7 +1,14 @@
 //will open all meta boxes by default
 //see #1932
 //this is an issue since WP 6.9
-const CB_POST_TYPES_WITH_METABOXES = [ 'cb_location', 'cb_item', 'cb_timeframe', 'cb_booking', 'cb_restriction', 'cb_map' ];
+const CB_POST_TYPES_WITH_METABOXES = [
+    'cb_location',
+    'cb_item',
+    'cb_timeframe',
+    'cb_booking',
+    'cb_restriction',
+    'cb_map',
+];
 (function waitForWP() {
     if (window.wp && wp.data && wp.data.select && wp.data.subscribe) {
         init();
@@ -20,7 +27,7 @@ function init() {
 
         unsubscribe(); //prevent this code from running again
 
-        if ( !CB_POST_TYPES_WITH_METABOXES.includes( postType ) ) {
+        if (!CB_POST_TYPES_WITH_METABOXES.includes(postType)) {
             return;
         }
 
@@ -31,7 +38,8 @@ function init() {
             const isOpen = prefs.get('core/edit-post', 'metaBoxesMainIsOpen');
 
             if (undefined === isOpen) {
-                wp.data.dispatch('core/preferences')
+                wp.data
+                    .dispatch('core/preferences')
                     .set('core/edit-post', 'metaBoxesMainIsOpen', true);
             }
         }

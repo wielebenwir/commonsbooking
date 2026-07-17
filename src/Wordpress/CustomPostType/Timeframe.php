@@ -594,7 +594,13 @@ class Timeframe extends CustomPostType {
 			),
 			array(
 				'name'    => esc_html__( 'Grid', 'commonsbooking' ),
-				'desc'    => commonsbooking_sanitizeHTML( __( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: <a target="_blank" href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/">Manage Booking Timeframes</a>', 'commonsbooking' ) ),
+				'desc'    => commonsbooking_sanitizeHTML(
+					sprintf(
+						__( 'Choose whether users can only select the entire from/to time period when booking (full slot) or book within the time period in an hourly grid. See the documentation: %1$sManage Booking Timeframes%2$s', 'commonsbooking' ),
+						'<a target="_blank" href="' . esc_url( 'https://commonsbooking.org/documentation/first-steps/booking-timeframes-manage/' ) . '">',
+						'</a>'
+					)
+				),
 				'id'      => 'grid',
 				'type'    => 'select',
 				'options' => self::getGridOptions(),
@@ -710,13 +716,17 @@ class Timeframe extends CustomPostType {
 			array(
 				'name' => esc_html__( 'Booking Codes', 'commonsbooking' ),
 				'desc' => commonsbooking_sanitizeHTML(
-					__(
-						'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
+					sprintf(
+						__(
+							'You can automatically generate booking codes. Codes can be generated only with the following settings:</br>
 				- Whole day is enabled</br>
 				- Timeframe is bookable</br>
-				<a href="https://commonsbooking.org/dokumentation/erste-schritte/buchungszeitraeume-verwalten/" target="_blank">More Information in the documentation</a>
+				%1$sMore Information in the documentation%2$s
 				',
-						'commonsbooking'
+							'commonsbooking'
+						),
+						'<a href="' . esc_url( 'https://commonsbooking.org/documentation/first-steps/booking-timeframes-manage/' ) . '" target="_blank">',
+						'</a>'
 					)
 				),
 				'id'   => 'title-timeframe-booking-codes',
@@ -1105,7 +1115,7 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_SHOW_BOOKING_CODES,
 		];
 		// remove multi-select postmeta if not relevant (#507)
-		$onlyRelevantForHolidays = [
+		$onlyRelevantForHolidaysOrRepair = [
 			\CommonsBooking\Model\Timeframe::META_ITEM_ID_LIST,
 			\CommonsBooking\Model\Timeframe::META_LOCATION_ID_LIST,
 			\CommonsBooking\Model\Timeframe::META_ITEM_CATEGORY_IDS,
@@ -1114,14 +1124,15 @@ class Timeframe extends CustomPostType {
 			\CommonsBooking\Model\Timeframe::META_LOCATION_SELECTION_TYPE,
 		];
 
-		if ( $timeframe->getType() != self::BOOKABLE_ID ) {
+		$type = $timeframe->getType();
+		if ( $type !== self::BOOKABLE_ID ) {
 			foreach ( $onlyRelevantForBookable as $metaKey ) {
 				delete_post_meta( $timeframe->ID, $metaKey );
 			}
 		}
 
-		if ( $timeframe->getType() != self::HOLIDAYS_ID ) {
-			foreach ( $onlyRelevantForHolidays as $metaKey ) {
+		if ( ! ( $type === self::HOLIDAYS_ID || $type === self::REPAIR_ID ) ) {
+			foreach ( $onlyRelevantForHolidaysOrRepair as $metaKey ) {
 				delete_post_meta( $timeframe->ID, $metaKey );
 			}
 			// reset to manual selection

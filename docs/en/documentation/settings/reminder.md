@@ -1,6 +1,4 @@
-#  Reminder via email concerning bookings
-
-__
+# Reminder via email concerning bookings
 
 In addition to the emails that users receive when confirming or canceling a booking, CommonsBooking can also send reminder emails to users and locations before the start or after the end of a booking. These can be activated and deactivated individually. This page provides an overview of all email notifications sent by CommonsBooking.
 
@@ -18,13 +16,13 @@ CommonsBooking will send the following emails to users, the text of which can be
     * Template under "Settings → CommonsBooking → Restrictions"
     * Is sent by default as a blind carbon copy to station emails (see below) 
 
-  * **Booking reminder** .
+  * **Booking reminder**
     * Not enabled by default
     * Template under "Settings → CommonsBooking → Reminder"
     * Intended purpose is to ask users whether the booking should remain or possibly be canceled.
   * **Email after booking has ended** :
     * Not enabled by default
-    * One day after the booking, users receive an email where they can be asked if they had any problems or if they would to to donate etc.
+    * One day after the booking, users receive an email where they can be asked if they had any problems or if they would like to donate etc.
 
 ## To your team
 
@@ -38,7 +36,7 @@ CommonsBooking will send the following emails to users, the text of which can be
   * **Locations** (under Location → Location Email) receive **reminders about bookings** if the option under "Settings → "Reminders → Reminder for locations before booking start" or "Reminder for locations before booking end" is set AND in the corresponding location the option "Reminder email for booking start" or "Reminder email for booking end" is enabled.
 
 ::: warning **Important**
-It is not enough to enter people as [location managers](/en/documentation/basics/permission-management) for them to be notified. In order to receive emails, the recipients address must be entered in the field "Location → Location Email".
+It is not enough to enter people as [location managers](../basics/permission-management) for them to be notified. In order to receive emails, the recipients address must be entered in the field "Location → Location Email".
 :::
 
 ### Item maintainers

@@ -28,7 +28,7 @@ class ItemsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.items.schema.json';
+	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.items.schema.json';
 
 	/**
 	 * Returns raw data collection.
@@ -51,8 +51,11 @@ class ItemsRoute extends BaseRoute {
 
 		$items = Item::get( $args );
 		foreach ( $items as $item ) {
-			$itemdata      = $this->prepare_item_for_response( $item, $request );
-			$data->items[] = $this->prepare_response_for_collection( $itemdata );
+			$itemdata = $this->prepare_item_for_response( $item, $request );
+			if ( $item->getMeta( COMMONSBOOKING_METABOX_PREFIX . 'api_exclude' ) == 'on' ) {
+				continue;
+			}
+			$data->items[] = $itemdata->get_data();
 		}
 
 		return $data;
@@ -98,11 +101,7 @@ class ItemsRoute extends BaseRoute {
 			}
 		}
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $data );
 	}
 
 	/**
@@ -114,7 +113,8 @@ class ItemsRoute extends BaseRoute {
 	 */
 	public function get_item( $request ): WP_REST_Response {
 		$data = $this->getItemData( $request );
-		return new WP_REST_Response( $data, 200 );
+
+		return $this->respond_with_validation( $data );
 	}
 
 	/**
@@ -126,10 +126,11 @@ class ItemsRoute extends BaseRoute {
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem              = new stdClass();
 		$preparedItem->id          = $item->ID . '';
-		$preparedItem->name        = $item->post_title;
+		$preparedItem->name        = $this->decodeApiTitle( $item->post_title );
 		$preparedItem->url         = get_permalink( $item->ID );
 		$preparedItem->description = $this->escapeJsonString( $item->post_content );
-		$preparedItem->projectId   = '1';
+		$preparedItem->ownerId     = '';  // not implemented, but currently required by schema
+		$preparedItem->projectId   = '1'; // not implemented, but currently required by schema
 
 		$thumbnailId = get_post_thumbnail_id( $item->ID );
 		if ( $thumbnailId ) {

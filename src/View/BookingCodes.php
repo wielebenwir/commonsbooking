@@ -181,7 +181,7 @@ class BookingCodes {
 				__( 'Unable to send Emails. No location email(s) configured, check location', 'commonsbooking' ) .
 													sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_edit_post_link( $location->ID ) ), commonsbooking_sanitizeHTML( $location->post_title ) )
 			);
-		} elseif ( ! $timeframe->hasBookingCodes() ) {
+		} elseif ( ! $timeframe->usesBookingCodes() ) {
 			$errMsg = commonsbooking_sanitizeHTML( __( 'This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking' ) );
 		}
 
@@ -290,7 +290,7 @@ HTML;
 				__( 'Unable to send Emails. No location email(s) configured, check location', 'commonsbooking' ) .
 				sprintf( ' <a href="%s" class="cb-title cb-title-link">%s</a>', esc_url( get_edit_post_link( $location->ID ) ), commonsbooking_sanitizeHTML( $location->post_title ) )
 			);
-		} elseif ( ! $timeframe->hasBookingCodes() ) {
+		} elseif ( ! $timeframe->usesBookingCodes() ) {
 			echo commonsbooking_sanitizeHTML( __( 'This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking' ) );
 		} else {
 			echo '
@@ -386,10 +386,13 @@ HTML;
                 <div class="cmb-th">
                     <label for="booking-codes-download-link">' . commonsbooking_sanitizeHTML( __( 'Download booking codes', 'commonsbooking' ) ) . '</label>
                 </div>
-                <div id="booking-codes-download" class="cmb-td">' . ( $timeframe->hasBookingCodes() ? '
+                <div id="booking-codes-download" class="cmb-td">' . ( $timeframe->usesBookingCodes() ? '
                     <a id="booking-codes-download-link" href="' . esc_url( add_query_arg( [ 'action' => 'cb_download-bookingscodes-csv' ] ) ) . '" target="_blank"><strong>Download booking codes</strong></a>
                     <p  class="cmb2-metabox-description">
-                    ' . commonsbooking_sanitizeHTML( sprintf( __( 'Will download all available booking codes for this timeframe. If the timeframe has no end-date, the booking codes for the next %s days will be retrieved.', 'commonsbooking' ), \CommonsBooking\Repository\BookingCodes::ADVANCE_GENERATION_DAYS ) ) . '<br>
+                    ' .
+					// translators: %s number of days
+					commonsbooking_sanitizeHTML( sprintf( __( 'Will download all available booking codes for this timeframe. If the timeframe has no end-date, the booking codes for the next %s days will be retrieved.', 'commonsbooking' ), \CommonsBooking\Repository\BookingCodes::ADVANCE_GENERATION_DAYS ) )
+					. '<br>
                     ' . commonsbooking_sanitizeHTML( __( 'The file will be exported as tab delimited .txt file so you can choose wether you want to print it, open it in a separate application (like Word, Excel etc.)', 'commonsbooking' ) ) . '
                     </p>' : commonsbooking_sanitizeHTML( __( 'This timeframe has no booking codes. To generate booking codes you need to save the timeframe.', 'commonsbooking' ) ) ) . '
                 </div>
@@ -407,11 +410,12 @@ HTML;
                     <label id="booking-codes-list">' . commonsbooking_sanitizeHTML( __( 'Booking codes list', 'commonsbooking' ) ) . '</label>
                 </div>
                 <div class="cmb-td">';
-			if ( $timeframe->hasBookingCodes() ) {
+			if ( $timeframe->usesBookingCodes() ) {
 				echo self::renderTableFor( 'timeframe_form', $bookingCodes );
 
 				echo '<br>';
 				echo '<p  class="cmb2-metabox-description">';
+					// translators: %s is a positive number
 					printf( __( 'Only showing booking codes for the next %s days.', 'commonsbooking' ), $bcToShow );
 					echo '<br>';
 					echo __( 'The amount of booking codes shown in the overview can be changed in the settings.', 'commonsbooking' );
@@ -543,7 +547,6 @@ HTML;
 			2
 		);
 
-		// @phpstan-ignore deadCode.unreachable (false positive, covered by unit tests)
 		$booking_msg = new BookingCodesMessage( $timeframeId, 'codes', $tsFrom, $tsTo );
 		$booking_msg->sendMessage();
 

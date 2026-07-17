@@ -526,13 +526,16 @@ class TimeframeTest extends CustomPostTypeTest {
 		$timeframe         = new Timeframe( $timeframe );
 
 		wp_set_current_user( $this->subscriberId );
-		$this->assertFalse( $timeframe->isUserPrivileged() );
+		$currentUser = wp_get_current_user();
+		$this->assertFalse( $timeframe->isUserPrivileged( $currentUser ) );
 
 		wp_set_current_user( $this->cbManagerUserID );
-		$this->assertTrue( $timeframe->isUserPrivileged() );
+		$currentUser = wp_get_current_user();
+		$this->assertTrue( $timeframe->isUserPrivileged( $currentUser ) );
 
 		wp_set_current_user( $this->adminUserID );
-		$this->assertTrue( $timeframe->isUserPrivileged() );
+		$currentUser = wp_get_current_user();
+		$this->assertTrue( $timeframe->isUserPrivileged( $currentUser ) );
 	}
 
 	public function testisValid_throwsException() {

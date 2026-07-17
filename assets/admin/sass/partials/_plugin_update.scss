@@ -3,33 +3,41 @@
  *
  */
 
- .cb-major-update-warning {
+.cb-major-update-warning {
     margin-bottom: 5px;
     max-width: 1000px;
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex; }
-    .cb-major-update-warning__separator {
-      margin: 15px -12px; }
-    .cb-major-update-warning__icon {
-      font-size: 17px;
-      margin-left: 9px;
-      margin-right: 5px; }
-    .cb-major-update-warning__title {
-      font-weight: 600;
-      margin-bottom: 10px; }
-    .cb-major-update-warning + p {
-      display: none; }
+    display: flex;
+}
+.cb-major-update-warning__separator {
+    margin: 15px -12px;
+}
+.cb-major-update-warning__icon {
+    font-size: 17px;
+    margin-left: 9px;
+    margin-right: 5px;
+}
+.cb-major-update-warning__title {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.cb-major-update-warning + p {
+    display: none;
+}
 
-    .notice-success .cb-major-update-warning__separator {
-    border: 1px solid var(--commonsbooking-color-success); }
-    
-    .notice-success .cb-major-update-warning__icon {
-    color: var(--commonsbooking-color-success); }
-    
-    .notice-warning .cb-major-update-warning__separator {
-    border: 1px solid var(--commonsbooking-color-warning); }
-    
-    .notice-warning .cb-major-update-warning__icon {
-    color: var(--commonsbooking-color-success); }
-      
+.notice-success .cb-major-update-warning__separator {
+    border: 1px solid var(--commonsbooking-color-success);
+}
+
+.notice-success .cb-major-update-warning__icon {
+    color: var(--commonsbooking-color-success);
+}
+
+.notice-warning .cb-major-update-warning__separator {
+    border: 1px solid var(--commonsbooking-color-warning);
+}
+
+.notice-warning .cb-major-update-warning__icon {
+    color: var(--commonsbooking-color-success);
+}

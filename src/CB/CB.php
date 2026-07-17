@@ -65,8 +65,10 @@ class CB {
 		 * @since 2.1.1
 		 *
 		 * @param string|null $result from property lookup
+		 * @param WP_Post|WP_User|CustomPost $wpObject current post object
+		 * @param mixed|null $args additional args passed to the property/method
 		 */
-		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result );
+		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result, $wpObject, $args );
 	}
 
 	/**

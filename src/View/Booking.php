@@ -39,7 +39,7 @@ class Booking extends View {
 	 * @return array|false|mixed
 	 * @throws Exception
 	 */
-	public static function getBookingListData( int $postsPerPage = 6, \WP_User $user = null ) {
+	public static function getBookingListData( int $postsPerPage = 6, ?\WP_User $user = null ) {
 
 		// sets selected user to current user when no specific user is passed
 		if ( $user == null ) {
@@ -344,9 +344,15 @@ class Booking extends View {
 
 		try {
 			$itemModel = new \CommonsBooking\Model\Item( $itemID );
-			$location  = \CommonsBooking\Repository\Location::getByItem( $itemID, true );
-			// pick the first location, no matter what
-			$location  = reset( $location );
+			$location  = $itemModel->getLocation();
+			if ( ! $location ) {
+				// This won't be displayed anywhere
+				wp_send_json_error(
+					array(
+						'message' => 'No location found for this item.',
+					)
+				);
+			}
 			$timeframe = Timeframe::getBookable(
 				[ $location->ID ],
 				[ $itemID ],
@@ -363,22 +369,13 @@ class Booking extends View {
 				)
 			);
 		}
-		if ( $location ) {
-			wp_send_json(
-				array(
-					'success'     => true,
-					'locationID'  => $location->ID,
-					'fullDay'     => $timeframe->isFullDay(),
-				)
-			);
-		} else {
-			// This won't be displayed anywhere
-			wp_send_json_error(
-				array(
-					'message' => 'No location found for this item.',
-				)
-			);
-		}
+		wp_send_json(
+			array(
+				'success'     => true,
+				'locationID'  => $location->ID,
+				'fullDay'     => $timeframe->isFullDay(),
+			)
+		);
 	}
 
 	/**
@@ -503,10 +500,16 @@ class Booking extends View {
 	 * @throws Exception
 	 */
 	public static function getBookingListiCal( $user = null ) {
-		$eventTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
-		$eventDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
+		$userBookingTitle_unparsed            = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+		$userBookingDescription_unparsed      = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+		$otherUserBookingTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
+		$otherUserBookingDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
 
-		$user = get_user_by( 'id', $user );
+		if ( $user == null ) {
+			$user = wp_get_current_user();
+		} else {
+			$user = get_user_by( 'id', $user );
+		}
 
 		if ( ! $user ) {
 			return false;
@@ -521,22 +524,27 @@ class Booking extends View {
 
 		$calendar = new iCalendar();
 
-		foreach ( $bookingList['data'] as $booking ) {
-			$booking_model = new \CommonsBooking\Model\Booking( $booking['postID'] );
-			if ( ! $booking_model->isConfirmed() ) {
+		foreach ( $bookingList['data'] as $bookingData ) {
+			$booking = \CommonsBooking\Repository\Booking::getPostById( $bookingData['postID'] );
+			if ( ! $booking->isConfirmed() ) {
 				continue;
 			}
+
+			$bookingUser      = $booking->getUserData();
+			$isOwnBooking     = $bookingUser->ID === $user->ID;
 			$template_objects = [
-				'booking'  => $booking_model,
-				'item'     => $booking_model->getItem(),
-				'location' => $booking_model->getLocation(),
-				'user'     => $booking_model->getUserData(),
+				'booking'  => $booking,
+				'item'     => $booking->getItem(),
+				'location' => $booking->getLocation(),
+				'user'     => $booking->getUserData(),
 			];
 
-			$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle_unparsed, $template_objects ) );
-			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription_unparsed, $template_objects ) ) );
+			$eventTitle_unparsed       = $isOwnBooking ? $userBookingTitle_unparsed : $otherUserBookingTitle_unparsed;
+			$eventDescription_unparsed = $isOwnBooking ? $userBookingDescription_unparsed : $otherUserBookingDescription_unparsed;
+			$eventTitle                = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle_unparsed, $template_objects ) );
+			$eventDescription          = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription_unparsed, $template_objects ) ) );
 
-			$calendar->addBookingEvent( $booking_model, $eventTitle, $eventDescription );
+			$calendar->addBookingEvent( $booking, $eventTitle, $eventDescription );
 		}
 
 		return $calendar->getCalendarData();

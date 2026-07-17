@@ -46,6 +46,27 @@ class Calendar {
 	protected array $timeframes;
 
 	/**
+	 * When this is enabled, @see Timeframe::META_BOOKING_START_DAY_OFFSET is ignored.
+	 * This is used for the API routes, where we want to show the actual availability of the items, regardless of the booking start day offset.
+	 *
+	 * @var bool
+	 */
+	protected bool $ignoreStartDayOffset = false;
+
+	/**
+	 * When this is enabled, restrictions are ignored when creating availabilities.
+	 * This is useful when you want to differentiate between an item that is booked / not available
+	 * and an item that would be bookable but is in repair.
+	 *
+	 * Just passed to the \CommonsBooking\Model\Day model, because restriction calculations are made there
+	 *
+	 * Used in @see \CommonsBooking\API\GBFS\VehicleStatus to differentiate between booked items and disabled items
+	 *
+	 * @var bool
+	 */
+	protected bool $ignoreRestrictions = false;
+
+	/**
 	 * Calendar constructor.
 	 *
 	 * @param Day   $startDate
@@ -59,6 +80,9 @@ class Calendar {
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
 		}
+
+		$startDate->setIgnoreRestrictions( $this->ignoreRestrictions );
+		$endDate->setIgnoreRestrictions( $this->ignoreRestrictions );
 
 		$this->startDate = $startDate;
 		$this->endDate   = $endDate;
@@ -79,6 +103,8 @@ class Calendar {
 
 	/**
 	 * Returns weeks for calendar time range.
+	 *
+	 * Uses cache and expires at midnight on a daily basis.
 	 *
 	 * @return array
 	 */
@@ -137,6 +163,7 @@ class Calendar {
 		foreach ( $this->getWeeks() as $week ) {
 			/** @var Day $day */
 			foreach ( $week->getDays() as $day ) {
+				$day->setIgnoreRestrictions( $this->ignoreRestrictions );
 				foreach ( $day->getGrid() as $slot ) {
 					$timeframe     = new Timeframe( $slot['timeframe'] );
 					$timeFrameType = get_post_meta( $slot['timeframe']->ID, 'type', true );
@@ -147,7 +174,7 @@ class Calendar {
 					}
 
 					// Skip timeframes that are not bookable today
-					if ( $timeframe->getFirstBookableDay() > $day->getDate() ) {
+					if ( ! $this->ignoreStartDayOffset && $timeframe->getFirstBookableDay() > $day->getDate() ) {
 						continue;
 					}
 
@@ -182,5 +209,13 @@ class Calendar {
 			}
 		}
 		return $slots;
+	}
+
+	public function setIgnoreStartDayOffset( bool $ignoreStartDayOffset ): void {
+		$this->ignoreStartDayOffset = $ignoreStartDayOffset;
+	}
+
+	public function setIgnoreRestrictions( bool $ignoreRestrictions ): void {
+		$this->ignoreRestrictions = $ignoreRestrictions;
 	}
 }

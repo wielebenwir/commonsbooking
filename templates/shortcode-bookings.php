@@ -12,7 +12,8 @@
 
 global $templateData;
 if ( ! is_user_logged_in() ) {
-	$current_url  = $_SERVER['REQUEST_URI'];
+	$current_url = $_SERVER['REQUEST_URI'];
+	// translators: %s is the url to the login
 	$noResultText = sprintf( commonsbooking_sanitizeHTML( __( 'Please <a href="%s"> login </a> to see your bookings.', 'commonsbooking' ) ), wp_login_url( $current_url ) );
 } else {
 	$noResultText = commonsbooking_sanitizeHTML( __( 'No bookings available.', 'commonsbooking' ) );

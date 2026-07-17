@@ -1,0 +1,16 @@
+name: Check js formatting
+on:
+  pull_request:
+  push:
+permissions: {}
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+      - run: |
+          yarn
+          yarn prettier . --check

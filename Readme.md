@@ -1,25 +1,28 @@
 [![PHP Composer](https://github.com/wielebenwir/commonsbooking/actions/workflows/phpunit.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/phpunit.yml)
 [![E2E Tests](https://github.com/wielebenwir/commonsbooking/actions/workflows/e2e.yml/badge.svg)](https://github.com/wielebenwir/commonsbooking/actions/workflows/e2e.yml)
-[![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest) 
+[![WP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/wp-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
 [![PHP compatibility](https://plugintests.com/plugins/wporg/commonsbooking/php-badge.svg)](https://plugintests.com/plugins/wporg/commonsbooking/latest)
 [![codecov](https://codecov.io/gh/wielebenwir/commonsbooking/branch/master/graph/badge.svg?token=STJC8WPWIC)](https://codecov.io/gh/wielebenwir/commonsbooking)
 
 # CommonsBooking
 
-Contributors: wielebenwirteam, m0rb, flegfleg, chriwen  
-Donate link: https://www.wielebenwir.de/verein/unterstutzen  
-License: GPLv2 or later  
-License URI: http://www.gnu.org/licenses/gpl-2.0.html  
+**Contributors**: wielebenwirteam, m0rb, flegfleg, chriwen, hansmorb, datengraben
 
-CommonsBooking is a plugin for the management and booking of common goods. This plugin provides associations, groups, and individuals with the ability to share items (such as cargo bikes and tools) among users. It is based on the concept of Commons, where resources are shared for the benefit of the community.
+**Donate link**: https://www.wielebenwir.de/verein/unterstutzen
+
+**License**: GPLv2 or later
+
+**License URI**: http://www.gnu.org/licenses/gpl-2.0.html
+
+CommonsBooking is a plugin for the management and booking of common goods. This plugin gives associations, groups and individuals the ability to share items (e.g. cargo bikes, tools) with users. It is based on the idea of the commons and sharing resources for the benefit of the community.
 
 ## Links
 
 * [WordPress Plugin Page](https://wordpress.org/plugins/commonsbooking/)
 * [View Changelog](https://wordpress.org/plugins/commonsbooking/#developers)
 * [Official Website](https://commonsbooking.org)
-* For users read the [documentation](https://commonsbooking.org/dokumentation) or get [Support](https://commonsbooking.org/kontakt/)
-* For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) 
+* For users read the [documentation](https://commonsbooking.org/documentation) or get [Support](https://commonsbooking.org/contact/)
+* For developers use the [Bug-Tracker](https://github.com/wielebenwir/commonsbooking/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug)
 
 ## Installation
 
@@ -29,9 +32,9 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 2. Search for 'commonsbooking'
 3. Click 'Install Now'
 4. Activate the plugin in the plugins dashboard
- 
 
-### Uploading in WordPress Dashboard 
+
+### Uploading in WordPress Dashboard
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Navigate to the 'Upload' area
@@ -57,7 +60,7 @@ CommonsBooking is a plugin for the management and booking of common goods. This 
 
 ## Contribute
 
-Contributions are welcome either through 
+Contributions are welcome either through
 
 * Translating WordPress into your native tongue ([see the already existing WordPress Plugin Translations](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/))
 * Improving or translating the documentation at https://commonsbooking.org
@@ -81,11 +84,12 @@ Optional (for [wp-env](https://developer.wordpress.org/block-editor/reference-gu
 
 ### Run plugin
 
-First, we have to install the necessary dependencies and packages: We can do this using 
+First, we have to install the necessary dependencies and packages: We can do this using
 ```
 npm run start
 ```
 `npm run start` runs `composer install`, `npm install` and then builds assets via `grunt dist`.
+This might take a while, as dependencies are downloaded and namespaces are prefixed using Strauss.
 
 The most easy way to start hacking WordPress plugins in general (if you have no other development environment set up) is using [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install it and it's dependencies (mainly Docker) and run this to start the enviroment:
 ```
@@ -105,14 +109,14 @@ To test the code you first run the [preparation scripts](https://github.com/wp-c
 bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
 ```
 
-Testing the plugin code via `phpunit`. At the moment it works only with a manually downloaded phar. We are using PHPUnit 9 and PHP7.4 for the automated tests. The tests might fail if you are using a different version.
+Testing the plugin code via `phpunit`. We are using PHPUnit 9, because it is the latest version currently compatible with the WordPress testing suite.
 ```
-php ~/phpunit.phar --bootstrap tests/php/bootstrap.php
+php vendor/bin/phpunit --bootstrap tests/php/bootstrap.php
 ```
 
 E2E (end to end) tests are written in [cypress](https://www.cypress.io/). To run them you need to install cypress and start the wordpress environment:
 ```bash
-npm run env:start
+npm run env:test:start
 ```
 Now, install the test data needed for the tests:
 ```bash
@@ -130,18 +134,32 @@ npm run cypress:open
 
 ### Update translations
 
-Currently, we only manage German and English translations as po files in the repository, so they are available at build time. 
+Currently, we only manage German and English translations as po files in the repository, so they are available at build time.
 See the [WordPress plugin translation page](https://translate.wordpress.org/projects/wp-plugins/commonsbooking/) for other languages available at runtime.
 
-Create a new .pot file using the 
+Create a new .pot file using the
 ```
 wp i18n make-pot . languages/commonsbooking.pot
 ```
-command in the plugin directory. Make sure that all of your strings use the `__` function with the domain `commonsbooking`. Then you can use `poedit` to open the `commonsbooking-de_DE.po` and update the strings from the `pot` file. 
+command in the plugin directory. Make sure that all of your strings use the `__` function with the domain `commonsbooking`. Then you can use `poedit` to open the `commonsbooking-de_DE.po` and update the strings from the `pot` file.
 
 ### Build plugin zip
 
 To create the plugin zip file for uploading to a development server:
 ```
 bin/build-zip.sh
+```
+
+### Benchmark
+
+First, install test data like you would for the unit tests:
+
+```
+bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
+```
+
+Then run
+
+```
+./vendor/bin/phpbench run tests/benchmark --report=aggregate
 ```
