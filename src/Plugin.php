@@ -384,7 +384,7 @@ class Plugin {
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName(),
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName() . '&post_type=' . Item::getPostType(),
 				''
 			);
 
@@ -394,7 +394,7 @@ class Plugin {
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName(),
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName() . '&post_type=' . Location::getPostType(),
 				''
 			);
 
