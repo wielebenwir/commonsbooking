@@ -1,6 +1,11 @@
 #  Artikel anlegen
 
 
+:::tip Wofür nutze ich Kategorien?
+Dieser WordPress Post-Typ kann mit einer [Kategorie](https://wordpress.org/documentation/article/posts-categories-screen/) konfiguriert werden.
+Innerhalb von CommonsBooking kannst du Kategorien eines Artikels in den [Shortcodes](../administration/shortcodes) verwenden.
+:::
+
 **Beschreibung des Artikels**
 
 Nutze den großen Texteditor oben auf der Artikelseite nur für die
@@ -29,3 +34,4 @@ Ergänze hier die Kurzversion der Artikelbeschreibung, diese wird in der Artikel
 
 Es ist möglich einen Artikel mit einem Passwort zu versehen. Klicke dafür neben "Status" auf der rechten Seite des Artikels und füge ein Passwort hinzu. Jetzt können Nutzende diesen Artikel nur buchen, wenn das korrekte Passwort eingegeben wurde.
 ![](/img/item-password.png){width="400"}
+

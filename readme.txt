@@ -81,6 +81,8 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
+FIXED: Admin list for items and locations are able to filter by their respective category
+
 ### 2.11 (13.07.2026)
 ADDED: GBFS routes vehicle_availability.json, vehicle_types.json, vehicle_status.json
 ADDED: Multi-select now also available for timeframes of type repair
