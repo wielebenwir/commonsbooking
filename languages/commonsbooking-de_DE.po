@@ -510,8 +510,8 @@ msgid "The color used for dark text on light backgrounds"
 msgstr "Die Farbe, die für dunklen Text auf hellem Hintergrund verwendet wird"
 
 #: includes/OptionsArray.php:644
-#: src/Wordpress/CustomPostType/Restriction.php:305
-#: src/Wordpress/CustomPostType/Restriction.php:326
+#: src/Wordpress/CustomPostType/Restriction.php:287
+#: src/Wordpress/CustomPostType/Restriction.php:308
 #: templates/dashboard-index.php:47
 msgid "Restrictions"
 msgstr "Einschränkungen"
@@ -809,7 +809,7 @@ msgstr "Zeitrahmen-Export herunterladen"
 #: includes/OptionsArray.php:1321
 #: src/Wordpress/CustomPostType/Map.php:557
 #: src/Wordpress/CustomPostType/Restriction.php:47
-#: src/Wordpress/CustomPostType/Restriction.php:415
+#: src/Wordpress/CustomPostType/Restriction.php:397
 #: src/Wordpress/CustomPostType/Timeframe.php:98
 #: src/Wordpress/CustomPostType/Timeframe.php:455
 msgid "Type"
@@ -1276,14 +1276,14 @@ msgstr "Der Ordner %s ist nicht beschreibbar."
 
 #: src/View/Admin/Filter.php:58
 #: src/Wordpress/CustomPostType/Booking.php:792
-#: src/Wordpress/CustomPostType/Restriction.php:451
+#: src/Wordpress/CustomPostType/Restriction.php:433
 #: src/Wordpress/CustomPostType/Timeframe.php:678
 msgid "Start date"
 msgstr "Startdatum"
 
 #: src/View/Admin/Filter.php:62
 #: src/Wordpress/CustomPostType/Booking.php:809
-#: src/Wordpress/CustomPostType/Restriction.php:461
+#: src/Wordpress/CustomPostType/Restriction.php:443
 #: src/Wordpress/CustomPostType/Timeframe.php:702
 msgid "End date"
 msgstr "Enddatum"
@@ -1316,7 +1316,7 @@ msgstr "Nutzende*r"
 #: src/View/Booking.php:200
 #: src/View/MassOperations.php:42
 #: src/Wordpress/CustomPostType/Booking.php:986
-#: src/Wordpress/CustomPostType/Restriction.php:477
+#: src/Wordpress/CustomPostType/Restriction.php:459
 msgid "Status"
 msgstr "Status"
 
@@ -1338,7 +1338,7 @@ msgstr "Liste der Buchungscodes"
 #: src/Wordpress/CustomPostType/Booking.php:1002
 #: src/Wordpress/CustomPostType/Item.php:117
 #: src/Wordpress/CustomPostType/Restriction.php:48
-#: src/Wordpress/CustomPostType/Restriction.php:438
+#: src/Wordpress/CustomPostType/Restriction.php:420
 #: src/Wordpress/CustomPostType/Timeframe.php:99
 #: templates/shortcode-bookings.php:73
 msgid "Item"
@@ -1354,7 +1354,7 @@ msgstr "Keine Artikel gefunden."
 #: src/Wordpress/CustomPostType/Booking.php:998
 #: src/Wordpress/CustomPostType/Location.php:139
 #: src/Wordpress/CustomPostType/Restriction.php:49
-#: src/Wordpress/CustomPostType/Restriction.php:431
+#: src/Wordpress/CustomPostType/Restriction.php:413
 #: src/Wordpress/CustomPostType/Timeframe.php:100
 #: src/Wordpress/CustomPostType/Timeframe.php:463
 #: templates/shortcode-bookings.php:75
@@ -1562,7 +1562,7 @@ msgstr "Buchungen"
 #: src/Wordpress/CustomPostType/Booking.php:538
 #: src/Wordpress/CustomPostType/Item.php:118
 #: src/Wordpress/CustomPostType/Location.php:140
-#: src/Wordpress/CustomPostType/Restriction.php:307
+#: src/Wordpress/CustomPostType/Restriction.php:289
 #: src/Wordpress/CustomPostType/Timeframe.php:1153
 msgid "Add new"
 msgstr "Neu hinzufügen"
@@ -2031,104 +2031,104 @@ msgstr "Filtern nach Standort "
 msgid "Filter By Status "
 msgstr "Filtern nach Status "
 
-#: src/Wordpress/CustomPostType/Restriction.php:306
-#: src/Wordpress/CustomPostType/Restriction.php:387
+#: src/Wordpress/CustomPostType/Restriction.php:288
+#: src/Wordpress/CustomPostType/Restriction.php:369
 msgid "Restriction"
 msgstr "Einschränkung"
 
-#: src/Wordpress/CustomPostType/Restriction.php:308
-#: src/Wordpress/CustomPostType/Restriction.php:310
+#: src/Wordpress/CustomPostType/Restriction.php:290
+#: src/Wordpress/CustomPostType/Restriction.php:292
 msgid "Add new Restriction"
 msgstr "Neue Einschränkung hinzufügen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:309
+#: src/Wordpress/CustomPostType/Restriction.php:291
 msgid "Edit Restriction"
 msgstr "Einschränkung bearbeiten"
 
-#: src/Wordpress/CustomPostType/Restriction.php:311
+#: src/Wordpress/CustomPostType/Restriction.php:293
 msgid "Show Restriction"
 msgstr "Einschränkung anzeigen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:312
+#: src/Wordpress/CustomPostType/Restriction.php:294
 msgid "Show Restrictions"
 msgstr "Einschränkungen anzeigen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:313
+#: src/Wordpress/CustomPostType/Restriction.php:295
 msgid "Search Restrictions"
 msgstr "Einschränkungen suchen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:314
+#: src/Wordpress/CustomPostType/Restriction.php:296
 msgid "Restrictions not found"
 msgstr "Einschränkungen nicht gefunden"
 
-#: src/Wordpress/CustomPostType/Restriction.php:315
+#: src/Wordpress/CustomPostType/Restriction.php:297
 msgid "No Restrictions found in trash"
 msgstr "Keine Einschränkungen im Papierkorb gefunden"
 
-#: src/Wordpress/CustomPostType/Restriction.php:316
+#: src/Wordpress/CustomPostType/Restriction.php:298
 msgid "Parent Restrictions:"
 msgstr "Übergeordnete Einschränkungen:"
 
-#: src/Wordpress/CustomPostType/Restriction.php:317
+#: src/Wordpress/CustomPostType/Restriction.php:299
 msgid "All Restrictions"
 msgstr "Alle Einschränkungen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:318
+#: src/Wordpress/CustomPostType/Restriction.php:300
 msgid "Restriction archive"
 msgstr "Einschränkungsarchiv"
 
-#: src/Wordpress/CustomPostType/Restriction.php:319
+#: src/Wordpress/CustomPostType/Restriction.php:301
 msgid "Restriction attributes"
 msgstr "Einschränkungsattribute"
 
-#: src/Wordpress/CustomPostType/Restriction.php:320
+#: src/Wordpress/CustomPostType/Restriction.php:302
 msgid "Add to Restriction"
 msgstr "Zur Einschränkung hinzufügen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:321
+#: src/Wordpress/CustomPostType/Restriction.php:303
 msgid "Added to Restriction"
 msgstr "Zur Einschränkung hinzugefügt"
 
-#: src/Wordpress/CustomPostType/Restriction.php:322
+#: src/Wordpress/CustomPostType/Restriction.php:304
 msgid "Restriction image"
 msgstr "Einschränkungs-Bild"
 
-#: src/Wordpress/CustomPostType/Restriction.php:323
+#: src/Wordpress/CustomPostType/Restriction.php:305
 msgid "set Restriction image"
 msgstr "Festlegen des Einschränkungsbilds"
 
-#: src/Wordpress/CustomPostType/Restriction.php:324
+#: src/Wordpress/CustomPostType/Restriction.php:306
 msgid "remove Restriction image"
 msgstr "Einschränkungsbild entfernen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:325
+#: src/Wordpress/CustomPostType/Restriction.php:307
 msgid "use as Restriction image"
 msgstr "Verwendung als Einschränkungsbild"
 
-#: src/Wordpress/CustomPostType/Restriction.php:434
-#: src/Wordpress/CustomPostType/Restriction.php:441
+#: src/Wordpress/CustomPostType/Restriction.php:416
+#: src/Wordpress/CustomPostType/Restriction.php:423
 #: src/Wordpress/CustomPostType/Timeframe.php:815
 #: templates/shortcode-bookings.php:55
 msgid "All"
 msgstr "Alle"
 
-#: src/Wordpress/CustomPostType/Restriction.php:445
+#: src/Wordpress/CustomPostType/Restriction.php:427
 msgid "Hint"
 msgstr "Erläuterung"
 
-#: src/Wordpress/CustomPostType/Restriction.php:447
+#: src/Wordpress/CustomPostType/Restriction.php:429
 msgid "Please enter here a short information about the reason and possible effects of the usage restriction. <br>The explanation will be displayed on the article page and in the notification e-mail."
 msgstr "Bitte gib hier eine kurze Information über den Grund und mögliche Auswirkungen der Nutzungsbeschränkung ein. <br>Die Erklärung wird auf der Artikelseite und in der Benachrichtigungs-E-Mail angezeigt."
 
-#: src/Wordpress/CustomPostType/Restriction.php:452
+#: src/Wordpress/CustomPostType/Restriction.php:434
 msgid "Set the start date and time"
 msgstr "Startdatums und der Startzeit festlegen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:462
+#: src/Wordpress/CustomPostType/Restriction.php:444
 msgid "Set the estimated end date and time"
 msgstr "Das geschätzte Enddatum und die geschätzten Endzeit festlegen"
 
-#: src/Wordpress/CustomPostType/Restriction.php:480
+#: src/Wordpress/CustomPostType/Restriction.php:462
 msgid ""
 "Choose status of this restriction. <br>\n"
 "\t\t\t\tSet to <strong>None</strong> if you want to deactivate the restriction.<br>\n"
@@ -2140,31 +2140,31 @@ msgstr ""
 "Wähle den Status dieser Einschränkung aus. <br>Wähle <strong>Keine</strong> wenn du die Einschränkung deaktivieren möchtest.<br>Wähle <strong>Aktiv</strong>, wenn die Einschränkung aktiv ist. <br>Wähle <strong>Problem gelöst</strong>, wenn die Einschränkung nicht mehr besteht.<br>Je nach ausgewähltem Status erhalten betroffene Nutzende entsprechende Benachrichtigungs-E-Mails.\n"
 "Wähle den gewünschten Status aus und klicke dann auf die Schaltfläche \"Senden\", um die E-Mail zu senden.<br"
 
-#: src/Wordpress/CustomPostType/Restriction.php:495
+#: src/Wordpress/CustomPostType/Restriction.php:477
 msgid "Send notification emails to users"
 msgstr "Benachrichtigungs-E-Mails an Nutzende senden"
 
-#: src/Wordpress/CustomPostType/Restriction.php:496
+#: src/Wordpress/CustomPostType/Restriction.php:478
 msgid "Important: Please save this restriction before clicking the send-button. Dependent of the status of the restriction, the appropriate notifications are sent to all affected users and location admins. You can configure the e-mail templates via Options -> Commonsbooking -> Tab Restrictions"
 msgstr "Wichtig: Bitte speichere diese Einschränkung, bevor du auf den Senden-Button klickst. Abhängig vom Status der Einschränkung werden die entsprechenden Benachrichtigungen an alle betroffenen Nutzenden und Standortadministrierenden gesendet. Du kannst die E-Mail-Vorlagen über Optionen -> CommonsBooking -> Einschränkungen konfigurieren"
 
-#: src/Wordpress/CustomPostType/Restriction.php:514
+#: src/Wordpress/CustomPostType/Restriction.php:496
 msgid "Total breakdown"
 msgstr "Totalausfall"
 
-#: src/Wordpress/CustomPostType/Restriction.php:515
+#: src/Wordpress/CustomPostType/Restriction.php:497
 msgid "Notice"
 msgstr "Hinweis"
 
-#: src/Wordpress/CustomPostType/Restriction.php:525
+#: src/Wordpress/CustomPostType/Restriction.php:507
 msgid "Not active"
 msgstr "Nicht aktiv"
 
-#: src/Wordpress/CustomPostType/Restriction.php:526
+#: src/Wordpress/CustomPostType/Restriction.php:508
 msgid "Active"
 msgstr "Aktiv"
 
-#: src/Wordpress/CustomPostType/Restriction.php:527
+#: src/Wordpress/CustomPostType/Restriction.php:509
 msgid "Problem solved"
 msgstr "Problem gelöst"
 
@@ -4272,7 +4272,7 @@ msgstr "Maximal %1$s Tage hintereinander buchbar."
 msgid "Bookings have to be made at least %1$s days in advance."
 msgstr "Buchungen müssen mindestens %1$s Tage im Voraus getätigt werden."
 
-#: src/Wordpress/CustomPostType/Restriction.php:417
+#: src/Wordpress/CustomPostType/Restriction.php:399
 msgid ""
 "Select the type of restriction.<br>\n"
 "\t\t\t\tSelect <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>\n"
