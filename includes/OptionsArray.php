@@ -456,7 +456,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 						'name'    => esc_html__( 'Infotext hidden contactdetails', 'commonsbooking' ),
 						'id'      => 'text_hidden-contactinfo',
 						'type'    => 'textarea_small',
-						'desc'    => esc_html__( 'This text is displayed when contact details of the station are shown only after booking confirmation.', 'commonsbooking' ),
+						'desc'    => esc_html__( 'This text is displayed when contact details of the location are shown only after booking confirmation.', 'commonsbooking' ),
 						'default' => esc_html__( 'Please confirm the booking to see the contact details for pickup and return.', 'commonsbooking' ),
 					),
 					array(
@@ -1564,14 +1564,14 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 					),
 					array(
 						'name'  => esc_html__( 'Event title', 'commonsbooking' ),
-						'desc'  => esc_html__( 'This is the event title that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here as well', 'commonsbooking' ),
+						'desc'  => esc_html__( 'This is the event title that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the location calendar. You can use template tags here as well', 'commonsbooking' ),
 						'default'       => commonsbooking_sanitizeHTML( '{{item:post_title}} @ {{user:first_name}} {{user:last_name}}' ),
 						'id'    => 'event_title',
 						'type'  => 'text',
 					),
 					array(
 						'name'  => esc_html__( 'Event description', 'commonsbooking' ),
-						'desc'  => esc_html__( 'This is the event description that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here.', 'commonsbooking' ),
+						'desc'  => esc_html__( 'This is the event description that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the location calendar. You can use template tags here.', 'commonsbooking' ),
 						'default'       => commonsbooking_sanitizeHTML(
 							__(
 								'
