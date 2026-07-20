@@ -491,6 +491,7 @@ your booking of {{item:post_title}} at {{location:post_title}} {{booking:formatt
 				'title'  => commonsbooking_sanitizeHTML( __( 'Image formatting', 'commonsbooking' ) ),
 				'id'     => 'imageoptions',
 				'desc'   => '',
+				'before_row' => commonsbooking_deprecated_field_notice( 'https://github.com/wielebenwir/commonsbooking/issues/1066', '2.12.0' ),
 				'fields' => array(
 					array(
 						'name'    => commonsbooking_sanitizeHTML( __( 'Listing image small width (in px)', 'commonsbooking' ) ),

@@ -81,6 +81,10 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
+### 2.11.1
+
+DEPRECATION: Custom listing image sizes cb_listing_small and cb_listing_medium and Settings image_listing_* will be removed in next 2.12.0 release.
+
 ### 2.11 (13.07.2026)
 ADDED: GBFS routes vehicle_availability.json, vehicle_types.json, vehicle_status.json
 ADDED: Multi-select now also available for timeframes of type repair

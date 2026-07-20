@@ -211,6 +211,38 @@ function commonsbooking_sanitizeHTML( $string ): string {
 }
 
 /**
+ * Renders a deprecation notice for CMB2 fields.
+ *
+ * @param string $issue_url GitHub issue URL.
+ * @param string $version   Version in which the field will be removed.
+ */
+function commonsbooking_deprecated_field_notice( $issue_url = '', $version = '' ) {
+
+	$message = __( 'Deprecated.', 'commonsbooking' );
+
+	if ( $version ) {
+		$message .= ' ' . sprintf(
+			/* translators: %s: version number */
+			__( 'Will be removed in version %s.', 'commonsbooking' ),
+			esc_html( $version )
+		);
+	}
+
+	$message = '<div class="notice notice-warning inline" style="margin:10px 0;padding:8px 12px;">'
+		. '<strong>' . esc_html( $message ) . '</strong>';
+
+	if ( $issue_url ) {
+		$message .= ' <a href="' . esc_url( $issue_url ) . '" target="_blank" rel="noopener noreferrer">'
+			. esc_html__( 'See GitHub issue', 'commonsbooking' )
+			. '</a>';
+	}
+
+	$message .= '</div>';
+
+	return $message;
+}
+
+/**
  * Create filter hooks for cmb2 fields
  *
  * @param array $field_args  Array of field args.
