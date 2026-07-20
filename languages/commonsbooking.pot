@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-09T12:57:50+00:00\n"
+"POT-Creation-Date: 2026-07-19T12:42:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -596,8 +596,8 @@ msgid "The color used for dark text on light backgrounds"
 msgstr ""
 
 #: includes/OptionsArray.php:644
-#: src/Wordpress/CustomPostType/Restriction.php:305
-#: src/Wordpress/CustomPostType/Restriction.php:326
+#: src/Wordpress/CustomPostType/Restriction.php:287
+#: src/Wordpress/CustomPostType/Restriction.php:308
 #: templates/dashboard-index.php:47
 msgid "Restrictions"
 msgstr ""
@@ -1025,7 +1025,7 @@ msgstr ""
 #: includes/OptionsArray.php:1321
 #: src/Wordpress/CustomPostType/Map.php:557
 #: src/Wordpress/CustomPostType/Restriction.php:47
-#: src/Wordpress/CustomPostType/Restriction.php:415
+#: src/Wordpress/CustomPostType/Restriction.php:397
 #: src/Wordpress/CustomPostType/Timeframe.php:98
 #: src/Wordpress/CustomPostType/Timeframe.php:455
 msgid "Type"
@@ -1476,7 +1476,7 @@ msgstr ""
 
 #. translators: %s = date in WordPress defined format
 #: src/Model/Booking.php:437
-#: src/Model/Timeframe.php:336
+#: src/Model/Timeframe.php:347
 #, php-format
 msgid "on %s"
 msgstr ""
@@ -1484,7 +1484,7 @@ msgstr ""
 #. translators: %1 = startdate, %2 = enddate in WordPress defined format
 #. translators: %1$s = startdate, second %2$s = enddate in WordPress defined format
 #: src/Model/Booking.php:440
-#: src/Model/Timeframe.php:351
+#: src/Model/Timeframe.php:352
 #, php-format
 msgid "from %1$s until %2$s"
 msgstr ""
@@ -1569,83 +1569,83 @@ msgid "Available here"
 msgstr ""
 
 #. translators: %s = date in WordPress defined format
-#: src/Model/Timeframe.php:341
+#: src/Model/Timeframe.php:339
 #, php-format
 msgid "from %s"
 msgstr ""
 
-#: src/Model/Timeframe.php:345
+#: src/Model/Timeframe.php:343
 msgid "permanently"
 msgstr ""
 
 #. translators: %s = enddate in WordPress defined format
-#: src/Model/Timeframe.php:358
+#: src/Model/Timeframe.php:359
 #, php-format
 msgid "until %s"
 msgstr ""
 
-#: src/Model/Timeframe.php:631
+#: src/Model/Timeframe.php:632
 msgid "Could not get item or location. Please set a valid item and location."
 msgstr ""
 
-#: src/Model/Timeframe.php:640
+#: src/Model/Timeframe.php:641
 msgid "Item or location is missing. Please set item and location."
 msgstr ""
 
-#: src/Model/Timeframe.php:653
+#: src/Model/Timeframe.php:654
 msgid "No dates selected. Please select at least one date."
 msgstr ""
 
-#: src/Model/Timeframe.php:663
+#: src/Model/Timeframe.php:664
 msgid "The same date was selected multiple times. Please select each date only once."
 msgstr ""
 
-#: src/Model/Timeframe.php:672
+#: src/Model/Timeframe.php:673
 msgid "Startdate is missing. Please enter a start date to publish this timeframe."
 msgstr ""
 
-#: src/Model/Timeframe.php:686
+#: src/Model/Timeframe.php:687
 msgid "A pickup time but no return time has been set. Please set the return time."
 msgstr ""
 
-#: src/Model/Timeframe.php:696
+#: src/Model/Timeframe.php:697
 msgid "End date is before start date. Please set a valid end date."
 msgstr ""
 
-#: src/Model/Timeframe.php:706
+#: src/Model/Timeframe.php:707
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr ""
 
 #. translators: %1$s = timeframe-ID, %2$s is timeframe post_title
-#: src/Model/Timeframe.php:731
+#: src/Model/Timeframe.php:732
 #, php-format
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr ""
 
 #. translators: first %s = timeframe-ID, second %s is timeframe post_title
-#: src/Model/Timeframe.php:767
+#: src/Model/Timeframe.php:768
 #, php-format
 msgid "See overlapping timeframe ID: %1$s %2$s"
 msgstr ""
 
-#: src/Model/Timeframe.php:866
+#: src/Model/Timeframe.php:867
 msgid "Overlapping bookable timeframes are only allowed to have the same grid."
 msgstr ""
 
-#: src/Model/Timeframe.php:882
+#: src/Model/Timeframe.php:883
 msgid "Daily repeated time periods are not allowed to overlap."
 msgstr ""
 
-#: src/Model/Timeframe.php:896
+#: src/Model/Timeframe.php:897
 msgid "Overlapping bookable timeframes are not allowed to have the same weekdays."
 msgstr ""
 
-#: src/Model/Timeframe.php:908
+#: src/Model/Timeframe.php:909
 msgid "Overlapping bookable timeframes are not allowed to have the same dates."
 msgstr ""
 
-#: src/Model/Timeframe.php:915
-#: src/Model/Timeframe.php:922
+#: src/Model/Timeframe.php:916
+#: src/Model/Timeframe.php:923
 msgid "The other timeframe is overlapping with your weekly configuration."
 msgstr ""
 
@@ -1993,14 +1993,14 @@ msgstr ""
 
 #: src/View/Admin/Filter.php:58
 #: src/Wordpress/CustomPostType/Booking.php:792
-#: src/Wordpress/CustomPostType/Restriction.php:451
+#: src/Wordpress/CustomPostType/Restriction.php:433
 #: src/Wordpress/CustomPostType/Timeframe.php:678
 msgid "Start date"
 msgstr ""
 
 #: src/View/Admin/Filter.php:62
 #: src/Wordpress/CustomPostType/Booking.php:809
-#: src/Wordpress/CustomPostType/Restriction.php:461
+#: src/Wordpress/CustomPostType/Restriction.php:443
 #: src/Wordpress/CustomPostType/Timeframe.php:702
 msgid "End date"
 msgstr ""
@@ -2033,7 +2033,7 @@ msgstr ""
 #: src/View/Booking.php:200
 #: src/View/MassOperations.php:42
 #: src/Wordpress/CustomPostType/Booking.php:986
-#: src/Wordpress/CustomPostType/Restriction.php:477
+#: src/Wordpress/CustomPostType/Restriction.php:459
 msgid "Status"
 msgstr ""
 
@@ -2153,7 +2153,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Booking.php:1002
 #: src/Wordpress/CustomPostType/Item.php:117
 #: src/Wordpress/CustomPostType/Restriction.php:48
-#: src/Wordpress/CustomPostType/Restriction.php:438
+#: src/Wordpress/CustomPostType/Restriction.php:420
 #: src/Wordpress/CustomPostType/Timeframe.php:99
 #: templates/shortcode-bookings.php:73
 msgid "Item"
@@ -2165,7 +2165,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Booking.php:998
 #: src/Wordpress/CustomPostType/Location.php:139
 #: src/Wordpress/CustomPostType/Restriction.php:49
-#: src/Wordpress/CustomPostType/Restriction.php:431
+#: src/Wordpress/CustomPostType/Restriction.php:413
 #: src/Wordpress/CustomPostType/Timeframe.php:100
 #: src/Wordpress/CustomPostType/Timeframe.php:463
 #: templates/shortcode-bookings.php:75
@@ -2424,7 +2424,7 @@ msgstr ""
 #: src/Wordpress/CustomPostType/Booking.php:538
 #: src/Wordpress/CustomPostType/Item.php:118
 #: src/Wordpress/CustomPostType/Location.php:140
-#: src/Wordpress/CustomPostType/Restriction.php:307
+#: src/Wordpress/CustomPostType/Restriction.php:289
 #: src/Wordpress/CustomPostType/Timeframe.php:1153
 msgid "Add new"
 msgstr ""
@@ -3486,81 +3486,81 @@ msgstr ""
 msgid "Filter By Status "
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:306
-#: src/Wordpress/CustomPostType/Restriction.php:387
+#: src/Wordpress/CustomPostType/Restriction.php:288
+#: src/Wordpress/CustomPostType/Restriction.php:369
 msgid "Restriction"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:308
-#: src/Wordpress/CustomPostType/Restriction.php:310
+#: src/Wordpress/CustomPostType/Restriction.php:290
+#: src/Wordpress/CustomPostType/Restriction.php:292
 msgid "Add new Restriction"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:309
+#: src/Wordpress/CustomPostType/Restriction.php:291
 msgid "Edit Restriction"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:311
+#: src/Wordpress/CustomPostType/Restriction.php:293
 msgid "Show Restriction"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:312
+#: src/Wordpress/CustomPostType/Restriction.php:294
 msgid "Show Restrictions"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:313
+#: src/Wordpress/CustomPostType/Restriction.php:295
 msgid "Search Restrictions"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:314
+#: src/Wordpress/CustomPostType/Restriction.php:296
 msgid "Restrictions not found"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:315
+#: src/Wordpress/CustomPostType/Restriction.php:297
 msgid "No Restrictions found in trash"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:316
+#: src/Wordpress/CustomPostType/Restriction.php:298
 msgid "Parent Restrictions:"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:317
+#: src/Wordpress/CustomPostType/Restriction.php:299
 msgid "All Restrictions"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:318
+#: src/Wordpress/CustomPostType/Restriction.php:300
 msgid "Restriction archive"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:319
+#: src/Wordpress/CustomPostType/Restriction.php:301
 msgid "Restriction attributes"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:320
+#: src/Wordpress/CustomPostType/Restriction.php:302
 msgid "Add to Restriction"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:321
+#: src/Wordpress/CustomPostType/Restriction.php:303
 msgid "Added to Restriction"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:322
+#: src/Wordpress/CustomPostType/Restriction.php:304
 msgid "Restriction image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:323
+#: src/Wordpress/CustomPostType/Restriction.php:305
 msgid "set Restriction image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:324
+#: src/Wordpress/CustomPostType/Restriction.php:306
 msgid "remove Restriction image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:325
+#: src/Wordpress/CustomPostType/Restriction.php:307
 msgid "use as Restriction image"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:417
+#: src/Wordpress/CustomPostType/Restriction.php:399
 msgid ""
 "Select the type of restriction.<br>\n"
 "\t\t\t\tSelect <strong>Notice</strong>, the item can still be used and if e.g. only one part is missing or defective.<br>\n"
@@ -3569,30 +3569,30 @@ msgid ""
 "\t\t\t\t"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:434
-#: src/Wordpress/CustomPostType/Restriction.php:441
+#: src/Wordpress/CustomPostType/Restriction.php:416
+#: src/Wordpress/CustomPostType/Restriction.php:423
 #: src/Wordpress/CustomPostType/Timeframe.php:815
 #: templates/shortcode-bookings.php:55
 msgid "All"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:445
+#: src/Wordpress/CustomPostType/Restriction.php:427
 msgid "Hint"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:447
+#: src/Wordpress/CustomPostType/Restriction.php:429
 msgid "Please enter here a short information about the reason and possible effects of the usage restriction. <br>The explanation will be displayed on the article page and in the notification e-mail."
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:452
+#: src/Wordpress/CustomPostType/Restriction.php:434
 msgid "Set the start date and time"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:462
+#: src/Wordpress/CustomPostType/Restriction.php:444
 msgid "Set the estimated end date and time"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:480
+#: src/Wordpress/CustomPostType/Restriction.php:462
 msgid ""
 "Choose status of this restriction. <br>\n"
 "\t\t\t\tSet to <strong>None</strong> if you want to deactivate the restriction.<br>\n"
@@ -3602,31 +3602,31 @@ msgid ""
 "Select the desired status and then click the \"Send\" button to send the e-mail.<br>"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:495
+#: src/Wordpress/CustomPostType/Restriction.php:477
 msgid "Send notification emails to users"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:496
+#: src/Wordpress/CustomPostType/Restriction.php:478
 msgid "Important: Please save this restriction before clicking the send-button. Dependent of the status of the restriction, the appropriate notifications are sent to all affected users and location admins. You can configure the e-mail templates via Options -> Commonsbooking -> Tab Restrictions"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:514
+#: src/Wordpress/CustomPostType/Restriction.php:496
 msgid "Total breakdown"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:515
+#: src/Wordpress/CustomPostType/Restriction.php:497
 msgid "Notice"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:525
+#: src/Wordpress/CustomPostType/Restriction.php:507
 msgid "Not active"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:526
+#: src/Wordpress/CustomPostType/Restriction.php:508
 msgid "Active"
 msgstr ""
 
-#: src/Wordpress/CustomPostType/Restriction.php:527
+#: src/Wordpress/CustomPostType/Restriction.php:509
 msgid "Problem solved"
 msgstr ""
 
