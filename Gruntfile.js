@@ -155,8 +155,8 @@ module.exports = function (grunt) {
 						src: 'main.js',
 						rename: function () {
 							return nodePackagesDestDir + 'litepicker/litepicker.js';
-						}
-					},	
+						},
+					},
 					{
 						dest: nodePackagesDestDir + 'vue/',
 						expand: true,

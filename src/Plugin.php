@@ -707,7 +707,7 @@ class Plugin {
 			'cb-litepicker',
 			$base . 'litepicker/litepicker.js',
 			[],
-			self::packagedVersion('litepicker')
+			self::packagedVersion( 'litepicker' )
 		);
 	}
 
