@@ -57,6 +57,11 @@ class Plugin {
 		// Init booking codes table
 		BookingCodes::initBookingCodesTable();
 
+		// Record installation date for demo-data button visibility window
+		if ( ! get_option( \CommonsBooking\Service\DemoData::INSTALL_DATE_OPTION ) ) {
+			update_option( \CommonsBooking\Service\DemoData::INSTALL_DATE_OPTION, time() );
+		}
+
 		self::clearCache();
 	}
 
@@ -323,6 +328,11 @@ class Plugin {
 	}
 
 	public static function admin_init() {
+		// Set installation date if not yet recorded (covers existing installs that were not re-activated)
+		if ( ! get_option( \CommonsBooking\Service\DemoData::INSTALL_DATE_OPTION ) ) {
+			update_option( \CommonsBooking\Service\DemoData::INSTALL_DATE_OPTION, time() );
+		}
+
 		// check if we have a new version and run tasks
 		Upgrade::runTasksAfterUpdate();
 
