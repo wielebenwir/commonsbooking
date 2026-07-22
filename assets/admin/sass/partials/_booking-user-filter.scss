@@ -1,0 +1,11 @@
+.cb-booking-user-filter {
+    min-width: 240px;
+}
+
+.ui-autocomplete.cb-booking-user-autocomplete {
+    max-width: 520px;
+    max-height: 320px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 100000;
+}
