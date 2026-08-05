@@ -702,6 +702,13 @@ class Plugin {
 			[ 'cb-leaflet', 'cb-leaflet-markercluster' ],
 			self::packagedVersion( '@commonsbooking/frontend' )
 		);
+		// litepicker
+		wp_register_script(
+			'cb-litepicker',
+			$base . 'litepicker/litepicker.js',
+			[],
+			self::packagedVersion( 'litepicker' )
+		);
 	}
 
 	public function registerShortcodes() {

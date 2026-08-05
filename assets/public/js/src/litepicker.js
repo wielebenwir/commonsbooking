@@ -1,4 +1,6 @@
 /**
+ * This is the file that loads the settings for the Litepicker
+ * The litepicker itself is in the github.com/wielebenwir/Litepicker repository
  * @TODO: Reduce redundancy, use state machine
  */
 
