@@ -52,6 +52,9 @@ function commonsbooking_public() {
 	wp_enqueue_script( 'cb-scripts-select2' );
 	wp_enqueue_script( 'cb-scripts-moment' );
 
+	// Litepicker
+	wp_enqueue_script( 'cb-litepicker' ); // registered in Plugin::registerScriptsAndStyles
+
 	/**
 	 * Public scripts
 	 */
