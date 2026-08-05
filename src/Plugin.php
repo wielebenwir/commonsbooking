@@ -558,6 +558,11 @@ class Plugin {
 	 * Version string for a packaged asset (from dist.json when present, else '0').
 	 */
 	private static function packagedVersion( string $key ): string {
+		// always reload assets when WP_DEBUG is active
+		if ( WP_DEBUG ) {
+			return strval( time() );
+		}
+
 		static $versions = null;
 		if ( $versions === null ) {
 			$path     = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
