@@ -82,6 +82,7 @@
     "prefix-namespaces": [
       "sh -c 'test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.28.1/strauss.phar'",
       "@php bin/strauss.phar --info",
+      "@php bin/prefix-fontlib-dynamic-class-names.php",
       "@composer dump-autoload"
     ]
   },

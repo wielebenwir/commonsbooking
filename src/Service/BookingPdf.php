@@ -232,8 +232,6 @@ class BookingPdf {
 		$html     = self::wrapHtmlDocument( $html );
 		$html     = str_replace( self::LOGO_PLACEHOLDER, self::getRenderedLogoMarkup(), $html );
 
-		self::registerFontLibAliases();
-
 		$dompdf = new Dompdf( self::getDompdfOptions() );
 		$dompdf->loadHtml( $html, 'UTF-8' );
 		$dompdf->setPaper( 'A4', 'portrait' );
@@ -716,43 +714,6 @@ class BookingPdf {
 		$options->setChroot( self::getChrootPaths() );
 
 		return $options;
-	}
-
-	/**
-	 * Map Dompdf's dynamically referenced FontLib classes to their prefixed names.
-	 *
-	 * Strauss prefixes static class references, but php-font-lib builds some class
-	 * names dynamically from strings such as "FontLib\\TrueType\\File".
-	 *
-	 * @return void
-	 */
-	private static function registerFontLibAliases(): void {
-		static $registered = false;
-
-		if ( $registered ) {
-			return;
-		}
-
-		spl_autoload_register(
-			function ( string $className ): void {
-				if (
-					$className === 'FontLib\\FontLib\\TableDirectoryEntry' &&
-					class_exists( 'CommonsBooking\\FontLib\\TrueType\\TableDirectoryEntry' )
-				) {
-					class_alias( 'CommonsBooking\\FontLib\\TrueType\\TableDirectoryEntry', $className, false );
-					return;
-				}
-
-				if ( str_starts_with( $className, 'FontLib\\' ) && ! class_exists( $className, false ) ) {
-					$prefixedClassName = 'CommonsBooking\\' . $className;
-					if ( class_exists( $prefixedClassName ) ) {
-						class_alias( $prefixedClassName, $className, false );
-					}
-				}
-			}
-		);
-
-		$registered = true;
 	}
 
 	/**
