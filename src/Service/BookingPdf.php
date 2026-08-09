@@ -35,7 +35,7 @@ class BookingPdf {
 		// Cache per locale: the template is built several times per admin render (CMB2 default
 		// value and the reset button), but its labels depend on the current locale.
 		static $cache = [];
-		$locale = get_locale();
+		$locale       = get_locale();
 		if ( isset( $cache[ $locale ] ) ) {
 			return $cache[ $locale ];
 		}
@@ -227,10 +227,10 @@ class BookingPdf {
 			throw new RuntimeException( esc_html__( 'The booking form PDF template is empty. Save a template before opening the preview.', 'commonsbooking' ) );
 		}
 
-		$html     = commonsbooking_parse_template( $template, self::getTemplateObjects( $booking ) );
-		$html     = self::renderEmptyFieldLines( commonsbooking_sanitizeHTML( $html ) );
-		$html     = self::wrapHtmlDocument( $html );
-		$html     = str_replace( self::LOGO_PLACEHOLDER, self::getRenderedLogoMarkup(), $html );
+		$html = commonsbooking_parse_template( $template, self::getTemplateObjects( $booking ) );
+		$html = self::renderEmptyFieldLines( commonsbooking_sanitizeHTML( $html ) );
+		$html = self::wrapHtmlDocument( $html );
+		$html = str_replace( self::LOGO_PLACEHOLDER, self::getRenderedLogoMarkup(), $html );
 
 		$dompdf = new Dompdf( self::getDompdfOptions() );
 		$dompdf->loadHtml( $html, 'UTF-8' );
