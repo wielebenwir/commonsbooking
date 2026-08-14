@@ -10,10 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class BookingPdfTest extends TestCase {
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
 	public function testPrefixedFontLibCoexistsWithLoadedUnprefixedVersion(): void {
 		$this->assertTrue( class_exists( 'FontLib\\Font' ) );
 		$this->assertTrue( class_exists( 'FontLib\\TrueType\\File' ) );
