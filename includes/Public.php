@@ -143,6 +143,8 @@ if ( is_admin() ) {
 // Map ajax
 add_action( 'wp_ajax_cb_map_locations', array( MapData::class, 'get_locations' ) );
 add_action( 'wp_ajax_nopriv_cb_map_locations', array( MapData::class, 'get_locations' ) );
+add_action( 'wp_ajax_cb_search_items', array( \CommonsBooking\Map\SearchShortcode::class, 'get_items' ) );
+add_action( 'wp_ajax_nopriv_cb_search_items', array( \CommonsBooking\Map\SearchShortcode::class, 'get_items' ) );
 add_action( 'wp_ajax_cb_map_geo_search', array( MapData::class, 'geo_search' ) );
 add_action( 'wp_ajax_nopriv_cb_map_geo_search', array( MapData::class, 'geo_search' ) );
 
