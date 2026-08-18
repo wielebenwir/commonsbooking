@@ -353,6 +353,7 @@ trait Cache {
 
 	public static function warmupCache() {
 		try {
+			check_ajax_referer( 'cb_cache_warmup' );   // dies with 403 on invalid/missing nonce
 			global $wpdb;
 			$table_posts = $wpdb->prefix . 'posts';
 
