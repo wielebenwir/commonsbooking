@@ -888,7 +888,7 @@ msgid "Absolute path on your webserver (including trailing slash) where export f
 msgstr "Absoluter Pfad auf deinem Webserver (einschließlich abschließender Schrägstrich), in dem die Exportdatei gespeichert wird."
 
 #: includes/OptionsArray.php:1423
-#: includes/OptionsArray.php:1469
+#: includes/OptionsArray.php:1480
 msgid "API"
 msgstr "Schnittstelle"
 
@@ -904,105 +904,105 @@ msgstr "API aktivieren"
 msgid "Enable API Access without API-Key"
 msgstr "Aktiviert den API-Zugang ohne API-Schlüssel"
 
-#: includes/OptionsArray.php:1457
+#: includes/OptionsArray.php:1468
 msgid "API shares"
 msgstr "API Freigaben"
 
-#: includes/OptionsArray.php:1470
+#: includes/OptionsArray.php:1481
 msgid "Add Another API"
 msgstr "Weitere API hinzufügen"
 
-#: includes/OptionsArray.php:1471
+#: includes/OptionsArray.php:1482
 msgid "Remove API"
 msgstr "API entfernen"
 
-#: includes/OptionsArray.php:1478
+#: includes/OptionsArray.php:1489
 msgid "API name"
 msgstr "Schnittstellen Name"
 
-#: includes/OptionsArray.php:1479
+#: includes/OptionsArray.php:1490
 msgid "Internal name for this API share"
 msgstr "Interner Name für diese API-Freigabe"
 
-#: includes/OptionsArray.php:1484
+#: includes/OptionsArray.php:1495
 msgid "API enabled"
 msgstr "Schnittelle aktiviert"
 
-#: includes/OptionsArray.php:1485
+#: includes/OptionsArray.php:1496
 msgid "If checked this API share is enabled"
 msgstr "Wenn ausgewählt, ist diese API-Freigabe aktiviert"
 
-#: includes/OptionsArray.php:1490
+#: includes/OptionsArray.php:1501
 msgid "Push URL"
 msgstr "Push URL"
 
-#: includes/OptionsArray.php:1491
+#: includes/OptionsArray.php:1502
 msgid "URL that gets push information everytime there was a change on CommonsBooking data"
 msgstr "URL, welche eine Push-Information bekommt, sobald es Änderungen den CommonsBooking Daten gibt"
 
-#: includes/OptionsArray.php:1496
+#: includes/OptionsArray.php:1507
 msgid "API Key"
 msgstr "API Schlüssel"
 
-#: includes/OptionsArray.php:1499
+#: includes/OptionsArray.php:1510
 msgid " You must set an API-Key. The API key should consist of alphanumeric characters and be at least 24 characters long."
 msgstr " Du musst einen API-Key setzen. Der API-Schlüssel sollte aus alphanumerischen Zeichen bestehen und mindestens 24 Zeichen lang sein."
 
-#: includes/OptionsArray.php:1502
+#: includes/OptionsArray.php:1513
 msgid "API Owner"
 msgstr "API-Besitzer"
 
-#: includes/OptionsArray.php:1503
+#: includes/OptionsArray.php:1514
 msgid "The owner value is provided by the API. It is set to the blog name by default in this version. In future versions you may be able to change this information"
 msgstr "Der API-Besitzer wird von der API bereitgestellt. In dieser Version ist standardmäßig der Blogname festgelegt. In zukünftigen Versionen können diese Informationen möglicherweise selbst geändert werden"
 
-#: includes/OptionsArray.php:1523
+#: includes/OptionsArray.php:1534
 msgid "Advanced Options"
 msgstr "Erweiterte Optionen"
 
-#: includes/OptionsArray.php:1527
+#: includes/OptionsArray.php:1538
 msgid "Set Custom metadata to locations and items"
 msgstr "Festlegen von benutzerdefinierten Metadaten für Standorte und Artikel"
 
-#: includes/OptionsArray.php:1529
+#: includes/OptionsArray.php:1540
 msgid "This is an advanced feature and should only be used if you are experienced or instructed how to set it up properly. In future versions we will add more detailed information and documentation."
 msgstr "Dies ist eine erweiterte Funktion und sollte nur verwendet werden, wenn du erfahren oder in der Konfiguration unterwiesen wurdest . In zukünftigen Versionen werden wir detailliertere Informationen und Dokumentationen hinzufügen."
 
-#: includes/OptionsArray.php:1537
+#: includes/OptionsArray.php:1548
 msgid "Meta Data"
 msgstr "Metadaten"
 
-#: includes/OptionsArray.php:1539
+#: includes/OptionsArray.php:1550
 msgid ""
 "Use only this format, separated by semicolon and each entry in a new line: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>\n"
 "                                        Example: item;waterproof;Waterproof material;checkbox;\"This item is waterproof and can be used in heavy rain\" "
 msgstr "Verwende nur dieses Format, getrennt durch Semikolon und jeden Eintrag in einer neuen Zeile: <br>post_type(item/location);field-name;label(english),type(checkbox,number,text),description(in english)<br>Beispiel: item;wasserdicht; Wasserdichtes Material;Checkbox;\" Dieser Artikel ist wasserdicht und kann bei starkem Regen verwendet werden\" "
 
-#: includes/OptionsArray.php:1551
+#: includes/OptionsArray.php:1562
 msgid "iCalendar Feed"
 msgstr "iCalendar Feed"
 
-#: includes/OptionsArray.php:1561
+#: includes/OptionsArray.php:1572
 msgid "Enable iCalendar feed"
 msgstr "iCalendar Feed aktivieren"
 
-#: includes/OptionsArray.php:1566
+#: includes/OptionsArray.php:1577
 msgid "Event title"
 msgstr "Termin Titel"
 
-#: includes/OptionsArray.php:1573
+#: includes/OptionsArray.php:1584
 msgid "Event description"
 msgstr "Terminbeschreibung"
 
-#: includes/OptionsArray.php:1591
+#: includes/OptionsArray.php:1602
 msgid "Advanced caching settings"
 msgstr "Erweiterte Cachingoptionen"
 
-#: includes/OptionsArray.php:1594
+#: includes/OptionsArray.php:1605
 msgid "Allows you to change options regarding the caching system"
 msgstr "Erlaubt die Anpassung der Optionen für das Caching-System"
 
-#: includes/OptionsArray.php:1617
+#: includes/OptionsArray.php:1628
 msgid "Current connection status"
 msgstr "Aktueller Verbindungsstatus"
 
@@ -3355,7 +3355,7 @@ msgstr "Nächste E-Mail geplant am: "
 msgid "(not planned)"
 msgstr "(nichts geplant)"
 
-#: includes/OptionsArray.php:1597
+#: includes/OptionsArray.php:1608
 #: src/Service/Cache.php:478
 msgid "Clear Cache"
 msgstr "Cache leeren"
@@ -4192,15 +4192,15 @@ msgstr ""
 "{{booking:getEmailSignature}}\n"
 "                            "
 
-#: includes/OptionsArray.php:1603
+#: includes/OptionsArray.php:1614
 msgid "Cache Adapter"
 msgstr "Cache Adapter"
 
-#: includes/OptionsArray.php:1610
+#: includes/OptionsArray.php:1621
 msgid "Location of cache"
 msgstr "Cache Pfad"
 
-#: includes/OptionsArray.php:1611
+#: includes/OptionsArray.php:1622
 msgid "The location of the cache. A directory for the filesystem cache, a REDIS DSN, ..."
 msgstr "Der Pfad zu dem Cache. Kann ein Ordner sein für den Dateisystem-Cache, eine REDIS DSN, ..."
 
@@ -4224,27 +4224,27 @@ msgstr "Cache ist deaktiviert."
 msgid "Cache adapter successfully connected."
 msgstr "Cache Adapter erfolgreich verbunden."
 
-#: includes/OptionsArray.php:1623
+#: includes/OptionsArray.php:1634
 msgid "Periodical warmup through cronjob"
 msgstr "Regelmäßiges Aufwärmen durch einen Cronjob"
 
-#: includes/OptionsArray.php:1624
+#: includes/OptionsArray.php:1635
 msgid "Will periodically warm up the cache through a cronjob. This can be useful, when you have a lot of timeframes / bookings but your site is rarely accessed. <br> You NEED to hook WP-Cron Into the System Task Scheduler for this to have any positive effect. <b> You probably don't want this. </b>"
 msgstr "Wärmt den Cache regelmäßig über einen Cronjob auf. Das kann praktisch sein, wenn du viele Zeitrahmen / Buchungen in deiner Instanz hast, die Seite aber selten aufgerufen wird. <br> Damit dieses Feature funktioniert, muss WP-Cron in den System Task Scheduler eingebunden sein. <b> Höchstwahrscheinlich ist diese Einstellung nicht für deine Instanz geeignet. </b>"
 
-#: includes/OptionsArray.php:1629
+#: includes/OptionsArray.php:1640
 msgid "Every 10 minutes"
 msgstr "Alle 10 Minuten"
 
-#: includes/OptionsArray.php:1630
+#: includes/OptionsArray.php:1641
 msgid "Every 30 minutes"
 msgstr "Alle 30 Minuten"
 
-#: includes/OptionsArray.php:1631
+#: includes/OptionsArray.php:1642
 msgid "Every hour"
 msgstr "Jede Stunde"
 
-#: includes/OptionsArray.php:1632
+#: includes/OptionsArray.php:1643
 msgid "Every day"
 msgstr "Jeden Tag"
 
@@ -4383,7 +4383,7 @@ msgstr "Wenn diese Option ausgewählt ist, ist die API aktiviert. Weitere Inform
 msgid "If selected, the API is accessible without an API-Key. For details see: %1$sAPI documentation%2$s"
 msgstr "Wenn diese Option ausgewählt ist, ist die API ohne API-Schlüssel zugänglich. Weitere Informationen findest du unter: %1$sAPI -Dokumentation%2$s"
 
-#: includes/OptionsArray.php:1460
+#: includes/OptionsArray.php:1471
 #, php-format
 msgid "You can define on or more API shares. Read the documentation for more information about API shares and configuration %1$sAPI documentation%2$s"
 msgstr "Du kannst ein oder mehrere API-Freigaben definieren. Weitere Informationen zu API-Freigaben und zur Konfiguration findest du in der %1$sAPI-Dokumentation%2$s"
@@ -4413,19 +4413,19 @@ msgstr ""
 "\t\t\t\t%1$sWeitere Informationen in der Dokumentation%2$s\r\n"
 "\t\t\t\t"
 
-#: includes/OptionsArray.php:1553
+#: includes/OptionsArray.php:1564
 msgid "Enables users to copy a url for a dynamic iCalendar feed into their own digital calendars."
 msgstr "Erlaubt Nutzenden eine URL für einen dynamischen iCalendar in ihre eigenen digitalen Kalender zu kopieren."
 
-#: includes/OptionsArray.php:1567
+#: includes/OptionsArray.php:1578
 msgid "This is the event title that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here as well"
 msgstr "Dies ist der Titel für Kalendereinträge von Buchungen, die nicht dem aktuell angemeldeten Nutzenden zugeordnet sind. Solche Einträge sind für Personen mit der Rolle „CB-Manager“ sichtbar, wenn sie den Kalender einer Station abonnieren. Hier können auch Template-Tags genutzt werden."
 
-#: includes/OptionsArray.php:1574
+#: includes/OptionsArray.php:1585
 msgid "This is the event description that will be given to bookings that do not belong to the current user. This is what the CB-Manager will see when they subscribe to the station calendar. You can use template tags here."
 msgstr "Dies ist die Beschreibung für Kalendereinträge von Buchungen, die nicht dem aktuell angemeldeten Nutzenden zugeordnet sind. Solche Einträge sind für Personen mit der Rolle „CB-Manager“ sichtbar, wenn sie den Kalender einer Station abonnieren. Hier können auch Template-Tags genutzt werden."
 
-#: includes/OptionsArray.php:1576
+#: includes/OptionsArray.php:1587
 msgid ""
 "\n"
 "Pick up: {{booking:pickupDatetime}}\n"
@@ -4503,4 +4503,12 @@ msgstr ""
 
 #: src/Wordpress/CustomPostType/Booking.php:366
 msgid "You already have unconfirmed bookings. Please wait a few minutes for them to expire or confirm/cancel them before creating a new one."
+msgstr ""
+
+#: includes/OptionsArray.php:1455
+msgid "Future availability displayed in API (weeks)"
+msgstr ""
+
+#: includes/OptionsArray.php:1456
+msgid "How many weeks of item availability should be displayed in the API. Setting high values may lead to very slow response times on availability endpoints."
 msgstr ""
