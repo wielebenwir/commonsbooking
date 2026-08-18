@@ -15,6 +15,9 @@ on:
     paths-ignore:
       - 'docs/**'
 
+permissions:
+  contents: read
+
 env:
   DB_DATABASE: wordpress_test
   DB_USER: root
@@ -128,6 +131,9 @@ jobs:
     needs: e2e
     if: failure() && fromJSON(github.run_attempt) < 3
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
     steps:
       - env:
           GH_REPO: ${{ github.repository }}
