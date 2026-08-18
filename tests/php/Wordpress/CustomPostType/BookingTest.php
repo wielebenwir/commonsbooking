@@ -186,6 +186,66 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertEquals( 2, $bookingModel->getOverbookedDays() );
 	}
 
+	/**
+	 * Makes sure, that bookings that are created always have to be unconfirmed first and then confirmed.
+	 * It should not be possible to create a confirmed or canceled booking immediately.
+	 * Fixes #2295, where impatient users who would click cancel multiple times would create new bookings.
+	 * @return void
+	 */
+	public function testHandleBookingRequest_noDirectCreation() {
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+		$this->bookingIds[] = $bookingId;
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'confirmed',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			get_post( $bookingId )->post_name,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+
+		// cancel once
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'canceled',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			get_post( $bookingId )->post_name,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		// cancel twice, should throw exception
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'canceled',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			get_post( $bookingId )->post_name,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+	}
+
 	public function testBookingWithoutLoc() {
 		// Case 1: We try to create a booking without a defined location
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );

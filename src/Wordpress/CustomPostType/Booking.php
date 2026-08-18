@@ -346,6 +346,10 @@ class Booking extends Timeframe {
 
 		// New booking
 		if ( empty( $booking ) ) {
+			if ( $post_status !== 'unconfirmed' ) {
+				// New bookings always have to be unconfirmed
+				throw new BookingDeniedException( __( 'Invalid booking request. Please try again.', 'commonsbooking' ) );
+			}
 			$postarr['post_name']  = Helper::generateRandomString();
 			$postarr['meta_input'] = array(
 				\CommonsBooking\Model\Timeframe::META_LOCATION_ID   => $locationId,
