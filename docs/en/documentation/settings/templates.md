@@ -22,6 +22,10 @@ CommonsBooking is able to generate a .ics file from the bookings made, which is 
 
 Additionally, you can also create a subscribable calendar. [Learn more about the iCalendar Feed here](../manage-bookings/icalendar-feed).
 
+## Booking form PDF
+
+CommonsBooking can additionally attach a PDF booking form to the confirmation email of a booking. You enable and design it here in the **Templates** tab as well. [Learn more about the booking form PDF here](booking-form-pdf).
+
 ## Template and booking process messages
 
 In this section you will find various text blocks that are output at different points of the booking process. The fields each contain a description of the use of the text block.
