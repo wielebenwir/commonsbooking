@@ -51,4 +51,17 @@ class ItemTest extends CustomPostTypeTest {
 			)
 		);
 	}
+
+	public function testGetPostByIdDoesNotFallBackToGlobalPostForEmptyId(): void {
+		$previousPost = $GLOBALS['post'] ?? null;
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Reproduce WordPress' empty get_post() fallback.
+		$GLOBALS['post'] = get_post( $this->itemId );
+
+		try {
+			$this->assertNull( Item::getPostById( null ) );
+		} finally {
+			// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Restore the shared test state.
+			$GLOBALS['post'] = $previousPost;
+		}
+	}
 }
