@@ -48,7 +48,7 @@ class CacheTest extends TestCase {
 			uopz_unset_return( 'debug_backtrace' );
 		}
 
-		$this->assertSame( 0, $backtraceOptions );
+		$this->assertSame( DEBUG_BACKTRACE_PROVIDE_OBJECT, $backtraceOptions );
 		$this->assertSame( 3, $backtraceLimit );
 	}
 
