@@ -62,6 +62,9 @@ jobs:
           name: built-plugin
           path: build/commonsbooking
 
+      - name: Install node dependencies
+        run: npm ci
+
       - name: Install wp-env systemwide
         shell: bash
         run: npm -g i @wordpress/env
