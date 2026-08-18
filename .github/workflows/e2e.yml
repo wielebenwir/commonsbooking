@@ -15,15 +15,33 @@ on:
     paths-ignore:
       - 'docs/**'
 
+permissions:
+  contents: read
+
 env:
   DB_DATABASE: wordpress_test
   DB_USER: root
   DB_PASSWORD: ''
 
 jobs:
+  build-plugin:
+    name: Build plugin
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ./.github/actions/build-plugin
+
+      - name: Upload built plugin
+        uses: actions/upload-artifact@v7
+        with:
+          name: built-plugin
+          path: build/commonsbooking
+
   e2e:
     name: 'WP ${{ matrix.core.name }} on PHP ${{ matrix.php }}'
     runs-on: ubuntu-24.04
+    needs: build-plugin
 
     strategy:
       matrix:
@@ -38,7 +56,14 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: ./.github/actions/build-plugin
+      - name: Download built plugin
+        uses: actions/download-artifact@v5
+        with:
+          name: built-plugin
+          path: build/commonsbooking
+
+      - name: Install Cypress
+        run: npm install cypress --no-save
 
       - name: Install wp-env systemwide
         shell: bash
@@ -109,6 +134,9 @@ jobs:
     needs: e2e
     if: failure() && fromJSON(github.run_attempt) < 3
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
     steps:
       - env:
           GH_REPO: ${{ github.repository }}
