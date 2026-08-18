@@ -246,6 +246,82 @@ class BookingTest extends CustomPostTypeTest {
 		);
 	}
 
+	/**
+	 * Regression test for #1518
+	 * Users should only have one unconfirmed booking at a time.
+	 * This is because checks for booking validity only happen when unconfirmed bookings are created.
+	 * Multiple unconfirmed bookings can lead to circumvention of booking restrictions in the form of booking rules.
+	 * @return void
+	 */
+	public function testHandleBookingRequest_onlyOneUnconfirmedBooking() {
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingId;
+
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessageMatches( '/You already have an unconfirmed booking/' );
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+	}
+
+	/**
+	 * edge case for #1518
+	 * check, that unconfirmed bookings of other users are not counted against the current user.
+	 * This might be the case for admins or cb_manager.
+	 * @return void
+	 */
+	public function testHandleBookingRequest_onlyOneUnconfirmedBooking_withAdmin() {
+		$this->createSubscriber();
+		wp_set_current_user( $this->subscriberId );
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingId;
+
+		$this->createAdministrator();
+		wp_set_current_user( $this->adminUserID );
+		// if this test fails, an exception would be thrown
+		$bookingTwoId       = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingTwoId;
+		$this->assertNotNull( $bookingTwoId );
+	}
+
 	public function testBookingWithoutLoc() {
 		// Case 1: We try to create a booking without a defined location
 		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
