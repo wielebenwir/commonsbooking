@@ -2,9 +2,9 @@
     'use strict';
     $(function () {
         let typeInput = $('#export-type');
-        let locationFields = $('#location-fields');
-        let itemFields = $('#item-fields');
-        let userFields = $('#user-fields');
+        let locationFields = $('#locationFields');
+        let itemFields = $('#itemFields');
+        let userFields = $('#userFields');
         let exportTimerangeStart = $('#export-timerange-start');
         let exportTimerangeEnd = $('#export-timerange-end');
         let inProgress = $('#timeframe-export-in-progress');

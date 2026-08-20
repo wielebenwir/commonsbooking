@@ -309,9 +309,9 @@ class TimeframeExport {
 	 */
 	public function getCSV( ?string $exportPath = null ): string {
 		$inputFields = [
-			'location' => self::getInputFields( 'location-fields' ),
-			'item'     => self::getInputFields( 'item-fields' ),
-			'user'     => self::getInputFields( 'user-fields' ),
+			'location' => self::getInputFields( 'locationFields' ),
+			'item'     => self::getInputFields( 'itemFields' ),
+			'user'     => self::getInputFields( 'userFields' ),
 		];
 
 		if ( ! $this->exportDataComplete ) {
@@ -440,9 +440,9 @@ class TimeframeExport {
 	 * @return false|string[]
 	 */
 	protected static function getInputFields( $inputName ) {
-		$inputFieldsString =
-			array_key_exists( $inputName, $_REQUEST ) ? sanitize_text_field( $_REQUEST[ $inputName ] ) :
-				Settings::getOption( 'commonsbooking_options_export', '$inputName' );
+		$exportSettings    = $_REQUEST['data']['settings'];
+		$inputFieldsString = array_key_exists( $inputName, $exportSettings ) ? sanitize_text_field( $exportSettings[ $inputName ] )
+			: Settings::getOption( 'commonsbooking_options_export', $inputName );
 
 		return array_filter( explode( ',', $inputFieldsString ) );
 	}
