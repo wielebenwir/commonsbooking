@@ -36,7 +36,11 @@ abstract class CustomPostType_AJAX_Test extends \WP_Ajax_UnitTestCase {
 	/**
 	 * @int array The IDs of all created timeframes. Append here, if you should create one.
 	 */
-	protected $timeframeIDs   = [];
+	protected $timeframeIDs = [];
+	/**
+	 * @int The ID of the user that the bookings belong to.
+	 */
+	protected $userID;
 	private $previousResponse = '';
 	public function set_up() {
 		parent::set_up();
@@ -58,6 +62,13 @@ abstract class CustomPostType_AJAX_Test extends \WP_Ajax_UnitTestCase {
 				'post_status' => 'publish',
 			]
 		);
+
+		$wp_user = get_user_by( 'email', 'subscriber@ajax.de' );
+		if ( ! $wp_user ) {
+			$this->userID = wp_create_user( 'subscriber', 'subscriber', 'subcriber@ajax.de' );
+		} else {
+			$this->userID = $wp_user->ID;
+		}
 	}
 	public function tear_down() {
 		parent::tear_down();
@@ -117,7 +128,7 @@ abstract class CustomPostType_AJAX_Test extends \WP_Ajax_UnitTestCase {
 				'post_title'  => 'Booking',
 				'post_type'   => \CommonsBooking\Wordpress\CustomPostType\Booking::$postType,
 				'post_status' => 'confirmed',
-				'post_author' => '0',
+				'post_author' => $this->userID,
 				'meta_input'  => [
 					'type' => \CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID,
 					'location-id' => $this->locationID,
