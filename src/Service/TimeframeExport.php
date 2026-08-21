@@ -440,8 +440,8 @@ class TimeframeExport {
 	 * @return false|string[]
 	 */
 	protected static function getInputFields( $inputName ) {
-		$exportSettings    = $_REQUEST['data']['settings'];
-		$inputFieldsString = array_key_exists( $inputName, $exportSettings ) ? sanitize_text_field( $exportSettings[ $inputName ] )
+		$exportSettings    = $_REQUEST['data']['settings'][ $inputName ] ?? null;
+		$inputFieldsString = $exportSettings !== null ? sanitize_text_field( $exportSettings )
 			: Settings::getOption( 'commonsbooking_options_export', $inputName );
 
 		return array_filter( explode( ',', $inputFieldsString ) );
