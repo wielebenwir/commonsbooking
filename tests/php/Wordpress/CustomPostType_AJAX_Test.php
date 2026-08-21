@@ -65,7 +65,7 @@ abstract class CustomPostType_AJAX_Test extends \WP_Ajax_UnitTestCase {
 
 		$wp_user = get_user_by( 'email', 'subscriber@ajax.de' );
 		if ( ! $wp_user ) {
-			$this->userID = wp_create_user( 'subscriber', 'subscriber', 'subcriber@ajax.de' );
+			$this->userID = wp_create_user( 'subscriber', 'subscriber', 'subscriber@ajax.de' );
 		} else {
 			$this->userID = $wp_user->ID;
 		}

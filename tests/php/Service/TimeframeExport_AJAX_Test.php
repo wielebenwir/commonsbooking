@@ -89,6 +89,12 @@ class TimeframeExport_AJAX_Test extends CustomPostType_AJAX_Test {
 				$stdObjects
 			)
 		);
+		// assert, that custom fields are still present
+		foreach ( $stdObjects as $booking ) {
+			$this->assertEquals( $this->itemFieldValue, $booking->{'item: ' . $this->itemFieldKey}, 'item metadata not present for booking with ID ' . $booking->ID );
+			$this->assertEquals( $this->locationFieldValue, $booking->{'location: ' . $this->locationFieldKey}, 'location metadata not present for booking with ID ' . $booking->ID );
+			$this->assertEquals( $this->userFieldValue, $booking->{'user: ' . $this->userFieldKey}, 'user metadata not present for booking with ID ' . $booking->ID );
+		}
 	}
 
 	/**

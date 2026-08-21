@@ -440,11 +440,15 @@ class TimeframeExport {
 	 * @return false|string[]
 	 */
 	protected static function getInputFields( $inputName ) {
-		$exportSettings    = $_REQUEST['data']['settings'][ $inputName ] ?? null;
-		$inputFieldsString = $exportSettings !== null ? sanitize_text_field( $exportSettings )
-			: Settings::getOption( 'commonsbooking_options_export', $inputName );
-
-		return array_filter( explode( ',', $inputFieldsString ) );
+		$inputFieldValue = $_REQUEST['data']['settings'][ $inputName ] ?? null;
+		// when the request is paginated, the input field has already been sanitized and exploded into an array by @see self::convertInputFields
+		if ( is_array( $inputFieldValue ) ) {
+			return $inputFieldValue;
+		} elseif ( is_string( $inputFieldValue ) ) {
+			return array_filter( explode( ',', sanitize_text_field( $inputFieldValue ) ) );
+		} else {
+			return array_filter( explode( ',', Settings::getOption( 'commonsbooking_options_export', $inputName ) ) );
+		}
 	}
 
 	/**
