@@ -30,21 +30,21 @@ class TimeframeExport {
 	/**
 	 * The extra meta fields to export for locations.
 	 *
-	 * @var array|null
+	 * @var array
 	 */
-	private ?array $locationFields = null;
+	private array $locationFields = [];
 	/**
 	 * The extra meta fields to export for items.
 	 *
-	 * @var array|null
+	 * @var array
 	 */
-	private ?array $itemFields = null;
+	private array $itemFields = [];
 	/**
 	 * The extra meta fields to export for users.
 	 *
-	 * @var array|null
+	 * @var array
 	 */
-	private ?array $userFields = null;
+	private array $userFields = [];
 	/**
 	 * Export start date in whatever string format the WP field provides
 	 *
@@ -112,9 +112,9 @@ class TimeframeExport {
 	 * @param string      $exportStartDate Start date string of export
 	 * @param string      $exportEndDate End date string of export
 	 *
-	 * @param array|null  $locationFields Metafields of location objects that should be included in the export
-	 * @param array|null  $itemFields Metafields of item objects that should be included in the export
-	 * @param array|null  $userFields Metafields of user objects that should be included in the export
+	 * @param array       $locationFields Metafields of location objects that should be included in the export
+	 * @param array       $itemFields Metafields of item objects that should be included in the export
+	 * @param array       $userFields Metafields of user objects that should be included in the export
 	 * @param int|null    $lastProcessedPage 0 when starting, otherwise the last processed page from previous run
 	 * @param int|null    $totalPosts Set on previous run, total amount of posts in export
 	 * @param string|null $transientName Set on previous run, name of transient where intermediate results are stored
@@ -125,9 +125,9 @@ class TimeframeExport {
 		string $exportType,
 		string $exportStartDate,
 		string $exportEndDate,
-		?array $locationFields = null,
-		?array $itemFields = null,
-		?array $userFields = null,
+		array $locationFields = [],
+		array $itemFields = [],
+		array $userFields = [],
 		?int $lastProcessedPage = null,
 		?int $totalPosts = null,
 		?string $transientName = null
@@ -186,9 +186,9 @@ class TimeframeExport {
 				$postSettings['exportType'],
 				$postSettings['exportStartDate'],
 				$postSettings['exportEndDate'],
-				$postSettings['locationFields'] ? self::convertInputFields( $postSettings['locationFields'] ) : null,
-				$postSettings['itemFields'] ? self::convertInputFields( $postSettings['itemFields'] ) : null,
-				$postSettings['userFields'] ? self::convertInputFields( $postSettings['userFields'] ) : null,
+				$postSettings['locationFields'] ? self::convertInputFields( $postSettings['locationFields'] ) : [],
+				$postSettings['itemFields'] ? self::convertInputFields( $postSettings['itemFields'] ) : [],
+				$postSettings['userFields'] ? self::convertInputFields( $postSettings['userFields'] ) : [],
 				$postSettings['lastProcessedPage'] ?? null,
 				$postSettings['totalPages'] ?? null,
 				$postSettings['transientName'] ?? null
@@ -284,9 +284,9 @@ class TimeframeExport {
 				$type,
 				$start,
 				$end,
-				$configuredLocationFields ? self::convertInputFields( $configuredLocationFields ) : null,
-				$configuredItemFields ? self::convertInputFields( $configuredItemFields ) : null,
-				$configuredUserFields ? self::convertInputFields( $configuredUserFields ) : null,
+				$configuredLocationFields ? self::convertInputFields( $configuredLocationFields ) : [],
+				$configuredItemFields ? self::convertInputFields( $configuredItemFields ) : [],
+				$configuredUserFields ? self::convertInputFields( $configuredUserFields ) : [],
 			);
 			$exportObject->setCron();
 			$exportObject->getExportData();
@@ -309,9 +309,9 @@ class TimeframeExport {
 	 */
 	public function getCSV( ?string $exportPath = null ): string {
 		$inputFields = [
-			'location' => self::getInputFields( 'locationFields' ),
-			'item'     => self::getInputFields( 'itemFields' ),
-			'user'     => self::getInputFields( 'userFields' ),
+			'location' => $this->locationFields,
+			'item'     => $this->itemFields,
+			'user'     => $this->userFields,
 		];
 
 		if ( ! $this->exportDataComplete ) {
@@ -406,13 +406,17 @@ class TimeframeExport {
 
 	/**
 	 * Gets export fields array from the comma separated string in the settings.
+	 * After first run, this might already be an array. Therefore it has already been sanitized.
 	 *
-	 * @param string|null $inputString
+	 * @param string|array $inputFields
 	 *
 	 * @return string[] returns an empty array when non-string or empty-string input
 	 */
-	private static function convertInputFields( $inputString ): array {
-		return array_filter( explode( ',', sanitize_text_field( $inputString ) ) );
+	private static function convertInputFields( $inputFields ): array {
+		if ( is_array( $inputFields ) ) {
+			return $inputFields;
+		}
+		return array_filter( explode( ',', sanitize_text_field( $inputFields ) ) );
 	}
 
 
@@ -430,25 +434,6 @@ class TimeframeExport {
 
 		// translators: %1$d actual item number, %2$d total item number
 		return sprintf( __( 'Processed %1$d of %2$d bookings', 'commonsbooking' ), $progressBookings, $totalBookings );
-	}
-
-	/**
-	 * Return user defined export fields.
-	 *
-	 * @param $inputName
-	 *
-	 * @return false|string[]
-	 */
-	protected static function getInputFields( $inputName ) {
-		$inputFieldValue = $_REQUEST['data']['settings'][ $inputName ] ?? null;
-		// when the request is paginated, the input field has already been sanitized and exploded into an array by @see self::convertInputFields
-		if ( is_array( $inputFieldValue ) ) {
-			return $inputFieldValue;
-		} elseif ( is_string( $inputFieldValue ) ) {
-			return array_filter( explode( ',', sanitize_text_field( $inputFieldValue ) ) );
-		} else {
-			return array_filter( explode( ',', Settings::getOption( 'commonsbooking_options_export', $inputName ) ) );
-		}
 	}
 
 	/**
