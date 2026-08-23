@@ -74,5 +74,5 @@ For this, a JSON object must be passed to the shortcode. This could look like th
 [/cb_search]
 ```
 
-With this example configuration, the markers are first assigned based on categories and fall back to a thumbnail or ultimately a color. Details of the configuration are explained in the [CB-Frontend library documentation](https://github.com/wielebenwir/CB-Frontend/blob/main/documentation/configuration.md).
+With this example configuration, the markers are first assigned based on categories and fall back to a thumbnail or ultimately a color. Details of the configuration are explained in the [CB-Frontend library documentation](https://github.com/wielebenwir/CB-Frontend/blob/main/docs/configuration.md).
 

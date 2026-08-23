@@ -1451,7 +1451,18 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 						'id'   => 'apikey_not_required',
 						'type' => 'checkbox',
 					),
-
+					array(
+						'name' => esc_html__( 'Future availability displayed in API (weeks)', 'commonsbooking' ),
+						'desc' => esc_html__( 'How many weeks of item availability should be displayed in the API. Setting high values may lead to very slow response times on availability endpoints.', 'commonsbooking' ),
+						'id'   => 'api_future_availability_weeks',
+						'type' => 'text',
+						'default' => \CommonsBooking\API\AvailabilityRoute::DEFAULT_WEEKS,
+						'attributes' => array(
+							'type'    => 'number',
+							'min'     => '1',
+							'pattern' => '\d*',
+						),
+					),
 					array(
 						// Repeatable group -> API Shares
 						'name'       => esc_html__( 'API shares', 'commonsbooking' ),

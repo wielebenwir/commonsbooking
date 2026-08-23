@@ -384,7 +384,7 @@ class Plugin {
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName(),
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName() . '&post_type=' . Item::getPostType(),
 				''
 			);
 
@@ -394,7 +394,7 @@ class Plugin {
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName(),
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName() . '&post_type=' . Location::getPostType(),
 				''
 			);
 
@@ -558,6 +558,11 @@ class Plugin {
 	 * Version string for a packaged asset (from dist.json when present, else '0').
 	 */
 	private static function packagedVersion( string $key ): string {
+		// always reload assets when WP_DEBUG is active
+		if ( WP_DEBUG ) {
+			return strval( time() );
+		}
+
 		static $versions = null;
 		if ( $versions === null ) {
 			$path     = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
@@ -701,6 +706,13 @@ class Plugin {
 			$base . 'commons-search/style.css',
 			[ 'cb-leaflet', 'cb-leaflet-markercluster' ],
 			self::packagedVersion( '@commonsbooking/frontend' )
+		);
+		// litepicker
+		wp_register_script(
+			'cb-litepicker',
+			$base . 'litepicker/litepicker.js',
+			[],
+			self::packagedVersion( 'litepicker' )
 		);
 	}
 

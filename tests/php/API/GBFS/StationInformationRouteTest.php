@@ -33,6 +33,29 @@ class StationInformationRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertEquals( 8.123, $station->lon );
 	}
 
+	public function testTitleHtmlEntitiesAreDecoded() {
+		update_post_meta( $this->locationId, 'geo_latitude', '50.123' );
+		update_post_meta( $this->locationId, 'geo_longitude', '8.123' );
+
+		wp_update_post(
+			[
+				'ID'         => $this->locationId,
+				'post_title' => 'Station &amp; Hof',
+			]
+		);
+
+		// Sanity check: WordPress stores the title with the encoded entity.
+		$this->assertStringContainsString( '&amp;', get_post( $this->locationId )->post_title );
+
+		$request  = new WP_REST_Request( 'GET', $this->ENDPOINT );
+		$response = rest_do_request( $request );
+
+		$this->assertSame( 200, $response->get_status() );
+
+		$station = $response->get_data()->data->stations[0];
+		$this->assertEquals( 'Station & Hof', $station->name[0]->text );
+	}
+
 	// no gps data and no address defined, skip location
 	public function testStationInformation_geocodingNonExistent() {
 		delete_post_meta( $this->locationId, 'geo_latitude' );

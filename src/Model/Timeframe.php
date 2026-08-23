@@ -316,42 +316,43 @@ class Timeframe extends CustomPost {
 	 * This is used to display the end date of the timeframe in the frontend.
 	 * This is mainly in use by the [cb_items] shortcode.
 	 *
-	 * @param   int $startDate
-	 * @param   int $endDate
+	 * @param   int       $startDate
+	 * @param   int|false $endDate false when timeframe is open ended
 	 *
 	 * @return string
 	 */
-	public static function formatBookableDate( int $startDate, int $endDate ): string {
+	public static function formatBookableDate( int $startDate, $endDate ): string {
 		$format = self::getDateFormat();
 		$today  = strtotime( 'now' );
 
 		$startDateFormatted = date_i18n( $format, $startDate );
-		$endDateFormatted   = date_i18n( $format, $endDate );
+		$endDateFormatted   = $endDate !== false ? date_i18n( $format, $endDate ) : '';
 
 		$label           = commonsbooking_sanitizeHTML( __( 'Available here', 'commonsbooking' ) );
 		$availableString = '';
 
-		if ( $startDate && $endDate && $startDate === $endDate ) { // available only one day
-			/* translators: %s = date in WordPress defined format */
-			$availableString = sprintf( commonsbooking_sanitizeHTML( __( 'on %s', 'commonsbooking' ) ), $startDateFormatted );
-		} elseif ( $startDate && ! $endDate ) { // start but no end date
-			if ( $startDate > $today ) { // start is in the future
-				$availableString = sprintf(
-					/* translators: %s = date in WordPress defined format */
-					commonsbooking_sanitizeHTML( __( 'from %s', 'commonsbooking' ) ),
-					$startDateFormatted
-				);
-			} else { // start has passed, no end date, probably a fixed location
-				$availableString = commonsbooking_sanitizeHTML( __( 'permanently', 'commonsbooking' ) );
-			}
-		} elseif ( $startDate && $endDate ) { // start AND end date
-			if ( $startDate > $today ) { // start is in the future, with an end date
-				$availableString = sprintf(
-					/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
-					commonsbooking_sanitizeHTML( __( 'from %1$s until %2$s', 'commonsbooking' ) ),
-					$startDateFormatted,
-					$endDateFormatted
-				);
+		if ( $startDate !== 0 ) {
+			if ( $endDate === false ) { // start but no end date
+				if ( $startDate > $today ) { // start is in the future
+					$availableString = sprintf(
+						/* translators: %s = date in WordPress defined format */
+						commonsbooking_sanitizeHTML( __( 'from %s', 'commonsbooking' ) ),
+						$startDateFormatted
+					);
+				} else { // start has passed, no end date, probably a fixed location
+					$availableString = commonsbooking_sanitizeHTML( __( 'permanently', 'commonsbooking' ) );
+				}
+			} elseif ( $startDate === $endDate ) { // available only one day
+				/* translators: %s = date in WordPress defined format */
+				$availableString = sprintf( commonsbooking_sanitizeHTML( __( 'on %s', 'commonsbooking' ) ), $startDateFormatted );
+			} elseif ( $startDate > $today ) { // start AND end date
+				// start is in the future, with an end date
+					$availableString = sprintf(
+						/* translators: %1$s = startdate, second %2$s = enddate in WordPress defined format */
+						commonsbooking_sanitizeHTML( __( 'from %1$s until %2$s', 'commonsbooking' ) ),
+						$startDateFormatted,
+						$endDateFormatted
+					);
 			} else { // start has passed, with an end date
 				$availableString = sprintf(
 					/* translators: %s = enddate in WordPress defined format */

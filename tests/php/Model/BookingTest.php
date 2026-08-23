@@ -534,7 +534,7 @@ class BookingTest extends CustomPostTypeTest {
 			$this->assertStringContainsString( 'There are one ore more overlapping bookings within the chosen timerange', $e->getMessage() );
 			// also test, that correct notice for Bookings is shown
 			$this->assertStringContainsString( 'Booking is saved as draft.', $e->getMessage() );
-			$this->assertStringContainsString( $validBooking->getFormattedEditLink(), $e->getMessage() );
+			$this->assertStringContainsString( get_edit_post_link( $validBooking->ID ), $e->getMessage() );
 		}
 
 		$startDateBeforeEnd = new Booking(
@@ -745,10 +745,10 @@ class BookingTest extends CustomPostTypeTest {
 		$endingTime->setTime( 17, 59, 59 );
 		// we need to create this booking in the "frontend" way in order to save the correct grid sizes for the generation
 		// pickup and returntimes
-		$testBookingSpanningOverTwoSlotsID     = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
+		$testBookingSpanningOverTwoSlotsID = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
 			$separateItem,
 			$separateLocation,
-			'confirmed',
+			'unconfirmed',
 			null,
 			null,
 			$beginningTime->getTimestamp(),
@@ -756,6 +756,19 @@ class BookingTest extends CustomPostTypeTest {
 			null,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
 		);
+
+		\CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
+			$separateItem,
+			$separateLocation,
+			'confirmed',
+			$testBookingSpanningOverTwoSlotsID,
+			null,
+			$beginningTime->getTimestamp(),
+			$endingTime->getTimestamp(),
+			get_post( $testBookingSpanningOverTwoSlotsID )->post_name,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+
 		$this->testBookingSpanningOverTwoSlots = new Booking(
 			$testBookingSpanningOverTwoSlotsID
 		);

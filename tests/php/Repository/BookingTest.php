@@ -349,6 +349,7 @@ class BookingTest extends CustomPostTypeTest {
 	 */
 	public function testGetForCurrentUser() {
 		// Without current user we shouldn't get bookings.
+		wp_logout();
 		$bookings = Booking::getForCurrentUser();
 		$this->assertCount( 0, $bookings );
 
