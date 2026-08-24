@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-18T15:53:15+00:00\n"
+"POT-Creation-Date: 2026-08-24T10:29:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -1555,11 +1555,11 @@ msgid "Cancelled"
 msgstr ""
 
 #: src/Model/Booking.php:1028
-#: src/Service/TimeframeExport.php:591
-#: src/Service/TimeframeExport.php:601
-#: src/Service/TimeframeExport.php:607
-#: src/Service/TimeframeExport.php:619
-#: src/Service/TimeframeExport.php:632
+#: src/Service/TimeframeExport.php:580
+#: src/Service/TimeframeExport.php:590
+#: src/Service/TimeframeExport.php:596
+#: src/Service/TimeframeExport.php:608
+#: src/Service/TimeframeExport.php:621
 msgid "Unknown"
 msgstr ""
 
@@ -1972,25 +1972,25 @@ msgid "You need to set an export path to execute the export"
 msgstr ""
 
 #. translators: %1$d actual item number, %2$d total item number
-#: src/Service/TimeframeExport.php:432
+#: src/Service/TimeframeExport.php:436
 #, php-format
 msgid "Processed %1$d of %2$d bookings"
 msgstr ""
 
-#: src/Service/Upgrade.php:141
+#: src/Service/Upgrade.php:144
 msgid "There are some tasks that need to be run to complete the update process. <br> This needs to be done so that the plugin can function correctly."
 msgstr ""
 
-#: src/Service/Upgrade.php:144
+#: src/Service/Upgrade.php:147
 msgid "Click here to run the upgrade tasks."
 msgstr ""
 
-#: src/Service/Upgrade.php:305
+#: src/Service/Upgrade.php:308
 msgid "New features and changes: Please backup your site before upgrading!"
 msgstr ""
 
 #. translators: %1$s Link open tag, %2$s: Link close tag.
-#: src/Service/Upgrade.php:312
+#: src/Service/Upgrade.php:315
 #, php-format
 msgid ""
 "\n"

@@ -1475,11 +1475,11 @@ msgid "Download Export"
 msgstr "Download Export"
 
 #: src/Model/Booking.php:1028
-#: src/Service/TimeframeExport.php:591
-#: src/Service/TimeframeExport.php:601
-#: src/Service/TimeframeExport.php:607
-#: src/Service/TimeframeExport.php:619
-#: src/Service/TimeframeExport.php:632
+#: src/Service/TimeframeExport.php:580
+#: src/Service/TimeframeExport.php:590
+#: src/Service/TimeframeExport.php:596
+#: src/Service/TimeframeExport.php:608
+#: src/Service/TimeframeExport.php:621
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -3063,12 +3063,12 @@ msgstr "Storniert am"
 msgid "Admin booking by"
 msgstr "Adminbuchung von"
 
-#: src/Service/Upgrade.php:305
+#: src/Service/Upgrade.php:308
 msgid "New features and changes: Please backup your site before upgrading!"
 msgstr "Neue Funktionen und Änderungen: Bitte die Website vor dem Upgrade sichern!"
 
 #. translators: %1$s Link open tag, %2$s: Link close tag.
-#: src/Service/Upgrade.php:312
+#: src/Service/Upgrade.php:315
 #, php-format
 msgid ""
 "\n"
@@ -3775,11 +3775,11 @@ msgstr "Hier klicken, um das Upgrade auf die neueste Version fertig zu stellen. 
 msgid "Finish upgrade"
 msgstr "Upgrade fertigstellen"
 
-#: src/Service/Upgrade.php:141
+#: src/Service/Upgrade.php:144
 msgid "There are some tasks that need to be run to complete the update process. <br> This needs to be done so that the plugin can function correctly."
 msgstr "Es gibt einige Aufgaben, die ausgeführt werden müssen, um den Aktualisierungsprozess abzuschließen. <br> Das ist notwendig, um die korrekte Funktionsweise des Plugins zu gewährleisten."
 
-#: src/Service/Upgrade.php:144
+#: src/Service/Upgrade.php:147
 msgid "Click here to run the upgrade tasks."
 msgstr "Hier klicken, um die Upgrade-Aufgaben auszuführen."
 
@@ -4125,7 +4125,7 @@ msgid "There is already a booking on the new location during the timeframe of bo
 msgstr "Es existiert bereits eine Buchung für den Standort in dem Zeitraum der existierenden Buchung mit der ID %s."
 
 #. translators: %1$d actual item number, %2$d total item number
-#: src/Service/TimeframeExport.php:432
+#: src/Service/TimeframeExport.php:436
 #, php-format
 msgid "Processed %1$d of %2$d bookings"
 msgstr "%1$d von %2$d Buchungen verarbeitet"
