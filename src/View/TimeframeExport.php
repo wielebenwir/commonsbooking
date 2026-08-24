@@ -11,9 +11,9 @@ namespace CommonsBooking\View;
  */
 class TimeframeExport {
 
-	const LOCATION_FIELD = 'location-fields';
-	const ITEM_FIELD     = 'item-fields';
-	const USER_FIELD     = 'user-fields';
+	const LOCATION_FIELD = 'locationFields';
+	const ITEM_FIELD     = 'itemFields';
+	const USER_FIELD     = 'userFields';
 
 	/**
 	 * @param $field_args
