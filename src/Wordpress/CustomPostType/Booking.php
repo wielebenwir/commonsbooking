@@ -53,6 +53,22 @@ class Booking extends Timeframe {
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
+		// prevent bookings from being retrieved through query vars in a plain request
+		add_filter(
+			'request',
+			function ( $query_vars ) {
+				if (
+					isset( $query_vars['post_type'] )
+					&& self::$postType === $query_vars['post_type']
+					&& empty( $query_vars['name'] )
+					&& empty( $query_vars['p'] )
+				) {
+					$query_vars['error'] = '404';
+				}
+				return $query_vars;
+			}
+		);
+
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
 
