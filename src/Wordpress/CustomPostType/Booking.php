@@ -62,6 +62,7 @@ class Booking extends Timeframe {
 					&& self::$postType === $query_vars['post_type']
 					&& empty( $query_vars['name'] )
 					&& empty( $query_vars['p'] )
+					&& ! commonsbooking_isCurrentUserAdmin()
 				) {
 					$query_vars['error'] = '404';
 				}
