@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9
 Tested up to: 7.1
-Stable Tag: 2.11.1
+Stable Tag: 2.11.2
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,13 +81,15 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
-### 2.11.1 (26.08.2026)
+### 2.11.2 (26.08.2026)
 ENHANCED: Length of availability displayed in API is now configurable in the API settings
 FIXED: Bookings were accessible through querying posts from homepage
 FIXED: Custom metadata was not included in the export
 FIXED: Only one unconfirmed booking per user prevents now prevents circumvention of booking rules
 FIXED: Cancelling an already cancelled booking won't duplicate the booking anymore
 FIXED: Admin list for items and locations are able to filter by their respective category
+
+### 2.11.1 (skipped)
 
 ### 2.11 (13.07.2026)
 ADDED: GBFS routes vehicle_availability.json, vehicle_types.json, vehicle_status.json
