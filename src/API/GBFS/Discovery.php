@@ -1,4 +1,4 @@
-<?php
+const DEFAULT_TTL = 86400;<?php
 
 
 namespace CommonsBooking\API\GBFS;
@@ -60,7 +60,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$response->data         = new stdClass();
 		$response->data->feeds  = $feeds;
 		$response->last_updated = date( 'c' ); // ISO-8601 timestamp
-		$response->ttl          = 86400;
+		$response->ttl          = self::DEFAULT_TTL;
 		$response->version      = '3.1-RC3';
 
 		return $this->respond_with_validation( $response );
