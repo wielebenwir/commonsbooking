@@ -13,9 +13,9 @@ abstract class BenchmarkCase {
 
 	use CPTCreationTrait;
 
-	private static bool $fixtureInitialized = false;
+	private static bool $fixtureInitialized     = false;
 	private static ?BenchmarkCase $fixtureOwner = null;
-	private static array $sharedPostIds = [
+	private static array $sharedPostIds         = [
 		'bookingIds'     => [],
 		'timeframeIds'   => [],
 		'restrictionIds' => [],
