@@ -20,7 +20,7 @@ class BookingBench extends BenchmarkCase {
 	 * @Revs(9)
 	 */
 	public function benchBookingLifecycle(): void {
-		$bookingId         = $this->handleBookingRequest( 'unconfirmed' );
+		$bookingId          = $this->handleBookingRequest( 'unconfirmed' );
 		$this->bookingIds[] = $bookingId;
 		$postName           = get_post( $bookingId )->post_name;
 

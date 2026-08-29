@@ -31,5 +31,4 @@ class CalendarBench extends BenchmarkCase {
 		assertStringNotContainsString( 'No items found.', $calendar );
 		assertStringContainsString( 'is-booked', $calendar ); // assert that at least some items appear booked
 	}
-
 }
