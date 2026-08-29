@@ -29,9 +29,10 @@ do_action( 'commonsbooking_before_booking-single', $booking->ID, $booking );
 
 echo commonsbooking_sanitizeHTML( $booking->bookingNotice() ); ?>
 
-<?php if ( $current_status === 'unconfirmed' ) :
+<?php
+if ( $current_status === 'unconfirmed' ) :
 	$expiry_ts = strtotime( $booking->post_date ) + 10 * 60;
-?>
+	?>
 <style>
 @keyframes cb-pulse {
 	0%, 100% { opacity: 1; transform: scale(1); }

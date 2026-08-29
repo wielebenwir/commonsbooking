@@ -6,7 +6,6 @@
  * See templates/booking-single.php for the implementation.
  */
 describe('Booking confirmation pending banner', () => {
-
     // Mirrors the helper in 06-booking-process.cy.js: returns a date that is
     // never the last day of the month, so the calendar always has a next-day
     // cell adjacent to .is-start-date.
@@ -31,7 +30,10 @@ describe('Booking confirmation pending banner', () => {
         cy.get('.is-today').click();
         cy.get('.is-start-date').next('.day-item').click();
         cy.get('#booking-form > [type="submit"]').click();
-        cy.get('.cb-notice').should('contain', 'Please check your booking and click confirm booking');
+        cy.get('.cb-notice').should(
+            'contain',
+            'Please check your booking and click confirm booking',
+        );
     }
 
     afterEach(() => {
@@ -79,9 +81,11 @@ describe('Booking confirmation pending banner', () => {
 
             cy.get('#cb-countdown-timer').invoke('text').as('timeBefore');
             cy.tick(1000);
-            cy.get('#cb-countdown-timer').invoke('text').then((timeAfter) => {
-                cy.get('@timeBefore').should('not.equal', timeAfter);
-            });
+            cy.get('#cb-countdown-timer')
+                .invoke('text')
+                .then((timeAfter) => {
+                    cy.get('@timeBefore').should('not.equal', timeAfter);
+                });
         });
     });
 
