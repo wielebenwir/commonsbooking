@@ -41,7 +41,6 @@ class CalendarBench {
 		$calendar = Calendar::renderTable( [] );
 		assertStringNotContainsString( 'No items found.', $calendar );
 		assertStringContainsString( 'is-booked', $calendar ); // assert that at least some items appear booked
-		file_put_contents( COMMONSBOOKING_PLUGIN_DIR . 'cal_results.txt', $calendar );
 	}
 
 	public function setUp(): void {
