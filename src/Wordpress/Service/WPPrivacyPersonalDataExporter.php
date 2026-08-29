@@ -1,6 +1,6 @@
 <?php
 
-namespace CommonsBooking\Service;
+namespace CommonsBooking\Wordpress\Service;
 
 use CommonsBooking\Helper\Helper;
 
