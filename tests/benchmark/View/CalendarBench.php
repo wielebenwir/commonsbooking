@@ -10,6 +10,9 @@ use CommonsBooking\Tests\CPTCreationTrait;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\Helper\GeoHelperTest;
 
+use function PHPUnit\Framework\assertStringContainsString;
+use function PHPUnit\Framework\assertStringNotContainsString;
+
 /**
  *
  * @BeforeMethods({"setUp"})
@@ -36,6 +39,8 @@ class CalendarBench {
 	 */
 	public function benchRenderTable() {
 		$calendar = Calendar::renderTable( [] );
+		assertStringNotContainsString( 'No items found.', $calendar );
+		assertStringContainsString( 'is-booked', $calendar ); // assert that at least some items appear booked
 	}
 
 	public function setUp(): void {
@@ -69,9 +74,9 @@ class CalendarBench {
 		);
 		$repetitions = [];
 		// every day has exactly one booking
-		$start = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$start = new \DateTime();
 		$start->modify( '- ' . self::BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE . ' days' );
-		$end = new \DateTime( \CommonsBooking\Tests\Wordpress\CustomPostTypeTest::CURRENT_DATE );
+		$end = new \DateTime();
 		$end->modify( self::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE . ' days' );
 		$period = new \DatePeriod( $start, new \DateInterval( 'P1D' ), $end );
 		foreach ( $period as $date ) {
