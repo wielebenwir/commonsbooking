@@ -223,6 +223,30 @@ class Booking extends Timeframe {
 		}
 	}
 
+	/**
+	 * @deprecated 2.11.0 Use \Namespace\Foobar::handleBookingRequest() instead.
+	 */
+	public static function handleBookingRequest(
+		?string $itemId,
+		?string $locationId,
+		?string $post_status,
+		?int $post_ID,
+		?string $comment,
+		?string $repetitionStart,
+		?string $repetitionEnd,
+		?string $requestedPostName,
+		?string $postType,
+		int $overbookedDays = 0
+	): int {
+		_deprecated_function(
+			__METHOD__,
+			'2.11.3',
+			'\CommonsBooking\Service\Booking::handleBookingRequest()'
+		);
+
+		return \CommonsBooking\Service\Booking::handleBookingRequest( ...func_get_args() );
+	}
+
 
 	/**
 	 * @inheritDoc
