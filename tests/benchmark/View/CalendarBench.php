@@ -10,6 +10,9 @@ use CommonsBooking\Tests\CPTCreationTrait;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\Helper\GeoHelperTest;
 
+use function PHPUnit\Framework\assertStringContainsString;
+use function PHPUnit\Framework\assertStringNotContainsString;
+
 /**
  *
  * @BeforeMethods({"setUp"})
@@ -36,6 +39,9 @@ class CalendarBench {
 	 */
 	public function benchRenderTable() {
 		$calendar = Calendar::renderTable( [] );
+		assertStringNotContainsString( 'No items found.', $calendar );
+		assertStringContainsString( 'is-booked', $calendar ); // assert that at least some items appear booked
+		file_put_contents( COMMONSBOOKING_PLUGIN_DIR . 'cal_results.txt', $calendar );
 	}
 
 	public function setUp(): void {
