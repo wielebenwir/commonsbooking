@@ -122,8 +122,8 @@ add_action( 'wp_ajax_nopriv_cb_calendar_data', array( Calendar::class, 'getCalen
 add_action( 'wp_ajax_cb_bookings_data', array( Booking::class, 'getTemplateData' ) );
 add_action( 'wp_ajax_nopriv_cb_bookings_data', array( Booking::class, 'getTemplateData' ) );
 
-add_action( 'wp_ajax_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
-add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCache' ) );
+add_action( 'wp_ajax_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCacheView' ) );
+add_action( 'wp_ajax_nopriv_cb_cache_warmup', array( \CommonsBooking\Plugin::class, 'warmupCacheView' ) );
 
 if ( is_admin() ) {
 	// migration AJAX

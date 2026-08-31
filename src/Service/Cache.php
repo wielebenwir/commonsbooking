@@ -351,9 +351,17 @@ trait Cache {
 		}
 	}
 
+	/**
+	 * View wrapper to warmup up the cache with referer http handling
+	 * @return void
+	 */
+	public static function warmupCacheView() {
+		check_ajax_referer( 'cb_cache_warmup' );   // dies with 403 on invalid/missing nonce
+		self::warmupCache();
+	}
+
 	public static function warmupCache() {
 		try {
-			check_ajax_referer( 'cb_cache_warmup' );   // dies with 403 on invalid/missing nonce
 			global $wpdb;
 			$table_posts = $wpdb->prefix . 'posts';
 
