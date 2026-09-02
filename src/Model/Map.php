@@ -3,7 +3,6 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Repository\Item;
-use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use Exception;
 
@@ -69,7 +68,7 @@ class Map extends CustomPost {
 				}
 			}
 
-			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
+			foreach ( Item::getByLocation( $post->ID ) as $item ) {
 				$item_terms = wp_get_post_terms(
 					$item->ID,
 					\CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName()
@@ -102,12 +101,11 @@ class Map extends CustomPost {
 				}
 
 				$timeframesData = [];
-				$timeframes     = Timeframe::getBookableForCurrentUser(
-					[ $post->ID ],
-					[ $item->ID ],
-					null,
-					true
-				);
+				$timeframes     = $item->getBookableTimeframesByLocation( $post->ID, true );
+
+				if ( ! $timeframes ) {
+					continue;
+				}
 
 				/** @var \CommonsBooking\Model\Timeframe $timeframe */
 				foreach ( $timeframes as $timeframe ) {
