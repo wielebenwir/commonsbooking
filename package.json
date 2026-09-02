@@ -48,7 +48,7 @@
 	},
 	"dependencies": {
 		"@commonsbooking/frontend": "^0.1.0-beta.7",
-		"@commonsbooking/litepicker": "^1.5.7",
+		"@commonsbooking/litepicker": "^1.5.8",
 		"feiertagejs": "^1.5.1",
 		"leaflet": "^1.7.1",
 		"leaflet-easybutton": "^2.4.0",
