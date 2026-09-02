@@ -43,7 +43,7 @@ jobs:
       - name: Run benchmark on PR branch
         run: |
           composer dump-autoload -o
-          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/pr-benchmark.txt
+          php tests/benchmark/phpbench.php run tests/benchmark --report=aggregate > /tmp/pr-benchmark.txt
 
       - name: Checkout master branch
         uses: actions/checkout@v7
@@ -58,7 +58,7 @@ jobs:
       - name: Run benchmark on master branch
         run: |
           composer dump-autoload -o
-          php vendor/bin/phpbench run tests/benchmark --report=aggregate > /tmp/master-benchmark.txt
+          php tests/benchmark/phpbench.php run tests/benchmark --report=aggregate > /tmp/master-benchmark.txt
 
       - name: Prepare benchmark comment
         id: prepare-comment
