@@ -6,7 +6,7 @@ use CommonsBooking\Tests\Wordpress\CustomPostType_AJAX_Test;
 
 class Cache_AJAX_Test extends CustomPostType_AJAX_Test {
 
-	protected $hooks     = [ 'cb_ajax_cache_warmup' => array( \CommonsBooking\Plugin::class, 'warmupCache' ) ];
+	protected $hooks     = [ 'cb_cache_warmup' => array( \CommonsBooking\Plugin::class, 'warmupCache' ) ];
 	private array $posts = [];
 
 	private static array $fakeShortcodeACalled = [];
