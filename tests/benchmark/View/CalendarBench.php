@@ -21,8 +21,8 @@ class CalendarBench extends BenchmarkCase {
 
 
 	/**
-	 * @Iterations(1)
-	 * @Revs(9)
+	 * @Iterations(3)
+	 * @Revs(3)
 	 * @return void
 	 * @throws \Exception
 	 */
