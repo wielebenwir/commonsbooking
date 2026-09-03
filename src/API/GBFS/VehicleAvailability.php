@@ -11,6 +11,13 @@ use WP_REST_Response;
 class VehicleAvailability extends BaseRoute {
 
 	/**
+	 * Availability slots indexed by item ID for the current response.
+	 *
+	 * @var array<int, array>
+	 */
+	private array $availabilitiesByItem = [];
+
+	/**
 	 * The base of this controller's route.
 	 *
 	 * @var string
@@ -23,6 +30,26 @@ class VehicleAvailability extends BaseRoute {
 	 * @var string
 	 */
 	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_availability.json';
+
+	/**
+	 * Build availability once for all vehicles instead of processing a calendar
+	 * separately for every item.
+	 *
+	 * @param $request
+	 *
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function getItemData( $request ): array {
+		$this->availabilitiesByItem = [];
+
+		foreach ( AvailabilityRoute::getItemData() as $availability ) {
+			$itemId                                  = (int) $availability->itemId;
+			$this->availabilitiesByItem[ $itemId ][] = $availability;
+		}
+
+		return parent::getItemData( $request );
+	}
 
 	/**
 	 * @param \CommonsBooking\Model\Item $item
@@ -41,13 +68,13 @@ class VehicleAvailability extends BaseRoute {
 		$preparedItem->vehicle_id      = strval( $item->getCloakedId() );
 		$preparedItem->vehicle_type_id = VehicleTypes::DEFAULT_NAME;
 		$preparedItem->station_id      = strval( $location->ID ); // This is what you could consider the home location. Regardless if the item is there atm or not.
-		$preparedItem->availabilities  = self::getAvailabilities( $item );
+		$preparedItem->availabilities  = $this->getAvailabilities( $item );
 
 		return new WP_REST_Response( $preparedItem );
 	}
 
-	private static function getAvailabilities( $item ): array {
-		$availabilities = AvailabilityRoute::getItemData( $item->ID );
+	private function getAvailabilities( $item ): array {
+		$availabilities = $this->availabilitiesByItem[ $item->ID ] ?? [];
 
 		if ( empty( $availabilities ) ) {
 			return [];
