@@ -42,8 +42,13 @@ class VehicleAvailability extends BaseRoute {
 	 */
 	public function getItemData( $request ): array {
 		$this->availabilitiesByItem = [];
+		$items                      = static::getRepository()::get();
+		$itemIds                    = array_map(
+			static fn( $item ) => $item->ID,
+			$items
+		);
 
-		foreach ( AvailabilityRoute::getItemData() as $availability ) {
+		foreach ( AvailabilityRoute::getItemData( $itemIds ) as $availability ) {
 			$itemId                                  = (int) $availability->itemId;
 			$this->availabilitiesByItem[ $itemId ][] = $availability;
 		}

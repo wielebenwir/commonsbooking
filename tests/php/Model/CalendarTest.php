@@ -24,11 +24,11 @@ class CalendarTest extends CustomPostTypeTest {
 		$this->assertEquals( 5, count( $this->calendar->getWeeks() ) );
 		$this->assertEquals(
 			array(
-				new Week( 2023, 120 ),
-				new Week( 2023, 127 ),
-				new Week( 2023, 134 ),
-				new Week( 2023, 141 ),
-				new Week( 2023, 148 ),
+				new Week( 2023, 120, [], [], [], [], [] ),
+				new Week( 2023, 127, [], [], [], [], [] ),
+				new Week( 2023, 134, [], [], [], [], [] ),
+				new Week( 2023, 141, [], [], [], [], [] ),
+				new Week( 2023, 148, [], [], [], [], [] ),
 			),
 			$this->calendar->getWeeks()
 		);
