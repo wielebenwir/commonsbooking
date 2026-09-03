@@ -16,8 +16,8 @@ class BookingBench extends BenchmarkCase {
 	/**
 	 * @BeforeMethods({"setUp"})
 	 * @AfterMethods({"tearDown"})
-	 * @Iterations(1)
-	 * @Revs(9)
+	 * @Iterations(6)
+	 * @Revs(3)
 	 */
 	public function benchBookingLifecycle(): void {
 		$bookingId          = $this->handleBookingRequest( 'unconfirmed' );
