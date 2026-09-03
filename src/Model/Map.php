@@ -3,6 +3,7 @@
 namespace CommonsBooking\Model;
 
 use CommonsBooking\Repository\Item;
+use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use Exception;
 
@@ -101,7 +102,12 @@ class Map extends CustomPost {
 				}
 
 				$timeframesData = [];
-				$timeframes     = $item->getBookableTimeframesByLocation( $post->ID, true );
+				$timeframes     = Timeframe::getBookableForCurrentUser(
+					[ $post->ID ],
+					[ $item->ID ],
+					null,
+					true
+				);
 
 				if ( ! $timeframes ) {
 					continue;
