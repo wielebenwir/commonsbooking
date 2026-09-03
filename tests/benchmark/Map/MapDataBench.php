@@ -14,8 +14,8 @@ class MapDataBench extends BenchmarkCase {
 	private Map $map;
 
 	/**
-	 * @Iterations(1)
-	 * @Revs(9)
+	 * @Iterations(3)
+	 * @Revs(3)
 	 */
 	public function benchLoadMapData(): void {
 		$this->map->get_locations( [] );

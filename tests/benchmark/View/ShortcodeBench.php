@@ -13,16 +13,16 @@ use CommonsBooking\View\Location;
 class ShortcodeBench extends BenchmarkCase {
 
 	/**
-	 * @Iterations(1)
-	 * @Revs(9)
+	 * @Iterations(3)
+	 * @Revs(3)
 	 */
 	public function benchItemsShortcode(): void {
 		Item::shortcode( [] );
 	}
 
 	/**
-	 * @Iterations(1)
-	 * @Revs(9)
+	 * @Iterations(3)
+	 * @Revs(3)
 	 */
 	public function benchLocationsShortcode(): void {
 		Location::shortcode( [] );
