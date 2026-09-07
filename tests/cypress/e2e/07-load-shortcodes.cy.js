@@ -107,10 +107,8 @@ describe('load shortcodes', () => {
         //login
         cy.visit('/wp-login.php');
         cy.wait(1000);
-        cy.env('wpSubscriber').then((wpSubscriber) => {
+        cy.env(['wpSubscriber', 'wpPassword']).then(({ wpSubscriber, wpPassword }) => {
             cy.get('#user_login').type(wpSubscriber);
-        });
-        cy.env('wpPassword').then((wpPassword) => {
             cy.get('#user_pass').type(wpPassword);
             cy.get('#wp-submit').click();
         });

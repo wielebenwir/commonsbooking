@@ -14,7 +14,7 @@ Cypress.Commands.add('waitForWordPressReady', () => {
 
 Cypress.Commands.add('loginAs', (userType = 'admin') => {
     const username = userType;
-    cy.env('wpPassword').then((password) => {
+    cy.env(['wpPassword']).then(({ wpPassword }) => {
         cy.visit('/wp-login.php', {
             timeout: 120000, // 2 minutes for CI
             failOnStatusCode: false,
@@ -23,7 +23,7 @@ Cypress.Commands.add('loginAs', (userType = 'admin') => {
         cy.wait(2000); //2 seconds so login form is completely present
 
         cy.get('#user_login', { timeout: 30000 }).type(username);
-        cy.get('#user_pass').type(password);
+        cy.get('#user_pass').type(wpPassword);
         cy.get('#wp-submit').click();
 
         // Final check
