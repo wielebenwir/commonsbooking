@@ -107,9 +107,13 @@ describe('load shortcodes', () => {
         //login
         cy.visit('/wp-login.php');
         cy.wait(1000);
-        cy.get('#user_login').type(Cypress.env('wpSubscriber'));
-        cy.get('#user_pass').type(Cypress.env('wpPassword'));
-        cy.get('#wp-submit').click();
+        cy.env('wpSubscriber').then((wpSubscriber) => {
+            cy.get('#user_login').type(wpSubscriber);
+        });
+        cy.env('wpPassword').then((wpPassword) => {
+            cy.get('#user_pass').type(wpPassword);
+            cy.get('#wp-submit').click();
+        });
 
         cy.visit('/?page_id=128');
         //This depends on the booking-process.cy.js running before this test
