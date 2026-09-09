@@ -44,29 +44,37 @@ class Week {
 	/**
 	 * @var Timeframe[]
 	 */
-	private array $timeframes = [];
+	private ?array $timeframes;
+
+	/**
+	 * @var Restriction[]|null
+	 */
+	private ?array $restrictions;
 
 	/**
 	 * Week constructor.
 	 *
 	 * @param $year
 	 * @param $dayOfYear
-	 * @param array       $locations
-	 * @param array       $items
-	 * @param array       $types
-	 * @param Timeframe[] $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
+	 * @param array              $locations
+	 * @param array              $items
+	 * @param array              $types
+	 * @param Timeframe[]|null   $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
+	 * @param Restriction[]|null $possibleRestrictions Restrictions that might be relevant for this week.
 	 */
-	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
+	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], ?array $possibleTimeframes = null, ?array $possibleRestrictions = null ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}
-		$this->year      = $year;
-		$this->dayOfYear = $dayOfYear;
-		$this->locations = $locations;
-		$this->items     = $items;
-		$this->types     = $types;
+		$this->year         = $year;
+		$this->dayOfYear    = $dayOfYear;
+		$this->locations    = $locations;
+		$this->items        = $items;
+		$this->types        = $types;
+		$this->restrictions = $possibleRestrictions;
 
-		if ( ! empty( $possibleTimeframes ) ) {
+		$this->timeframes = $possibleTimeframes;
+		if ( $possibleTimeframes !== null ) {
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
 		}
 	}
@@ -100,7 +108,7 @@ class Week {
 			$days = array();
 			for ( $i = 0; $i < 7; $i++ ) {
 				$dayDate   = $dto->format( 'Y-m-d' );
-				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $this->timeframes ?: [] );
+				$days[]    = new Day( $dayDate, $this->locations, $this->items, $this->types, $this->timeframes, $this->restrictions );
 				$dayOfWeek = $dto->format( 'w' );
 				if ( $dayOfWeek === '0' ) {
 					break;
