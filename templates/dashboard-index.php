@@ -1,5 +1,17 @@
 <h1>Dashboard</h1>
 <!-- based on WordPress Dashboard -->
+<?php if ( \CommonsBooking\Service\DemoData::shouldShowButton() ) : ?>
+<div class="wrap">
+	<div class="cb_welcome-panel" style="background:#f0f8e8;border-left:4px solid #67b32a;padding:16px 20px;margin-bottom:10px;">
+		<h3 style="margin-top:0"><?php echo esc_html__( 'Getting started with CommonsBooking', 'commonsbooking' ); ?></h3>
+		<p><?php echo esc_html__( 'No items or locations yet? Load sample data to explore the plugin.', 'commonsbooking' ); ?></p>
+		<button id="cb-create-demo-data" class="button button-primary">
+			<?php echo esc_html__( 'Try with demo data', 'commonsbooking' ); ?>
+		</button>
+		<span id="cb-demo-data-status" style="margin-left:10px;font-style:italic;"></span>
+	</div>
+</div>
+<?php endif; ?>
 <div class="wrap">
 	<div id="cb_welcome-panel" class="cb_welcome-panel">
 		<div class="cb_welcome-panel-content">
