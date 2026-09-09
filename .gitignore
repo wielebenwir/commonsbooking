@@ -6,6 +6,7 @@ assets/packaged
 .vscode/settings.json
 .idea
 
+.phpunit.result.cache
 tests/cypress/screenshots
 docs/.vitepress/dist
 /vendor-prefixed

@@ -85,6 +85,17 @@ class Timeframe extends PostRepository {
 	}
 
 	/**
+	 * @param $postId
+	 * @return \CommonsBooking\Model\Timeframe
+	 * @throws \CommonsBooking\Psr\Cache\CacheException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
+	 */
+	public static function getPostById( $postId ) {
+		$result = parent::getPostById( $postId );
+		return $result;
+	}
+
+	/**
 	 * Function to get timeframes with all possible options/params.
 	 * Why? We have different types of timeframes and in some cases we need multiple of them.
 	 *      In this case we need this function.
