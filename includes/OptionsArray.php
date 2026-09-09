@@ -1426,13 +1426,19 @@ This item has been booked by {{user:first_name}} {{user:last_name}} ( {{user:use
 			'api' => array(
 				'title'  => esc_html__( 'Configure API Access', 'commonsbooking' ),
 				'id'     => 'api_access',
+				'desc'   => sprintf(
+					__( 'If not stated otherwise, this refers to the Commons API. See %1$sCommons API documentation here%2$s.', 'commonsbooking' ),
+					'<a target="_blank" href="' . esc_url( 'https://commonsbooking.org/documentation/api/commonsbooking-api' ) . '">',
+					'</a>'
+				),
 				'fields' => [
 					array(
 						'name' => esc_html__( 'Activate API', 'commonsbooking' ),
 						'desc' => commonsbooking_sanitizeHTML(
 							sprintf(
-								__( 'If selected, the API is enabled. See more information in the documentation: %1$sAPI documentation%2$s', 'commonsbooking' ),
-								'<a target="_blank" href="' . esc_url( 'https://commonsbooking.org/documentation/api/commonsbooking-api/' ) . '">',
+								// translators: %1$s, %2$s = doc link
+								__( 'If selected, the API is enabled. This option also enables the GBFS API of the plugin, see %1$sGBFS documentation here%2$s.', 'commonsbooking' ),
+								'<a target="_blank" href="' . esc_url( 'https://commonsbooking.org/documentation/api/gbfs' ) . '">',
 								'</a>'
 							)
 						),
