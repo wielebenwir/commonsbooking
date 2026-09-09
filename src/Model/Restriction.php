@@ -297,7 +297,10 @@ class Restriction extends CustomPost {
 	public function apply() {
 		// Check if this is an active restriction
 		if ( $this->isActive() ) {
-			$bookings = \CommonsBooking\Repository\Booking::getByRestriction( $this );
+			$bookings = array_filter(
+				\CommonsBooking\Repository\Booking::getByRestriction( $this ),
+				fn( $booking ) => ! $booking->isPast()
+			);
 			if ( $bookings ) {
 				// send restriction mails to all affected bookings
 				$this->sendRestrictionMails( $bookings );
