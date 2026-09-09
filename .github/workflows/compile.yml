@@ -60,7 +60,7 @@ jobs:
         node-version-file: '.nvmrc'
         cache: 'npm'
 
-    - run: npm ci --legacy-peer-deps --include=dev
+    - run: npm ci --include=dev
 
     - name: Validate composer.json and composer.lock
       run: composer validate

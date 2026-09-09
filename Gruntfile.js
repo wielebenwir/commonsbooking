@@ -238,7 +238,27 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-dart-sass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-babel');
+	grunt.registerMultiTask('babel', 'Compile files with Babel.', function () {
+		const options = this.options({});
+		if (Object.prototype.hasOwnProperty.call(options, 'sourceMap')) {
+			options.sourceMaps = options.sourceMap;
+			delete options.sourceMap;
+		}
+		const babel = require('@babel/core');
+		this.files.forEach(function (file) {
+			const result = babel.transformFileSync(file.src[0], options);
+			if (!result || !result.code) {
+				grunt.fail.fatal('Babel transpilation failed for ' + file.src[0]);
+				return;
+			}
+
+			grunt.file.write(file.dest, result.code);
+
+			if (result.map) {
+				grunt.file.write(file.dest + '.map', JSON.stringify(result.map));
+			}
+		});
+	});
 	grunt.registerTask('node_versions', 'Generates a version map for dependencies', function () {
 		const deps = pkg.dependencies;
 		const versionMap = Object.fromEntries(
