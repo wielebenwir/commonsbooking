@@ -253,6 +253,82 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 3:00 pm - 6:00 pm', $this->testBookingSpanningOverTwoSlots->returnDatetime() );
 	}
 
+	/**
+	 * Regression test for the "return time shown on a full-day return" bug.
+	 *
+	 * Scenario from the issue: an item has several timeframes configured that allow both slot-based
+	 * and full-day bookings on *different* days. A booking is then picked up on a slot day and
+	 * returned on a full-day day. Expected: the return line shows only the return date (no time),
+	 * because a full day has no meaningful return time. Observed in the bug: the return line
+	 * additionally rendered a time that was inherited from the pickup slot.
+	 *
+	 * Mechanism: a booking inherits its `full-day`/`grid` meta from the timeframe at its *start*
+	 * (pickup) day via {@see Booking::assignBookableTimeframeFields()}. `returnDatetime()` then
+	 * decides whether to print a time solely from that inherited `isFullDay()` value, ignoring the
+	 * timeframe that actually governs the *return* day.
+	 *
+	 * @throws \Exception
+	 */
+	public function testReturnDatetimeFullDayReturnAfterSlotPickup() {
+		$item     = $this->createItem( 'MixedGridItem', 'publish' );
+		$location = $this->createLocation( 'MixedGridLocation', 'publish' );
+
+		// Pickup day (CURRENT_DATE): slot / time-based timeframe, 10:00 - 18:00, not full-day.
+		$this->createTimeframe(
+			$location,
+			$item,
+			strtotime( 'midnight', strtotime( self::CURRENT_DATE ) ),
+			$this->getEndOfDayTimestamp( self::CURRENT_DATE ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'off', // not full-day: bookable in slots
+			'd',
+			0,
+			'10:00',
+			'18:00'
+		);
+
+		// Return day (CURRENT_DATE + 1): full-day timeframe.
+		$returnDay = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+		$this->createTimeframe(
+			$location,
+			$item,
+			strtotime( 'midnight', $returnDay ),
+			$this->getEndOfDayTimestamp( date( 'd.m.Y', $returnDay ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'on', // full-day
+			'd',
+			0,
+			'00:00',
+			'23:59'
+		);
+
+		// Booking: picked up on the slot day at 10:00, returned at the end of the full-day day.
+		$beginningTime = new \DateTime( self::CURRENT_DATE );
+		$beginningTime->setTime( 10, 0 );
+		$endingTime = new \DateTime();
+		$endingTime->setTimestamp( $this->getEndOfDayTimestamp( date( 'd.m.Y', $returnDay ) ) );
+
+		// Create the booking the "frontend" way so the correct grid sizes and bookable-timeframe
+		// meta fields are assigned, exactly as they would be for a real booking.
+		$bookingId          = \CommonsBooking\Wordpress\CustomPostType\Booking::handleBookingRequest(
+			$item,
+			$location,
+			'confirmed',
+			null,
+			null,
+			$beginningTime->getTimestamp(),
+			$endingTime->getTimestamp(),
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+		$this->bookingIds[] = $bookingId;
+		$booking            = new Booking( $bookingId );
+
+		// The return happens on a full day, so only the date must be shown - no time may be
+		// inherited from the pickup slot.
+		$this->assertEquals( 'July 2, 2021', $booking->returnDatetime() );
+	}
+
 	public function testShowBookingCodes() {
 		$this->assertFalse( $this->testBookingTomorrow->showBookingCodes() );
 
