@@ -118,7 +118,7 @@ class Calendar {
 		$itemIDs = array_map( fn( $item ) => $item->ID, $items );
 
 		/* @var Timeframe[] $allTimeframes */
-		$allTimeframes = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
+		$allTimeframes      = \CommonsBooking\Repository\Timeframe::getInRangeForCurrentUser(
 			strtotime( $today ),
 			strtotime( $last_day ),
 			[],
@@ -126,12 +126,33 @@ class Calendar {
 			[ Timeframe::BOOKABLE_ID ],
 			true
 		);
+		$calendarTimeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+			strtotime( $today ),
+			strtotime( $last_day ),
+			[],
+			$itemIDs,
+			[],
+			true,
+			[ 'confirmed', 'publish' ]
+		);
 
 		// group by item ID
-		$timeframeByItemID = [];
+		$timeframeByItemID                   = [];
+		$bookableTimeframesByItemAndLocation = [];
+		$calendarTimeframesByItemAndLocation = [];
 		foreach ( $allTimeframes as $timeframe ) {
 			foreach ( $timeframe->getItemIDs() as $itemID ) {
 				$timeframeByItemID[ $itemID ][] = $timeframe;
+				foreach ( $timeframe->getLocationIDs() as $locationID ) {
+					$bookableTimeframesByItemAndLocation[ $itemID ][ $locationID ][] = $timeframe;
+				}
+			}
+		}
+		foreach ( $calendarTimeframes as $timeframe ) {
+			foreach ( $timeframe->getItemIDs() as $itemID ) {
+				foreach ( $timeframe->getLocationIDs() as $locationID ) {
+					$calendarTimeframesByItemAndLocation[ $itemID ][ $locationID ][] = $timeframe;
+				}
 			}
 		}
 
@@ -168,7 +189,17 @@ class Calendar {
 							}
 						}
 
-						$locationHtml = self::renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display );
+						$locationHtml = self::renderItemLocationRow(
+							$item,
+							$locationId,
+							$locationName,
+							$today,
+							$last_day,
+							$days,
+							$days_display,
+							$bookableTimeframesByItemAndLocation[ $item->ID ][ $locationId ] ?? [],
+							$calendarTimeframesByItemAndLocation[ $item->ID ][ $locationId ] ?? []
+						);
 						Plugin::setCacheItem( $locationHtml, [ strval( $item->ID ), strval( $locationId ) ], $customCacheKey );
 						$rowHtml .= $locationHtml;
 					}
@@ -248,11 +279,13 @@ class Calendar {
 	 * @param $last_day
 	 * @param $days
 	 * @param $days_display
+	 * @param array $bookableTimeframes
+	 * @param array $calendarTimeframes
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display ): string {
+	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display, array $bookableTimeframes, array $calendarTimeframes ): string {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -266,7 +299,9 @@ class Calendar {
 				$locationId,
 				$today,
 				date( 'Y-m-d', strtotime( '+' . $days . ' days', time() ) ),
-				true
+				true,
+				$bookableTimeframes,
+				$calendarTimeframes
 			);
 
 			$gotStartDate = false;
@@ -341,11 +376,13 @@ class Calendar {
 	 * @param string                        $startDateString YYYY-MM-DD Format
 	 * @param string                        $endDateString YYYY-MM-DD Format
 	 * @param bool                          $keepDaterange
+	 * @param array|null                    $bookableTimeframes
+	 * @param array|null                    $calendarTimeframes
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false ): array {
+	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false, ?array $bookableTimeframes = null, ?array $calendarTimeframes = null ): array {
 		if ( $item instanceof WP_Post || $item instanceof CustomPost ) {
 			$item = $item->ID;
 		}
@@ -362,12 +399,12 @@ class Calendar {
 			return [];
 		}
 
-		$startDate          = new Day( $startDateString );
-		$endDate            = new Day( $endDateString );
-		$advanceBookingDays = null;
-		$lastBookableDate   = null;
-		$firstBookableDay   = null;
-		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
+		$startDate            = new Day( $startDateString );
+		$endDate              = new Day( $endDateString );
+		$advanceBookingDays   = null;
+		$lastBookableDate     = null;
+		$firstBookableDay     = null;
+		$bookableTimeframes ??= \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
 			null,
@@ -411,7 +448,7 @@ class Calendar {
 			}
 		}
 
-		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay );
+		return self::prepareJsonResponse( $startDate, $endDate, [ $location ], [ $item ], $advanceBookingDays, $lastBookableDate, $firstBookableDay, $calendarTimeframes );
 	}
 
 	/**
@@ -542,7 +579,8 @@ class Calendar {
 		array $items,
 		$advanceBookingDays = null,
 		$lastBookableDate = null,
-		$firstBookableDay = null
+		$firstBookableDay = null,
+		?array $calendarTimeframes = null
 	): array {
 
 		$current_user   = wp_get_current_user();
@@ -563,7 +601,9 @@ class Calendar {
 				$startDate,
 				$endDate,
 				$locations,
-				$items
+				$items,
+				[],
+				$calendarTimeframes
 			);
 
 			$jsonResponse = [
