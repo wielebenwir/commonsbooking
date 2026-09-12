@@ -414,4 +414,11 @@ class DayTest extends CustomPostTypeTest {
 			$this->assertTrue( $slot['timeframe']->locked );
 		}
 	}
+	public function testGetGridIncludesBookingEndingAtEndOfDay() {
+		$booking = $this->createConfirmedBookingEndingToday();
+		$grid    = $this->instance->getGrid();
+
+		$this->assertSame( $booking, $grid[95]['timeframe']->ID );
+		$this->assertTrue( $grid[95]['timeframe']->locked );
+	}
 }

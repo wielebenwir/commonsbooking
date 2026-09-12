@@ -539,6 +539,26 @@ class TimeframeTest extends CustomPostTypeTest {
 		$timeframe->isValid();
 	}
 
+	public function testIsValidSkipsUnsetFractionalGridBoundary() {
+		$location  = $this->createLocation( 'Fractional grid location without start time', 'publish' );
+		$item      = $this->createItem( 'Fractional grid item without start time', 'publish' );
+		$timeframe = new Timeframe(
+			$this->createTimeframe(
+				$location,
+				$item,
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'off',
+				'd',
+				'0.5',
+				null,
+				'10:00 AM'
+			)
+		);
+
+		$this->assertTrue( $timeframe->isValid() );
+	}
 	public function testIsUserPrivileged() {
 		$this->createSubscriber();
 		$this->createCBManager();
