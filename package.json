@@ -32,6 +32,7 @@
 		"prettier": "^3.8.4"
 	},
 	"scripts": {
+		"audit:production": "npm audit --omit=dev --audit-level=high",
 		"start": "composer install --ignore-platform-reqs && npm install && npm run dist",
 		"env": "wp-env",
 		"env:start": "wp-env start",
@@ -45,6 +46,13 @@
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
 		"docs:preview": "vitepress preview docs"
+	},
+	"overrides": {
+		"@rokoli/vue-tiny-i18n": {
+			"js-yaml": "4.3.2"
+		},
+		"nanoid": "3.3.19",
+		"postcss": "8.5.28"
 	},
 	"dependencies": {
 		"@commonsbooking/frontend": "^0.1.0-beta.7",
