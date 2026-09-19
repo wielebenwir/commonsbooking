@@ -3,8 +3,8 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Model\MessageRecipient;
-use CommonsBooking\PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
+use PHPMailer;
 use function commonsbooking_parse_template;
 
 /**
