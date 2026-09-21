@@ -1,4 +1,5 @@
 const { defineConfig } = require('cypress');
+const { execSync } = require('node:child_process');
 
 module.exports = defineConfig({
     fixturesFolder: 'tests/cypress/fixtures',
@@ -14,7 +15,20 @@ module.exports = defineConfig({
     e2e: {
         baseUrl: 'http://localhost:1001/',
         setupNodeEvents(on, config) {
-            // implement node event listeners here
+            on('task', {
+                wpPostMetaUpdate({ postId, metaKey, metaValue }) {
+                    try {
+                        return execSync(
+                            `npx wp-env --config=.wp-env.test.json run cli wp post meta update ${postId} ${metaKey} ${metaValue}`,
+                            {
+                                encoding: 'utf8',
+                            },
+                        );
+                    } catch (error) {
+                        return error.stderr?.toString() || error.message;
+                    }
+                },
+            });
         },
         video: false,
         specPattern: 'tests/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
