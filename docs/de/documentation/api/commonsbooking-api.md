@@ -10,7 +10,7 @@ Die API basiert auf der in [WordPress implementierten REST-API](https://develope
 
 ::: tip Aktivierung der API
 Die API ist standardmäßig deaktiviert und es gibt keine Verbindungen zu externen Services oder Plattformen.
-Die API aktivierst du über die Einstellungen (s.u.) und die Checkbox "API aktivieren".
+Die API aktivierst du über die Einstellungen (s.u.).
 :::
 
 
@@ -18,7 +18,7 @@ Die API aktivierst du über die Einstellungen (s.u.) und die Checkbox "API aktiv
 
 Die API erreichst du über _Einstellungen_ -> _CommonsBooking_ -> Tab: _API / Export_.
 
-  * API aktivieren: Aktiviert generell den API-Zugriff
+  * API aktivieren: Aktiviert generell den API-Zugriff (auch für die [GBFS API](gbfs)).
   * API Zugang ohne API-Schlüssel: Wenn diese Option aktiviert ist, kann auf die API auch ohne einen individuellen API-Key zugegriffen werden. Diese Einstellung ist sinnvoll, wenn ihre eure Daten mit mehreren Plattformen teilen möchtet.
   * API-Freigaben: Die Schnittstelle kann für verschiedene Endpunkte bzw. anfragende Seiten freigegeben werden. Um die Zugriffsrechte entsprechend zu steuern könnt ihr auch mehrere unterschiedliche Freigaben anlegen.
 
@@ -31,7 +31,9 @@ Die API erreichst du über _Einstellungen_ -> _CommonsBooking_ -> Tab: _API / Ex
 
 ## Artikel von der API ausschliessen
 
-Wenn Artikel nicht in der API erscheinen sollen, müssen diese explizit ausgeschlossen werden. Diese Einstellungen kann auf Artikelebene vorgenommen werden, wenn dort der entsprechende Haken gesetzt ist, tauchen diese Artikel nicht in den API Routen auf.
+Wenn Artikel nicht in der API erscheinen sollen, müssen diese explizit ausgeschlossen werden.
+Diese Einstellungen kann auf Artikelebene vorgenommen werden, wenn die API aktiviert ist.
+Wenn in der Artikel-Ansicht der Haken im entsprechenden Meta-Feld gesetzt ist, tauchen diese Artikel nicht in den API Routen auf.
 
 ##  Spezifikation der API-Routen
 
