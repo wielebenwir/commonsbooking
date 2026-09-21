@@ -21,6 +21,9 @@ class TimeframeExportTest extends CustomPostTypeTest {
 		$timeframeOneItemAndLocation = $this->createBookableTimeFrameIncludingCurrentDay();
 		$dataArray                   = \CommonsBooking\Service\TimeframeExport::getTimeframeData( [ $timeframeOneItemAndLocation ] );
 		$this->assertEquals( 1, count( $dataArray ) );
+		update_post_meta( $timeframeOneItemAndLocation, 'grid', '0.25' );
+		$dataArray = \CommonsBooking\Service\TimeframeExport::getTimeframeData( [ $timeframeOneItemAndLocation ] );
+		$this->assertSame( '15 minutes', $dataArray[0]['grid'] );
 
 		$secondItem                   = $this->createItem( 'second-item' );
 		$timeframeTwoItemsOneLocation =

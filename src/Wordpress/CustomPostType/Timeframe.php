@@ -614,7 +614,7 @@ class Timeframe extends CustomPostType {
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
-							'stepMinute' => 60,
+							'stepMinute' => 15,
 							'timeFormat' => 'HH:mm',
 						)
 					),
@@ -631,7 +631,7 @@ class Timeframe extends CustomPostType {
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
 						array(
-							'stepMinute' => 60,
+							'stepMinute' => 15,
 							'timeFormat' => 'HH:mm',
 						)
 					),
@@ -824,8 +824,10 @@ class Timeframe extends CustomPostType {
 	 */
 	public static function getGridOptions() {
 		return [
-			0 => esc_html__( 'Full slot', 'commonsbooking' ),
-			1 => esc_html__( 'Hourly', 'commonsbooking' ),
+			0      => esc_html__( 'Full slot', 'commonsbooking' ),
+			1      => esc_html__( 'Hourly', 'commonsbooking' ),
+			'0.5'  => esc_html__( '30 minutes', 'commonsbooking' ),
+			'0.25' => esc_html__( '15 minutes', 'commonsbooking' ),
 		];
 	}
 

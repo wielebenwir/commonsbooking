@@ -253,6 +253,33 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertEquals( self::CURRENT_DATE_FORMATTED . ' 3:00 pm - 6:00 pm', $this->testBookingSpanningOverTwoSlots->returnDatetime() );
 	}
 
+	public function testFractionalSlotDatetimes() {
+		$start   = strtotime( self::CURRENT_DATE . ' 09:15' );
+		$end     = strtotime( self::CURRENT_DATE . ' 09:30' ) - 1;
+		$booking = new Booking(
+			$this->createBooking(
+				$this->locationId,
+				$this->itemId,
+				$start,
+				$end,
+				'09:15 AM',
+				'09:30 AM',
+				'confirmed',
+				self::USER_ID,
+				'w',
+				3,
+				'Quarter-hour booking',
+				0,
+				[ '1', '2', '3', '4', '5', '6', '7' ],
+				'0.25',
+				'0.25'
+			)
+		);
+
+		$this->assertSame( self::CURRENT_DATE_FORMATTED . ' 9:15 am - 9:30 am', $booking->pickupDatetime() );
+		$this->assertSame( self::CURRENT_DATE_FORMATTED . ' 9:15 am - 9:30 am', $booking->returnDatetime() );
+	}
+
 	public function testShowBookingCodes() {
 		$this->assertFalse( $this->testBookingTomorrow->showBookingCodes() );
 
