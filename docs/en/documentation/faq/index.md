@@ -8,6 +8,12 @@ This page is split into two sections: [general **FAQ**](#faq) with common how-to
 
 <ExpandAll label-expand="Expand all" label-collapse="Collapse all" />
 
+## New bookings aren't showing up on the calendar, old bookings aren't disappearing, or restrictions aren't taking effect
+
+::: details Expand for answer
+An outdated calendar may indicate caching issues. You can find more information and troubleshooting tips in the [documentation page about caching](../advanced-functionality/cache#troubleshooting).
+:::
+
 ## How do I show the booking comment on the page and in the email?
 
 ::: details Expand for answer
