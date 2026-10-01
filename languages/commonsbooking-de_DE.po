@@ -3585,31 +3585,31 @@ msgid "Number of bookings each user is allowed to make per month"
 msgstr "Anzahl der Buchungen die jeder Nutzende pro Monat tätigen darf"
 
 #. translators: %1$s number of days, %2$s number of days
-#: src/Service/BookingRule.php:464
+#: src/Service/BookingRule.php:474
 #, php-format
 msgid "You can only book %1$s days out of %2$s days. Please wait a while in-between bookings."
 msgstr "Du kannst maximal %1$s Tage alle %2$s Tage buchen. Bitte lass etwas Zeit zwischen deinen Buchungen."
 
 #. translators: %1$s number of days allowed, %2$s name of day next week
-#: src/Service/BookingRule.php:497
+#: src/Service/BookingRule.php:507
 #, php-format
 msgid "You can only book %1$s days per week, please try again after %2$s next week."
 msgstr "Du kannst maximal %1$s Tage pro Woche buchen. Bitte versuche es nochmal nach %2$s nächste Woche."
 
 #. translators: %1$s allowed number of bookings, %2$s reset day
-#: src/Service/BookingRule.php:516
+#: src/Service/BookingRule.php:526
 #, php-format
 msgid "You are only allowed to have %1$s booking(s) per week, please try again after %2$s next week."
 msgstr "Du kannst maximal %1$s Buchungen pro Woche tätigen. Bitte versuche es nochmal nach %2$s nächste Woche."
 
 #. translators: %1$s allowed number of bookings, %2$s reset day (date)
-#: src/Service/BookingRule.php:546
+#: src/Service/BookingRule.php:556
 #, php-format
 msgid "You can only book %1$s days per month, please try again after the %2$s. next month."
 msgstr "Du kannst maximal %1$s Tage pro Monat buchen. Bitte versuche es nochmal nach dem %2$s. nächsten Monats."
 
 #. translators: %1$s allowed number of bookings, %2$s reset day (date)
-#: src/Service/BookingRule.php:562
+#: src/Service/BookingRule.php:572
 #, php-format
 msgid "You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month."
 msgstr "Du kannst maximal %1$s Buchungen pro Monat tätigen. Bitte versuche es nochmal nach dem %2$s. nächsten Monats."

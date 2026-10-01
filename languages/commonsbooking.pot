@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-29T19:15:38+00:00\n"
+"POT-Creation-Date: 2026-10-01T15:34:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: commonsbooking\n"
@@ -1813,31 +1813,31 @@ msgid "Number of bookings each user is allowed to make per month"
 msgstr ""
 
 #. translators: %1$s number of days, %2$s number of days
-#: src/Service/BookingRule.php:464
+#: src/Service/BookingRule.php:474
 #, php-format
 msgid "You can only book %1$s days out of %2$s days. Please wait a while in-between bookings."
 msgstr ""
 
 #. translators: %1$s number of days allowed, %2$s name of day next week
-#: src/Service/BookingRule.php:497
+#: src/Service/BookingRule.php:507
 #, php-format
 msgid "You can only book %1$s days per week, please try again after %2$s next week."
 msgstr ""
 
 #. translators: %1$s allowed number of bookings, %2$s reset day
-#: src/Service/BookingRule.php:516
+#: src/Service/BookingRule.php:526
 #, php-format
 msgid "You are only allowed to have %1$s booking(s) per week, please try again after %2$s next week."
 msgstr ""
 
 #. translators: %1$s allowed number of bookings, %2$s reset day (date)
-#: src/Service/BookingRule.php:546
+#: src/Service/BookingRule.php:556
 #, php-format
 msgid "You can only book %1$s days per month, please try again after the %2$s. next month."
 msgstr ""
 
 #. translators: %1$s allowed number of bookings, %2$s reset day (date)
-#: src/Service/BookingRule.php:562
+#: src/Service/BookingRule.php:572
 #, php-format
 msgid "You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month."
 msgstr ""
