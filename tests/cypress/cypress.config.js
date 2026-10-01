@@ -1,5 +1,8 @@
 const { defineConfig } = require('cypress');
-const { execSync } = require('node:child_process');
+const { execFileSync } = require('node:child_process');
+const { resolve } = require('node:path');
+
+const repositoryRoot = resolve(__dirname, '../..');
 
 module.exports = defineConfig({
     fixturesFolder: 'tests/cypress/fixtures',
@@ -18,14 +21,28 @@ module.exports = defineConfig({
             on('task', {
                 wpPostMetaUpdate({ postId, metaKey, metaValue }) {
                     try {
-                        return execSync(
-                            `npx wp-env --config=.wp-env.test.json run cli wp post meta update ${postId} ${metaKey} ${metaValue}`,
+                        return execFileSync(
+                            'npx',
+                            [
+                                'wp-env',
+                                '--config=.wp-env.test.json',
+                                'run',
+                                'cli',
+                                'wp',
+                                'post',
+                                'meta',
+                                'update',
+                                String(postId),
+                                String(metaKey),
+                                String(metaValue),
+                            ],
                             {
                                 encoding: 'utf8',
+                                cwd: repositoryRoot,
                             },
                         );
                     } catch (error) {
-                        return error.stderr?.toString() || error.message;
+                        return error.stderr?.toString() || error.message || '';
                     }
                 },
             });
