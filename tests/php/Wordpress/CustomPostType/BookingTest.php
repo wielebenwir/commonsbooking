@@ -260,8 +260,16 @@ class BookingTest extends CustomPostTypeTest {
 		Settings::updateOption(
 			'commonsbooking_options_restrictions',
 			'rules_group',
-			[ [ 'rule-applies-all' => 'on' ], [ 'rule-type' => 'noSimultaneousBooking' ] ]
+			[
+				[
+					'rule-applies-all' => 'on',
+					'rule-type' => 'noSimultaneousBooking',
+				],
+			]
 		);
+		// only for non-admins
+		$this->createSubscriber();
+		wp_set_current_user( $this->subscriberId );
 
 		$bookingId          = Booking::handleBookingRequest(
 			$this->itemId,
@@ -340,6 +348,11 @@ class BookingTest extends CustomPostTypeTest {
 	 * @throws BookingDeniedException
 	 */
 	public function testHandleBookingRequest_onlyOneUnconfirmedBooking_notWhenNoRuleSet() {
+		Settings::updateOption(
+			'commonsbooking_options_restrictions',
+			'rules_group',
+			[]
+		);
 		// This test should pass without throwing an exception, as no booking rules are set.
 		$bookingId          = Booking::handleBookingRequest(
 			$this->itemId,
