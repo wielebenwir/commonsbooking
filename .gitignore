@@ -11,6 +11,7 @@ docs/.vitepress/dist
 /vendor-prefixed
 /bin/strauss.phar
 /.phpunit.result.cache
+/.phpbench/
 
 # Pre-Build dist only sources
 assets/admin/js/admin.js

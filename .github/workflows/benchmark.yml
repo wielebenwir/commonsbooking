@@ -11,15 +11,17 @@ jobs:
   benchmark:
     if: ${{ !startsWith(github.head_ref, 'dependabot') }}
     runs-on: self-hosted
+    env:
+      BENCHMARK_BASELINE: ${{ runner.temp }}/phpbench-baseline-${{ github.run_id }}-${{ github.run_attempt }}
     permissions:
       contents: read
       pull-requests: write
 
     steps:
-      - name: Checkout PR branch
+      - name: Checkout base commit
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.base.sha }}
 
       # Not needed on self-hosted runners
       # - name: Set up MySQL
@@ -40,40 +42,37 @@ jobs:
           bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
           composer install --prefer-dist --no-progress
 
-      - name: Run benchmark on PR branch
+      - name: Run and save master baseline
         run: |
           composer dump-autoload -o
-          php tests/benchmark/phpbench.php run tests/benchmark --report=aggregate > /tmp/pr-benchmark.txt
+          php tests/benchmark/phpbench.php run tests/benchmark --tag=master --retry-threshold=5 --iterations=10
+          mv .phpbench "$BENCHMARK_BASELINE"
 
-      - name: Checkout master branch
+      - name: Checkout PR commit
         uses: actions/checkout@v7
         with:
-          ref: master
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Install test dependencies (again for master branch)
+      - name: Install test dependencies for PR commit
         run: |
           bash bin/install-wp-tests.sh wordpress_test root root localhost latest false false true
           composer install --prefer-dist --no-progress
 
-      - name: Run benchmark on master branch
+      - name: Compare PR commit with master baseline
         run: |
           composer dump-autoload -o
-          php tests/benchmark/phpbench.php run tests/benchmark --report=aggregate > /tmp/master-benchmark.txt
+          mv "$BENCHMARK_BASELINE" .phpbench
+          php tests/benchmark/phpbench.php run tests/benchmark --report=aggregate --ref=master --retry-threshold=5 --iterations=10 > "$RUNNER_TEMP/pr-benchmark.txt"
 
       - name: Prepare benchmark comment
         id: prepare-comment
         run: |
           {
-            echo "## Benchmark Results"
+            echo "## Benchmark Results (PR vs. master)"
             echo ""
-            echo "### PR Branch Results"
             echo "\`\`\`"
-            cat /tmp/pr-benchmark.txt
-            echo "\`\`\`"
-            echo ""
-            echo "### Master Branch Results"
-            echo "\`\`\`"
-            cat /tmp/master-benchmark.txt
+            cat "$RUNNER_TEMP/pr-benchmark.txt"
             echo "\`\`\`"
           } > benchmark-comment.md
           cat benchmark-comment.md >> $GITHUB_STEP_SUMMARY
