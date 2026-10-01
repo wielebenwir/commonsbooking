@@ -4,9 +4,14 @@
 namespace CommonsBooking\Tests\Wordpress\Service;
 
 use CommonsBooking\Wordpress\Service\WPPrivacyPersonalDataExporter;
-use CommonsBooking\Tests\Wordpress\CustomPostType\CustomPostTypeTest;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class WPPrivacyPersonalDataExporterTest extends CustomPostTypeTest {
+	protected function setUp(): void {
+		parent::setUp();
+		$this->createSubscriber();
+	}
+
 	/**
 	 * This will check if the bookings can be exported through the WordPress personal data export tool
 	 * @return void
