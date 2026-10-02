@@ -798,6 +798,8 @@ class Plugin {
 
 		// Remove cache items on save.
 		add_action( 'wp_insert_post', array( $this, 'savePostActions' ), 10, 3 );
+		// Remove cache items also when posts (e.g. bookings) are deleted, so calendars stay in sync.
+		add_action( 'before_delete_post', array( $this, 'deletePostActions' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( self::class, 'addWarmupAjaxToOutput' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'addWarmupAjaxToOutput' ) );
 
@@ -892,6 +894,26 @@ class Plugin {
 			$tags[] = 'misc';
 			self::clearCache( $tags );
 		}
+	}
+
+	/**
+	 * Removes cache items in connection to post deletion.
+	 * The 'wp_insert_post' hook does not fire on deletion, so without this,
+	 * deleted bookings would stay in cached calendars until their expiration.
+	 *
+	 * @param int $post_id
+	 * @param WP_Post|null $post
+	 */
+	public function deletePostActions( $post_id, $post = null ) {
+		$post = $post ?? get_post( $post_id );
+
+		if ( ! self::isPostCustomPostType( $post ) ) {
+			return;
+		}
+
+		$tags   = Wordpress::getRelatedPostIds( $post_id );
+		$tags[] = 'misc';
+		self::clearCache( $tags );
 	}
 
 	/**
