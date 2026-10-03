@@ -628,8 +628,10 @@ class Calendar {
 				}
 			}
 
-			// set transient expiration time to midnight to force cache refresh by daily basis to allow dynamic advanced booking day feature
-			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, 'midnight' );
+			// set short cache expiration to keep the calendar in sync with newly created bookings;
+			// longer expirations (e.g. 'midnight') lead to stale calendars because the cache warmup
+			// may re-cache outdated availability data after a booking has been created (race condition).
+			Plugin::setCacheItem( $jsonResponse, [ 'misc' ], $customCacheKey, 300 );
 		}
 
 		return $jsonResponse;
