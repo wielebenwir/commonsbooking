@@ -12,7 +12,7 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'dependabot') }}
     runs-on: self-hosted
     env:
-      BENCHMARK_BASELINE: ${{ runner.temp }}/phpbench-baseline-${{ github.run_id }}-${{ github.run_attempt }}
+      BENCHMARK_BASELINE: /tmp/phpbench-baseline-${{ github.run_id }}-${{ github.run_attempt }}
     permissions:
       contents: read
       pull-requests: write
