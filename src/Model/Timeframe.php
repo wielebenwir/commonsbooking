@@ -711,6 +711,23 @@ class Timeframe extends CustomPost {
 					);
 				}
 
+				if ( ! $this->isFullDay() && $this->getGrid() !== 0 ) {
+					$gridMinutes = $this->getGridMinutes();
+					foreach ( [ $this->getStartTime(), $this->getEndTime() ] as $time ) {
+						if ( ! $time ) {
+							continue;
+						}
+
+						$timestamp = strtotime( $time );
+						$minutes   = (int) date( 'G', $timestamp ) * 60 + (int) date( 'i', $timestamp );
+						if ( $minutes % $gridMinutes !== 0 ) {
+							throw new TimeframeInvalidException(
+								__( 'Start and end times must align with the selected grid.', 'commonsbooking' )
+							);
+						}
+					}
+				}
+
 				// First we check if the item is already connected to another location to avoid overlapping bookable dates
 				$sameItemTimeframes = \CommonsBooking\Repository\Timeframe::getBookable(
 					[],
@@ -974,14 +991,26 @@ class Timeframe extends CustomPost {
 
 	/**
 	 * Returns grid type id.
-	 * The timeframe grid describes if either the full slot is bookable or if the timeframe is bookable hourly.
+	 * The timeframe grid describes if either the full slot is bookable or if the timeframe is bookable in a configured interval.
 	 * 0 = slot
-	 * 1 = hourly
+	 *
+	 * @return int|float
+	 */
+	public function getGrid(): int|float {
+		$grid = floatval( $this->getMeta( 'grid' ) );
+
+		return $grid === 0.0 ? 0 : $grid;
+	}
+
+	/**
+	 * Returns the configured interval grid in minutes.
 	 *
 	 * @return int
 	 */
-	public function getGrid(): int {
-		return intval( $this->getMeta( 'grid' ) );
+	public function getGridMinutes(): int {
+		$grid = $this->getGrid();
+
+		return 0 === $grid ? 0 : (int) round( $grid * 60 );
 	}
 
 	/**
@@ -1048,20 +1077,20 @@ class Timeframe extends CustomPost {
 	 * This means the length of the individual bookable slots.
 	 * For example if the grid is 2, the bookable slots are 2 hours long.
 	 *
-	 * @return int|null
+	 * @return float|null
 	 */
-	public function getGridSize(): ?int {
+	public function getGridSize(): ?float {
 		if ( $this->isFullDay() ) {
-			return 24;
+			return 24.0;
 		} elseif ( $this->getGrid() === 0 ) {
 			// this is for slot timeframes
 			$startTime = strtotime( $this->getMeta( 'start-time' ) );
 			$endTime   = strtotime( $this->getMeta( 'end-time' ) );
 
-			return intval( round( abs( $endTime - $startTime ) / 3600, 2 ) );
+			return round( abs( $endTime - $startTime ) / 3600, 2 );
 		} else {
-			// this is for hourly timeframes, the grid will be 1, because each hour is bookable
-			return intval( $this->getGrid() );
+			// this is for interval timeframes, the grid is the bookable slot length.
+			return $this->getGrid();
 		}
 	}
 

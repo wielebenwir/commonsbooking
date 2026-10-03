@@ -221,8 +221,8 @@ class DayTest extends CustomPostTypeTest {
 		// one grid entry spanning whole day
 		$grid = $this->instance->getGrid();
 		$this->assertCount( 1, $grid );
-		$this->assertArrayHasKey( 23, $grid );
-		$this->assertEquals( $grid[23]['timeframe']->ID, $this->bookableTimeframeForCurrentDayId );
+		$this->assertArrayHasKey( 95, $grid );
+		$this->assertEquals( $grid[95]['timeframe']->ID, $this->bookableTimeframeForCurrentDayId );
 
 		// hourly grid
 		// we explicitly define a new location and item here to avoid interference with other tests
@@ -271,18 +271,18 @@ class DayTest extends CustomPostTypeTest {
 
 		$assertGridLocked = function ( $grid ) {
 			$this->assertCount( 8, $grid );
-			$this->assertArrayHasKey( 8, $grid );
-			$this->assertArrayHasKey( 15, $grid );
+			$this->assertArrayHasKey( 35, $grid );
+			$this->assertArrayHasKey( 63, $grid );
 
-			// make sure, that only 8:00-10:00 is correctly blocked
-			$this->assertTrue( $grid[8]['timeframe']->locked );
-			$this->assertTrue( $grid[9]['timeframe']->locked );
-			$this->assertFalse( $grid[10]['timeframe']->locked );
-			$this->assertFalse( $grid[11]['timeframe']->locked );
-			$this->assertFalse( $grid[12]['timeframe']->locked );
-			$this->assertFalse( $grid[13]['timeframe']->locked );
-			$this->assertFalse( $grid[14]['timeframe']->locked );
-			$this->assertFalse( $grid[15]['timeframe']->locked );
+			// make sure that only 8:00-10:00 is correctly blocked
+			$this->assertTrue( $grid[35]['timeframe']->locked );
+			$this->assertTrue( $grid[39]['timeframe']->locked );
+			$this->assertFalse( $grid[43]['timeframe']->locked );
+			$this->assertFalse( $grid[47]['timeframe']->locked );
+			$this->assertFalse( $grid[51]['timeframe']->locked );
+			$this->assertFalse( $grid[55]['timeframe']->locked );
+			$this->assertFalse( $grid[59]['timeframe']->locked );
+			$this->assertFalse( $grid[63]['timeframe']->locked );
 		};
 
 		$assertGridLocked( $grid );
@@ -298,9 +298,9 @@ class DayTest extends CustomPostTypeTest {
 		// blocking grid should extend till end of the day
 		$assertOverbookLocked = function ( $grid ) {
 			$this->assertCount( 16, $grid );
-			$this->assertArrayHasKey( 8, $grid );
-			$this->assertArrayHasKey( 23, $grid );
-			for ( $i = 8; $i <= 23; $i++ ) {
+			$this->assertArrayHasKey( 35, $grid );
+			$this->assertArrayHasKey( 95, $grid );
+			for ( $i = 35; $i <= 95; $i += 4 ) {
 				$this->assertTrue( $grid[ $i ]['timeframe']->locked );
 			}
 		};
@@ -327,9 +327,98 @@ class DayTest extends CustomPostTypeTest {
 		$grid     = $instance->getGrid();
 		// first hour (8:00-9:00) still free, rest blocked
 		$this->assertCount( 2, $grid );
-		$this->assertArrayHasKey( 8, $grid );
-		$this->assertArrayHasKey( 23, $grid );
-		$this->assertFalse( $grid[8]['timeframe']->locked );
-		$this->assertTrue( $grid[23]['timeframe']->locked );
+		$this->assertArrayHasKey( 35, $grid );
+		$this->assertArrayHasKey( 95, $grid );
+		$this->assertFalse( $grid[35]['timeframe']->locked );
+		$this->assertTrue( $grid[95]['timeframe']->locked );
+	}
+	public function testGetGridSupportsFractionalIntervals() {
+		$quarterLocation  = $this->createLocation( 'Quarter-hour Location' );
+		$quarterItem      = $this->createItem( 'Quarter-hour Item', $quarterLocation );
+		$quarterTimeframe = $this->createTimeframe(
+			$quarterLocation,
+			$quarterItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'off',
+			'd',
+			'0.25',
+			'9:00 AM',
+			'10:00 AM'
+		);
+		$quarterGrid      = ( new Day( $this->dateFormatted, [ $quarterLocation ], [ $quarterItem ] ) )->getGrid();
+
+		$this->assertSame( [ 36, 37, 38, 39 ], array_keys( $quarterGrid ) );
+		foreach ( $quarterGrid as $slot ) {
+			$this->assertEquals( 899, $slot['timestampend'] - $slot['timestampstart'] );
+			$this->assertSame( $quarterTimeframe, $slot['timeframe']->ID );
+		}
+
+		$halfLocation  = $this->createLocation( 'Half-hour Location' );
+		$halfItem      = $this->createItem( 'Half-hour Item', $halfLocation );
+		$halfTimeframe = $this->createTimeframe(
+			$halfLocation,
+			$halfItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'off',
+			'd',
+			'0.5',
+			'9:00 AM',
+			'10:00 AM'
+		);
+		$halfGrid      = ( new Day( $this->dateFormatted, [ $halfLocation ], [ $halfItem ] ) )->getGrid();
+
+		$this->assertSame( [ 37, 39 ], array_keys( $halfGrid ) );
+		foreach ( $halfGrid as $slot ) {
+			$this->assertEquals( 1799, $slot['timestampend'] - $slot['timestampstart'] );
+			$this->assertSame( $halfTimeframe, $slot['timeframe']->ID );
+		}
+
+		$priorityLocation = $this->createLocation( 'Priority Location' );
+		$priorityItem     = $this->createItem( 'Priority Item', $priorityLocation );
+		$this->createTimeframe(
+			$priorityLocation,
+			$priorityItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'off',
+			'd',
+			'0.5',
+			'9:00 AM',
+			'10:00 AM'
+		);
+		$priorityBooking = $this->createBooking(
+			$priorityLocation,
+			$priorityItem,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( 'tomorrow', strtotime( self::CURRENT_DATE ) ),
+			'9:00 AM',
+			'10:00 AM',
+			'confirmed',
+			self::USER_ID,
+			'w',
+			3,
+			'Quarter-hour priority booking',
+			'0.25'
+		);
+		$priorityGrid    = ( new Day( $this->dateFormatted, [ $priorityLocation ], [ $priorityItem ] ) )->getGrid();
+
+		$this->assertSame( [ 36, 37, 38, 39 ], array_keys( $priorityGrid ) );
+		foreach ( $priorityGrid as $slot ) {
+			$this->assertEquals( 899, $slot['timestampend'] - $slot['timestampstart'] );
+			$this->assertSame( $priorityBooking, $slot['timeframe']->ID );
+			$this->assertTrue( $slot['timeframe']->locked );
+		}
+	}
+	public function testGetGridIncludesBookingEndingAtEndOfDay() {
+		$booking = $this->createConfirmedBookingEndingToday();
+		$grid    = $this->instance->getGrid();
+
+		$this->assertSame( $booking, $grid[95]['timeframe']->ID );
+		$this->assertTrue( $grid[95]['timeframe']->locked );
 	}
 }
