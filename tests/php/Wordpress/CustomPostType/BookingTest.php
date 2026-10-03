@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\BookingDeniedException;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use SlopeIt\ClockMock\ClockMock;
@@ -250,10 +252,25 @@ class BookingTest extends CustomPostTypeTest {
 	 * Regression test for #1518
 	 * Users should only have one unconfirmed booking at a time.
 	 * This is because checks for booking validity only happen when unconfirmed bookings are created.
-	 * Multiple unconfirmed bookings can lead to circumvention of booking restrictions in the form of booking rules.
+	 * Multiple unconfirmed bookings can lead to circumvention of booking rules.
 	 * @return void
 	 */
 	public function testHandleBookingRequest_onlyOneUnconfirmedBooking() {
+		// setup booking rule to enable check
+		Settings::updateOption(
+			'commonsbooking_options_restrictions',
+			'rules_group',
+			[
+				[
+					'rule-applies-all' => 'on',
+					'rule-type' => 'noSimultaneousBooking',
+				],
+			]
+		);
+		// only for non-admins
+		$this->createSubscriber();
+		wp_set_current_user( $this->subscriberId );
+
 		$bookingId          = Booking::handleBookingRequest(
 			$this->itemId,
 			$this->locationId,
@@ -319,6 +336,51 @@ class BookingTest extends CustomPostTypeTest {
 			null
 		);
 		$this->bookingIds[] = $bookingTwoId;
+		$this->assertNotNull( $bookingTwoId );
+	}
+
+	/**
+	 * regression test for #2367
+	 * Multiple unconfirmed bookings shall be allowed when either a) no booking rule is set or b) the user is admin
+	 * Bc the unconfirmed booking check is expensive, it should be omitted in those cases.
+	 *
+	 * @return void
+	 * @throws BookingDeniedException
+	 */
+	public function testHandleBookingRequest_onlyOneUnconfirmedBooking_notWhenNoRuleSet() {
+		Settings::updateOption(
+			'commonsbooking_options_restrictions',
+			'rules_group',
+			[]
+		);
+		// This test should pass without throwing an exception, as no booking rules are set.
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingId;
+
+		// this should not cause an exception
+		$bookingTwoId       = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingTwoId;
+
 		$this->assertNotNull( $bookingTwoId );
 	}
 
