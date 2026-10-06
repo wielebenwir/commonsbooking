@@ -239,19 +239,15 @@ class Booking extends PostRepository {
 	/**
 	 * Rank used to pick a deterministic booking when duplicates exist for the same slot.
 	 * Confirmed bookings win over unconfirmed ones.
+	 * Only confirmed/unconfirmed posts can reach this (enforced by query + filter),
+	 * anything unexpected is treated like unconfirmed.
 	 *
 	 * @param \WP_Post $post The booking post to rank.
 	 *
 	 * @return int
 	 */
 	private static function getDuplicateBookingRank( \WP_Post $post ): int {
-		if ( 'confirmed' === $post->post_status ) {
-			return 0;
-		}
-		if ( 'unconfirmed' === $post->post_status ) {
-			return 1;
-		}
-		return 2;
+		return 'confirmed' === $post->post_status ? 0 : 1;
 	}
 
 	/**
