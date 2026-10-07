@@ -4,8 +4,10 @@ namespace CommonsBooking\Tests\View;
 
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\View\Calendar;
 use DateTime;
+use Override;
 use SlopeIt\ClockMock\ClockMock;
 
 /**
@@ -75,6 +77,20 @@ class CalendarTest extends CustomPostTypeTest {
 		$maxBookableDays = date_diff( $latestPossibleBookingDate, $timeframeStart )->days;
 
 		$this->assertTrue( $maxBookableDays == ( self::bookingDaysInAdvance - self::timeframeStart - 1 ) );
+	}
+
+	public function testEmptyCalendar() {
+		$inFiveYears = new \DateTime( self::CURRENT_DATE );
+		$inFiveYears->modify( '+5 years' );
+		$startDate    = date( 'Y-m-d', strtotime( 'midnight', $inFiveYears->getTimestamp() ) );
+		$endDate      = date( 'Y-m-d', strtotime( '+60 days midnight', $inFiveYears->getTimestamp() ) );
+		$jsonresponse = Calendar::getCalendarDataArray(
+			$this->itemId,
+			$this->locationId,
+			$startDate,
+			$endDate
+		);
+		$this->assertEmpty( $jsonresponse['days'] );
 	}
 
 	public function testClosestBookableTimeFrameFuntion() {
@@ -214,12 +230,26 @@ class CalendarTest extends CustomPostTypeTest {
 	}
 
 	public function testRenderTable() {
+		\CommonsBooking\Wordpress\CustomPostType\Item::registerPostTypeTaxonomy();
 		$calendar = Calendar::renderTable( [] );
 		$item     = new \CommonsBooking\Model\Item( $this->itemId );
 		$location = new \CommonsBooking\Model\Location( $this->locationId );
 		$this->assertStringContainsString( '<table', $calendar );
 		$this->assertStringContainsString( $item->post_title, $calendar );
 		$this->assertStringContainsString( $location->post_title, $calendar );
+
+		// when a category is set, it should only show items of that category
+		$taxonomyItem = $this->createItem( 'Taxonomy Item' );
+		$taxonomyItem = new \CommonsBooking\Model\Item( $taxonomyItem );
+		$term         = wp_create_term( 'Test Category', Item::getTaxonomyName() );
+		wp_set_post_terms( $taxonomyItem->ID, [ $term['term_id'] ], Item::getTaxonomyName() );
+		$termObj = get_term_by( 'id', $term['term_id'], Item::getTaxonomyName() );
+		$slug    = $termObj->slug;
+		$this->createBookableTimeFrameIncludingCurrentDay( $location->ID, $taxonomyItem->ID );
+		wp_cache_flush(); // for some reason, the tests were failing without this
+		$calendar = Calendar::renderTable( [ 'itemcat' => $slug ] );
+		$this->assertStringContainsString( $taxonomyItem->post_title, $calendar );
+		$this->assertStringNotContainsString( $item->post_title, $calendar );
 
 		// in a year, all timeframes will have expired -> calendar should be empty
 		$inAYear = new \DateTime();
@@ -442,8 +472,9 @@ class CalendarTest extends CustomPostTypeTest {
 	}
 
 	protected function setUp(): void {
-		parent::setUp();
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 
+		parent::setUp();
 		$this->now         = time();
 		$this->timeframeId = $this->createTimeframe(
 			$this->locationId,
@@ -467,5 +498,10 @@ class CalendarTest extends CustomPostTypeTest {
 			strtotime( '+14 days midnight' ),
 			strtotime( '+300 days midnight' )
 		);
+	}
+
+	protected function tearDown(): void {
+		ClockMock::reset();
+		parent::tearDown();
 	}
 }

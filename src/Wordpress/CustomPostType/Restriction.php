@@ -159,31 +159,13 @@ class Restriction extends CustomPostType {
 					echo '-';
 					break;
 				case \CommonsBooking\Model\Restriction::META_TYPE:
-					$output = '-';
-
-					foreach ( $this->getCustomFields() as $customField ) {
-						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_TYPE ) {
-							foreach ( $customField['options'] as $key => $label ) {
-								if ( $value == $key ) {
-									$output = $label;
-								}
-							}
-						}
-					}
+					$types  = self::getTypes();
+					$output = $types[ $value ] ?? '-';
 					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Restriction::META_STATE:
-					$output = '-';
-
-					foreach ( $this->getCustomFields() as $customField ) {
-						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_STATE ) {
-							foreach ( $customField['options'] as $key => $label ) {
-								if ( $value == $key ) {
-									$output = $label;
-								}
-							}
-						}
-					}
+					$states = self::getStates();
+					$output = $states[ $value ] ?? '-';
 					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Restriction::META_START:
@@ -333,7 +315,7 @@ class Restriction extends CustomPostType {
 			// Sichtbarkeit des Post Types
 			'public'            => true,
 
-			// Standart Ansicht im Backend aktivieren (Wie Artikel / Seiten)
+			// Standard Ansicht im Backend aktivieren (Wie Artikel / Seiten)
 			'show_ui'           => true,
 
 			// Soll es im Backend Menu sichtbar sein?
@@ -349,7 +331,7 @@ class Restriction extends CustomPostType {
 			'show_in_nav_menus' => true,
 
 			// Hier können Berechtigungen in einem Array gesetzt werden
-			// oder die standart Werte post und page in form eines Strings gesetzt werden
+			// oder die Standard Werte post und page in form eines Strings gesetzt werden
 			'capability_type'   => array( self::$postType, self::$postType . 's' ),
 
 			'map_meta_cap'        => true,

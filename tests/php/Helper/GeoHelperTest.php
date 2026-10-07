@@ -5,8 +5,8 @@ namespace CommonsBooking\Tests\Helper;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\BaseTestCase;
-use Geocoder\Location;
-use Geocoder\Model\AddressBuilder;
+use CommonsBooking\Geocoder\Location;
+use CommonsBooking\Geocoder\Model\AddressBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,7 +19,7 @@ class GeoHelperTest extends BaseTestCase {
 	 *
 	 * @return Location|null
 	 */
-	private static function mockedLocation(): ?Location {
+	public static function mockedLocation(): ?Location {
 		$location = new AddressBuilder( 'Mock' );
 		$location->setStreetName( 'Karl-Marx-Straße' )
 				->setStreetNumber( '1' )

@@ -6,6 +6,7 @@ namespace CommonsBooking\API;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Repository\Item;
+use CommonsBooking\Settings\Settings;
 use Exception;
 use stdClass;
 use WP_Error;
@@ -22,6 +23,13 @@ use WP_REST_Response;
 class AvailabilityRoute extends BaseRoute {
 
 	/**
+	 * How many weeks of item availability should be displayed by default.
+	 * This value can be changed in the API settings.
+	 *
+	 * @var int
+	 */
+	const DEFAULT_WEEKS = 2;
+	/**
 	 * The base of this controller's route.
 	 *
 	 * @var string
@@ -33,20 +41,26 @@ class AvailabilityRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.availability.schema.json';
+	protected string $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.availability.schema.json';
 
 	/**
 	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
 	 *
-	 * @param bool $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
+	 * @param ?int $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
 	 *
 	 * @return stdClass[]
 	 * @throws Exception
 	 */
-	public function getItemData( $id = false ): array {
+	public static function getItemData( $id = null ): array {
+		$availabilityWeeks = Settings::getOption( 'commonsbooking_options_api', 'api_future_availability_weeks' );
+		if ( ! $availabilityWeeks || ! is_numeric( $availabilityWeeks ) ) {
+			$availabilityWeeks = self::DEFAULT_WEEKS;
+		} else {
+			$availabilityWeeks = intval( $availabilityWeeks );
+		}
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
-			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
+			new Day( date( 'Y-m-d', strtotime( '+' . $availabilityWeeks . ' weeks' ) ) ),
 			[],
 			$id ? [ $id ] : []
 		);
@@ -67,15 +81,7 @@ class AvailabilityRoute extends BaseRoute {
 		$data   = new stdClass();
 		try {
 			$data->availability = $this->getItemData( $params['id'] );
-
-			// return a response or error based on some conditional
-			if ( count( $data->availability ) ) {
-				return new WP_REST_Response( $data, 200 );
-			} else {
-				// This was missing in previous versions. According to the availability spec, we can return a list with no items
-				// TODO this part and the enclosing if-clause can be removed in future version, if no problems arose ...
-				return new WP_REST_Response( $data, 200 );
-			}
+			return $this->respond_with_validation( $data );
 		} catch ( Exception $e ) {
 			return new WP_Error( 'code', $e->getMessage() );
 		}
@@ -102,6 +108,7 @@ class AvailabilityRoute extends BaseRoute {
 				$this->getItemData( $item->ID )
 			);
 		}
-		return new WP_REST_Response( $data, 200 );
+
+		return $this->respond_with_validation( $data );
 	}
 }

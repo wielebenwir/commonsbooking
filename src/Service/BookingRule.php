@@ -352,7 +352,17 @@ class BookingRule {
 	 * @throws Exception
 	 */
 	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
-		$userBookings = \CommonsBooking\Repository\Booking::getForUser( $booking->getUserData(), true, time(), [ 'confirmed' ] );
+		$user         = $booking->getUserData();
+		$userBookings = \CommonsBooking\Repository\Booking::getByTimerange(
+			$booking->getStartDate(),
+			$booking->getEndDate(),
+			null,
+			null,
+			[
+				'author' => $user->ID,
+			],
+			[ 'confirmed' ]
+		);
 		$userBookings = Booking::filterTermsApply( $userBookings, $appliedTerms );
 		if ( empty( $userBookings ) ) {
 			return null;
@@ -443,7 +453,7 @@ class BookingRule {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
 		// split the period in half, when it is an uneven number, the left side will be one day longer
-		$daysHalf = $periodDays / 2;
+		$daysHalf = floor( $periodDays / 2 );
 		if ( $periodDays % 2 ) {
 			$daysLeft  = $daysHalf + 1;
 			$daysRight = $daysHalf - 1;
@@ -460,6 +470,7 @@ class BookingRule {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
 
+		// translators: %1$s number of days, %2$s number of days
 		return sprintf( __( 'You can only book %1$s days out of %2$s days. Please wait a while in-between bookings.', 'commonsbooking' ), $allowedBookedDays, $periodDays );
 	}
 
@@ -492,6 +503,7 @@ class BookingRule {
 		$weekDays       = __( 'Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2' );
 		$resetDayString = explode( ', ', $weekDays )[ $resetDay ];
 
+		// translators: %1$s number of days allowed, %2$s name of day next week
 		return sprintf( __( 'You can only book %1$s days per week, please try again after %2$s next week.', 'commonsbooking' ), $maxDays, $resetDayString );
 	}
 
@@ -510,6 +522,7 @@ class BookingRule {
 		$weekDays       = __( 'Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', 'cmb2' );
 		$resetDayString = explode( ', ', $weekDays )[ $resetDay ];
 
+		// translators: %1$s allowed number of bookings, %2$s reset day
 		return sprintf( __( 'You are only allowed to have %1$s booking(s) per week, please try again after %2$s next week.', 'commonsbooking' ), $maxDays, $resetDayString );
 	}
 
@@ -539,6 +552,7 @@ class BookingRule {
 		$maxDays  = $args[0];
 		$resetDay = $args[2];
 
+		// translators: %1$s allowed number of bookings, %2$s reset day (date)
 		return sprintf( __( 'You can only book %1$s days per month, please try again after the %2$s. next month.', 'commonsbooking' ), $maxDays, $resetDay );
 	}
 
@@ -554,6 +568,7 @@ class BookingRule {
 		$maxDays  = $args[0];
 		$resetDay = $args[2];
 
+		// translators: %1$s allowed number of bookings, %2$s reset day (date)
 		return sprintf( __( 'You are only allowed %1$s booking(s) per month, please try again after the %2$s. next month.', 'commonsbooking' ), $maxDays, $resetDay );
 	}
 

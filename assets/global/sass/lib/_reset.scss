@@ -7,37 +7,35 @@
  */
 
 .cb-content {
+    ol,
+    ul,
+    li,
+    h2,
+    h3,
+    dd,
+    dl,
+    dt,
+    .hentry {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
 
-	ol,
-	ul,
-	li,
-	h2,
-	h3,
-	dd,
-	dl,
-	dt,
-	.hentry {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
+    blockquote,
+    q {
+        quotes: none;
+    }
 
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+        content: '';
+        content: none;
+    }
 
-	blockquote,
-	q {
-		quotes: none;
-	}
-
-	blockquote:before,
-	blockquote:after,
-	q:before,
-	q:after {
-		content: '';
-		content: none;
-	}
-
-	table {
-		border-collapse: collapse;
-		border-spacing: 0;
-	}
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
 }

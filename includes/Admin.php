@@ -136,7 +136,7 @@ add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
  * @return string
  */
 function commonsbooking_sanitizeHTML( $string ): string {
-	global $allowedposttags;
+	$allowedposttags = wp_kses_allowed_html( 'post' );
 
 	if ( empty( $string ) ) {
 		return '';

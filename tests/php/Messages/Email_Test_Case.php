@@ -8,6 +8,9 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
+/**
+ * TODO: Refactor to use CPTCreationTrait
+ */
 abstract class Email_Test_Case extends \WP_UnitTestCase {
 
 	const FROM_MAIL   = 'test@example.com';
@@ -142,7 +145,7 @@ abstract class Email_Test_Case extends \WP_UnitTestCase {
 	 *
 	 * Wraps tests_retrieve_phpmailer_instance()
 	 *
-	 * @return \PHPMailer\PHPMailer\PHPMailer
+	 * @return \CommonsBooking\PHPMailer\PHPMailer\PHPMailer
 	 */
 	protected function getMockMailer() {
 		return tests_retrieve_phpmailer_instance();

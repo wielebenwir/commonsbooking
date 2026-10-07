@@ -16,6 +16,9 @@ use WP_Post;
 use WP_Query;
 
 /**
+ *
+ * @deprecated since 2.11, will be removed in 2.12
+ *
  * The logic for handling the migration from CB1 to CB2.
  * The CB1 fields are fetched from the @see \CommonsBooking\Repository\CB1 repository and migrated using the
  * respective migration functions in this class.
@@ -193,7 +196,7 @@ class Migration {
 	/**
 	 * @param WP_Post $location CB1 Location
 	 *
-	 * @throws Exception|\Geocoder\Exception\Exception
+	 * @throws Exception|\CommonsBooking\Geocoder\Exception\Exception
 	 */
 	public static function migrateLocation( WP_Post $location ): bool {
 		// Collect post data
@@ -361,7 +364,7 @@ class Migration {
 	 * @param $postMeta array Post meta
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
 	protected static function savePostData( $existingPost, array $postData, array $postMeta ): bool {
 
@@ -435,7 +438,7 @@ class Migration {
 	 * @param WP_Post $item
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
 	public static function migrateItem( WP_Post $item ): bool {
 		// Collect post data
@@ -473,7 +476,7 @@ class Migration {
 	 * @param $timeframe
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
 	public static function migrateTimeframe( $timeframe ): bool {
 		$cbItem     = self::getExistingPost( $timeframe['item_id'], Item::$postType );
@@ -525,7 +528,7 @@ class Migration {
 	 * @param $booking
 	 *
 	 * @return bool
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 * @throws Exception
 	 */
 	public static function migrateBooking( $booking ): bool {

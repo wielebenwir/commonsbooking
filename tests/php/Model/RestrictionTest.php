@@ -86,4 +86,57 @@ class RestrictionTest extends CustomPostTypeTest {
 		$this->assertEquals( $restrictionWithEndDate->getFormattedStartDateTime(), '01.07.2021 00:00' );
 		$this->assertEquals( $restrictionWithEndDate->getFormattedEndDateTime(), '22.07.2021 00:00' );
 	}
+
+	public function testGetAdmins() {
+		// case 1 : no admins set.
+		// Should just return author
+		$restriction = new Restriction( $this->restrictionWithoutEndDateId );
+		$this->assertEquals( [ self::USER_ID ], $restriction->getAdmins() );
+
+		// Case 2: Just item admin set.
+		// Should return author + item admin
+		$this->createCBManager();
+		$managedItem       = $this->createItem( 'Managed Item', 'publish', [ $this->cbManagerUserID ] );
+		$unmanagedLocation = $this->createLocation( 'Unmanaged Location' );
+		$restriction       = new Restriction(
+			$this->createRestriction(
+				Restriction::META_HINT,
+				$unmanagedLocation,
+				$managedItem,
+				strtotime( self::CURRENT_DATE ),
+				null
+			)
+		);
+		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $restriction->getAdmins() );
+
+		// Case 3: Just location admin set.
+		// Should return author + location admin
+		$managedLocation = $this->createLocation( 'Managed Location', 'publish', [ $this->cbManagerUserID ] );
+		$unmanagedItem   = $this->createItem( 'Unmanaged Item' );
+		$restriction     = new Restriction(
+			$this->createRestriction(
+				Restriction::META_HINT,
+				$managedLocation,
+				$unmanagedItem,
+				strtotime( self::CURRENT_DATE ),
+				null
+			)
+		);
+		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $restriction->getAdmins() );
+
+		// Case 4: both item and location admin set.
+		// Should return author + admin (no duplicates)
+		$otherManagedLocation = $this->createLocation( 'Other Managed Location', 'publish', [ $this->cbManagerUserID ] );
+		$otherManagedItem     = $this->createItem( 'Other Managed Item', 'publish', [ $this->cbManagerUserID ] );
+		$restriction          = new Restriction(
+			$this->createRestriction(
+				Restriction::META_HINT,
+				$otherManagedLocation,
+				$otherManagedItem,
+				strtotime( self::CURRENT_DATE ),
+				null
+			)
+		);
+		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $restriction->getAdmins() );
+	}
 }

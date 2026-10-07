@@ -33,7 +33,7 @@ class OwnersRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.owners.schema.json';
+	protected string $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.owners.schema.json';
 
 	/**
 	 * Returns raw data collection.

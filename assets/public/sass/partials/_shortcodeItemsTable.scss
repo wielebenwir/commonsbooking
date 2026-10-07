@@ -12,116 +12,116 @@
 * @copyright 2020 wielebenwir
 */
 
-@use "../../../global/sass/partials/variables";
-@use "../../../global/sass/partials/extends";
-@use "../../../public/sass/mixins/calendar";
+@use '../../../global/sass/partials/variables';
+@use '../../../global/sass/partials/extends';
+@use '../../../public/sass/mixins/calendar';
 
 .cb-table-scroll {
-	position: relative;
-	overflow: scroll;
+    position: relative;
+    overflow: scroll;
 }
 
 .cb-items-table {
-	@extend .cb-box;
-	overflow: auto; /* overwriting cb-box standard behaviour */
-	padding: 0; /* overwriting cb-box standard behaviour */
-	width: 100%;
-	border-collapse: separate;
+    @extend .cb-box;
+    overflow: auto; /* overwriting cb-box standard behaviour */
+    padding: 0; /* overwriting cb-box standard behaviour */
+    width: 100%;
+    border-collapse: separate;
 
-	td,
-	th {
-		line-height: var(--commonsbooking-font-line-height-small);
-		font-size: var(--commonsbooking-font-size-small);
-		padding: 4px 0;
-		font-weight: normal;
-	}
+    td,
+    th {
+        line-height: var(--commonsbooking-font-line-height-small);
+        font-size: var(--commonsbooking-font-size-small);
+        padding: 4px 0;
+        font-weight: normal;
+    }
 
-	th {
-		font-size: var(--commonsbooking-font-size-small);
-		text-align: center;
-		vertical-align: middle;
-	}
+    th {
+        font-size: var(--commonsbooking-font-size-small);
+        text-align: center;
+        vertical-align: middle;
+    }
 
-	thead {
-		tr {
-			color: var(--commonsbooking-color-secondary);
+    thead {
+        tr {
+            color: var(--commonsbooking-color-secondary);
 
-			&:first-child {
-				/* Months row */
-			}
-			&:nth-child(2) {
-				/* legend row */
-				th:nth-child(1),
-				th:nth-child(2) {
-					text-align: left;
-					padding-left: 4px;
-				}
-			}
-		}
-	}
+            &:first-child {
+                /* Months row */
+            }
+            &:nth-child(2) {
+                /* legend row */
+                th:nth-child(1),
+                th:nth-child(2) {
+                    text-align: left;
+                    padding-left: 4px;
+                }
+            }
+        }
+    }
 
-	/* make first 2 table columns sticky */
+    /* make first 2 table columns sticky */
     thead tr:first-child th:first-child,
-	thead tr:nth-child(2) th:first-child,
-	thead tr:nth-child(2) th:nth-child(2),
-	tbody tr td:first-child,
-	tbody tr td:nth-child(2) {
-		text-align: left;
-		padding-left: 5px;
-		position: sticky;
-		width: 100px;
-		min-width: 100px;
-		max-width: 100px;
-		background: variables.$color-white;
-	}
-	/* place first col */
-	thead tr:nth-child(2) th:first-child,
-	tbody tr td:first-child {
-		left: 0;
-	}
-	/* place second col */
-	thead tr:nth-child(2) th:nth-child(2),
-	tbody tr td:nth-child(2) {
-		left: 100px;
-	}
+    thead tr:nth-child(2) th:first-child,
+    thead tr:nth-child(2) th:nth-child(2),
+    tbody tr td:first-child,
+    tbody tr td:nth-child(2) {
+        text-align: left;
+        padding-left: 5px;
+        position: sticky;
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        background: variables.$color-white;
+    }
+    /* place first col */
+    thead tr:nth-child(2) th:first-child,
+    tbody tr td:first-child {
+        left: 0;
+    }
+    /* place second col */
+    thead tr:nth-child(2) th:nth-child(2),
+    tbody tr td:nth-child(2) {
+        left: 100px;
+    }
 
-	/* set bg color */
+    /* set bg color */
     thead tr:first-child th:first-child,
-	thead tr:nth-child(2) th:first-child,
-	thead tr:nth-child(2) th:nth-child(2) {
-		background: var(--commonsbooking-color-bg);;
-	}
+    thead tr:nth-child(2) th:first-child,
+    thead tr:nth-child(2) th:nth-child(2) {
+        background: var(--commonsbooking-color-bg);
+    }
 
-	tbody tr:hover td:first-child,
-	tbody tr:hover td:nth-child(2) {
-		background-color: var(--commonsbooking-color-bg);;
-	}
+    tbody tr:hover td:first-child,
+    tbody tr:hover td:nth-child(2) {
+        background-color: var(--commonsbooking-color-bg);
+    }
 
-	tbody {
-		tr {
-			background: var(--commonsbooking-color-bg);
-			height: 50px;
-			overflow: hidden;
+    tbody {
+        tr {
+            background: var(--commonsbooking-color-bg);
+            height: 50px;
+            overflow: hidden;
 
-			&:hover {
-				background: var(--commonsbooking-color-bg);
-			}
+            &:hover {
+                background: var(--commonsbooking-color-bg);
+            }
 
-			td {
+            td {
                 color: var(--commonsbooking-textcolor-dark);
-				border-top: 1px solid var(--commonsbooking-color-greyedout);
-				border-left: 1px solid var(--commonsbooking-color-gray-background);
-				border-bottom: 1px solid var(--commonsbooking-color-bg);
-			}
-		}
-	}
+                border-top: 1px solid var(--commonsbooking-color-greyedout);
+                border-left: 1px solid var(--commonsbooking-color-gray-background);
+                border-bottom: 1px solid var(--commonsbooking-color-bg);
+            }
+        }
+    }
 
-	td {
-		text-align: center;
-		vertical-align: middle;
-		z-index: 11;
+    td {
+        text-align: center;
+        vertical-align: middle;
+        z-index: 11;
 
-		> span {
+        > span {
             display: block;
             margin: 0 auto;
             width: 15px;
@@ -152,13 +152,13 @@
             &.is-locked {
                 @include calendar.day-is-locked;
             }
-		}
-	}
+        }
+    }
 }
 
 #cb-table-footnote {
-	background-color: #FFF;
-	margin-top: 10px;
-	padding: 10px;
-	font-size: var(--commonsbooking-font-size-normal);
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: var(--commonsbooking-font-size-normal);
 }

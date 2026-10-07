@@ -9,6 +9,8 @@ use WP_Query;
  * This class contains methods to query the database for old CB1 data.
  * CB1 is CommonsBooking up to version 0.9.4.18 (https://wordpress.org/plugins/commons-booking/)
  * This class is mainly used to migrate over the old data to CB2.
+ *
+ * @deprecated since 2.11 , removal in 2.12
  */
 class CB1 {
 
@@ -234,10 +236,10 @@ class CB1 {
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
 		$sql    = $wpdb->prepare(
-			"SELECT meta_value as cb1_id, post_id as cb2_id 
+			"SELECT meta_value as cb1_id, post_id as cb2_id
             FROM $table_postmeta
             WHERE
-                meta_key = '_cb_cb1_post_post_ID' AND 
+                meta_key = '_cb_cb1_post_post_ID' AND
                 meta_value = %s;
         	",
 			$id
@@ -266,10 +268,10 @@ class CB1 {
 		return $wpdb->get_results(
 			"
             SELECT
-                tr.*, 
+                tr.*,
                 tt.taxonomy,
                 t.slug as term
-            FROM $table_term_relationships tr 
+            FROM $table_term_relationships tr
             LEFT JOIN $table_term_taxonomy tt ON
                 tr.term_taxonomy_id = tt.term_id
             LEFT JOIN $table_terms t ON

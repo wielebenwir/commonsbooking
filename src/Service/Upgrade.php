@@ -8,7 +8,7 @@ use CommonsBooking\Plugin;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\Wordpress\CustomPostType\Map;
 use CommonsBooking\Wordpress\Options\AdminOptions;
-use Psr\Cache\InvalidArgumentException;
+use CommonsBooking\Psr\Cache\InvalidArgumentException;
 
 /**
  * This class contains migration functionality that is run when the plugin is upgraded
@@ -58,6 +58,9 @@ class Upgrade {
 		],
 		'2.10.5' => [
 			[ self::class, 'migrateCacheSettings' ],
+		],
+		'2.11.1' => [
+			[ self::class, 'migrateExportSettings' ],
 		],
 	];
 
@@ -307,8 +310,8 @@ class Upgrade {
 				<div class="e-major-update-warning__message">
 					<?php
 					printf(
-					/* translators: %1$s Link open tag, %2$s: Link close tag. */
 						commonsbooking_sanitizeHTML(
+						/* translators: %1$s Link open tag, %2$s: Link close tag. */
 							__(
 								'
 					This CommonsBooking update has a lot of new features and changes on some templates.<br>
@@ -317,7 +320,7 @@ class Upgrade {
 								'commonsbooking'
 							)
 						),
-						'<a target="_blank" href="https://commonsbooking.org/docs/installation/update-info/">',
+						'<a target="_blank" href="https://commonsbooking.org/documentation/setup/update-news/">',
 						'</a>'
 					);
 					?>
@@ -586,6 +589,27 @@ class Upgrade {
 				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' )
 			);
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter', 'filesystem' );
+		}
+	}
+
+	/**
+	 * In order to fix #2320 and unify the input names, the custom metadata
+	 * fields were renamed from hyphenated to camelCase. This moves them.
+	 *
+	 * @return void
+	 */
+	public static function migrateExportSettings(): void {
+		$itemFields     = Settings::getOption( 'commonsbooking_options_export', 'item-fields' );
+		$locationFields = Settings::getOption( 'commonsbooking_options_export', 'location-fields' );
+		$userFields     = Settings::getOption( 'commonsbooking_options_export', 'user-fields' );
+		if ( ! empty( $itemFields ) ) {
+			Settings::updateOption( 'commonsbooking_options_export', 'itemFields', $itemFields );
+		}
+		if ( ! empty( $locationFields ) ) {
+			Settings::updateOption( 'commonsbooking_options_export', 'locationFields', $locationFields );
+		}
+		if ( ! empty( $userFields ) ) {
+			Settings::updateOption( 'commonsbooking_options_export', 'userFields', $userFields );
 		}
 	}
 }

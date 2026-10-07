@@ -42,8 +42,8 @@ class BookingRuleApplied extends BookingRule {
 			$rule->description,
 			$rule->errorMessage,
 			$rule->validationFunction,
-			$rule->params ?? [],
-			$rule->selectParam ?? [],
+			empty( $rule->params ) ? [] : $rule->params,
+			empty( $rule->selectParam ) ? [] : $rule->selectParam,
 			$rule->errorFromArgs ?? null
 		);
 	}
@@ -112,7 +112,7 @@ class BookingRuleApplied extends BookingRule {
 	 * @return array|null - An array of conflicting bookings or an empty array if the booking complies with all rules
 	 */
 	public function checkBookingCompliance( Booking $booking ): ?array {
-		if ( $booking->isUserPrivileged() ) {
+		if ( $booking->isBookingOwnerPrivileged() ) {
 			return null;
 		}
 
@@ -152,8 +152,32 @@ class BookingRuleApplied extends BookingRule {
 			return;
 		}
 
-		if ( $booking->isUserPrivileged() ) {
+		if ( $booking->isBookingOwnerPrivileged() ) {
 			return;
+		}
+
+		// users should only have one unconfirmed booking at a time, when booking rules are active
+		// this is to prevent circumvention by having multiple approved, unconfirmed bookings
+		$unconfirmedBookings = array_filter(
+			\CommonsBooking\Repository\Booking::getForCurrentUser( true, null, [ 'unconfirmed' ] ),
+			function ( $unconfirmedBooking ) use ( $booking ) {
+				if ( $unconfirmedBooking->ID === $booking->ID ) {
+					return false; // Exclude the current booking from the check
+				}
+				return intval( $unconfirmedBooking->getPost()->post_author ) === get_current_user_id();
+			} // getForCurrentUser also gets managed bookings, these should be ignored
+		);
+
+		if ( ! empty( $unconfirmedBookings ) ) {
+			if ( count( $unconfirmedBookings ) === 1 ) {
+				$bookingLink = reset( $unconfirmedBookings )->bookingLink();
+				throw new BookingDeniedException(
+					__( 'You already have an unconfirmed booking. Please confirm / cancel your existing booking or wait for it to expire.', 'commonsbooking' ) .
+					'<br>' . $bookingLink
+				);
+			} else {
+				throw new BookingDeniedException( __( 'You already have unconfirmed bookings. Please wait a few minutes for them to expire or confirm/cancel them before creating a new one.', 'commonsbooking' ) );
+			}
 		}
 
 		foreach ( $ruleset as $rule ) {
@@ -229,7 +253,7 @@ class BookingRuleApplied extends BookingRule {
 		$rulesConfig  = Settings::getOption( 'commonsbooking_options_restrictions', 'rules_group' );
 		$appliedRules = [];
 
-		if ( ! is_array( $rulesConfig ) ) {
+		if ( ! is_array( $rulesConfig ) || empty( $rulesConfig ) ) {
 			if ( $ignoreErrors ) {
 				return [];
 			}

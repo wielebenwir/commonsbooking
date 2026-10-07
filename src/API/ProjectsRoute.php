@@ -27,7 +27,7 @@ class ProjectsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/commons-api.projects.schema.json';
+	protected string $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.projects.schema.json';
 
 	/**
 	 * Get one item from the collection
@@ -51,11 +51,7 @@ class ProjectsRoute extends BaseRoute {
 		$data           = new stdClass();
 		$data->projects = $this->getItemData();
 
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-
-		return new WP_REST_Response( $data, 200 );
+		return $this->respond_with_validation( $data );
 	}
 
 	/**

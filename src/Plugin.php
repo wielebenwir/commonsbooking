@@ -10,13 +10,13 @@ use CommonsBooking\Map\LocationMapAdmin;
 use CommonsBooking\Map\SearchShortcode;
 use CommonsBooking\Model\Booking;
 use CommonsBooking\Model\BookingCode;
+use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\Service\BookingRuleApplied;
 use CommonsBooking\Service\Cache;
-use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\iCalendar;
+use CommonsBooking\Service\Scheduler;
 use CommonsBooking\Service\Upgrade;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Repository\BookingCodes;
 use CommonsBooking\View\Dashboard;
 use CommonsBooking\View\MassOperations;
 use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
@@ -28,6 +28,7 @@ use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 use CommonsBooking\Wordpress\Options\AdminOptions;
 use CommonsBooking\Wordpress\Options\OptionsTab;
 use CommonsBooking\Wordpress\PostStatus\PostStatus;
+use CommonsBooking\Wordpress\Service\WPPrivacyPersonalDataExporter;
 
 /**
  * @since 2.10 removed saveOptionsActions, the transient commonsbooking_options_saved which is used in
@@ -229,6 +230,21 @@ class Plugin {
 	}
 
 	/**
+	 * Returns assoc array of dependencies to their version numbers
+	 *
+	 * @return array<string, string>|null
+	 */
+	public static function getManagedDepsVersions(): ?array {
+		$version_file_path    = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
+		$version_file_content = file_get_contents( $version_file_path );
+		$versions             = json_decode( $version_file_content, true );
+		if ( JSON_ERROR_NONE !== json_last_error() ) {
+			trigger_error( "Unable to parse commonsbooking asset version file in $version_file_path." );
+		}
+		return $versions;
+	}
+
+	/**
 	 * Tests if a given post belongs to our CPTs
 	 *
 	 * @param $post int|\WP_Post - post id or post object
@@ -369,7 +385,7 @@ class Plugin {
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				esc_html__( 'Item Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName(),
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Item::getTaxonomyName() . '&post_type=' . Item::getPostType(),
 				''
 			);
 
@@ -379,7 +395,7 @@ class Plugin {
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				esc_html__( 'Location Categories', 'commonsbooking' ),
 				'manage_' . COMMONSBOOKING_PLUGIN_SLUG,
-				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName(),
+				admin_url( 'edit-tags.php' ) . '?taxonomy=' . Location::getTaxonomyName() . '&post_type=' . Location::getPostType(),
 				''
 			);
 
@@ -539,42 +555,77 @@ class Plugin {
 		}
 	}
 
+	/**
+	 * Version string for a packaged asset (from dist.json when present, else '0').
+	 */
+	private static function packagedVersion( string $key ): string {
+		// always reload assets when WP_DEBUG is active
+		if ( WP_DEBUG ) {
+			return strval( time() );
+		}
+
+		static $versions = null;
+		if ( $versions === null ) {
+			$path     = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
+			$fromFile = is_readable( $path ) ? json_decode( (string) file_get_contents( $path ), true ) : null;
+			$versions = is_array( $fromFile ) ? $fromFile : [];
+		}
+		return $versions[ $key ] ?? '0';
+	}
 
 	public static function registerScriptsAndStyles() {
 		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
 
-		$version_file_path    = COMMONSBOOKING_PLUGIN_DIR . 'assets/packaged/dist.json';
-		$version_file_content = file_get_contents( $version_file_path );
-		$versions             = json_decode( $version_file_content, true );
-		if ( JSON_ERROR_NONE !== json_last_error() ) {
-			trigger_error( "Unable to parse commonsbooking asset version file in $version_file_path." );
-		}
-
 		// spin.js
-		wp_register_script( 'cb-spin', $base . 'spin-js/spin.min.js', [], $versions['spin.js'] );
+		wp_register_script( 'cb-spin', $base . 'spin-js/spin.min.js', [], self::packagedVersion( 'spin.js' ) );
 
 		// leaflet
-		wp_register_script( 'cb-leaflet', $base . 'leaflet/leaflet.js', [], $versions['leaflet'] );
-		wp_register_style( 'cb-leaflet', $base . 'leaflet/leaflet.css', [], $versions['leaflet'] );
+		wp_register_script( 'cb-leaflet', $base . 'leaflet/leaflet.js', [], self::packagedVersion( 'leaflet' ) );
+		wp_register_style( 'cb-leaflet', $base . 'leaflet/leaflet.css', [], self::packagedVersion( 'leaflet' ) );
 
 		// leaflet markercluster
 		wp_register_script(
 			'cb-leaflet-markercluster',
 			$base . 'leaflet-markercluster/leaflet.markercluster.js',
 			[ 'cb-leaflet' ],
-			$versions['leaflet.markercluster']
+			self::packagedVersion( 'leaflet.markercluster' )
 		);
 		wp_register_style(
 			'cb-leaflet-markercluster-base',
 			$base . 'leaflet-markercluster/MarkerCluster.css',
 			[],
-			$versions['leaflet.markercluster']
+			self::packagedVersion( 'leaflet.markercluster' )
 		);
 		wp_register_style(
 			'cb-leaflet-markercluster',
 			$base . 'leaflet-markercluster/MarkerCluster.Default.css',
 			[ 'cb-leaflet-markercluster-base' ],
-			$versions['leaflet.markercluster']
+			self::packagedVersion( 'leaflet.markercluster' )
+		);
+
+		// Select 2 (Styles)
+		wp_register_style(
+			'cb-styles-select2',
+			$base . 'select2/css/select2.min.css',
+			array(),
+			self::packagedVersion( 'select2' )
+		);
+
+		// Select 2 (JS)
+		wp_register_script(
+			'cb-scripts-select2',
+			$base . 'select2/js/select2.min.js',
+			array( 'jquery' ),
+			self::packagedVersion( 'select2' )
+		);
+
+		// Moment.js
+		wp_register_script(
+			'cb-scripts-moment',
+			$base . 'moment/moment.min.js',
+			array(),
+			self::packagedVersion( 'moment' ),
+			true
 		);
 
 		// leaflet-easybutton
@@ -582,13 +633,13 @@ class Plugin {
 			'cb-leaflet-easybutton',
 			$base . 'leaflet-easybutton/easy-button.js',
 			[ 'cb-leaflet' ],
-			$versions['leaflet-easybutton']
+			self::packagedVersion( 'leaflet-easybutton' )
 		);
 		wp_register_style(
 			'cb-leaflet-easybutton',
 			$base . 'leaflet-easybutton/easy-button.css',
 			[ 'cb-leaflet' ],
-			$versions['leaflet-easybutton']
+			self::packagedVersion( 'leaflet-easybutton' )
 		);
 
 		// leaflet-spin
@@ -596,10 +647,10 @@ class Plugin {
 			'cb-leaflet-spin',
 			$base . 'leaflet-spin/leaflet.spin.min.js',
 			[ 'cb-leaflet', 'cb-spin' ],
-			$versions['leaflet-spin']
+			self::packagedVersion( 'leaflet-spin' )
 		);
 
-		// leaflet-messagebox
+		// leaflet-messagebox (not tracked by NPM)
 		wp_register_script(
 			'cb-leaflet-messagebox',
 			COMMONSBOOKING_MAP_ASSETS_URL . 'leaflet-messagebox/leaflet-messagebox.js',
@@ -613,7 +664,7 @@ class Plugin {
 			'1.1'
 		);
 
-		// jquery overscroll
+		// jquery overscroll (not tracked by NPM)
 		wp_register_script(
 			'cb-jquery-overscroll',
 			COMMONSBOOKING_MAP_ASSETS_URL . 'overscroll/jquery.overscroll.min.js',
@@ -642,55 +693,32 @@ class Plugin {
 		);
 
 		// vue
-		wp_register_script( 'cb-vue', $base . 'vue/vue.runtime.global.prod.js', [], $versions['vue'] );
+		wp_register_script( 'cb-vue', $base . 'vue/vue.runtime.global.prod.js', [], self::packagedVersion( 'vue' ) );
 
 		// commons-search
 		wp_register_script(
 			'cb-commons-search',
 			$base . 'commons-search/commons-search.umd.js',
 			[ 'cb-leaflet', 'cb-leaflet-markercluster', 'cb-vue' ],
-			$versions['@commonsbooking/frontend']
+			self::packagedVersion( '@commonsbooking/frontend' )
 		);
 		wp_register_style(
 			'cb-commons-search',
 			$base . 'commons-search/style.css',
 			[ 'cb-leaflet', 'cb-leaflet-markercluster' ],
-			$versions['@commonsbooking/frontend']
+			self::packagedVersion( '@commonsbooking/frontend' )
+		);
+		// litepicker
+		wp_register_script(
+			'cb-litepicker',
+			$base . 'litepicker/litepicker.js',
+			[],
+			self::packagedVersion( 'litepicker' )
 		);
 	}
 
 	public function registerShortcodes() {
 		add_shortcode( 'cb_search', array( SearchShortcode::class, 'execute' ) );
-	}
-
-	/**
-	 * Registers all user data exporters ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-exporter-to-your-plugin/}).
-	 *
-	 * @param array $exporters
-	 *
-	 * @return mixed
-	 */
-	public static function registerUserDataExporters( $exporters ) {
-		$exporters[ COMMONSBOOKING_PLUGIN_SLUG ] = array(
-			'exporter_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
-			'callback'               => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'exportUserBookingsByEmail' ),
-		);
-		return $exporters;
-	}
-
-	/**
-	 * Registers all user data erasers ({@link https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-eraser-to-your-plugin/}).
-	 *
-	 * @param $erasers
-	 *
-	 * @return mixed
-	 */
-	public static function registerUserDataErasers( $erasers ) {
-		$erasers[ COMMONSBOOKING_PLUGIN_SLUG ] = array(
-			'eraser_friendly_name' => __( 'CommonsBooking Bookings', 'commonsbooking' ),
-			'callback'             => array( \CommonsBooking\Wordpress\CustomPostType\Booking::class, 'removeUserBookingsByEmail' ),
-		);
-		return $erasers;
 	}
 
 	/**
@@ -774,18 +802,20 @@ class Plugin {
 		add_filter(
 			'cmb2_field_ajax_search_url',
 			function () {
-				return ( COMMONSBOOKING_PLUGIN_URL . '/vendor/ed-itsolutions/cmb2-field-ajax-search/' );
+				return ( COMMONSBOOKING_PLUGIN_URL . '/vendor-prefixed/ed-itsolutions/cmb2-field-ajax-search/' );
 			}
 		);
 
 		// hook into WordPress personal data exporter
-		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'registerUserDataExporters' ) );
-
+		add_filter( 'wp_privacy_personal_data_exporters', array( WPPrivacyPersonalDataExporter::class, 'registerUserDataExporters' ) );
 		// hook into WordPress personal data eraser
-		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'registerUserDataErasers' ) );
+		add_filter( 'wp_privacy_personal_data_erasers', array( WPPrivacyPersonalDataExporter::class, 'registerUserDataErasers' ) );
 
 		// iCal rewrite
 		iCalendar::initRewrite();
+
+		// permalink resolution rewrite
+		\CommonsBooking\Repository\Item::initRewrite();
 	}
 
 	/**
@@ -819,7 +849,7 @@ class Plugin {
 	 * @param $post
 	 * @param $update
 	 *
-	 * @throws \Psr\Cache\InvalidArgumentException
+	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	public function savePostActions( $post_id, $post, $update ) {
 		if ( ! self::isPostCustomPostType( $post ) ) {
@@ -873,6 +903,9 @@ class Plugin {
 					new \CommonsBooking\API\GBFS\Discovery(),
 					new \CommonsBooking\API\GBFS\StationInformation(),
 					new \CommonsBooking\API\GBFS\StationStatus(),
+					new \CommonsBooking\API\GBFS\VehicleAvailability(),
+					new \CommonsBooking\API\GBFS\VehicleStatus(),
+					new \CommonsBooking\API\GBFS\VehicleTypes(),
 					new \CommonsBooking\API\GBFS\SystemInformation(),
 
 				];

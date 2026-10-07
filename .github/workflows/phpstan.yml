@@ -20,17 +20,17 @@ on:
 
 jobs:
   phpstan:
-    name: 'WP latest on PHP 8.3'
+    name: 'WP latest on PHP 8.5'
 
     runs-on: ubuntu-24.04
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     # TODO Use the composer action below
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'
+        php-version: '8.5'
         extensions: uopz
 
     - name: Validate composer.json and composer.lock
@@ -44,7 +44,7 @@ jobs:
       run: |
         composer dump-autoload -o
 
-    #- uses: actions/checkout@v6
+    #- uses: actions/checkout@v7
     #- uses: php-actions/composer@v6
 
     - name: PHPStan Static Analysis

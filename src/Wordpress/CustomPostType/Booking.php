@@ -53,6 +53,23 @@ class Booking extends Timeframe {
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
 
+		// prevent bookings from being retrieved through query vars in a plain request
+		add_filter(
+			'request',
+			function ( $query_vars ) {
+				if (
+					isset( $query_vars['post_type'] )
+					&& self::$postType === $query_vars['post_type']
+					&& empty( $query_vars['name'] )
+					&& empty( $query_vars['p'] )
+					&& ! commonsbooking_isCurrentUserAdmin()
+				) {
+					$query_vars['error'] = '404';
+				}
+				return $query_vars;
+			}
+		);
+
 		// Listing of bookings for current user
 		add_shortcode( 'cb_bookings', array( \CommonsBooking\View\Booking::class, 'shortcode' ) );
 
@@ -286,6 +303,24 @@ class Booking extends Timeframe {
 			$itemId
 		);
 
+		// Reject if the slot is already booked by another user (getExistingBookings excludes this booking by ID)
+		if ( $booking && ! commonsbooking_isCurrentUserAllowedToEdit( $booking ) ) {
+			throw new BookingDeniedException( __( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking' ) );
+		}
+
+		// The initial calendar flow always submits post_status=unconfirmed without a post_ID.
+		// If an exact-slot booking already exists for the current user, redirect to that booking
+		// instead of downgrading it back to unconfirmed via the update path below.
+		if ( $booking && $post_status === 'unconfirmed' && $post_ID === null ) {
+			return $booking->ID;
+		}
+
+		// Frontend requests should never reopen an existing booking as unconfirmed by ID.
+		// Treat this as an invalid request instead of mutating the current booking state.
+		if ( $post_status === 'unconfirmed' && $post_ID !== null ) {
+			throw new BookingDeniedException( __( 'Invalid booking request. Please try again.', 'commonsbooking' ) );
+		}
+
 		$existingBookings =
 			\CommonsBooking\Repository\Booking::getExistingBookings(
 				$itemId,
@@ -311,20 +346,13 @@ class Booking extends Timeframe {
 						array_values( $existingBookings )[0]->getPost()->post_name === $requestedPostName &&
 						intval( array_values( $existingBookings )[0]->getPost()->post_author ) === get_current_user_id();
 
-			if ( ( ! $isEdit || count( $existingBookings ) > 1 ) && $post_status !== 'canceled' ) {
+			if ( ! $isEdit && $post_status !== 'canceled' ) {
 				if ( $booking ) {
 					$post_status = 'unconfirmed';
 				} else {
 					throw new BookingDeniedException( __( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking' ) );
 				}
 			}
-		}
-
-		// add internal comment if admin edited booking via frontend TODO: This does not happen anymore, no admin bookings are made through the frontend
-		if ( $booking && $booking->post_author !== '' && intval( $booking->post_author ) !== intval( get_current_user_id() ) ) {
-			$postarr['meta_input']['admin_booking_id'] = get_current_user_id();
-			$internal_comment                          = esc_html__( 'status changed by admin user via frontend. New status: ', 'commonsbooking' ) . $post_status;
-			$booking->appendToInternalComment( $internal_comment, get_current_user_id() );
 		}
 
 		$postarr['type']                  = $postType;
@@ -335,6 +363,10 @@ class Booking extends Timeframe {
 
 		// New booking
 		if ( empty( $booking ) ) {
+			if ( $post_status !== 'unconfirmed' ) {
+				// New bookings always have to be unconfirmed
+				throw new BookingDeniedException( __( 'Invalid booking request. Please try again.', 'commonsbooking' ) );
+			}
 			$postarr['post_name']  = Helper::generateRandomString();
 			$postarr['meta_input'] = array(
 				\CommonsBooking\Model\Timeframe::META_LOCATION_ID   => $locationId,
@@ -461,13 +493,14 @@ class Booking extends Timeframe {
 	/**
 	 * Loads template according to global set post and to whether the user is authorized and returns content.
 	 *
-	 * @param $content
+	 * @param string $content value of content parameter of `the_content` filter
 	 *
 	 * @return string
 	 */
 	public function getTemplate( $content ) {
 		$cb_content = '';
-		if ( is_singular( self::getPostType() ) && is_main_query() ) {
+		if ( ! post_password_required() &&
+			is_singular( self::getPostType() ) && is_main_query() ) {
 			ob_start();
 			global $post;
 
@@ -821,7 +854,7 @@ class Booking extends Timeframe {
 				'id'               => 'booking_user',
 				'type'             => 'user_ajax_search',
 				'multiple-items'   => true,
-				'default'          => array( self::class, 'getFrontendBookingUser' ),
+				'default_cb'          => array( self::class, 'getFrontendBookingUser' ),
 				'desc'             => commonsbooking_sanitizeHTML(
 					__(
 						'Here you must select the user for whom the booking is made.<br>
@@ -885,14 +918,18 @@ class Booking extends Timeframe {
 		global $pagenow;
 
 		$notice = commonsbooking_sanitizeHTML(
-			__(
-				'Bookings should be created via frontend booking calendar. <br>
+			sprintf(
+				__(
+					'Bookings should be created via frontend booking calendar. <br>
 		As an admin you can create bookings via this admin interface. Please be aware that admin bookings are not validated
 		and checked. Use this function with care.<br>
 		Click on preview to show booking details in frontend<br>
 		To search and filter bookings please integrate the frontend booking list via shortcode.
-		See here <a target="_blank" href="https://commonsbooking.org/?p=1433">How to display the booking list</a>',
-				'commonsbooking'
+		See here %1$sHow to display the booking list%2$s',
+					'commonsbooking'
+				),
+				'<a target="_blank" href="' . esc_url( 'https://commonsbooking.org/documentation/administration/booking-list/' ) . '">',
+				'</a>'
 			)
 		);
 
@@ -914,155 +951,6 @@ class Booking extends Timeframe {
 		if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
 			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );
 		}
-	}
-
-	/**
-	 * Export user bookings using the supplied email. This is for integration with the WordPress personal data exporter.
-	 *
-	 * @param string $emailAddress
-	 * @param $page
-	 *
-	 * @return array
-	 */
-	public static function exportUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
-		$page         = intval( $page );
-		$itemsPerPage = 10;
-		$exportItems  = array();
-		// The internal group ID used by WordPress to group the data exported by this exporter.
-		$groupID    = 'bookings';
-		$groupLabel = __( 'CommonsBooking Bookings', 'commonsbooking' );
-
-		$user = get_user_by( 'email', $emailAddress );
-		if ( ! $user ) {
-			return array(
-				'data' => $exportItems,
-				'done' => true,
-			);
-		}
-		$bookings = \CommonsBooking\Repository\Booking::getForUserPaginated( $user, $page, $itemsPerPage );
-		if ( ! $bookings ) {
-			return array(
-				'data' => $exportItems,
-				'done' => true,
-			);
-		}
-		foreach ( $bookings as $booking ) {
-			$bookingID = $booking->ID;
-			// exclude bookings that the user is eligible to see but are not their own
-			// we are only concerned about one user's personal data
-			if ( $booking->getUserData()->user_email !== $emailAddress ) {
-				continue;
-			}
-			$bookingData = [
-				[
-					'name'  => __( 'Booking start', 'commonsbooking' ),
-					'value' => $booking->pickupDatetime(),
-				],
-				[
-					'name'  => __( 'Booking end', 'commonsbooking' ),
-					'value' => $booking->returnDatetime(),
-				],
-				[
-					'name'  => __( 'Time of booking', 'commonsbooking' ),
-					'value' => Helper::FormattedDateTime( get_post_timestamp( $bookingID ) ),
-				],
-				[
-					'name'  => __( 'Status', 'commonsbooking' ),
-					'value' => $booking->getStatus(),
-				],
-				[
-					'name'  => __( 'Booking code', 'commonsbooking' ),
-					'value' => $booking->getBookingCode(),
-				],
-				[
-					'name'  => __( 'Comment', 'commonsbooking' ),
-					'value' => $booking->returnComment(),
-				],
-				[
-					'name'  => __( 'Location', 'commonsbooking' ),
-					'value' => $booking->getLocation()->post_title,
-				],
-				[
-					'name'  => __( 'Item', 'commonsbooking' ),
-					'value' => $booking->getItem()->post_title,
-				],
-				[
-					'name'  => __( 'Time of cancellation', 'commonsbooking' ),
-					'value' => $booking->getMeta( 'cancellation_time' ) ? Helper::FormattedDateTime( $booking->getMeta( 'cancellation_time' ) ) : '',
-				],
-				[
-					'name'  => __( 'Admin booking by', 'commonsbooking' ),
-					'value' => $booking->getMeta( 'admin_booking_id' ) ? get_user_by( 'id', $booking->getMeta( 'admin_booking_id' ) )->display_name : '',
-				],
-			];
-
-			$exportItems[] = [
-				'group_id'    => $groupID,
-				'group_label' => $groupLabel,
-				'item_id'     => $bookingID,
-				'data'        => $bookingData,
-			];
-		}
-		$done = count( $bookings ) < $itemsPerPage;
-		return array(
-			'data' => $exportItems,
-			'done' => $done,
-		);
-	}
-
-	/**
-	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
-	 *
-	 * @param string $emailAddress The email address
-	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
-	 *
-	 * @return array
-	 */
-	public static function removeUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
-		// we reset the page to 1, because we are deleting our results as we go. Therefore, increasing the page number would skip some results.
-		$page         = 1;
-		$itemsPerPage = 10;
-		$removedItems = false;
-
-		$user = get_user_by( 'email', $emailAddress );
-		if ( ! $user ) {
-			return array(
-				'items_removed'  => $removedItems,
-				'items_retained' => false,
-				'messages'       => array(),
-				'done'           => true,
-			);
-		}
-		$bookings = \CommonsBooking\Repository\Booking::getForUserPaginated( $user, $page, $itemsPerPage );
-		if ( ! $bookings ) {
-			return array(
-				'items_removed'  => $removedItems,
-				'items_retained' => false,
-				'messages'       => array(),
-				'done'           => true,
-			);
-		}
-		foreach ( $bookings as $booking ) {
-			$bookingID = $booking->ID;
-			// exclude bookings that the user is eligible to see but are not their own
-			// we are only concerned about one user's personal data
-			if ( $booking->getUserData()->user_email !== $emailAddress ) {
-				continue;
-			}
-			// Cancel the booking before deletion so that status change emails are sent
-			$booking->cancel();
-			// Delete the booking
-			wp_delete_post( $bookingID, true );
-			$removedItems = true;
-		}
-
-		$done = count( $bookings ) < $itemsPerPage;
-		return array(
-			'items_removed'  => $removedItems,
-			'items_retained' => false, // always false, we don't retain any data
-			'messages'       => array(),
-			'done'           => $done,
-		);
 	}
 
 	/**

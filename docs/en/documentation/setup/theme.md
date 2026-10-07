@@ -1,10 +1,7 @@
-#  WordPress-Theme auswählen
+# Choose a WordPress theme
 
-__
+Recommended WordPress design templates:
 
-Empfohlene WordPress Design Templates:
-
-  * Twenty Nineteen (Official WordPress Theme) 
-  * TwentyTwenty (Official WordPress Theme) 
-  * [ Neve ](https://wordpress.org/themes/neve)
-
+  * Twenty Nineteen (Official WordPress theme)
+  * Twenty Twenty (Official WordPress theme)
+  * [Neve](https://wordpress.org/themes/neve)

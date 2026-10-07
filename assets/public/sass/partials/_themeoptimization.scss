@@ -6,29 +6,32 @@
  */
 
 .cb-wrapper {
-  /* Twenty Nineteen Theme*/
-  h2::before {
-    content: '';
-    margin: 0;
-    background: transparent;
-  }
-  /* Twenty Twenty Theme*/
-    h1, h2, h3, h4 {
-      margin: 0 !important;
-    }  
+    /* Twenty Nineteen Theme*/
+    h2::before {
+        content: '';
+        margin: 0;
+        background: transparent;
+    }
+    /* Twenty Twenty Theme*/
+    h1,
+    h2,
+    h3,
+    h4 {
+        margin: 0 !important;
+    }
 
-  .litepicker {
-    .container {
-        &__days {
-            .day-item {
-                font-size: 1rem;
+    .litepicker {
+        .container {
+            &__days {
+                .day-item {
+                    font-size: 1rem;
+                }
             }
         }
-    }  
-  }
+    }
 }
 
 /* Enable table scrolling in themes (e.g. twentyfifteen) */
 table.cb-items-table {
-  table-layout: auto !important;   
+    table-layout: auto !important;
 }

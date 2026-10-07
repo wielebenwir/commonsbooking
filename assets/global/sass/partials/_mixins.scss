@@ -8,37 +8,48 @@
 /* -------------------- Breakpoints (for lists) -------------------- */
 
 @mixin breakpoint($point) {
-	@if $point == phablet {
-     @media (min-width: 37.5em)  { @content ; }
-  }
-  @else if $point == mobileonly {
-     @media (max-width: 37.5em)  { @content ; }
-  }
+    @if $point == phablet {
+        @media (min-width: 37.5em) {
+            @content;
+        }
+    } @else if $point == mobileonly {
+        @media (max-width: 37.5em) {
+            @content;
+        }
+    }
 }
-
 
 /* -------------------- Animation -------------------- */
 
 @mixin transition($args...) {
-	-webkit-transition: $args;
-	-moz-transition: $args;
-	-ms-transition: $args;
-	-o-transition: $args;
-	transition: $args;
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -ms-transition: $args;
+    -o-transition: $args;
+    transition: $args;
 }
 
 @mixin background-hover($baseColor, $targetcolor) {
-	@include transition(all .3s ease);
-	background-color: $baseColor;
+    @include transition(all 0.3s ease);
+    background-color: $baseColor;
 
-	&:hover {
-		background-color: $targetcolor;
-	}
+    &:hover {
+        background-color: $targetcolor;
+    }
 }
 
-@mixin checkered-bg( $color ) {
-	$color2: darken($color, 2%);
-	background-image: linear-gradient(45deg, $color 25%, $color2 25%, $color2 50%, $color 50%, $color 75%, $color2 75%, $color2 100%);
-	background-size: 20px 20px;
-	box-shadow: none;
+@mixin checkered-bg($color) {
+    $color2: darken($color, 2%);
+    background-image: linear-gradient(
+        45deg,
+        $color 25%,
+        $color2 25%,
+        $color2 50%,
+        $color 50%,
+        $color 75%,
+        $color2 75%,
+        $color2 100%
+    );
+    background-size: 20px 20px;
+    box-shadow: none;
 }

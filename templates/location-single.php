@@ -9,16 +9,21 @@
 	$noResultText     = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'location-without-items' );
 	$bookThisItemText = \CommonsBooking\Settings\Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'text_book-this-item' );
 
+	// Single Item View
+if ( array_key_exists( 'item', $templateData ) && $templateData['item'] ) { // just one item selected, so we redirect to the item page see #1953
+	wp_redirect( esc_url( get_permalink( $templateData['item']->ID ) ) );
+	// if redirect fails (on WP < 6.9 we display link) see #1953
+	?>
+	<a href ="<?php echo esc_url( get_permalink( $templateData['item']->ID ) ); ?>">
+		<?php echo commonsbooking_sanitizeHTML( __( 'Please book this item on the item page.', 'commonsbooking' ) ); ?> 
+	</a>
+	<?php
+	exit;
+}
+
 	do_action( 'commonsbooking_before_location-single', $templateData['location']->ID, $templateData['location'] );
 
 	commonsbooking_get_template_part( 'location', 'single-meta' ); // file: location-single-meta.php
-
-	// Single Item View
-if ( array_key_exists( 'item', $templateData ) && $templateData['item'] ) { // item selected, so we display the booking calendar
-	echo '<h2>' . esc_html__( $bookThisItemText, 'commonsbooking' ) . '</h2>';
-	commonsbooking_get_template_part( 'item', 'calendar-header' ); // file: item-calendar-header.php
-	commonsbooking_get_template_part( 'timeframe', 'calendar' ); // file: timeframe-calendar.php
-}
 
 	// Multi item view
 if ( array_key_exists( 'items', $templateData ) && $templateData['items'] ) {
@@ -28,7 +33,8 @@ if ( array_key_exists( 'items', $templateData ) && $templateData['items'] ) {
 	}  // end foreach $timeframes
 } // $item_is_selected
 
-if ( ! array_key_exists( 'item', $templateData ) && ! array_key_exists( 'items', $templateData ) ) { ?>
+if ( ! array_key_exists( 'item', $templateData ) && ! array_key_exists( 'items', $templateData ) ) {
+	?>
 		<div class="cb-status cb-availability-status cb-status-not-available">
 		<?php
 		echo commonsbooking_sanitizeHTML( $noResultText );

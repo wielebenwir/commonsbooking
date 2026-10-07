@@ -1,0 +1,273 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id":
+    "https://github.com/MobilityData/gbfs-json-schema/blob/master/v3.1-RC3/vehicle_types.json",
+  "description":
+    "Describes the types of vehicles that System operator has available for rent (added in v2.1-RC).",
+  "type": "object",
+  "properties": {
+    "last_updated": {
+      "description":
+        "Last time the data in the feed was updated in RFC3339 format.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "ttl": {
+      "description":
+        "Number of seconds before the data in the feed will be updated again (0 if the data should always be refreshed).",
+      "type": "integer",
+      "minimum": 0
+    },
+    "version": {
+      "description":
+        "GBFS version number to which the feed conforms, according to the versioning framework.",
+      "type": "string",
+      "const": "3.1-RC3"
+    },
+    "data": {
+      "description": "Response data in the form of name:value pairs.",
+      "type": "object",
+      "properties": {
+        "vehicle_types": {
+          "description":
+          "Array that contains one object per vehicle type in the system as defined below.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "vehicle_type_id": {
+                "description": "Unique identifier of a vehicle type.",
+                "type": "string"
+              },
+              "form_factor": {
+                "description": "The vehicle's general form factor.",
+                "type": "string",
+                "enum": ["bicycle", "cargo_bicycle" ,"car", "moped", "scooter_standing", "scooter_seated", "other"]
+              },
+              "rider_capacity": {
+                "description": "The number of riders (driver included) the vehicle can legally accommodate",
+                "type": "integer",
+                "minimum": 0
+              },
+              "cargo_volume_capacity": {
+                "description": "Cargo volume available in the vehicle, expressed in liters.",
+                "type": "integer",
+                "minimum": 0
+              },
+              "cargo_load_capacity": {
+                "description": "The capacity of the vehicle cargo space (excluding passengers), expressed in kilograms.",
+                "type": "integer",
+                "minimum": 0
+              },
+
+              "propulsion_type": {
+                "description": "The primary propulsion type of the vehicle. Updated in v2.3 to represent car-sharing",
+                "type": "string",
+                "enum": ["human", "electric_assist", "electric", "combustion", "combustion_diesel", "hybrid", "plug_in_hybrid", "hydrogen_fuel_cell"]
+              },
+              "eco_labels": {
+                "description": "Vehicle air quality certificate. added in v2.3.",
+                "type": "array",
+                "items":  {
+                  "type": "object",
+                  "properties": {
+                    "country_code": {
+                      "description": " Country code following the ISO 3166-1 alpha-2 notation. Added in v2.3.",
+                      "type": "string",
+                      "pattern": "^[A-Z]{2}"
+                    },
+                    "eco_sticker": {
+                      "description": " Name of the eco label. Added in v2.3.",
+                      "type": "string"
+                    }
+                  },
+                  "required": ["country_code", "eco_sticker"]
+                }
+              },
+              "max_range_meters": {
+                "description":
+                "The furthest distance in meters that the vehicle can travel without recharging or refueling when it has the maximum amount of energy potential.",
+                "type": "number",
+                "minimum": 0
+              },
+              "name": {
+                "description": "The public name of this vehicle type. An array with one object per supported language with the following keys:",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "description": "The translated text.",
+                      "type": "string"
+                    },
+                    "language": {
+                      "description": "IETF BCP 47 language code.",
+                      "type": "string",
+                      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+                    }
+                  },
+                  "required": ["text", "language"]
+                }
+              },
+              "vehicle_accessories": {
+                "description": "Description of accessories available in the vehicle.",
+                "type": "array",
+                "items": {
+                  "enum": ["air_conditioning", "automatic", "manual", "convertible", "cruise_control", "doors_2", "doors_3", "doors_4", "doors_5", "navigation"]
+                }
+              },
+              "g_CO2_km": {
+                "description": "Maximum quantity of CO2, in grams, emitted per kilometer, according to the WLTP. Added in v2.3",
+                "type": "integer",
+                "minimum": 0
+              },
+              "vehicle_image": {
+                "description": "URL to an image that would assist the user in identifying the vehicle. JPEG or PNG. Added in v2.3",
+                "type": "string",
+                "format": "uri"
+              },
+              "make": {
+                "description": "The name of the vehicle manufacturer. An array with one object per supported language with the following keys:",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "description": "The translated text.",
+                      "type": "string"
+                    },
+                    "language": {
+                      "description": "IETF BCP 47 language code.",
+                      "type": "string",
+                      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+                    }
+                  },
+                  "required": ["text", "language"]
+                }
+              },
+              "model": {
+                "description": "The name of the vehicle model. An array with one object per supported language with the following keys:",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "description": "The translated text.",
+                      "type": "string"
+                    },
+                    "language": {
+                      "description": "IETF BCP 47 language code.",
+                      "type": "string",
+                      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+                    }
+                  },
+                  "required": ["text", "language"]
+                }
+              },
+              "color": {
+                "description": "The color of the vehicle. Added in v2.3",
+                "type": "string"
+              },
+              "description": {
+                "description": "Customer-readable description of the vehicle type outlining special features or how-tos. An array with one object per supported language with the following keys:",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "description": "The translated text.",
+                      "type": "string"
+                    },
+                    "language": {
+                      "description": "IETF BCP 47 language code.",
+                      "type": "string",
+                      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+                    }
+                  },
+                  "required": ["text", "language"]
+                }
+              },
+              "wheel_count": {
+                "description": "Number of wheels this vehicle type has. Added in v2.3",
+                "type": "integer",
+                "minimum": 0
+              },
+              "max_permitted_speed": {
+                "description": "The maximum speed in kilometers per hour this vehicle is permitted to reach in accordance with local permit and regulations. Added in v2.3",
+                "type": "integer",
+                "minimum": 0
+              },
+              "rated_power": {
+                "description": "The rated power of the motor for this vehicle type in watts. Added in v2.3",
+                "type": "integer",
+                "minimum": 0
+              },
+              "default_reserve_time": {
+                "description": "Maximum time in minutes that a vehicle can be reserved before a rental begins added in v2.3-RC.",
+                "type": "integer",
+                "minimum": 0
+              },
+              "return_constraint": {
+                "description": "The conditions for returning the vehicle at the end of the trip. Added in v2.3-RC as return_type, and updated to return_constraint in v2.3.",
+                "type": "string",
+                "enum": ["free_floating", "roundtrip_station", "any_station", "hybrid"]
+              },
+              "min_age": {
+                "description": "Minimum age required to use this vehicle. Added in v3.1-RC3.",
+                "type": "integer",
+                "minimum": 0
+              },
+              "vehicle_assets": {
+                "description": "An object where each key defines one of the items listed below added in v2.3-RC.",
+                "type": "object",
+                "properties": {
+                  "icon_url": {
+                    "description": "A fully qualified URL pointing to the location of a graphic icon file that MAY be used to represent this vehicle type on maps and in other applications added in v2.3-RC.",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "icon_url_dark": {
+                    "description": "A fully qualified URL pointing to the location of a graphic icon file to be used to represent this vehicle type when in dark mode added in v2.3-RC.",
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "icon_last_modified": {
+                    "description": "Date that indicates the last time any included vehicle icon images were modified or updated added in v2.3-RC.",
+                    "type": "string",
+                    "format": "date"
+                  }
+                },
+                "required": ["icon_url", "icon_last_modified"]
+              },
+              "default_pricing_plan_id": {
+                "description": "A plan_id as defined in system_pricing_plans.json added in v2.3-RC.",
+                "type": "string"
+              },
+              "pricing_plan_ids": {
+                "description": "Array of all pricing plan IDs as defined in system_pricing_plans.json added in v2.3-RC.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["vehicle_type_id", "form_factor", "propulsion_type"],
+            "if": {
+              "properties": {
+                "propulsion_type": {
+                  "enum": ["electric", "electric_assist", "combustion", "combustion_diesel", "hybrid", "plug_in_hybrid", "hydrogen_fuel_cell"]
+                }
+              }
+            },
+            "then": {
+              "required": ["max_range_meters"]
+            }
+          }
+        }
+      },
+      "required": ["vehicle_types"]
+    }
+  },
+  "required": ["last_updated", "ttl", "version", "data"]
+}
+

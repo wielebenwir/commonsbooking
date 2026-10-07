@@ -92,6 +92,22 @@ class CalendarTest extends CustomPostTypeTest {
 			],
 		];
 		$this->assertEquals( $expectedSlotObject, $availabilitySlots );
+
+		// book the other day too, assert an empty
+		$this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( $tomorrow ),
+			$tomorrowEnd
+		);
+		// recreate the calendar object to get the updated availability
+		$this->calendar = new Calendar(
+			new Day( $today, [ $this->locationId ], [ $this->itemId ] ),
+			new Day( $tomorrow, [ $this->locationId ], [ $this->itemId ] ),
+			[ $this->locationId ],
+			[ $this->itemId ]
+		);
+		$this->assertEmpty( $this->calendar->getAvailabilitySlots() );
 	}
 
 	public function testGetAvailabilitySlotsWithHourlyTimeframe() {

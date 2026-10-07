@@ -44,7 +44,7 @@ class BookingCodes {
 	 * @return array
 	 * @throws BookingCodeException
 	 */
-	public static function getCodes( int $timeframeId, int $startDate = null, int $endDate = null, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): array {
+	public static function getCodes( int $timeframeId, ?int $startDate = null, ?int $endDate = null, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): array {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;

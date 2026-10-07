@@ -31,13 +31,18 @@ class StationInformation extends BaseRoute {
 	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response
-	 * @throws \Geocoder\Exception\Exception
+	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 * @throws Exception
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem                   = new stdClass();
-		$preparedItem->station_id       = $item->ID . '';
-		$preparedItem->name             = $item->post_title;
+		$preparedItem->station_id       = strval( $item->ID );
+		$preparedItem->name             = [
+			(object) [
+				'text' => $this->decodeApiTitle( $item->post_title ),
+				'language' => get_bloginfo( 'language' ),
+			],
+		];
 		$preparedItem->address          = $item->formattedAddressOneLine();
 		$preparedItem->rental_uris      = new stdClass();
 		$preparedItem->rental_uris->web = get_permalink( $item->ID );
@@ -82,6 +87,8 @@ class StationInformation extends BaseRoute {
 			} else {
 				throw new Exception( 'Location address missing. (ID: ' . $item->ID . ')' );
 			}
+		} else {
+			throw new Exception( 'Location address missing. (ID: ' . $item->ID . ')' );
 		}
 
 		return new WP_REST_Response( $preparedItem );

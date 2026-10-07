@@ -89,62 +89,54 @@ class ViewTest extends CustomPostTypeTest {
 		parent::setUp();
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 
-		$now       = time();
-		$this->now = $now;
-
 		$this->item     = new Item( $this->itemId );
 		$this->location = new Location( $this->locationId );
-
-		$timeframeId = $this->createTimeframe(
+		$timeframeId    = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+5 days midnight', $now ),
-			strtotime( '+6 days midnight', $now ),
+			strtotime( '+5 days midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+6 days midnight', strtotime( self::CURRENT_DATE ) ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
-
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+2 days midnight', $now ),
-			strtotime( '+3 days midnight', $now ),
-		);// set booking days in advance
-		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
-
-		$timeframeId = $this->createTimeframe(
-			$this->locationId,
-			$this->itemId,
-			strtotime( '+8 days midnight', $now ),
-			strtotime( '+9 days midnight', $now ),
+			strtotime( '+2 days midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+3 days midnight', strtotime( self::CURRENT_DATE ) ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
-
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+12 days midnight', $now ),
-			strtotime( '+13 days midnight', $now ),
+			strtotime( '+8 days midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+9 days midnight', strtotime( self::CURRENT_DATE ) ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
-
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+14 days midnight', $now ),
-			strtotime( '+15 days midnight', $now ),
+			strtotime( '+12 days midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+13 days midnight', strtotime( self::CURRENT_DATE ) ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
-
+		$timeframeId = $this->createTimeframe(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+14 days midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+15 days midnight', strtotime( self::CURRENT_DATE ) ),
+		);
+		// set booking days in advance
+		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
 		// this timeframe should not be in shortcode data, because it's out of 30 days advanced booking range
 		$timeframeId = $this->createTimeframe(
 			$this->locationId,
 			$this->itemId,
-			strtotime( '+32 days midnight', $now ),
-			strtotime( '+33 days midnight', $now ),
+			strtotime( '+32 days midnight', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+33 days midnight', strtotime( self::CURRENT_DATE ) ),
 		);
 		// set booking days in advance
 		update_post_meta( $timeframeId, \CommonsBooking\Model\Timeframe::META_TIMEFRAME_ADVANCE_BOOKING_DAYS, self::bookingDaysInAdvance );
@@ -152,5 +144,6 @@ class ViewTest extends CustomPostTypeTest {
 
 	protected function tearDown(): void {
 		parent::tearDown();
+		ClockMock::reset();
 	}
 }
