@@ -34,10 +34,12 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
 		*
 		* @param string $template content of template after tag replacement
 		*/
-		$filteredTemplate = apply_filters('commonsbooking_template_tag', $template);
+		$filteredTemplate = apply_filters( 'commonsbooking_template_tag', $template );
 		if ( ! empty( $filteredTemplate ) ) {
-			return null;
+			return $filteredTemplate;
 		}
+
+		return null;
 	} else {
 		return commonsbooking_parse_template( $template, $objects, $sanitizeFunction );
 	}
@@ -54,8 +56,8 @@ function commonsbooking_parse_shortcode( $tag ) {
  * Renders html before and after the template tag if it is given by using [html text] before or after the template tag
  * Example: {{[this comes before: ]item:post_title[this comes after]}}
  *
- * @param mixed $match
- * @param array $objects
+ * @param mixed    $match
+ * @param array    $objects
  * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
  *
  * @return false|string the template tag rendered as a string, false if property or function not found
