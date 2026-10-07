@@ -2,7 +2,7 @@
   "name": "wielebenwir/commonsbooking",
   "description": "~",
   "homepage": "https://commonsbooking.org",
-  "version": "2.10.10",
+  "version": "2.11.2",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "prefer-stable": true,
@@ -22,6 +22,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "CommonsBooking\\Tests\\Benchmark\\": "tests/benchmark/",
       "CommonsBooking\\Tests\\": "tests/php/"
     }
   },
@@ -78,7 +79,7 @@
       "@prefix-namespaces"
     ],
     "prefix-namespaces": [
-      "sh -c 'test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.27.3/strauss.phar'",
+      "sh -c 'test -f ./bin/strauss.phar || curl -o bin/strauss.phar -L -C - https://github.com/BrianHenryIE/strauss/releases/download/0.28.1/strauss.phar'",
       "@php bin/strauss.phar --info",
       "@composer dump-autoload"
     ]

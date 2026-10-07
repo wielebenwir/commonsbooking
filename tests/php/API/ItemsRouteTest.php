@@ -82,6 +82,21 @@ class ItemsRouteTest extends CB_REST_Route_UnitTestCase {
 		$this->assertEquals( (string) $this->itemId, $data->items[0]->id );
 	}
 
+	public function testTitleHtmlEntitiesAreDecoded() {
+		$entityItemId = $this->createItem( 'Bohrmaschine &amp; Akkuschrauber &apos;Pro&apos;', 'publish' );
+
+		// Sanity check: WordPress stores the title with the encoded entity.
+		$this->assertStringContainsString( '&amp;', get_post( $entityItemId )->post_title );
+
+		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT . '/' . $entityItemId );
+		$response = rest_do_request( $request );
+
+		$this->assertSame( 200, $response->get_status() );
+
+		$item = $response->get_data()->items[0];
+		$this->assertEquals( 'Bohrmaschine & Akkuschrauber \'Pro\'', $item->name );
+	}
+
 	public function testExcludedIfBoxChecked() {
 		update_post_meta( $this->itemId, COMMONSBOOKING_METABOX_PREFIX . 'api_exclude', 'on' );
 		$request  = new \WP_REST_Request( 'GET', $this->ENDPOINT . '/' . $this->itemId );

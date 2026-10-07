@@ -148,6 +148,16 @@ module.exports = function (grunt) {
 						src: ['commons-search.umd.js', 'style.css'],
 					},
 					{
+						dest: nodePackagesDestDir + 'litepicker/',
+						expand: true,
+						nonull: true,
+						cwd: 'node_modules/@commonsbooking/litepicker/dist/js/',
+						src: 'main.js',
+						rename: function () {
+							return nodePackagesDestDir + 'litepicker/litepicker.js';
+						},
+					},
+					{
 						dest: nodePackagesDestDir + 'vue/',
 						expand: true,
 						cwd: 'node_modules/vue/dist/',

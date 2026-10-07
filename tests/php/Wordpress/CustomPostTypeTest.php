@@ -122,6 +122,9 @@ abstract class CustomPostTypeTest extends BaseTestCase {
 
 		// Create Item
 		$this->itemId = self::createItem( 'TestItem' );
+
+		// login as test user
+		wp_set_current_user( self::USER_ID );
 	}
 
 	protected function setUpBookingCodesTable() {

@@ -179,6 +179,21 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
+	 * Decodes HTML entities in a post title for API output.
+	 *
+	 * WordPress stores post titles with encoded entities (e.g. "A&amp;B").
+	 * Since the API returns plain text values that consumers render as text,
+	 * we decode them so they receive "A&B" instead of "A&amp;B".
+	 *
+	 * @param string $title
+	 *
+	 * @return string
+	 */
+	protected function decodeApiTitle( string $title ): string {
+		return html_entity_decode( $title, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8' );
+	}
+
+	/**
 	 * Returns true if current request is allowed.
 	 *
 	 * @return bool

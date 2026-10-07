@@ -1,5 +1,9 @@
 #  Station anlegen
 
+:::tip Wofür nutze ich Kategorien?
+Dieser WordPress Post-Typ kann mit einer [Kategorie](https://wordpress.org/documentation/article/posts-categories-screen/) konfiguriert werden.
+Innerhalb von CommonsBooking kannst du Kategorien einer Station in den [Shortcodes](../administration/shortcodes) verwenden.
+:::
 
 ## Stationsbeschreibung
 
@@ -88,3 +92,4 @@ würde_ )
 ![](/img/overbooking-countone.png){data-zoomable}
 _Nur der erste Tag wird bei der Überbuchung gezählt: Das Wochenende ist somit
 überbuchbar aber es kann nicht bis Dienstag gebucht werden._
+

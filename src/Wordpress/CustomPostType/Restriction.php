@@ -159,31 +159,13 @@ class Restriction extends CustomPostType {
 					echo '-';
 					break;
 				case \CommonsBooking\Model\Restriction::META_TYPE:
-					$output = '-';
-
-					foreach ( $this->getCustomFields() as $customField ) {
-						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_TYPE ) {
-							foreach ( $customField['options'] as $key => $label ) {
-								if ( $value == $key ) {
-									$output = $label;
-								}
-							}
-						}
-					}
+					$types  = self::getTypes();
+					$output = $types[ $value ] ?? '-';
 					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Restriction::META_STATE:
-					$output = '-';
-
-					foreach ( $this->getCustomFields() as $customField ) {
-						if ( $customField['id'] == \CommonsBooking\Model\Restriction::META_STATE ) {
-							foreach ( $customField['options'] as $key => $label ) {
-								if ( $value == $key ) {
-									$output = $label;
-								}
-							}
-						}
-					}
+					$states = self::getStates();
+					$output = $states[ $value ] ?? '-';
 					echo commonsbooking_sanitizeHTML( $output );
 					break;
 				case \CommonsBooking\Model\Restriction::META_START:

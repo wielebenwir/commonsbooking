@@ -5,6 +5,13 @@
  * @package Commonsbooking
  */
 
+// Reflection subprocesses only need the autoloader. WordPress is already
+// running in the local executor process started by phpbench.php.
+if ( getenv( 'COMMONSBOOKING_BENCHMARK_BOOTSTRAPPED' ) === '1' ) {
+	require_once dirname( __DIR__, 2 ) . '/vendor/autoload.php';
+	return;
+}
+
 // Silence all output during reflection
 ob_start();
 

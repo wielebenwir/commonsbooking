@@ -278,6 +278,7 @@ class Booking extends PostRepository {
 
 	/**
 	 * Returns all bookings, allowed to see for user.
+	 * This are not just the bookings owned by the user but also managed items for admins / cb-managers.
 	 *
 	 * @param bool     $asModel if true, returns as Booking array, if false, return int array (defaults to false)
 	 * @param int|null $minTimestamp

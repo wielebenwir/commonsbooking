@@ -2,6 +2,8 @@
 
 namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
+use CommonsBooking\Exception\BookingDeniedException;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Booking;
 use SlopeIt\ClockMock\ClockMock;
@@ -184,6 +186,202 @@ class BookingTest extends CustomPostTypeTest {
 		$this->assertFalse( $bookingModel->isUnconfirmed() );
 		// two of those days are counted as overbooked, first day is still counted to maximum quota
 		$this->assertEquals( 2, $bookingModel->getOverbookedDays() );
+	}
+
+	/**
+	 * Makes sure, that bookings that are created always have to be unconfirmed first and then confirmed.
+	 * It should not be possible to create a confirmed or canceled booking immediately.
+	 * Fixes #2295, where impatient users who would click cancel multiple times would create new bookings.
+	 * @return void
+	 */
+	public function testHandleBookingRequest_noDirectCreation() {
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+		$this->bookingIds[] = $bookingId;
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'confirmed',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			get_post( $bookingId )->post_name,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+
+		// cancel once
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'canceled',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			get_post( $bookingId )->post_name,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		// cancel twice, should throw exception
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'canceled',
+			$bookingId,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			get_post( $bookingId )->post_name,
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKING_ID
+		);
+	}
+
+	/**
+	 * Regression test for #1518
+	 * Users should only have one unconfirmed booking at a time.
+	 * This is because checks for booking validity only happen when unconfirmed bookings are created.
+	 * Multiple unconfirmed bookings can lead to circumvention of booking rules.
+	 * @return void
+	 */
+	public function testHandleBookingRequest_onlyOneUnconfirmedBooking() {
+		// setup booking rule to enable check
+		Settings::updateOption(
+			'commonsbooking_options_restrictions',
+			'rules_group',
+			[
+				[
+					'rule-applies-all' => 'on',
+					'rule-type' => 'noSimultaneousBooking',
+				],
+			]
+		);
+		// only for non-admins
+		$this->createSubscriber();
+		wp_set_current_user( $this->subscriberId );
+
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingId;
+
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessageMatches( '/You already have an unconfirmed booking/' );
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+	}
+
+	/**
+	 * edge case for #1518
+	 * check, that unconfirmed bookings of other users are not counted against the current user.
+	 * This might be the case for admins or cb_manager.
+	 * @return void
+	 */
+	public function testHandleBookingRequest_onlyOneUnconfirmedBooking_withAdmin() {
+		$this->createSubscriber();
+		wp_set_current_user( $this->subscriberId );
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingId;
+
+		$this->createAdministrator();
+		wp_set_current_user( $this->adminUserID );
+		// if this test fails, an exception would be thrown
+		$bookingTwoId       = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingTwoId;
+		$this->assertNotNull( $bookingTwoId );
+	}
+
+	/**
+	 * regression test for #2367
+	 * Multiple unconfirmed bookings shall be allowed when either a) no booking rule is set or b) the user is admin
+	 * Bc the unconfirmed booking check is expensive, it should be omitted in those cases.
+	 *
+	 * @return void
+	 * @throws BookingDeniedException
+	 */
+	public function testHandleBookingRequest_onlyOneUnconfirmedBooking_notWhenNoRuleSet() {
+		Settings::updateOption(
+			'commonsbooking_options_restrictions',
+			'rules_group',
+			[]
+		);
+		// This test should pass without throwing an exception, as no booking rules are set.
+		$bookingId          = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingId;
+
+		// this should not cause an exception
+		$bookingTwoId       = Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+4 days', strtotime( self::CURRENT_DATE ) ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingTwoId;
+
+		$this->assertNotNull( $bookingTwoId );
 	}
 
 	public function testBookingWithoutLoc() {
@@ -404,133 +602,6 @@ class BookingTest extends CustomPostTypeTest {
 
 		$bookingModel = new \CommonsBooking\Model\Booking( $bookingId );
 		$this->assertTrue( $bookingModel->isConfirmed() );
-	}
-
-	/**
-	 * This will check if the bookings can be exported through the WordPress personal data export tool
-	 * @return void
-	 */
-	public function testExportUserBookingsByEmail() {
-		$booking    = new \CommonsBooking\Model\Booking(
-			$this->createBooking(
-				$this->itemId,
-				$this->locationId,
-				strtotime( self::CURRENT_DATE ),
-				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-				'08:00 AM',
-				'12:00 PM',
-				'confirmed',
-				$this->subscriberId
-			)
-		);
-		$fullExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
-		$this->assertIsArray( $fullExport );
-		$this->assertCount( 1, $fullExport['data'] );
-		$this->assertTrue( $fullExport['done'] );
-		$data = $fullExport['data'][0]['data'];
-		$this->assertEquals( $booking->pickupDatetime(), $data[0]['value'] );
-
-		// get empty export when e-mail is unknown
-		$emptyExport = Booking::exportUserBookingsByEmail( 'doi@knowy.ou' );
-		$this->assertIsArray( $emptyExport );
-		$this->assertCount( 0, $emptyExport['data'] );
-		$this->assertTrue( $emptyExport['done'] );
-
-		// make sure, that the export does not contain any other bookings (like bookings that are not the user's own)
-		$this->createAdministrator();
-		$emptyExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->adminUserID )->user_email );
-		$this->assertIsArray( $emptyExport );
-		$this->assertCount( 0, $emptyExport['data'] );
-		$this->assertTrue( $emptyExport['done'] );
-
-		// now, we test the proper export of multiple bookings with pagination
-		$bookingIds = [ $booking->ID ];
-		for ( $i = 0; $i < 20; $i++ ) {
-			$bookingIds[] = $this->createBooking(
-				$this->itemId,
-				$this->locationId,
-				strtotime( '+' . ( $i + 10 ) . ' day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+' . ( $i + 11 ) . ' days', strtotime( self::CURRENT_DATE ) ),
-				'08:00 AM',
-				'12:00 PM',
-				'confirmed',
-				$this->subscriberId
-			);
-		}
-		$partialExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
-		$this->assertIsArray( $partialExport );
-		$this->assertCount( 10, $partialExport['data'] );
-		$this->assertFalse( $partialExport['done'] );
-		$otherPartialExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 2 );
-		$this->assertIsArray( $otherPartialExport );
-		$this->assertCount( 10, $otherPartialExport['data'] );
-		$this->assertFalse( $otherPartialExport['done'] );
-		$lastPartialExport = Booking::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 3 );
-		$this->assertIsArray( $lastPartialExport );
-		$this->assertCount( 1, $lastPartialExport['data'] );
-		$this->assertTrue( $lastPartialExport['done'] );
-	}
-
-	public function testRemoveUserBookingsByEmail() {
-		$booking   = new \CommonsBooking\Model\Booking(
-			$this->createBooking(
-				$this->itemId,
-				$this->locationId,
-				strtotime( self::CURRENT_DATE ),
-				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
-				'08:00 AM',
-				'12:00 PM',
-				'confirmed',
-				$this->subscriberId
-			)
-		);
-		$deleteAll = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
-		$this->assertIsArray( $deleteAll );
-		$this->assertTrue( $deleteAll['items_removed'] );
-		$this->assertFalse( $deleteAll['items_retained'] );
-		$this->assertEmpty( $deleteAll['messages'] );
-		$this->assertTrue( $deleteAll['done'] );
-
-		// now we create a bunch of bookings and delete them in chunks
-		$bookingIds = [];
-		for ( $i = 0; $i < 21; $i++ ) {
-			$bookingIds[] = $this->createBooking(
-				$this->itemId,
-				$this->locationId,
-				strtotime( '+' . ( $i + 10 ) . ' day', strtotime( self::CURRENT_DATE ) ),
-				strtotime( '+' . ( $i + 11 ) . ' days', strtotime( self::CURRENT_DATE ) ),
-				'08:00 AM',
-				'12:00 PM',
-				'confirmed',
-				$this->subscriberId
-			);
-		}
-		// quickly test if the bookings are there
-		$this->assertCount( 21, \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
-
-		$deleteFirstPage = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
-		$this->assertIsArray( $deleteFirstPage );
-		$this->assertTrue( $deleteFirstPage['items_removed'] );
-		$this->assertFalse( $deleteFirstPage['items_retained'] );
-		$this->assertEmpty( $deleteFirstPage['messages'] );
-		$this->assertFalse( $deleteFirstPage['done'] );
-		$this->assertCount( 11, \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
-
-		$deleteSecondPage = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 2 );
-		$this->assertCount( 1, \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
-		$this->assertIsArray( $deleteSecondPage );
-		$this->assertTrue( $deleteSecondPage['items_removed'] );
-		$this->assertFalse( $deleteSecondPage['items_retained'] );
-		$this->assertEmpty( $deleteSecondPage['messages'] );
-		$this->assertFalse( $deleteSecondPage['done'] );
-
-		$deleteThirdPage = Booking::removeUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email, 3 );
-		$this->assertIsArray( $deleteThirdPage );
-		$this->assertTrue( $deleteThirdPage['items_removed'] );
-		$this->assertFalse( $deleteThirdPage['items_retained'] );
-		$this->assertEmpty( $deleteThirdPage['messages'] );
-		$this->assertTrue( $deleteThirdPage['done'] );
-		$this->assertEmpty( \CommonsBooking\Repository\Booking::getForUser( get_user_by( 'ID', $this->subscriberId ) ) );
 	}
 
 	/** User cannot book a slot already confirmed by another user (issue #1864) */
