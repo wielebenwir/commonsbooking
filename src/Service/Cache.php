@@ -351,7 +351,12 @@ trait Cache {
 		}
 	}
 
-	public static function warmupCache() {
+	/**
+	 * Warms up the cache by executing all supported shortcode calls found on published pages.
+	 *
+	 * @return void
+	 */
+	public static function warmupCache(): void {
 		try {
 			check_ajax_referer( 'cb_cache_warmup' );   // dies with 403 on invalid/missing nonce
 			global $wpdb;
@@ -467,7 +472,15 @@ trait Cache {
 		<?php
 	}
 
-	public static function renderClearCacheButton( $field_args, $field ) {
+	/**
+	 * Renders the "clear cache" button row for the cache settings view.
+	 *
+	 * @param array<string, mixed> $field_args
+	 * @param CMB2_Field           $field
+	 *
+	 * @return void
+	 */
+	public static function renderClearCacheButton( array $field_args, CMB2_Field $field ): void {
 		?>
 		<div class="cmb-row cmb-type-text ">
 			<div class="cmb-th">

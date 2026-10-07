@@ -464,8 +464,10 @@ HTML;
 	 * Renders CVS file (txt-format) with booking codes for download
 	 *
 	 * @param int|null $timeframeId
+	 *
+	 * @return void
 	 */
-	public static function renderCSV( $timeframeId = null ) {
+	public static function renderCSV( ?int $timeframeId = null ): void {
 		if ( $timeframeId == null ) {
 			$timeframeId = intval( $_GET['post'] );
 		}

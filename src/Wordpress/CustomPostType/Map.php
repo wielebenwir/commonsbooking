@@ -37,7 +37,12 @@ class Map extends CustomPostType {
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 	}
 
-	public function registerMetabox() {
+	/**
+	 * Registers the map metabox.
+	 *
+	 * @return void
+	 */
+	public function registerMetabox(): void {
 		$cmb = new_cmb2_box(
 			[
 				'id'           => static::getPostType() . '-custom-fields',
@@ -667,8 +672,13 @@ class Map extends CustomPostType {
 
 	/**
 	 * Renders the shortcode for the map
+	 *
+	 * @param array<string, mixed> $field_args
+	 * @param CMB2_Field           $field
+	 *
+	 * @return void
 	 */
-	public static function getShortcode( array $field_args, CMB2_Field $field ) {
+	public static function getShortcode( array $field_args, CMB2_Field $field ): void {
 		$id = get_the_ID();
 		?>
 		<b> Shortcode: </b>

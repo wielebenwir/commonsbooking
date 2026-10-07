@@ -215,7 +215,12 @@ class CB1UserFields {
 		return $errors;
 	}
 
-	public function registration_add_meta( $user_id ) {
+	/**
+	 * @param int $user_id
+	 *
+	 * @return void
+	 */
+	public function registration_add_meta( int $user_id ): void {
 
 		foreach ( $this->user_fields as $field ) {
 			if ( ! empty( $_POST[ $field['field_name'] ] ) ) {
@@ -229,10 +234,13 @@ class CB1UserFields {
 	/**
 	 * Sets a flat array of user field/value pairs
 	 *
+	 * @param int $user_id
+	 *
+	 * @return void
 	 * @since    2.10 deprecated (cb_object_to_array is unspecified), removal in 2.12
 	 * @since    0.6
 	 */
-	public function set_basic_user_vars( $user_id ) {
+	public function set_basic_user_vars( int $user_id ): void {
 		$user_basic = get_user_by( 'id', $user_id );
 		$user_meta  = get_user_meta( $user_id );
 
@@ -251,10 +259,13 @@ class CB1UserFields {
 	/**
 	 * Add addiotinal key/value pairs to the user_vars array
 	 *
+	 * @param string $key
+	 *
+	 * @return void
 	 * @deprecated since 2.11, removal in 2.12
 	 * @since    0.5.3
 	 */
-	public function add_user_vars( $key, $value ) {
+	public function add_user_vars( string $key, $value ): void {
 
 		$this->user_vars[ $key ] = $value;
 	}
@@ -262,9 +273,12 @@ class CB1UserFields {
 	/**
 	 * Backend: Show the extra profile fields
 	 *
+	 * @param \WP_User $user
+	 *
+	 * @return void
 	 * @since    0.2
 	 */
-	public function show_extra_profile_fields( $user ) {
+	public function show_extra_profile_fields( \WP_User $user ): void {
 
 		?>
 
@@ -308,9 +322,12 @@ class CB1UserFields {
 	/**
 	 * Backend: Update the extra profile fields
 	 *
+	 * @param int $user_id
+	 *
+	 * @return void
 	 * @since    0.2
 	 */
-	public function save_extra_profile_fields( $user_id ) {
+	public function save_extra_profile_fields( int $user_id ): void {
 		if ( current_user_can( 'edit_user', $user_id ) ) {
 			$phone   = sanitize_text_field( $_POST['phone'] );
 			$address = sanitize_text_field( $_POST['address'] );

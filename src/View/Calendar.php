@@ -638,14 +638,15 @@ class Calendar {
 	/**
 	 * Processes day for calendar view of json.
 	 *
-	 * @param Day $day
-	 * @param $lastBookableDate
-	 * @param $endDate
-	 * @param $jsonResponse
+	 * @param Day                  $day
+	 * @param int|false            $lastBookableDate
+	 * @param Day                  $endDate
+	 * @param array<string, mixed> $jsonResponse
+	 * @param string|null          $firstBookableDay
 	 *
 	 * @return void
 	 */
-	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay ) {
+	protected static function mapDay( Day $day, int|false $lastBookableDate, Day $endDate, array &$jsonResponse, ?string $firstBookableDay ): void {
 		$dayArray = [
 			'date'               => $day->getFormattedDate( 'd.m.Y' ),
 			'slots'              => [],
@@ -840,9 +841,10 @@ class Calendar {
 	/**
 	 * Ajax request - Returns json-formatted calendardata.
 	 *
+	 * @return void
 	 * @throws Exception
 	 */
-	public static function getCalendarData() {
+	public static function getCalendarData(): void {
 		// item by post-param
 		$item = isset( $_POST['item'] ) && $_POST['item'] != '' ? intval( $_POST['item'] ) : false;
 		if ( $item === false || $item == 0 ) { // 0 = failed intval check

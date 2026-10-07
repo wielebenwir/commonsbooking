@@ -186,9 +186,11 @@ class Booking extends Timeframe {
 	/**
 	 * Handles frontend save-Request for timeframe.
 	 *
+	 * @return void
+	 *
 	 * @throws BookingDeniedException - if booking is not allowed, contains translated error message for the user
 	 */
-	public static function handleFormRequest() {
+	public static function handleFormRequest(): void {
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
@@ -734,8 +736,10 @@ class Booking extends Timeframe {
 
 	/**
 	 * Registers metaboxes for cpt.
+	 *
+	 * @return void
 	 */
-	public function registerMetabox() {
+	public function registerMetabox(): void {
 		// do not render the metabox if the user is on the login page (not yet logged in)
 		if ( ! is_user_logged_in() ) {
 			return;

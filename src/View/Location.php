@@ -139,7 +139,7 @@ class Location extends View {
 	 *
 	 * @return void
 	 */
-	public static function renderLocationMap( \CommonsBooking\Model\Location $post ) {
+	public static function renderLocationMap( \CommonsBooking\Model\Location $post ): void {
 		// renders map for location-calendar-header template, only renders when set as option
 		if ( $post->getMeta( 'loc_showmap' ) ) {
 			$latitude  = $post->getMeta( 'geo_latitude' );

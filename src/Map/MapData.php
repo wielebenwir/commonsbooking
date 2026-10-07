@@ -6,7 +6,12 @@ use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Map;
 
 class MapData {
-	public static function geo_search() {
+	/**
+	 * Handles the geocoding ajax request.
+	 *
+	 * @return void
+	 */
+	public static function geo_search(): void {
 		if ( isset( $_POST['query'] ) && $_POST['cb_map_id'] ) {
 			$map = new Map( $_POST['cb_map_id'] );
 
@@ -73,8 +78,10 @@ class MapData {
 
 	/**
 	 * the ajax request handler for locations
+	 *
+	 * @return void
 	 **/
-	public static function get_locations() {
+	public static function get_locations(): void {
 		// handle local/import map
 		if ( isset( $_POST['cb_map_id'] ) ) {
 			check_ajax_referer( 'cb_map_locations', 'nonce' );

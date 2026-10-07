@@ -235,7 +235,7 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	public static function addAdminTypeFilter() {
+	public static function addAdminTypeFilter(): void {
 		Filter::renderFilter(
 			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
@@ -246,8 +246,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by item in timeframe List
+	 *
+	 * @return void
 	 */
-	public static function addAdminItemFilter() {
+	public static function addAdminItemFilter(): void {
 		$items = \CommonsBooking\Repository\Item::get(
 			[
 				'post_status' => 'any',
@@ -273,8 +275,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
+	 *
+	 * @return void
 	 */
-	public static function addAdminLocationFilter() {
+	public static function addAdminLocationFilter(): void {
 		$locations = \CommonsBooking\Repository\Location::get(
 			[
 				'post_status' => 'any',
@@ -300,8 +304,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in booking list
+	 *
+	 * @return void
 	 */
-	public static function addAdminStatusFilter() {
+	public static function addAdminStatusFilter(): void {
 		$values = [];
 		foreach ( \CommonsBooking\Model\Booking::$bookingStates as $bookingState ) {
 			$values[ $bookingState ] = $bookingState;
@@ -316,8 +322,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
+	 *
+	 * @return void
 	 */
-	public static function addAdminDateFilter() {
+	public static function addAdminDateFilter(): void {
 		$startDateInputName = 'admin_filter_startdate';
 		$endDateInputName   = 'admin_filter_enddate';
 
@@ -340,7 +348,7 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	public static function filterAdminList( $query ) {
+	public static function filterAdminList( $query ): void {
 		global $pagenow;
 
 		if (
@@ -412,8 +420,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Registers metaboxes for cpt.
+	 *
+	 * @return void
 	 */
-	public function registerMetabox() {
+	public function registerMetabox(): void {
 		$cmb = new_cmb2_box(
 			[
 				'id'           => static::getPostType() . '-custom-fields',
@@ -847,8 +857,13 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Save the new Custom Fields values
+	 *
+	 * @param int     $post_id
+	 * @param WP_Post $post
+	 *
+	 * @return void
 	 */
-	public function savePost( $post_id, WP_Post $post ) {
+	public function savePost( int $post_id, WP_Post $post ): void {
 		// This is just for timeframes
 		if ( $post->post_type !== static::getPostType() ) {
 			return;
@@ -1012,11 +1027,11 @@ class Timeframe extends CustomPostType {
 	 * 3. Item / Location is removed entirely
 	 * 4. Item / Location is added
 	 *
-	 * @param $post_id
+	 * @param int $post_id
 	 *
 	 * @return void
 	 */
-	public static function manageTimeframeMeta( $post_id ) {
+	public static function manageTimeframeMeta( int $post_id ): void {
 		$postModel = get_post( $post_id );
 		// This is just for timeframes
 		if ( $postModel->post_type !== static::getPostType() ) {

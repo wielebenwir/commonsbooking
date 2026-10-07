@@ -18,7 +18,11 @@ class SearchShortcode extends BaseShortcode {
 		);
 	}
 
-	protected function inject_script( $cb_map_id ) {
+	/**
+	 * @param int $cb_map_id the id of the map post.
+	 * @return void
+	 */
+	protected function inject_script( int $cb_map_id ): void {
 		wp_enqueue_style( 'cb-commons-search' );
 		wp_enqueue_script( 'cb-commons-search' );
 	}

@@ -608,8 +608,10 @@ class Migration {
 
 	/**
 	 * Migrates some of the CB1 Options that can be transfered to CB2
+	 *
+	 * @return void
 	 */
-	public static function migrateCB1Options() {
+	public static function migrateCB1Options(): void {
 		// migrate Booking-Codes
 		$cb1_bookingcodes = Settings::getOption( 'commons-booking-settings-codes', 'commons-booking_codes_pool' );
 		Settings::updateOption( 'commonsbooking_options_bookingcodes', 'bookingcodes', $cb1_bookingcodes );

@@ -422,7 +422,7 @@ class Day {
 	 *
 	 * @throws Exception
 	 */
-	protected function mapTimeFrames( array &$slots ) {
+	protected function mapTimeFrames( array &$slots ): void {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
@@ -455,7 +455,7 @@ class Day {
 	 *
 	 * @throws Exception
 	 */
-	protected function mapRestrictions( array &$slots ) {
+	protected function mapRestrictions( array &$slots ): void {
 		$grid = 24 / count( $slots );
 
 		// Iterate through timeframes and fill slots
@@ -500,7 +500,7 @@ class Day {
 	 *
 	 * @param array $slots Given an array of assocs in hourly slot resolution.
 	 */
-	protected function sanitizeSlots( array &$slots ) {
+	protected function sanitizeSlots( array &$slots ): void {
 		$this->removeEmptySlots( $slots );
 
 		// merge multiple slots if they are of same type
@@ -536,7 +536,7 @@ class Day {
 	 *
 	 * @param $slots
 	 */
-	protected function removeEmptySlots( &$slots ) {
+	protected function removeEmptySlots( array &$slots ): void {
 		// remove slots without timeframes
 		foreach ( $slots as $slotNr => $slot ) {
 			if ( ! array_key_exists( 'timeframe', $slot ) || ! ( $slot['timeframe'] instanceof WP_Post ) ) {
