@@ -68,6 +68,21 @@ The WordPress plugin was originally developed for the needs of the [„Free carg
   * You or your organization have tools that are not used on a daily basis and you want to make them available to local groups.
   * You own a cargo bike and want to share it with the community, it should be stationed at different locations throughout the year.
 
+## Alternatives
+
+We will list some FOSS (Free and Open Source) alternatives to CommonsBooking here to help you make a decision on which software to use. This list is incomplete and additions are welcome. We can also recommend [the list of German libraries of things](https://github.com/mojoaxel/awesome-leihladen) to see live instances. We are comparing the different software solutions from CommonsBooking's perspective, therefore we have listed all the features that CommonsBooking does not support. This list only contains software that is still actively developed. All of the solutions do not work with WordPress, but in turn also do not require WordPress.
+
+| Name | Scope of application | Comparison to CommonsBooking | Since |
+| ---- | ----------------- | -------------------------------- | -------------- |
+|[cosum.de](https://cosum.de/) | Library of things | - Rental requests that have to be confirmed possible <br> - Does not require creation of timeframes, quick creation of many bookable items possible <br> - Complete package with integrated user management | 2019 
+|[leihbase](https://leihbase.org/) | Library of things | - Reservation of items possible <br> - Can create statistics <br> - Can be deployed as a docker container | 2024 
+|[llka](https://buergerstiftung-karlsruhe.de/ll/unsere-software)|Library of things | - Installation through a single command <br> - Self-Service Terminal Support <br> - Dashboards for team management | 2026
+|[dingsda2mex](https://commons.machinaex.org/) | Inventory management for artists | - Optimized for checking items in and out of inventory using a smartphones or laptop <br> - Focus on streamlined inventory management <br> - Export options for billing or customs clearance forms <br>| 2021
+|[Biletado](https://www.biletado.info/) | Booking software for municipalities | - Optimized for room reservations <br> - Can be integrated with billing systems <br> - Ticketing and event management | 2024
+|[Koha](https://koha-community.org/) | Library software | - Cataloging books in standardized formats (MARC) <br> - Check-out and check-in procedures <br> - Label creation and inventory management <br>| 2001
+|[Biblioteq](https://textbrowser.github.io/biblioteq/) | Library software | - Local installation (Windows / Mac / Linux) <br> - Primary function: Cataloging books | 2002
+
+
 * * *
 
 ##  Subscribe to our newsletter
