@@ -1233,13 +1233,13 @@ msgstr "Enddatum liegt vor dem Startdatum. Bitte setze ein gültiges Enddatum."
 msgid "Item is already bookable at another location within the same date range. See other timeframe ID: %1$s: %2$s"
 msgstr "Artikel ist bereits an einem anderen Ort innerhalb desselben Datumsbereichs buchbar. Siehe andere Zeitrahmen ID: %1$s: %2$s"
 
-#: src/Plugin.php:384
 #: src/Plugin.php:385
+#: src/Plugin.php:386
 msgid "Item Categories"
 msgstr "Artikel-Kategorien"
 
-#: src/Plugin.php:394
 #: src/Plugin.php:395
+#: src/Plugin.php:396
 msgid "Location Categories"
 msgstr "Standort-Kategorien"
 
@@ -1315,8 +1315,8 @@ msgstr "Nutzende*r"
 
 #: src/View/Booking.php:200
 #: src/View/MassOperations.php:42
-#: src/Wordpress/CustomPostType/Booking.php:1007
 #: src/Wordpress/CustomPostType/Restriction.php:459
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:93
 msgid "Status"
 msgstr "Status"
 
@@ -1335,11 +1335,11 @@ msgstr "Liste der Buchungscodes"
 #: src/View/Calendar.php:237
 #: src/Wordpress/CustomPostType/Booking.php:481
 #: src/Wordpress/CustomPostType/Booking.php:795
-#: src/Wordpress/CustomPostType/Booking.php:1023
 #: src/Wordpress/CustomPostType/Item.php:117
 #: src/Wordpress/CustomPostType/Restriction.php:48
 #: src/Wordpress/CustomPostType/Restriction.php:420
 #: src/Wordpress/CustomPostType/Timeframe.php:99
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:109
 #: templates/shortcode-bookings.php:73
 msgid "Item"
 msgstr "Artikel"
@@ -1351,12 +1351,12 @@ msgstr "Keine Artikel gefunden."
 #: src/View/Calendar.php:238
 #: src/Wordpress/CustomPostType/Booking.php:482
 #: src/Wordpress/CustomPostType/Booking.php:801
-#: src/Wordpress/CustomPostType/Booking.php:1019
 #: src/Wordpress/CustomPostType/Location.php:139
 #: src/Wordpress/CustomPostType/Restriction.php:49
 #: src/Wordpress/CustomPostType/Restriction.php:413
 #: src/Wordpress/CustomPostType/Timeframe.php:100
 #: src/Wordpress/CustomPostType/Timeframe.php:463
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:105
 #: templates/shortcode-bookings.php:75
 msgid "Location"
 msgstr "Standort"
@@ -1549,8 +1549,8 @@ msgid "Booking Status"
 msgstr "Buchungsstatus"
 
 #: src/Wordpress/CustomPostType/Booking.php:487
-#: src/Wordpress/CustomPostType/Booking.php:1015
 #: src/Wordpress/CustomPostType/Timeframe.php:448
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:101
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -3029,9 +3029,9 @@ msgstr "Storniert"
 msgid "The start- and end-time of the timeframe can not be the same. Please check the full-day checkbox if you want users to be able to book the full day."
 msgstr "Die Start- und Endzeit des Zeitrahmens dürfen nicht gleich sein. Wenn der gesamte Tag buchbar sein soll muss die Option \"Ganzer Tag\" angewählt sein."
 
-#: src/Plugin.php:732
-#: src/Plugin.php:747
-#: src/Wordpress/CustomPostType/Booking.php:970
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:21
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:36
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:56
 msgid "CommonsBooking Bookings"
 msgstr "CommonsBooking Buchungen"
 
@@ -3039,27 +3039,27 @@ msgstr "CommonsBooking Buchungen"
 msgid "Bookings not found"
 msgstr "Keine Buchungen gefunden"
 
-#: src/Wordpress/CustomPostType/Booking.php:995
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:81
 msgid "Booking start"
 msgstr "Buchungsbeginn"
 
-#: src/Wordpress/CustomPostType/Booking.php:999
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:85
 msgid "Booking end"
 msgstr "Buchungsende"
 
-#: src/Wordpress/CustomPostType/Booking.php:1003
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:89
 msgid "Time of booking"
 msgstr "Buchungszeit"
 
-#: src/Wordpress/CustomPostType/Booking.php:1011
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:97
 msgid "Booking code"
 msgstr "Buchungscode"
 
-#: src/Wordpress/CustomPostType/Booking.php:1027
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:113
 msgid "Time of cancellation"
 msgstr "Storniert am"
 
-#: src/Wordpress/CustomPostType/Booking.php:1031
+#: src/Wordpress/Service/WPPrivacyPersonalDataExporter.php:117
 msgid "Admin booking by"
 msgstr "Adminbuchung von"
 
@@ -3918,8 +3918,8 @@ msgstr ""
 msgid "This will create the specified booking and send out the booking confirmation email."
 msgstr "Dadurch wird die angegebene Buchung erstellt und die Buchungsbestätigung per E-Mail verschickt."
 
-#: src/Plugin.php:404
 #: src/Plugin.php:405
+#: src/Plugin.php:406
 msgid "Mass Operations"
 msgstr "Massenverarbeitung"
 
