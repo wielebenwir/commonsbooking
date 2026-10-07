@@ -149,7 +149,7 @@ class MapData {
 	 * @return array
 	 * @throws \Exception
 	 */
-	public static function get_settings($cb_map_id ): array {
+	public static function get_settings( $cb_map_id ): array {
 		$map                = new Map( $cb_map_id );
 		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );

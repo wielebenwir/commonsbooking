@@ -148,7 +148,7 @@ function commonsbooking_custom_view_count( array $views ) {
  * @param $views
  * @return array|mixed
  */
-function commonsbooking_fix_view_counts($postType, $views ) {
+function commonsbooking_fix_view_counts( $postType, $views ) {
 	// admin is allowed to see all posts
 	if ( commonsbooking_isCurrentUserAdmin() ) {
 		return $views;
