@@ -84,12 +84,12 @@ class Restriction extends CustomPost {
 	/**
 	 * @var bool|null
 	 */
-	protected ?bool $active;
+	protected ?bool $active = null;
 
 	/**
 	 * @var bool|null
 	 */
-	protected ?bool $canceled;
+	protected ?bool $canceled = null;
 
 	/**
 	 * Returns post id, for array_unique.

@@ -210,9 +210,9 @@ class CustomPost {
 	}
 
 	/**
-	 * @return string
+	 * @return ?string
 	 */
-	public function getDate(): string {
+	public function getDate(): ?string {
 		return $this->date;
 	}
 
