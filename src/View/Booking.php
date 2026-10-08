@@ -343,8 +343,8 @@ class Booking extends View {
 		$itemID   = intval( $postData['itemID'] );
 
 		try {
-			$itemModel = new \CommonsBooking\Model\Item( $itemID );
-			$location  = $itemModel->getLocation();
+			$itemModel = \CommonsBooking\Repository\Item::getPostById( $itemID );
+			$location  = \CommonsBooking\Repository\Location::getByItem( $itemID, true );
 			if ( ! $location ) {
 				// This won't be displayed anywhere
 				wp_send_json_error(
@@ -353,6 +353,7 @@ class Booking extends View {
 					)
 				);
 			}
+			$location  = reset( $location );
 			$timeframe = Timeframe::getBookable(
 				[ $location->ID ],
 				[ $itemID ],

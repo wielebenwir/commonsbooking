@@ -95,6 +95,8 @@ class Helper {
 	/**
 	 * Returns CB custom post type if possible.
 	 *
+	 * TODO try to reuse that where appropriate (PostRepository etc.)
+	 *
 	 * @param $post
 	 * @param $type
 	 *
