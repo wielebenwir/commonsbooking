@@ -6,6 +6,7 @@ use CommonsBooking\Geocoder\Location as GeocoderLocation;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Helper\Helper;
+use CommonsBooking\Plugin;
 use CommonsBooking\Tests\CPTCreationTrait;
 use CommonsBooking\Tests\Helper\GeoHelperTest;
 
@@ -24,6 +25,13 @@ abstract class BenchmarkCase {
 		'mapIds'         => [],
 	];
 
+	/**
+	 * Benchmark classes whose (persistent) cache has already been cleared.
+	 *
+	 * @var array<string, bool>
+	 */
+	private static array $cacheClearedForBenchmarks = [];
+
 	protected const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77;
 	protected const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33;
 	protected const ITEMS_TOTAL                          = 100;
@@ -34,7 +42,11 @@ abstract class BenchmarkCase {
 		error_reporting( E_ALL & ~E_DEPRECATED );
 		wp_set_current_user( 1 );
 
+		// disable cache for fixture creation
+		add_filter( 'commonsbooking_disableCache', '__return_true' );
+
 		if ( self::$fixtureInitialized ) {
+			$this->applyCacheMode();
 			$this->hydrateSharedPostIds();
 			return;
 		}
@@ -45,8 +57,6 @@ abstract class BenchmarkCase {
 			}
 		};
 		GeoHelper::setGeoCodeServiceInstance( $geoCodeService );
-
-		add_filter( 'commonsbooking_disableCache', '__return_true' );
 
 		global $wpdb;
 		$wpdb->query( 'SET autocommit=0' );
@@ -92,6 +102,49 @@ abstract class BenchmarkCase {
 		self::$fixtureOwner       = $this;
 		$this->captureSharedPostIds();
 		register_shutdown_function( [ self::class, 'tearDownSharedFixture' ] );
+
+		$this->applyCacheMode();
+	}
+
+	/**
+	 * Whether the benchmark should run with CommonsBooking's cache enabled.
+	 *
+	 * Cached benchmarks override this.
+	 */
+	protected function useCache(): bool {
+		return false;
+	}
+
+	/**
+	 * Applies the cache mode requested by {@see self::useCache()}.
+	 *
+	 * The plugin bypasses its cache completely while the
+	 * "commonsbooking_disableCache" filter is active, so cached benchmarks
+	 * have to remove it again.
+	 */
+	private function applyCacheMode(): void {
+		if ( ! $this->useCache() ) {
+			return;
+		}
+
+		remove_filter( 'commonsbooking_disableCache', '__return_true' );
+		$this->clearCacheOnce();
+	}
+
+	/**
+	 * Clears the persistent cache once per benchmark class.
+	 *
+	 * This keeps the first iteration of every cached benchmark cold and makes
+	 * sure that results cannot be skewed by cache entries left behind by an
+	 * earlier benchmark class or a previous run.
+	 */
+	private function clearCacheOnce(): void {
+		if ( self::$cacheClearedForBenchmarks[ static::class ] ?? false ) {
+			return;
+		}
+
+		self::$cacheClearedForBenchmarks[ static::class ] = true;
+		Plugin::clearCache();
 	}
 
 	public function tearDown(): void {
