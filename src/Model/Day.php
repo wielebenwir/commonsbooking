@@ -585,7 +585,8 @@ class Day {
 			Plugin::setCacheItem(
 				$slots,
 				Wordpress::getTags( $this->getTimeframes(), $this->items, $this->locations ),
-				$customCacheKey
+				$customCacheKey,
+				300 // short expiration to keep the calendar in sync with newly created bookings (see View\Calendar::prepareJsonResponse)
 			);
 
 			return $slots;
