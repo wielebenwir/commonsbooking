@@ -334,7 +334,7 @@ class Booking extends View {
 	 *
 	 * @return void
 	 */
-	public static function getLocationForItem_AJAX() {
+	public static function getLocationForItem_AJAX(): void {
 		// verify nonce
 		check_ajax_referer( 'cb_get_bookable_location', 'nonce' );
 
@@ -385,7 +385,7 @@ class Booking extends View {
 	 *
 	 * @return void
 	 */
-	public static function getBookingCode_AJAX() {
+	public static function getBookingCode_AJAX(): void {
 		// verify nonce
 		check_ajax_referer( 'cb_get_booking_code', 'nonce' );
 

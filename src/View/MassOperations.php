@@ -3,7 +3,7 @@
 namespace CommonsBooking\View;
 
 class MassOperations {
-	public static function index() {
+	public static function index(): void {
 		global $templateData;
 		$templateData                     = [];
 		$templateData['orphanedBookings'] = \CommonsBooking\Repository\Booking::getOrphaned();
@@ -18,7 +18,7 @@ class MassOperations {
 	 *
 	 * @return void
 	 */
-	public static function renderBookingViewTable( array $bookings ) {
+	public static function renderBookingViewTable( array $bookings ): void {
 
 		if ( empty( $bookings ) ) {
 			echo '<p>' . esc_html__( 'No bookings found.' ) . '</p>';
@@ -86,7 +86,7 @@ class MassOperations {
 		echo $tableString;
 	}
 
-	public static function renderOrphanedMigrationButton() {
+	public static function renderOrphanedMigrationButton(): void {
 		echo '
 		<div class="cmb-row cmb-type-text">
 			<div id="orphans-migration-in-progress">

@@ -50,8 +50,13 @@ class Item extends CustomPostType {
 
 	/**
 	 * Handles save-Request for items.
+	 *
+	 * @param int      $post_id
+	 * @param \WP_Post $post
+	 *
+	 * @return void
 	 */
-	public function savePost( $post_id, \WP_Post $post ) {
+	public function savePost( int $post_id, \WP_Post $post ): void {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			// update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
@@ -322,7 +327,12 @@ class Item extends CustomPostType {
 		Settings::updateOption( 'commonsbooking_settings_metaboxfields', static::getPostType(), $metabox_fields );
 	}
 
-	public static function registerPostTypeTaxonomy() {
+	/**
+	 * Registers the taxonomy belonging to the item post type.
+	 *
+	 * @return void
+	 */
+	public static function registerPostTypeTaxonomy(): void {
 		parent::registerPostTypeTaxonomy();
 
 		// hook this for later, if we run it now, it would fail

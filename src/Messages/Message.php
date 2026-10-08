@@ -241,7 +241,7 @@ abstract class Message {
 	 *
 	 * @return void
 	 */
-	public function sendNotificationMail() {
+	public function sendNotificationMail(): void {
 		$to         = $this->getTo();
 		$subject    = $this->getSubject();
 		$body       = $this->getBody();
@@ -260,6 +260,9 @@ abstract class Message {
 		do_action( 'commonsbooking_mail_sent', $this->getAction(), $result );
 	}
 
+	/**
+	 * @return void
+	 */
 	abstract public function sendMessage();
 
 	/**
@@ -296,7 +299,7 @@ abstract class Message {
 	 *
 	 * @return void
 	 */
-	protected function add_bcc( array $address_array ) {
+	protected function add_bcc( array $address_array ): void {
 		// sanitize emails
 		$address_array   = array_filter( array_map( 'sanitize_email', $address_array ) );
 		$this->headers[] = sprintf( 'BCC:%s', implode( ',', $address_array ) );

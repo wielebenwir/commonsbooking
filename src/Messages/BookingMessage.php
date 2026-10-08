@@ -20,7 +20,10 @@ class BookingMessage extends Message {
 	 */
 	protected $validActions = [ 'confirmed', 'canceled' ];
 
-	public function sendMessage() {
+	/**
+	 * @return void
+	 */
+	public function sendMessage(): void {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
 

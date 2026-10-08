@@ -28,7 +28,7 @@ class Map extends View {
 		wp_add_inline_script( 'cb-map-positioning_js', 'cb_map_positioning.defaults =' . wp_json_encode( $defaults ) );
 	}
 
-	public static function renderGeoRefreshButton() {
+	public static function renderGeoRefreshButton(): void {
 		echo '<div class="cmb-row cmb-type-text ">
 			<div class="cmb-th">
 				<label>' . esc_html__( 'Set / Update GPS Coordinates', 'commonsbooking' ) . '</label>

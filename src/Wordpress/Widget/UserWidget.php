@@ -26,6 +26,9 @@ class UserWidget extends WP_Widget {
 		);
 	}
 
+	/**
+	 * @var array<string, mixed>
+	 */
 	public $args = array(
 		'before_title'  => '<h4 class="widgettitle">',
 		'after_title'   => '</h4>',
@@ -33,6 +36,12 @@ class UserWidget extends WP_Widget {
 		'after_widget'  => '</div></div>',
 	);
 
+	/**
+	 * @param array<string, mixed> $args
+	 * @param array<string, mixed> $instance
+	 *
+	 * @return void
+	 */
 	public function widget( $args, $instance ) {
 
 		echo commonsbooking_sanitizeHTML( $args['before_widget'] );
@@ -60,7 +69,10 @@ class UserWidget extends WP_Widget {
 		echo commonsbooking_sanitizeHTML( $args['after_widget'] );
 	}
 
-	public function renderWidgetContent() {
+	/**
+	 * @return string
+	 */
+	public function renderWidgetContent(): string {
 
 		$content = '';
 
@@ -103,11 +115,11 @@ class UserWidget extends WP_Widget {
 	}
 
 	/**
-	 * @param $instance
+	 * @param array<string, mixed> $instance
 	 *
 	 * @return string
 	 */
-	public function form( $instance ) {
+	public function form( $instance ): string {
 
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
 		$text  = ! empty( $instance['text'] ) ? $instance['text'] : '';
@@ -129,7 +141,12 @@ class UserWidget extends WP_Widget {
 		return ''; // Parent class returns string, not used
 	}
 
-	public function update( $new_instance, $old_instance ) {
+	/**
+	 * @param array<string, mixed> $new_instance New settings for this instance as input by the user via WP_Widget::form().
+	 * @param array<string, mixed> $old_instance Old settings for this instance.
+	 * @return array<string, mixed> Settings to save or bool false to cancel saving.
+	 */
+	public function update( $new_instance, $old_instance ): array {
 
 		$instance = array();
 

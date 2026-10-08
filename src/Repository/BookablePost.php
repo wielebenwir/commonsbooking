@@ -29,7 +29,7 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * @param bool $publishedOnly
 	 *
-	 * @return array
+	 * @return WP_Post[]
 	 * @throws CacheException
 	 * @throws InvalidArgumentException
 	 */
@@ -268,10 +268,10 @@ abstract class BookablePost extends PostRepository {
 	 * Returns related object based on bookable post.
 	 * Example: We'd like to have the items bookable at a specific location. With this function we are able to get them.
 	 *
-	 * @param $postId
-	 * @param $originType
-	 * @param $relatedType
-	 * @param bool $bookable
+	 * @param int    $postId
+	 * @param string $originType
+	 * @param string $relatedType
+	 * @param bool   $bookable
 	 *
 	 * @return \CommonsBooking\Model\Location[] | \CommonsBooking\Model\Item[]
 	 * @throws Exception
@@ -320,7 +320,7 @@ abstract class BookablePost extends PostRepository {
 	 * @param $originType
 	 * @param $relatedType
 	 *
-	 * @return array
+	 * @return WP_Post[]
 	 */
 	protected static function getRelatedPosts( $postId, $originType, $relatedType ): array {
 		if ( $postId instanceof WP_Post ) {

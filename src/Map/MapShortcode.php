@@ -19,7 +19,11 @@ class MapShortcode extends BaseShortcode {
 		return shortcode_atts( array( 'id' => 0 ), $atts );
 	}
 
-	protected function inject_script( $cb_map_id ) {
+	/**
+	 * @param int $cb_map_id the id of the map post.
+	 * @return void
+	 */
+	protected function inject_script( int $cb_map_id ): void {
 		wp_add_inline_script(
 			'cb-map-shortcode',
 			'jQuery(document).ready(function ($) {

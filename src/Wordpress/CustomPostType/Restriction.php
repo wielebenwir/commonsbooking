@@ -72,8 +72,10 @@ class Restriction extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by item in restrictions List
+	 *
+	 * @return void
 	 */
-	public static function addAdminItemFilter() {
+	public static function addAdminItemFilter(): void {
 		$items = \CommonsBooking\Repository\Item::get(
 			[
 				'post_status' => 'any',
@@ -99,8 +101,10 @@ class Restriction extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in restrictions List
+	 *
+	 * @return void
 	 */
-	public static function addAdminLocationFilter() {
+	public static function addAdminLocationFilter(): void {
 		$locations = \CommonsBooking\Repository\Location::get(
 			[
 				'post_status' => 'any',
@@ -126,8 +130,10 @@ class Restriction extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by status in restrictions list
+	 *
+	 * @return void
 	 */
-	public static function addAdminStatusFilter() {
+	public static function addAdminStatusFilter(): void {
 		Filter::renderFilter(
 			static::$postType,
 			esc_html__( 'Filter By Status ', 'commonsbooking' ),
@@ -361,8 +367,10 @@ class Restriction extends CustomPostType {
 
 	/**
 	 * Registers metaboxes for cpt.
+	 *
+	 * @return void
 	 */
-	public function registerMetabox() {
+	public function registerMetabox(): void {
 		$cmb = new_cmb2_box(
 			[
 				'id'           => static::getPostType() . '-custom-fields',
@@ -512,8 +520,13 @@ Select the desired status and then click the "Send" button to send the e-mail.<b
 
 	/**
 	 * Handles save-Request for location.
+	 *
+	 * @param int      $post_id
+	 * @param \WP_Post $post
+	 *
+	 * @return void
 	 */
-	public function savePost( $post_id, $post ) {
+	public function savePost( int $post_id, \WP_Post $post ): void {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			if ( $this->hasRunBefore( __METHOD__ ) ) {
 				return;

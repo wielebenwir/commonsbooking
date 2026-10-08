@@ -12,41 +12,41 @@ use Exception;
 class MapItemAvailable {
 
 	/**
-	 * item is available
+	 * Item is available
 	 */
 	const ITEM_AVAILABLE = 'available';
 
 
 	/**
-	 * location closed because of holiday / official holiday
+	 * Location closed because of holiday / official holiday
 	 */
 	const LOCATION_HOLIDAY = 'location-holiday';
 
 	/**
-	 * item is partially booked
+	 * Item is partially booked
 	 */
 	const ITEM_PARTIALLY_BOOKED = 'partially-booked';
 
 	/**
-	 * item is partially locked
+	 * Item is partially locked
 	 */
 	const ITEM_LOCKED = 'locked';
 
 
 	/**
-	 * item is booked or blocked
+	 * Item is booked or blocked
 	 */
 	const ITEM_BOOKED = 'booked';
 
 	/**
-	 * no timeframe for item set
+	 * No timeframe for item set
 	 */
 	const OUT_OF_TIMEFRAME = 'no-timeframe';
 
 	/**
 	 * @param $locations
-	 * @param $date_start
-	 * @param $date_end
+	 * @param string $date_start
+	 * @param string $date_end
 	 *
 	 * @return mixed
 	 * @throws Exception

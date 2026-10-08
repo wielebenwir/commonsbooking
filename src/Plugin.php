@@ -47,8 +47,10 @@ class Plugin {
 
 	/**
 	 * Plugin activation tasks.
+	 *
+	 * @return void
 	 */
-	public static function activation() {
+	public static function activation(): void {
 		// Register custom user roles (e.g. cb_manager)
 		self::addCustomUserRoles();
 
@@ -63,8 +65,10 @@ class Plugin {
 
 	/**
 	 * Plugin deactivation tasks.
+	 *
+	 * @return void
 	 */
-	public static function deactivation() {
+	public static function deactivation(): void {
 		do_action( Scheduler::UNSCHEDULER_HOOK );
 	}
 
@@ -86,7 +90,7 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	public static function addCPTRoleCaps() {
+	public static function addCPTRoleCaps(): void {
 		// admins are allowed to see all custom post types
 		$adminAllowedCPT     = self::getCustomPostTypes();
 		$CBManagerAllowedCPT = self::getCBManagerCustomPostTypes();
@@ -133,8 +137,10 @@ class Plugin {
 
 	/**
 	 * Adds cb user roles to WordPress.
+	 *
+	 * @return void
 	 */
-	public static function addCustomUserRoles() {
+	public static function addCustomUserRoles(): void {
 		foreach ( self::getRoleCapMapping() as $roleName => $caps ) {
 			$role = get_role( $roleName );
 			if ( ! $role ) {
@@ -282,9 +288,12 @@ class Plugin {
 	/**
 	 * Adds permissions to edit custom post types for specified role.
 	 *
-	 * @param $postType
+	 * @param string $postType the custom post type slug
+	 * @param string $roleName the role to add the capabilities to
+	 *
+	 * @return void
 	 */
-	protected static function addRoleCaps( $postType, $roleName ) {
+	protected static function addRoleCaps( string $postType, string $roleName ): void {
 		// Add the roles you'd like to administer the custom post types
 		$roles = array_keys( self::getRoleCapMapping( $roleName ) );
 
@@ -323,7 +332,12 @@ class Plugin {
 		}
 	}
 
-	public static function admin_init() {
+	/**
+	 * Runs admin initialization tasks.
+	 *
+	 * @return void
+	 */
+	public static function admin_init(): void {
 		// check if we have a new version and run tasks
 		Upgrade::runTasksAfterUpdate();
 
@@ -341,8 +355,10 @@ class Plugin {
 
 	/**
 	 * Adds menu pages.
+	 *
+	 * @return void
 	 */
-	public static function addMenuPages() {
+	public static function addMenuPages(): void {
 		// Dashboard
 		add_menu_page(
 			'Commons Booking',
@@ -470,8 +486,10 @@ class Plugin {
 
 	/**
 	 * Registers custom post types.
+	 *
+	 * @return void
 	 */
-	public static function registerCustomPostTypes() {
+	public static function registerCustomPostTypes(): void {
 		foreach ( self::getCustomPostTypeObjects() as $customPostType ) {
 			$cptArgs = $customPostType->getArgs();
 			// make export possible when using WP_DEBUG, this allows us to use the export feature for creating new E2E tests
@@ -486,8 +504,10 @@ class Plugin {
 
 	/**
 	 * Registers additional post statuses.
+	 *
+	 * @return void
 	 */
-	public static function registerPostStates() {
+	public static function registerPostStates(): void {
 		foreach ( Booking::$bookingStates as $bookingState ) {
 			new PostStatus( $bookingState, __( ucfirst( $bookingState ), 'commonsbooking' ) );
 		}
@@ -496,8 +516,10 @@ class Plugin {
 	/**
 	 * Renders error for backend_notice.
 	 * TODO refactor this using the AdminMessage type
+	 *
+	 * @return void
 	 */
-	public static function renderError() {
+	public static function renderError(): void {
 		$errorTypes = [
 			Model\Timeframe::ERROR_TYPE,
 			Model\Timeframe::ORPHANED_TYPE,
@@ -537,8 +559,10 @@ class Plugin {
 
 	/**
 	 * Enable Legacy CB1 profile fields.
+	 *
+	 * @return void
 	 */
-	public static function maybeEnableCB1UserFields() {
+	public static function maybeEnableCB1UserFields(): void {
 		$enabled = Settings::getOption( 'commonsbooking_options_migration', 'enable-cb1-user-fields' );
 		if ( $enabled == 'on' ) {
 			new CB1UserFields();
@@ -547,8 +571,10 @@ class Plugin {
 
 	/**
 	 * Register Admin-Options
+	 *
+	 * @return void
 	 */
-	public static function registerAdminOptions() {
+	public static function registerAdminOptions(): void {
 		$options_array = include COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php';
 		foreach ( $options_array as $tab_id => $tab ) {
 			new OptionsTab( $tab_id, $tab );
@@ -573,7 +599,12 @@ class Plugin {
 		return $versions[ $key ] ?? '0';
 	}
 
-	public static function registerScriptsAndStyles() {
+	/**
+	 * Registers the plugin scripts and styles.
+	 *
+	 * @return void
+	 */
+	public static function registerScriptsAndStyles(): void {
 		$base = COMMONSBOOKING_PLUGIN_ASSETS_URL . 'packaged/';
 
 		// spin.js
@@ -717,14 +748,21 @@ class Plugin {
 		);
 	}
 
-	public function registerShortcodes() {
+	/**
+	 * Registers the plugin shortcodes.
+	 *
+	 * @return void
+	 */
+	public function registerShortcodes(): void {
 		add_shortcode( 'cb_search', array( SearchShortcode::class, 'execute' ) );
 	}
 
 	/**
 	 *  Init hooks.
+	 *
+	 * @return void
 	 */
-	public function init() {
+	public function init(): void {
 		do_action( 'cmb2_init' );
 
 		// Enable CB1 User Fields (needed in case of migration from cb 0.9.x)
@@ -823,7 +861,7 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	public function commonsbooking_load_textdomain() {
+	public function commonsbooking_load_textdomain(): void {
 		/**
 		 * We want to ensure that new translations are available directly after update
 		 * so we load the local translation first if its available, otherwise we use the load_plugin_textdomain
@@ -924,8 +962,10 @@ class Plugin {
 	 *    @see \CommonsBooking\View\BookingCodes::renderTable()
 	 * - Hook appropriate function to button that sends out emails with booking codes to the station.
 	 *   @see \CommonsBooking\View\BookingCodes::renderDirectEmailRow()
+	 *
+	 * @return void
 	 */
-	public function initBookingcodes() {
+	public function initBookingcodes(): void {
 		add_action( 'admin_action_cb_download-bookingscodes-csv', array( View\BookingCodes::class, 'renderCSV' ), 10, 0 );
 		add_action( 'admin_action_cb_email-bookingcodes', array( View\BookingCodes::class, 'emailCodes' ), 10, 0 );
 	}
@@ -988,12 +1028,22 @@ class Plugin {
 		return $content;
 	}
 
-	public function registerUserWidget() {
+	/**
+	 * Registers the user widget.
+	 *
+	 * @return void
+	 */
+	public function registerUserWidget(): void {
 		register_widget( '\CommonsBooking\Wordpress\Widget\UserWidget' );
 	}
 
 
-	function AddImageSizes() {
+	/**
+	 * Registers additional image sizes.
+	 *
+	 * @return void
+	 */
+	function AddImageSizes(): void {
 
 		$crop = Settings::getOption( 'commonsbooking_options_templates', 'image_listing_crop' ) == 'on' ? true : false;
 

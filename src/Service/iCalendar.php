@@ -144,13 +144,14 @@ class iCalendar {
 	 * @param String  $eventTitle - The title of the event in the ics calendar
 	 * @param String  $eventDescription - The description of the event in the ics calendar
 	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function addBookingEvent(
 		Booking $booking,
 		string $eventTitle,
 		string $eventDescription
-	) {
+	): void {
 			$eventDescription = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $eventDescription ); // remove empty lines from the description, they are not part of the standard
 
 			$bookingLocation           = $booking->getLocation();

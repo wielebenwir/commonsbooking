@@ -770,7 +770,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @throws Exception
 	 */
-	private static function castPostsToModels( &$posts ) {
+	private static function castPostsToModels( &$posts ): void {
 		foreach ( $posts as &$post ) {
 			// If we have a standard timeframe
 			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {

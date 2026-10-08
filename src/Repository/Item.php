@@ -4,6 +4,8 @@ namespace CommonsBooking\Repository;
 
 use Exception;
 
+use WP_Post;
+
 class Item extends BookablePost {
 	public const URL_SLUG         = COMMONSBOOKING_PLUGIN_SLUG . '_get_vehicle';
 	public const QUERY_VEHICLE_ID = COMMONSBOOKING_PLUGIN_SLUG . '_vehicle_cloaked_id';
@@ -11,14 +13,14 @@ class Item extends BookablePost {
 	/**
 	 * Returns array with items at location based on bookable timeframes.
 	 *
-	 * @param $locationId
+	 * @param int  $locationId
 	 *
 	 * @param bool $bookable
 	 *
-	 * @return array
+	 * @return WP_Post[]
 	 * @throws Exception
 	 */
-	public static function getByLocation( $locationId, bool $bookable = false ): array {
+	public static function getByLocation( int $locationId, bool $bookable = false ): array {
 		return self::getByRelatedPost( $locationId, 'location', 'item', $bookable );
 	}
 

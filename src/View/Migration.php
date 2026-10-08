@@ -17,7 +17,7 @@ class Migration {
 	 * @param array      $field_args Array of field arguments.
 	 * @param CMB2_Field $field The field object
 	 */
-	public static function renderMigrationForm( array $field_args, CMB2_Field $field ) {
+	public static function renderMigrationForm( array $field_args, CMB2_Field $field ): void {
 		$cb1Installed = CB1::isInstalled();
 
 		?>
@@ -89,7 +89,7 @@ class Migration {
 	 * @param array      $field_args
 	 * @param CMB2_Field $field
 	 */
-	public static function renderBookingMigrationForm( array $field_args, CMB2_Field $field ) {
+	public static function renderBookingMigrationForm( array $field_args, CMB2_Field $field ): void {
 
 		echo( '
             <div class="cmb-row cmb-type-text">
