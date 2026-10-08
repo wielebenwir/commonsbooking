@@ -161,5 +161,5 @@ bash bin/install-wp-tests.sh wordpress root password 127.0.0.1:49153 latest
 Then run
 
 ```
-./vendor/bin/phpbench run tests/benchmark --report=aggregate
+php tests/benchmark/phpbench.php run tests/benchmark --report=aggregate
 ```

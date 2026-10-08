@@ -2,7 +2,7 @@
   "name": "wielebenwir/commonsbooking",
   "description": "~",
   "homepage": "https://commonsbooking.org",
-  "version": "2.11",
+  "version": "2.11.2",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "prefer-stable": true,
@@ -22,6 +22,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "CommonsBooking\\Tests\\Benchmark\\": "tests/benchmark/",
       "CommonsBooking\\Tests\\": "tests/php/"
     }
   },

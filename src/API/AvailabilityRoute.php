@@ -6,6 +6,7 @@ namespace CommonsBooking\API;
 use CommonsBooking\Model\Calendar;
 use CommonsBooking\Model\Day;
 use CommonsBooking\Repository\Item;
+use CommonsBooking\Settings\Settings;
 use Exception;
 use stdClass;
 use WP_Error;
@@ -21,6 +22,13 @@ use WP_REST_Response;
  */
 class AvailabilityRoute extends BaseRoute {
 
+	/**
+	 * How many weeks of item availability should be displayed by default.
+	 * This value can be changed in the API settings.
+	 *
+	 * @var int
+	 */
+	const DEFAULT_WEEKS = 2;
 	/**
 	 * The base of this controller's route.
 	 *
@@ -44,9 +52,15 @@ class AvailabilityRoute extends BaseRoute {
 	 * @throws Exception
 	 */
 	public static function getItemData( $id = null ): array {
+		$availabilityWeeks = Settings::getOption( 'commonsbooking_options_api', 'api_future_availability_weeks' );
+		if ( ! $availabilityWeeks || ! is_numeric( $availabilityWeeks ) ) {
+			$availabilityWeeks = self::DEFAULT_WEEKS;
+		} else {
+			$availabilityWeeks = intval( $availabilityWeeks );
+		}
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
-			new Day( date( 'Y-m-d', strtotime( '+2 weeks' ) ) ), // TODO why two weeks? seems like a configurable option
+			new Day( date( 'Y-m-d', strtotime( '+' . $availabilityWeeks . ' weeks' ) ) ),
 			[],
 			$id ? [ $id ] : []
 		);
