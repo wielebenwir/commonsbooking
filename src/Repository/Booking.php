@@ -195,17 +195,59 @@ class Booking extends PostRepository {
 
 			// If there is exactly one result, return it.
 			if ( count( $posts ) == 1 ) {
-				$booking = new \CommonsBooking\Model\Booking( $posts[0] );
+				$booking = new \CommonsBooking\Model\Booking( reset( $posts ) );
 				if ( in_array( $booking->getPost()->post_status, array( 'confirmed', 'unconfirmed' ) ) ) {
 					return $booking;
 				}
 			} elseif ( count( $posts ) > 1 ) {
-				// This shouldn't happen.
-				throw new Exception( __CLASS__ . '::' . __LINE__ . ': Found more than one bookings' );
+				// Duplicates for the exact same slot can happen in production (race condition /
+				// double-submit, stale unconfirmed bookings, admin duplicates). This must never
+				// escalate to a fatal error, the caller expects ?Booking and handles
+				// overlapping bookings via getExistingBookings() with a user-friendly message.
+				// We therefore return the most relevant booking deterministically
+				// (confirmed first, then oldest) and only log the incident.
+				usort(
+					$posts,
+					function ( $a, $b ) {
+						$rankDiff = self::getDuplicateBookingRank( $a ) - self::getDuplicateBookingRank( $b );
+						if ( 0 !== $rankDiff ) {
+							return $rankDiff;
+						}
+						return $a->ID - $b->ID;
+					}
+				);
+				$ids = array_map( fn( $post ) => $post->ID, $posts );
+				error_log( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					sprintf(
+						'%s: Found more than one booking for start=%d end=%d location=%d item=%d, returning %d out of [%s].',
+						__METHOD__,
+						$startDateTimestamp,
+						$endDateTimestamp,
+						$locationId,
+						$itemId,
+						$posts[0]->ID,
+						implode( ',', $ids )
+					)
+				);
+				return new \CommonsBooking\Model\Booking( $posts[0] );
 			}
 		}
 
 		return null;
+	}
+
+	/**
+	 * Rank used to pick a deterministic booking when duplicates exist for the same slot.
+	 * Confirmed bookings win over unconfirmed ones.
+	 * Only confirmed/unconfirmed posts can reach this (enforced by query + filter),
+	 * anything unexpected is treated like unconfirmed.
+	 *
+	 * @param \WP_Post $post The booking post to rank.
+	 *
+	 * @return int
+	 */
+	private static function getDuplicateBookingRank( \WP_Post $post ): int {
+		return 'confirmed' === $post->post_status ? 0 : 1;
 	}
 
 	/**

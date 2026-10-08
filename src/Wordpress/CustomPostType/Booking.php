@@ -295,13 +295,25 @@ class Booking extends Timeframe {
 			);
 		}
 
-		/** @var \CommonsBooking\Model\Booking|null $booking */
-		$booking = \CommonsBooking\Repository\Booking::getByDate(
-			$repetitionStart,
-			$repetitionEnd,
-			$locationId,
-			$itemId
-		);
+		try {
+			/** @var \CommonsBooking\Model\Booking|null $booking */
+			$booking = \CommonsBooking\Repository\Booking::getByDate(
+				$repetitionStart,
+				$repetitionEnd,
+				$locationId,
+				$itemId
+			);
+		}
+		// @codeCoverageIgnoreStart
+		catch ( Exception $e ) {
+			// getByDate() should never throw for duplicates anymore, but we must never
+			// escalate to a fatal error here. Fall back so the overlap check below
+			// can reject with a user-friendly BookingDeniedException instead.
+			// Unreachable in tests (defense in depth), excluded from coverage.
+			error_log( $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			$booking = null;
+		}
+		// @codeCoverageIgnoreEnd
 
 		// Reject if the slot is already booked by another user (getExistingBookings excludes this booking by ID)
 		if ( $booking && ! commonsbooking_isCurrentUserAllowedToEdit( $booking ) ) {
