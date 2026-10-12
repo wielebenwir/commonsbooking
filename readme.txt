@@ -4,7 +4,7 @@ Donate link: https://www.wielebenwir.de/verein/unterstutzen
 Tags: booking, calendar, sharing, commoning, open-source
 Requires at least: 5.9
 Tested up to: 7.1
-Stable Tag: 2.11.2
+Stable Tag: 2.11.3
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -80,6 +80,15 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 4. User bookings list
 
 ## Changelog
+
+### 2.11.3 (12.10.2026)
+ENHANCED: Will not check for unconfirmed bookings anymore if booker is admin / CB-Manager
+ENHANCED: Booking with rule "no simultaneous bookings" active is now ~50% faster
+ENHANCED: Loading data of maps is now ~45% faster
+FIXED: Future incompatibility with new WordPress functions
+FIXED: Compatibility issue with wp-inventory-manager plugin
+UPDATED: Dependencies
+
 
 ### 2.11.2 (26.08.2026)
 ENHANCED: Length of availability displayed in API is now configurable in the API settings
