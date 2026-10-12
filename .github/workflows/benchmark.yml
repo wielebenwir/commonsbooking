@@ -19,7 +19,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       # Not needed on self-hosted runners
       # - name: Set up MySQL
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v7
         with:
-          ref: master
+          ref: ${{ github.event.pull_request.base.sha }}
 
       - name: Install test dependencies (again for master branch)
         run: |
