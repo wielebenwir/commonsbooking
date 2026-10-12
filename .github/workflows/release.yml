@@ -4,12 +4,14 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+  
 jobs:
   publish:
     name: New Release
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+
     steps:
 
     - uses: actions/checkout@v7
@@ -25,6 +27,7 @@ jobs:
         min-coverage: 100
         
     - name: WordPress Plugin Deploy
+      id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
       with:
         dry-run: false
