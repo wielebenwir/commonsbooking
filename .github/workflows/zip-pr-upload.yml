@@ -52,14 +52,19 @@ jobs:
       - name: Download zip artifact
         uses: actions/download-artifact@v8
         with:
-          name: commonsbooking.zip
+          name: commonsbooking-plugin
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
       - name: Move zip to workspace root
         run: |
           ZIP="$(find . -type f -name 'commonsbooking.zip' -print -quit)"
-          if [ -n "$ZIP" ] && [ "$ZIP" != "./commonsbooking.zip" ]; then
+          if [ -z "$ZIP" ]; then
+            echo "::error::commonsbooking.zip was not found in the downloaded artifact."
+            find . -maxdepth 3 -print
+            exit 1
+          fi
+          if [ "$ZIP" != "./commonsbooking.zip" ]; then
             mv "$ZIP" ./commonsbooking.zip
           fi
           ls -la ./commonsbooking.zip

@@ -29,9 +29,11 @@ jobs:
      # by workflow_run), because repository secrets and a write-capable token
      # are never available inside a fork's own pull_request run. Here we only
      # build the zip (no secrets required) and hand it over as an artifact.
+     # Regular (archived) artifact: the inner commonsbooking.zip is restored
+     # verbatim on download. Non-archived (archive: false) uploads are meant for
+     # tarballs and do not round-trip a zip reliably through download-artifact.
      - name: Upload zip as artifact
        uses: actions/upload-artifact@v7
        with:
-        name: commonsbooking.zip
+        name: commonsbooking-plugin
         path: commonsbooking.zip
-        archive: false
