@@ -1,11 +1,3 @@
-export function clickIfExist(element) {
-    cy.get('body').then((body) => {
-        if (body.find(element).length > 0) {
-            cy.get(element).click();
-        }
-    });
-}
-
 describe('correctly render metaboxes for backend CPT creation', () => {
     beforeEach(function () {
         cy.loginAs('admin');
@@ -14,10 +6,6 @@ describe('correctly render metaboxes for backend CPT creation', () => {
     it('shows item metaboxes', () => {
         cy.visit('/wp-admin/edit.php?post_type=cb_item');
         cy.get('.page-title-action').click();
-        //dismiss that annoying message about the block editor
-        cy.wait(5000);
-        clickIfExist('.components-modal__header > .components-button');
-        cy.wait(1000);
         //Just assert, that the CMB2 wrapper exists, the rest is done through screenshots
         cy.get('.cmb2-wrap').should('exist');
         cy.screenshot('cb-item-metaboxes');
