@@ -8,6 +8,13 @@ Diese Seite ist in zwei Bereiche unterteilt: [allgemeine **FAQ**](#faq) mit häu
 
 <ExpandAll label-expand="Alle anzeigen" label-collapse="Alle ausblenden" />
 
+
+## Neue Buchungen werden nicht im Kalender angezeigt, alte Buchungen verschwinden nicht oder Einschränkungen blockieren nicht
+
+::: details Antwort anzeigen
+Wenn der Kalender nicht auf dem neuesten Stand ist deutet das auf Probleme mit dem Caching hin. Diese Probleme sind uns seit einer Weile bekannt und wir arbeiten daran sie zu beheben. In dem [Artikel zum Cache](../advanced-functionality/cache#troubleshooting) findest du weitere Informationen und Fehlerbehebungen.
+:::
+
 ## Wie bekomme ich den Buchungskommentar auf die Seite und in die Email?
 
 ::: details Antwort anzeigen

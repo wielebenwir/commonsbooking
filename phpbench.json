@@ -1,6 +1,10 @@
 {
   "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
   "runner.bootstrap": "tests/benchmark/bootstrap.php",
+  "runner.executor": "local",
+  "runner.php_env": {
+    "COMMONSBOOKING_BENCHMARK_BOOTSTRAPPED": "1"
+  },
   "report.generators": {
     "all": {
       "generator": "composite",

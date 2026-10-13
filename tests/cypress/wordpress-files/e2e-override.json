@@ -10,6 +10,7 @@
   ],
   "mappings": {
     "wp-content/plugins/commonsbooking": "./build/commonsbooking",
-    "wp-content/plugins/commonsbooking/tests/cypress/wordpress-files": "./tests/cypress/wordpress-files"
+    "wp-content/plugins/commonsbooking/tests/cypress/wordpress-files": "./tests/cypress/wordpress-files",
+    "wp-content/mu-plugins": "./tests/cypress/mu-plugins"
   }
 }

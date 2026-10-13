@@ -352,7 +352,17 @@ class BookingRule {
 	 * @throws Exception
 	 */
 	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
-		$userBookings = \CommonsBooking\Repository\Booking::getForUser( $booking->getUserData(), true, time(), [ 'confirmed' ] );
+		$user         = $booking->getUserData();
+		$userBookings = \CommonsBooking\Repository\Booking::getByTimerange(
+			$booking->getStartDate(),
+			$booking->getEndDate(),
+			null,
+			null,
+			[
+				'author' => $user->ID,
+			],
+			[ 'confirmed' ]
+		);
 		$userBookings = Booking::filterTermsApply( $userBookings, $appliedTerms );
 		if ( empty( $userBookings ) ) {
 			return null;

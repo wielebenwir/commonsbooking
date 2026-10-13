@@ -69,7 +69,7 @@ class Map extends CustomPost {
 				}
 			}
 
-			foreach ( Item::getByLocation( $post->ID, true ) as $item ) {
+			foreach ( Item::getByLocation( $post->ID ) as $item ) {
 				$item_terms = wp_get_post_terms(
 					$item->ID,
 					\CommonsBooking\Wordpress\CustomPostType\Item::getTaxonomyName()
@@ -108,6 +108,10 @@ class Map extends CustomPost {
 					null,
 					true
 				);
+
+				if ( ! $timeframes ) {
+					continue;
+				}
 
 				/** @var \CommonsBooking\Model\Timeframe $timeframe */
 				foreach ( $timeframes as $timeframe ) {

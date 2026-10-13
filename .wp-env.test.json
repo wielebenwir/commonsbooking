@@ -19,5 +19,8 @@
   },
   "themes" : [
     "flegfleg/kasimir-theme"
-  ]
+  ],
+  "mappings" : {
+    "wp-content/mu-plugins" : "./tests/cypress/mu-plugins"
+  }
 }

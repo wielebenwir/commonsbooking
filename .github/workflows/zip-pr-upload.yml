@@ -1,0 +1,101 @@
+name: Upload PR zip and comment
+
+# Runs in the context of the default branch (so repository secrets and a
+# write-capable GITHUB_TOKEN are available) after the untrusted "Build zip from
+# PR" workflow has completed. It only downloads the built artifact and never
+# checks out or executes PR code, which keeps the secrets away from untrusted
+# input.
+on:
+  workflow_run:
+    workflows: ["Build zip from PR"]
+    types:
+      - completed
+
+permissions:
+  actions: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  upload:
+    if: github.event.workflow_run.conclusion == 'success' && !startsWith(github.event.workflow_run.head_branch, 'dependabot')
+    runs-on: ubuntu-24.04
+    steps:
+      # The fork's head branch is attacker-controlled, so it is passed through
+      # the environment instead of being interpolated into the shell script.
+      - name: Resolve PR number
+        id: pr
+        env:
+          HEAD_OWNER: ${{ github.event.workflow_run.head_repository.owner.login }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR_NUMBER="$(jq -r '.workflow_run.pull_requests[0].number // empty' "$GITHUB_EVENT_PATH")"
+
+          if [ -z "$PR_NUMBER" ]; then
+            # GitHub keeps workflow_run.pull_requests empty for pull requests
+            # from forks, so resolve the PR from the run's head repository and
+            # branch. Matching the head SHA ignores runs a newer push replaced.
+            PR_NUMBER="$(gh api -X GET "repos/${GITHUB_REPOSITORY}/pulls" \
+              -f head="${HEAD_OWNER}:${HEAD_BRANCH}" -f state=open \
+              | jq -r --arg sha "$HEAD_SHA" '[.[] | select(.head.sha == $sha) | .number] | first // empty')"
+          fi
+
+          if ! printf '%s' "$PR_NUMBER" | grep -Eq '^[1-9][0-9]*$'; then
+            echo "::error::Could not resolve a PR number for workflow run ${GITHUB_RUN_ID} (head ${HEAD_OWNER}:${HEAD_BRANCH})."
+            exit 1
+          fi
+          echo "number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+
+      - name: Download zip artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: commonsbooking-plugin
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Move zip to workspace root
+        run: |
+          ZIP="$(find . -type f -name 'commonsbooking.zip' -print -quit)"
+          if [ -z "$ZIP" ]; then
+            echo "::error::commonsbooking.zip was not found in the downloaded artifact."
+            find . -maxdepth 3 -print
+            exit 1
+          fi
+          if [ "$ZIP" != "./commonsbooking.zip" ]; then
+            mv "$ZIP" ./commonsbooking.zip
+          fi
+          ls -la ./commonsbooking.zip
+
+      - name: Upload zip
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          exclude: |
+            **
+            ! commonsbooking.zip
+          server: ${{ secrets.CBZIPUPLOAD_SERVER }}
+          username: ${{ secrets.CBZIPUPLOAD_USER }}
+          password: ${{ secrets.CBZIPUPLOAD_KEY }}
+          server-dir: ${{ steps.pr.outputs.number }}/
+          dangerous-clean-slate: true # We only set this because we create a fresh directory and the action fails otherwise
+          protocol: ftps
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v4
+        id: fc
+        with:
+          issue-number: ${{ steps.pr.outputs.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Download built plugin zip
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ steps.pr.outputs.number }}
+          body: |
+            [Download built plugin zip](https://builds.commonsbooking.org/${{ steps.pr.outputs.number }}/commonsbooking.zip)
+            [Test Plugin in Wordpress Playground](https://playground.wordpress.net/#{%22steps%22:[{%22step%22:%22installPlugin%22,%22pluginData%22:{%22resource%22:%22url%22,%22url%22:%22https://builds.commonsbooking.org/${{ steps.pr.outputs.number }}/commonsbooking.zip%22}},{%22step%22:%22importWxr%22,%22file%22:{%22resource%22:%22url%22,%22url%22:%22https://raw.githubusercontent.com/wielebenwir/commonsbooking/refs/heads/master/tests/cypress/wordpress-files/content-example.xml%22}}],%22login%22:true})
+          edit-mode: replace

@@ -59,6 +59,9 @@ class Upgrade {
 		'2.10.5' => [
 			[ self::class, 'migrateCacheSettings' ],
 		],
+		'2.11.1' => [
+			[ self::class, 'migrateExportSettings' ],
+		],
 	];
 
 	/**
@@ -586,6 +589,27 @@ class Upgrade {
 				Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_path' )
 			);
 			Settings::updateOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter', 'filesystem' );
+		}
+	}
+
+	/**
+	 * In order to fix #2320 and unify the input names, the custom metadata
+	 * fields were renamed from hyphenated to camelCase. This moves them.
+	 *
+	 * @return void
+	 */
+	public static function migrateExportSettings(): void {
+		$itemFields     = Settings::getOption( 'commonsbooking_options_export', 'item-fields' );
+		$locationFields = Settings::getOption( 'commonsbooking_options_export', 'location-fields' );
+		$userFields     = Settings::getOption( 'commonsbooking_options_export', 'user-fields' );
+		if ( ! empty( $itemFields ) ) {
+			Settings::updateOption( 'commonsbooking_options_export', 'itemFields', $itemFields );
+		}
+		if ( ! empty( $locationFields ) ) {
+			Settings::updateOption( 'commonsbooking_options_export', 'locationFields', $locationFields );
+		}
+		if ( ! empty( $userFields ) ) {
+			Settings::updateOption( 'commonsbooking_options_export', 'userFields', $userFields );
 		}
 	}
 }

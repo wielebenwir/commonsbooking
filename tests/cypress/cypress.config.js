@@ -1,4 +1,8 @@
 const { defineConfig } = require('cypress');
+const { execFileSync } = require('node:child_process');
+const { resolve } = require('node:path');
+
+const repositoryRoot = resolve(__dirname, '../..');
 
 module.exports = defineConfig({
     fixturesFolder: 'tests/cypress/fixtures',
@@ -14,7 +18,34 @@ module.exports = defineConfig({
     e2e: {
         baseUrl: 'http://localhost:1001/',
         setupNodeEvents(on, config) {
-            // implement node event listeners here
+            on('task', {
+                wpPostMetaUpdate({ postId, metaKey, metaValue }) {
+                    try {
+                        return execFileSync(
+                            'npx',
+                            [
+                                'wp-env',
+                                '--config=.wp-env.test.json',
+                                'run',
+                                'cli',
+                                'wp',
+                                'post',
+                                'meta',
+                                'update',
+                                String(postId),
+                                String(metaKey),
+                                String(metaValue),
+                            ],
+                            {
+                                encoding: 'utf8',
+                                cwd: repositoryRoot,
+                            },
+                        );
+                    } catch (error) {
+                        return error.stderr?.toString() || error.message || '';
+                    }
+                },
+            });
         },
         video: false,
         specPattern: 'tests/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
