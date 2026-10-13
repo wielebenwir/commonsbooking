@@ -413,14 +413,15 @@ class Restriction extends CustomPost {
 	protected function sendRestrictionMails( $bookings ): void {
 		foreach ( $bookings as $key => $booking ) {
 			// get User ID from booking
-			//TODO: Refactor so we don't get userData twice and check for non-existent userData
-			$userId = $booking->getUserData()->ID;
-
+			$user = $booking->getUserData();
+			if ( ! $user ) {
+				return;
+			}
 			// checks if this is the first booking that is processed
 			$firstMessage = ( $key === array_key_first( $bookings ) );
 
 			// send restriction message for each booking
-			$hintMail = new RestrictionMessage( $this, get_userdata( $userId ), $booking, $this->getType(), $firstMessage );
+			$hintMail = new RestrictionMessage( $this, $user, $booking, $this->getType(), $firstMessage );
 			$hintMail->triggerMail();
 		}
 	}
