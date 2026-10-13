@@ -334,10 +334,8 @@ trait Cache {
 	public static function addWarmupAjaxToOutput() {
 		if ( get_transient( 'clearCacheHasBeenDone' ) ) {
 			delete_transient( 'clearCacheHasBeenDone' );
-			wp_register_script( 'cache_warmup', '', array( 'jquery' ), '', true );
-			wp_enqueue_script( 'cache_warmup' );
 			wp_add_inline_script(
-				'cache_warmup',
+				'cb-scripts-public',
 				'
 				jQuery.ajax({
 		            url: cb_ajax_cache_warmup.ajax_url,
