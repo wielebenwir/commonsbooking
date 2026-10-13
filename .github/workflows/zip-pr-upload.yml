@@ -21,22 +21,42 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success' && !startsWith(github.event.workflow_run.head_branch, 'dependabot')
     runs-on: ubuntu-24.04
     steps:
-      - name: Extract PR number
+      # The fork's head branch is attacker-controlled, so it is passed through
+      # the environment instead of being interpolated into the shell script.
+      - name: Resolve PR number
         id: pr
+        env:
+          HEAD_OWNER: ${{ github.event.workflow_run.head_repository.owner.login }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           PR_NUMBER="$(jq -r '.workflow_run.pull_requests[0].number // empty' "$GITHUB_EVENT_PATH")"
+
+          if [ -z "$PR_NUMBER" ]; then
+            # GitHub keeps workflow_run.pull_requests empty for pull requests
+            # from forks, so resolve the PR from the run's head repository and
+            # branch. Matching the head SHA ignores runs a newer push replaced.
+            PR_NUMBER="$(gh api -X GET "repos/${GITHUB_REPOSITORY}/pulls" \
+              -f head="${HEAD_OWNER}:${HEAD_BRANCH}" -f state=open \
+              | jq -r --arg sha "$HEAD_SHA" '[.[] | select(.head.sha == $sha) | .number] | first // empty')"
+          fi
+
+          if ! printf '%s' "$PR_NUMBER" | grep -Eq '^[1-9][0-9]*$'; then
+            echo "::error::Could not resolve a PR number for workflow run ${GITHUB_RUN_ID} (head ${HEAD_OWNER}:${HEAD_BRANCH})."
+            exit 1
+          fi
           echo "number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
 
       - name: Download zip artifact
-        if: steps.pr.outputs.number != ''
         uses: actions/download-artifact@v8
         with:
           name: commonsbooking.zip
           run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
 
       - name: Move zip to workspace root
-        if: steps.pr.outputs.number != ''
         run: |
           ZIP="$(find . -type f -name 'commonsbooking.zip' -print -quit)"
           if [ -n "$ZIP" ] && [ "$ZIP" != "./commonsbooking.zip" ]; then
@@ -45,7 +65,6 @@ jobs:
           ls -la ./commonsbooking.zip
 
       - name: Upload zip
-        if: steps.pr.outputs.number != ''
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           exclude: |
@@ -59,7 +78,6 @@ jobs:
           protocol: ftps
 
       - name: Find Comment
-        if: steps.pr.outputs.number != ''
         uses: peter-evans/find-comment@v4
         id: fc
         with:
@@ -68,7 +86,6 @@ jobs:
           body-includes: Download built plugin zip
 
       - name: Create or update comment
-        if: steps.pr.outputs.number != ''
         uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
