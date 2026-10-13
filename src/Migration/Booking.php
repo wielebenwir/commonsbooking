@@ -8,6 +8,8 @@ class Booking {
 
 	/**
 	 * Changes post type of booking timeframes to cb_booking.
+	 *
+	 * @return int[]
 	 */
 	public static function migrate() {
 

@@ -329,10 +329,10 @@ class Timeframe extends PostRepository {
 	 *
 	 * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
-	 * @return string[]|int[]
+	 * @return int[]
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ): array {
 
 		if ( ! count( $types ) ) {
 			$types = [
@@ -416,7 +416,7 @@ class Timeframe extends PostRepository {
 				$customId
 			);
 
-			return $postIds;
+			return array_map('intval', $postIds);
 		}
 	}
 
