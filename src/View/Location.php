@@ -63,7 +63,7 @@ class Location extends View {
 					}
 				}
 			} else {
-				$args['item'] = \CommonsBooking\Repository\Item::getPostById( $item->ID );
+				$args['item'] = \CommonsBooking\Repository\Item::getPostById( $item );
 			}
 
 			$calendarData          = Calendar::getCalendarDataArray(
