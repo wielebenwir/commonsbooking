@@ -109,7 +109,7 @@ class BookingRuleApplied extends BookingRule {
 	 *
 	 * @param Booking $booking - The booking object to check for rule compliance
 	 *
-	 * @return array|null - An array of conflicting bookings or an empty array if the booking complies with all rules
+	 * @return Booking[]|null - An array of conflicting bookings or an empty array / null if the booking complies with all rules
 	 */
 	public function checkBookingCompliance( Booking $booking ): ?array {
 		if ( $booking->isBookingOwnerPrivileged() ) {

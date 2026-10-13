@@ -25,7 +25,7 @@ class Location extends BookablePost {
 	 * @param int  $itemId
 	 * @param bool $asModel
 	 *
-	 * @return Location[]
+	 * @return \CommonsBooking\Model\Timeframe[]|\WP_Post[]
 	 * @throws \Exception
 	 */
 	public function getBookableTimeframesByItem( int $itemId, bool $asModel = false ): array {

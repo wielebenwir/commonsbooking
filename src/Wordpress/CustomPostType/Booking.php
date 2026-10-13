@@ -556,9 +556,9 @@ class Booking extends Timeframe {
 	/**
 	 * Returns CPT arguments.
 	 *
-	 * @return array
+	 * @return array<string, mixed> array of arguments compatible with register_post_type
 	 */
-	public function getArgs() {
+	public function getArgs(): array {
 		$labels = array(
 			'name'                  => esc_html__( 'Bookings', 'commonsbooking' ),
 			'singular_name'         => esc_html__( 'Booking', 'commonsbooking' ),

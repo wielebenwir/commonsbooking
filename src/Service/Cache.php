@@ -202,14 +202,14 @@ trait Cache {
 	/**
 	 * This will get an adapter by the adapter identifier.
 	 *
-	 * @param $identifier
-	 * @param $namespace
-	 * @param $defaultLifetime
+	 * @param string $identifier
+	 * @param string $namespace
+	 * @param int    $defaultLifetime
 	 * @param string $cacheLocation
 	 * @return TagAwareAdapterInterface
 	 * @throws \CommonsBooking\Psr\Cache\CacheException
 	 */
-	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
+	public static function getAdapter( string $identifier, string $namespace, int $defaultLifetime, string $cacheLocation = '' ): TagAwareAdapterInterface {
 		if ( self::isDisabled() ) {
 			return self::getNullAdapter();
 		}
@@ -294,7 +294,7 @@ trait Cache {
 	 *
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public static function clearCache( array $tags = [] ) {
+	public static function clearCache( array $tags = [] ): void {
 		if ( ! count( $tags ) ) {
 			self::getCache()->clear();
 		} else {
@@ -429,7 +429,7 @@ trait Cache {
 	 * @param array      $field_args
 	 * @param CMB2_Field $field
 	 */
-	public static function renderCacheStatus( array $field_args, CMB2_Field $field ) {
+	public static function renderCacheStatus( array $field_args, CMB2_Field $field ): void {
 		$success           = true;
 		$errorMessage      = '';
 		$adapterIdentifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' );

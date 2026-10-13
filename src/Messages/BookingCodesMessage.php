@@ -144,8 +144,8 @@ class BookingCodesMessage extends Message {
 	 * Updates the information about the last sent email.
 	 * This is triggered through the commonsbooking_mail_sent action.
 	 *
-	 * @param $action
-	 * @param $result
+	 * @param string $action
+	 * @param bool   $result
 	 *
 	 * @return void
 	 */

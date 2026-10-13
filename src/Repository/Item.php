@@ -17,7 +17,7 @@ class Item extends BookablePost {
 	 *
 	 * @param bool $bookable
 	 *
-	 * @return WP_Post[]
+	 * @return \CommonsBooking\Model\Item[]
 	 * @throws Exception
 	 */
 	public static function getByLocation( int $locationId, bool $bookable = false ): array {

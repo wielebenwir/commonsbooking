@@ -109,12 +109,12 @@ class iCalendar {
 	/**
 	 * Get the ics file for an existing booking. Will be called, when the "Add to Calendar" button on the booking page is pressed
 	 *
-	 * @param $bookingID
+	 * @param int $bookingID
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function downloadICS( $bookingID ): void {
+	public static function downloadICS( int $bookingID ): void {
 		$postID           = $bookingID;
 		$booking          = new Booking( $postID );
 		$template_objects = [

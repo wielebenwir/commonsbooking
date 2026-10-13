@@ -146,11 +146,11 @@ class CB1 {
 
 	/**
 	 *
-	 * @param $id
+	 * @param int $id
 	 *
 	 * @return ?string
 	 */
-	public static function getBookingCode( $id ): ?string {
+	public static function getBookingCode( int $id ): ?string {
 		global $wpdb;
 		$table_bookingcodes = $wpdb->prefix . self::$BOOKINGCODES_TABLE;
 
@@ -207,31 +207,31 @@ class CB1 {
 	/**
 	 * Returns CB2 Location-ID.
 	 *
-	 * @param $locationId
+	 * @param int $locationId
 	 *
 	 * @return false|int
 	 */
-	public static function getCB2ItemId( $locationId ) {
+	public static function getCB2ItemId( int $locationId ) {
 		return self::getCB2PostIdByType( $locationId, \CommonsBooking\Wordpress\CustomPostType\Item::$postType );
 	}
 
 	/**
-	 * @param $timeframeId
+	 * @param int $timeframeId
 	 *
 	 * @return false|int
 	 */
-	public static function getCB2TimeframeId( $timeframeId ) {
+	public static function getCB2TimeframeId( int $timeframeId ) {
 		return self::getCB2PostIdByType( $timeframeId, \CommonsBooking\Wordpress\CustomPostType\Timeframe::$postType );
 	}
 
 	/**
 	 * Returns CB2 post id for CB1 post id, if available.
 	 *
-	 * @param $id
+	 * @param int $id
 	 *
 	 * @return ?int
 	 */
-	public static function getCB2PostIdByCB1Id( $id ): ?int {
+	public static function getCB2PostIdByCB1Id( int $id ): ?int {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 

@@ -69,13 +69,22 @@ abstract class CustomPostType {
 	}
 
 	/**
-	 * @return array
+	 * Returns the arguments passed to register_taxonomy().
+	 *
+	 * Needs to be implemented by child.
+	 *
+	 * @return array<string, mixed>
 	 */
-	protected static function getTaxonomyArgs() {
+	protected static function getTaxonomyArgs(): array {
 		throw new BadMethodCallException( 'Not implemented' );
 	}
 
-	public static function registerPostTypeTaxonomy() {
+	/**
+	 * Registers the taxonomy belonging to the custom post type.
+	 *
+	 * @return void
+	 */
+	public static function registerPostTypeTaxonomy(): void {
 
 		$customPostType = static::getPostType();
 		$taxonomy       = static::getTaxonomyName();

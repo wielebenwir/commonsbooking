@@ -15,7 +15,7 @@ abstract class Message {
 	/**
 	 * The actions that are valid for this message. Usually a string.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	protected $validActions = [];
 
@@ -69,19 +69,19 @@ abstract class Message {
 	 *    'type' => File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
 	 *    'disposition' => Disposition to use (defaults to 'attachment')
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
-	protected $attachment = [];
+	protected array $attachment = [];
 	/**
 	 * @var int
 	 */
 	private $postId;
 
 	/**
-	 * @param $postId
-	 * @param $action
+	 * @param int    $postId
+	 * @param string $action
 	 */
-	public function __construct( $postId, $action ) {
+	public function __construct( int $postId, string $action ) {
 		$this->postId = $postId;
 
 		global $post;
@@ -90,7 +90,10 @@ abstract class Message {
 		$this->action = $action;
 	}
 
-	public function getAction() {
+	/**
+	 * @return string
+	 */
+	public function getAction(): string {
 		return $this->action;
 	}
 
@@ -114,7 +117,10 @@ abstract class Message {
 		return apply_filters( 'commonsbooking_mail_to', $recipient, $messageAction );
 	}
 
-	public function getHeaders() {
+	/**
+	 * @return string[]
+	 */
+	public function getHeaders(): array {
 		return $this->headers;
 	}
 
@@ -161,7 +167,7 @@ abstract class Message {
 	/**
 	 * Return array of attachment
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
 	public function getAttachment(): array {
 		$attachment    = $this->attachment;
@@ -180,13 +186,13 @@ abstract class Message {
 	/**
 	 * Setup the email template, headers (BCC)
 	 *
-	 * @param MessageRecipient $recipientUser User-Object
-	 * @param string           $template_body template string
-	 * @param string           $template_subject template string
-	 * @param string           $from_headers From-Header (From:xxx)
-	 * @param string|null      $bcc_adresses comma separated string with e-mail adresses
-	 * @param object[]         $objects objects used in parse template function
-	 * @param array|null       $attachment
+	 * @param MessageRecipient           $recipientUser User-Object
+	 * @param string                     $template_body template string
+	 * @param string                     $template_subject template string
+	 * @param string                     $from_headers From-Header (From:xxx)
+	 * @param string|null                $bcc_adresses comma separated string with e-mail adresses
+	 * @param object[]                   $objects objects used in parse template function
+	 * @param array<string, string>|null $attachment
 	 */
 	protected function prepareMail(
 		MessageRecipient $recipientUser,
@@ -306,7 +312,7 @@ abstract class Message {
 	}
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getValidActions(): array {
 		return $this->validActions;
@@ -326,7 +332,7 @@ abstract class Message {
 	 *
 	 * @see https://gist.github.com/thomasfw/5df1a041fd8f9c939ef9d88d887ce023/
 	 */
-	public function addStringAttachments( $atts ) {
+	public function addStringAttachments( $atts ): array {
 		$attachment_arrays = [];
 		if ( ! empty( $atts['attachments'] ) ) {
 			$attachments = $atts['attachments'];

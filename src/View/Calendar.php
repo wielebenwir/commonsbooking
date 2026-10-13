@@ -367,6 +367,7 @@ class Calendar {
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
 		$firstBookableDay   = null;
+		/** @var \CommonsBooking\Model\Timeframe[] $bookableTimeframes */
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
@@ -417,11 +418,11 @@ class Calendar {
 	/**
 	 * Returns closest timeframe from date/time perspective.
 	 *
-	 * @param $bookableTimeframes
+	 * @param \CommonsBooking\Model\Timeframe[] $bookableTimeframes
 	 *
 	 * @return \CommonsBooking\Model\Timeframe|null
 	 */
-	public static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
+	public static function getClosestBookableTimeFrameForToday( array $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
 		$today           = new Day( date( 'Y-m-d' ) );
 		$todayTimeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $bookableTimeframes, $today->getStartTimestamp(), $today->getEndTimestamp() );
 		$todayTimeframes = array_filter(
@@ -527,12 +528,15 @@ class Calendar {
 	 *
 	 * Uses cache which expires at midnight on a daily basis.
 	 *
-	 * @param Day   $startDate
-	 * @param Day   $endDate
-	 * @param array $locations []
-	 * @param array $items <int|string>
+	 * @param Day         $startDate
+	 * @param Day         $endDate
+	 * @param int[]       $locations
+	 * @param int[]       $items
+	 * @param int|null    $advanceBookingDays
+	 * @param int|null    $lastBookableDate
+	 * @param string|null $firstBookableDay
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public static function prepareJsonResponse(
@@ -540,9 +544,9 @@ class Calendar {
 		Day $endDate,
 		array $locations,
 		array $items,
-		$advanceBookingDays = null,
-		$lastBookableDate = null,
-		$firstBookableDay = null
+		?int $advanceBookingDays = null,
+		?int $lastBookableDate = null,
+		?string $firstBookableDay = null
 	): array {
 
 		$current_user   = wp_get_current_user();

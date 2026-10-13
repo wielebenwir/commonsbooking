@@ -883,13 +883,15 @@ class Plugin {
 	 *
 	 * @TODO: Add test if cache is cleared correctly.
 	 *
-	 * @param $post_id
-	 * @param $post
-	 * @param $update
+	 * @param int      $post_id the post ID
+	 * @param \WP_Post $post    the post object
+	 * @param bool     $update  whether this is an existing post being updated
+	 *
+	 * @return void
 	 *
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public function savePostActions( $post_id, $post, $update ) {
+	public function savePostActions( int $post_id, \WP_Post $post, bool $update ): void {
 		if ( ! self::isPostCustomPostType( $post ) ) {
 			return;
 		}
@@ -921,8 +923,10 @@ class Plugin {
 	 */
 	/**
 	 * Function to register our new routes from the controller.
+	 *
+	 * @return false|null false when the API is not activated, null otherwise
 	 */
-	public function initRoutes() {
+	public function initRoutes(): ?bool {
 		// Check if API is activated in settings
 		$api_activated = Settings::getOption( 'commonsbooking_options_api', 'api-activated' );
 		if ( $api_activated != 'on' ) {
@@ -952,6 +956,8 @@ class Plugin {
 				}
 			}
 		);
+
+		return null;
 	}
 
 	/**
@@ -973,11 +979,11 @@ class Plugin {
 	/**
 	 * Fixes highlighting issue for cpt views.
 	 *
-	 * @param $parent_file
+	 * @param string $parent_file the parent file slug
 	 *
 	 * @return string
 	 */
-	public function setParentFile( $parent_file ): string {
+	public function setParentFile( string $parent_file ): string {
 		global $current_screen;
 
 		// Set 'cb-dashboard' as parent for cb post types
@@ -1010,11 +1016,11 @@ class Plugin {
 	/**
 	 * Appends view data to content.
 	 *
-	 * @param $content
+	 * @param string $content the post content
 	 *
 	 * @return string
 	 */
-	public function getTheContent( $content ): string {
+	public function getTheContent( string $content ): string {
 		// Check if we're inside the main loop in a single post page.
 		if ( is_single() && in_the_loop() && is_main_query() ) {
 			global $post;

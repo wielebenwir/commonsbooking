@@ -14,16 +14,28 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
  */
 class RestrictionMessage extends Message {
 
+	/**
+	 * @var \WP_User
+	 */
 	protected $user;
 
-	protected $restriction;
+	/**
+	 * @var Restriction
+	 */
+	protected Restriction $restriction;
 
 	protected $action;
 
-	protected $booking;
+	/**
+	 * @var Booking
+	 */
+	protected Booking $booking;
 
 	protected bool $firstMessage;
 
+	/**
+	 * @var string[]
+	 */
 	protected $validActions = [
 		Restriction::TYPE_REPAIR,
 		Restriction::TYPE_HINT,

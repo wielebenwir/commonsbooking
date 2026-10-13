@@ -595,8 +595,8 @@ class Day {
 	/**
 	 * Returns timestamp when $slotNr starts.
 	 *
-	 * @param $slotsPerDay
-	 * @param $slotNr
+	 * @param int $slotsPerDay
+	 * @param int $slotNr
 	 *
 	 * @return false|float|int
 	 */
@@ -607,8 +607,8 @@ class Day {
 	/**
 	 * Returns timestamp when $slotNr ends.
 	 *
-	 * @param $slotsPerDay
-	 * @param $slotNr
+	 * @param int $slotsPerDay
+	 * @param int $slotNr
 	 *
 	 * @return false|float|int
 	 */

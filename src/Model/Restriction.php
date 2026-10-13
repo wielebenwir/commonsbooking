@@ -349,9 +349,9 @@ class Restriction extends CustomPost {
 	 * TODO:
 	 *      Duplicated implementation in Model/Timeframe.php
 	 *
-	 * @return array
+	 * @return int[]
 	 */
-	public function getAdmins() {
+	public function getAdmins(): array {
 
 		$itemAdminIds     = [];
 		$locationAdminIds = [];
@@ -413,6 +413,7 @@ class Restriction extends CustomPost {
 	protected function sendRestrictionMails( $bookings ): void {
 		foreach ( $bookings as $key => $booking ) {
 			// get User ID from booking
+			//TODO: Refactor so we don't get userData twice and check for non-existent userData
 			$userId = $booking->getUserData()->ID;
 
 			// checks if this is the first booking that is processed

@@ -41,7 +41,7 @@ class BookingCodes {
 	 * @param int|null $endDate - Where to get booking codes to (timestamp)
 	 * @param int      $advanceGenerationDays - Open-ended timeframes: If 0, generate code(s) until today. If >0, generate additional codes after today
 	 *
-	 * @return array
+	 * @return BookingCode[]
 	 * @throws BookingCodeException
 	 */
 	public static function getCodes( int $timeframeId, ?int $startDate = null, ?int $endDate = null, int $advanceGenerationDays = self::ADVANCE_GENERATION_DAYS ): array {
@@ -136,13 +136,13 @@ class BookingCodes {
 	 * Function is only needed when new cb version handles database entries created by old cb version.
 	 * The filtering can be omitted in future cb versions when backward compatibility with old cb is dropped.
 	 *
-	 * @param array &$bookingCodes reference of array of BookingCode|s. It is assumed that they all have the same itemId.
-	 * @param int   $preferredTimeframeId timeframeId to prefer when filtering
-	 * @param int   $preferredLocationId locationId to prefer when filtering
+	 * @param \stdClass[] &$bookingCodes reference of array of BookingCode|s. It is assumed that they all have the same itemId.
+	 * @param int                   $preferredTimeframeId timeframeId to prefer when filtering
+	 * @param int                   $preferredLocationId locationId to prefer when filtering
 	 *
 	 * @return void works by reference on param $bookingCodes
 	 */
-	private static function backwardCompatibilityFilter( &$bookingCodes, $preferredTimeframeId, $preferredLocationId ) {
+	private static function backwardCompatibilityFilter(array &$bookingCodes, int $preferredTimeframeId, int $preferredLocationId ): void {
 		$filteredCodes = [];
 		$codesByDate   = [];
 

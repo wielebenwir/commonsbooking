@@ -126,15 +126,14 @@ class CB1UserFields {
 		return $this->extra_profile_fields;
 	}
 
-	/*
-	*   Adds error handling
-	*
-	* @since    0.6
-	*
-	* @return    object
-	*/
-
-	public function registration_add_fields() {
+	/**
+	 *   Adds error handling
+	 *
+	 * @since    0.6
+	 *
+	 * @return void
+	 */
+	public function registration_add_fields(): void {
 
 		foreach ( $this->user_fields as $field ) {
 			$row = ( ! empty( $_POST[ $field['field_name'] ] ) ) ? sanitize_text_field( trim( $_POST[ $field['field_name'] ] ) ) : '';
@@ -198,6 +197,13 @@ class CB1UserFields {
 		return $string;
 	}
 
+	/**
+	 * @param \WP_Error $errors
+	 * @param string    $username
+	 * @param string    $email
+	 *
+	 * @return \WP_Error
+	 */
 	public function registration_set_errors( $errors, $username, $email ) {
 
 		foreach ( $this->user_fields as $field ) {

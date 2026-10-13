@@ -372,13 +372,15 @@ HTML;
 	/**
 	 * Renders table of booking codes.
 	 *
-	 * @param $timeframeId
+	 * @param int $timeframeId
+	 *
+	 * @return bool|null true if the table was rendered, null if the timeframe was invalid
 	 */
-	public static function renderTable( $timeframeId ) {
+	public static function renderTable( int $timeframeId ): ?bool {
 		try {
 			$timeframe = new Timeframe( $timeframeId );} catch ( BookingCodeException $e ) {
 			echo $e->getMessage();
-			return;
+			return null;
 			}
 
 			echo '
@@ -497,11 +499,13 @@ HTML;
 	/**
 	 * action for sending Booking Codes by E-mail
 	 *
-	 * @param int $timeframeId      ID of requested timeframe
-	 * @param int $tsFrom           Timestamp of first Booking Code
-	 * @param int $tsTo             Timestamp of last Booking Code
+	 * @param int|string|null $timeframeId ID of requested timeframe
+	 * @param int|null        $tsFrom      Timestamp of first Booking Code
+	 * @param int|null        $tsTo        Timestamp of last Booking Code
+	 *
+	 * @return void
 	 */
-	public static function emailCodes( $timeframeId = null, $tsFrom = null, $tsTo = null ) {
+	public static function emailCodes( $timeframeId = null, $tsFrom = null, $tsTo = null ): void {
 
 		if ( $timeframeId == null ) {
 			$timeframeId = empty( $_GET['post'] ) ? null : sanitize_text_field( $_GET['post'] );

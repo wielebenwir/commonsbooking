@@ -173,11 +173,11 @@ class Map extends CustomPost {
 	 * recursive clean up of location data entries
 	 *
 	 * @param $value
-	 * @param $linebreak_replacement
+	 * @param string $linebreak_replacement
 	 *
 	 * @return mixed|string|string[]|null
 	 */
-	public static function cleanup_location_data_entry( $value, $linebreak_replacement ) {
+	public static function cleanup_location_data_entry( $value, string $linebreak_replacement ) {
 
 		if ( is_string( $value ) ) {
 			$value = wp_strip_all_tags( $value ); // strip all tags
