@@ -43,12 +43,12 @@ class RestrictionMessage extends Message {
 
 	/**
 	 * @param Restriction $restriction
-	 * @param \WP_User $user
+	 * @param \WP_User    $user
 	 * @param Booking     $booking
 	 * @param string      $action
 	 * @param bool        $firstMessage
 	 */
-	public function __construct(Restriction $restriction, \WP_User $user, Booking $booking, string $action, bool $firstMessage = false ) {
+	public function __construct( Restriction $restriction, \WP_User $user, Booking $booking, string $action, bool $firstMessage = false ) {
 		$this->restriction  = $restriction;
 		$this->user         = $user;
 		$this->booking      = $booking;
@@ -166,16 +166,16 @@ class RestrictionMessage extends Message {
 	}
 
 	/**
-	 * @return mixed
+	 * @return \WP_User
 	 */
-	public function getUser() {
+	public function getUser(): \WP_User {
 		return $this->user;
 	}
 
 	/**
 	 * @return Restriction
 	 */
-	public function getRestriction() {
+	public function getRestriction(): Restriction {
 		return $this->restriction;
 	}
 

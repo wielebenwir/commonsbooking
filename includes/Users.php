@@ -7,12 +7,12 @@ use CommonsBooking\Wordpress\CustomPostType\CustomPostType;
 /**
  * Checks if current user is allowed to edit custom post.
  *
- * @param int|WP_Post $post
+ * @param int|WP_Post|\CommonsBooking\Model\CustomPost|null $post
  *
  * @return bool
  * @throws Exception
  */
-function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
+function commonsbooking_isCurrentUserAllowedToEdit( int|WP_Post|\CommonsBooking\Model\CustomPost|null $post ): bool {
 	if ( ! is_user_logged_in() ) {
 		return false; }
 
@@ -24,13 +24,13 @@ function commonsbooking_isCurrentUserAllowedToEdit( $post ): bool {
 /**
  * Checks if user is allowed to edit custom post.
  *
- * @param int|WP_Post $post
- * @param WP_User     $user
+ * @param int|WP_Post|\CommonsBooking\Model\CustomPost|null $post
+ * @param WP_User                                           $user
  *
  * @return bool
  * @throws Exception
  */
-function commonsbooking_isUserAllowedToEdit( $post, WP_User $user ): bool {
+function commonsbooking_isUserAllowedToEdit( int|WP_Post|\CommonsBooking\Model\CustomPost|null $post, WP_User $user ): bool {
 
 	if ( ! Plugin::isPostCustomPostType( $post ) ) {
 		return false;

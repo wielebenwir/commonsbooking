@@ -145,14 +145,24 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Callback function for booking code list.
 	 *
-	 * @param $field_args
-	 * @param $field
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
+	 *
+	 * @return void
 	 */
-	public static function renderBookingCodeList( $field_args, $field ) {
+	public static function renderBookingCodeList( array $field_args, \CMB2_Field $field ): void {
 		\CommonsBooking\View\BookingCodes::renderTable( $field->object_id() );
 	}
 
-	public static function renderDateSelector( $field_args, $field ) {
+	/**
+	 * CMB2 callback rendering the manual date selection row.
+	 *
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
+	 *
+	 * @return void
+	 */
+	public static function renderDateSelector( array $field_args, \CMB2_Field $field ): void {
 		?>
 		<label for="cmb2_multiselect_datepicker">
 			<?php echo commonsbooking_sanitizeHTML( __( 'Select Dates:', 'commonsbooking' ) ); ?>
@@ -952,11 +962,11 @@ class Timeframe extends CustomPostType {
 	 * Adds 23h 59m 59s to repetition end, to set the timestamp at the end of the day and not
 	 * the very start.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return void
 	 */
-	private static function sanitizeRepetitionEndDate( $postId ): void {
+	private static function sanitizeRepetitionEndDate( int $postId ): void {
 		$repetitionEnd = get_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true );
 		if ( $repetitionEnd ) {
 			$repetitionEnd = strtotime( '+23 Hours +59 Minutes +59 Seconds', $repetitionEnd );

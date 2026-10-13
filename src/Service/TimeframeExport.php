@@ -30,19 +30,19 @@ class TimeframeExport {
 	/**
 	 * The extra meta fields to export for locations.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private array $locationFields = [];
 	/**
 	 * The extra meta fields to export for items.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private array $itemFields = [];
 	/**
 	 * The extra meta fields to export for users.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private array $userFields = [];
 	/**
@@ -112,9 +112,9 @@ class TimeframeExport {
 	 * @param string      $exportStartDate Start date string of export
 	 * @param string      $exportEndDate End date string of export
 	 *
-	 * @param array       $locationFields Metafields of location objects that should be included in the export
-	 * @param array       $itemFields Metafields of item objects that should be included in the export
-	 * @param array       $userFields Metafields of user objects that should be included in the export
+	 * @param string[]    $locationFields Metafields of location objects that should be included in the export
+	 * @param string[]    $itemFields Metafields of item objects that should be included in the export
+	 * @param string[]    $userFields Metafields of user objects that should be included in the export
 	 * @param int|null    $lastProcessedPage 0 when starting, otherwise the last processed page from previous run
 	 * @param int|null    $totalPosts Set on previous run, total amount of posts in export
 	 * @param string|null $transientName Set on previous run, name of transient where intermediate results are stored

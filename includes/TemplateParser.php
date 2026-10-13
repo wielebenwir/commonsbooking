@@ -45,7 +45,15 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
 	}
 }
 
-function commonsbooking_parse_shortcode( $tag ) {
+/**
+ * Renders a single cb shortcode tag.
+ *
+ * @param string $tag the template tag to parse, e.g. "item:post_title"
+ *
+ * @return false|string the rendered template tag, false if not found
+ * @throws Exception
+ */
+function commonsbooking_parse_shortcode( string $tag ): bool|string {
 	$tag = (array) $tag;
 	return commonsbooking_parse_template_callback( $tag );
 }
