@@ -408,7 +408,7 @@ class TimeframeExport {
 	 * Gets export fields array from the comma separated string in the settings.
 	 * After first run, this might already be an array. Therefore it has already been sanitized.
 	 *
-	 * @param string|array $inputFields
+	 * @param string|string[] $inputFields
 	 *
 	 * @return string[] returns an empty array when non-string or empty-string input
 	 */

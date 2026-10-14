@@ -441,12 +441,12 @@ class Booking extends View {
 	 *
 	 * A list of items with timeframes.
 	 *
-	 * @param $atts
+	 * @param array<string, mixed> $atts
 	 *
 	 * @return false|string
 	 * @throws Exception
 	 */
-	public static function shortcode( $atts ) {
+	public static function shortcode( array $atts ): string|false {
 		global $templateData;
 		$templateData = [];
 		$templateData = self::getBookingListData();

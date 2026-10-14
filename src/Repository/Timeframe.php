@@ -417,7 +417,7 @@ class Timeframe extends PostRepository {
 				$customId
 			);
 
-			return array_map('intval', $postIds);
+			return array_map( 'intval', $postIds );
 		}
 	}
 
@@ -467,8 +467,8 @@ class Timeframe extends PostRepository {
 	 * @param string|null $date
 	 * @param int|null    $minTimestamp
 	 * @param int|null    $maxTimestamp
-	 * @param array       $postIds
-	 * @param array       $postStatus
+	 * @param int[]       $postIds
+	 * @param string[]    $postStatus
 	 *
 	 * @return \WP_Post[]
 	 */

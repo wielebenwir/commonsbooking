@@ -30,7 +30,12 @@ class Location extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
-	protected static function getTaxonomyArgs() {
+	/**
+	 * Returns the arguments passed to register_taxonomy().
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected static function getTaxonomyArgs(): array {
 		return array(
 			'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
 			'rewrite'           => array( 'slug' => self::getPostType() . '-cat' ),
@@ -534,9 +539,9 @@ class Location extends CustomPostType {
 	 * Will get the metaboxes for the location settings that can also be overwritten by the global location settings.
 	 * We put them in a function here, so they can be retrieved by the OptionsArray.php as well.
 	 *
-	 * @return array[]
+	 * @return array<int, array<string, string>>
 	 */
-	public static function getOverbookingSettingsMetaboxes() {
+	public static function getOverbookingSettingsMetaboxes(): array {
 		return [
 			array(
 				'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),

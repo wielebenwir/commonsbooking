@@ -14,7 +14,7 @@ class Location extends View {
 	 *
 	 * @param WP_Post|null $post
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public static function getTemplateData( ?WP_Post $post = null ): array {
@@ -85,12 +85,12 @@ class Location extends View {
 	 *
 	 * A list of locations with timeframes.
 	 *
-	 * @param $atts
+	 * @param array<string, mixed>|string $atts
 	 *
 	 * @return false|string
 	 * @throws Exception
 	 */
-	public static function shortcode( $atts ) {
+	public static function shortcode( $atts ): string|false {
 		global $templateData;
 		$templateData = [];
 		$locations    = [];

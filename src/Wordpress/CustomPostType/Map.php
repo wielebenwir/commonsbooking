@@ -56,6 +56,11 @@ class Map extends CustomPostType {
 		}
 	}
 
+	/**
+	 * Returns the custom (meta) fields for the map post type.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
 	public static function getCustomFields(): array {
 		return array(
 			array(

@@ -34,7 +34,7 @@ class Calendar {
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
-	 * @param $atts array Supports the following attributes:
+	 * @param array<string, mixed>|string $atts Supports the following attributes:
 	 *                    - locationcat: Filter by location category
 	 *                    - itemcat: Filter by item category
 	 *                    - days: Number of days to show in calendar table view
@@ -189,7 +189,15 @@ class Calendar {
 		return $print;
 	}
 
-	public static function shortcode( $atts ) {
+	/**
+	 * Renders the item table shortcode.
+	 *
+	 * @param array<string, mixed> $atts shortcode attributes.
+	 *
+	 * @return string|false
+	 * @throws Exception
+	 */
+	public static function shortcode( array $atts ): string|false {
 		global $templateData;
 		$templateData         = [];
 		$templateData['data'] = self::renderTable( $atts );
@@ -199,6 +207,8 @@ class Calendar {
 			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false );
 			return ob_get_clean();
 		}
+
+		return false;
 	}
 
 	/**

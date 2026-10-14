@@ -114,7 +114,7 @@ class Item extends CustomPostType {
 	/**
 	 * Returns CPT args.
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public function getArgs(): array {
 		$labels = array(

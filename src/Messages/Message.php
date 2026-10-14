@@ -301,7 +301,7 @@ abstract class Message {
 	}
 
 	/**
-	 * @param array $address_array
+	 * @param string[] $address_array
 	 *
 	 * @return void
 	 */
@@ -323,12 +323,14 @@ abstract class Message {
 	 * Allows us to send string-based or binary attachments (non-filesystem)
 	 * and gives us more control over the attachment data.
 	 *
-	 * @param array $atts  Array of the `wp_mail()` arguments.
+	 * @param array<string, mixed> $atts  Array of the `wp_mail()` arguments.
 	 *    - string|string[] $to          Array or comma-separated list of email addresses to send message.
 	 *    - string          $subject     Email subject.
 	 *    - string          $message     Message contents.
 	 *    - string|string[] $headers     Additional headers.
 	 *    - string|string[] $attachments Paths to files to attach.
+	 *
+	 * @return array<string, mixed>
 	 *
 	 * @see https://gist.github.com/thomasfw/5df1a041fd8f9c939ef9d88d887ce023/
 	 */

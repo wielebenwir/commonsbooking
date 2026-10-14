@@ -840,9 +840,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns grid options.
 	 *
-	 * @return array
+	 * @return array<int, string>
 	 */
-	public static function getGridOptions() {
+	public static function getGridOptions(): array {
 		return [
 			0 => esc_html__( 'Full slot', 'commonsbooking' ),
 			1 => esc_html__( 'Hourly', 'commonsbooking' ),
@@ -852,9 +852,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns array with repetition options.
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
-	public static function getTimeFrameRepetitions() {
+	public static function getTimeFrameRepetitions(): array {
 		return [
 			'norep' => esc_html__( 'No repetition', 'commonsbooking' ),
 			'manual' => esc_html__( 'Manual repetition', 'commonsbooking' ),
@@ -931,7 +931,17 @@ class Timeframe extends CustomPostType {
 	}
 
 
-	public function updatedPostMeta( $meta_id, $object_id, $meta_key, $meta_value ) {
+	/**
+	 * Reacts on updated timeframe post meta (e.g. a changed location).
+	 *
+	 * @param int    $meta_id    ID of the updated meta row.
+	 * @param int    $object_id  ID of the post the meta belongs to.
+	 * @param string $meta_key   The meta key that was updated.
+	 * @param mixed  $meta_value Metadata value.
+	 *
+	 * @return void
+	 */
+	public function updatedPostMeta( int $meta_id, int $object_id, string $meta_key, $meta_value ): void {
 		// make sure, that action is only executed if timeframe is changed
 		if ( get_post( $object_id )->post_type !== self::getPostType() ) {
 			return;
@@ -1169,9 +1179,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns CPT arguments.
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	public function getArgs() {
+	public function getArgs(): array {
 		$labels = array(
 			'name'                  => esc_html__( 'Timeframes', 'commonsbooking' ),
 			'singular_name'         => esc_html__( 'Timeframe', 'commonsbooking' ),
