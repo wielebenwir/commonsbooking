@@ -251,7 +251,7 @@ class Scheduler {
 	 * There are also jobs still from CommonsBooking 0.X listed here.
 	 * It is important to remove the jobs, because WordPress does not delete them on it's own, not even on plugin deactivation.
 	 */
-	public static function unscheduleOldEvents() {
+	public static function unscheduleOldEvents(): void {
 		$cbCronHooks = [
 			'cb_cron_hook',
 			'cb_reminder_cron_hook',

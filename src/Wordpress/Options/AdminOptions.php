@@ -11,7 +11,7 @@ use CommonsBooking\Settings\Settings;
  * The options are defined in includes/OptionsArray.php
  */
 class AdminOptions {
-	private static $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
+	private static string $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
 
 	/**
 	 * set default values to admin options fields as defined in includes/OptionsArray.php

@@ -22,9 +22,9 @@ class Week {
 	/**
 	 * Day in the year to start the week from (0-365)
 	 *
-	 * @var int
+	 * @var int|string
 	 */
-	protected $dayOfYear;
+	protected string|int $dayOfYear;
 
 	/**
 	 * @var array
@@ -76,10 +76,10 @@ class Week {
 	 *
 	 * Uses the cache and expires at midnight on a daily basis.
 	 *
-	 * @return array
+	 * @return Day[]
 	 * @throws Exception
 	 */
-	public function getDays() {
+	public function getDays(): array {
 		$customId = md5(
 			$this->year .
 			$this->dayOfYear .

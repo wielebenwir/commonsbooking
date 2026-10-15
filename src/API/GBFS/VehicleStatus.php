@@ -29,7 +29,7 @@ class VehicleStatus extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_status.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_status.json';
 
 	/**
 	 * @param \CommonsBooking\Model\Item $item

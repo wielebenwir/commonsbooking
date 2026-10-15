@@ -3,6 +3,8 @@
 namespace CommonsBooking\View;
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Psr\Cache\CacheException;
+use CommonsBooking\Psr\Cache\InvalidArgumentException;
 use CommonsBooking\Repository\Timeframe;
 use Exception;
 
@@ -334,7 +336,7 @@ class Booking extends View {
 	 *
 	 * @return void
 	 */
-	public static function getLocationForItem_AJAX() {
+	public static function getLocationForItem_AJAX(): void {
 		// verify nonce
 		check_ajax_referer( 'cb_get_bookable_location', 'nonce' );
 
@@ -385,7 +387,7 @@ class Booking extends View {
 	 *
 	 * @return void
 	 */
-	public static function getBookingCode_AJAX() {
+	public static function getBookingCode_AJAX(): void {
 		// verify nonce
 		check_ajax_referer( 'cb_get_booking_code', 'nonce' );
 
@@ -439,12 +441,12 @@ class Booking extends View {
 	 *
 	 * A list of items with timeframes.
 	 *
-	 * @param $atts
+	 * @param array<string, mixed> $atts
 	 *
 	 * @return false|string
 	 * @throws Exception
 	 */
-	public static function shortcode( $atts ) {
+	public static function shortcode( array $atts ): string|false {
 		global $templateData;
 		$templateData = [];
 		$templateData = self::getBookingListData();
@@ -494,12 +496,13 @@ class Booking extends View {
 	 *
 	 * This only includes confirmed bookings in the future.
 	 *
-	 * @param $user
+	 * @param int|null $user
 	 *
 	 * @return string|false
-	 * @throws Exception
+	 * @throws CacheException
+	 * @throws InvalidArgumentException
 	 */
-	public static function getBookingListiCal( $user = null ) {
+	public static function getBookingListiCal( ?int $user = null ): string|false {
 		$userBookingTitle_unparsed            = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
 		$userBookingDescription_unparsed      = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
 		$otherUserBookingTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
@@ -553,10 +556,10 @@ class Booking extends View {
 	/**
 	 * Callback function to render the button that submits the backend booking.
 	 *
-	 * @param $field_args
-	 * @param $field
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
 	 */
-	public static function renderSubmitButton( $field_args, $field ) {
+	public static function renderSubmitButton( array $field_args, \CMB2_Field $field ): void {
 		$id     = $field->args( 'id' );
 		$label  = $field->args( 'name' );
 		$desc   = $field->args( 'desc' );

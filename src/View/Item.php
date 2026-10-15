@@ -89,12 +89,12 @@ class Item extends View {
 	 *
 	 * A list of items with timeframes.
 	 *
-	 * @param $atts
+	 * @param array<string, mixed>|string $atts
 	 *
 	 * @return false|string
 	 * @throws Exception
 	 */
-	public static function shortcode( $atts ) {
+	public static function shortcode( $atts ): string|false {
 		global $templateData;
 		$templateData = [];
 		$queryArgs    = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() );

@@ -38,15 +38,20 @@ class OptionsTab {
 		add_action( 'cmb2_save_options-page_fields', array( self::class, 'savePostOptions' ), 10 );
 	}
 
-	public function register() {
+	/**
+	 * @return void
+	 */
+	public function register(): void {
 		$this->registerOptionsTab();
 		$this->registerOptionsGroups();
 	}
 
 	/**
 	 * Register Tab
+	 *
+	 * @return void
 	 */
-	public function registerOptionsTab() {
+	public function registerOptionsTab(): void {
 
 		$default_args = array(
 			'id'           => $this->id,
@@ -75,8 +80,10 @@ class OptionsTab {
 
 	/**
 	 * Register Tab Contents (Groups + Fields)
+	 *
+	 * @return void
 	 */
-	public function registerOptionsGroups() {
+	public function registerOptionsGroups(): void {
 
 		foreach ( $this->groups as $group ) {
 			$group = static::prependTitle( $group ); /* prepend title + description html */

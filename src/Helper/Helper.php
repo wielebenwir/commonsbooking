@@ -80,11 +80,11 @@ class Helper {
 	/**
 	 * Returns timestamp of last full day, needed to get more cache hits.
 	 *
-	 * @param $timestamp
+	 * @param int|null $timestamp
 	 *
-	 * @return int|mixed|null
+	 * @return int
 	 */
-	public static function getLastFullDayTimestamp( $timestamp = null ) {
+	public static function getLastFullDayTimestamp( ?int $timestamp = null ) {
 		if ( $timestamp === null ) {
 			$timestamp = current_time( 'timestamp' );
 		}

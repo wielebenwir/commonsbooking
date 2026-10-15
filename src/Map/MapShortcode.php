@@ -8,18 +8,33 @@ use CommonsBooking\Model\Map;
  * Shortcode for the legacy map with the old non-responsive standard leaflet style.
  */
 class MapShortcode extends BaseShortcode {
-	protected function create_container( $cb_map_id, $attrs, $options, $content ) {
+	/**
+	 * @param int                            $cb_map_id the id of the map post.
+	 * @param array<string, int|string|null> $attrs parsed shortcode attributes.
+	 * @param array<int, string>             $options positional shortcode attributes (numeric keys).
+	 * @param string                         $content the shortcode content.
+	 * @return string the container markup.
+	 */
+	protected function create_container( int $cb_map_id, array $attrs, array $options, string $content ): string {
 		$map        = new Map( $cb_map_id );
 		$map_height = $map->getMeta( 'map_height' );
 
 		return '<div id="cb-map-' . esc_attr( $cb_map_id ) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr( $map_height ) . 'px;"></div>';
 	}
 
-	protected function parse_attributes( $atts ) {
+	/**
+	 * @param array<string|int, string> $atts attributes for parametrization.
+	 * @return array{id: int|string} parsed attributes, at least containing the `id` key.
+	 */
+	protected function parse_attributes( array $atts ): array {
 		return shortcode_atts( array( 'id' => 0 ), $atts );
 	}
 
-	protected function inject_script( $cb_map_id ) {
+	/**
+	 * @param int $cb_map_id the id of the map post.
+	 * @return void
+	 */
+	protected function inject_script( int $cb_map_id ): void {
 		wp_add_inline_script(
 			'cb-map-shortcode',
 			'jQuery(document).ready(function ($) {
@@ -36,8 +51,11 @@ class MapShortcode extends BaseShortcode {
 
 	/**
 	 * get the translations for the frontend
+	 *
+	 * @param int $cb_map_id the id of the map post.
+	 * @return array<string, string> the translations keyed by their frontend identifier.
 	 **/
-	private function get_translation( $cb_map_id ): array {
+	private function get_translation( int $cb_map_id ): array {
 		$map                            = new Map( $cb_map_id );
 		$label_location_opening_hours   = $map->getMeta( 'label_location_opening_hours' );
 		$label_location_contact         = $map->getMeta( 'label_location_contact' );

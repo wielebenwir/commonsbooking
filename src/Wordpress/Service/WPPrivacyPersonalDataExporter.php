@@ -43,11 +43,11 @@ class WPPrivacyPersonalDataExporter {
 	 * Export user bookings using the supplied email. This is for integration with the WordPress personal data exporter.
 	 *
 	 * @param string $emailAddress
-	 * @param $page
+	 * @param int    $page
 	 *
 	 * @return array
 	 */
-	public static function exportUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
+	public static function exportUserBookingsByEmail( string $emailAddress, int $page = 1 ): array {
 		$page         = intval( $page );
 		$itemsPerPage = 10;
 		$exportItems  = array();
@@ -137,11 +137,11 @@ class WPPrivacyPersonalDataExporter {
 	 * Remove user bookings using the supplied email. This is for integration with the WordPress personal data eraser.
 	 *
 	 * @param string $emailAddress The email address
-	 * @param $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
+	 * @param int    $page This parameter has no real use in this function, we just use it to stick to WordPress expected parameters.
 	 *
 	 * @return array
 	 */
-	public static function removeUserBookingsByEmail( string $emailAddress, $page = 1 ): array {
+	public static function removeUserBookingsByEmail( string $emailAddress, int $page = 1 ): array {
 		// we reset the page to 1, because we are deleting our results as we go. Therefore, increasing the page number would skip some results.
 		$page         = 1;
 		$itemsPerPage = 10;

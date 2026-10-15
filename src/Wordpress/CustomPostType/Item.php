@@ -35,13 +35,13 @@ class Item extends CustomPostType {
 	/**
 	 * Handles the creation and editing of the terms in the taxonomy for the location post type
 	 *
-	 * @param $term_id
-	 * @param $tt_id
-	 * @param $taxonomy
+	 * @param int             $term_id
+	 * @param int             $tt_id
+	 * @param \WP_Term|string $taxonomy
 	 *
 	 * @return void
 	 */
-	public static function termChange( $term_id, $tt_id, $taxonomy ) {
+	public static function termChange( int $term_id, int $tt_id, $taxonomy ): void {
 		if ( $taxonomy == self::getTaxonomyName() ) {
 			// update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
@@ -50,8 +50,13 @@ class Item extends CustomPostType {
 
 	/**
 	 * Handles save-Request for items.
+	 *
+	 * @param int      $post_id
+	 * @param \WP_Post $post
+	 *
+	 * @return void
 	 */
-	public function savePost( $post_id, \WP_Post $post ) {
+	public function savePost( int $post_id, \WP_Post $post ): void {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			// update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
@@ -109,7 +114,7 @@ class Item extends CustomPostType {
 	/**
 	 * Returns CPT args.
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public function getArgs(): array {
 		$labels = array(
@@ -322,7 +327,12 @@ class Item extends CustomPostType {
 		Settings::updateOption( 'commonsbooking_settings_metaboxfields', static::getPostType(), $metabox_fields );
 	}
 
-	public static function registerPostTypeTaxonomy() {
+	/**
+	 * Registers the taxonomy belonging to the item post type.
+	 *
+	 * @return void
+	 */
+	public static function registerPostTypeTaxonomy(): void {
 		parent::registerPostTypeTaxonomy();
 
 		// hook this for later, if we run it now, it would fail

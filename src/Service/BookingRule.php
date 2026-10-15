@@ -348,7 +348,7 @@ class BookingRule {
 	 * @param array      $args
 	 * @param bool|array $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 * @throws Exception
 	 */
 	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
@@ -385,7 +385,7 @@ class BookingRule {
 	 * @param array      $args
 	 * @param bool|array $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 * @throws Exception
 	 */
 	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
@@ -486,7 +486,7 @@ class BookingRule {
 	 * @param array      $args
 	 * @param bool|array $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 */
 	public static function checkMaxBookingDaysPerWeek( Booking $booking, array $args, $appliedTerms = false ): ?array {
 		$allowedBookableDays = $args[0];
@@ -538,7 +538,7 @@ class BookingRule {
 	 * @param array      $args
 	 * @param bool|array $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 */
 	public static function checkMaxBookingDaysPerMonth( Booking $booking, array $args, $appliedTerms = false ): ?array {
 		$allowedBookableDays = $args[0];
@@ -640,7 +640,7 @@ class BookingRule {
 	 * @param \WP_User  $user
 	 * @param             $terms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 */
 	private static function filterBookingsForTermsAndUser( array $bookings, \WP_User $user, $terms ): ?array {
 		$filteredTerms = Booking::filterTermsApply( $bookings, $terms );
@@ -671,7 +671,7 @@ class BookingRule {
 	 *
 	 * @return Booking[]
 	 */
-	private static function filterEmptyBookings( array $bookings ) {
+	private static function filterEmptyBookings( array $bookings ): array {
 		return array_filter( $bookings, fn( $booking ) => $booking->getDuration() > 0 );
 	}
 
@@ -688,7 +688,7 @@ class BookingRule {
 	 * @param array|false $appliedTerms
 	 * @param int         $allowedBookableDays
 	 *
-	 * @return array|null - conflicting bookings in order of post_date
+	 * @return Booking[]|null - conflicting bookings in order of post_date
 	 * @throws Exception
 	 */
 	private static function checkBookingRangeForDays( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, $appliedTerms, int $allowedBookableDays ): ?array {

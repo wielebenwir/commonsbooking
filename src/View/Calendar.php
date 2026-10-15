@@ -34,7 +34,7 @@ class Calendar {
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
-	 * @param $atts array Supports the following attributes:
+	 * @param array<string, mixed>|string $atts Supports the following attributes:
 	 *                    - locationcat: Filter by location category
 	 *                    - itemcat: Filter by item category
 	 *                    - days: Number of days to show in calendar table view
@@ -189,7 +189,15 @@ class Calendar {
 		return $print;
 	}
 
-	public static function shortcode( $atts ) {
+	/**
+	 * Renders the item table shortcode.
+	 *
+	 * @param array<string, mixed> $atts shortcode attributes.
+	 *
+	 * @return string|false
+	 * @throws Exception
+	 */
+	public static function shortcode( array $atts ): string|false {
 		global $templateData;
 		$templateData         = [];
 		$templateData['data'] = self::renderTable( $atts );
@@ -199,6 +207,8 @@ class Calendar {
 			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false );
 			return ob_get_clean();
 		}
+
+		return false;
 	}
 
 	/**
@@ -367,6 +377,7 @@ class Calendar {
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
 		$firstBookableDay   = null;
+		/** @var \CommonsBooking\Model\Timeframe[] $bookableTimeframes */
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
@@ -417,11 +428,11 @@ class Calendar {
 	/**
 	 * Returns closest timeframe from date/time perspective.
 	 *
-	 * @param $bookableTimeframes
+	 * @param \CommonsBooking\Model\Timeframe[] $bookableTimeframes
 	 *
 	 * @return \CommonsBooking\Model\Timeframe|null
 	 */
-	public static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
+	public static function getClosestBookableTimeFrameForToday( array $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
 		$today           = new Day( date( 'Y-m-d' ) );
 		$todayTimeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $bookableTimeframes, $today->getStartTimestamp(), $today->getEndTimestamp() );
 		$todayTimeframes = array_filter(
@@ -527,12 +538,15 @@ class Calendar {
 	 *
 	 * Uses cache which expires at midnight on a daily basis.
 	 *
-	 * @param Day   $startDate
-	 * @param Day   $endDate
-	 * @param array $locations []
-	 * @param array $items <int|string>
+	 * @param Day         $startDate
+	 * @param Day         $endDate
+	 * @param int[]       $locations
+	 * @param int[]       $items
+	 * @param int|null    $advanceBookingDays
+	 * @param int|null    $lastBookableDate
+	 * @param string|null $firstBookableDay
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public static function prepareJsonResponse(
@@ -540,9 +554,9 @@ class Calendar {
 		Day $endDate,
 		array $locations,
 		array $items,
-		$advanceBookingDays = null,
-		$lastBookableDate = null,
-		$firstBookableDay = null
+		?int $advanceBookingDays = null,
+		?int $lastBookableDate = null,
+		?string $firstBookableDay = null
 	): array {
 
 		$current_user   = wp_get_current_user();
@@ -638,14 +652,15 @@ class Calendar {
 	/**
 	 * Processes day for calendar view of json.
 	 *
-	 * @param Day $day
-	 * @param $lastBookableDate
-	 * @param $endDate
-	 * @param $jsonResponse
+	 * @param Day                  $day
+	 * @param int|false            $lastBookableDate
+	 * @param Day                  $endDate
+	 * @param array<string, mixed> $jsonResponse
+	 * @param string|null          $firstBookableDay
 	 *
 	 * @return void
 	 */
-	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay ) {
+	protected static function mapDay( Day $day, int|false $lastBookableDate, Day $endDate, array &$jsonResponse, ?string $firstBookableDay ): void {
 		$dayArray = [
 			'date'               => $day->getFormattedDate( 'd.m.Y' ),
 			'slots'              => [],
@@ -840,9 +855,10 @@ class Calendar {
 	/**
 	 * Ajax request - Returns json-formatted calendardata.
 	 *
+	 * @return void
 	 * @throws Exception
 	 */
-	public static function getCalendarData() {
+	public static function getCalendarData(): void {
 		// item by post-param
 		$item = isset( $_POST['item'] ) && $_POST['item'] != '' ? intval( $_POST['item'] ) : false;
 		if ( $item === false || $item == 0 ) { // 0 = failed intval check

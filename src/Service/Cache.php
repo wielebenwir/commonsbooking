@@ -202,14 +202,14 @@ trait Cache {
 	/**
 	 * This will get an adapter by the adapter identifier.
 	 *
-	 * @param $identifier
-	 * @param $namespace
-	 * @param $defaultLifetime
+	 * @param string $identifier
+	 * @param string $namespace
+	 * @param int    $defaultLifetime
 	 * @param string $cacheLocation
 	 * @return TagAwareAdapterInterface
 	 * @throws \CommonsBooking\Psr\Cache\CacheException
 	 */
-	public static function getAdapter( $identifier, $namespace, $defaultLifetime, $cacheLocation = '' ): TagAwareAdapterInterface {
+	public static function getAdapter( string $identifier, string $namespace, int $defaultLifetime, string $cacheLocation = '' ): TagAwareAdapterInterface {
 		if ( self::isDisabled() ) {
 			return self::getNullAdapter();
 		}
@@ -294,7 +294,7 @@ trait Cache {
 	 *
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public static function clearCache( array $tags = [] ) {
+	public static function clearCache( array $tags = [] ): void {
 		if ( ! count( $tags ) ) {
 			self::getCache()->clear();
 		} else {
@@ -349,7 +349,12 @@ trait Cache {
 		}
 	}
 
-	public static function warmupCache() {
+	/**
+	 * Warms up the cache by executing all supported shortcode calls found on published pages.
+	 *
+	 * @return void
+	 */
+	public static function warmupCache(): void {
 		try {
 			check_ajax_referer( 'cb_cache_warmup' );   // dies with 403 on invalid/missing nonce
 			global $wpdb;
@@ -422,7 +427,7 @@ trait Cache {
 	 * @param array      $field_args
 	 * @param CMB2_Field $field
 	 */
-	public static function renderCacheStatus( array $field_args, CMB2_Field $field ) {
+	public static function renderCacheStatus( array $field_args, CMB2_Field $field ): void {
 		$success           = true;
 		$errorMessage      = '';
 		$adapterIdentifier = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'cache_adapter' );
@@ -465,7 +470,15 @@ trait Cache {
 		<?php
 	}
 
-	public static function renderClearCacheButton( $field_args, $field ) {
+	/**
+	 * Renders the "clear cache" button row for the cache settings view.
+	 *
+	 * @param array<string, mixed> $field_args
+	 * @param CMB2_Field           $field
+	 *
+	 * @return void
+	 */
+	public static function renderClearCacheButton( array $field_args, CMB2_Field $field ): void {
 		?>
 		<div class="cmb-row cmb-type-text ">
 			<div class="cmb-th">

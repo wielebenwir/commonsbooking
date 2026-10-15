@@ -18,12 +18,23 @@ class SearchShortcode extends BaseShortcode {
 		);
 	}
 
-	protected function inject_script( $cb_map_id ) {
+	/**
+	 * @param int $cb_map_id the id of the map post.
+	 * @return void
+	 */
+	protected function inject_script( int $cb_map_id ): void {
 		wp_enqueue_style( 'cb-commons-search' );
 		wp_enqueue_script( 'cb-commons-search' );
 	}
 
-	protected function create_container( $cb_map_id, $attrs, $options, $content ) {
+	/**
+	 * @param int                            $cb_map_id the id of the map post.
+	 * @param array<string, int|string|null> $attrs parsed shortcode attributes.
+	 * @param array<int, string>             $options positional shortcode attributes (numeric keys).
+	 * @param string                         $content the shortcode content.
+	 * @return string the container markup.
+	 */
+	protected function create_container( int $cb_map_id, array $attrs, array $options, string $content ): string {
 		// Ensure that the api and config object are only created once per page and per map
 		if ( ! in_array( $cb_map_id, $this->processed_map_ids ) ) {
 			$settings                  = MapData::get_settings( $cb_map_id );
