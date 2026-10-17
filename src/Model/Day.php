@@ -17,6 +17,10 @@ use WP_Post;
  */
 class Day {
 
+	private const MINUTES_PER_DAY = 1440;
+
+	private const MINUTES_PER_CELL = 15;
+
 	/**
 	 * @var string
 	 */
@@ -190,28 +194,32 @@ class Day {
 	/**
 	 * Returns the slot number for specific timeframe and time.
 	 *
-	 * @param DateTime $date
-	 * @param int      $grid
+	 * @param DateTime $date    Date to map.
+	 * @param int      $grid    Minutes per availability cell.
+	 * @param bool     $roundUp Whether a partial final cell must be included.
 	 *
-	 * @return float|int
+	 * @return int
 	 */
-	protected function getSlotByTime( DateTime $date, int $grid ) {
-		$hourSlots   = $date->format( 'H' ) / $grid;
-		$minuteSlots = $date->format( 'i' ) / 60 / $grid;
+	protected function getSlotByTime( DateTime $date, int $grid, bool $roundUp = false ): int {
+		$minutesSinceMidnight = (int) $date->format( 'G' ) * 60 + (int) $date->format( 'i' );
+		$slot                 = intdiv( $minutesSinceMidnight, $grid );
+		if ( $roundUp && ( $minutesSinceMidnight % $grid !== 0 || (int) $date->format( 's' ) !== 0 ) ) {
+			++$slot;
+		}
 
-		return $hourSlots + $minuteSlots;
+		return $slot;
 	}
 
 	/**
 	 * Returns start-slot id.
 	 *
-	 * @param int                             $grid
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
+	 * @param int                             $grid      Minutes per availability cell.
+	 * @param \CommonsBooking\Model\Timeframe $timeframe Timeframe to map.
 	 *
-	 * @return float|int
+	 * @return int
 	 * @throws Exception
 	 */
-	protected function getStartSlot( int $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
+	protected function getStartSlot( int $grid, \CommonsBooking\Model\Timeframe $timeframe ): int {
 		// Timeframe
 		$fullDay   = $timeframe->isFullDay();
 		$startTime = $timeframe->getStartTimeDateTime();
@@ -240,12 +248,12 @@ class Day {
 	/**
 	 * Returns start slot for restriction.
 	 *
-	 * @param int         $grid
-	 * @param Restriction $restriction
-
-	 * @return float|int
+	 * @param int         $grid        Minutes per availability cell.
+	 * @param Restriction $restriction Timeframe restriction to map.
+	 *
+	 * @return int
 	 */
-	protected function getRestrictionStartSlot( int $grid, Restriction $restriction ) {
+	protected function getRestrictionStartSlot( int $grid, Restriction $restriction ): int {
 
 		$startTime = $restriction->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
@@ -264,14 +272,14 @@ class Day {
 	/**
 	 * Returns end-slot id.
 	 *
-	 * @param array                           $slots
-	 * @param int                             $grid
-	 * @param \CommonsBooking\Model\Timeframe $timeframe
+	 * @param array                           $slots     Availability cells to map.
+	 * @param int                             $grid      Minutes per availability cell.
+	 * @param \CommonsBooking\Model\Timeframe $timeframe Timeframe to map.
 	 *
-	 * @return float|int
+	 * @return int
 	 * @throws Exception
 	 */
-	protected function getEndSlot( array $slots, int $grid, \CommonsBooking\Model\Timeframe $timeframe ) {
+	protected function getEndSlot( array $slots, int $grid, \CommonsBooking\Model\Timeframe $timeframe ): int {
 		// Timeframe
 		$endTime = $timeframe->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
 		$endDate = $timeframe->getEndDateDateTime();
@@ -281,7 +289,22 @@ class Day {
 
 		// If timeframe isn't configured as full day
 		if ( ! $timeframe->isFullDay() ) {
-			$endSlot = $this->getSlotByTime( $endTime, $grid );
+			$endSlot = $this->getSlotByTime( $endTime, $grid, $timeframe->isLocked() && $timeframe->getType() !== Timeframe::BOOKING_ID );
+		}
+
+		// Frontend bookings end inside their final cell (for example, 18:44:59);
+		// admin bookings can end exactly at a boundary. Round the stored end up without adding a cell at an exact boundary.
+		if (
+			! $timeframe->isFullDay() &&
+			$timeframe->getType() === Timeframe::BOOKING_ID &&
+			$endDate &&
+			$endDate->format( 'Y-m-d' ) === $this->getDate()
+		) {
+			$endSlot = $this->getSlotByTime( $endDate, $grid, true );
+		}
+
+		if ( $endDate && $endDate->getTimestamp() === $this->getEndTimestamp() ) {
+			$endSlot = count( $slots );
 		}
 
 		// If we have a overbooked day, we need to mark all slots as booked
@@ -298,19 +321,23 @@ class Day {
 	/**
 	 * Returns end slot for restriction.
 	 *
-	 * @param array       $slots
-	 * @param int         $grid
-	 * @param Restriction $restriction
+	 * @param array       $slots       Availability cells to map.
+	 * @param int         $grid        Minutes per availability cell.
+	 * @param Restriction $restriction Timeframe restriction to map.
 	 *
-	 * @return float|int
+	 * @return int
 	 * @throws Exception
 	 */
-	protected function getRestrictionEndSlot( array $slots, int $grid, Restriction $restriction ) {
+	protected function getRestrictionEndSlot( array $slots, int $grid, Restriction $restriction ): int {
 		$endTime = $restriction->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
 		$endDate = $restriction->getEndDateDateTime();
 
 		// Slots
-		$endSlot = $this->getSlotByTime( $endTime, $grid );
+		$endSlot = $this->getSlotByTime( $endTime, $grid, true );
+
+		if ( $endDate->getTimestamp() === $this->getEndTimestamp() ) {
+			$endSlot = count( $slots );
+		}
 
 		// Check if timeframe ends after the current day
 		if ( strtotime( $this->getFormattedDate( 'd.m.Y 23:59' ) ) < $endDate->getTimestamp() ) {
@@ -423,7 +450,7 @@ class Day {
 	 * @throws Exception
 	 */
 	protected function mapTimeFrames( array &$slots ) {
-		$grid = 24 / count( $slots );
+		$grid = intdiv( self::MINUTES_PER_DAY, count( $slots ) );
 
 		// Iterate through timeframes and fill slots
 		foreach ( $this->getTimeframes() as $timeframe ) {
@@ -438,9 +465,14 @@ class Day {
 				$timeframePost->locked = $timeframe->isLocked();
 
 				if ( ! array_key_exists( 'timeframe', $slots[ $startSlot ] ) || ! $slots[ $startSlot ]['timeframe'] ) {
-					$slots[ $startSlot ]['timeframe'] = $timeframePost;
+					$slots[ $startSlot ]['timeframe']   = $timeframePost;
+					$slots[ $startSlot ]['gridMinutes'] = $timeframe->getGridMinutes();
 				} else {
-					$slots[ $startSlot ]['timeframe'] = Timeframe::getHigherPrioFrame( $timeframePost, $slots[ $startSlot ]['timeframe'] );
+					$winningTimeframe = Timeframe::getHigherPrioFrame( $timeframePost, $slots[ $startSlot ]['timeframe'] );
+					if ( $winningTimeframe === $timeframePost ) {
+						$slots[ $startSlot ]['timeframe']   = $timeframePost;
+						$slots[ $startSlot ]['gridMinutes'] = $timeframe->getGridMinutes();
+					}
 				}
 
 				++$startSlot;
@@ -456,7 +488,7 @@ class Day {
 	 * @throws Exception
 	 */
 	protected function mapRestrictions( array &$slots ) {
-		$grid = 24 / count( $slots );
+		$grid = intdiv( self::MINUTES_PER_DAY, count( $slots ) );
 
 		// Iterate through timeframes and fill slots
 		/** @var Restriction $restriction */
@@ -471,9 +503,10 @@ class Day {
 				// Add timeframe to relevant slots
 				while ( $startSlot < $endSlot ) {
 					// Set locked property
-					$restrictionPost                  = $restriction->getPost();
-					$restrictionPost->locked          = true;
-					$slots[ $startSlot ]['timeframe'] = $restrictionPost;
+					$restrictionPost                    = $restriction->getPost();
+					$restrictionPost->locked            = true;
+					$slots[ $startSlot ]['timeframe']   = $restrictionPost;
+					$slots[ $startSlot ]['gridMinutes'] = 0;
 					++$startSlot;
 				}
 			}
@@ -496,39 +529,64 @@ class Day {
 
 
 	/**
-	 * Remove empty and merge connected slots.
+	 * Removes empty cells and groups contiguous cells according to their timeframe's grid.
 	 *
-	 * @param array $slots Given an array of assocs in hourly slot resolution.
+	 * @param array $slots Given an array of assocs in fifteen-minute cell resolution.
 	 */
 	protected function sanitizeSlots( array &$slots ) {
 		$this->removeEmptySlots( $slots );
 
-		// merge multiple slots if they are of same type
+		$sanitizedSlots = [];
+		$run            = [];
+		$previousSlotNr = null;
+		$timeframeId    = null;
+
 		foreach ( $slots as $slotNr => $slot ) {
-			if ( ! array_key_exists( $slotNr - 1, $slots ) ) {
-				continue;
+			$slot['slotNr']     = $slotNr;
+			$currentTimeframeId = $slot['timeframe']->ID;
+			if ( $run && ( $slotNr !== $previousSlotNr + 1 || $currentTimeframeId !== $timeframeId ) ) {
+				$this->appendSanitizedRun( $run, $sanitizedSlots );
+				$run = [];
 			}
-			$slotBefore = $slots[ $slotNr - 1 ];
 
-			// If Slot before is of same timeframe and we have no hourly grid, we merge them.
-			if (
-				$slotBefore &&
-				$slotBefore['timeframe']->ID == $slot['timeframe']->ID &&
-				(
-					get_post_meta( $slot['timeframe']->ID, 'full-day', true ) == 'on' ||
-					get_post_meta( $slot['timeframe']->ID, 'grid', true ) == 0
-				)
-			) {
-				// Take over start time from slot before
-				$slots[ $slotNr ]['timestart']      = $slotBefore['timestart'];
-				$slots[ $slotNr ]['timestampstart'] = $slotBefore['timestampstart'];
-
-				// unset timeframe from slot before
-				unset( $slots[ $slotNr - 1 ]['timeframe'] );
-			}
+			$run[]          = $slot;
+			$previousSlotNr = $slotNr;
+			$timeframeId    = $currentTimeframeId;
+		}
+		if ( $run ) {
+			$this->appendSanitizedRun( $run, $sanitizedSlots );
 		}
 
-		$this->removeEmptySlots( $slots );
+		$slots = $sanitizedSlots;
+	}
+
+	/**
+	 * Merges a contiguous timeframe run, offering only complete, clock-aligned interval slots.
+	 *
+	 * @param non-empty-array $run
+	 * @param array           $sanitizedSlots
+	 */
+	protected function appendSanitizedRun( array $run, array &$sanitizedSlots ): void {
+		$timeframe    = $run[0]['timeframe'];
+		$gridMinutes  = $run[0]['gridMinutes'];
+		$slotCount    = count( $run );
+		$isInterval   = get_post_meta( $timeframe->ID, 'full-day', true ) !== 'on' && $gridMinutes > 0;
+		$slotsPerGrid = $isInterval ? intdiv( $gridMinutes, self::MINUTES_PER_CELL ) : $slotCount;
+		$completeOnly = $isInterval && ! $timeframe->locked;
+		$firstSlot    = $completeOnly ? ( $slotsPerGrid - $run[0]['slotNr'] % $slotsPerGrid ) % $slotsPerGrid : 0;
+
+		for ( $first = $firstSlot; $first < $slotCount; $first += $slotsPerGrid ) {
+			$end = min( $first + $slotsPerGrid, $slotCount );
+			if ( $completeOnly && $end - $first !== $slotsPerGrid ) {
+				break;
+			}
+			$slot                 = $run[ $first ];
+			$lastSlot             = $run[ $end - 1 ];
+			$slot['timeend']      = $lastSlot['timeend'];
+			$slot['timestampend'] = $lastSlot['timestampend'];
+			unset( $slot['slotNr'], $slot['gridMinutes'] );
+			$sanitizedSlots[ $lastSlot['slotNr'] ] = $slot;
+		}
 	}
 
 	/**
@@ -546,33 +604,33 @@ class Day {
 	}
 
 	/**
-	 * Returns an array of timeslots, which is build according the relevant timeframes and their configuration.
+	 * Returns an array of timeslots, which is built according to the relevant timeframes and their configuration.
 	 * So this takes the hourly-, daily or custom-sized-slot configuration of timeframes into account.
 	 *
-	 * Implementation note: An hourly resolution is used, but as a last step, the hourly slots are merged into
+	 * Implementation note: A fifteen-minute resolution is used, but as a last step, the cells are merged into
 	 * the representation that is configured in the timeframes.
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
 	protected function getTimeframeSlots(): array {
-		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations ) . serialize( $this->ignoreRestrictions );
+		$slotsPerDay    = intdiv( self::MINUTES_PER_DAY, self::MINUTES_PER_CELL );
+		$customCacheKey = $this->getDate() . serialize( $this->items ) . serialize( $this->locations ) . serialize( $this->ignoreRestrictions ) . $slotsPerDay . ':fixed-intervals-v2';
 		$customCacheKey = md5( $customCacheKey );
 		$cacheItem      = Plugin::getCacheItem( $customCacheKey );
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$slots       = [];
-			$slotsPerDay = 24;
-			$timeFormat  = esc_html( get_option( 'time_format' ) );
+			$slots      = [];
+			$timeFormat = esc_html( get_option( 'time_format' ) );
 
-			// Init Slots
+			// Init slots.
 			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
 				$slots[ $i ] = [
-					'timestart'      => date( $timeFormat, $i * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timeend'        => date( $timeFormat, ( $i + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ),
-					'timestampstart' => $this->getSlotTimestampStart( $slotsPerDay, $i ),
-					'timestampend'   => $this->getSlotTimestampEnd( $slotsPerDay, $i ),
+					'timestart'      => date( $timeFormat, $i * self::MINUTES_PER_CELL * 60 ),
+					'timeend'        => date( $timeFormat, ( $i + 1 ) * self::MINUTES_PER_CELL * 60 ),
+					'timestampstart' => $this->getSlotTimestampStart( $i ),
+					'timestampend'   => $this->getSlotTimestampEnd( $i ),
 				];
 			}
 
@@ -595,25 +653,19 @@ class Day {
 	/**
 	 * Returns timestamp when $slotNr starts.
 	 *
-	 * @param $slotsPerDay
-	 * @param $slotNr
-	 *
-	 * @return false|float|int
+	 * @return int
 	 */
-	protected function getSlotTimestampStart( $slotsPerDay, $slotNr ) {
-		return strtotime( $this->getDate() ) + ( $slotNr * ( ( 24 / $slotsPerDay ) * 3600 ) );
+	protected function getSlotTimestampStart( int $slotNr ): int {
+		return $this->getStartTimestamp() + $slotNr * self::MINUTES_PER_CELL * 60;
 	}
 
 	/**
 	 * Returns timestamp when $slotNr ends.
 	 *
-	 * @param $slotsPerDay
-	 * @param $slotNr
-	 *
-	 * @return false|float|int
+	 * @return int
 	 */
-	protected function getSlotTimestampEnd( $slotsPerDay, $slotNr ) {
-		return strtotime( $this->getDate() ) + ( ( $slotNr + 1 ) * ( ( 24 / $slotsPerDay ) * 3600 ) ) - 1;
+	protected function getSlotTimestampEnd( int $slotNr ): int {
+		return $this->getStartTimestamp() + ( $slotNr + 1 ) * self::MINUTES_PER_CELL * 60 - 1;
 	}
 
 	public function setIgnoreRestrictions( bool $ignoreRestrictions ): void {
