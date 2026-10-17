@@ -53,7 +53,7 @@ and click on "Add new timeframe". From there, fill out the form:
 
 ### **Configure timeframe:**
 * **Full Day:** When enabled, the timeframe applies to the entire day. If this option is disabled, the timeframe must have a start and end time.
-* **Grid:** Irrelevant for full-day timeframes. If "Full slot" is selected, the item can only be booked from the start and end time of the timeframe. If "Hourly" is selected, each hour between the start and end time can be booked individually.
+* **Grid:** Irrelevant for full-day timeframes. If "Full slot" is selected, the item can only be booked from the start and end time of the timeframe. "Hourly", "30 minutes", and "15 minutes" offer fixed, clock-aligned intervals. Start and end times must align with the selected interval. If any part of an interval is blocked, that entire interval is omitted from bookable availability; shorter fragments are not offered.
 * **Start time / End time:** Irrelevant for full-day timeframes. Defines when the booking window starts and ends each day.
 
 ### **Timeframe repetition:**
@@ -138,8 +138,9 @@ The codes will be sent to the email addresses stored in the "Location Email" fie
 ### **Hourly or slot-based booking** (e.g. half-day, every three hours,...)
 * Type: Bookable
 * "Full Day": unchecked
-* Grid: "Hourly" or "Full Slot"
-  * When "hourly" is selected, the booking calendar will show time slots of one hour each from the start to the end time for pickup or return.
+* Grid: "Hourly", "30 minutes", "15 minutes", or "Full slot"
+  * Interval grids show pickup or return slots of the selected duration. Blocking part of a slot makes the entire slot unavailable without shifting later slot boundaries. For example, with a 30-minute grid, a block from 09:15 to 09:30 makes 09:00–09:30 unavailable, while 09:30–10:00 remains available unless another rule blocks it.
+  * A booking ending exactly at a slot boundary does not block the following slot. For example, an admin booking from 09:45 to 10:00 makes the hourly slot 09:00–10:00 unavailable, but does not block 10:00–11:00.
   * When "Full Slot" is selected, users can only book the entire time slot from start to end time (e.g. only from 09:00 to 12:00). This setting allows you to provide a coarser booking grid if you do not want to offer detailed 1-hour slots.
 
 ### **Combining multiple timeframes:**
