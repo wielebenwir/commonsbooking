@@ -105,6 +105,70 @@ class BookingTest extends CustomPostTypeTest {
 		);
 		$this->assertNull( $booking );
 	}
+
+	/**
+	 * Duplicate bookings for the exact same slot must never escalate to a fatal
+	 * error (see #2373). getByDate() returns the most relevant booking instead.
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function testGetByDateWithDuplicatesDoesNotThrow() {
+		$start = strtotime( '+100 days', strtotime( self::CURRENT_DATE ) );
+		$end   = strtotime( '+101 days', strtotime( self::CURRENT_DATE ) );
+
+		$unconfirmedId = $this->createBooking(
+			$this->testLocation,
+			$this->testItem,
+			$start,
+			$end,
+			'8:00 AM',
+			'12:00 PM',
+			'unconfirmed'
+		);
+		$confirmedId   = $this->createBooking(
+			$this->testLocation,
+			$this->testItem,
+			$start,
+			$end,
+			'8:00 AM',
+			'12:00 PM',
+			'confirmed'
+		);
+
+		$booking = Booking::getByDate( $start, $end, $this->testLocation, $this->testItem );
+
+		$this->assertInstanceOf( \CommonsBooking\Model\Booking::class, $booking );
+		// a confirmed booking wins over an older unconfirmed duplicate
+		$this->assertEquals( $confirmedId, $booking->ID );
+
+		// two unconfirmed duplicates: oldest one is returned deterministically
+		$laterStart = strtotime( '+110 days', strtotime( self::CURRENT_DATE ) );
+		$laterEnd   = strtotime( '+111 days', strtotime( self::CURRENT_DATE ) );
+		$firstId    = $this->createBooking(
+			$this->testLocation,
+			$this->testItem,
+			$laterStart,
+			$laterEnd,
+			'8:00 AM',
+			'12:00 PM',
+			'unconfirmed'
+		);
+		$this->createBooking(
+			$this->testLocation,
+			$this->testItem,
+			$laterStart,
+			$laterEnd,
+			'8:00 AM',
+			'12:00 PM',
+			'unconfirmed'
+		);
+
+		$booking = Booking::getByDate( $laterStart, $laterEnd, $this->testLocation, $this->testItem );
+
+		$this->assertInstanceOf( \CommonsBooking\Model\Booking::class, $booking );
+		$this->assertEquals( $firstId, $booking->ID );
+	}
 	public function testGetByTimerange() {
 		$bookings = Booking::getByTimerange(
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
