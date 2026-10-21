@@ -144,8 +144,8 @@ class BookingCodesMessage extends Message {
 	 * Updates the information about the last sent email.
 	 * This is triggered through the commonsbooking_mail_sent action.
 	 *
-	 * @param $action
-	 * @param $result
+	 * @param string $action
+	 * @param bool   $result
 	 *
 	 * @return void
 	 */
@@ -162,7 +162,7 @@ class BookingCodesMessage extends Message {
 	/**
 	 * filter commonsbooking_mail_to for adding multiple to email addresses
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function addMultiTo(): array {
 		$to = array();
@@ -201,7 +201,7 @@ class BookingCodesMessage extends Message {
 	 *
 	 * @param BookingCode[] $bookingCodes   List of BookingCode objects
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
 	protected function getIcalAttachment( array $bookingCodes ): array {
 		$calendar = new iCalendar();

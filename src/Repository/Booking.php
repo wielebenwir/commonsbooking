@@ -15,30 +15,32 @@ class Booking extends PostRepository {
 	/**
 	 * Returns 0:00 timestamp for day of $timestamp.
 	 *
-	 * @param $timestamp
+	 * @param int $timestamp
 	 *
 	 * @return false|int
 	 */
-	protected static function getStartTimestamp( $timestamp ) {
+	protected static function getStartTimestamp( int $timestamp ): bool|int
+	{
 		return strtotime( 'midnight', $timestamp );
 	}
 
 	/**
 	 * Returns 23:59 timestamp for day of $timestamp.
 	 *
-	 * @param $startTimestamp
+	 * @param int $startTimestamp
 	 *
 	 * @return false|int
 	 */
-	protected static function getEndTimestamp( $startTimestamp ) {
+	protected static function getEndTimestamp( int $startTimestamp ): bool|int
+	{
 		return strtotime( '+23 Hours +59 Minutes +59 Seconds', $startTimestamp );
 	}
 
 	/**
 	 * Returns bookings ending at day of timestamp.
 	 *
-	 * @param int   $timestamp
-	 * @param array $customArgs
+  	 * @param int                  $timestamp
+	 * @param array<string, mixed> $customArgs WP_Query compatible args
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -83,8 +85,8 @@ class Booking extends PostRepository {
 	/**
 	 * Returns bookings beginning at day of timestamp.
 	 *
-	 * @param int   $timestamp
-	 * @param array $customArgs
+	 * @param int                  $timestamp
+	 * @param array<string, mixed> $customArgs WP_Query compatible args
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -209,12 +211,12 @@ class Booking extends PostRepository {
 	}
 
 	/**
-	 * @param int   $startDate
-	 * @param int   $endDate
-	 * @param $locationId
-	 * @param $itemId
-	 * @param array $customArgs
-	 * @param array $postStatus
+	 * @param int                  $startDate
+	 * @param int                  $endDate
+	 * @param int|null             $locationId
+	 * @param int|null             $itemId
+	 * @param array<string, mixed> $customArgs
+	 * @param string[]             $postStatus a valid postStatus for Booking
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -222,8 +224,8 @@ class Booking extends PostRepository {
 	public static function getByTimerange(
 		int $startDate,
 		int $endDate,
-		$locationId = null,
-		$itemId = null,
+		?int $locationId = null,
+		?int $itemId = null,
 		array $customArgs = [],
 		array $postStatus = [ 'confirmed', 'unconfirmed' ]
 	): array {
@@ -280,8 +282,10 @@ class Booking extends PostRepository {
 	 * Returns all bookings, allowed to see for user.
 	 * This are not just the bookings owned by the user but also managed items for admins / cb-managers.
 	 *
+	 * @param \WP_User $user
 	 * @param bool     $asModel if true, returns as Booking array, if false, return int array (defaults to false)
 	 * @param int|null $minTimestamp
+	 * @param string[] $postStatus
 	 *
 	 * @return \CommonsBooking\Model\Booking[]|int[]
 	 * @throws Exception
@@ -289,7 +293,7 @@ class Booking extends PostRepository {
 	public static function getForUser(
 		\WP_User $user,
 		bool $asModel = false,
-		$minTimestamp = null,
+		?int $minTimestamp = null,
 		array $postStatus = [ 'canceled', 'confirmed', 'unconfirmed' ]
 	): array {
 		$customId  = $user->ID;
@@ -328,16 +332,17 @@ class Booking extends PostRepository {
 	/**
 	 * Returns all bookings, allowed to see/edit for current user.
 	 *
-	 * @param bool $asModel
-	 * @param null $startDate
+	 * @param bool     $asModel
+	 * @param int|null $startDate
+	 * @param string[] $postStatus
 	 *
-	 * @return array
+	 * @return int[]|\CommonsBooking\Model\Booking[] array of postIds when asModel=false, otherwise \CommonsBooking\Model\Booking[]
 	 * @throws Exception
 	 */
 	public static function getForCurrentUser(
 		bool $asModel = false,
-		$startDate = null,
-		$postStatus = [ 'canceled', 'confirmed', 'unconfirmed' ]
+		?int $startDate = null,
+		array $postStatus = [ 'canceled', 'confirmed', 'unconfirmed' ]
 	): array {
 		if ( ! is_user_logged_in() ) {
 			return [];
@@ -352,12 +357,12 @@ class Booking extends PostRepository {
 	 * Returns bookings. This uses the CommonsBooking\Repository\Timeframe::get() method which
 	 * is not based on the WP_Query class but will perform its own SQL query.
 	 *
-	 * @param array       $locations an array of post IDs
-	 * @param array       $items an array of post IDs
+	 * @param int[]       $locations an array of post IDs
+	 * @param int[]       $items an array of post IDs
 	 * @param string|null $date Date-String in format YYYY-mm-dd
 	 * @param bool        $returnAsModel if true, returns booking model, if false return int array (defaults to false)
 	 * @param int|null    $minTimestamp
-	 * @param array       $postStatus
+	 * @param string[]    $postStatus valid postStatus for Booking
 	 *
 	 * @return int[]|\CommonsBooking\Model\Booking[]
 	 * @throws Exception
@@ -386,10 +391,11 @@ class Booking extends PostRepository {
 	 * This is to prevent timeouts for bigger queries such as data exports. As opposed to the getForUser() function,
 	 * this function will use the WP_Query class to perform the query allowing us to use the pagination features of WP_Query.
 	 *
-	 * @param \WP_User $user The user for which to get the bookings.
-	 * @param int      $page The current page that is processed.
-	 * @param int      $perPage The number of bookings per page. A lower number will result in faster queries.
-	 * @param array    $customArgs Valid WP_Query args array.
+	 * @param \WP_User             $user The user for which to get the bookings.
+	 * @param int                  $page The current page that is processed.
+	 * @param int                  $perPage The number of bookings per page. A lower number will result in faster queries.
+	 * @param array<string, mixed> $customArgs Valid WP_Query args array.
+	 * @param string[]             $postStatus Valid post statuses for Booking
 	 *
 	 * @return \CommonsBooking\Model\Booking[] An array of Booking models.
 	 */
@@ -397,8 +403,8 @@ class Booking extends PostRepository {
 		\WP_User $user,
 		int $page = 1,
 		int $perPage = 10,
-		$customArgs = [],
-		$postStatus = [ 'confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit' ]
+		array $customArgs = [],
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit' ]
 	): array {
 		$args = array(
 			'author'         => $user->ID,
@@ -446,15 +452,15 @@ class Booking extends PostRepository {
 	 * This is used to check if the given parameters are overlapping with existing bookings.
 	 * The given $postID will be excluded from the result so that the given booking will not be counted as overlapping.
 	 *
-	 * @param $itemId
-	 * @param $locationId
+	 * @param int      $itemId
+	 * @param int      $locationId
 	 * @param int      $startDate
 	 * @param int      $endDate
 	 * @param int|null $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking[] empty array if none are found
 	 */
-	public static function getExistingBookings( $itemId, $locationId, $startDate, $endDate, $postId = null ): array {
+	public static function getExistingBookings( int $itemId, int $locationId, int $startDate, int $endDate, ?int $postId = null ): array {
 
 		// Get existing bookings for defined parameters
 		$existingBookingsInRange = self::getByTimerange(
@@ -478,7 +484,7 @@ class Booking extends PostRepository {
 	/**
 	 * Will take a valid WP_Query args array and return an array of Booking models.
 	 *
-	 * @param array $args
+	 * @param array<string, mixed> $args WP_Query compatible args array
 	 *
 	 * @return \CommonsBooking\Model\Booking[]
 	 * @throws Exception

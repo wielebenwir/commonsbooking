@@ -45,11 +45,11 @@ class Wordpress {
 	}
 
 	/**
-	 * @param $dateString
+	 * @param string $dateString
 	 *
-	 * @return bool|false
+	 * @return bool
 	 */
-	public static function isValidDateString( $dateString ): bool {
+	public static function isValidDateString( string $dateString ): bool {
 		return preg_match( '/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/i', $dateString ) === 1;
 	}
 
@@ -73,11 +73,11 @@ class Wordpress {
 	 * Returns all post ids which are in relation to $postId.
 	 * Why? Needed to get tags for cache invalidation.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return array|string[]
 	 */
-	public static function getRelatedPostIds( $postId ): array {
+	public static function getRelatedPostIds( int $postId ): array {
 		$postIds = [];
 		$post    = get_post( $postId );
 
@@ -108,12 +108,12 @@ class Wordpress {
 	/**
 	 * Returns all post ids in relation to $postId.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return mixed
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public static function getRelatedPostsIdsForLocation( $postId ) {
+	public static function getRelatedPostsIdsForLocation( int $postId ) {
 		$timeframes   = \CommonsBooking\Repository\Timeframe::get( [ $postId ] );
 		$restrictions = \CommonsBooking\Repository\Restriction::get( [ $postId ] );
 		return array_merge(
@@ -127,7 +127,7 @@ class Wordpress {
 	 * Returns all post ids in relation to $postId.
 	 * CAREFUL: This will not get the location that the item is in relation to.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return array
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
@@ -145,12 +145,12 @@ class Wordpress {
 	/**
 	 * Returns all post ids in relation to $postId.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return array
 	 * @throws \Exception
 	 */
-	public static function getRelatedPostsIdsForTimeframe( $postId ): array {
+	public static function getRelatedPostsIdsForTimeframe( int $postId ): array {
 		$timeframe = new Timeframe( $postId );
 		$ids       = [ $postId ];
 		return array_merge( $ids, $timeframe->getItemIDs(), $timeframe->getLocationIDs() );
@@ -159,12 +159,12 @@ class Wordpress {
 	/**
 	 * Returns all post ids in relation to $postId.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return array
 	 * @throws \Exception
 	 */
-	public static function getRelatedPostsIdsForBooking( $postId ): array {
+	public static function getRelatedPostsIdsForBooking( int $postId ): array {
 		$booking = new \CommonsBooking\Model\Booking( $postId );
 		$ids     = [ $postId ];
 
@@ -184,12 +184,12 @@ class Wordpress {
 	/**
 	 * Returns all post ids in relation to $postId.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return array
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public static function getRelatedPostsIdsForRestriction( $postId ): array {
+	public static function getRelatedPostsIdsForRestriction( int $postId ): array {
 		$restriction = new \CommonsBooking\Model\Restriction( $postId );
 
 		// Restriction itself
@@ -223,7 +223,7 @@ class Wordpress {
 	 *
 	 * @return array
 	 */
-	public static function getTags( $posts, array $items = [], array $locations = [] ): array {
+	public static function getTags( array $posts, array $items = [], array $locations = [] ): array {
 		$itemsAndLocations = self::getLocationAndItemIdsFromPosts( $posts );
 
 		if ( ! count( $items ) && ! count( $locations ) ) {
@@ -267,6 +267,7 @@ class Wordpress {
 						$timeframe = new Timeframe( $timeframe );
 					}
 				}
+				/** @var Timeframe $timeframe */
 				$itemsAndLocations = array_merge(
 					$itemsAndLocations,
 					$timeframe->getItemIDs(),
@@ -313,7 +314,13 @@ class Wordpress {
 		return $dto;
 	}
 
-	public static function getUTCDateTime( $datetime = 'now' ): DateTime {
+	/**
+	 * @param string $datetime
+	 *
+	 * @return DateTime
+	 * @throws \Exception
+	 */
+	public static function getUTCDateTime( string $datetime = 'now' ): DateTime {
 		$dto = new DateTime( $datetime );
 		$dto->setTimezone( new \DateTimeZone( 'UTC' ) );
 
@@ -323,12 +330,12 @@ class Wordpress {
 	/**
 	 * UNUSED
 	 *
-	 * @deprecated since 2.11, to be removed in 2.12
-	 * @param $timestamp
+	 * @param int $timestamp
 	 * @return DateTime
 	 * @throws \DateInvalidTimeZoneException
+	 * @deprecated since 2.11, to be removed in 2.12
 	 */
-	public static function getLocalDateTime( $timestamp ): DateTime {
+	public static function getLocalDateTime( int $timestamp ): DateTime {
 		$dto = new DateTime();
 		$dto->setTimestamp(
 			$timestamp

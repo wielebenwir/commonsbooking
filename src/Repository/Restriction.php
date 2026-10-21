@@ -12,11 +12,11 @@ class Restriction extends PostRepository {
 	/**
 	 * Returns active restrictions.
 	 *
-	 * @param array       $locations one or more location ids to filter
-	 * @param array       $items     one or more item ids to filter
+	 * @param int[]       $locations one or more location ids to filter
+	 * @param int[]       $items     one or more item ids to filter
 	 * @param string|null $date if provided, filters restrictions to be valid on the given date
 	 * @param bool        $returnAsModel returns array of models instead of ids, default false (returns ids)
-	 * @param int         $minTimestamp if provided, returns restrictions where rep-end > min-timestamp. default null
+	 * @param int|null    $minTimestamp if provided, returns restrictions where rep-end > min-timestamp. default null
 	 * @param string[]    $postStatus filters for given list of status, defaults to all WordPress post status enums
 	 *
 	 * @return \CommonsBooking\Model\Restriction[]
@@ -27,7 +27,7 @@ class Restriction extends PostRepository {
 		array $items = [],
 		?string $date = null,
 		bool $returnAsModel = false,
-		$minTimestamp = null,
+		?int $minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		$customCacheKey = serialize( $postStatus );
@@ -109,11 +109,11 @@ class Restriction extends PostRepository {
 	/**
 	 * Returns filter to query be minimum timestamp.
 	 *
-	 * @param $minTimestamp
+	 * @param int $minTimestamp
 	 *
 	 * @return string
 	 */
-	private static function getMinTimestampQuery( $minTimestamp ): string {
+	private static function getMinTimestampQuery( int $minTimestamp ): string {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
@@ -141,11 +141,11 @@ class Restriction extends PostRepository {
 	/**
 	 * Returns query to filter by date.
 	 *
-	 * @param $date
+	 * @param string $date
 	 *
 	 * @return string
 	 */
-	private static function getDateQuery( $date ): string {
+	private static function getDateQuery( string $date ): string {
 		global $wpdb;
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
@@ -196,11 +196,11 @@ class Restriction extends PostRepository {
 	 * WARNING: This method will filter out posts that are only queried by item OR location.
 	 * Meaning, if a restriction is created that has a location and an item, but the query only contains the location, the restriction will not be returned.
 	 *
-	 * @param array $posts
-	 * @param array $locations
-	 * @param array $items
+	 * @param \WP_Post[] $posts
+	 * @param int[]      $locations
+	 * @param int[]      $items
 	 *
-	 * @return array
+	 * @return \WP_Post[]
 	 */
 	private static function filterPosts( array $posts, array $locations, array $items ): array {
 		return array_filter(
@@ -251,12 +251,12 @@ class Restriction extends PostRepository {
 	/**
 	 * Casts all posts in the array to Restriction objects.
 	 *
-	 * @param $posts
+	 * @param \WP_Post[] $posts
 	 *
-	 * @return mixed
+	 * @return \CommonsBooking\Model\Restriction[]
 	 * @throws Exception
 	 */
-	private static function castPostsToRestrictions( $posts ) {
+	private static function castPostsToRestrictions( array $posts ): array {
 		foreach ( $posts as &$post ) {
 			$post = new \CommonsBooking\Model\Restriction( $post );
 		}

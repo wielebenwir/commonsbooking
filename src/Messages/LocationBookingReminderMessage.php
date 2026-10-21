@@ -23,8 +23,10 @@ class LocationBookingReminderMessage extends Message {
 
 	/**
 	 * Sends reminder message.
+	 *
+	 * @return void
 	 */
-	public function sendMessage() {
+	public function sendMessage(): void {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking      = Booking::getPostById( $this->getPostId() );
 		$booking_user = get_userdata( (int) $this->getPost()->post_author );

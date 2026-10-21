@@ -265,11 +265,11 @@ class Migration {
 	 * fetchEmails
 	 * extract mails from a given string and return an array with email addresses
 	 *
-	 * @param mixed $text
+	 * @param string $text
 	 *
-	 * @return array
+	 * @return array<int|string, string>
 	 */
-	public static function fetchEmails( $text ): array {
+	public static function fetchEmails( string $text ): array {
 		$words = str_word_count( $text, 1, '.@-_' );
 
 		return array_filter(
@@ -281,9 +281,9 @@ class Migration {
 	}
 
 	/**
-	 * @param $meta
+	 * @param array<string, array<int, mixed>> $meta
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	private static function getFlatPostMeta( $meta ): array {
 		return array_map(
@@ -294,6 +294,12 @@ class Migration {
 		);
 	}
 
+	/**
+	 * @param array<string, mixed> $array
+	 * @param array<int, string>   $keys
+	 *
+	 * @return array<string, mixed>
+	 */
 	private static function removeArrayItemsByKeys( $array, $keys ) {
 		foreach ( $keys as $ignoredMetaField ) {
 			if ( array_key_exists( $ignoredMetaField, $array ) ) {
@@ -305,10 +311,10 @@ class Migration {
 	}
 
 	/**
-	 * @param $id
-	 * @param $type
+	 * @param int|string $id
+	 * @param string     $type
 	 *
-	 * @param null $timeframe_type
+	 * @param null       $timeframe_type
 	 *
 	 * @return mixed
 	 * @throws Exception
@@ -360,8 +366,8 @@ class Migration {
 
 	/**
 	 * @param $existingPost
-	 * @param $postData array Post data
-	 * @param $postMeta array Post meta
+	 * @param array<string, mixed> $postData Post data
+	 * @param array<string, mixed> $postMeta Post meta
 	 *
 	 * @return bool
 	 * @throws \CommonsBooking\Geocoder\Exception\Exception
@@ -473,7 +479,7 @@ class Migration {
 	}
 
 	/**
-	 * @param $timeframe
+	 * @param array{item_id: int|string, location_id: int|string, timeframe_title: string, id: int|string, date_start: string, date_end: string} $timeframe
 	 *
 	 * @return bool
 	 * @throws \CommonsBooking\Geocoder\Exception\Exception
@@ -525,7 +531,7 @@ class Migration {
 	}
 
 	/**
-	 * @param $booking
+	 * @param array{user_id: int|string, item_id: int|string, location_id: int|string, date_start: string, date_end: string, status: string, booking_time: string, id: int|string, code_id: int|string} $booking
 	 *
 	 * @return bool
 	 * @throws \CommonsBooking\Geocoder\Exception\Exception
@@ -576,7 +582,7 @@ class Migration {
 	/**
 	 * Migrates CB1 Booking Code to CB2.
 	 *
-	 * @param $bookingCode
+	 * @param array{item_id: int|string, booking_date: string, bookingcode: string} $bookingCode
 	 *
 	 * @return mixed
 	 */
@@ -608,8 +614,10 @@ class Migration {
 
 	/**
 	 * Migrates some of the CB1 Options that can be transfered to CB2
+	 *
+	 * @return void
 	 */
-	public static function migrateCB1Options() {
+	public static function migrateCB1Options(): void {
 		// migrate Booking-Codes
 		$cb1_bookingcodes = Settings::getOption( 'commons-booking-settings-codes', 'commons-booking_codes_pool' );
 		Settings::updateOption( 'commonsbooking_options_bookingcodes', 'bookingcodes', $cb1_bookingcodes );
@@ -626,7 +634,7 @@ class Migration {
 	/**
 	 * Migrates CB1 taxonomy to CB2 posts.
 	 *
-	 * @param $cb1Taxonomy
+	 * @param object{object_id: int, taxonomy: string} $cb1Taxonomy
 	 *
 	 * @return void
 	 */

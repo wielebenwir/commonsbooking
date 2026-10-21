@@ -145,14 +145,24 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Callback function for booking code list.
 	 *
-	 * @param $field_args
-	 * @param $field
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
+	 *
+	 * @return void
 	 */
-	public static function renderBookingCodeList( $field_args, $field ) {
+	public static function renderBookingCodeList( array $field_args, \CMB2_Field $field ): void {
 		\CommonsBooking\View\BookingCodes::renderTable( $field->object_id() );
 	}
 
-	public static function renderDateSelector( $field_args, $field ) {
+	/**
+	 * CMB2 callback rendering the manual date selection row.
+	 *
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
+	 *
+	 * @return void
+	 */
+	public static function renderDateSelector( array $field_args, \CMB2_Field $field ): void {
 		?>
 		<label for="cmb2_multiselect_datepicker">
 			<?php echo commonsbooking_sanitizeHTML( __( 'Select Dates:', 'commonsbooking' ) ); ?>
@@ -235,7 +245,7 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	public static function addAdminTypeFilter() {
+	public static function addAdminTypeFilter(): void {
 		Filter::renderFilter(
 			static::$postType,
 			esc_html__( 'Filter By Type ', 'commonsbooking' ),
@@ -246,8 +256,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by item in timeframe List
+	 *
+	 * @return void
 	 */
-	public static function addAdminItemFilter() {
+	public static function addAdminItemFilter(): void {
 		$items = \CommonsBooking\Repository\Item::get(
 			[
 				'post_status' => 'any',
@@ -273,8 +285,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
+	 *
+	 * @return void
 	 */
-	public static function addAdminLocationFilter() {
+	public static function addAdminLocationFilter(): void {
 		$locations = \CommonsBooking\Repository\Location::get(
 			[
 				'post_status' => 'any',
@@ -300,8 +314,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in booking list
+	 *
+	 * @return void
 	 */
-	public static function addAdminStatusFilter() {
+	public static function addAdminStatusFilter(): void {
 		$values = [];
 		foreach ( \CommonsBooking\Model\Booking::$bookingStates as $bookingState ) {
 			$values[ $bookingState ] = $bookingState;
@@ -316,8 +332,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Adds filter dropdown // filter by location in timeframe List
+	 *
+	 * @return void
 	 */
-	public static function addAdminDateFilter() {
+	public static function addAdminDateFilter(): void {
 		$startDateInputName = 'admin_filter_startdate';
 		$endDateInputName   = 'admin_filter_enddate';
 
@@ -340,7 +358,7 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @return void
 	 */
-	public static function filterAdminList( $query ) {
+	public static function filterAdminList( $query ): void {
 		global $pagenow;
 
 		if (
@@ -412,8 +430,10 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Registers metaboxes for cpt.
+	 *
+	 * @return void
 	 */
-	public function registerMetabox() {
+	public function registerMetabox(): void {
 		$cmb = new_cmb2_box(
 			[
 				'id'           => static::getPostType() . '-custom-fields',
@@ -820,9 +840,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns grid options.
 	 *
-	 * @return array
+	 * @return array<int, string>
 	 */
-	public static function getGridOptions() {
+	public static function getGridOptions(): array {
 		return [
 			0 => esc_html__( 'Full slot', 'commonsbooking' ),
 			1 => esc_html__( 'Hourly', 'commonsbooking' ),
@@ -832,9 +852,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns array with repetition options.
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
-	public static function getTimeFrameRepetitions() {
+	public static function getTimeFrameRepetitions(): array {
 		return [
 			'norep' => esc_html__( 'No repetition', 'commonsbooking' ),
 			'manual' => esc_html__( 'Manual repetition', 'commonsbooking' ),
@@ -847,8 +867,13 @@ class Timeframe extends CustomPostType {
 
 	/**
 	 * Save the new Custom Fields values
+	 *
+	 * @param int     $post_id
+	 * @param WP_Post $post
+	 *
+	 * @return void
 	 */
-	public function savePost( $post_id, WP_Post $post ) {
+	public function savePost( int $post_id, WP_Post $post ): void {
 		// This is just for timeframes
 		if ( $post->post_type !== static::getPostType() ) {
 			return;
@@ -906,7 +931,17 @@ class Timeframe extends CustomPostType {
 	}
 
 
-	public function updatedPostMeta( $meta_id, $object_id, $meta_key, $meta_value ) {
+	/**
+	 * Reacts on updated timeframe post meta (e.g. a changed location).
+	 *
+	 * @param int    $meta_id    ID of the updated meta row.
+	 * @param int    $object_id  ID of the post the meta belongs to.
+	 * @param string $meta_key   The meta key that was updated.
+	 * @param mixed  $meta_value Metadata value.
+	 *
+	 * @return void
+	 */
+	public function updatedPostMeta( int $meta_id, int $object_id, string $meta_key, $meta_value ): void {
 		// make sure, that action is only executed if timeframe is changed
 		if ( get_post( $object_id )->post_type !== self::getPostType() ) {
 			return;
@@ -937,11 +972,11 @@ class Timeframe extends CustomPostType {
 	 * Adds 23h 59m 59s to repetition end, to set the timestamp at the end of the day and not
 	 * the very start.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return void
 	 */
-	private static function sanitizeRepetitionEndDate( $postId ): void {
+	private static function sanitizeRepetitionEndDate( int $postId ): void {
 		$repetitionEnd = get_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true );
 		if ( $repetitionEnd ) {
 			$repetitionEnd = strtotime( '+23 Hours +59 Minutes +59 Seconds', $repetitionEnd );
@@ -1012,11 +1047,11 @@ class Timeframe extends CustomPostType {
 	 * 3. Item / Location is removed entirely
 	 * 4. Item / Location is added
 	 *
-	 * @param $post_id
+	 * @param int $post_id
 	 *
 	 * @return void
 	 */
-	public static function manageTimeframeMeta( $post_id ) {
+	public static function manageTimeframeMeta( int $post_id ): void {
 		$postModel = get_post( $post_id );
 		// This is just for timeframes
 		if ( $postModel->post_type !== static::getPostType() ) {
@@ -1144,9 +1179,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns CPT arguments.
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	public function getArgs() {
+	public function getArgs(): array {
 		$labels = array(
 			'name'                  => esc_html__( 'Timeframes', 'commonsbooking' ),
 			'singular_name'         => esc_html__( 'Timeframe', 'commonsbooking' ),

@@ -14,8 +14,8 @@ abstract class BaseShortcode {
 	/**
 	 * The shortcode handler - load all the needed assets and render the map container
 	 *
-	 * @param array  $atts attributes for parametrization.
-	 * @param string $content content to display, if shortcode implementation allows to.
+	 * @param array<string|int, string> $atts attributes for parametrization.
+	 * @param string                    $content content to display, if shortcode implementation allows to.
 	 **/
 	public static function execute( array $atts, string $content = '' ): string {
 		$instance = new static();
@@ -40,7 +40,30 @@ abstract class BaseShortcode {
 		$instance->inject_script( $cb_map_id );
 		return $instance->create_container( $cb_map_id, $attrs, $options, $content );
 	}
-	abstract protected function parse_attributes( $atts );
-	abstract protected function inject_script( $cb_map_id );
-	abstract protected function create_container( $cb_map_id, $attrs, $options, $content );
+	/**
+	 * Parse the given shortcode attributes and merge them with the defaults of the implementation.
+	 *
+	 * @param array<string|int, string> $atts attributes for parametrization.
+	 * @return array<string, int|string|null> parsed attributes, at least containing the `id` key.
+	 */
+	abstract protected function parse_attributes( array $atts ): array;
+
+	/**
+	 * Inject the assets needed to render the map with the given id.
+	 *
+	 * @param int $cb_map_id the id of the map post.
+	 * @return void
+	 */
+	abstract protected function inject_script( int $cb_map_id ): void;
+
+	/**
+	 * Render the map container markup.
+	 *
+	 * @param int                            $cb_map_id the id of the map post.
+	 * @param array<string, int|string|null> $attrs parsed shortcode attributes.
+	 * @param array<int, string>             $options positional shortcode attributes (numeric keys).
+	 * @param string                         $content the shortcode content.
+	 * @return string the container markup.
+	 */
+	abstract protected function create_container( int $cb_map_id, array $attrs, array $options, string $content ): string;
 }

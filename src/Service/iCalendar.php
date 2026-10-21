@@ -109,12 +109,12 @@ class iCalendar {
 	/**
 	 * Get the ics file for an existing booking. Will be called, when the "Add to Calendar" button on the booking page is pressed
 	 *
-	 * @param $bookingID
+	 * @param int $bookingID
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function downloadICS( $bookingID ): void {
+	public static function downloadICS( int $bookingID ): void {
 		$postID           = $bookingID;
 		$booking          = new Booking( $postID );
 		$template_objects = [
@@ -144,13 +144,14 @@ class iCalendar {
 	 * @param String  $eventTitle - The title of the event in the ics calendar
 	 * @param String  $eventDescription - The description of the event in the ics calendar
 	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function addBookingEvent(
 		Booking $booking,
 		string $eventTitle,
 		string $eventDescription
-	) {
+	): void {
 			$eventDescription = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $eventDescription ); // remove empty lines from the description, they are not part of the standard
 
 			$bookingLocation           = $booking->getLocation();
