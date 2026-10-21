@@ -162,7 +162,7 @@ class BookingCodesMessage extends Message {
 	/**
 	 * filter commonsbooking_mail_to for adding multiple to email addresses
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function addMultiTo(): array {
 		$to = array();
@@ -201,7 +201,7 @@ class BookingCodesMessage extends Message {
 	 *
 	 * @param BookingCode[] $bookingCodes   List of BookingCode objects
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
 	protected function getIcalAttachment( array $bookingCodes ): array {
 		$calendar = new iCalendar();

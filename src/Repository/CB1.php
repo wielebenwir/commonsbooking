@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Repository;
 
+use WP_Post;
 use WP_Query;
 
 /**
@@ -58,18 +59,18 @@ class CB1 {
 	/**
 	 * Get the old CB1 location post type posts
 	 *
-	 * @return array
+	 * @return array<int, WP_Post|int>
 	 */
-	public static function getLocations() {
+	public static function getLocations(): array {
 		return self::get( self::$LOCATION_TYPE_ID );
 	}
 
 	/**
-	 * @param $postType
+	 * @param string $postType
 	 *
-	 * @return array
+	 * @return array<int, WP_Post|int>
 	 */
-	protected static function get( $postType ) {
+	protected static function get( string $postType ): array {
 		$posts = [];
 		$args  = array(
 			'post_type'   => $postType,
@@ -87,9 +88,9 @@ class CB1 {
 	/**
 	 * Get the old CB1 item post type posts
 	 *
-	 * @return array
+	 * @return array<int, WP_Post|int>
 	 */
-	public static function getItems() {
+	public static function getItems(): array {
 		return self::get( self::$ITEM_TYPE_ID );
 	}
 

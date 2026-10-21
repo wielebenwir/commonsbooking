@@ -137,12 +137,12 @@ class BookingCodes {
 	 * The filtering can be omitted in future cb versions when backward compatibility with old cb is dropped.
 	 *
 	 * @param \stdClass[] &$bookingCodes reference of array of BookingCode|s. It is assumed that they all have the same itemId.
-	 * @param int                   $preferredTimeframeId timeframeId to prefer when filtering
-	 * @param int                   $preferredLocationId locationId to prefer when filtering
+	 * @param int         $preferredTimeframeId timeframeId to prefer when filtering
+	 * @param int         $preferredLocationId locationId to prefer when filtering
 	 *
 	 * @return void works by reference on param $bookingCodes
 	 */
-	private static function backwardCompatibilityFilter(array &$bookingCodes, int $preferredTimeframeId, int $preferredLocationId ): void {
+	private static function backwardCompatibilityFilter( array &$bookingCodes, int $preferredTimeframeId, int $preferredLocationId ): void {
 		$filteredCodes = [];
 		$codesByDate   = [];
 
@@ -415,7 +415,7 @@ class BookingCodes {
 	/**
 	 * Will get the configured booking codes from the settings and return them as an array.
 	 *
-	 * @return array - Array of booking codes, empty array if no booking codes are configured.
+	 * @return array<string|null>|array{} - Array of booking codes, empty array if no booking codes are configured.
 	 */
 	private static function getCodesArray(): array {
 		$bookingCodes = Settings::getOption( 'commonsbooking_options_bookingcodes', 'bookingcodes' );
@@ -424,7 +424,7 @@ class BookingCodes {
 		}
 		$bookingCodesArray = array_filter( explode( ',', trim( $bookingCodes ) ) );
 		return array_map(
-			function ( $item ) {
+			function ( string $item ) {
 				return preg_replace( "/\r|\n/", '', $item );
 			},
 			$bookingCodesArray

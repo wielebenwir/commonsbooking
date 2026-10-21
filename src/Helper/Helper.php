@@ -3,6 +3,7 @@
 namespace CommonsBooking\Helper;
 
 use CommonsBooking\Model\Booking;
+use CommonsBooking\Model\CustomPost;
 use CommonsBooking\Model\Item;
 use CommonsBooking\Model\Location;
 
@@ -95,13 +96,14 @@ class Helper {
 	/**
 	 * Returns CB custom post type if possible.
 	 *
-	 * @param $post
-	 * @param $type
+	 * @param \WP_User|\WP_Post|CustomPost $post
+	 * @param string $type a CPT name, if nothing, the post is returned
 	 *
-	 * @return Booking|Item|Location|mixed
+	 * @return Item|Booking|\WP_User|Location|\WP_Post|CustomPost
 	 * @throws \Exception
 	 */
-	public static function castToCBCustomType( $post, $type ) {
+	public static function castToCBCustomType(\WP_User|\WP_Post|\CommonsBooking\Model\CustomPost $post, string $type ): Item|Booking|\WP_User|Location|\WP_Post|\CommonsBooking\Model\CustomPost
+	{
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Booking::$postType ) {
 			$post = new Booking( $post->ID );
 		}
@@ -121,9 +123,9 @@ class Helper {
 	 * NOTE: When performance issues arise, this operation can be implemented
 	 * faster with an interval tree data structure
 	 *
-	 * @param array $array_of_ranges Array of one or more ranges.
+	 * @param array<int, array{start_date: int, end_date: int|false}> $array_of_ranges Array of one or more ranges.
 	 *
-	 * @return array - Array of overlapping ranges.
+	 * @return array<int, array{start_date: int, end_date: int|false}> - Array of overlapping ranges.
 	 */
 	public static function mergeRangesToBookableDates( array $array_of_ranges ): array {
 		$interval_open = function ( $interval_value ): bool {

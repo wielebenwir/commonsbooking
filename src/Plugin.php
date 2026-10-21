@@ -111,9 +111,11 @@ class Plugin {
 	/**
 	 * Returns needed roles and caps for specific roles
 	 *
-	 * @return bool[][]
+	 * @param string|null $roleName role to return the mapping for, or null for all roles
+	 *
+	 * @return array<string, array<string, bool>>
 	 */
-	public static function getRoleCapMapping( $roleName = null ) {
+	public static function getRoleCapMapping( ?string $roleName = null ): array {
 		if ( $roleName === null ) {
 			return [
 				// We deliberately don't use the getManagerRoles from the UserRepository here, because the custom roles should be able to define their own permissions
@@ -253,7 +255,7 @@ class Plugin {
 	/**
 	 * Tests if a given post belongs to our CPTs
 	 *
-	 * @param $post int|\WP_Post - post id or post object
+	 * @param int|\WP_Post|\CommonsBooking\Model\CustomPost|null $post - post id, post object, model or null (e.g. an unset global $post)
 	 *
 	 * @return bool
 	 */
@@ -905,7 +907,9 @@ class Plugin {
 	}
 
 	/**
-	 * @return array
+	 * Returns the post type labels of all custom post types.
+	 *
+	 * @return string[]
 	 */
 	public static function getCustomPostTypesLabels(): array {
 		return [

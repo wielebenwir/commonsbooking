@@ -97,13 +97,13 @@ class BookingCodes {
 	 * CMB2 sanitize field callback
 	 * Will take the entered start date and saves it as a timestamp.
 	 *
-	 * @param  mixed       $value      The unsanitized value from the form.
-	 * @param  array       $field_args Array of field arguments.
-	 * @param  \CMB2_Field $field      The field object
+	 * @param array<string, string>|null $value      The unsanitized value from the form.
+	 * @param  array<string, mixed>       $field_args Array of field arguments.
+	 * @param  \CMB2_Field                $field      The field object
 	 *
-	 * @return ?array                  Sanitized value to be stored.
+	 * @return array<string, int|string>|null Sanitized value to be stored.
 	 */
-	public static function sanitizeCronEmailCodes( $value, $field_args, $field ): ?array {
+	public static function sanitizeCronEmailCodes(?array $value, array $field_args, \CMB2_Field $field ): ?array {
 		if ( $value == null ) {
 			return null;
 		}
@@ -128,13 +128,13 @@ class BookingCodes {
 	/**
 	 * CMB2 escape field callback
 	 *
-	 * @param  mixed       $value      The unescaped value from the database.
-	 * @param  array       $field_args Array of field arguments.
-	 * @param  \CMB2_Field $field      The field object
+	 * @param array<string, int|string>|null $value      The unescaped value from the database.
+	 * @param  array<string, mixed>           $field_args Array of field arguments.
+	 * @param  \CMB2_Field                    $field      The field object
 	 *
-	 * @return array                  Escaped value to be displayed.
+	 * @return array<string, int|string>      Escaped value to be displayed.
 	 */
-	public static function escapeCronEmailCodes( $value, $field_args, $field ): array {
+	public static function escapeCronEmailCodes(?array $value, array $field_args, \CMB2_Field $field ): array {
 
 		if ( is_array( $value ) ) {
 			return array(
@@ -157,13 +157,15 @@ class BookingCodes {
 	/**
 	 * renders custom CMB2 field settings for Cron Booking Codes
 	 *
-	 * @param  $field: The current CMB2_Field object.
-	 * @param  $escaped_value: The value of this field passed through the escaping filter.
-	 * @param  $object_id: The id of the object you are working with. Most commonly, the post id.
-	 * @param  $object_type: The type of object you are working with.
-	 * @param  $field_type_object: This is an instance of the CMB2_Types object and gives you access to all of the methods
+	 * @param  \CMB2_Field                      $field         The current CMB2_Field object.
+	 * @param string|array<string, int|string> $escaped_value The value of this field passed through the escaping filter.
+	 * @param  int                              $object_id     The id of the object you are working with. Most commonly, the post id.
+	 * @param  string                           $object_type   The type of object you are working with.
+	 * @param  \CMB2_Types                      $field_type    This is an instance of the CMB2_Types object and gives you access to all of the methods
+	 *
+	 * @return void
 	 */
-	public static function renderCronEmailFields( $field, $escaped_value, $object_id, $object_type, $field_type ): void {
+	public static function renderCronEmailFields(\CMB2_Field $field, array|string $escaped_value, int $object_id, string $object_type, \CMB2_Types $field_type ): void {
 
 		$timeframeId = $object_id;
 		$timeframe   = new Timeframe( $timeframeId );
@@ -263,10 +265,12 @@ HTML;
 	/**
 	 * renders CMB2 field row
 	 *
-	 * @param  array       $field_args Array of field arguments.
-	 * @param  \CMB2_Field $field      The field object
+	 * @param  array<string, mixed> $field_args Array of field arguments.
+	 * @param  \CMB2_Field          $field      The field object
+	 *
+	 * @return bool
 	 */
-	public static function renderDirectEmailRow( $field_args, $field ) {
+	public static function renderDirectEmailRow( array $field_args, \CMB2_Field $field ): bool {
 
 		$timeframeId = $field->object_id();
 		$timeframe   = new Timeframe( $timeframeId );

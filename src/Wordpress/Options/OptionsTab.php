@@ -9,14 +9,20 @@ use Exception;
  * This adds the settings pane to the commonsbooking plugin page.
  * It uses CMB2 fields to display settings in a generic way and uses underlying functionality to save them.
  * The structure and contents of all the settings is controlled via the file OptionsArray.
+ *
+ * @phpstan-type OptionsTabValue string|int|float|bool|array<int|string, mixed>
+ * @phpstan-type OptionsTabGroup array{id: string, title?: string, desc?: string, fields: array<int, array<string, OptionsTabValue>>}
+ * @phpstan-type OptionsTabContent array{title: string, id: string, is_top_level?: bool, field_groups: array<string, OptionsTabGroup>}
  */
 class OptionsTab {
 
-	public $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
-	public $id;
-	public $tab_title;
-	public $content;
-	public $groups;
+	public string $option_key = COMMONSBOOKING_PLUGIN_SLUG . '_options';
+	public string $id;
+	public string $tab_title;
+	/** @var OptionsTabContent */
+	public array $content;
+	/** @var array<string, OptionsTabGroup> */
+	public array $groups;
 
 	// Error type for backend error output
 	public const ERROR_TYPE = 'commonsbooking-options-error';
@@ -27,6 +33,9 @@ class OptionsTab {
 	 */
 	private $metabox;
 
+	/**
+	 * @param OptionsTabContent $content
+	 */
 	public function __construct( string $id, array $content ) {
 		$this->id        = $id;
 		$this->content   = $content;
@@ -100,9 +109,9 @@ class OptionsTab {
 	/**
 	 * If array contains title or description, create a new row containing this text
 	 *
-	 * @param array $metabox_group
+	 * @param OptionsTabGroup $metabox_group
 	 *
-	 * @return array $metabox_group with title + description added as row
+	 * @return OptionsTabGroup $metabox_group with title + description added as row
 	 */
 	public static function prependTitle( array $metabox_group ): array {
 

@@ -764,9 +764,9 @@ class Booking extends Timeframe {
 	/**
 	 * Returns custom (meta) fields for Costum Post Type Timeframe.
 	 *
-	 * @return array
+	 * @return array<array<string, mixed>
 	 */
-	protected function getCustomFields() {
+	protected function getCustomFields(): array {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = 'd/m/Y';
 		if ( str_starts_with( get_locale(), 'de_' ) ) {

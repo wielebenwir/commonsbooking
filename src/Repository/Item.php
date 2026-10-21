@@ -4,8 +4,6 @@ namespace CommonsBooking\Repository;
 
 use Exception;
 
-use WP_Post;
-
 class Item extends BookablePost {
 	public const URL_SLUG         = COMMONSBOOKING_PLUGIN_SLUG . '_get_vehicle';
 	public const QUERY_VEHICLE_ID = COMMONSBOOKING_PLUGIN_SLUG . '_vehicle_cloaked_id';

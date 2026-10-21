@@ -339,7 +339,12 @@ class Item extends CustomPostType {
 		add_action( 'cmb2_admin_init', array( self::class, 'registerTaxonomyMetaboxes' ) );
 	}
 
-	protected static function getTaxonomyArgs() {
+	/**
+	 * Returns the arguments passed to register_taxonomy().
+	 *
+	 * @return array<string, string|bool|array<string, string>>
+	 */
+	protected static function getTaxonomyArgs(): array {
 		return array(
 			'label'             => esc_html__( 'Item Category', 'commonsbooking' ),
 			'rewrite'           => array( 'slug' => static::getPostType() . '-cat' ),

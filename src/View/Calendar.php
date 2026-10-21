@@ -214,11 +214,11 @@ class Calendar {
 	/**
 	 * Renders months in headline.
 	 *
-	 * @param $month_cols
+	 * @param array<string, int> $month_cols
 	 *
 	 * @return string
 	 */
-	protected static function renderHeadlineMonths( $month_cols ): string {
+	protected static function renderHeadlineMonths( array $month_cols ): string {
 		$print = '';
 		foreach ( $month_cols as $month => $colspan ) {
 			$print .= "<th class='sortless' colspan='" . $colspan . "'>";
@@ -236,11 +236,11 @@ class Calendar {
 	/**
 	 * Renders days in headline.
 	 *
-	 * @param $days_display
+	 * @param array<int, string> $days_display
 	 *
 	 * @return string
 	 */
-	protected static function renderHeadlineDays( $days_display ): string {
+	protected static function renderHeadlineDays( array $days_display ): string {
 		$divider = "</th><th class='cal sortless'>";
 		$dayStr  = implode( $divider, $days_display );
 
@@ -251,18 +251,18 @@ class Calendar {
 	/**
 	 * Renders item/location row.
 	 *
-	 * @param $item
-	 * @param $locationId
-	 * @param $locationName
-	 * @param $today
-	 * @param $last_day
-	 * @param $days
-	 * @param $days_display
+	 * @param WP_Post            $item
+	 * @param int                $locationId
+	 * @param string             $locationName
+	 * @param string             $today
+	 * @param string             $last_day
+	 * @param int                $days
+	 * @param array<int, string> $days_display
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display ): string {
+	protected static function renderItemLocationRow( WP_Post $item, int $locationId, string $locationName, string $today, string $last_day, int $days, array $days_display ): string {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -346,13 +346,13 @@ class Calendar {
 	/**
 	 * Returns calendar data
 	 *
-	 * @param WP_Post|int|string|CustomPost $item
-	 * @param WP_Post|int|string|CustomPost $location
-	 * @param string                        $startDateString YYYY-MM-DD Format
-	 * @param string                        $endDateString YYYY-MM-DD Format
-	 * @param bool                          $keepDaterange
+	 * @param WP_Post|int|CustomPost $item
+	 * @param WP_Post|int|CustomPost $location
+	 * @param string                 $startDateString YYYY-MM-DD Format
+	 * @param string                 $endDateString YYYY-MM-DD Format
+	 * @param bool                   $keepDaterange
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false ): array {
@@ -741,13 +741,15 @@ class Calendar {
 	/**
 	 * Extracts calendar relevant data from slot.
 	 *
-	 * @param $slot
-	 * @param $dayArray
-	 * @param $jsonResponse
-	 * @param $allLocked
-	 * @param $noSlots
+	 * @param array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, ...} $slot
+	 * @param array<string, mixed>                                                                          $dayArray
+	 * @param array<string, mixed>                                                                          $jsonResponse
+	 * @param bool                                                                                          $allLocked
+	 * @param bool                                                                                          $noSlots
+	 *
+	 * @return void
 	 */
-	protected static function processSlot( $slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots ) {
+	protected static function processSlot( array $slot, array &$dayArray, array &$jsonResponse, bool &$allLocked, bool &$noSlots ): void {
 		// Add only bookable slots for time select
 		// TODO: This should be refactored to use the methods on the timeframe model.
 		if ( ! empty( $slot['timeframe'] ) && $slot['timeframe'] instanceof WP_Post ) {
@@ -835,7 +837,7 @@ class Calendar {
 	/**
 	 * @param Day $day
 	 *
-	 * @return array
+	 * @return array{date: string, slots: array<int, array<string, mixed>>, locked: bool, bookedDay: bool, partiallyBookedDay: bool, holiday: bool, repair: bool, fullDay: bool, firstSlotBooked: bool, lastSlotBooked: bool}
 	 */
 	protected static function getLockedDayArray( Day $day ): array {
 		return [

@@ -19,7 +19,7 @@ class MapShortcode extends BaseShortcode {
 		$map        = new Map( $cb_map_id );
 		$map_height = $map->getMeta( 'map_height' );
 
-		return '<div id="cb-map-' . esc_attr( $cb_map_id ) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr( $map_height ) . 'px;"></div>';
+		return '<div id="cb-map-' . esc_attr( (string) $cb_map_id ) . '" class="cb-wrapper cb-leaflet-map" style="width: 100%; height: ' . esc_attr( $map_height ) . 'px;"></div>';
 	}
 
 	/**

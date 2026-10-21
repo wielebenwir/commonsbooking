@@ -58,9 +58,10 @@ class BookingCodes {
 	 *
 	 * @param int $timeframeId
 	 *
-	 * @return array|false   Parameters.
+	 * @return array{from: int, to: int, nextCronEventTs: int}|false   Parameters.
 	 */
-	public static function getCronParams( $timeframeId ) {
+	public static function getCronParams( int $timeframeId ): bool|array
+	{
 		$tsCurrentCronEvent = get_post_meta( $timeframeId, \CommonsBooking\View\BookingCodes::NEXT_CRON_EMAIL, true );
 		if ( empty( $tsCurrentCronEvent ) ) {
 			return false;

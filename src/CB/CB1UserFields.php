@@ -22,7 +22,7 @@ class CB1UserFields {
 	 */
 	private array $registration_fields;
 	/**
-	 * @var array|array[]
+	 * @var array<string, array{field_name: string, title: string, type: string, description: string, errormessage: string}>
 	 */
 	private array $extra_profile_fields;
 	/**
@@ -30,7 +30,7 @@ class CB1UserFields {
 	 */
 	private array $registration_fields_required; // @phpstan-ignore property.onlyWritten
 	/**
-	 * @var array|array[]
+	 * @var array<string, array{field_name: string, title: string, type: string, description: string, errormessage: string}>
 	 */
 	private array $user_fields;
 	/**
@@ -119,7 +119,7 @@ class CB1UserFields {
 	/**
 	 * Get the additional User fields
 	 *
-	 * @return array
+	 * @return array<string, array{field_name: string, title: string, type: string, description: string, errormessage: string}>
 	 * @since    0.6.
 	 */
 	public function get_extra_profile_fields(): array {

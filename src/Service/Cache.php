@@ -84,11 +84,11 @@ trait Cache {
 	}
 
 	/**
-	 * @param $backtrace
+	 * @param array<string, mixed> $backtrace
 	 *
-	 * @return mixed
+	 * @return array<string, mixed>
 	 */
-	private static function sanitizeArgsArray( $backtrace ) {
+	private static function sanitizeArgsArray( array $backtrace ): array {
 		if ( array_key_exists( 'args', $backtrace ) &&
 			count( $backtrace['args'] ) &&
 			is_array( $backtrace['args'][0] )
@@ -151,9 +151,9 @@ trait Cache {
 	 * When we select it from a menu, we only need to pass the labels.
 	 *
 	 * @param bool $onlyLabels Will get associative array with adapter identifier as key and translated label as value
-	 * @return array
+	 * @return ($onlyLabels is true ? array<string, string> : array<string, array{label: string, factory: callable}>)
 	 */
-	public static function getAdapters( $onlyLabels = false ): array {
+	public static function getAdapters( bool $onlyLabels = false ): array {
 		$adapters = [
 			'filesystem' => [
 				'label' => __( 'Filesystem', 'commonsbooking' ),
@@ -243,10 +243,9 @@ trait Cache {
 	/**
 	 * Saves cache item based on calling class, function and args.
 	 *
-	 * @param $value
-	 * @param array       $tags
-	 * @param mixed|null  $custom_id
-	 * @param string|null $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
+	 * @param array<int, int|string> $tags
+	 * @param mixed|null             $custom_id
+	 * @param string|null            $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day
 	 *
 	 * @return bool
 	 */
@@ -290,7 +289,9 @@ trait Cache {
 	/**
 	 * Deletes cache entries.
 	 *
-	 * @param array $tags
+	 * @param array<int, int|string> $tags
+	 *
+	 * @return void
 	 *
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
@@ -313,11 +314,11 @@ trait Cache {
 	 * Calls clearCache using WP Cron.
 	 * Why? ClearCache can be resource intensive on larger instances and should be offloaded.
 	 *
-	 * @param array $tags to clear cache for
+	 * @param array<int, int|string> $tags to clear cache for
 	 *
 	 * @return void
 	 */
-	public static function scheduleClearCache( array $tags = [] ) {
+	public static function scheduleClearCache( array $tags = [] ): void {
 		$event = wp_schedule_single_event( time(), self::$clearCacheHook, [ $tags ], true );
 		// TODO document why only on wp-error, why this can fail, why we don't re-try or do other things, instead of forcing the execution of this resource intensive task?
 		if ( is_wp_error( $event ) ) {
@@ -426,8 +427,10 @@ trait Cache {
 	/**
 	 * Renders connection status information for the cache adapter settings view.
 	 *
-	 * @param array      $field_args
-	 * @param CMB2_Field $field
+	 * @param array<string, mixed> $field_args
+	 * @param CMB2_Field           $field
+	 *
+	 * @return void
 	 */
 	public static function renderCacheStatus( array $field_args, CMB2_Field $field ): void {
 		$success           = true;
@@ -499,7 +502,7 @@ trait Cache {
 	/**
 	 * Iterates through array and statically executes given functions.
 	 *
-	 * @param array<array{shortcode: string, attributes: array, body: string}> $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
+	 * @param array<int, array{shortcode: string, attributes: array<string, string>, body: string}> $shortCodeCalls array of tuples of shortcode name strings and tuples of class + static function.
 	 *
 	 * @return void
 	 */
@@ -525,11 +528,11 @@ trait Cache {
 	/**
 	 * Extracts shortcode and attributes from shortcode string.
 	 *
-	 * @param $shortCode
+	 * @param string $shortCode
 	 *
-	 * @return array
+	 * @return array{0: string|null, 1: array<string, string>}
 	 */
-	private static function getShortcodeAndAttributes( $shortCode ) {
+	private static function getShortcodeAndAttributes( string $shortCode ): array {
 		$shortCodeParts = explode( ' ', $shortCode );
 		$shortCodeParts = array_map(
 			function ( $part ) {
@@ -560,7 +563,12 @@ trait Cache {
 		return [ $shortCode, $args ];
 	}
 
-	private static $cbShortCodeFunctions = [
+	/**
+	 * Maps supported shortcode names to the tuple of class and static method used for cache warmup.
+	 *
+	 * @var array<string, array{0: class-string, 1: string}>
+	 */
+	private static array $cbShortCodeFunctions = [
 		'cb_items' => array( \CommonsBooking\View\Item::class, 'shortcode' ),
 		'cb_bookings' => array( \CommonsBooking\View\Booking::class, 'shortcode' ),
 		'cb_locations' => array( \CommonsBooking\View\Location::class, 'shortcode' ),

@@ -14,10 +14,10 @@ class Item extends View {
 	 *
 	 * @param WP_Post|null $post
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
-	public static function getTemplateData( ?WP_Post $post = null ) {
+	public static function getTemplateData( ?WP_Post $post = null ): array {
 		if ( $post == null ) {
 			global $post;
 		}

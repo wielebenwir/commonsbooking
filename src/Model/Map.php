@@ -19,9 +19,9 @@ class Map extends CustomPost {
 	 * attaches start / enddate of the bookable timeframe to the item
 	 * Fetches location & item metadata to be displayed on the map
 	 *
-	 * @param $mapItemTerms array of term ids
+	 * @param array<int, int> $mapItemTerms array of term ids
 	 *
-	 * @return array with postIDs as keys for an array with location data relevant for this map
+	 * @return array<int, array<string, mixed>> with postIDs as keys for an array with location data relevant for this map
 	 * @throws Exception
 	 */
 	public function get_locations( array $mapItemTerms ): array {
@@ -197,12 +197,12 @@ class Map extends CustomPost {
 	/**
 	 * clean up the location data
 	 *
-	 * @param $locations
-	 * @param $linebreak_replacement
+	 * @param array<int, array<string, mixed>> $locations
+	 * @param string                           $linebreak_replacement
 	 *
-	 * @return mixed
+	 * @return array<int, array<string, mixed>>
 	 */
-	public static function cleanup_location_data( $locations, $linebreak_replacement ) {
+	public static function cleanup_location_data( array $locations, string $linebreak_replacement ): array {
 		foreach ( $locations as &$location ) {
 			$location = self::cleanup_location_data_entry( $location, $linebreak_replacement );
 		}
