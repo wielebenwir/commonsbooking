@@ -13,13 +13,12 @@ jobs:
     runs-on: self-hosted
     permissions:
       contents: read
-      pull-requests: write
 
     steps:
       - name: Checkout PR branch
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       # Not needed on self-hosted runners
       # - name: Set up MySQL
@@ -48,7 +47,7 @@ jobs:
       - name: Checkout master branch
         uses: actions/checkout@v7
         with:
-          ref: master
+          ref: ${{ github.event.pull_request.base.sha }}
 
       - name: Install test dependencies (again for master branch)
         run: |
@@ -60,36 +59,34 @@ jobs:
           composer dump-autoload -o
           php tests/benchmark/phpbench.php run tests/benchmark --report=aggregate > /tmp/master-benchmark.txt
 
-      - name: Prepare benchmark comment
-        id: prepare-comment
+      - name: Publish step summary
         run: |
           {
             echo "## Benchmark Results"
             echo ""
             echo "### PR Branch Results"
-            echo "\`\`\`"
+            echo '```'
             cat /tmp/pr-benchmark.txt
-            echo "\`\`\`"
+            echo '```'
             echo ""
             echo "### Master Branch Results"
-            echo "\`\`\`"
+            echo '```'
             cat /tmp/master-benchmark.txt
-            echo "\`\`\`"
-          } > benchmark-comment.md
-          cat benchmark-comment.md >> $GITHUB_STEP_SUMMARY
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Find existing benchmark comment
-        uses: peter-evans/find-comment@v4
-        id: fc
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: 'Benchmark Results'
+      - name: Collect benchmark results
+        run: |
+          mkdir -p benchmark-results
+          cp /tmp/pr-benchmark.txt benchmark-results/
+          cp /tmp/master-benchmark.txt benchmark-results/
 
-      - name: Create or update benchmark comment
-        uses: peter-evans/create-or-update-comment@v5
+      # The PR comment is posted from benchmark-comment.yml (workflow_run),
+      # because GITHUB_TOKEN is read-only on pull requests from forks. Only the
+      # raw benchmark output is handed over; the comment is assembled there from
+      # trusted code so the untrusted output cannot inject markdown.
+      - name: Upload benchmark results as artifact
+        uses: actions/upload-artifact@v7
         with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body-file: benchmark-comment.md
-          edit-mode: replace
+          name: benchmark-results
+          path: benchmark-results/

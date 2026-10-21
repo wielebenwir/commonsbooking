@@ -1,0 +1,119 @@
+name: Post benchmark comment
+
+# Runs in the context of the default branch (so a write-capable GITHUB_TOKEN is
+# available) after the untrusted "Benchmark" workflow has completed. It only
+# downloads the benchmark output and never checks out or executes PR code.
+on:
+  workflow_run:
+    workflows: ["Benchmark"]
+    types:
+      - completed
+
+permissions:
+  actions: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  comment:
+    if: github.event.workflow_run.conclusion == 'success' && !startsWith(github.event.workflow_run.head_branch, 'dependabot')
+    runs-on: ubuntu-24.04
+    steps:
+      # The fork's head branch is attacker-controlled, so it is passed through
+      # the environment instead of being interpolated into the shell script.
+      - name: Resolve PR number
+        id: pr
+        env:
+          HEAD_OWNER: ${{ github.event.workflow_run.head_repository.owner.login }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR_NUMBER="$(jq -r '.workflow_run.pull_requests[0].number // empty' "$GITHUB_EVENT_PATH")"
+
+          if [ -z "$PR_NUMBER" ]; then
+            # GitHub keeps workflow_run.pull_requests empty for pull requests
+            # from forks, so resolve the PR from the run's head repository and
+            # branch. Matching the head SHA ignores runs a newer push replaced.
+            PR_NUMBER="$(gh api -X GET "repos/${GITHUB_REPOSITORY}/pulls" \
+              -f head="${HEAD_OWNER}:${HEAD_BRANCH}" -f state=open \
+              | jq -r --arg sha "$HEAD_SHA" '[.[] | select(.head.sha == $sha) | .number] | first // empty')"
+          fi
+
+          if ! printf '%s' "$PR_NUMBER" | grep -Eq '^[1-9][0-9]*$'; then
+            echo "::error::Could not resolve a PR number for workflow run ${GITHUB_RUN_ID} (head ${HEAD_OWNER}:${HEAD_BRANCH})."
+            exit 1
+          fi
+          echo "number=${PR_NUMBER}" >> "$GITHUB_OUTPUT"
+
+      - name: Download benchmark results
+        uses: actions/download-artifact@v8
+        with:
+          name: benchmark-results
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Build comment body
+        run: |
+          set -euo pipefail
+          PR_FILE="$(find . -type f -name 'pr-benchmark.txt' -print -quit)"
+          MASTER_FILE="$(find . -type f -name 'master-benchmark.txt' -print -quit)"
+          if [ -z "$PR_FILE" ] || [ -z "$MASTER_FILE" ]; then
+            echo "::error::Benchmark result files were not found in the downloaded artifact."
+            find . -maxdepth 3 -print
+            exit 1
+          fi
+
+          # Pick a code fence longer than any backtick run in the file, so the
+          # untrusted benchmark output cannot close the block and inject markdown.
+          fence_for() {
+            local n
+            n="$(grep -oE '`+' "$1" | awk '{print length}' | sort -rn | head -n1 || true)"
+            n="${n:-0}"
+            if [ "$n" -lt 3 ]; then
+              n=3
+            fi
+            local fence=""
+            local i
+            for ((i = 0; i < n + 1; i++)); do
+              fence="${fence}\`"
+            done
+            printf '%s' "$fence"
+          }
+
+          PR_FENCE="$(fence_for "$PR_FILE")"
+          MASTER_FENCE="$(fence_for "$MASTER_FILE")"
+
+          # Truncate to stay well under GitHub's 65536 character comment limit.
+          {
+            echo "## Benchmark Results"
+            echo
+            echo "### PR Branch Results"
+            echo "$PR_FENCE"
+            head -c 25000 "$PR_FILE"
+            echo
+            echo "$PR_FENCE"
+            echo
+            echo "### Master Branch Results"
+            echo "$MASTER_FENCE"
+            head -c 25000 "$MASTER_FILE"
+            echo
+            echo "$MASTER_FENCE"
+          } > benchmark-comment.md
+
+      - name: Find existing benchmark comment
+        uses: peter-evans/find-comment@v4
+        id: fc
+        with:
+          issue-number: ${{ steps.pr.outputs.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Benchmark Results'
+
+      - name: Create or update benchmark comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ steps.pr.outputs.number }}
+          body-file: benchmark-comment.md
+          edit-mode: replace

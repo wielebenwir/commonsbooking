@@ -58,6 +58,12 @@
       "post_title": "WeeklyRepetition NoOverbooking 1Day – NoAdmin; NoGeo",
       "post_name": "weeklyrepetition-nooverbooking-1day-noadmin-nogeo",
       "test_name": "WeeklyRepetition NoOverbooking 1Day"
+    },
+    {
+      "post_id": 136,
+      "post_title": "ManagedLocation",
+      "post_name": "managedlocation",
+      "test_name": "Managed Item"
     }
   ]
 }

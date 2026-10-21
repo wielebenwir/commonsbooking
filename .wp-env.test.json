@@ -1,6 +1,6 @@
 {
   "phpVersion" : "8.1",
-  "core" : "Wordpress/Wordpress#6.9",
+  "core" : "Wordpress/Wordpress#7.1",
   "plugins" : [
     ".",
     "https://downloads.wordpress.org/plugin/wp-crontrol.zip",
@@ -19,5 +19,8 @@
   },
   "themes" : [
     "flegfleg/kasimir-theme"
-  ]
+  ],
+  "mappings" : {
+    "wp-content/mu-plugins" : "./tests/cypress/mu-plugins"
+  }
 }
