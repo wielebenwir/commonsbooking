@@ -21,8 +21,8 @@ use WP_User;
  */
 class BookingCodesMessage extends Message {
 
-	protected $validActions = [ 'codes' ];
-	protected $to;
+	protected array $validActions = [ 'codes' ];
+	protected string $to;
 	private ?int $tsFrom;
 	private ?int $tsTo;
 
@@ -32,10 +32,11 @@ class BookingCodesMessage extends Message {
 	private ?array $locationAdmins = null; // TODO remove nullable, never is set to null anyway
 
 	/**
-	 * @param int    $postId       ID or Post of timeframe
-	 * @param string $action    Message action
-	 * @param int    $tsFrom  Timestamp of first Booking Code
-	 * @param int    $tsTo    Timestamp of last Booking Code
+	 * @param int    $postId ID or Post of timeframe
+	 * @param string $action Message action
+	 * @param int    $tsFrom Timestamp of first Booking Code
+	 * @param int    $tsTo Timestamp of last Booking Code
+	 * @throws PostException
 	 */
 	public function __construct( int $postId, string $action, int $tsFrom, int $tsTo ) {
 		parent::__construct( $postId, $action );

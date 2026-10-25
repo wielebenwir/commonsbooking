@@ -14,7 +14,7 @@ class API {
 	 *
 	 * @return void
 	 */
- 	public static function triggerPushUrls(): void {
+	public static function triggerPushUrls(): void {
 		$apiShares = ApiShares::getAll();
 
 		foreach ( $apiShares as $apiShare ) {

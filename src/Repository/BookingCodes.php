@@ -195,8 +195,8 @@ class BookingCodes {
 
 		$sql = $wpdb->prepare(
 			"SELECT * FROM $table_name
-			WHERE 
-				item = %s AND 
+			WHERE
+				item = %s AND
 				date = %s
 			ORDER BY item ASC, date ASC, timeframe ASC, location ASC",
 			$itemId,
@@ -277,7 +277,7 @@ class BookingCodes {
             location bigint(20) unsigned NOT NULL,
             item bigint(20) unsigned NOT NULL,
             code varchar(100) NOT NULL,
-            PRIMARY KEY (date, timeframe, location, item, code) 
+            PRIMARY KEY (date, timeframe, location, item, code)
         ) $charset_collate;";
 
 		// Include dbDelta since it's not part of autoloaded modules

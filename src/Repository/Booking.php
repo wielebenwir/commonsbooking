@@ -19,8 +19,7 @@ class Booking extends PostRepository {
 	 *
 	 * @return false|int
 	 */
-	protected static function getStartTimestamp( int $timestamp ): bool|int
-	{
+	protected static function getStartTimestamp( int $timestamp ): bool|int {
 		return strtotime( 'midnight', $timestamp );
 	}
 
@@ -31,15 +30,14 @@ class Booking extends PostRepository {
 	 *
 	 * @return false|int
 	 */
-	protected static function getEndTimestamp( int $startTimestamp ): bool|int
-	{
+	protected static function getEndTimestamp( int $startTimestamp ): bool|int {
 		return strtotime( '+23 Hours +59 Minutes +59 Seconds', $startTimestamp );
 	}
 
 	/**
 	 * Returns bookings ending at day of timestamp.
 	 *
-  	 * @param int                  $timestamp
+	 * @param int                  $timestamp
 	 * @param array<string, mixed> $customArgs WP_Query compatible args
 	 *
 	 * @return \CommonsBooking\Model\Booking[]

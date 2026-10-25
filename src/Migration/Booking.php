@@ -11,8 +11,7 @@ class Booking {
 	 *
 	 * @return int[]
 	 */
-	public static function migrate(): array
-	{
+	public static function migrate(): array {
 
 		$bookings = Timeframe::getPostIdsByType(
 			[
