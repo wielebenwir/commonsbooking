@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Model;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\RestrictionMessage;
@@ -263,10 +264,14 @@ class Restriction extends CustomPost {
 	/**
 	 * Returns itemId for the item that is restricted.
 	 *
-	 * @return mixed
+	 * @return ?int
 	 */
-	public function getItemId() {
-		return $this->getMeta( self::META_ITEM_ID );
+	public function getItemId(): ?int {
+		$itemIdField = $this->getMeta( self::META_ITEM_ID );
+		if ( empty( $itemIdField ) ) {
+			return null;
+		}
+		return intval( $itemIdField );
 	}
 
 	/**
@@ -357,17 +362,27 @@ class Restriction extends CustomPost {
 		$locationAdminIds = [];
 
 		try {
-			$location = \CommonsBooking\Repository\Location::getPostById( $this->getLocationId() );
-		} catch ( InvalidArgumentException | CacheException $e ) {
+			$locationId = $this->getLocationId();
+			if ( ! $locationId ) {
+				throw new PostException( 'no location available for restriction' );
+			}
+			$location = \CommonsBooking\Repository\Location::getPostById( $locationId );
+		} catch ( \CommonsBooking\Psr\Cache\InvalidArgumentException | \CommonsBooking\Psr\Cache\CacheException | PostException $e ) {
 			$location = null;
+			commonsbooking_write_log( 'Error occurred while fetching location for restriction: ' . $e->getMessage() );
 		}
 		if ( ! empty( $location ) ) {
 			$locationAdminIds = $location->getAdmins();
 		}
 		try {
-			$item = \CommonsBooking\Repository\Item::getPostById( $this->getItemId() );
-		} catch ( InvalidArgumentException | CacheException $e ) {
+			$itemId = $this->getItemId();
+			if ( ! $itemId ) {
+				throw new PostException( 'no item available for restriction' );
+			}
+			$item = \CommonsBooking\Repository\Item::getPostById( $itemId );
+		} catch ( \CommonsBooking\Psr\Cache\InvalidArgumentException | \CommonsBooking\Psr\Cache\CacheException | PostException $e ) {
 			$item = null;
+			commonsbooking_write_log( 'Error occurred while fetching item for restriction: ' . $e->getMessage() );
 		}
 		if ( ! empty( $item ) ) {
 			$itemAdminIds = $item->getAdmins();

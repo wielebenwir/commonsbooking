@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
@@ -80,12 +81,16 @@ abstract class Message {
 	/**
 	 * @param int    $postId
 	 * @param string $action
+	 * @throws PostException
 	 */
 	public function __construct( int $postId, string $action ) {
 		$this->postId = $postId;
 
 		global $post;
 		$post = $this->getPost();
+		if ( $post === null ) {
+			throw new PostException( 'postId for message not valid' );
+		}
 
 		$this->action = $action;
 	}
@@ -102,7 +107,7 @@ abstract class Message {
 	 *
 	 * @return string|null
 	 */
-	public function getTo() {
+	public function getTo(): array|string|null {
 		$recipient     = $this->to;
 		$messageAction = $this->getAction();
 		/**
@@ -129,7 +134,7 @@ abstract class Message {
 	 *
 	 * @return string|null
 	 */
-	public function getSubject() {
+	public function getSubject(): ?string {
 		$subject       = $this->subject;
 		$messageAction = $this->getAction();
 		/**
@@ -149,7 +154,7 @@ abstract class Message {
 	 *
 	 * @return string|null
 	 */
-	public function getBody() {
+	public function getBody(): ?string {
 		$body          = $this->body;
 		$messageAction = $this->getAction();
 		/**
@@ -269,7 +274,7 @@ abstract class Message {
 	/**
 	 * @return void
 	 */
-	abstract public function sendMessage();
+	abstract public function sendMessage(): bool;
 
 	/**
 	 * Only send mail if action is valid
@@ -283,9 +288,9 @@ abstract class Message {
 	}
 
 	/**
-	 * @return \WP_Post
+	 * @return \WP_Post|null
 	 */
-	public function getPost() {
+	public function getPost(): ?\WP_Post {
 		if ( $this->post == null ) {
 			$this->post = get_post( $this->getPostId() );
 		}
@@ -296,7 +301,7 @@ abstract class Message {
 	/**
 	 * @return int
 	 */
-	public function getPostId() {
+	public function getPostId(): int {
 		return $this->postId;
 	}
 

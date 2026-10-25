@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingDeniedException;
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
@@ -177,8 +178,16 @@ class Booking extends Timeframe {
 
 			// if we just created a new confirmed booking we trigger the confirmation mail
 			if ( $post_status == 'confirmed' ) {
-				$booking_msg = new BookingMessage( $post_id, $post_status );
-				$booking_msg->triggerMail();
+				try {
+					$booking_msg = new BookingMessage( $post_id, $post_status );
+					$booking_msg->triggerMail();
+				} catch ( PostException $e ) {
+					set_transient(
+						\CommonsBooking\Model\Booking::ERROR_TYPE,
+						nl2br( commonsbooking_sanitizeHTML( $e->getMessage() ) ),
+						30 // Expires very quickly, so that outdated messsages will not be shown to the user
+					);
+				}
 			}
 		}
 	}

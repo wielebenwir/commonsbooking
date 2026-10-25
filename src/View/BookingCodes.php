@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\View;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Settings\Settings;
 use CommonsBooking\CB\CB;
 use CommonsBooking\Exception\BookingCodeException;
@@ -103,7 +104,7 @@ class BookingCodes {
 	 *
 	 * @return array<string, int|string>|null Sanitized value to be stored.
 	 */
-	public static function sanitizeCronEmailCodes(?array $value, array $field_args, \CMB2_Field $field ): ?array {
+	public static function sanitizeCronEmailCodes( ?array $value, array $field_args, \CMB2_Field $field ): ?array {
 		if ( $value == null ) {
 			return null;
 		}
@@ -134,7 +135,7 @@ class BookingCodes {
 	 *
 	 * @return array<string, int|string>      Escaped value to be displayed.
 	 */
-	public static function escapeCronEmailCodes(?array $value, array $field_args, \CMB2_Field $field ): array {
+	public static function escapeCronEmailCodes( ?array $value, array $field_args, \CMB2_Field $field ): array {
 
 		if ( is_array( $value ) ) {
 			return array(
@@ -165,7 +166,7 @@ class BookingCodes {
 	 *
 	 * @return void
 	 */
-	public static function renderCronEmailFields(\CMB2_Field $field, array|string $escaped_value, int $object_id, string $object_type, \CMB2_Types $field_type ): void {
+	public static function renderCronEmailFields( \CMB2_Field $field, array|string $escaped_value, int $object_id, string $object_type, \CMB2_Types $field_type ): void {
 
 		$timeframeId = $object_id;
 		$timeframe   = new Timeframe( $timeframeId );
@@ -557,8 +558,12 @@ HTML;
 			2
 		);
 
-		$booking_msg = new BookingCodesMessage( $timeframeId, 'codes', $tsFrom, $tsTo );
-		$booking_msg->sendMessage();
+		try {
+			$booking_msg = new BookingCodesMessage( $timeframeId, 'codes', $tsFrom, $tsTo );
+			$booking_msg->sendMessage();
+		} catch ( PostException $e ) {
+			set_transient( BookingCode::ERROR_TYPE, __( 'Error sending booking codes', 'commonsbooking' ) );
+		}
 
 		// this should never happen
 		wp_die(

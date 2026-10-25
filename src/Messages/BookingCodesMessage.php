@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Settings\Settings;

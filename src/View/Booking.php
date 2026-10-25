@@ -3,6 +3,7 @@
 namespace CommonsBooking\View;
 
 use CommonsBooking\CB\CB;
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Psr\Cache\CacheException;
 use CommonsBooking\Psr\Cache\InvalidArgumentException;
 use CommonsBooking\Repository\Timeframe;
@@ -528,7 +529,16 @@ class Booking extends View {
 		$calendar = new iCalendar();
 
 		foreach ( $bookingList['data'] as $bookingData ) {
-			$booking = \CommonsBooking\Repository\Booking::getPostById( $bookingData['postID'] );
+			try {
+				$postId = $bookingData['postID'];
+				if ( ! $postId ) {
+					throw new PostException( 'no post ID found for this booking.' );
+				}
+				$booking = \CommonsBooking\Repository\Booking::getPostById( $postId );
+			} catch ( \Exception $e ) {
+				commonsbooking_write_log( 'booking excluded from iCalendar feed: ' . $e->getMessage() );
+				continue;
+			}
 			if ( ! $booking->isConfirmed() ) {
 				continue;
 			}
