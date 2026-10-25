@@ -3,6 +3,8 @@
 namespace CommonsBooking\Messages;
 
 use CommonsBooking\Model\MessageRecipient;
+use CommonsBooking\Psr\Cache\CacheException;
+use CommonsBooking\Psr\Cache\InvalidArgumentException;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Settings\Settings;
 
@@ -22,12 +24,22 @@ class BookingReminderMessage extends Message {
 	/**
 	 * Sends reminder message.
 	 *
-	 * @return void
+	 * @return bool
 	 * @throws \Exception
 	 */
-	public function sendMessage(): void {
+	public function sendMessage(): bool {
 		/** @var \CommonsBooking\Model\Booking $booking */
-		$booking      = Booking::getPostById( $this->getPostId() );
+		try {
+			$booking = Booking::getPostById( $this->getPostId() );
+		} catch ( InvalidArgumentException | CacheException $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error retrieving booking for reminder message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 		$booking_user = get_userdata( (int) $this->getPost()->post_author );
 
 		// get templates from Admin Options
@@ -62,5 +74,6 @@ class BookingReminderMessage extends Message {
 			]
 		);
 		$this->sendNotificationMail();
+		return true;
 	}
 }

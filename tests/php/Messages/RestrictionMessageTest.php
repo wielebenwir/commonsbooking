@@ -12,7 +12,7 @@ class RestrictionMessageTest extends Email_Test_Case {
 	const RESTRICION_REPAIR_NAME = 'Test Restriction (Repair)';
 
 	private $hintMessageText;
-	private $hintMessage;
+	private RestrictionMessage $hintMessage;
 	private $hintId;
 
 	private $repairMessageText;

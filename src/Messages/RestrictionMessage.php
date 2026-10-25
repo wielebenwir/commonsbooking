@@ -59,74 +59,105 @@ class RestrictionMessage extends Message {
 	/**
 	 * Sends mails related to restriction type and state.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function sendMessage(): void {
+	public function sendMessage(): bool {
 		if ( $this->getRestriction()->isActive() ) {
 			if ( $this->getRestriction()->getType() == Restriction::TYPE_HINT ) {
 				// send hint mail
-				$this->sendHintMail();
+				return $this->sendHintMail();
 			} else {
 				// Send repair mail
-				$this->sendRepairMail();
+				return $this->sendRepairMail();
 			}
-		}
-
-		if ( $this->getRestriction()->isCancelled() ) {
+		} elseif ( $this->getRestriction()->isCancelled() ) {
 			// send restriction cancellation
-			$this->sendRestrictionCancelationMail();
+			return $this->sendRestrictionCancelationMail();
 		}
 	}
 
 	/**
 	 * Sends hint mail.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	protected function sendHintMail(): void {
+	protected function sendHintMail(): bool {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-body' );
 		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject', 'sanitize_text_field' );
 
-		$this->prepareRestrictionMail(
-			$body,
-			$subject
-		);
+		try {
+			$this->prepareRestrictionMail(
+				$body,
+				$subject
+			);
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing hint mail for restriction message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		$this->sendNotificationMail();
+		return true;
 	}
 
 	/**
 	 * Sends repair mail.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	protected function sendRepairMail(): void {
+	protected function sendRepairMail(): bool {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-body' );
 		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-subject', 'sanitize_text_field' );
 
-		$this->prepareRestrictionMail(
-			$body,
-			$subject
-		);
+		try {
+			$this->prepareRestrictionMail(
+				$body,
+				$subject
+			);
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing repair mail for restriction message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		$this->sendNotificationMail();
+		return true;
 	}
 
 	/**
 	 * Sends mail, when restriction is canceled (not active).
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	protected function sendRestrictionCancelationMail(): void {
+	protected function sendRestrictionCancelationMail(): bool {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-body' );
 		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-subject', 'sanitize_text_field' );
 
-		$this->prepareRestrictionMail(
-			$body,
-			$subject
-		);
+		try {
+			$this->prepareRestrictionMail(
+				$body,
+				$subject
+			);
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing restriction cancellation mail for restriction message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		$this->sendNotificationMail();
+		return true;
 	}
 
 	/**

@@ -272,7 +272,7 @@ abstract class Message {
 	}
 
 	/**
-	 * @return void
+	 * @return bool
 	 */
 	abstract public function sendMessage(): bool;
 
