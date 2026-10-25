@@ -151,7 +151,7 @@ class BookingCodesMessage extends Message {
 	 *
 	 * @return void
 	 */
-	public function updateEmailSent( $action, $result ) {
+	public function updateEmailSent( string $action, bool $result ): void {
 		if ( $this->action != $action ) {
 			return;
 		}

@@ -61,5 +61,10 @@ abstract class PostRepository {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed> $args
+	 *
+	 * @return array<int, int|WP_Post|\CommonsBooking\Model\CustomPost>
+	 */
 	abstract public static function get( array $args = array() ): array;
 }

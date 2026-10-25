@@ -387,7 +387,7 @@ class Restriction extends CustomPostType {
 	/**
 	 * Returns custom (meta) fields for Costum Post Type Timeframe.
 	 *
-	 * @return array
+	 * @return array<int, array<string, mixed>>
 	 */
 	protected function getCustomFields(): array {
 		// We need static types, because german month names dont't work for datepicker

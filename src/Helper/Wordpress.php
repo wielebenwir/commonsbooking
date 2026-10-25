@@ -75,7 +75,7 @@ class Wordpress {
 	 *
 	 * @param int $postId
 	 *
-	 * @return array|string[]
+	 * @return string[]
 	 */
 	public static function getRelatedPostIds( int $postId ): array {
 		$postIds = [];
