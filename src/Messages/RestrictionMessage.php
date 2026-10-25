@@ -73,6 +73,8 @@ class RestrictionMessage extends Message {
 		} elseif ( $this->getRestriction()->isCancelled() ) {
 			// send restriction cancellation
 			return $this->sendRestrictionCancelationMail();
+		} else {
+			return false;
 		}
 	}
 
