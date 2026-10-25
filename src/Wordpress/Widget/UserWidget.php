@@ -7,6 +7,8 @@ use WP_Widget;
 
 /**
  * Class provides the commonsbooking user widget
+ *
+ * @extends WP_Widget
  */
 class UserWidget extends WP_Widget {
 

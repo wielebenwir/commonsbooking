@@ -227,7 +227,7 @@ class Timeframe extends PostRepository {
 	 * @param bool                 $asModel
 	 * @param array<string, mixed> $customArgs WP_Query compatible args array
 	 *
-	 * @return array An array with the keys 'posts', 'totalPages' and 'done' (bool) to indicate if there are more posts to fetch
+	 * @return array{posts: int[]|\WP_Post[]|\CommonsBooking\Model\Timeframe[], totalPages: int, totalPosts: int, done: bool} An array with the keys 'posts', 'totalPages' and 'done' (bool) to indicate if there are more posts to fetch
 	 */
 	public static function getInRangePaginated(
 		int $minTimestamp,
@@ -361,6 +361,10 @@ class Timeframe extends PostRepository {
 			$locations = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
 			$types     = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
+			/**
+			 * @var array<int, int> $items
+			 * @var array<int, int> $locations
+			 */
 			$itemQuery = '';
 			if ( count( $items ) > 0 ) {
 				$itemQuery = self::getEntityQuery(

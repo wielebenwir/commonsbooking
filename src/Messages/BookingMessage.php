@@ -18,7 +18,7 @@ class BookingMessage extends Message {
 	 *
 	 * @var string[]
 	 */
-	protected $validActions = [ 'confirmed', 'canceled' ];
+	protected array $validActions = [ 'confirmed', 'canceled' ];
 
 	/**
 	 * @return bool

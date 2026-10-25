@@ -27,19 +27,19 @@ class Week {
 	protected string|int $dayOfYear;
 
 	/**
-	 * @var array
+	 * @var array<int, int|\WP_Post>
 	 */
-	protected $locations;
+	protected array $locations;
 
 	/**
-	 * @var array
+	 * @var array<int, int|\WP_Post>
 	 */
-	protected $items;
+	protected array $items;
 
 	/**
-	 * @var array
+	 * @var array<int, int>
 	 */
-	protected $types;
+	protected array $types;
 
 	/**
 	 * @var Timeframe[]
@@ -49,14 +49,14 @@ class Week {
 	/**
 	 * Week constructor.
 	 *
-	 * @param $year
-	 * @param $dayOfYear
-	 * @param array       $locations
-	 * @param array       $items
-	 * @param array       $types
-	 * @param Timeframe[] $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
+	 * @param int|string|null          $year
+	 * @param int|string               $dayOfYear
+	 * @param array<int, int|\WP_Post> $locations
+	 * @param array<int, int|\WP_Post> $items
+	 * @param array<int, int>          $types
+	 * @param Timeframe[]              $possibleTimeframes Timeframes that might be relevant for this week, need to be filtered.
 	 */
-	public function __construct( $year, $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
+	public function __construct( int|string|null $year, int|string $dayOfYear, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
 		if ( $year === null ) {
 			$year = date( 'Y' );
 		}

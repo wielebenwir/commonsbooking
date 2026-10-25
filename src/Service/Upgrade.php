@@ -36,7 +36,7 @@ class Upgrade {
 	 *
 	 * This is so that once the upgrade from a specific version has been run, it will not be run again.
 	 *
-	 * @var array[]
+	 * @var array<string, list<array{0: class-string, 1: string}>>
 	 */
 	private static array $upgradeTasks = [
 		'2.6.0' => [
@@ -74,7 +74,7 @@ class Upgrade {
 	 *
 	 * ATTENTION: These tasks will be ignored upon new installations.
 	 *
-	 * @var array|array[]
+	 * @var array<string, list<array{0: class-string, 1: string}>>
 	 */
 	private static array $ajaxUpgradeTasks = [
 		'2.8.5' => [
@@ -176,11 +176,11 @@ class Upgrade {
 	/**
 	 * Returns an array of tasks that need to be run for this upgrade.
 	 *
-	 * @param $upgradeTasks - An associative array with the version as key and the tasks as value (array of tasks).
+	 * @param array<string, list<array{0: class-string, 1: string}>> $upgradeTasks - An associative array with the version as key and the tasks as value (array of tasks).
 	 *
-	 * @return array
+	 * @return list<array{0: class-string, 1: string}>
 	 */
-	private function getTasksForUpgrade( $upgradeTasks ): array {
+	private function getTasksForUpgrade( array $upgradeTasks ): array {
 		$tasks = [];
 		foreach ( $upgradeTasks as $version => $versionTasks ) {
 			if ( version_compare( $this->previousVersion, $version, '<' ) && version_compare( $this->currentVersion, $version, '>=' ) ) {

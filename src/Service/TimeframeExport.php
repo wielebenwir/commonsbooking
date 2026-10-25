@@ -522,9 +522,9 @@ class TimeframeExport {
 	 * @param string $start Start date as datestring
 	 * @param string $end End date as datestring
 	 *
-	 * @return DatePeriod
+	 * @return DatePeriod<\DateTime, \DateTime, int>
 	 */
-	protected static function getPeriod( $start, $end ) {
+	protected static function getPeriod( string $start, string $end ): DatePeriod {
 		// Timerange
 		$begin = Wordpress::getUTCDateTime( $start );
 		$end   = Wordpress::getUTCDateTime( $end );
@@ -561,7 +561,7 @@ class TimeframeExport {
 	 *
 	 * @param int[] $timeframeIDs Array of timeframe post IDs
 	 *
-	 * @return array
+	 * @return array<int, array<string, mixed>>
 	 */
 	public static function getTimeframeData( array $timeframeIDs ): array {
 
@@ -659,7 +659,7 @@ class TimeframeExport {
 	 *
 	 * @param \CommonsBooking\Model\Timeframe $timeframe The timeframe object to process
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	protected static function getRelevantTimeframeFields( \CommonsBooking\Model\Timeframe $timeframe ): array {
 		$postArray               = get_object_vars( $timeframe->getPost() );

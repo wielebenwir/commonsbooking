@@ -64,13 +64,13 @@ class Restriction extends PostRepository {
 	 * Queries restriction posts from db.
 	 * Only queries active restrictions.
 	 *
-	 * @param $date
-	 * @param $minTimestamp int checks if rep-end > minTimestamp (0:00)
-	 * @param $postStatus
+	 * @param string|null $date
+	 * @param int|null    $minTimestamp checks if rep-end > minTimestamp (0:00)
+	 * @param string[]    $postStatus
 	 *
-	 * @return array|object|null
+	 * @return array<int, \stdClass>|null
 	 */
-	private static function queryPosts( $date, $minTimestamp, $postStatus ) {
+	private static function queryPosts( ?string $date, ?int $minTimestamp, array $postStatus ) {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -91,7 +91,7 @@ class Restriction extends PostRepository {
 
 			// Complete query
 			$query = "
-                SELECT DISTINCT pm1.* from $table_posts pm1                
+                SELECT DISTINCT pm1.* from $table_posts pm1
                 " . $dateQuery . '
                 ' . self::getActiveQuery() . "
                 WHERE
@@ -121,13 +121,13 @@ class Restriction extends PostRepository {
 			"
                 INNER JOIN $table_postmeta pm4 ON
                     pm4.post_id = pm1.id AND (
-                        ( 
+                        (
                             pm4.meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "' AND
                             pm4.meta_value > %d
                         ) OR
                         (
                             pm1.id not in (
-                                SELECT post_id FROM $table_postmeta 
+                                SELECT post_id FROM $table_postmeta
                                 WHERE
                                     meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "'
                             )
@@ -162,12 +162,12 @@ class Restriction extends PostRepository {
                         ) OR
                         (
                             pm1.id not in (
-                                SELECT post_id FROM $table_postmeta 
-                                WHERE 
+                                SELECT post_id FROM $table_postmeta
+                                WHERE
                                     meta_key = '" . \CommonsBooking\Model\Restriction::META_END . "'
                             )
                         )
-                    )                        
+                    )
             ",
 			strtotime( $date . 'T23:59' ),
 			strtotime( $date )
@@ -184,7 +184,7 @@ class Restriction extends PostRepository {
 		$table_postmeta = $wpdb->prefix . 'postmeta';
 
 		return "INNER JOIN $table_postmeta pm2 ON
-            pm2.post_id = pm1.id AND (                         
+            pm2.post_id = pm1.id AND (
                 pm2.meta_key = '" . \CommonsBooking\Model\Restriction::META_STATE . "' AND
                 pm2.meta_value = '" . \CommonsBooking\Model\Restriction::STATE_ACTIVE . "'
             )";

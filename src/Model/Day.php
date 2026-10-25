@@ -265,8 +265,8 @@ class Day {
 	 * Returns end-slot id.
 	 *
 	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots
-	 * @param int                                                                                                      $grid
-	 * @param \CommonsBooking\Model\Timeframe                                                                          $timeframe
+	 * @param int                                                                                                                            $grid
+	 * @param \CommonsBooking\Model\Timeframe                                                                                                $timeframe
 	 *
 	 * @return float|int
 	 * @throws Exception
@@ -299,8 +299,8 @@ class Day {
 	 * Returns end slot for restriction.
 	 *
 	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots
-	 * @param int                                                                                                      $grid
-	 * @param Restriction                                                                                              $restriction
+	 * @param int                                                                                                                            $grid
+	 * @param Restriction                                                                                                                    $restriction
 	 *
 	 * @return float|int
 	 * @throws Exception

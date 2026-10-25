@@ -6,9 +6,14 @@ namespace CommonsBooking\Map;
  * Short code for a multi-widget with map, search and table capabilities.
  */
 class SearchShortcode extends BaseShortcode {
-	protected $processed_map_ids = [];
+	/** @var array<int, int> ids of the map posts whose assets were already created on this page. */
+	protected array $processed_map_ids = [];
 
-	protected function parse_attributes( $atts ) {
+	/**
+	 * @param array<string|int, string> $atts attributes for parametrization.
+	 * @return array parsed attributes, at least containing the `id` key.
+	 */
+	protected function parse_attributes( array $atts ): array {
 		return shortcode_atts(
 			[
 				'id' => null,
@@ -84,7 +89,15 @@ class SearchShortcode extends BaseShortcode {
 	}
 }
 
-function pop_key( &$array, $key ) {
+/**
+ * Removes a key from the given array and returns its value.
+ *
+ * @template TValue
+ * @param array<string, TValue> $array the array to remove the key from (by reference).
+ * @param string                $key the key to remove.
+ * @return TValue the value that was stored under the given key.
+ */
+function pop_key( array &$array, string $key ) {
 	$value = $array[ $key ];
 	unset( $array[ $key ] );
 	return $value;

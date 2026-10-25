@@ -425,7 +425,7 @@ class Restriction extends CustomPost {
 	 *
 	 * @return void
 	 */
-	protected function sendRestrictionMails( $bookings ): void {
+	protected function sendRestrictionMails( array $bookings ): void {
 		foreach ( $bookings as $key => $booking ) {
 			// get User ID from booking
 			$user = $booking->getUserData();

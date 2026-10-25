@@ -97,13 +97,12 @@ class Helper {
 	 * Returns CB custom post type if possible.
 	 *
 	 * @param \WP_User|\WP_Post|CustomPost $post
-	 * @param string $type a CPT name, if nothing, the post is returned
+	 * @param string                       $type a CPT name, if nothing, the post is returned
 	 *
 	 * @return Item|Booking|\WP_User|Location|\WP_Post|CustomPost
 	 * @throws \Exception
 	 */
-	public static function castToCBCustomType(\WP_User|\WP_Post|\CommonsBooking\Model\CustomPost $post, string $type ): Item|Booking|\WP_User|Location|\WP_Post|\CommonsBooking\Model\CustomPost
-	{
+	public static function castToCBCustomType( \WP_User|\WP_Post|\CommonsBooking\Model\CustomPost $post, string $type ): Item|Booking|\WP_User|Location|\WP_Post|\CommonsBooking\Model\CustomPost {
 		if ( $type == \CommonsBooking\Wordpress\CustomPostType\Booking::$postType ) {
 			$post = new Booking( $post->ID );
 		}

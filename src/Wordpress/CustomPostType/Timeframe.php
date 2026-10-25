@@ -86,7 +86,7 @@ class Timeframe extends CustomPostType {
 	 */
 	protected $menuPosition = 1;
 	/**
-	 * @var array
+	 * @var array<int|string, string>
 	 */
 	protected $types;
 
@@ -112,7 +112,7 @@ class Timeframe extends CustomPostType {
 	 *
 	 * @param bool $includeAll - When toggled, will include the "All" Option as a selection option
 	 *
-	 * @return array
+	 * @return array<int|string, string>
 	 */
 	public static function getTypes( bool $includeAll = false ): array {
 		$typeOptions = [];
@@ -135,7 +135,12 @@ class Timeframe extends CustomPostType {
 		return $typeOptions;
 	}
 
-	public static function getSimilarPostTypes() {
+	/**
+	 * Returns the post types whose posts are similar to timeframes.
+	 *
+	 * @return String[]
+	 */
+	public static function getSimilarPostTypes(): array {
 		return [
 			self::$postType,
 			Booking::$postType,
@@ -450,9 +455,9 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns custom (meta) fields for Costum Post Type Timeframe.
 	 *
-	 * @return array
+	 * @return array<int, array<string, mixed>>
 	 */
-	protected function getCustomFields() {
+	protected function getCustomFields(): array {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = 'd/m/Y';
 		if ( str_starts_with( get_locale(), 'de_' ) ) {
@@ -808,9 +813,9 @@ class Timeframe extends CustomPostType {
 	 * Get allowed timeframe types for selection box in timeframe editor
 	 * TODO: can be removed if type cleanup has been done (e.g. move BOOKIG_ID to Booking-Class and rename existing types )
 	 *
-	 * @return array
+	 * @return array<int|string, string>
 	 */
-	public static function getTypesforSelectField() {
+	public static function getTypesforSelectField(): array {
 		$types = self::getTypes();
 
 		// remove unused types
@@ -826,7 +831,7 @@ class Timeframe extends CustomPostType {
 	/**
 	 * Returns style of item / location selection
 	 *
-	 * @return array
+	 * @return array<int, string>
 	 */
 	public static function getSelectionOptions(): array {
 		$selection = [ \CommonsBooking\Model\Timeframe::SELECTION_MANUAL_ID => esc_html__( 'Manual selection', 'commonsbooking' ) ];

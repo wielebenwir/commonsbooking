@@ -19,7 +19,7 @@ class LocationBookingReminderMessage extends Message {
 	/**
 	 * @var array|string[]
 	 */
-	protected $validActions = [ 'booking-start-location-reminder', 'booking-end-location-reminder' ];
+	protected array $validActions = [ 'booking-start-location-reminder', 'booking-end-location-reminder' ];
 
 	/**
 	 * Sends reminder message.

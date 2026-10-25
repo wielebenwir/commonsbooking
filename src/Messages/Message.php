@@ -18,49 +18,49 @@ abstract class Message {
 	 *
 	 * @var string[]
 	 */
-	protected $validActions = [];
+	protected array $validActions = [];
 
 	/**
 	 * The action that is used for this message. Needs to be contained in $validActions
 	 *
 	 * @var string
 	 */
-	protected $action;
+	protected string $action;
 
 	/**
 	 * The post that this message is about
 	 *
 	 * @var \WP_Post|null
 	 */
-	protected $post;
+	protected ?\WP_Post $post = null;
 
 	/**
 	 * The recipient(s) of this message
 	 *
 	 * @var string
 	 */
-	protected $to;
+	protected string $to;
 
 	/**
 	 * The e-mail headers
 	 *
 	 * @var string[]
 	 */
-	protected $headers;
+	protected array $headers;
 
 	/**
 	 * The subject text of this message
 	 *
 	 * @var string
 	 */
-	protected $subject;
+	protected string $subject;
 
 	/**
 	 * The body text of this message
 	 *
 	 * @var string
 	 */
-	protected $body;
+	protected string $body;
 
 	/**
 	 * An associative array of a string attachment.
@@ -76,7 +76,7 @@ abstract class Message {
 	/**
 	 * @var int
 	 */
-	private $postId;
+	private int $postId;
 
 	/**
 	 * @param int    $postId
@@ -103,9 +103,9 @@ abstract class Message {
 	}
 
 	/**
-	 * Returns recipient address of the message.
+	 * Returns recipient addresses of the message.
 	 *
-	 * @return string|null
+	 * @return string[] | string | null
 	 */
 	public function getTo(): array|string|null {
 		$recipient     = $this->to;

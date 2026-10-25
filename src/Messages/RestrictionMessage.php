@@ -24,7 +24,7 @@ class RestrictionMessage extends Message {
 	 */
 	protected Restriction $restriction;
 
-	protected $action;
+	protected string $action;
 
 	/**
 	 * @var Booking
@@ -36,7 +36,7 @@ class RestrictionMessage extends Message {
 	/**
 	 * @var string[]
 	 */
-	protected $validActions = [
+	protected array $validActions = [
 		Restriction::TYPE_REPAIR,
 		Restriction::TYPE_HINT,
 	];

@@ -77,13 +77,13 @@ class BookingRule {
 	/**
 	 * The constructor for BookingRules before they are applied
 	 *
-	 * @param String                                                $name The name of the rule, needs to be unique and is used to identify the rule in the code
-	 * @param String                                                $title The title of the rule, will be shown to the configuration admin
-	 * @param String                                                $description A detailed description of the rule, will be shown to the configuration admin
-	 * @param String                                                $errorMessage The static error message that will be shown to the booking user if the rule is not met
-	 * @param Closure                                               $validationFunction The function that will be called to validate the rule. This is a closure that takes a Booking object, the passed args and an array of the selected terms as arguments
-	 * @param array<int, array{title: string, description: string}> $params Array of associative arrays in which the key "title" is the title of the parameter and "description" is the description of the parameter. Only 2 parameters are currently supported. They have to be integer values.
-	 * @param array{0: string, 1: array<int|string, int|string>}|array{}   $selectParam Array where first element is the description of the select field and the second element is an associative array of the select options
+	 * @param String                                                     $name The name of the rule, needs to be unique and is used to identify the rule in the code
+	 * @param String                                                     $title The title of the rule, will be shown to the configuration admin
+	 * @param String                                                     $description A detailed description of the rule, will be shown to the configuration admin
+	 * @param String                                                     $errorMessage The static error message that will be shown to the booking user if the rule is not met
+	 * @param Closure                                                    $validationFunction The function that will be called to validate the rule. This is a closure that takes a Booking object, the passed args and an array of the selected terms as arguments
+	 * @param array<int, array{title: string, description: string}>      $params Array of associative arrays in which the key "title" is the title of the parameter and "description" is the description of the parameter. Only 2 parameters are currently supported. They have to be integer values.
+	 * @param array{0: string, 1: array<int|string, int|string>}|array{} $selectParam Array where first element is the description of the select field and the second element is an associative array of the select options
 	 *
 	 * @throws BookingRuleException
 	 */
@@ -349,7 +349,7 @@ class BookingRule {
 	 *
 	 * @param Booking                     $booking
 	 * @param array<int, int|string|null> $args the three arguments that can be passed to the rule, when none are defined, the keys still exist but the value is null
-	 * @param bool|string[] $appliedTerms
+	 * @param bool|string[]               $appliedTerms
 	 *
 	 * @return Booking[]|null
 	 * @throws Exception

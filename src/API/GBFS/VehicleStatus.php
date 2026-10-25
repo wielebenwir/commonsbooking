@@ -33,7 +33,7 @@ class VehicleStatus extends BaseRoute {
 
 	/**
 	 * @param \CommonsBooking\Model\Item $item
-	 * @param $request
+	 * @param \WP_REST_Request           $request
 	 *
 	 * @return WP_REST_Response
 	 * @throws \Exception
