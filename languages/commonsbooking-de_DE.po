@@ -1147,7 +1147,7 @@ msgstr "Der Dienst ist derzeit nicht verfügbar. Versuche  später erneut."
 msgid "comming soon"
 msgstr "Bald verfügbar"
 
-#: src/Messages/Message.php:208
+#: src/Messages/Message.php:207
 msgid "Could not send email because mail-template was not available. Check options -> templates"
 msgstr "E-Mail konnte nicht gesendet werden, da keine E-Mail-Vorlage verfügbar war. Optionen überprüfen -> Vorlagen"
 
