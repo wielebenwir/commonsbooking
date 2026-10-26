@@ -120,6 +120,44 @@ function commonsbooking_admin() {
 			'nonce'    => wp_create_nonce( 'cb_get_booking_code' ),
 		)
 	);
+
+	/**
+	 * Ajax - create demo data (onboarding button on the dashboard)
+	 */
+	wp_localize_script(
+		'cb-scripts-admin',
+		'cb_ajax_demo_data',
+		array(
+			'ajax_url'      => admin_url( 'admin-ajax.php' ),
+			'nonce'         => wp_create_nonce( 'cb_create_demo_data' ),
+			'creating_text' => __( 'Creating demo data…', 'commonsbooking' ),
+			'success_text'  => __( 'Demo data created! Redirecting…', 'commonsbooking' ),
+			'error_text'    => __( 'An error occurred. Please try again.', 'commonsbooking' ),
+		)
+	);
+
+	wp_add_inline_script(
+		'cb-scripts-admin',
+		'jQuery(document).ready(function($){
+			$("#cb-create-demo-data").on("click",function(){
+				var $btn=$(this),$status=$("#cb-demo-data-status");
+				$btn.prop("disabled",true);
+				$status.text(cb_ajax_demo_data.creating_text);
+				$.post(cb_ajax_demo_data.ajax_url,{action:"cb_create_demo_data",nonce:cb_ajax_demo_data.nonce},function(response){
+					if(response.success){
+						$status.text(cb_ajax_demo_data.success_text);
+						setTimeout(function(){window.location.href=response.data.redirect_url;},1200);
+					}else{
+						$status.text((response.data&&response.data.message)||cb_ajax_demo_data.error_text);
+						$btn.prop("disabled",false);
+					}
+				}).fail(function(){
+					$status.text(cb_ajax_demo_data.error_text);
+					$btn.prop("disabled",false);
+				});
+			});
+		});'
+	);
 }
 
 add_action( 'admin_enqueue_scripts', 'commonsbooking_admin' );
