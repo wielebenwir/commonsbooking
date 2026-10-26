@@ -591,7 +591,7 @@ class TimeframeExport {
 
 			// Grid option
 			$gridOptions           = \CommonsBooking\Wordpress\CustomPostType\Timeframe::getGridOptions();
-			$gridOptionId          = $timeframePost->getGrid();
+			$gridOptionId          = $timeframePost->getMeta( 'grid' );
 			$timeframeData['grid'] = array_key_exists( $gridOptionId, $gridOptions ) ?
 				$gridOptions[ $gridOptionId ] : __( 'Unknown', 'commonsbooking' );
 

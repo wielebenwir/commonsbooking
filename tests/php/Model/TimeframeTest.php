@@ -516,6 +516,49 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertTrue( $isOverlapping->isValid() );
 	}
 
+	public function testIsValidRejectsUnalignedFractionalGrid() {
+		$location  = $this->createLocation( 'Fractional grid location', 'publish' );
+		$item      = $this->createItem( 'Fractional grid item', 'publish' );
+		$timeframe = new Timeframe(
+			$this->createTimeframe(
+				$location,
+				$item,
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'off',
+				'd',
+				'0.5',
+				'09:15 AM',
+				'10:15 AM'
+			)
+		);
+
+		$this->expectException( TimeframeInvalidException::class );
+		$this->expectExceptionMessage( 'Start and end times must align with the selected grid.' );
+		$timeframe->isValid();
+	}
+
+	public function testIsValidSkipsUnsetFractionalGridBoundary() {
+		$location  = $this->createLocation( 'Fractional grid location without start time', 'publish' );
+		$item      = $this->createItem( 'Fractional grid item without start time', 'publish' );
+		$timeframe = new Timeframe(
+			$this->createTimeframe(
+				$location,
+				$item,
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'off',
+				'd',
+				'0.5',
+				null,
+				'10:00 AM'
+			)
+		);
+
+		$this->assertTrue( $timeframe->isValid() );
+	}
 	public function testIsUserPrivileged() {
 		$this->createSubscriber();
 		$this->createCBManager();
@@ -1042,6 +1085,51 @@ class TimeframeTest extends CustomPostTypeTest {
 			)
 		);
 		$this->assertEquals( 1, $hourlyBookable->getGridSize() );
+
+		$quarterHourlyBookable = new Timeframe(
+			$this->createTimeframe(
+				$this->locationId,
+				$this->itemId,
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+				'',
+				'd',
+				'0.25',
+				'08:00 AM',
+				'10:00 AM',
+			)
+		);
+		$this->assertSame( 0.25, $quarterHourlyBookable->getGrid() );
+		$this->assertSame( 0.25, $quarterHourlyBookable->getGridSize() );
+	}
+
+	public function testGetGridMinutes() {
+		foreach (
+			[
+				0      => 0,
+				'0.25' => 15,
+				'0.5'  => 30,
+				1      => 60,
+			] as $grid => $expectedMinutes
+		) {
+			$timeframe = new Timeframe(
+				$this->createTimeframe(
+					$this->locationId,
+					$this->itemId,
+					strtotime( self::CURRENT_DATE ),
+					strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+					\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+					'off',
+					'd',
+					$grid,
+					'08:00 AM',
+					'10:00 AM',
+				)
+			);
+
+			$this->assertSame( $expectedMinutes, $timeframe->getGridMinutes() );
+		}
 	}
 
 	public function testGetAdmins() {
