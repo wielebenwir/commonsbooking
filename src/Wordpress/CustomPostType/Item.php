@@ -285,9 +285,10 @@ class Item extends CustomPostType {
 			$cmb->add_field(
 				array(
 					'name' => esc_html__( 'Exclude from API', 'commonsbooking' ),
-					'desc' => esc_html__( 'When this box is checked, the item will not appear in any of the API shares.', 'commonsbooking' ),
+					'desc' => esc_html__( 'When this box is checked, the item will not appear in any of the Commons API shares or the GBFS API.', 'commonsbooking' ),
 					'id' => COMMONSBOOKING_METABOX_PREFIX . 'api_exclude',
 					'type' => 'checkbox',
+					'show_on_cb' => fn() => Settings::getOption( 'commonsbooking_options_api', 'api-activated' ) === 'on',
 				)
 			);
 		}
