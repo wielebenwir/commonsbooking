@@ -437,6 +437,8 @@ class Day {
 				$timeframePost         = $timeframe->getPost();
 				$timeframePost->locked = $timeframe->isLocked();
 
+				// TODO: Check if this check is necessary
+				// @phpstan-ignore-next-line
 				if ( ! array_key_exists( 'timeframe', $slots[ $startSlot ] ) || ! $slots[ $startSlot ]['timeframe'] ) {
 					$slots[ $startSlot ]['timeframe'] = $timeframePost;
 				} else {

@@ -38,7 +38,7 @@ class Restriction extends PostRepository {
 		} else {
 			$posts = self::queryPosts( $date, $minTimestamp, $postStatus );
 
-			if ( $posts && count( $posts ) ) {
+			if ( $posts ) {
 				$posts = Wordpress::flattenWpdbResult( $posts );
 
 				// If there are locations or items to be filtered, we iterate through
