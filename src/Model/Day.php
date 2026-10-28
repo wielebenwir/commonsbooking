@@ -180,7 +180,7 @@ class Day {
 	 * Returns grid for the day defined by the timeframes.
 	 *
 	 * @see Day::getTimeframeSlots()
-	 * @return array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}>
+	 * @return array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}>
 	 * @throws Exception
 	 */
 	public function getGrid(): array {
@@ -264,9 +264,9 @@ class Day {
 	/**
 	 * Returns end-slot id.
 	 *
-	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots
-	 * @param int                                                                                                                            $grid
-	 * @param \CommonsBooking\Model\Timeframe                                                                                                $timeframe
+	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}> $slots
+	 * @param int                                                                                                                      $grid
+	 * @param \CommonsBooking\Model\Timeframe                                                                                          $timeframe
 	 *
 	 * @return float|int
 	 * @throws Exception
@@ -298,9 +298,9 @@ class Day {
 	/**
 	 * Returns end slot for restriction.
 	 *
-	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots
-	 * @param int                                                                                                                            $grid
-	 * @param Restriction                                                                                                                    $restriction
+	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}> $slots
+	 * @param int                                                                                                                      $grid
+	 * @param Restriction                                                                                                              $restriction
 	 *
 	 * @return float|int
 	 * @throws Exception
@@ -418,7 +418,7 @@ class Day {
 	/**
 	 * Maps timeframes to timeslots.
 	 *
-	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots untyped structure of timeframe slot information
+	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}> $slots untyped structure of timeframe slot information
 	 *
 	 * @throws Exception
 	 */
@@ -453,7 +453,7 @@ class Day {
 	/**
 	 * Overwrites restricted slots
 	 *
-	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots
+	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}> $slots
 	 *
 	 * @throws Exception
 	 */
@@ -473,8 +473,9 @@ class Day {
 				// Add timeframe to relevant slots
 				while ( $startSlot < $endSlot ) {
 					// Set locked property
-					$restrictionPost                  = $restriction->getPost();
-					$restrictionPost->locked          = true;
+					$restrictionPost         = $restriction->getPost();
+					$restrictionPost->locked = true;
+					// @phpstan-ignore parameterByRef.type (PHPStan cannot prove that the slot index is in bounds here)
 					$slots[ $startSlot ]['timeframe'] = $restrictionPost;
 					++$startSlot;
 				}
@@ -500,7 +501,7 @@ class Day {
 	/**
 	 * Remove empty and merge connected slots.
 	 *
-	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots Given an array of assocs in hourly slot resolution.
+	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}> $slots Given an array of assocs in hourly slot resolution.
 	 */
 	protected function sanitizeSlots( array &$slots ): void {
 		$this->removeEmptySlots( $slots );
@@ -536,7 +537,7 @@ class Day {
 	/**
 	 * remove slots without timeframes
 	 *
-	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}> $slots
+	 * @param array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}> $slots
 	 */
 	protected function removeEmptySlots( array &$slots ): void {
 		// remove slots without timeframes
@@ -554,7 +555,7 @@ class Day {
 	 * Implementation note: An hourly resolution is used, but as a last step, the hourly slots are merged into
 	 * the representation that is configured in the timeframes.
 	 *
-	 * @return array<int, array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, timeframe?: WP_Post}>
+	 * @return array<int, array{timestart: string, timeend: string, timestampstart: int, timestampend: int|float, timeframe?: WP_Post}>
 	 * @throws Exception
 	 */
 	protected function getTimeframeSlots(): array {

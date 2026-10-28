@@ -134,12 +134,14 @@ class MapData {
 	 * Returns configured item terms
 	 *
 	 * @param array<string, mixed> $settings
-	 * @return list<string, int>
+	 * @return list<int|string>
 	 */
 	public static function getItemCategoryTerms( array $settings ): array {
-		$terms = [];
+		/** @var array<int, array{elements?: array<int, array{cat_id: int|string}>}> $categoryGroups */
+		$categoryGroups = $settings['filter_cb_item_categories'];
+		$terms          = [];
 
-		foreach ( $settings['filter_cb_item_categories'] as $categoryGroup ) {
+		foreach ( $categoryGroups as $categoryGroup ) {
 			if ( array_key_exists( 'elements', $categoryGroup ) ) {
 				foreach ( $categoryGroup['elements'] as $category ) {
 					$terms[] = $category['cat_id'];

@@ -5,9 +5,9 @@ use CommonsBooking\CB\CB;
 /**
  * Parses templates and extracts the template tags used in e-mail templates: {{xxx:yyyy}}
  *
- * @param string                             $template
- * @param \CommonsBooking\Model\CustomPost[] $objects
- * @param callable|string                    $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
+ * @param string                                                              $template
+ * @param array<string, \CommonsBooking\Model\CustomPost|\WP_User|false|null> $objects
+ * @param callable|string                                                     $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
  *
  * @return string|null the template with replaced tags, null if no template content is given after tag replacement
  */
@@ -64,9 +64,9 @@ function commonsbooking_parse_shortcode( string $tag ): bool|string {
  * Renders html before and after the template tag if it is given by using [html text] before or after the template tag
  * Example: {{[this comes before: ]item:post_title[this comes after]}}
  *
- * @param mixed                              $match
- * @param \CommonsBooking\Model\CustomPost[] $objects
- * @param callable|string                    $sanitizeFunction The callable used to remove unwanted tags/characters
+ * @param mixed                                                               $match
+ * @param array<string, \CommonsBooking\Model\CustomPost|\WP_User|false|null> $objects
+ * @param callable|string                                                     $sanitizeFunction The callable used to remove unwanted tags/characters
  *
  * @return false|string the template tag rendered as a string, false if property or function not found
  * @throws Exception

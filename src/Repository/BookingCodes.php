@@ -324,8 +324,8 @@ class BookingCodes {
 	/**
 	 * Generate booking codes for a given period
 	 *
-	 * @param Timeframe  $timeframe
-	 * @param DatePeriod $period
+	 * @param Timeframe                             $timeframe
+	 * @param DatePeriod<\DateTime, \DateTime, int> $period
 	 *
 	 * @return true
 	 * @throws BookingCodeException

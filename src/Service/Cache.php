@@ -243,6 +243,7 @@ trait Cache {
 	/**
 	 * Saves cache item based on calling class, function and args.
 	 *
+	 * @param mixed                  $value
 	 * @param array<int, int|string> $tags
 	 * @param mixed|null             $custom_id
 	 * @param string|null            $expirationString set expiration as timestamp or string 'midnight' to set expiration to 00:00 next day

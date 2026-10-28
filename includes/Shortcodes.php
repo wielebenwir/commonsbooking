@@ -18,4 +18,5 @@ function commonsbooking_tag( array $atts ): void {
 	echo commonsbooking_sanitizeHTML( commonsbooking_parse_shortcode( $atts['tag'] ) );
 }
 
+// @phpstan-ignore argument.type (callback echoes instead of returning; see issue #2405: https://github.com/wielebenwir/commonsbooking/issues/2405)
 add_shortcode( 'cb', 'commonsbooking_tag' );

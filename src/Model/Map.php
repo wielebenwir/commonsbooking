@@ -172,8 +172,8 @@ class Map extends CustomPost {
 	/**
 	 * recursive clean up of location data entries
 	 *
-	 * @param $value
-	 * @param string $linebreak_replacement
+	 * @param string|array<mixed>|null $value
+	 * @param string                   $linebreak_replacement
 	 *
 	 * @return mixed|string|string[]|null
 	 */
