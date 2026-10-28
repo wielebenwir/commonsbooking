@@ -28,7 +28,6 @@ class BookingReminderMessage extends Message {
 	 * @throws \Exception
 	 */
 	public function sendMessage(): bool {
-		/** @var \CommonsBooking\Model\Booking $booking */
 		try {
 			$booking = Booking::getPostById( $this->getPostId() );
 		} catch ( InvalidArgumentException | CacheException $e ) {

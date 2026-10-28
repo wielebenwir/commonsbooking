@@ -316,7 +316,7 @@ class Migration {
 	 *
 	 * @param null       $timeframe_type
 	 *
-	 * @return mixed
+	 * @return int|WP_Post|null
 	 * @throws Exception
 	 */
 	public static function getExistingPost( $id, $type, $timeframe_type = null ) {
@@ -365,7 +365,7 @@ class Migration {
 	}
 
 	/**
-	 * @param $existingPost
+	 * @param int|WP_Post|null     $existingPost
 	 * @param array<string, mixed> $postData Post data
 	 * @param array<string, mixed> $postMeta Post meta
 	 *

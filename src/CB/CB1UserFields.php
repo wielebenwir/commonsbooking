@@ -266,6 +266,7 @@ class CB1UserFields {
 	 * Add addiotinal key/value pairs to the user_vars array
 	 *
 	 * @param string $key
+	 * @param mixed  $value
 	 *
 	 * @return void
 	 * @deprecated since 2.11, removal in 2.12

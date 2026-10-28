@@ -11,7 +11,7 @@ class SearchShortcode extends BaseShortcode {
 
 	/**
 	 * @param array<string|int, string> $atts attributes for parametrization.
-	 * @return array parsed attributes, at least containing the `id` key.
+	 * @return array<string, string> parsed attributes, at least containing the `id` key.
 	 */
 	protected function parse_attributes( array $atts ): array {
 		return shortcode_atts(

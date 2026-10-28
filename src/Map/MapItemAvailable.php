@@ -44,14 +44,16 @@ class MapItemAvailable {
 	const OUT_OF_TIMEFRAME = 'no-timeframe';
 
 	/**
-	 * @param $locations
-	 * @param string $date_start
-	 * @param string $date_end
+	 * Create availability data for items in the given locations.
 	 *
-	 * @return mixed
+	 * @param array<int, array<string, mixed>> $locations with postIDs as keys for an array with location data relevant for this map
+	 * @param string                           $date_start
+	 * @param string                           $date_end
+	 *
+	 * @return array <int, array<string, mixed>> postIDs of locations as keys for getCalendarDataArray data
 	 * @throws Exception
 	 */
-	public static function create_items_availabilities( $locations, $date_start, $date_end ) {
+	public static function create_items_availabilities( array $locations, string $date_start, string $date_end ): array {
 
 		$startDay = new Day( $date_start );
 		$endDay   = new Day( $date_end );
@@ -104,12 +106,12 @@ class MapItemAvailable {
 	 *  This logic should resemble the logic in the @see \CommonsBooking\View\Calendar::processSlot() method because
 	 *  otherwise days would be mapped differently throughout the plugin.
 	 *
-	 * @param $calendarData
-	 * @param $availabilities
+	 * @param array<string, mixed>                            $calendarData
+	 * @param array<int, array{date: string, status: string}> $availabilities
 	 *
-	 * @return mixed
+	 * @return array<int, array{date: string, status: string}>
 	 */
-	protected static function markDaysInTimeframe( $calendarData, $availabilities ) {
+	protected static function markDaysInTimeframe( array $calendarData, array $availabilities ): array {
 		// mark days which are inside a timeframe
 		foreach ( $availabilities as &$availability ) {
 			if ( array_key_exists( $availability['date'], $calendarData['days'] ) ) {

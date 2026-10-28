@@ -5,13 +5,13 @@ use CommonsBooking\CB\CB;
 /**
  * Parses templates and extracts the template tags used in e-mail templates: {{xxx:yyyy}}
  *
- * @param string   $template
- * @param array    $objects
- * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
+ * @param string                             $template
+ * @param \CommonsBooking\Model\CustomPost[] $objects
+ * @param callable|string                    $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
  *
  * @return string|null the template with replaced tags, null if no template content is given after tag replacement
  */
-function commonsbooking_parse_template( string $template = '', $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+function commonsbooking_parse_template( string $template = '', array $objects = [], callable|string $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): ?string {
 	$template = preg_replace_callback(
 		'/\{{.*?\}}/',
 		function ( $match ) use ( $objects, $sanitizeFunction ) {
@@ -64,14 +64,14 @@ function commonsbooking_parse_shortcode( string $tag ): bool|string {
  * Renders html before and after the template tag if it is given by using [html text] before or after the template tag
  * Example: {{[this comes before: ]item:post_title[this comes after]}}
  *
- * @param mixed    $match
- * @param array    $objects
- * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
+ * @param mixed                              $match
+ * @param \CommonsBooking\Model\CustomPost[] $objects
+ * @param callable|string                    $sanitizeFunction The callable used to remove unwanted tags/characters
  *
  * @return false|string the template tag rendered as a string, false if property or function not found
  * @throws Exception
  */
-function commonsbooking_parse_template_callback( $match, array $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+function commonsbooking_parse_template_callback( $match, array $objects = [], callable|string $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): bool|string {
 
 	if ( isset( $match[0] ) ) {
 		$match = $match[0];
@@ -129,7 +129,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [], $s
  *
  * @return string
  */
-function commonsbooking_getCBType( $type ) {
+function commonsbooking_getCBType( string $type ): string {
 	if ( $type == 'location' ) {
 		return \CommonsBooking\Wordpress\CustomPostType\Location::$postType;
 	}

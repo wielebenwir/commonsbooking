@@ -133,9 +133,10 @@ class MapData {
 	/**
 	 * Returns configured item terms
 	 *
-	 * @return array
+	 * @param array<string, mixed> $settings
+	 * @return list<string, int>
 	 */
-	public static function getItemCategoryTerms( $settings ): array {
+	public static function getItemCategoryTerms( array $settings ): array {
 		$terms = [];
 
 		foreach ( $settings['filter_cb_item_categories'] as $categoryGroup ) {
@@ -151,12 +152,13 @@ class MapData {
 
 	/**
 	 * get the settings for the frontend of the map with given id
+	 * TODO: Better return param documentation
 	 *
 	 * @param int|\WP_Post $cb_map_id
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws \Exception
 	 */
-	public static function get_settings( $cb_map_id ): array {
+	public static function get_settings( int|\WP_Post $cb_map_id ): array {
 		$map                = new Map( $cb_map_id );
 		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );

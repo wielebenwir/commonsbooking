@@ -8,7 +8,7 @@ use WP_Widget;
 /**
  * Class provides the commonsbooking user widget
  *
- * @extends WP_Widget
+ * @extends \WP_Widget
  */
 class UserWidget extends WP_Widget {
 
@@ -44,8 +44,7 @@ class UserWidget extends WP_Widget {
 	 *
 	 * @return void
 	 */
-	public function widget( $args, $instance ) {
-
+	public function widget( $args, $instance ): void {
 		echo commonsbooking_sanitizeHTML( $args['before_widget'] );
 
 		if ( ! empty( $instance['title'] ) ) {
