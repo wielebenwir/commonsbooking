@@ -34,7 +34,7 @@ class Calendar {
 	 * Many thanks to fLotte Berlin!
 	 * Forked from https://github.com/flotte-berlin/cb-shortcodes/blob/master/custom-shortcodes-cb-items.php
 	 *
-	 * @param $atts array Supports the following attributes:
+	 * @param array<string, mixed>|string $atts Supports the following attributes:
 	 *                    - locationcat: Filter by location category
 	 *                    - itemcat: Filter by item category
 	 *                    - days: Number of days to show in calendar table view
@@ -189,7 +189,15 @@ class Calendar {
 		return $print;
 	}
 
-	public static function shortcode( $atts ) {
+	/**
+	 * Renders the item table shortcode.
+	 *
+	 * @param array<string, mixed> $atts shortcode attributes.
+	 *
+	 * @return string|false
+	 * @throws Exception
+	 */
+	public static function shortcode( array $atts ): string|false {
 		global $templateData;
 		$templateData         = [];
 		$templateData['data'] = self::renderTable( $atts );
@@ -199,16 +207,18 @@ class Calendar {
 			commonsbooking_get_template_part( 'shortcode', 'items_table', true, false, false );
 			return ob_get_clean();
 		}
+
+		return false;
 	}
 
 	/**
 	 * Renders months in headline.
 	 *
-	 * @param $month_cols
+	 * @param array<string, int> $month_cols
 	 *
 	 * @return string
 	 */
-	protected static function renderHeadlineMonths( $month_cols ): string {
+	protected static function renderHeadlineMonths( array $month_cols ): string {
 		$print = '';
 		foreach ( $month_cols as $month => $colspan ) {
 			$print .= "<th class='sortless' colspan='" . $colspan . "'>";
@@ -226,11 +236,11 @@ class Calendar {
 	/**
 	 * Renders days in headline.
 	 *
-	 * @param $days_display
+	 * @param array<int, string> $days_display
 	 *
 	 * @return string
 	 */
-	protected static function renderHeadlineDays( $days_display ): string {
+	protected static function renderHeadlineDays( array $days_display ): string {
 		$divider = "</th><th class='cal sortless'>";
 		$dayStr  = implode( $divider, $days_display );
 
@@ -241,18 +251,18 @@ class Calendar {
 	/**
 	 * Renders item/location row.
 	 *
-	 * @param $item
-	 * @param $locationId
-	 * @param $locationName
-	 * @param $today
-	 * @param $last_day
-	 * @param $days
-	 * @param $days_display
+	 * @param WP_Post            $item
+	 * @param int                $locationId
+	 * @param string             $locationName
+	 * @param string             $today
+	 * @param string             $last_day
+	 * @param int                $days
+	 * @param array<int, string> $days_display
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	protected static function renderItemLocationRow( $item, $locationId, $locationName, $today, $last_day, $days, $days_display ): string {
+	protected static function renderItemLocationRow( WP_Post $item, int $locationId, string $locationName, string $today, string $last_day, int $days, array $days_display ): string {
 		$cacheItem = Plugin::getCacheItem();
 		if ( $cacheItem ) {
 			return $cacheItem;
@@ -336,13 +346,13 @@ class Calendar {
 	/**
 	 * Returns calendar data
 	 *
-	 * @param WP_Post|int|string|CustomPost $item
-	 * @param WP_Post|int|string|CustomPost $location
-	 * @param string                        $startDateString YYYY-MM-DD Format
-	 * @param string                        $endDateString YYYY-MM-DD Format
-	 * @param bool                          $keepDaterange
+	 * @param WP_Post|int|CustomPost $item
+	 * @param WP_Post|int|CustomPost $location
+	 * @param string                 $startDateString YYYY-MM-DD Format
+	 * @param string                 $endDateString YYYY-MM-DD Format
+	 * @param bool                   $keepDaterange
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public static function getCalendarDataArray( $item, $location, string $startDateString, string $endDateString, bool $keepDaterange = false ): array {
@@ -367,6 +377,7 @@ class Calendar {
 		$advanceBookingDays = null;
 		$lastBookableDate   = null;
 		$firstBookableDay   = null;
+		/** @var \CommonsBooking\Model\Timeframe[] $bookableTimeframes */
 		$bookableTimeframes = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
 			[ $location ],
 			[ $item ],
@@ -417,11 +428,11 @@ class Calendar {
 	/**
 	 * Returns closest timeframe from date/time perspective.
 	 *
-	 * @param $bookableTimeframes
+	 * @param \CommonsBooking\Model\Timeframe[] $bookableTimeframes
 	 *
 	 * @return \CommonsBooking\Model\Timeframe|null
 	 */
-	public static function getClosestBookableTimeFrameForToday( $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
+	public static function getClosestBookableTimeFrameForToday( array $bookableTimeframes ): ?\CommonsBooking\Model\Timeframe {
 		$today           = new Day( date( 'Y-m-d' ) );
 		$todayTimeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $bookableTimeframes, $today->getStartTimestamp(), $today->getEndTimestamp() );
 		$todayTimeframes = array_filter(
@@ -527,12 +538,15 @@ class Calendar {
 	 *
 	 * Uses cache which expires at midnight on a daily basis.
 	 *
-	 * @param Day   $startDate
-	 * @param Day   $endDate
-	 * @param array $locations []
-	 * @param array $items <int|string>
+	 * @param Day         $startDate
+	 * @param Day         $endDate
+	 * @param int[]       $locations
+	 * @param int[]       $items
+	 * @param int|null    $advanceBookingDays
+	 * @param int|null    $lastBookableDate
+	 * @param string|null $firstBookableDay
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public static function prepareJsonResponse(
@@ -540,9 +554,9 @@ class Calendar {
 		Day $endDate,
 		array $locations,
 		array $items,
-		$advanceBookingDays = null,
-		$lastBookableDate = null,
-		$firstBookableDay = null
+		?int $advanceBookingDays = null,
+		?int $lastBookableDate = null,
+		?string $firstBookableDay = null
 	): array {
 
 		$current_user   = wp_get_current_user();
@@ -638,14 +652,15 @@ class Calendar {
 	/**
 	 * Processes day for calendar view of json.
 	 *
-	 * @param Day $day
-	 * @param $lastBookableDate
-	 * @param $endDate
-	 * @param $jsonResponse
+	 * @param Day                  $day
+	 * @param int|false            $lastBookableDate
+	 * @param Day                  $endDate
+	 * @param array<string, mixed> $jsonResponse
+	 * @param string|null          $firstBookableDay
 	 *
 	 * @return void
 	 */
-	protected static function mapDay( $day, $lastBookableDate, $endDate, &$jsonResponse, $firstBookableDay ) {
+	protected static function mapDay( Day $day, int|false $lastBookableDate, Day $endDate, array &$jsonResponse, ?string $firstBookableDay ): void {
 		$dayArray = [
 			'date'               => $day->getFormattedDate( 'd.m.Y' ),
 			'slots'              => [],
@@ -726,13 +741,15 @@ class Calendar {
 	/**
 	 * Extracts calendar relevant data from slot.
 	 *
-	 * @param $slot
-	 * @param $dayArray
-	 * @param $jsonResponse
-	 * @param $allLocked
-	 * @param $noSlots
+	 * @param array{timestart: string, timeend: string, timestampstart: int|float, timestampend: int|float, ...} $slot
+	 * @param array<string, mixed>                                                                          $dayArray
+	 * @param array<string, mixed>                                                                          $jsonResponse
+	 * @param bool                                                                                          $allLocked
+	 * @param bool                                                                                          $noSlots
+	 *
+	 * @return void
 	 */
-	protected static function processSlot( $slot, &$dayArray, &$jsonResponse, &$allLocked, &$noSlots ) {
+	protected static function processSlot( array $slot, array &$dayArray, array &$jsonResponse, bool &$allLocked, bool &$noSlots ): void {
 		// Add only bookable slots for time select
 		// TODO: This should be refactored to use the methods on the timeframe model.
 		if ( ! empty( $slot['timeframe'] ) && $slot['timeframe'] instanceof WP_Post ) {
@@ -820,7 +837,7 @@ class Calendar {
 	/**
 	 * @param Day $day
 	 *
-	 * @return array
+	 * @return array{date: string, slots: array<int, array<string, mixed>>, locked: bool, bookedDay: bool, partiallyBookedDay: bool, holiday: bool, repair: bool, fullDay: bool, firstSlotBooked: bool, lastSlotBooked: bool}
 	 */
 	protected static function getLockedDayArray( Day $day ): array {
 		return [
@@ -840,9 +857,10 @@ class Calendar {
 	/**
 	 * Ajax request - Returns json-formatted calendardata.
 	 *
+	 * @return void
 	 * @throws Exception
 	 */
-	public static function getCalendarData() {
+	public static function getCalendarData(): void {
 		// item by post-param
 		$item = isset( $_POST['item'] ) && $_POST['item'] != '' ? intval( $_POST['item'] ) : false;
 		if ( $item === false || $item == 0 ) { // 0 = failed intval check

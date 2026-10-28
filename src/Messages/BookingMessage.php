@@ -18,20 +18,33 @@ class BookingMessage extends Message {
 	 *
 	 * @var string[]
 	 */
-	protected $validActions = [ 'confirmed', 'canceled' ];
+	protected array $validActions = [ 'confirmed', 'canceled' ];
 
-	public function sendMessage() {
+	/**
+	 * @return bool
+	 */
+	public function sendMessage(): bool {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
 
 		$booking_user = $booking->getUserData();
 
-		$template_objects = [
-			'booking'  => $booking,
-			'item'     => $booking->getItem(),
-			'location' => $booking->getLocation(),
-			'user'     => $booking_user,
-		];
+		try {
+			$template_objects = [
+				'booking' => $booking,
+				'item' => $booking->getItem(),
+				'location' => $booking->getLocation(),
+				'user' => $booking_user,
+			];
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing template objects for booking message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		// get location email adresses to send them bcc copies
 		$location          = get_post( $booking->getMetaInt( 'location-id' ) );
@@ -89,5 +102,6 @@ class BookingMessage extends Message {
 			$attachment
 		);
 		$this->sendNotificationMail();
+		return true;
 	}
 }

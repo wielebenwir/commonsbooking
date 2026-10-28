@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\MessageRecipient;
 use WP_Error;
 use function commonsbooking_parse_template;
@@ -14,51 +15,51 @@ abstract class Message {
 	/**
 	 * The actions that are valid for this message. Usually a string.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	protected $validActions = [];
+	protected array $validActions = [];
 
 	/**
 	 * The action that is used for this message. Needs to be contained in $validActions
 	 *
 	 * @var string
 	 */
-	protected $action;
+	protected string $action;
 
 	/**
 	 * The post that this message is about
 	 *
 	 * @var \WP_Post|null
 	 */
-	protected $post;
+	protected ?\WP_Post $post = null;
 
 	/**
 	 * The recipient(s) of this message
 	 *
 	 * @var string
 	 */
-	protected $to;
+	protected string $to;
 
 	/**
 	 * The e-mail headers
 	 *
 	 * @var string[]
 	 */
-	protected $headers;
+	protected array $headers;
 
 	/**
 	 * The subject text of this message
 	 *
 	 * @var string
 	 */
-	protected $subject;
+	protected string $subject;
 
 	/**
 	 * The body text of this message
 	 *
 	 * @var string
 	 */
-	protected $body;
+	protected string $body;
 
 	/**
 	 * An associative array of a string attachment.
@@ -68,37 +69,44 @@ abstract class Message {
 	 *    'type' => File MIME type (if left unspecified, PHPMailer will try to work it out from the file name)
 	 *    'disposition' => Disposition to use (defaults to 'attachment')
 	 *
-	 * @var array
+	 * @var array<string, string>
 	 */
-	protected $attachment = [];
+	protected array $attachment = [];
 	/**
 	 * @var int
 	 */
-	private $postId;
+	private int $postId;
 
 	/**
-	 * @param $postId
-	 * @param $action
+	 * @param int    $postId
+	 * @param string $action
+	 * @throws PostException
 	 */
-	public function __construct( $postId, $action ) {
+	public function __construct( int $postId, string $action ) {
 		$this->postId = $postId;
 
 		global $post;
 		$post = $this->getPost();
+		if ( $post === null ) {
+			throw new PostException( 'postId for message not valid' );
+		}
 
 		$this->action = $action;
 	}
 
-	public function getAction() {
+	/**
+	 * @return string
+	 */
+	public function getAction(): string {
 		return $this->action;
 	}
 
 	/**
-	 * Returns recipient address of the message.
+	 * Returns recipient addresses of the message.
 	 *
-	 * @return string|null
+	 * @return string[] | string | null
 	 */
-	public function getTo() {
+	public function getTo(): array|string|null {
 		$recipient     = $this->to;
 		$messageAction = $this->getAction();
 		/**
@@ -113,7 +121,10 @@ abstract class Message {
 		return apply_filters( 'commonsbooking_mail_to', $recipient, $messageAction );
 	}
 
-	public function getHeaders() {
+	/**
+	 * @return string[]
+	 */
+	public function getHeaders(): array {
 		return $this->headers;
 	}
 
@@ -122,7 +133,7 @@ abstract class Message {
 	 *
 	 * @return string|null
 	 */
-	public function getSubject() {
+	public function getSubject(): ?string {
 		$subject       = $this->subject;
 		$messageAction = $this->getAction();
 		/**
@@ -142,7 +153,7 @@ abstract class Message {
 	 *
 	 * @return string|null
 	 */
-	public function getBody() {
+	public function getBody(): ?string {
 		$body          = $this->body;
 		$messageAction = $this->getAction();
 		/**
@@ -160,7 +171,7 @@ abstract class Message {
 	/**
 	 * Return array of attachment
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
 	public function getAttachment(): array {
 		$attachment    = $this->attachment;
@@ -179,13 +190,13 @@ abstract class Message {
 	/**
 	 * Setup the email template, headers (BCC)
 	 *
-	 * @param MessageRecipient $recipientUser User-Object
-	 * @param string           $template_body template string
-	 * @param string           $template_subject template string
-	 * @param string           $from_headers From-Header (From:xxx)
-	 * @param string|null      $bcc_adresses comma separated string with e-mail adresses
-	 * @param object[]         $objects objects used in parse template function
-	 * @param array|null       $attachment
+	 * @param MessageRecipient           $recipientUser User-Object
+	 * @param string                     $template_body template string
+	 * @param string                     $template_subject template string
+	 * @param string                     $from_headers From-Header (From:xxx)
+	 * @param string|null                $bcc_adresses comma separated string with e-mail adresses
+	 * @param object[]                   $objects objects used in parse template function
+	 * @param array<string, string>|null $attachment
 	 */
 	protected function prepareMail(
 		MessageRecipient $recipientUser,
@@ -240,7 +251,7 @@ abstract class Message {
 	 *
 	 * @return void
 	 */
-	public function sendNotificationMail() {
+	public function sendNotificationMail(): void {
 		$to         = $this->getTo();
 		$subject    = $this->getSubject();
 		$body       = $this->getBody();
@@ -259,7 +270,10 @@ abstract class Message {
 		do_action( 'commonsbooking_mail_sent', $this->getAction(), $result );
 	}
 
-	abstract public function sendMessage();
+	/**
+	 * @return bool
+	 */
+	abstract public function sendMessage(): bool;
 
 	/**
 	 * Only send mail if action is valid
@@ -273,9 +287,9 @@ abstract class Message {
 	}
 
 	/**
-	 * @return \WP_Post
+	 * @return \WP_Post|null
 	 */
-	public function getPost() {
+	public function getPost(): ?\WP_Post {
 		if ( $this->post == null ) {
 			$this->post = get_post( $this->getPostId() );
 		}
@@ -286,23 +300,23 @@ abstract class Message {
 	/**
 	 * @return int
 	 */
-	public function getPostId() {
+	public function getPostId(): int {
 		return $this->postId;
 	}
 
 	/**
-	 * @param array $address_array
+	 * @param string[] $address_array
 	 *
 	 * @return void
 	 */
-	protected function add_bcc( array $address_array ) {
+	protected function add_bcc( array $address_array ): void {
 		// sanitize emails
 		$address_array   = array_filter( array_map( 'sanitize_email', $address_array ) );
 		$this->headers[] = sprintf( 'BCC:%s', implode( ',', $address_array ) );
 	}
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getValidActions(): array {
 		return $this->validActions;
@@ -313,16 +327,18 @@ abstract class Message {
 	 * Allows us to send string-based or binary attachments (non-filesystem)
 	 * and gives us more control over the attachment data.
 	 *
-	 * @param array $atts  Array of the `wp_mail()` arguments.
+	 * @param array<string, mixed> $atts  Array of the `wp_mail()` arguments.
 	 *    - string|string[] $to          Array or comma-separated list of email addresses to send message.
 	 *    - string          $subject     Email subject.
 	 *    - string          $message     Message contents.
 	 *    - string|string[] $headers     Additional headers.
 	 *    - string|string[] $attachments Paths to files to attach.
 	 *
+	 * @return array<string, mixed>
+	 *
 	 * @see https://gist.github.com/thomasfw/5df1a041fd8f9c939ef9d88d887ce023/
 	 */
-	public function addStringAttachments( $atts ) {
+	public function addStringAttachments( $atts ): array {
 		$attachment_arrays = [];
 		if ( ! empty( $atts['attachments'] ) ) {
 			$attachments = $atts['attachments'];

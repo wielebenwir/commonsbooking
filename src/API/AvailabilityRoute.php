@@ -41,14 +41,14 @@ class AvailabilityRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.availability.schema.json';
+	protected string $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.availability.schema.json';
 
 	/**
 	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
 	 *
 	 * @param ?int $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
 	 *
-	 * @return array
+	 * @return stdClass[]
 	 * @throws Exception
 	 */
 	public static function getItemData( $id = null ): array {
@@ -71,7 +71,7 @@ class AvailabilityRoute extends BaseRoute {
 	/**
 	 * Get one item from the collection
 	 *
-	 * @param $request WP_REST_Request
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response|WP_Error
 	 */
@@ -90,7 +90,7 @@ class AvailabilityRoute extends BaseRoute {
 	/**
 	 * Get a collection of items
 	 *
-	 * @param $request WP_REST_Request full data about the request.
+	 * @param WP_REST_Request<array<string, mixed>> $request full data about the request.
 	 *
 	 * @return WP_REST_Response
 	 */

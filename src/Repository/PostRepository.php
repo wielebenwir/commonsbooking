@@ -12,13 +12,13 @@ abstract class PostRepository {
 	 * Returns post by id as CB-CPT if possible.
 	 * Will try to return a model class if possible.
 	 *
-	 * @param $postId
+	 * @param int $postId
 	 *
 	 * @return \CommonsBooking\Model\Booking|\CommonsBooking\Model\Item|\CommonsBooking\Model\Location|mixed|WP_Post
 	 * @throws \CommonsBooking\Psr\Cache\CacheException
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostById( $postId ) {
+	public static function getPostById( int $postId ) {
 		if ( ! $postId ) {
 			return null;
 		}
@@ -61,5 +61,10 @@ abstract class PostRepository {
 		}
 	}
 
+	/**
+	 * @param array<string, mixed> $args
+	 *
+	 * @return array<int, int|WP_Post|\CommonsBooking\Model\CustomPost>
+	 */
 	abstract public static function get( array $args = array() ): array;
 }

@@ -29,7 +29,7 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * @param bool $publishedOnly
 	 *
-	 * @return array
+	 * @return WP_Post[]
 	 * @throws CacheException
 	 * @throws InvalidArgumentException
 	 */
@@ -150,10 +150,10 @@ abstract class BookablePost extends PostRepository {
 	 *
 	 * THIS METHOD DOES NOT SEEM TO BE USED ANYWHERE.
 	 *
-	 * @param mixed $userId
-	 * @param bool  $asModel - Whether the posts should be returned as their respective model class or as WP_Post
+	 * @param int  $userId
+	 * @param bool $asModel - Whether the posts should be returned as their respective model class or as WP_Post
 	 *
-	 * @return array
+	 * @return array<int, int|WP_Post|\CommonsBooking\Model\Location|\CommonsBooking\Model\Item>
 	 */
 	public static function getByUserId( $userId, bool $asModel = false ): array {
 		$cbPosts = [];
@@ -214,8 +214,8 @@ abstract class BookablePost extends PostRepository {
 	/**
 	 * Returns an array of CB item post objects
 	 *
-	 * @param array $args WP Post args
-	 * @param bool  $bookable
+	 * @param array<string, mixed> $args WP Post args
+	 * @param bool                 $bookable
 	 *
 	 * @return \CommonsBooking\Model\Location[]|\CommonsBooking\Model\Item[]
 	 */
@@ -268,15 +268,15 @@ abstract class BookablePost extends PostRepository {
 	 * Returns related object based on bookable post.
 	 * Example: We'd like to have the items bookable at a specific location. With this function we are able to get them.
 	 *
-	 * @param $postId
-	 * @param $originType
-	 * @param $relatedType
-	 * @param bool $bookable
+	 * @param int|WP_Post $postId
+	 * @param string      $originType a string with the origin type, not the complete cpt but 'item' or 'location'
+	 * @param string      $relatedType a string of either 'item' or 'location'
+	 * @param bool        $bookable
 	 *
 	 * @return \CommonsBooking\Model\Location[] | \CommonsBooking\Model\Item[]
 	 * @throws Exception
 	 */
-	protected static function getByRelatedPost( $postId, $originType, $relatedType, bool $bookable = false ): array {
+	protected static function getByRelatedPost( int|WP_Post $postId, string $originType, string $relatedType, bool $bookable = false ): array {
 
 		if ( ! in_array( $originType, self::$relationalTypes ) || ! in_array( $relatedType, self::$relationalTypes ) ) {
 			throw new Exception( 'invalid type submitted' );
@@ -316,13 +316,13 @@ abstract class BookablePost extends PostRepository {
 	 * Returns array with related posts for post with post id and origin type.
 	 * Works only for locations and items!
 	 *
-	 * @param $postId
-	 * @param $originType
-	 * @param $relatedType
+	 * @param int|WP_Post $postId
+	 * @param string      $originType not the cpt but either 'item' or 'location'
+	 * @param string      $relatedType either 'item' or 'location'
 	 *
-	 * @return array
+	 * @return WP_Post[]
 	 */
-	protected static function getRelatedPosts( $postId, $originType, $relatedType ): array {
+	protected static function getRelatedPosts( int|WP_Post $postId, string $originType, string $relatedType ): array {
 		if ( $postId instanceof WP_Post ) {
 			$postId = $postId->ID;
 		}

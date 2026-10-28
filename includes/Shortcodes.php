@@ -1,6 +1,12 @@
 <?php
 
-function commonsbooking_tag( $atts ) {
+/**
+ * Runs the cb_tag shortcode to output parsed template tag.
+ *
+ * @param array<string, string> $atts
+ * @throws Exception
+ */
+function commonsbooking_tag( array $atts ): void {
 	$atts = shortcode_atts(
 		array(
 			'tag' => '',
@@ -12,4 +18,5 @@ function commonsbooking_tag( $atts ) {
 	echo commonsbooking_sanitizeHTML( commonsbooking_parse_shortcode( $atts['tag'] ) );
 }
 
+// @phpstan-ignore argument.type (callback echoes instead of returning; see issue #2405: https://github.com/wielebenwir/commonsbooking/issues/2405)
 add_shortcode( 'cb', 'commonsbooking_tag' );

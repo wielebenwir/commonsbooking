@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingDeniedException;
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Messages\BookingMessage;
@@ -95,7 +96,7 @@ class Booking extends Timeframe {
 	 * @param  mixed $update
 	 * @return void
 	 */
-	public function savePost( $post_id, $post = null, $update = null ) {
+	public function savePost( $post_id, $post = null, $update = null ): void {
 		global $pagenow;
 
 		$post            = $post ?? get_post( $post_id );
@@ -177,8 +178,16 @@ class Booking extends Timeframe {
 
 			// if we just created a new confirmed booking we trigger the confirmation mail
 			if ( $post_status == 'confirmed' ) {
-				$booking_msg = new BookingMessage( $post_id, $post_status );
-				$booking_msg->triggerMail();
+				try {
+					$booking_msg = new BookingMessage( $post_id, $post_status );
+					$booking_msg->triggerMail();
+				} catch ( PostException $e ) {
+					set_transient(
+						\CommonsBooking\Model\Booking::ERROR_TYPE,
+						nl2br( commonsbooking_sanitizeHTML( $e->getMessage() ) ),
+						30 // Expires very quickly, so that outdated messsages will not be shown to the user
+					);
+				}
 			}
 		}
 	}
@@ -186,9 +195,11 @@ class Booking extends Timeframe {
 	/**
 	 * Handles frontend save-Request for timeframe.
 	 *
+	 * @return void
+	 *
 	 * @throws BookingDeniedException - if booking is not allowed, contains translated error message for the user
 	 */
-	public static function handleFormRequest() {
+	public static function handleFormRequest(): void {
 		if (
 			function_exists( 'wp_verify_nonce' ) &&
 			isset( $_REQUEST[ static::getWPNonceId() ] ) &&
@@ -435,13 +446,15 @@ class Booking extends Timeframe {
 	 * Multi grid size
 	 * We need to save the grid size for timeframes with full slot grid.
 	 *
-	 * @param $postId
-	 * @param $locationId
-	 * @param $itemId
-	 * @param $startDate
-	 * @param $endDate
+	 * @param int $postId
+	 * @param int $locationId
+	 * @param int $itemId
+	 * @param int $startDate
+	 * @param int $endDate
+	 *
+	 * @return void
 	 */
-	private static function saveGridSizes( $postId, $locationId, $itemId, $startDate, $endDate ): void {
+	private static function saveGridSizes( int $postId, int $locationId, int $itemId, int $startDate, int $endDate ): void {
 		$startTimeFrame = \CommonsBooking\Repository\Timeframe::getByLocationItemTimestamp( $locationId, $itemId, $startDate );
 		if ( $startTimeFrame && ! $startTimeFrame->isFullDay() && $startTimeFrame->getGrid() == 0 ) {
 			update_post_meta(
@@ -518,11 +531,13 @@ class Booking extends Timeframe {
 	/**
 	 * Is triggered when post gets updated. Currently used to send notifications regarding bookings.
 	 *
-	 * @param $post_ID
-	 * @param $post_after
-	 * @param $post_before
+	 * @param int      $post_ID
+	 * @param \WP_Post $post_after
+	 * @param \WP_Post $post_before
+	 *
+	 * @return void
 	 */
-	public function postUpdated( $post_ID, $post_after, $post_before ) {
+	public function postUpdated( int $post_ID, \WP_Post $post_after, \WP_Post $post_before ): void {
 
 		if ( ! $this->hasRunBefore( __FUNCTION__ ) ) {
 			$isBooking = get_post_meta( $post_ID, 'type', true ) == Timeframe::BOOKING_ID;
@@ -550,9 +565,9 @@ class Booking extends Timeframe {
 	/**
 	 * Returns CPT arguments.
 	 *
-	 * @return array
+	 * @return array<string, mixed> array of arguments compatible with register_post_type
 	 */
-	public function getArgs() {
+	public function getArgs(): array {
 		$labels = array(
 			'name'                  => esc_html__( 'Bookings', 'commonsbooking' ),
 			'singular_name'         => esc_html__( 'Booking', 'commonsbooking' ),
@@ -734,8 +749,10 @@ class Booking extends Timeframe {
 
 	/**
 	 * Registers metaboxes for cpt.
+	 *
+	 * @return void
 	 */
-	public function registerMetabox() {
+	public function registerMetabox(): void {
 		// do not render the metabox if the user is on the login page (not yet logged in)
 		if ( ! is_user_logged_in() ) {
 			return;
@@ -756,9 +773,9 @@ class Booking extends Timeframe {
 	/**
 	 * Returns custom (meta) fields for Costum Post Type Timeframe.
 	 *
-	 * @return array
+	 * @return array<array<string, mixed>>
 	 */
-	protected function getCustomFields() {
+	protected function getCustomFields(): array {
 		// We need static types, because german month names dont't work for datepicker
 		$dateFormat = 'd/m/Y';
 		if ( str_starts_with( get_locale(), 'de_' ) ) {
@@ -944,9 +961,11 @@ class Booking extends Timeframe {
 	/**
 	 * Displays a permanent admin-notice if booking overlaps
 	 *
+	 * @param \WP_Post $post
+	 *
 	 * @return void
 	 */
-	public function displayOverlappingBookingNotice( $post ) {
+	public function displayOverlappingBookingNotice( \WP_Post $post ): void {
 
 		if ( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) ) {
 			echo commonsbooking_sanitizeHTML( get_transient( 'commonsbooking_booking_validation_failed_' . $post->ID ) );

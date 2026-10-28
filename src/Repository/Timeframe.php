@@ -19,14 +19,14 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns only bookable timeframes.
 	 *
-	 * @param array       $locations
-	 * @param array       $items
+	 * @param int[]       $locations
+	 * @param int[]       $items
 	 * @param string|null $date
 	 * @param bool        $returnAsModel
-	 * @param $minTimestamp
-	 * @param array       $postStatus
+	 * @param int|null    $minTimestamp
+	 * @param string[]    $postStatus
 	 *
-	 * @return array
+	 * @return \WP_Post[]|\CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
 	public static function getBookable(
@@ -34,7 +34,7 @@ class Timeframe extends PostRepository {
 		array $items = [],
 		?string $date = null,
 		bool $returnAsModel = false,
-		$minTimestamp = null,
+		?int $minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 		return self::get(
@@ -51,14 +51,14 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns only bookable timeframes for current user.
 	 *
-	 * @param array       $locations
-	 * @param array       $items
+	 * @param int[]       $locations
+	 * @param int[]       $items
 	 * @param string|null $date
 	 * @param bool        $returnAsModel
-	 * @param $minTimestamp
-	 * @param array       $postStatus
+	 * @param int|null    $minTimestamp
+	 * @param string[]    $postStatus
 	 *
-	 * @return array
+	 * @return \WP_Post[]|\CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
 	public static function getBookableForCurrentUser(
@@ -66,7 +66,7 @@ class Timeframe extends PostRepository {
 		array $items = [],
 		?string $date = null,
 		bool $returnAsModel = false,
-		$minTimestamp = null,
+		?int $minTimestamp = null,
 		array $postStatus = [ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
 	): array {
 
@@ -93,9 +93,9 @@ class Timeframe extends PostRepository {
 	 * TODO: Investigate
 	 *       This function is not based on the WP_Query class, probably because of performance reasons.
 	 *
-	 * @param array       $locations
-	 * @param array       $items
-	 * @param array       $types
+	 * @param int[]       $locations
+	 * @param int[]       $items
+	 * @param int[]       $types
 	 * @param string|null $date Date-String in format YYYY-mm-dd
 	 * @param bool        $returnAsModel if true, returns as custom wp-post model, if false, return wp-post or int array (defaults to false)
 	 * @param int|null    $minTimestamp
@@ -165,9 +165,9 @@ class Timeframe extends PostRepository {
 	/**
 	 * Will get all timeframes in the database to perform mass operations on (like migrations).
 	 *
-	 * @param int   $page
-	 * @param int   $perPage
-	 * @param array $customArgs
+	 * @param int                  $page
+	 * @param int                  $perPage
+	 * @param array<string, mixed> $customArgs WP_Query compatible args array
 	 *
 	 * @return \stdClass Properties: array posts, int totalPosts, int totalPages, bool done
 	 * @throws Exception
@@ -218,15 +218,16 @@ class Timeframe extends PostRepository {
 	 * We need this for the Timeframe Export, so that it does not time out on large datasets.
 	 * This function is in general slower than the getInRange function. But it can be used in AJAX requests.
 	 *
-	 * @param int      $minTimestamp
-	 * @param int|null $maxTimestamp
-	 * @param int      $page
-	 * @param int      $perPage
-	 * @param array    $types
-	 * @param bool     $asModel
-	 * @param array    $customArgs
+	 * @param int                  $minTimestamp
+	 * @param int|null             $maxTimestamp
+	 * @param int                  $page
+	 * @param int                  $perPage
+	 * @param int[]                $types
+	 * @param string[]             $postStatus
+	 * @param bool                 $asModel
+	 * @param array<string, mixed> $customArgs WP_Query compatible args array
 	 *
-	 * @return array An array with the keys 'posts', 'totalPages' and 'done' (bool) to indicate if there are more posts to fetch
+	 * @return array{posts: int[]|\WP_Post[]|\CommonsBooking\Model\Timeframe[], totalPages: int, totalPosts: int, done: bool} An array with the keys 'posts', 'totalPages' and 'done' (bool) to indicate if there are more posts to fetch
 	 */
 	public static function getInRangePaginated(
 		int $minTimestamp,
@@ -240,7 +241,7 @@ class Timeframe extends PostRepository {
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::REPAIR_ID,
 			\CommonsBooking\Wordpress\CustomPostType\Timeframe::OFF_HOLIDAYS_ID,
 		],
-		$postStatus = [ 'confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit' ],
+		array $postStatus = [ 'confirmed', 'unconfirmed', 'canceled', 'publish', 'inherit' ],
 		bool $asModel = false,
 		array $customArgs = []
 	): array {
@@ -323,16 +324,16 @@ class Timeframe extends PostRepository {
 	 *
 	 * Why? It's because of performance. We use the ids as base set for following filter queries.
 	 *
-	 * @param array $types the types of timeframes to return, will return default set when not set
-	 * @param array $items the items that the timeframes should be applicable to, will return all if not set
-	 * @param array $locations the locations that the timeframes should be applicable to, will return all if not set
+	 * @param int[] $types the types of timeframes to return, will return default set when not set
+	 * @param int[] $items the items that the timeframes should be applicable to, will return all if not set
+	 * @param int[] $locations the locations that the timeframes should be applicable to, will return all if not set
 	 *
 	 * @since 2.9.0 Supports now single and multi selection for items and locations
 	 *
-	 * @return string[]|int[]
+	 * @return int[]
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
-	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ) {
+	public static function getPostIdsByType( array $types = [], array $items = [], array $locations = [] ): array {
 
 		if ( ! count( $types ) ) {
 			$types = [
@@ -360,6 +361,10 @@ class Timeframe extends PostRepository {
 			$locations = commonsbooking_sanitizeArrayorString( $locations, 'intval' );
 			$types     = commonsbooking_sanitizeArrayorString( $types, 'intval' );
 
+			/**
+			 * @var array<int, int> $items
+			 * @var array<int, int> $locations
+			 */
 			$itemQuery = '';
 			if ( count( $items ) > 0 ) {
 				$itemQuery = self::getEntityQuery(
@@ -416,7 +421,7 @@ class Timeframe extends PostRepository {
 				$customId
 			);
 
-			return $postIds;
+			return array_map( 'intval', $postIds );
 		}
 	}
 
@@ -424,6 +429,12 @@ class Timeframe extends PostRepository {
 	 * Returns entity query as join statement, which considers single and multi selection.
 	 *
 	 * @since 2.9.0 Supports now single and multi selection for items and locations
+	 *
+	 * @param string $joinAlias
+	 * @param string $table_postmeta
+	 * @param int[]  $entities
+	 * @param string $singleEntityKey
+	 * @param string $multiEntityKey
 	 *
 	 * @return string join statement
 	 */
@@ -460,10 +471,10 @@ class Timeframe extends PostRepository {
 	 * @param string|null $date
 	 * @param int|null    $minTimestamp
 	 * @param int|null    $maxTimestamp
-	 * @param array       $postIds
-	 * @param array       $postStatus
+	 * @param int[]       $postIds
+	 * @param string[]    $postStatus
 	 *
-	 * @return array
+	 * @return \WP_Post[]
 	 */
 	private static function getPostsByBaseParams( ?string $date, ?int $minTimestamp, ?int $maxTimestamp, array $postIds, array $postStatus ): array {
 		$cacheItem = Plugin::getCacheItem();
@@ -624,10 +635,10 @@ class Timeframe extends PostRepository {
 	/**
 	 * Wrapper function for all filters.
 	 *
-	 * @param array       $posts
+	 * @param \WP_Post[]  $posts
 	 * @param string|null $date
 	 *
-	 * @return array
+	 * @return \WP_Post[]
 	 */
 	private static function filterTimeframes( array $posts, ?string $date ): array {
 		// Filter by configured days
@@ -642,10 +653,10 @@ class Timeframe extends PostRepository {
 	 * Why? Because you can define days for your timeframe. Here's the point where we make sure, that only these days
 	 *      are taken into account.
 	 *
-	 * @param array       $posts
+	 * @param \WP_Post[]  $posts
 	 * @param string|null $date string format: YYYY-mm-dd
 	 *
-	 * @return array
+	 * @return \WP_Post[]
 	 * @throws \CommonsBooking\Psr\Cache\InvalidArgumentException
 	 */
 	private static function filterTimeframesByConfiguredDays( array $posts, ?string $date ): array {
@@ -681,11 +692,11 @@ class Timeframe extends PostRepository {
 	 * Filters timeframes from array, which aren't bookable because of the max booking days in
 	 * advance setting.
 	 *
-	 * @param $posts
+	 * @param \WP_Post[] $posts
 	 *
-	 * @return array
+	 * @return \WP_Post[]
 	 */
-	private static function filterTimeframesByMaxBookingDays( $posts ): array {
+	private static function filterTimeframesByMaxBookingDays( array $posts ): array {
 		return array_filter(
 			$posts,
 			function ( $post ) {
@@ -710,11 +721,11 @@ class Timeframe extends PostRepository {
 	 * Filters timeframes from array,
 	 * removes timeframes which are not bookable by current user
 	 *
-	 * @param $posts
+	 * @param \WP_Post[]|\CommonsBooking\Model\Timeframe[] $posts
 	 *
-	 * @return array
+	 * @return \WP_Post[]|\CommonsBooking\Model\Timeframe[]
 	 */
-	private static function filterTimeframesForCurrentUser( $posts ): array {
+	private static function filterTimeframesForCurrentUser( array $posts ): array {
 		return array_filter(
 			$posts,
 			function ( $post ) {
@@ -770,7 +781,7 @@ class Timeframe extends PostRepository {
 	 *
 	 * @throws Exception
 	 */
-	private static function castPostsToModels( &$posts ) {
+	private static function castPostsToModels( &$posts ): void {
 		foreach ( $posts as &$post ) {
 			// If we have a standard timeframe
 			if ( $post->post_type == \CommonsBooking\Wordpress\CustomPostType\Timeframe::getPostType() ) {
@@ -833,20 +844,20 @@ class Timeframe extends PostRepository {
 	 * Why? We often need timeframes for a specific timerange. For example in the calendar the default range is
 	 *      three months. Another example is the table view.
 	 *
-	 * @param $minTimestamp
-	 * @param $maxTimestamp
+	 * @param int      $minTimestamp
+	 * @param int      $maxTimestamp
 	 * @param int[]    $locations
 	 * @param int[]    $items
-	 * @param array    $types
+	 * @param int[]    $types
 	 * @param bool     $returnAsModel
 	 * @param string[] $postStatus
 	 *
-	 * @return array
+	 * @return \WP_Post[]|\CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
 	public static function getInRange(
-		$minTimestamp,
-		$maxTimestamp,
+		int $minTimestamp,
+		int $maxTimestamp,
 		array $locations = [],
 		array $items = [],
 		array $types = [],
@@ -903,20 +914,20 @@ class Timeframe extends PostRepository {
 	/**
 	 * Returns timeframes in explicit timerange that are bookable by the current user.
 	 *
-	 * @param $minTimestamp
-	 * @param $maxTimestamp
+	 * @param int      $minTimestamp
+	 * @param int      $maxTimestamp
 	 * @param int[]    $locations
 	 * @param int[]    $items
-	 * @param array    $types
+	 * @param int[]    $types
 	 * @param bool     $returnAsModel
 	 * @param string[] $postStatus
 	 *
-	 * @return array
+	 * @return \WP_Post[]|\CommonsBooking\Model\Timeframe[]
 	 * @throws Exception
 	 */
 	public static function getInRangeForCurrentUser(
-		$minTimestamp,
-		$maxTimestamp,
+		int $minTimestamp,
+		int $maxTimestamp,
 		array $locations = [],
 		array $items = [],
 		array $types = [],

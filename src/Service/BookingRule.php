@@ -56,13 +56,14 @@ class BookingRule {
 	 * Array of associative arrays in which the key "title" is the title of the parameter and "description" is the description of the parameter.
 	 * These parameters are text fields that can be used to configure the rule. We can currently only support 2 parameters
 	 *
-	 * @var array
+	 * @var array<int, array{title: string, description: string}>
 	 */
 	protected array $params = [];
 	/**
-	 * Array where first element is the description of the select field and the second element is an associative array of the select options
+	 * Array where first element is the description of the select field and the second element is an associative array of the select options. The key is the value under which it is saved,
+	 * the value is the display value.
 	 *
-	 * @var array
+	 * @var array{0: string, 1: array<int|string, int|string>}|array{}
 	 */
 	protected array $selectParam;
 	/**
@@ -76,13 +77,13 @@ class BookingRule {
 	/**
 	 * The constructor for BookingRules before they are applied
 	 *
-	 * @param String  $name The name of the rule, needs to be unique and is used to identify the rule in the code
-	 * @param String  $title The title of the rule, will be shown to the configuration admin
-	 * @param String  $description A detailed description of the rule, will be shown to the configuration admin
-	 * @param String  $errorMessage The static error message that will be shown to the booking user if the rule is not met
-	 * @param Closure $validationFunction The function that will be called to validate the rule. This is a closure that takes a Booking object, the passed args and an array of the selected terms as arguments
-	 * @param array   $params Array of associative arrays in which the key "title" is the title of the parameter and "description" is the description of the parameter. Only 2 parameters are currently supported. They have to be integer values.
-	 * @param array   $selectParam Array where first element is the description of the select field and the second element is an associative array of the select options
+	 * @param String                                                     $name The name of the rule, needs to be unique and is used to identify the rule in the code
+	 * @param String                                                     $title The title of the rule, will be shown to the configuration admin
+	 * @param String                                                     $description A detailed description of the rule, will be shown to the configuration admin
+	 * @param String                                                     $errorMessage The static error message that will be shown to the booking user if the rule is not met
+	 * @param Closure                                                    $validationFunction The function that will be called to validate the rule. This is a closure that takes a Booking object, the passed args and an array of the selected terms as arguments
+	 * @param array<int, array{title: string, description: string}>      $params Array of associative arrays in which the key "title" is the title of the parameter and "description" is the description of the parameter. Only 2 parameters are currently supported. They have to be integer values.
+	 * @param array{0: string, 1: array<int|string, int|string>}|array{} $selectParam Array where first element is the description of the select field and the second element is an associative array of the select options
 	 *
 	 * @throws BookingRuleException
 	 */
@@ -124,9 +125,11 @@ class BookingRule {
 	/**
 	 * Gets the sanitized version of the BookingRule error message
 	 *
+	 * @param array<int, int|string|null> $args The parameters the rule was configured with
+	 *
 	 * @return string
 	 */
-	public function getErrorMessage( $args = [] ): string {
+	public function getErrorMessage( array $args = [] ): string {
 		$errorMessage = commonsbooking_sanitizeHTML( $this->errorMessage );
 		if ( $this->errorFromArgs !== null ) {
 			$errorMessageFunction = $this->errorFromArgs;
@@ -145,7 +148,7 @@ class BookingRule {
 	}
 
 	/**
-	 * @return array
+	 * @return array<int, array{title: string, description: string}>
 	 */
 	public function getParams(): array {
 		return $this->params;
@@ -161,7 +164,7 @@ class BookingRule {
 	/**
 	 * Create associative array for CMB2 select
 	 *
-	 * @return array
+	 * @return array<string, string> Map of rule name to sanitized rule title
 	 */
 	public static function getRulesForSelect(): array {
 		$assoc_array = [];
@@ -344,14 +347,14 @@ class BookingRule {
 	 * If the user has bookings at the same day it will return an array with conflicting bookings
 	 * If there is no booking at the same day, will return null
 	 *
-	 * @param Booking    $booking
-	 * @param array      $args
-	 * @param bool|array $appliedTerms
+	 * @param Booking                     $booking
+	 * @param array<int, int|string|null> $args the three arguments that can be passed to the rule, when none are defined, the keys still exist but the value is null
+	 * @param bool|string[]               $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 * @throws Exception
 	 */
-	public static function checkSimultaneousBookings( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
+	public static function checkSimultaneousBookings( Booking $booking, array $args = [], array|bool $appliedTerms = false ): ?array {
 		$user         = $booking->getUserData();
 		$userBookings = \CommonsBooking\Repository\Booking::getByTimerange(
 			$booking->getStartDate(),
@@ -381,14 +384,14 @@ class BookingRule {
 	 * If the user has chained too many days in that timespan will return the conflicting bookings
 	 * If the user bookings are NOT above the limit, will return null
 	 *
-	 * @param Booking    $booking
-	 * @param array      $args
-	 * @param bool|array $appliedTerms
+	 * @param Booking                     $booking
+	 * @param array<int, int|string|null> $args
+	 * @param bool|array<int, int|string> $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 * @throws Exception
 	 */
-	public static function checkChainBooking( Booking $booking, array $args = [], $appliedTerms = false ): ?array {
+	public static function checkChainBooking( Booking $booking, array $args = [], array|bool $appliedTerms = false ): ?array {
 		$timeframe = $booking->getBookableTimeFrame();
 		if ( $timeframe === null ) {
 			return null;
@@ -442,14 +445,14 @@ class BookingRule {
 	 * Params: $args[0} = The amount of days the user is allowed to book
 	 *         $args[1] = The period over which the user is allowed to book
 	 *
-	 * @param Booking    $booking
-	 * @param array      $args
-	 * @param bool|array $appliedTerms
+	 * @param Booking                     $booking
+	 * @param array<int, int|string|null> $args
+	 * @param bool|array<int, int|string> $appliedTerms
 	 *
-	 * @return array
+	 * @return Booking[]|null
 	 * @throws Exception
 	 */
-	public static function checkMaxBookingDays( Booking $booking, array $args, $appliedTerms = false ): ?array {
+	public static function checkMaxBookingDays( Booking $booking, array $args, array|bool $appliedTerms = false ): ?array {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
 		// split the period in half, when it is an uneven number, the left side will be one day longer
@@ -466,7 +469,14 @@ class BookingRule {
 		return self::checkBookingRangeForDays( $startOfPeriod, $endOfPeriod, $booking, $appliedTerms, $allowedBookedDays );
 	}
 
-	public static function maxBookingDaysErrorMessage( $args ) {
+	/**
+	 * Builds the error message for the maxBookingDays rule
+	 *
+	 * @param array<int, int|string|null> $args $args[0] = allowed days, $args[1] = length of the period
+	 *
+	 * @return string
+	 */
+	public static function maxBookingDaysErrorMessage( array $args ): string {
 		$allowedBookedDays = $args[0];
 		$periodDays        = $args[1];
 
@@ -482,13 +492,13 @@ class BookingRule {
 	 *         $args[1] : Unused
 	 *         $args[2]:  The day on which the counter is reset, default: 1 = sunday, 2 = monday, ..., 7 = saturday
 	 *
-	 * @param Booking    $booking
-	 * @param array      $args
-	 * @param bool|array $appliedTerms
+	 * @param Booking                     $booking
+	 * @param array<int, int|string|null> $args
+	 * @param bool|array<int, int|string> $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 */
-	public static function checkMaxBookingDaysPerWeek( Booking $booking, array $args, $appliedTerms = false ): ?array {
+	public static function checkMaxBookingDaysPerWeek( Booking $booking, array $args, array|bool $appliedTerms = false ): ?array {
 		$allowedBookableDays = $args[0];
 		// default is sunday, we could not use 0 because it would be interpreted as an empty value
 		$resetDay = ( $args[2] < 7 && $args[2] >= 1 ) ? $args[2] : 1;
@@ -497,6 +507,13 @@ class BookingRule {
 		return self::checkBookingRangeForDays( $range[0], $range[1], $booking, $appliedTerms, $allowedBookableDays );
 	}
 
+	/**
+	 * Builds the error message for the maxBookingDaysPerWeek rule
+	 *
+	 * @param array<int, int|string|null> $args $args[0] = allowed days per week, $args[2] = day the counter is reset
+	 *
+	 * @return string
+	 */
 	public static function maxDaysWeekErrorMessage( array $args ): string {
 		$maxDays        = $args[0];
 		$resetDay       = $args[2] - 1;
@@ -507,7 +524,17 @@ class BookingRule {
 		return sprintf( __( 'You can only book %1$s days per week, please try again after %2$s next week.', 'commonsbooking' ), $maxDays, $resetDayString );
 	}
 
-	public static function checkMaxBookingsWeek( Booking $booking, array $args, $appliedTerms = false ): ?array {
+	/**
+	 * This rule will check if the user has exceeded their maximum number of bookings per week
+	 * Will return the conflicting bookings if a user has too many in the week
+	 *
+	 * @param Booking                     $booking
+	 * @param array<int, int|string|null> $args
+	 * @param bool|array<int, int|string> $appliedTerms
+	 *
+	 * @return Booking[]|null
+	 */
+	public static function checkMaxBookingsWeek( Booking $booking, array $args, array|bool $appliedTerms = false ): ?array {
 		$allowedTotalBookings = $args[0];
 		// default is sunday
 		$resetDay = ( $args[2] < 6 && $args[2] >= 0 ) ? $args[2] : 0;
@@ -516,6 +543,13 @@ class BookingRule {
 		return self::checkBookingAmount( $range[0], $range[1], $booking, $appliedTerms, $allowedTotalBookings );
 	}
 
+	/**
+	 * Builds the error message for the maxBookingsWeek rule
+	 *
+	 * @param array<int, int|string|null> $args $args[0] = allowed number of bookings per week, $args[2] = day the counter is reset
+	 *
+	 * @return string
+	 */
 	public static function maxBookingsWeekErrorMessage( array $args ): string {
 		$maxDays        = $args[0];
 		$resetDay       = $args[2];
@@ -534,13 +568,13 @@ class BookingRule {
 	 *           $args[1] : Unused
 	 *         $args[2]:  The day on which the counter is reset, from 0 to max 31.
 	 *
-	 * @param Booking    $booking
-	 * @param array      $args
-	 * @param bool|array $appliedTerms
+	 * @param Booking                     $booking
+	 * @param array<int, int|string|null> $args
+	 * @param bool|array<int, int|string> $appliedTerms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 */
-	public static function checkMaxBookingDaysPerMonth( Booking $booking, array $args, $appliedTerms = false ): ?array {
+	public static function checkMaxBookingDaysPerMonth( Booking $booking, array $args, array|bool $appliedTerms = false ): ?array {
 		$allowedBookableDays = $args[0];
 		$resetDay            = $args[2];
 		$range               = self::getBookingMonthRange( $booking, $resetDay );
@@ -548,6 +582,13 @@ class BookingRule {
 		return self::checkBookingRangeForDays( $range[0], $range[1], $booking, $appliedTerms, $allowedBookableDays );
 	}
 
+	/**
+	 * Builds the error message for the maxBookingDaysPerMonth rule
+	 *
+	 * @param array<int, int|string|null> $args $args[0] = allowed days per month, $args[2] = day the counter is reset
+	 *
+	 * @return string
+	 */
 	public static function maxDaysMonthErrorMessage( array $args ): string {
 		$maxDays  = $args[0];
 		$resetDay = $args[2];
@@ -556,7 +597,17 @@ class BookingRule {
 		return sprintf( __( 'You can only book %1$s days per month, please try again after the %2$s. next month.', 'commonsbooking' ), $maxDays, $resetDay );
 	}
 
-	public static function checkMaxBookingsMonth( Booking $booking, array $args, $appliedTerms = false ): ?array {
+	/**
+	 * This rule will check if the user has exceeded their maximum number of bookings per month
+	 * Will return the conflicting bookings if a user has too many in the month
+	 *
+	 * @param Booking                     $booking
+	 * @param array<int, int|string|null> $args
+	 * @param bool|array<int, int|string> $appliedTerms
+	 *
+	 * @return Booking[]|null
+	 */
+	public static function checkMaxBookingsMonth( Booking $booking, array $args, array|bool $appliedTerms = false ): ?array {
 		$allowedTotalBookings = $args[0];
 		$resetDay             = $args[2];
 		$range                = self::getBookingMonthRange( $booking, $resetDay );
@@ -564,6 +615,13 @@ class BookingRule {
 		return self::checkBookingAmount( $range[0], $range[1], $booking, $appliedTerms, $allowedTotalBookings );
 	}
 
+	/**
+	 * Builds the error message for the maxBookingsMonth rule
+	 *
+	 * @param array<int, int|string|null> $args $args[0] = allowed number of bookings per month, $args[2] = day the counter is reset
+	 *
+	 * @return string
+	 */
 	public static function maxBookingsMonthErrorMessage( array $args ): string {
 		$maxDays  = $args[0];
 		$resetDay = $args[2];
@@ -636,13 +694,13 @@ class BookingRule {
 	 *
 	 * Is often used by BookingRule to determine if a booking should be taken into consideration
 	 *
-	 * @param Booking[] $bookings
-	 * @param \WP_User  $user
-	 * @param             $terms
+	 * @param Booking[]                   $bookings
+	 * @param \WP_User                    $user
+	 * @param bool|array<int, int|string> $terms
 	 *
-	 * @return array|null
+	 * @return Booking[]|null
 	 */
-	private static function filterBookingsForTermsAndUser( array $bookings, \WP_User $user, $terms ): ?array {
+	private static function filterBookingsForTermsAndUser( array $bookings, \WP_User $user, array|bool $terms ): ?array {
 		$filteredTerms = Booking::filterTermsApply( $bookings, $terms );
 		if ( ! empty( $filteredTerms ) ) {
 			return Booking::filterForUser( $bookings, $user );
@@ -671,7 +729,7 @@ class BookingRule {
 	 *
 	 * @return Booking[]
 	 */
-	private static function filterEmptyBookings( array $bookings ) {
+	private static function filterEmptyBookings( array $bookings ): array {
 		return array_filter( $bookings, fn( $booking ) => $booking->getDuration() > 0 );
 	}
 
@@ -682,16 +740,16 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the range.
 	 * Will also consider the setting if cancelled bookings should be considered.
 	 *
-	 * @param DateTime    $startOfRange
-	 * @param DateTime    $endOfRange
-	 * @param Booking     $booking
-	 * @param array|false $appliedTerms
-	 * @param int         $allowedBookableDays
+	 * @param DateTime                    $startOfRange
+	 * @param DateTime                    $endOfRange
+	 * @param Booking                     $booking
+	 * @param bool|array<int, int|string> $appliedTerms
+	 * @param int                         $allowedBookableDays
 	 *
-	 * @return array|null - conflicting bookings in order of post_date
+	 * @return Booking[]|null - conflicting bookings in order of post_date
 	 * @throws Exception
 	 */
-	private static function checkBookingRangeForDays( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, $appliedTerms, int $allowedBookableDays ): ?array {
+	private static function checkBookingRangeForDays( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, array|bool $appliedTerms, int $allowedBookableDays ): ?array {
 		$countedPostTypes = [ 'confirmed' ];
 		if ( Settings::getOption( 'commonsbooking_options_restrictions', 'bookingrules-count-cancelled' ) == 'on' ) {
 			$countedPostTypes[] = 'canceled';
@@ -733,16 +791,16 @@ class BookingRule {
 	 * Will return the conflicting bookings if a user has too many in the range.
 	 * Cancelled bookings will be considered when they were cancelled after the start of the range.
 	 *
-	 * @param DateTime $startOfRange
-	 * @param DateTime $endOfRange
-	 * @param Booking  $booking
-	 * @param $appliedTerms
-	 * @param int      $allowedTotalBookings
+	 * @param DateTime                    $startOfRange
+	 * @param DateTime                    $endOfRange
+	 * @param Booking                     $booking
+	 * @param bool|array<int, int|string> $appliedTerms
+	 * @param int                         $allowedTotalBookings
 	 *
 	 * @return Booking[]|null
 	 * @throws Exception
 	 */
-	private static function checkBookingAmount( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, $appliedTerms, int $allowedTotalBookings ) {
+	private static function checkBookingAmount( DateTime $startOfRange, DateTime $endOfRange, Booking $booking, array|bool $appliedTerms, int $allowedTotalBookings ): ?array {
 		$countedPostTypes = [ 'confirmed' ];
 		if ( Settings::getOption( 'commonsbooking_options_restrictions', 'bookingrules-count-cancelled' ) == 'on' ) {
 			$countedPostTypes[] = 'canceled';
