@@ -74,16 +74,16 @@
         },
         {
             "name": "cmb2/cmb2",
-            "version": "v2.13.4",
+            "version": "v2.13.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "9916c5b21b0f0618f878d4ba4b625ae124d1fae7"
+                "reference": "c4d9cfa1a1a8707b22140a5bec1749b74f9829f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/9916c5b21b0f0618f878d4ba4b625ae124d1fae7",
-                "reference": "9916c5b21b0f0618f878d4ba4b625ae124d1fae7",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/c4d9cfa1a1a8707b22140a5bec1749b74f9829f0",
+                "reference": "c4d9cfa1a1a8707b22140a5bec1749b74f9829f0",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
                 "issues": "https://github.com/CMB2/CMB2/issues",
                 "source": "http://wordpress.org/support/plugin/cmb2"
             },
-            "time": "2026-10-08T15:38:53+00:00"
+            "time": "2026-10-26T23:16:04+00:00"
         },
         {
             "name": "ed-itsolutions/cmb2-field-ajax-search",
