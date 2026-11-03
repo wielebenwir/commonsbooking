@@ -3887,7 +3887,7 @@ msgstr "Das gleiche Datum wurde mehrere Male ausgewählt. Bitte ein Datum nur ei
 msgid "Startdate is missing. Please enter a start date to publish this timeframe."
 msgstr "Das Startdatum fehlt. Ein Startdatum muss eingegeben werden, damit der Zeitrahmen veröffentlicht werden kann."
 
-#: src/View/Booking.php:578
+#: src/View/Booking.php:579
 #: src/Wordpress/CustomPostType/Booking.php:898
 msgid "Submit booking"
 msgstr "Buchung abschicken"
