@@ -220,8 +220,11 @@ class Day {
 	 * @throws Exception
 	 */
 	protected function getStartSlot( int $grid, \CommonsBooking\Model\Timeframe $timeframe ): int {
+		if ( $timeframe->isFullDay() ) {
+			return 0;
+		}
+
 		// Timeframe
-		$fullDay   = $timeframe->isFullDay();
 		$startTime = $timeframe->getStartTimeDateTime();
 		$startSlot = $this->getSlotByTime( $startTime, $grid );
 
@@ -235,11 +238,6 @@ class Day {
 			if ( $startDateBooking < $startDateDay ) {
 				$startSlot = 0;
 			}
-		}
-
-		// If timeframe is full day, it starts at slot 0
-		if ( $fullDay ) {
-			$startSlot = 0;
 		}
 
 		return $startSlot;
@@ -280,22 +278,20 @@ class Day {
 	 * @throws Exception
 	 */
 	protected function getEndSlot( array $slots, int $grid, \CommonsBooking\Model\Timeframe $timeframe ): int {
+		if ( $timeframe->isFullDay() ) {
+			return count( $slots );
+		}
+
 		// Timeframe
 		$endTime = $timeframe->getEndTimeDateTime( $this->getDateObject()->getTimestamp() );
 		$endDate = $timeframe->getEndDateDateTime();
 
 		// Slots
-		$endSlot = count( $slots );
-
-		// If timeframe isn't configured as full day
-		if ( ! $timeframe->isFullDay() ) {
-			$endSlot = $this->getSlotByTime( $endTime, $grid, $timeframe->isLocked() && $timeframe->getType() !== Timeframe::BOOKING_ID );
-		}
+		$endSlot = $this->getSlotByTime( $endTime, $grid, $timeframe->isLocked() && $timeframe->getType() !== Timeframe::BOOKING_ID );
 
 		// Frontend bookings end inside their final cell (for example, 18:44:59);
 		// admin bookings can end exactly at a boundary. Round the stored end up without adding a cell at an exact boundary.
 		if (
-			! $timeframe->isFullDay() &&
 			$timeframe->getType() === Timeframe::BOOKING_ID &&
 			$endDate &&
 			$endDate->format( 'Y-m-d' ) === $this->getDate()
@@ -464,6 +460,7 @@ class Day {
 			$timeframePost         = $timeframe->getPost();
 			$timeframePost->locked = $timeframe->isLocked();
 			$gridMinutes           = $timeframe->getGridMinutes();
+			$priorityWinners       = [];
 
 			// Add timeframe to relevant slots
 			while ( $startSlot < $endSlot ) {
@@ -471,7 +468,12 @@ class Day {
 					$slots[ $startSlot ]['timeframe']   = $timeframePost;
 					$slots[ $startSlot ]['gridMinutes'] = $gridMinutes;
 				} else {
-					$winningTimeframe = Timeframe::getHigherPrioFrame( $timeframePost, $slots[ $startSlot ]['timeframe'] );
+					$existingTimeframe = $slots[ $startSlot ]['timeframe'];
+					// Each overlapping pair has the same winner throughout this mapping pass.
+					if ( ! isset( $priorityWinners[ $existingTimeframe->ID ] ) ) {
+						$priorityWinners[ $existingTimeframe->ID ] = Timeframe::getHigherPrioFrame( $timeframePost, $existingTimeframe );
+					}
+					$winningTimeframe = $priorityWinners[ $existingTimeframe->ID ];
 					if ( $winningTimeframe === $timeframePost ) {
 						$slots[ $startSlot ]['timeframe']   = $timeframePost;
 						$slots[ $startSlot ]['gridMinutes'] = $gridMinutes;
