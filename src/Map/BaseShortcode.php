@@ -17,8 +17,9 @@ abstract class BaseShortcode {
 	 * @param array<string|int, string> $atts attributes for parametrization.
 	 * @param string                    $content content to display, if shortcode implementation allows to.
 	 **/
-	public static function execute( array $atts, string $content = '' ): string {
+	public static function execute( array|string $atts, string $content = '' ): string {
 		$instance = new static();
+		$atts     = is_array( $atts ) ? $atts : [];
 		$attrs    = $instance->parse_attributes( $atts );
 		$options  = array_filter( $atts, 'is_int', ARRAY_FILTER_USE_KEY );
 

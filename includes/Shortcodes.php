@@ -3,10 +3,14 @@
 /**
  * Runs the cb_tag shortcode to output parsed template tag.
  *
- * @param array<string, string> $atts
+ * WordPress versions before 6.5 pass an empty string instead of an array
+ * to shortcode callbacks when no attributes were given.
+ *
+ * @param array<string, string>|string $atts
  * @throws Exception
  */
-function commonsbooking_tag( array $atts ): void {
+function commonsbooking_tag( array|string $atts ): void {
+	$atts = is_array( $atts ) ? $atts : [];
 	$atts = shortcode_atts(
 		array(
 			'tag' => '',

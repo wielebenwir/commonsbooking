@@ -192,13 +192,17 @@ class Calendar {
 	/**
 	 * Renders the item table shortcode.
 	 *
-	 * @param array<string, mixed> $atts shortcode attributes.
+	 * WordPress versions before 6.5 pass an empty string instead of an array
+	 * to shortcode callbacks when no attributes were given.
+	 *
+	 * @param array<string, mixed>|string $atts shortcode attributes.
 	 *
 	 * @return string|false
 	 * @throws Exception
 	 */
-	public static function shortcode( array $atts ): string|false {
+	public static function shortcode( array|string $atts ): string|false {
 		global $templateData;
+		$atts                 = is_array( $atts ) ? $atts : [];
 		$templateData         = [];
 		$templateData['data'] = self::renderTable( $atts );
 

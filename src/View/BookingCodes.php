@@ -98,14 +98,14 @@ class BookingCodes {
 	 * CMB2 sanitize field callback
 	 * Will take the entered start date and saves it as a timestamp.
 	 *
-	 * @param array<string, string>|null $value      The unsanitized value from the form.
-	 * @param  array<string, mixed>       $field_args Array of field arguments.
-	 * @param  \CMB2_Field                $field      The field object
+	 * @param array<string, string>|string|null $value      The unsanitized value from the form.
+	 * @param  array<string, mixed>              $field_args Array of field arguments.
+	 * @param  \CMB2_Field                       $field      The field object
 	 *
 	 * @return array<string, int|string>|null Sanitized value to be stored.
 	 */
-	public static function sanitizeCronEmailCodes( ?array $value, array $field_args, \CMB2_Field $field ): ?array {
-		if ( $value == null ) {
+	public static function sanitizeCronEmailCodes( array|string|null $value, array $field_args, \CMB2_Field $field ): ?array {
+		if ( ! is_array( $value ) ) {
 			return null;
 		}
 
@@ -129,13 +129,13 @@ class BookingCodes {
 	/**
 	 * CMB2 escape field callback
 	 *
-	 * @param array<string, int|string>|null $value      The unescaped value from the database.
-	 * @param  array<string, mixed>           $field_args Array of field arguments.
-	 * @param  \CMB2_Field                    $field      The field object
+	 * @param array<string, int|string>|string|null $value      The unescaped value from the database.
+	 * @param  array<string, mixed>                  $field_args Array of field arguments.
+	 * @param  \CMB2_Field                           $field      The field object
 	 *
 	 * @return array<string, int|string>      Escaped value to be displayed.
 	 */
-	public static function escapeCronEmailCodes( ?array $value, array $field_args, \CMB2_Field $field ): array {
+	public static function escapeCronEmailCodes( array|string|null $value, array $field_args, \CMB2_Field $field ): array {
 
 		if ( is_array( $value ) ) {
 			return array(

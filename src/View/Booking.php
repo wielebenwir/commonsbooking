@@ -442,12 +442,15 @@ class Booking extends View {
 	 *
 	 * A list of items with timeframes.
 	 *
-	 * @param array<string, mixed> $atts
+	 * WordPress versions before 6.5 pass an empty string instead of an array
+	 * to shortcode callbacks when no attributes were given.
+	 *
+	 * @param array<string, mixed>|string $atts
 	 *
 	 * @return false|string
 	 * @throws Exception
 	 */
-	public static function shortcode( array $atts ): string|false {
+	public static function shortcode( array|string $atts ): string|false {
 		global $templateData;
 		$templateData = [];
 		$templateData = self::getBookingListData();
