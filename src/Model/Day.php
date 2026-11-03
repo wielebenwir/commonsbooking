@@ -457,21 +457,24 @@ class Day {
 			// Slots
 			$startSlot = $this->getStartSlot( $grid, $timeframe );
 			$endSlot   = $this->getEndSlot( $slots, $grid, $timeframe );
+			if ( $startSlot >= $endSlot ) {
+				continue;
+			}
+
+			$timeframePost         = $timeframe->getPost();
+			$timeframePost->locked = $timeframe->isLocked();
+			$gridMinutes           = $timeframe->getGridMinutes();
 
 			// Add timeframe to relevant slots
 			while ( $startSlot < $endSlot ) {
-				// Set locked property
-				$timeframePost         = $timeframe->getPost();
-				$timeframePost->locked = $timeframe->isLocked();
-
 				if ( ! array_key_exists( 'timeframe', $slots[ $startSlot ] ) || ! $slots[ $startSlot ]['timeframe'] ) {
 					$slots[ $startSlot ]['timeframe']   = $timeframePost;
-					$slots[ $startSlot ]['gridMinutes'] = $timeframe->getGridMinutes();
+					$slots[ $startSlot ]['gridMinutes'] = $gridMinutes;
 				} else {
 					$winningTimeframe = Timeframe::getHigherPrioFrame( $timeframePost, $slots[ $startSlot ]['timeframe'] );
 					if ( $winningTimeframe === $timeframePost ) {
 						$slots[ $startSlot ]['timeframe']   = $timeframePost;
-						$slots[ $startSlot ]['gridMinutes'] = $timeframe->getGridMinutes();
+						$slots[ $startSlot ]['gridMinutes'] = $gridMinutes;
 					}
 				}
 
@@ -499,12 +502,15 @@ class Day {
 				// Slots
 				$startSlot = $this->getRestrictionStartSlot( $grid, $restriction );
 				$endSlot   = $this->getRestrictionEndSlot( $slots, $grid, $restriction );
+				if ( $startSlot >= $endSlot ) {
+					continue;
+				}
+
+				$restrictionPost         = $restriction->getPost();
+				$restrictionPost->locked = true;
 
 				// Add timeframe to relevant slots
 				while ( $startSlot < $endSlot ) {
-					// Set locked property
-					$restrictionPost                    = $restriction->getPost();
-					$restrictionPost->locked            = true;
 					$slots[ $startSlot ]['timeframe']   = $restrictionPost;
 					$slots[ $startSlot ]['gridMinutes'] = 0;
 					++$startSlot;
@@ -623,14 +629,15 @@ class Day {
 		} else {
 			$slots      = [];
 			$timeFormat = esc_html( get_option( 'time_format' ) );
+			$dayStart   = $this->getStartTimestamp();
 
 			// Init slots.
 			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
 				$slots[ $i ] = [
 					'timestart'      => date( $timeFormat, $i * self::MINUTES_PER_CELL * 60 ),
 					'timeend'        => date( $timeFormat, ( $i + 1 ) * self::MINUTES_PER_CELL * 60 ),
-					'timestampstart' => $this->getSlotTimestampStart( $i ),
-					'timestampend'   => $this->getSlotTimestampEnd( $i ),
+					'timestampstart' => $this->getSlotTimestampStart( $i, $dayStart ),
+					'timestampend'   => $this->getSlotTimestampEnd( $i, $dayStart ),
 				];
 			}
 
@@ -653,19 +660,25 @@ class Day {
 	/**
 	 * Returns timestamp when $slotNr starts.
 	 *
+	 * @param int      $slotNr   Cell index.
+	 * @param int|null $dayStart Precomputed day start, when initializing multiple cells.
+	 *
 	 * @return int
 	 */
-	protected function getSlotTimestampStart( int $slotNr ): int {
-		return $this->getStartTimestamp() + $slotNr * self::MINUTES_PER_CELL * 60;
+	protected function getSlotTimestampStart( int $slotNr, ?int $dayStart = null ): int {
+		return ( $dayStart ?? $this->getStartTimestamp() ) + $slotNr * self::MINUTES_PER_CELL * 60;
 	}
 
 	/**
 	 * Returns timestamp when $slotNr ends.
 	 *
+	 * @param int      $slotNr   Cell index.
+	 * @param int|null $dayStart Precomputed day start, when initializing multiple cells.
+	 *
 	 * @return int
 	 */
-	protected function getSlotTimestampEnd( int $slotNr ): int {
-		return $this->getStartTimestamp() + ( $slotNr + 1 ) * self::MINUTES_PER_CELL * 60 - 1;
+	protected function getSlotTimestampEnd( int $slotNr, ?int $dayStart = null ): int {
+		return ( $dayStart ?? $this->getStartTimestamp() ) + ( $slotNr + 1 ) * self::MINUTES_PER_CELL * 60 - 1;
 	}
 
 	public function setIgnoreRestrictions( bool $ignoreRestrictions ): void {
