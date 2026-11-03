@@ -515,7 +515,6 @@ class Day {
 
 			// If Slot before is of same timeframe and we have no hourly grid, we merge them.
 			if (
-				$slotBefore &&
 				$slotBefore['timeframe']->ID == $slot['timeframe']->ID &&
 				(
 					get_post_meta( $slot['timeframe']->ID, 'full-day', true ) == 'on' ||
@@ -542,7 +541,7 @@ class Day {
 	protected function removeEmptySlots( array &$slots ): void {
 		// remove slots without timeframes
 		foreach ( $slots as $slotNr => $slot ) {
-			if ( ! array_key_exists( 'timeframe', $slot ) || ! ( $slot['timeframe'] instanceof WP_Post ) ) {
+			if ( ! array_key_exists( 'timeframe', $slot ) ) {
 				unset( $slots[ $slotNr ] );
 			}
 		}
