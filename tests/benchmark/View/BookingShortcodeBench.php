@@ -29,6 +29,8 @@ class BookingShortcodeBench extends BenchmarkCase {
 		$templateData = $GLOBALS['templateData'];
 		$subscriber   = get_user_by( 'ID', $this->subscriberId );
 
+		$this->executeBookingDataAjax();
+
 		assertStringContainsString( 'booking-list', $output );
 		assertGreaterThan( 0, $templateData['total'] );
 		assertNotEmpty( $templateData['data'] );
@@ -48,6 +50,8 @@ class BookingShortcodeBench extends BenchmarkCase {
 
 		$templateData = $GLOBALS['templateData'];
 
+		$this->executeBookingDataAjax();
+
 		assertStringContainsString( 'booking-list', $output );
 		assertGreaterThan( $this->subscriberBookingTotal, $templateData['total'] );
 	}
@@ -65,5 +69,18 @@ class BookingShortcodeBench extends BenchmarkCase {
 		$data       = Booking::getBookingListData( 1, $subscriber );
 
 		$this->subscriberBookingTotal = is_array( $data ) ? (int) $data['total'] : 0;
+	}
+
+	private function executeBookingDataAjax(): void {
+		$errorLevel = error_reporting();
+		error_reporting( $errorLevel & ~E_WARNING );
+
+		ob_start();
+		do_action( 'wp_ajax_cb_bookings_data' );
+		$response = ob_get_clean();
+
+		error_reporting( $errorLevel );
+
+		assertStringContainsString( '"total"', $response );
 	}
 }
