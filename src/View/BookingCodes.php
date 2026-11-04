@@ -169,7 +169,7 @@ class BookingCodes {
 	public static function renderCronEmailFields( \CMB2_Field $field, array|string $escaped_value, int $object_id, string $object_type, \CMB2_Types $field_type ): void {
 
 		$timeframeId = $object_id;
-		$timeframe   = new Timeframe( $timeframeId );
+		$timeframe   = \CommonsBooking\Repository\Timeframe::getPostById( $timeframeId );
 
 		$location        = $timeframe->getLocation();
 		$location_emails = $location ?
@@ -274,7 +274,7 @@ HTML;
 	public static function renderDirectEmailRow( array $field_args, \CMB2_Field $field ): bool {
 
 		$timeframeId = $field->object_id();
-		$timeframe   = new Timeframe( $timeframeId );
+		$timeframe   = \CommonsBooking\Repository\Timeframe::getPostById( $timeframeId );
 
 		$location        = $timeframe->getLocation();
 		$location_emails = $location ?
@@ -383,7 +383,7 @@ HTML;
 	 */
 	public static function renderTable( int $timeframeId ): ?bool {
 		try {
-			$timeframe = new Timeframe( $timeframeId );} catch ( BookingCodeException $e ) {
+			$timeframe = \CommonsBooking\Repository\Timeframe::getPostById( $timeframeId );} catch ( BookingCodeException $e ) {
 			echo $e->getMessage();
 			return null;
 			}

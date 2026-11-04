@@ -51,7 +51,7 @@ class BookingCodesMessage extends Message {
 	 */
 	public function sendMessage(): bool {
 		$timeframeId = (int) $this->getPostId();
-		$timeframe   = new Timeframe( $timeframeId );
+		$timeframe   = \CommonsBooking\Repository\Timeframe::getPostById( $timeframeId );
 
 		if ( ! $this->prepareReceivers( $timeframe ) ) {
 			return $this->raiseError(

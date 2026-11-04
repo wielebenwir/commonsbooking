@@ -116,7 +116,7 @@ class iCalendar {
 	 */
 	public static function downloadICS( int $bookingID ): void {
 		$postID           = $bookingID;
-		$booking          = new Booking( $postID );
+		$booking          = \CommonsBooking\Repository\Booking::getPostById( $postID );
 		$template_objects = [
 			'booking'  => $booking,
 			'item'     => $booking->getItem(),

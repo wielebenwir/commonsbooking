@@ -96,6 +96,8 @@ class Helper {
 	/**
 	 * Returns CB custom post type if possible.
 	 *
+	 * TODO try to reuse that where appropriate (PostRepository etc.)
+	 *
 	 * @param \WP_User|\WP_Post|CustomPost $post
 	 * @param string                       $type a CPT name, if nothing, the post is returned
 	 *
