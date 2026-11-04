@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Repository;
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -247,12 +248,16 @@ abstract class BookablePost extends PostRepository {
 
 			if ( $query->have_posts() ) {
 				$posts = $query->get_posts();
-				foreach ( $posts as $key => &$post ) {
-					$class = static::getModelClass();
-					$post  = new $class( $post );
 
-					// If items shall be bookable, we need to check...
-					if ( $bookable && ! $post->isBookable() ) {
+				// If items shall be bookable, we need to check...
+				$bookablePostIds = $bookable ? self::getBookablePostIds( $posts ) : [];
+
+				foreach ( $posts as $key => &$post ) {
+					$postId = $post->ID;
+					$class  = static::getModelClass();
+					$post   = new $class( $post );
+
+					if ( $bookable && ! isset( $bookablePostIds[ $postId ] ) ) {
 						unset( $posts[ $key ] );
 					}
 				}
@@ -262,6 +267,84 @@ abstract class BookablePost extends PostRepository {
 
 			return $posts;
 		}
+	}
+
+	/**
+	 * Returns the IDs of the given bookable posts (locations or items) that have at
+	 * least one bookable timeframe.
+	 *
+	 * This is the batched equivalent of calling `isBookable()` on every post: instead
+	 * of running the same bookable-timeframe query once per post (N+1), it runs a
+	 * single query for all posts and maps the resulting timeframes back to their
+	 * location or item IDs. The resulting set is identical, because
+	 * {@see \CommonsBooking\Model\BookablePost::isBookable()} resolves the timeframes
+	 * with a null date (`CustomPost::$date` is never set for locations and items) and
+	 * the same minimum timestamp.
+	 *
+	 * @param \WP_Post[] $posts
+	 *
+	 * @return array<int, true> Bookable post IDs as keys.
+	 * @throws Exception
+	 */
+	private static function getBookablePostIds( array $posts ): array {
+		$postIds = array_map(
+			static function ( $post ) {
+				return $post->ID;
+			},
+			$posts
+		);
+
+		if ( ! count( $postIds ) ) {
+			return [];
+		}
+
+		$modelClass = static::getModelClass();
+
+		if ( $modelClass === \CommonsBooking\Model\Location::class ) {
+			$timeframes   = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
+				$postIds,
+				[],
+				null,
+				true,
+				Helper::getLastFullHourTimestamp()
+			);
+			$getEntityIds = static function ( $timeframe ) {
+				return $timeframe->getLocationIDs();
+			};
+		} elseif ( $modelClass === \CommonsBooking\Model\Item::class ) {
+			$timeframes   = \CommonsBooking\Repository\Timeframe::getBookableForCurrentUser(
+				[],
+				$postIds,
+				null,
+				true,
+				Helper::getLastFullHourTimestamp()
+			);
+			$getEntityIds = static function ( $timeframe ) {
+				return $timeframe->getItemIDs();
+			};
+		} else {
+			// Unknown bookable post type: fall back to the per-post check.
+			$bookablePostIds = [];
+			foreach ( $posts as $post ) {
+				$class = $modelClass;
+				$model = new $class( $post );
+				if ( $model->isBookable() ) {
+					$bookablePostIds[ $post->ID ] = true;
+				}
+			}
+
+			return $bookablePostIds;
+		}
+
+		$bookablePostIds = [];
+		/** @var \CommonsBooking\Model\Timeframe $timeframe */
+		foreach ( $timeframes as $timeframe ) {
+			foreach ( $getEntityIds( $timeframe ) as $entityId ) {
+				$bookablePostIds[ (int) $entityId ] = true;
+			}
+		}
+
+		return $bookablePostIds;
 	}
 
 	/**
