@@ -15,4 +15,8 @@ class SettingsTest extends TestCase {
 		$emailBodyActual     = Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' );
 		$this->assertEquals( $emailHeaderExpected, $emailBodyActual );
 	}
+
+	public function testGetDefaultOption() {
+		$this->assertEquals( get_option( 'admin_email' ), Settings::getDefaultOption( 'commonsbooking_options_templates', 'emailheaders_from-email' ) );
+	}
 }

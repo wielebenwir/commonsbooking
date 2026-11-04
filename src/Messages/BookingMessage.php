@@ -77,10 +77,10 @@ class BookingMessage extends Message {
 		// generate attachment when set in settings
 		$attachment = null;
 		if ( ( Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on' ) ) {
-			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', 'commonsbooking_sanitizeHTML', true ) ?? '';
 			$eventTitle = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
 
-			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description', 'commonsbooking_sanitizeHTML', true ) ?? '';
 			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
 
 			$attachment = [

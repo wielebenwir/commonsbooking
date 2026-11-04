@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Settings;
 
+use CommonsBooking\Wordpress\Options\AdminOptions;
 use function get_option;
 
 /**
@@ -25,10 +26,12 @@ class Settings {
 	 * @param mixed $sanitizeFunction Optional. Function to sanitize return value. If an array, each element
 	 *                                 is sanitized recursively. Use false to not sanitize.
 	 *                                 Default: 'commonsbooking_sanitizeHTML'.
+	 * @param bool  $fallbackToDefault Optional. If true, and the option is not found, the default value will be returned.
+	 *                                  Default: false.
 	 *
 	 * @return mixed
 	 */
-	public static function getOption( $options_key, $field_id, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+	public static function getOption( $options_key, $field_id, $sanitizeFunction = 'commonsbooking_sanitizeHTML', bool $fallbackToDefault = false ) {
 		$cb_options_array = get_option( $options_key );
 
 		if ( is_array( $cb_options_array ) && array_key_exists( $field_id, $cb_options_array ) ) {
@@ -39,8 +42,35 @@ class Settings {
 				return $optionValue;
 			}
 		} else {
+			if ( $fallbackToDefault ) {
+				return self::getDefaultOption( $options_key, $field_id );
+			}
 			return false;
 		}
+	}
+
+	/**
+	 * Gets the default value, can be used when an option is not yet set.
+	 *
+	 * @param string $options_key
+	 * @param string $field_id
+	 * @return string | false
+	 */
+	public static function getDefaultOption( string $options_key, string $field_id ): bool|string {
+		$options_array = include COMMONSBOOKING_PLUGIN_DIR . '/includes/OptionsArray.php';
+		$tab           = str_replace( AdminOptions::OPTION_KEY . '_', '', $options_key );
+		if ( isset( $options_array[ $tab ] ) ) {
+			$groups = $options_array[ $tab ]['field_groups'];
+			foreach ( $groups as $group ) {
+				$fields = $group['fields'];
+				foreach ( $fields as $field ) {
+					if ( isset( $field['id'] ) && $field['id'] === $field_id && isset( $field['default'] ) ) {
+						return $field['default'];
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 

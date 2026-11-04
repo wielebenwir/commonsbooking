@@ -124,9 +124,9 @@ class iCalendar {
 			'user'     => $booking->getUserData(),
 		];
 
-		$eventTitle       = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+		$eventTitle       = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', 'commonsbooking_sanitizeHTML', true ) ?? '';
 		$eventTitle       = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
-		$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+		$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description', 'commonsbooking_sanitizeHTML', true ) ?? '';
 		$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
 		$calendar         = $booking->getiCal( $eventTitle, $eventDescription );
 		header( 'Content-Type: text/calendar; charset=utf-8' );

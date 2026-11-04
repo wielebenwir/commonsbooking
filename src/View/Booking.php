@@ -508,10 +508,10 @@ class Booking extends View {
 	 * @throws InvalidArgumentException
 	 */
 	public static function getBookingListiCal( ?int $user = null ): string|false {
-		$userBookingTitle_unparsed            = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
-		$userBookingDescription_unparsed      = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
-		$otherUserBookingTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title' );
-		$otherUserBookingDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc' );
+		$userBookingTitle_unparsed            = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-title', 'commonsbooking_sanitizeHTML', true ) ?? '';
+		$userBookingDescription_unparsed      = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_templates', 'emailtemplates_mail-booking_ics_event-description', 'commonsbooking_sanitizeHTML', true ) ?? '';
+		$otherUserBookingTitle_unparsed       = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_title', 'commonsbooking_sanitizeHTML', true ) ?? '';
+		$otherUserBookingDescription_unparsed = Settings::getOption( COMMONSBOOKING_PLUGIN_SLUG . '_options_advanced-options', 'event_desc', 'commonsbooking_sanitizeHTML', true ) ?? '';
 
 		if ( $user == null ) {
 			$user = wp_get_current_user();
