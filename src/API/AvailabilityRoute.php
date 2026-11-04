@@ -46,7 +46,7 @@ class AvailabilityRoute extends BaseRoute {
 	/**
 	 * This retrieves bookable timeframes and the different items assigned, with their respective availability.
 	 *
-	 * @param ?int $id The id of a {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} post to search for
+	 * @param int|int[]|null $id The IDs of {@see \CommonsBooking\Wordpress\CustomPostType\Item::post_type} posts to search for
 	 *
 	 * @return array
 	 * @throws Exception
@@ -58,11 +58,12 @@ class AvailabilityRoute extends BaseRoute {
 		} else {
 			$availabilityWeeks = intval( $availabilityWeeks );
 		}
+		$itemIds  = is_array( $id ) ? $id : ( $id ? [ $id ] : [] );
 		$calendar = new Calendar(
 			new Day( date( 'Y-m-d', time() ) ),
 			new Day( date( 'Y-m-d', strtotime( '+' . $availabilityWeeks . ' weeks' ) ) ),
 			[],
-			$id ? [ $id ] : []
+			$itemIds
 		);
 
 		return $calendar->getAvailabilitySlots();
@@ -101,13 +102,11 @@ class AvailabilityRoute extends BaseRoute {
 		// Get all items
 		$items = Item::get( [], true );
 
-		// Collect availabilies for each item
-		foreach ( $items as $item ) {
-			$data->availability = array_merge(
-				$data->availability,
-				$this->getItemData( $item->ID )
-			);
-		}
+		$itemIds            = array_map(
+			static fn( $item ) => $item->ID,
+			$items
+		);
+		$data->availability = $itemIds ? $this->getItemData( $itemIds ) : [];
 
 		return $this->respond_with_validation( $data );
 	}
