@@ -62,7 +62,7 @@ dann dort angezeigt.
 
 ### **Konfigurieren des Zeitrahmens:**
   * **Ganzer Tag:** Wenn aktiviert, belegt der Zeitrahmen den ganzen Tag. Wenn diese Option deaktiviert ist, muss der Zeitraum eine Start- und Endzeit haben.
-  * **Raster:** Bei ganztägigen Zeitrahmen irrelevant. Wenn "Gesamter Slot" ausgewählt ist, ist der Artikel immer von der angegebenen Startzeit bis zur Endzeit buchbar. Wenn "Stundenweise" ausgewählt ist, ist jede Stunde zwischen Start- und Endzeit einzeln buchbar.
+  * **Raster:** Bei ganztägigen Zeitrahmen irrelevant. Wenn "Gesamter Slot" ausgewählt ist, ist der Artikel immer von der angegebenen Startzeit bis zur Endzeit buchbar. Die Raster für eine Stunde, 30 Minuten und 15 Minuten bieten feste, an der Uhrzeit ausgerichtete Intervalle. Start- und Endzeit müssen zum gewählten Raster passen. Ist ein Teil eines Intervalls gesperrt, wird das gesamte Intervall nicht als buchbar angeboten; kürzere Reststücke werden nicht angeboten.
   * **Startzeit / Endzeit:** Bei ganztägigen Zeitrahmen irrelevant. Wann jeden Tag das Buchungsfenster beginnt und endet.
 
 ### **Zeitrahmenwiederholung:**
@@ -153,8 +153,9 @@ Die Codes werden an die E-Mail-Adressen versendet, die in dem Feld "Standort E-M
 ### **Stundenweise oder** **Slotweise** (z.B. halbtags, 3-stundenweise o.ä.)
   **Buchung** :
   * Deaktiviere die Checkbox “Ganzer Tag”
-  * Wähle im Raster: “stundenweise” oder “ganzer Slot”
-    * Bei Auswahl stundenweise werden im Buchungskalender von der Start- bis zur Endzeit jeweils Zeiträume von einer Stunde für Abholung oder Rückgabe angezeigt.
+  * Wähle im Raster: eine Stunde, 30 Minuten, 15 Minuten oder „Gesamter Slot“.
+    * Bei einem Intervallraster werden im Buchungskalender Zeiträume der gewählten Dauer für Abholung oder Rückgabe angezeigt. Eine teilweise Sperrung macht das gesamte Intervall unbuchbar, ohne spätere Slotgrenzen zu verschieben. Beispiel: Bei einem 30-Minuten-Raster sperrt eine Blockierung von 09:15 bis 09:30 den Slot 09:00–09:30 vollständig. Der Slot 09:30–10:00 bleibt verfügbar, sofern keine andere Regel ihn sperrt.
+    * Endet eine Buchung genau an einer Slotgrenze, sperrt sie den folgenden Slot nicht. Eine Admin-Buchung von 09:45 bis 10:00 macht beispielsweise den Stunden-Slot 09:00–10:00 unbuchbar, sperrt aber nicht 10:00–11:00.
     * Slotweise bedeutet, dass Nutzende den Zeitraum von Start- bis Endzeit jeweils nur als kompletten Block buchen können (z.B. nur von 09:00 – 12:00 Uhr). Durch diese Einstellung könnt ihr ein gröberes Ausleihraster ermöglichen, falls ihr keine kleinteiligen 1-Stunden-Raster anbieten möchtet.
 
 ### **Kombination mehrerer Zeitrahmen:**

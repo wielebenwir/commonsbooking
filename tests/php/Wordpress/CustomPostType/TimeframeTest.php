@@ -53,7 +53,15 @@ class TimeframeTest extends CustomPostTypeTest {
 	}
 
 	public function testGetGridOptions() {
-		$this->assertIsArray( Timeframe::getGridOptions() );
+		$this->assertSame(
+			[
+				0      => 'Full slot',
+				1      => 'Hourly',
+				'0.5'  => '30 minutes',
+				'0.25' => '15 minutes',
+			],
+			Timeframe::getGridOptions()
+		);
 	}
 
 	/**
