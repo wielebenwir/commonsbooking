@@ -430,7 +430,7 @@ class Restriction extends CustomPost {
 			// get User ID from booking
 			$user = $booking->getUserData();
 			if ( ! $user ) {
-				return;
+				continue;
 			}
 			// checks if this is the first booking that is processed
 			$firstMessage = ( $key === array_key_first( $bookings ) );
