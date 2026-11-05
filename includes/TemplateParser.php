@@ -35,7 +35,8 @@ function commonsbooking_parse_template( string $template = '', array $objects = 
 		* @param string $template content of template after tag replacement
 		*/
 		$filteredTemplate = apply_filters( 'commonsbooking_template_tag', $template );
-		if ( $filteredTemplate !== '' && $filteredTemplate !== null && $filteredTemplate !== false ) {
+		//allows string "0" to be returned when set in meta-field
+		if ( $filteredTemplate === '0' || ! empty( $filteredTemplate ) ) {
 			return $filteredTemplate;
 		}
 
