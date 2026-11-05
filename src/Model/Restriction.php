@@ -267,12 +267,18 @@ class Restriction extends CustomPost {
 	 * @return ?int
 	 */
 	public function getItemId(): ?int {
-		$itemIdField = $this->getMeta( self::META_ITEM_ID );
-		if ( empty( $itemIdField ) ) {
-			return null;
-		}
-		return intval( $itemIdField );
+		return $this->getMetaInt( self::META_ITEM_ID );
 	}
+
+	/**
+	 * Returns location id for the location that the restricted item is in.
+	 *
+	 * @return int|null
+	 */
+	public function getLocationId(): ?int {
+		return $this->getMetaInt( self::META_LOCATION_ID );
+	}
+
 
 	/**
 	 * Returns location name for the location that the restricted item is in.
@@ -290,15 +296,6 @@ class Restriction extends CustomPost {
 		}
 
 		return $locationName;
-	}
-
-	/**
-	 * Returns location id for the location that the restricted item is in.
-	 *
-	 * @return int|null
-	 */
-	public function getLocationId(): ?int {
-		return $this->getMetaInt( self::META_LOCATION_ID );
 	}
 
 	/**
