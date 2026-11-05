@@ -89,6 +89,66 @@ class RestrictionMessageTest extends Email_Test_Case {
 		$this->assertEquals( $this->hintId, $this->hintMessage->getRestriction()->ID );
 	}
 
+	public function testSendMessageReturnsFalseForInactiveRestriction() {
+		update_post_meta( $this->hintId, \CommonsBooking\Model\Restriction::META_STATE, \CommonsBooking\Model\Restriction::STATE_NONE );
+
+		$message = new RestrictionMessage(
+			new \CommonsBooking\Model\Restriction( $this->hintId ),
+			get_userdata( $this->userId ),
+			new \CommonsBooking\Model\Booking( $this->bookingId ),
+			\CommonsBooking\Model\Restriction::TYPE_HINT,
+			true
+		);
+
+		$this->assertFalse( $message->sendMessage() );
+		$this->assertEmpty( $this->getMockMailer()->Subject );
+	}
+
+	public function testHintMailIsNotSentWhenPreparationFails() {
+		$message = $this->messageWithFailingPreparation( $this->hintId, \CommonsBooking\Model\Restriction::TYPE_HINT );
+
+		$this->assertFalse( $message->sendMessage() );
+		$this->assertEmpty( $this->getMockMailer()->Subject );
+	}
+
+	public function testRepairMailIsNotSentWhenPreparationFails() {
+		$message = $this->messageWithFailingPreparation( $this->repairId, \CommonsBooking\Model\Restriction::TYPE_REPAIR );
+
+		$this->assertFalse( $message->sendMessage() );
+		$this->assertEmpty( $this->getMockMailer()->Subject );
+	}
+
+	public function testCancellationMailIsNotSentWhenPreparationFails() {
+		update_post_meta( $this->hintId, \CommonsBooking\Model\Restriction::META_STATE, \CommonsBooking\Model\Restriction::STATE_SOLVED );
+
+		$message = $this->messageWithFailingPreparation( $this->hintId, \CommonsBooking\Model\Restriction::TYPE_HINT );
+
+		$this->assertFalse( $message->sendMessage() );
+		$this->assertEmpty( $this->getMockMailer()->Subject );
+	}
+
+	/**
+	 * Message whose mail preparation always throws, to cover the failure handling
+	 * of the send methods.
+	 */
+	private function messageWithFailingPreparation( int $restrictionId, string $type ): RestrictionMessage {
+		return new class( $restrictionId, $this->userId, $this->bookingId, $type ) extends RestrictionMessage {
+			public function __construct( int $restrictionId, int $userId, int $bookingId, string $type ) {
+				parent::__construct(
+					new \CommonsBooking\Model\Restriction( $restrictionId ),
+					get_userdata( $userId ),
+					new \CommonsBooking\Model\Booking( $bookingId ),
+					$type,
+					true
+				);
+			}
+
+			protected function prepareRestrictionMail( string $body, string $subject ): void {
+				throw new \Exception( 'mail preparation failed' );
+			}
+		};
+	}
+
 	public function setUp(): void {
 		parent::setUp();
 		$this->hintMessageText = 'This is a warning message';
