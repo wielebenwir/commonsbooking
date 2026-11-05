@@ -18,20 +18,33 @@ class BookingMessage extends Message {
 	 *
 	 * @var string[]
 	 */
-	protected $validActions = [ 'confirmed', 'canceled' ];
+	protected array $validActions = [ 'confirmed', 'canceled' ];
 
-	public function sendMessage() {
+	/**
+	 * @return bool
+	 */
+	public function sendMessage(): bool {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking = Booking::getPostById( $this->getPostId() );
 
 		$booking_user = $booking->getUserData();
 
-		$template_objects = [
-			'booking'  => $booking,
-			'item'     => $booking->getItem(),
-			'location' => $booking->getLocation(),
-			'user'     => $booking_user,
-		];
+		try {
+			$template_objects = [
+				'booking' => $booking,
+				'item' => $booking->getItem(),
+				'location' => $booking->getLocation(),
+				'user' => $booking_user,
+			];
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing template objects for booking message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		// get location email adresses to send them bcc copies
 		$location          = get_post( $booking->getMetaInt( 'location-id' ) );
@@ -64,10 +77,10 @@ class BookingMessage extends Message {
 		// generate attachment when set in settings
 		$attachment = null;
 		if ( ( Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_attach' ) == 'on' ) ) {
-			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title' );
+			$eventTitle = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-title', 'commonsbooking_sanitizeHTML', true ) ?? '';
 			$eventTitle = commonsbooking_sanitizeHTML( commonsbooking_parse_template( $eventTitle, $template_objects ) );
 
-			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description' );
+			$eventDescription = Settings::getOption( 'commonsbooking_options_templates', 'emailtemplates_mail-booking_ics_event-description', 'commonsbooking_sanitizeHTML', true ) ?? '';
 			$eventDescription = commonsbooking_sanitizeHTML( strip_tags( commonsbooking_parse_template( $eventDescription, $template_objects ) ) );
 
 			$attachment = [
@@ -89,5 +102,6 @@ class BookingMessage extends Message {
 			$attachment
 		);
 		$this->sendNotificationMail();
+		return true;
 	}
 }

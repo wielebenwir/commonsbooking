@@ -5,13 +5,13 @@ use CommonsBooking\CB\CB;
 /**
  * Parses templates and extracts the template tags used in e-mail templates: {{xxx:yyyy}}
  *
- * @param string   $template
- * @param array    $objects
- * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
+ * @param string                                                              $template
+ * @param array<string, \CommonsBooking\Model\CustomPost|\WP_User|false|null> $objects
+ * @param callable|string                                                     $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
  *
- * @return mixed
+ * @return string the template with replaced tags, empty string if no template tags found or if the template is empty
  */
-function commonsbooking_parse_template( string $template = '', $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+function commonsbooking_parse_template( string $template = '', array $objects = [], callable|string $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): string {
 	$template = preg_replace_callback(
 		'/\{{.*?\}}/',
 		function ( $match ) use ( $objects, $sanitizeFunction ) {
@@ -24,7 +24,7 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
 	// to items or locations
 	//
 	// why? users can add e.g. individual booking-mail texts per location by adding a custom field like
-	// 'custom_booking_message' and use all avaiable template tags within this custom field
+	// 'custom_booking_message' and use all available template tags within this custom field
 	if ( preg_match_all( '/{{.*?}}/', $template ) === 0 ) {
 		/**
 		* Default template content
@@ -34,13 +34,27 @@ function commonsbooking_parse_template( string $template = '', $objects = [], $s
 		*
 		* @param string $template content of template after tag replacement
 		*/
-		return apply_filters( 'commonsbooking_template_tag', $template );
+		$filteredTemplate = apply_filters( 'commonsbooking_template_tag', $template );
+		// allows string "0" to be returned when set in meta-field
+		if ( $filteredTemplate === '0' || ! empty( $filteredTemplate ) ) {
+			return $filteredTemplate;
+		}
+
+		return '';
 	} else {
 		return commonsbooking_parse_template( $template, $objects, $sanitizeFunction );
 	}
 }
 
-function commonsbooking_parse_shortcode( $tag ) {
+/**
+ * Renders a single cb shortcode tag.
+ *
+ * @param string $tag the template tag to parse, e.g. "item:post_title"
+ *
+ * @return false|string the rendered template tag, false if not found
+ * @throws Exception
+ */
+function commonsbooking_parse_shortcode( string $tag ): bool|string {
 	$tag = (array) $tag;
 	return commonsbooking_parse_template_callback( $tag );
 }
@@ -51,13 +65,14 @@ function commonsbooking_parse_shortcode( $tag ) {
  * Renders html before and after the template tag if it is given by using [html text] before or after the template tag
  * Example: {{[this comes before: ]item:post_title[this comes after]}}
  *
- * @param mixed    $match
- * @param array    $objects
- * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
+ * @param mixed                                                               $match
+ * @param array<string, \CommonsBooking\Model\CustomPost|\WP_User|false|null> $objects
+ * @param callable|string                                                     $sanitizeFunction The callable used to remove unwanted tags/characters
  *
- * @return false|mixed
+ * @return false|string the template tag rendered as a string, false if property or function not found
+ * @throws Exception
  */
-function commonsbooking_parse_template_callback( $match, array $objects = [], $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+function commonsbooking_parse_template_callback( $match, array $objects = [], callable|string $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): bool|string {
 
 	if ( isset( $match[0] ) ) {
 		$match = $match[0];
@@ -96,15 +111,16 @@ function commonsbooking_parse_template_callback( $match, array $objects = [], $s
 			}
 
 			$rendered_template_tag = CB::get( commonsbooking_getCBType( $path[0] ), $path[1], $post, null, $sanitizeFunction );
-			if ( $rendered_template_tag !== null && strlen( $rendered_template_tag ) > 0 ) {
+			if ( strlen( $rendered_template_tag ) > 0 ) {
 				return $html_before . $rendered_template_tag . $html_after;
 			} else {
-				return $rendered_template_tag;
+				return false;
 			}
 		}
 
 		return false;
 	}
+	return false;
 }
 
 /**
@@ -114,7 +130,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [], $s
  *
  * @return string
  */
-function commonsbooking_getCBType( $type ) {
+function commonsbooking_getCBType( string $type ): string {
 	if ( $type == 'location' ) {
 		return \CommonsBooking\Wordpress\CustomPostType\Location::$postType;
 	}

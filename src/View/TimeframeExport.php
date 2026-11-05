@@ -16,10 +16,10 @@ class TimeframeExport {
 	const USER_FIELD     = 'userFields';
 
 	/**
-	 * @param $field_args
-	 * @param $field
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
 	 */
-	public static function renderExportButton( $field_args, $field ) {
+	public static function renderExportButton( array $field_args, \CMB2_Field $field ): void {
 		?>
 		<div class="cmb-row cmb-type-text ">
 			<div class="cmb-th">

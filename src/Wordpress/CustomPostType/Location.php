@@ -30,7 +30,12 @@ class Location extends CustomPostType {
 		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 	}
 
-	protected static function getTaxonomyArgs() {
+	/**
+	 * Returns the arguments passed to register_taxonomy().
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected static function getTaxonomyArgs(): array {
 		return array(
 			'label'             => esc_html__( 'Location Category', 'commonsbooking' ),
 			'rewrite'           => array( 'slug' => self::getPostType() . '-cat' ),
@@ -42,8 +47,13 @@ class Location extends CustomPostType {
 
 	/**
 	 * Handles save-Request for location.
+	 *
+	 * @param int      $post_id
+	 * @param \WP_Post $post
+	 *
+	 * @return void
 	 */
-	public function savePost( $post_id, \WP_Post $post ) {
+	public function savePost( int $post_id, \WP_Post $post ): void {
 		if ( $post->post_type == self::$postType && $post_id ) {
 			$location = new \CommonsBooking\Model\Location( intval( $post_id ) );
 			$location->updateGeoLocation();
@@ -56,13 +66,13 @@ class Location extends CustomPostType {
 	/**
 	 * Handles the creation and editing of the terms in the taxonomy for the location post type
 	 *
-	 * @param $term_id
-	 * @param $tt_id
-	 * @param $taxonomy
+	 * @param int             $term_id
+	 * @param int             $tt_id
+	 * @param \WP_Term|string $taxonomy
 	 *
 	 * @return void
 	 */
-	public static function termChange( $term_id, $tt_id, $taxonomy ) {
+	public static function termChange( int $term_id, int $tt_id, $taxonomy ): void {
 		if ( $taxonomy == self::getTaxonomyName() ) {
 			// update all dynamic timeframes
 			Timeframe::updateAllTimeframes();
@@ -529,9 +539,9 @@ class Location extends CustomPostType {
 	 * Will get the metaboxes for the location settings that can also be overwritten by the global location settings.
 	 * We put them in a function here, so they can be retrieved by the OptionsArray.php as well.
 	 *
-	 * @return array[]
+	 * @return array<int, array<string, string>>
 	 */
-	public static function getOverbookingSettingsMetaboxes() {
+	public static function getOverbookingSettingsMetaboxes(): array {
 		return [
 			array(
 				'name' => esc_html__( 'Allow locked day overbooking', 'commonsbooking' ),

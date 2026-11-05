@@ -22,9 +22,9 @@ class PostStatus {
 	/**
 	 * PostStatus constructor.
 	 *
-	 * @param $name
-	 * @param $label
-	 * @param bool $public
+	 * @param string $name
+	 * @param string $label
+	 * @param bool   $public
 	 */
 	public function __construct( $name, $label, bool $public = true ) {
 		$this->name   = $name;
@@ -37,6 +37,8 @@ class PostStatus {
 
 	/**
 	 * Registers current post status.
+	 *
+	 * @return void
 	 */
 	public function registerPostStatus() {
 		register_post_status(
@@ -54,6 +56,8 @@ class PostStatus {
 
 	/**
 	 * Adds edit actions for post-status to backend.
+	 *
+	 * @return void
 	 */
 	public function addActions() {
 		add_action( 'admin_footer-edit.php', array( $this, 'addQuickedit' ) );
@@ -62,6 +66,8 @@ class PostStatus {
 
 	/**
 	 * Adds poststatus option to backend.
+	 *
+	 * @return void
 	 */
 	public function addOption() {
 		global $post;
@@ -83,6 +89,8 @@ class PostStatus {
 
 	/**
 	 * Adds poststatus quickedit to backend.
+	 *
+	 * @return void
 	 */
 	public function addQuickedit() {
 		echo "<script>

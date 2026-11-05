@@ -4,7 +4,7 @@ namespace CommonsBooking\Service;
 
 class MassOperations {
 
-	public static function ajaxMigrateOrphaned() {
+	public static function ajaxMigrateOrphaned(): void {
 		check_ajax_referer( 'cb_orphaned_booking_migration', 'nonce' );
 
 		if ( $_POST['data'] == 'false' ) {

@@ -20,7 +20,7 @@ class VehicleTypes extends \CommonsBooking\API\BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_types.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_types.json';
 
 	/**
 	 * In the core plugin, we offer just one vehicle type with hardcoded defaults.

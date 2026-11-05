@@ -22,11 +22,11 @@ class VehicleAvailability extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_availability.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_availability.json';
 
 	/**
 	 * @param \CommonsBooking\Model\Item $item
-	 * @param $request
+	 * @param \WP_REST_Request           $request
 	 *
 	 * @return WP_REST_Response
 	 * @throws \Exception
@@ -46,7 +46,12 @@ class VehicleAvailability extends BaseRoute {
 		return new WP_REST_Response( $preparedItem );
 	}
 
-	private static function getAvailabilities( $item ): array {
+	/**
+	 * @param \CommonsBooking\Model\Item $item
+	 *
+	 * @return array<int, stdClass>
+	 */
+	private static function getAvailabilities( \CommonsBooking\Model\Item $item ): array {
 		$availabilities = AvailabilityRoute::getItemData( $item->ID );
 
 		if ( empty( $availabilities ) ) {

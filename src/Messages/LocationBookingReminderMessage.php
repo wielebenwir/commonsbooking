@@ -19,12 +19,14 @@ class LocationBookingReminderMessage extends Message {
 	/**
 	 * @var array|string[]
 	 */
-	protected $validActions = [ 'booking-start-location-reminder', 'booking-end-location-reminder' ];
+	protected array $validActions = [ 'booking-start-location-reminder', 'booking-end-location-reminder' ];
 
 	/**
 	 * Sends reminder message.
+	 *
+	 * @return bool
 	 */
-	public function sendMessage() {
+	public function sendMessage(): bool {
 		/** @var \CommonsBooking\Model\Booking $booking */
 		$booking      = Booking::getPostById( $this->getPostId() );
 		$booking_user = get_userdata( (int) $this->getPost()->post_author );
@@ -33,7 +35,7 @@ class LocationBookingReminderMessage extends Message {
 		$location               = get_post( $booking->getMetaInt( 'location-id' ) );
 		$location_emails_option = CB::get( Location::$postType, COMMONSBOOKING_METABOX_PREFIX . 'location_email', $location ); /*  email addresses, comma-seperated  */
 		if ( empty( $location_emails_option ) ) {
-			return;
+			return false;
 		}
 
 		// Check if location has opted-in to receive this specific reminder type
@@ -42,7 +44,7 @@ class LocationBookingReminderMessage extends Message {
 			: COMMONSBOOKING_METABOX_PREFIX . 'receive_booking_end_reminder';
 
 		if ( ! ( CB::get( Location::$postType, $reminderMetaKey, $location ) === 'on' ) ) {
-			return;
+			return false;
 		}
 
 		$location_emails_option = str_replace( ' ', '', $location_emails_option );
@@ -69,19 +71,29 @@ class LocationBookingReminderMessage extends Message {
 		$recipientUser = new MessageRecipient( array_shift( $location_emails ), $booking->getLocation()->post_title );
 		$bcc_adresses  = implode( ',', $location_emails );
 
-		$this->prepareMail(
-			$recipientUser,
-			$template_body,
-			$template_subject,
-			$fromHeaders,
-			$bcc_adresses,
-			[
-				'booking'  => $booking,
-				'item'     => $booking->getItem(),
-				'location' => $booking->getLocation(),
-				'user'     => $booking_user,
-			]
-		);
+		try {
+			$this->prepareMail(
+				$recipientUser,
+				$template_body,
+				$template_subject,
+				$fromHeaders,
+				$bcc_adresses,
+				[
+					'booking' => $booking,
+					'item' => $booking->getItem(),
+					'location' => $booking->getLocation(),
+					'user' => $booking_user,
+				]
+			);
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing template objects for location booking reminder message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		$sendMessageToBeFiltered = $this;
 		/**
@@ -97,5 +109,6 @@ class LocationBookingReminderMessage extends Message {
 			// TODO $this can safely be renamed to $sendMessage?
 			$this->sendNotificationMail();
 		}
+		return true;
 	}
 }
