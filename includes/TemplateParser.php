@@ -35,7 +35,7 @@ function commonsbooking_parse_template( string $template = '', array $objects = 
 		* @param string $template content of template after tag replacement
 		*/
 		$filteredTemplate = apply_filters( 'commonsbooking_template_tag', $template );
-		//allows string "0" to be returned when set in meta-field
+		// allows string "0" to be returned when set in meta-field
 		if ( $filteredTemplate === '0' || ! empty( $filteredTemplate ) ) {
 			return $filteredTemplate;
 		}
@@ -111,7 +111,7 @@ function commonsbooking_parse_template_callback( $match, array $objects = [], ca
 			}
 
 			$rendered_template_tag = CB::get( commonsbooking_getCBType( $path[0] ), $path[1], $post, null, $sanitizeFunction );
-			if ( $rendered_template_tag !== null && strlen( $rendered_template_tag ) > 0 ) {
+			if ( strlen( $rendered_template_tag ) > 0 ) {
 				return $html_before . $rendered_template_tag . $html_after;
 			} else {
 				return false;

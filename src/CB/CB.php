@@ -35,10 +35,10 @@ class CB {
 	 *
 	 * @since 2.10.5 parameters in doc are correctly typed.
 	 *
-	 * @return null|string property of (custom) post (sanitized) or null if not found
+	 * @return string property of (custom) post (sanitized) or null if not found
 	 * @throws Exception
 	 */
-	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): string {
 
 		// Only CustomPost, WP_User or WP_Post ist allowed.
 		if ( $wpObject && ! (
@@ -54,7 +54,7 @@ class CB {
 			$postId   = self::getPostId( $key );
 			$wpObject = get_post( $postId );
 			if ( ! $wpObject ) {
-				throw new Exception( 'no valid post object found for key: ' . $key );
+				return strval( apply_filters( "commonsbooking_tag_{$key}_{$property}", null, null, $args ) );
 			}
 		}
 
@@ -77,7 +77,7 @@ class CB {
 		 * @param WP_Post|WP_User|CustomPost $wpObject current post object
 		 * @param mixed|null $args additional args passed to the property/method
 		 */
-		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result, $wpObject, $args );
+		return strval( apply_filters( "commonsbooking_tag_{$key}_{$property}", $result, $wpObject, $args ) );
 	}
 
 	/**
