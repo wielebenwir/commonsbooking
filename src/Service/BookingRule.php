@@ -214,8 +214,6 @@ class BookingRule {
 	/**
 	 * Returns an array with the default ruleset applied, can be filtered using a filter hook
 	 *
-	 * Closure::fromCallable can be replaced with First Class Callable Syntax in PHP8.1
-	 *
 	 * @return BookingRule[]
 	 * @throws BookingRuleException
 	 */
@@ -229,21 +227,21 @@ class BookingRule {
 				__( 'Forbid simultaneous Bookings', 'commonsbooking' ),
 				__( 'Users can no longer book two items on the same day.', 'commonsbooking' ),
 				__( 'You can not book more than one item at a time.', 'commonsbooking' ),
-				Closure::fromCallable( array( self::class, 'checkSimultaneousBookings' ) )
+				self::checkSimultaneousBookings( ... )
 			),
 			new BookingRule(
 				'prohibitChainBooking',
 				__( 'Prohibit chain-bookings', 'commonsbooking' ),
 				__( 'Users can no longer work around the maximum booking limit by chaining two bookings directly after one another.', 'commonsbooking' ),
 				__( 'You have reached your booking limit. Please leave some time in between bookings.', 'commonsbooking' ),
-				Closure::fromCallable( array( self::class, 'checkChainBooking' ) )
+				self::checkChainBooking( ... )
 			),
 			new BookingRule(
 				'maxBookingDaysPerWeek',
 				__( 'Maximum booked days per week', 'commonsbooking' ),
 				__( 'Users are only allowed to book a limited amount of days per week.', 'commonsbooking' ),
 				__( 'You have reached your booking limit. Please leave some time in between bookings.', 'commonsbooking' ),
-				Closure::fromCallable( array( self::class, 'checkMaxBookingDaysPerWeek' ) ),
+				self::checkMaxBookingDaysPerWeek( ... ),
 				array(
 					array(
 						'title'       => __( 'Maximum booked days per week', 'commonsbooking' ),
@@ -254,14 +252,14 @@ class BookingRule {
 					__( 'At what day of the week should the counter be reset?', 'commonsbooking' ),
 					$weekDaysSelect,
 				),
-				Closure::fromCallable( array( self::class, 'maxDaysWeekErrorMessage' ) )
+				self::maxDaysWeekErrorMessage( ... )
 			),
 			new BookingRule(
 				'maxBookingDaysPerMonth',
 				__( 'Maximum booked days per month', 'commonsbooking' ),
 				__( 'Users are only allowed to book a limited amount of days per month.', 'commonsbooking' ),
 				__( 'You have reached your booking limit. Please leave some time in between bookings.', 'commonsbooking' ),
-				Closure::fromCallable( array( self::class, 'checkMaxBookingDaysPerMonth' ) ),
+				self::checkMaxBookingDaysPerMonth( ... ),
 				array(
 					array(
 						'title'       => __( 'Maximum booked days per month', 'commonsbooking' ),
@@ -272,14 +270,14 @@ class BookingRule {
 					__( 'At what day of the month should the counter be reset?', 'commonsbooking' ),
 					$monthDaysSelect,
 				),
-				Closure::fromCallable( array( self::class, 'maxDaysMonthErrorMessage' ) )
+				self::maxDaysMonthErrorMessage( ... )
 			),
 			new BookingRule(
 				'maxBookingDays',
 				__( 'Maximum of bookable days in time period', 'commonsbooking' ),
 				__( 'Allow x booked days over the period of y days for user.', 'commonsbooking' ),
 				__( 'Booking limit exceeded. ', 'commonsbooking' ),
-				Closure::fromCallable( array( self::class, 'checkMaxBookingDays' ) ),
+				self::checkMaxBookingDays( ... ),
 				array(
 					array(
 						'title'       => __( 'Allow x booked days', 'commonsbooking' ),
@@ -291,14 +289,14 @@ class BookingRule {
 					),
 				),
 				[],
-				Closure::fromCallable( array( self::class, 'maxBookingDaysErrorMessage' ) )
+				self::maxBookingDaysErrorMessage( ... )
 			),
 			new BookingRule(
 				'maxBookingsWeek',
 				__( 'Maximum number of bookings per week', 'commonsbooking' ),
 				__( 'Users are only allowed to make that many bookings per week (Irrespective of their length).', 'commonsbooking' ),
 				__( 'You have reached your booking limit. Please leave some time in between bookings.', 'commonsbooking' ),
-				Closure::fromCallable( array( self::class, 'checkMaxBookingsWeek' ) ),
+				self::checkMaxBookingsWeek( ... ),
 				array(
 					array(
 						'title'       => __( 'Maximum number of bookings per week', 'commonsbooking' ),
@@ -309,14 +307,14 @@ class BookingRule {
 					__( 'At what day of the week should the counter be reset?', 'commonsbooking' ),
 					$weekDaysSelect,
 				),
-				Closure::fromCallable( array( self::class, 'maxBookingsWeekErrorMessage' ) )
+				self::maxBookingsWeekErrorMessage( ... )
 			),
 			new BookingRule(
 				'maxBookingsMonth',
 				__( 'Maximum number of bookings per month', 'commonsbooking' ),
 				__( 'Users are only allowed to make that many bookings per month (Irrespective of their length).', 'commonsbooking' ),
 				__( 'You have reached your booking limit. Please leave some time in between bookings.', 'commonsbooking' ),
-				Closure::fromCallable( array( self::class, 'checkMaxBookingsMonth' ) ),
+				self::checkMaxBookingsMonth( ... ),
 				array(
 					array(
 						'title'       => __( 'Maximum number of bookings per month', 'commonsbooking' ),
@@ -327,7 +325,7 @@ class BookingRule {
 					__( 'At what day of the month should the counter be reset?', 'commonsbooking' ),
 					$monthDaysSelect,
 				),
-				Closure::fromCallable( array( self::class, 'maxBookingsMonthErrorMessage' ) )
+				self::maxBookingsMonthErrorMessage( ... )
 			),
 		];
 
@@ -336,7 +334,7 @@ class BookingRule {
 		 *
 		 * @param BookingRule[] $defaultRuleSet list of booking rule objects
 		 *
-		 * @since 2.9 bigger refactoring # TODO
+		 * @since 2.9 bigger refactoring
 		 * @since 2.7.4
 		 */
 		return apply_filters( COMMONSBOOKING_PLUGIN_SLUG . '_booking-rules', $defaultRuleSet );
