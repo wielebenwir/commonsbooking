@@ -68,6 +68,7 @@ if ( ! array_key_exists( 'backend', $templateData ) || $templateData['backend'] 
 					</div>
 				</div>
 				<?php
+				/** @var \CommonsBooking\Model\Restriction[] $restrictions */
 				$restrictions = $templateData['restrictions'];
 				if ( count( $restrictions ) ) {
 					?>
