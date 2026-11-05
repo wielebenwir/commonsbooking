@@ -9,9 +9,9 @@ use CommonsBooking\CB\CB;
  * @param array<string, \CommonsBooking\Model\CustomPost|\WP_User|false|null> $objects
  * @param callable|string                                                     $sanitizeFunction The callable used to remove unwanted tags/characters (use default 'commonsbooking_sanitizeHTML' or 'sanitize_text_field')
  *
- * @return string|null the template with replaced tags, null if no template content is given after tag replacement
+ * @return string the template with replaced tags, empty string if no template tags found or if the template is empty
  */
-function commonsbooking_parse_template( string $template = '', array $objects = [], callable|string $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): ?string {
+function commonsbooking_parse_template( string $template = '', array $objects = [], callable|string $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): string {
 	$template = preg_replace_callback(
 		'/\{{.*?\}}/',
 		function ( $match ) use ( $objects, $sanitizeFunction ) {
@@ -39,7 +39,7 @@ function commonsbooking_parse_template( string $template = '', array $objects = 
 			return $filteredTemplate;
 		}
 
-		return null;
+		return '';
 	} else {
 		return commonsbooking_parse_template( $template, $objects, $sanitizeFunction );
 	}
