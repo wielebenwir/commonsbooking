@@ -426,17 +426,18 @@ class Restriction extends CustomPost {
 	 * @return void
 	 */
 	protected function sendRestrictionMails( array $bookings ): void {
+		// we want to notify the maintainer only once, not for every cancelled booking. So we set the flag here.
+		$firstMessage = true;
 		foreach ( $bookings as $key => $booking ) {
 			// get User ID from booking
 			$user = $booking->getUserData();
 			if ( ! $user ) {
 				continue;
 			}
-			// checks if this is the first booking that is processed
-			$firstMessage = ( $key === array_key_first( $bookings ) );
 
 			// send restriction message for each booking
-			$hintMail = new RestrictionMessage( $this, $user, $booking, $this->getType(), $firstMessage );
+			$hintMail     = new RestrictionMessage( $this, $user, $booking, $this->getType(), $firstMessage );
+			$firstMessage = false;
 			$hintMail->triggerMail();
 		}
 	}
