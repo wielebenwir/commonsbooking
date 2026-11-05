@@ -48,7 +48,8 @@ class Booking extends Timeframe {
 		add_action( 'cmb2_admin_init', array( $this, 'registerMetabox' ) );
 
 		// we need to add some additional fields and modify the autor if admin booking is made
-		add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ), 10 );
+		// priority 11: run after CMB2 saved the metabox fields (save_post, 10), otherwise CMB2 overwrites our changes (#2419)
+		add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 
 		// Set Tepmlates
 		add_filter( 'the_content', array( $this, 'getTemplate' ) );
@@ -98,7 +99,10 @@ class Booking extends Timeframe {
 	public function savePost( $post_id, $post = null, $update = null ) {
 		global $pagenow;
 
-		$post            = $post ?? get_post( $post_id );
+		$post = $post ?? get_post( $post_id );
+		if ( $post->post_type !== self::$postType ) {
+			return;
+		}
 		$is_trash_action = str_contains( $_REQUEST['action'] ?? '', 'trash' );
 
 		// we check if it's a new created post - TODO: This is not the case
@@ -126,7 +130,6 @@ class Booking extends Timeframe {
 					'start-time'       => $start_time,
 					'end-time'         => $end_time,
 					'type'             => Timeframe::BOOKING_ID,
-					'grid'             => '',
 					'full-day'         => $full_day,
 				],
 			);
@@ -139,10 +142,13 @@ class Booking extends Timeframe {
 			$postarr['ID'] = $post_id;
 
 			// unhook this function so it doesn't loop infinitely
-			remove_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
+			remove_action( 'save_post', array( $this, 'savePost' ), 11 );
 
 			// update this post
 			wp_update_post( $postarr, true, true );
+
+			self::alignRepetitionEndToMinuteEnd( $post_id );
+			self::assignTimeframeDerivedMeta( $post_id );
 
 			// run validation only on new posts (the submit button is only available on new posts)
 			if ( array_key_exists( self::SUBMIT_BUTTON_ID, $_REQUEST ) ) {
@@ -173,7 +179,7 @@ class Booking extends Timeframe {
 			}
 
 			// readd the hook
-			add_action( 'save_post_' . self::$postType, array( $this, 'savePost' ) );
+			add_action( 'save_post', array( $this, 'savePost' ), 11, 2 );
 
 			// if we just created a new confirmed booking we trigger the confirmation mail
 			if ( $post_status == 'confirmed' ) {
@@ -395,12 +401,8 @@ class Booking extends Timeframe {
 			}
 		}
 
-		self::saveGridSizes( $postId, $locationId, $itemId, $repetitionStart, $repetitionEnd );
-
-		$bookingModel = new \CommonsBooking\Model\Booking( $postId );
-		// we need some meta-fields from bookable-timeframe, so we assign them here to the booking-timeframe
 		try {
-			$bookingModel->assignBookableTimeframeFields();
+			$bookingModel = self::assignTimeframeDerivedMeta( $postId );
 			if ( $overbookedDays > 0 ) { // avoid setting the value when not present (for example when updating the booking)
 				$bookingModel->setOverbookedDays( $overbookedDays );
 			}
@@ -429,6 +431,35 @@ class Booking extends Timeframe {
 		}
 
 		return $postId;
+	}
+
+	/**
+	 * Saves the meta that pickupDatetime() / returnDatetime() depend on, the same way for frontend and admin saves (#2419):
+	 * grid sizes and the fields copied from the bookable timeframe.
+	 *
+	 * @param int|\WP_Error $postId not checked for WP_Error yet in handleBookingRequest
+	 *
+	 * @return \CommonsBooking\Model\Booking
+	 */
+	private static function assignTimeframeDerivedMeta( $postId ): \CommonsBooking\Model\Booking {
+		$booking = new \CommonsBooking\Model\Booking( $postId );
+		self::saveGridSizes( $postId, $booking->getLocationID(), $booking->getItemID(), $booking->getStartDate(), $booking->getRawEndDate() );
+		$booking->assignBookableTimeframeFields();
+
+		return $booking;
+	}
+
+	/**
+	 * CMB2 saves repetition-end as hh:mm:00, the frontend as hh:mm:59 (end of slot). returnDatetime() expects hh:mm:59.
+	 * Admin flow only: frontend ends are not always hh:mm:59 and bookings are looked up by their exact end.
+	 *
+	 * @param int $postId the booking.
+	 */
+	private static function alignRepetitionEndToMinuteEnd( int $postId ): void {
+		$repetitionEnd = intval( get_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, true ) );
+		if ( $repetitionEnd ) {
+			update_post_meta( $postId, \CommonsBooking\Model\Timeframe::REPETITION_END, $repetitionEnd - ( $repetitionEnd % 60 ) + 59 );
+		}
 	}
 
 	/**
