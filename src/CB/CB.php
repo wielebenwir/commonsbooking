@@ -53,6 +53,9 @@ class CB {
 		if ( ! $wpObject ) {
 			$postId   = self::getPostId( $key );
 			$wpObject = get_post( $postId );
+			if ( ! $wpObject ) {
+				throw new Exception( 'no valid post object found for key: ' . $key );
+			}
 		}
 
 		// If possible cast to CB Custom Post Type Model to get additional functions
