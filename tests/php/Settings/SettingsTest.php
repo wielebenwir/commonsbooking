@@ -11,9 +11,10 @@ class SettingsTest extends TestCase {
 
 	public function testGetOption() {
 		AdminOptions::setOptionsDefaultValues();
-		$emailHeaderExpected = get_option( 'admin_email' );
-		$emailBodyActual     = Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' );
-		$this->assertEquals( $emailHeaderExpected, $emailBodyActual );
+		$testMail = 'admin@example.org';
+		Settings::updateOption( 'commonsbooking_options_templates', 'emailheaders_from-email', $testMail );
+		$emailBodyActual = Settings::getOption( 'commonsbooking_options_templates', 'emailheaders_from-email' );
+		$this->assertEquals( $testMail, $emailBodyActual );
 	}
 
 	public function testGetDefaultOption() {
