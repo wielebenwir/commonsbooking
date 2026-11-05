@@ -43,7 +43,10 @@ class Settings {
 			}
 		} else {
 			if ( $fallbackToDefault ) {
-				return self::getDefaultOption( $options_key, $field_id );
+				$defaultValue = self::getDefaultOption( $options_key, $field_id );
+				return $defaultValue !== false && is_callable( $sanitizeFunction )
+					? map_deep( $defaultValue, $sanitizeFunction )
+					: $defaultValue;
 			}
 			return false;
 		}
