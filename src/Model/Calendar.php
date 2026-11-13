@@ -139,8 +139,8 @@ class Calendar {
 				$startDate = strtotime( 'next monday', $startDate );
 			}
 
-			// set cache expiration to force daily fresh after midnight
-			Plugin::setCacheItem( $weeks, array( 'misc' ), $customId, 'midnight' );
+			// set short cache expiration to keep the calendar in sync with newly created bookings (see View\Calendar::prepareJsonResponse)
+			Plugin::setCacheItem( $weeks, array( 'misc' ), $customId, 300 );
 
 			return $weeks;
 		}
