@@ -23,7 +23,13 @@ abstract class BaseShortcode {
 		$options  = array_filter( $atts, 'is_int', ARRAY_FILTER_USE_KEY );
 
 		if ( ! (int) $attrs['id'] ) {
-			return '<div>' . esc_html__( 'no valid map id provided', 'commonsbooking' ) . '</div>';
+			if ( ! $instance->allows_missing_map( $attrs ) ) {
+				return '<div>' . esc_html__( 'no valid map id provided', 'commonsbooking' ) . '</div>';
+			}
+
+			$cb_map_id = 0;
+			$instance->inject_script( $cb_map_id );
+			return $instance->create_container( $cb_map_id, $attrs, $options, $content );
 		}
 
 		$post = get_post( $attrs['id'] );
@@ -40,6 +46,14 @@ abstract class BaseShortcode {
 		$instance->inject_script( $cb_map_id );
 		return $instance->create_container( $cb_map_id, $attrs, $options, $content );
 	}
+
+	/**
+	 * Whether the shortcode can operate with default settings and no map post.
+	 */
+	protected function allows_missing_map( array $attrs ): bool {
+		return false;
+	}
+
 	abstract protected function parse_attributes( $atts );
 	abstract protected function inject_script( $cb_map_id );
 	abstract protected function create_container( $cb_map_id, $attrs, $options, $content );
