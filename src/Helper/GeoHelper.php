@@ -2,8 +2,6 @@
 
 namespace CommonsBooking\Helper;
 
-use CommonsBooking\Geocoder\Location;
-
 /**
  * Wrapper for calling the geoCoder service.
  * Defaults to implementation of {@see NominatimGeoCodeService}.
@@ -19,9 +17,9 @@ class GeoHelper {
 	 * @see NominatimGeoCodeService::getAddressData() for default values and more information
 	 * @param string $addressString
 	 *
-	 * @return Location|null
+	 * @return GeoLocation|null
 	 */
-	public static function getAddressData( $addressString ): ?Location {
+	public static function getAddressData( $addressString ): ?GeoLocation {
 		if ( ! isset( self::$geoCodeService ) ) {
 			self::resetGeoCoder();
 		}

@@ -2,7 +2,7 @@
 
 namespace CommonsBooking\Tests\Benchmark;
 
-use CommonsBooking\Geocoder\Location as GeocoderLocation;
+use CommonsBooking\Helper\GeoLocation;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Helper\Helper;
@@ -40,7 +40,7 @@ abstract class BenchmarkCase {
 		}
 
 		$geoCodeService = new class() implements GeoCodeService {
-			public function getAddressData( string $addressString ): ?GeocoderLocation {
+			public function getAddressData( string $addressString ): ?GeoLocation {
 				return GeoHelperTest::mockedLocation();
 			}
 		};

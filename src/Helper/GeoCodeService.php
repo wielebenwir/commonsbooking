@@ -2,8 +2,6 @@
 
 namespace CommonsBooking\Helper;
 
-use CommonsBooking\Geocoder\Location;
-
 interface GeoCodeService {
 
 	/**
@@ -11,7 +9,7 @@ interface GeoCodeService {
 	 *
 	 * @param string $addressString
 	 *
-	 * @return Location|null
+	 * @return GeoLocation|null
 	 */
-	public function getAddressData( string $addressString ): ?Location;
+	public function getAddressData( string $addressString ): ?GeoLocation;
 }

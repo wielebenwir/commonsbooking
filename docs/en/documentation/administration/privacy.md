@@ -10,7 +10,7 @@ This page will give an overview of the third-party services used by CommonsBooki
 
 ### Nominatim
 
-This plugin uses [Nominatim](https://nominatim.org) to calculate geo-coordinates from street or house addresses, also known as geocoding. Currently, there is no option to use an alternative geo-coding service. We chose Nominatim because the service is open source and is operated with the support of the OSM community.
+This plugin uses [Nominatim](https://nominatim.org) to calculate geo-coordinates from street or house addresses, also known as geocoding. The request can be adjusted, e.g. to use your own Nominatim server, see [change the geocoding request](../advanced-functionality/hooks-and-filters#filter-commonsbooking-geocode-request). We chose Nominatim because the service is open source and is operated with the support of the OSM community.
 
 #### What is being sent
 

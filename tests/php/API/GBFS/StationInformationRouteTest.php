@@ -61,7 +61,7 @@ class StationInformationRouteTest extends CB_REST_Route_UnitTestCase {
 		delete_post_meta( $this->locationId, 'geo_latitude' );
 		delete_post_meta( $this->locationId, 'geo_longitude' );
 
-		$mockedLocationCoordinates = GeoHelperTest::mockedLocation()->getCoordinates();
+		$mockedLocationCoordinates = GeoHelperTest::mockedLocation();
 
 		$request  = new WP_REST_Request( 'GET', $this->ENDPOINT );
 		$response = rest_do_request( $request );

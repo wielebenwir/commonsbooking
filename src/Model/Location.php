@@ -7,7 +7,6 @@ use CommonsBooking\CB\CB;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Helper\Helper;
 use CommonsBooking\Repository\Timeframe;
-use CommonsBooking\Geocoder\Exception\Exception;
 
 /**
  * This is the logical wrapper for the location custom post type.
@@ -201,14 +200,10 @@ class Location extends BookablePost {
 		}
 
 		$addressString = $street . ', ' . $postCode . ' ' . $city . ', ' . $country;
-		try {
-			$addressData = GeoHelper::getAddressData( $addressString );
-		} catch ( Exception $e ) {
-			$addressData = null;
-		}
+		$addressData   = GeoHelper::getAddressData( $addressString );
 
 		if ( $addressData ) {
-			$coordinates = $addressData->getCoordinates()->toArray();
+			$coordinates = $addressData->toArray();
 
 			update_post_meta(
 				$this->ID,

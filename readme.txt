@@ -81,6 +81,11 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
+### Unreleased
+ENHANCED: Geocoding uses the WordPress HTTP API; plugin is ~30% smaller and no longer needs PHP curl
+FIXED: Geocoding requests now verify TLS certificates
+DEVELOPER: BREAKING: `GeoHelper::getAddressData()` now returns `GeoLocation` (coordinates only) instead of `Geocoder\Location`. New filter `commonsbooking_geocode_request`, see docs (Hooks and filters)
+
 ### 2.11.3 (12.10.2026)
 ENHANCED: Will not check for unconfirmed bookings anymore if booker is admin / CB-Manager
 ENHANCED: Booking with rule "no simultaneous bookings" active is now ~50% faster

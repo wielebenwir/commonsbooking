@@ -6,8 +6,6 @@ namespace CommonsBooking\API;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Model\Location;
 use Exception;
-use CommonsBooking\Geocoder\Geocoder;
-use CommonsBooking\Geocoder\Provider\Provider;
 use stdClass;
 use WP_Error;
 use WP_REST_Request;
@@ -95,7 +93,6 @@ class LocationsRoute extends BaseRoute {
 	 * @param $request
 	 *
 	 * @return WP_REST_Response
-	 * @throws \CommonsBooking\Geocoder\Exception\Exception
 	 */
 	public function prepare_item_for_response( $item, $request ): WP_REST_Response {
 		$preparedItem             = new stdClass();
@@ -125,7 +122,7 @@ class LocationsRoute extends BaseRoute {
 			if ( $address !== null ) {
 				$preparedItem->geometry              = new stdClass();
 				$preparedItem->geometry->type        = 'Point';
-				$preparedItem->geometry->coordinates = $address->getCoordinates()->toArray();
+				$preparedItem->geometry->coordinates = $address->toArray();
 
 				// Save data to items
 				update_post_meta(

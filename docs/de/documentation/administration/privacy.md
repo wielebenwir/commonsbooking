@@ -11,7 +11,7 @@ Diese Seite soll eine Übersicht über durch CommonsBooking genutzte Drittanbiet
 ### Nominatim
 
 Das Plugin verwendet [Nominatim](https://nominatim.org) um aus Straßen- bzw. Haus-Adressen die Geo-Koordinaten zu berechnen, auch geokodieren genannt.
-Es wird aktuell keine Möglichkeit geboten einen alternativen Geo-Coding-Service zu nutzen.
+Die Anfrage kann angepasst werden, z.B. um einen eigenen Nominatim-Server zu nutzen, siehe [Geokodierungs-Anfrage ändern](../advanced-functionality/hooks-and-filters#filter-commonsbooking-geocode-request).
 Wir haben uns für Nominatim entschieden, da der Service quelloffen ist und, durch die OSM-Community unterstützt, betrieben wird.
 
 #### Was wird gesendet

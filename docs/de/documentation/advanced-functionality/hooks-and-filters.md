@@ -97,6 +97,7 @@ zurückgibt.
   * commonsbooking_mail_attachment
   * commonsbooking_disableCache
   * commonsbooking_gbfs_feeds
+  * [commonsbooking_geocode_request](#filter-commonsbooking-geocode-request)
 
 Es gibt auch Filter Hooks, mit denen du zusätzliche Benutzerrollen, die
 zusätzlich zum CB Manager Artikel und Standorte administrieren können,
@@ -184,3 +185,61 @@ Nutzungs-Beispiel:
 // Sets the mobile calendar view to display 2 month
 add_filter('commonsbooking_mobile_calendar_month_count', fn(): int => 2);
 ```
+
+### Filter `commonsbooking_geocode_request`
+
+CommonsBooking verwendet [Nominatim](https://nominatim.org), um aus der Adresse eines Standorts Koordinaten zu berechnen
+(siehe [Datenschutz](../administration/privacy#nominatim)). Mit dem Filter `commonsbooking_geocode_request` kann die
+Anfrage mit Codeschnipseln angepasst werden, zum Beispiel um einen eigenen Nominatim-Server zu nutzen.
+
+Der Filter erhält die Anfrage als Array mit diesen Schlüsseln, als zweiten Parameter die Adresse als String:
+
+| Schlüssel | Beschreibung                                                          |
+| --------- | --------------------------------------------------------------------- |
+| `url`     | Endpunkt, Standard `https://nominatim.openstreetmap.org/search`       |
+| `query`   | URL-Parameter (`q`, `format`, `limit`, `accept-language`)             |
+| `args`    | Argumente von [`wp_remote_get`](https://developer.wordpress.org/reference/functions/wp_remote_get/), inklusive der Header `User-Agent` und `Referer` |
+
+::: warning
+Für den öffentlichen Nominatim-Server gelten dessen Nutzungsbedingungen (max. eine Anfrage pro Sekunde, aussagekräftiger
+`User-Agent`). Behalte bei dessen Nutzung die Standard-Header in `args` bei.
+:::
+
+#### Eigenen Nominatim-Server verwenden
+
+```php
+add_filter( 'commonsbooking_geocode_request', function ( array $request ): array {
+    $request['url'] = 'https://nominatim.example.org/search';
+    return $request;
+} );
+```
+
+#### Ergebnisse auf ein Land beschränken
+
+```php
+add_filter( 'commonsbooking_geocode_request', function ( array $request ): array {
+    $request['query']['countrycodes'] = 'de';
+    return $request;
+} );
+```
+
+#### Adressdetails abrufen
+
+Standardmäßig werden nur die Koordinaten zurückgegeben. Um die Adressbestandteile (Straße, PLZ, Ort, ...) zu erhalten,
+fordere sie bei Nominatim an und lies sie aus dem Rohergebnis des geokodierten Standorts:
+
+```php
+add_filter( 'commonsbooking_geocode_request', function ( array $request ): array {
+    $request['query']['addressdetails'] = 1;
+    return $request;
+} );
+
+$location = \CommonsBooking\Helper\GeoHelper::getAddressData( 'Karl-Marx-Straße 1, 12043 Berlin' );
+$city     = $location?->getRaw()['address']['city'] ?? null;
+```
+
+#### Anderen Geokodierungs-Dienst verwenden
+
+Für einen komplett anderen Dienst implementiere `\CommonsBooking\Helper\GeoCodeService` (Rückgabe eines
+`\CommonsBooking\Helper\GeoLocation` oder `null`) und registriere ihn mit
+`\CommonsBooking\Helper\GeoHelper::setGeoCodeServiceInstance( new MyGeoCodeService() )`.

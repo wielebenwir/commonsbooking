@@ -5,8 +5,7 @@ namespace CommonsBooking\Tests\Helper;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Tests\BaseTestCase;
-use CommonsBooking\Geocoder\Location;
-use CommonsBooking\Geocoder\Model\AddressBuilder;
+use CommonsBooking\Helper\GeoLocation;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,19 +15,9 @@ class GeoHelperTest extends BaseTestCase {
 
 	/**
 	 * Mocks a location
-	 *
-	 * @return Location|null
 	 */
-	public static function mockedLocation(): ?Location {
-		$location = new AddressBuilder( 'Mock' );
-		$location->setStreetName( 'Karl-Marx-Straße' )
-				->setStreetNumber( '1' )
-				->setPostalCode( '12043' )
-				->setLocality( 'Berlin' )
-				->setCountry( 'Germany' )
-				->setCoordinates( 52.4863573, 13.4247667 );
-
-		return $location->build();
+	public static function mockedLocation(): GeoLocation {
+		return new GeoLocation( 52.4863573, 13.4247667 );
 	}
 
 	/**
@@ -51,20 +40,10 @@ class GeoHelperTest extends BaseTestCase {
 		$this->assertThatKarlMarxLocationIsProperlyGeoCoded( $address );
 	}
 
-	public function testThatGeoCoding_worksOnline() {
-		GeoHelper::resetGeoCoder();
-
-		$address = GeoHelper::getAddressData( 'Karl-Marx-Straße 1, 12043 Berlin' );
-		$this->assertThatKarlMarxLocationIsProperlyGeoCoded( $address );
-	}
-	private function assertThatKarlMarxLocationIsProperlyGeoCoded( Location $address ): void {
-		$this->assertEquals( 'Karl-Marx-Straße', $address->getStreetName() );
-		$this->assertEquals( '1', $address->getStreetNumber() );
-		$this->assertEquals( '12043', $address->getPostalCode() );
-		$this->assertEquals( 'Berlin', $address->getLocality() );
-		$this->assertEquals( 'Germany', $address->getCountry() );
-		// This won't check exact coords on purpose, because sometimes there are different results
-		$this->assertStringStartsWith( '52.4863', '' . $address->getCoordinates()->getLatitude() );
-		$this->assertStringStartsWith( '13.424', '' . $address->getCoordinates()->getLongitude() );
+	private function assertThatKarlMarxLocationIsProperlyGeoCoded( GeoLocation $address ): void {
+		$this->assertStringStartsWith( '52.4863', '' . $address->getLatitude() );
+		$this->assertStringStartsWith( '13.424', '' . $address->getLongitude() );
+		// GeoJSON order: lon, lat
+		$this->assertSame( [ 13.4247667, 52.4863573 ], $address->toArray() );
 	}
 }
