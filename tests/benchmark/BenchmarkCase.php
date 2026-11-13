@@ -6,12 +6,10 @@ use CommonsBooking\Geocoder\Location as GeocoderLocation;
 use CommonsBooking\Helper\GeoCodeService;
 use CommonsBooking\Helper\GeoHelper;
 use CommonsBooking\Helper\Helper;
-use CommonsBooking\Tests\CPTCreationTrait;
 use CommonsBooking\Tests\Helper\GeoHelperTest;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
-abstract class BenchmarkCase {
-
-	use CPTCreationTrait;
+abstract class BenchmarkCase extends CustomPostTypeTest {
 
 	private static bool $fixtureInitialized     = false;
 	private static ?BenchmarkCase $fixtureOwner = null;
@@ -24,6 +22,9 @@ abstract class BenchmarkCase {
 		'mapIds'         => [],
 	];
 
+	private static ?int $subscriberUserId = null;
+	private static ?int $adminUserId      = null;
+
 	protected const BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE = 77;
 	protected const BOOKINGS_PER_ITEM_AFTER_CURRENTDATE  = 33;
 	protected const ITEMS_TOTAL                          = 100;
@@ -32,7 +33,9 @@ abstract class BenchmarkCase {
 
 	public function setUp(): void {
 		error_reporting( E_ALL & ~E_DEPRECATED );
-		wp_set_current_user( 1 );
+
+		$this->initializeBenchmarkUsers();
+		wp_set_current_user( $this->adminUserID );
 
 		if ( self::$fixtureInitialized ) {
 			$this->hydrateSharedPostIds();
@@ -61,16 +64,21 @@ abstract class BenchmarkCase {
 		add_filter( 'pre_wp_unique_post_slug', $slugFilter, 10, 6 );
 
 		$firstBooking = strtotime( '-' . static::BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE . ' days midnight' );
-		$bookingCount = static::BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE + static::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE;
 
 		for ( $itemIndex = 0; $itemIndex < static::ITEMS_TOTAL; $itemIndex++ ) {
 			$itemId     = $this->createItem( "Benchmark Item $itemIndex" );
 			$locationId = $this->createLocation( "Benchmark Location $itemIndex" );
 			$this->createTimeframe( $locationId, $itemId, $firstBooking, null );
 
-			for ( $bookingIndex = 0; $bookingIndex < $bookingCount; $bookingIndex++ ) {
+			for ( $bookingIndex = 0; $bookingIndex < static::BOOKINGS_PER_ITEM_BEFORE_CURRENTDATE; $bookingIndex++ ) {
 				$start = strtotime( "+$bookingIndex days", $firstBooking );
-				$this->createBooking( $locationId, $itemId, $start, strtotime( '+1 day', $start ) - 1 );
+				$this->createBenchmarkBooking( $locationId, $itemId, $start, $this->adminUserID );
+			}
+
+			for ( $bookingIndex = 0; $bookingIndex < static::BOOKINGS_PER_ITEM_AFTER_CURRENTDATE; $bookingIndex++ ) {
+				$start    = strtotime( '+' . ( $bookingIndex + 1 ) . ' days midnight' );
+				$authorId = $bookingIndex % 2 === 0 ? $this->subscriberId : $this->adminUserID;
+				$this->createBenchmarkBooking( $locationId, $itemId, $start, $authorId );
 			}
 		}
 
@@ -106,6 +114,35 @@ abstract class BenchmarkCase {
 		self::$fixtureOwner->hydrateSharedPostIds();
 		self::$fixtureOwner->tearDownAllPosts();
 		remove_filter( 'commonsbooking_disableCache', '__return_true' );
+	}
+
+	private function initializeBenchmarkUsers(): void {
+		if ( self::$subscriberUserId === null ) {
+			$this->createSubscriber();
+			self::$subscriberUserId = $this->subscriberId;
+		} else {
+			$this->subscriberId = self::$subscriberUserId;
+		}
+
+		if ( self::$adminUserId === null ) {
+			$this->createAdministrator();
+			self::$adminUserId = $this->adminUserID;
+		} else {
+			$this->adminUserID = self::$adminUserId;
+		}
+	}
+
+	private function createBenchmarkBooking( int $locationId, int $itemId, int $start, int $authorId ): int {
+		return $this->createBooking(
+			$locationId,
+			$itemId,
+			$start,
+			strtotime( '+1 day', $start ) - 1,
+			'12:00 AM',
+			'23:59',
+			'confirmed',
+			$authorId
+		);
 	}
 
 	private function captureSharedPostIds(): void {
