@@ -3,7 +3,9 @@
 namespace CommonsBooking\Tests\Model;
 
 use CommonsBooking\Model\Restriction;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
+use SlopeIt\ClockMock\ClockMock;
 
 class RestrictionTest extends CustomPostTypeTest {
 
@@ -138,5 +140,135 @@ class RestrictionTest extends CustomPostTypeTest {
 			)
 		);
 		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $restriction->getAdmins() );
+	}
+
+	public function testApply_Default() {
+		$bookingId = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+		);
+
+		$restrictionId = $this->createRestriction(
+			Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) )
+		);
+
+		// isolate test behaviour for just apply function
+		$restriction = new class( $restrictionId ) extends Restriction {
+			public array $mailedBookings    = [];
+			public array $cancelledBookings = [];
+
+			protected function sendRestrictionMails( $bookings ) {
+				$this->mailedBookings = $bookings;
+			}
+
+			protected function cancelBookings( $bookings ) {
+				$this->cancelledBookings = $bookings;
+			}
+		};
+
+		$restriction->apply();
+
+		$getBookingIds = static fn( $booking ) => $booking->ID;
+
+		$this->assertSame( [ $bookingId ], array_map( $getBookingIds, $restriction->mailedBookings ) );
+		$this->assertSame( [ $bookingId ], array_map( $getBookingIds, $restriction->cancelledBookings ) );
+	}
+
+	/**
+	 * Tests the 'restrictions-no-cancel-on-total-breakdown' option
+	 * );
+	 * @return void
+	 */
+	public function testApply_NoCancel() {
+		$bookingId = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+2 days', strtotime( self::CURRENT_DATE ) )
+		);
+
+		$restrictionId = $this->createRestriction(
+			Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) )
+		);
+
+		Settings::updateOption(
+			'commonsbooking_options_restrictions',
+			'restrictions-no-cancel-on-total-breakdown',
+			'on'
+		);
+
+		// isolate test behaviour for just apply function
+		$restriction = new class( $restrictionId ) extends Restriction {
+			public array $mailedBookings    = [];
+			public array $cancelledBookings = [];
+
+			protected function sendRestrictionMails( $bookings ) {
+				$this->mailedBookings = $bookings;
+			}
+
+			protected function cancelBookings( $bookings ) {
+				$this->cancelledBookings = $bookings;
+			}
+		};
+
+		$restriction->apply();
+
+		$getBookingIds = static fn( $booking ) => $booking->ID;
+
+		$this->assertSame( [ $bookingId ], array_map( $getBookingIds, $restriction->mailedBookings ) );
+		$this->assertEmpty( $restriction->cancelledBookings );
+	}
+
+	/**
+	 * regression test for #2291
+	 * Make sure, that bookings that are in the past (already over) do not get informed about a restriction
+	 * nor canceled. Avoids unnecessary emails when start / end-date are incorrectly set by accident or bc of a bug.
+	 * @return void
+	 */
+	public function testApply_noPastBookings() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		$bookingId = $this->createBooking(
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-4 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '-1 day', strtotime( self::CURRENT_DATE ) )
+		);
+
+		$restrictionId = $this->createRestriction(
+			Restriction::TYPE_REPAIR,
+			$this->locationId,
+			$this->itemId,
+			strtotime( '-5 days', strtotime( self::CURRENT_DATE ) ),
+			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) )
+		);
+
+		$restriction = new class( $restrictionId ) extends Restriction {
+			public array $mailedBookings    = [];
+			public array $cancelledBookings = [];
+
+			protected function sendRestrictionMails( $bookings ) {
+				$this->mailedBookings = $bookings;
+			}
+
+			protected function cancelBookings( $bookings ) {
+				$this->cancelledBookings = $bookings;
+			}
+		};
+
+		$restriction->apply();
+
+		$this->assertEmpty( $restriction->mailedBookings, "Past booking {$bookingId} should not receive a restriction mail." );
+		$this->assertEmpty( $restriction->cancelledBookings, "Past booking {$bookingId} should not be cancelled." );
 	}
 }
