@@ -6,7 +6,12 @@ use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Model\Map;
 
 class MapData {
-	public static function geo_search() {
+	/**
+	 * Handles the geocoding ajax request.
+	 *
+	 * @return void
+	 */
+	public static function geo_search(): void {
 		if ( isset( $_POST['query'] ) && $_POST['cb_map_id'] ) {
 			$map = new Map( $_POST['cb_map_id'] );
 
@@ -73,8 +78,10 @@ class MapData {
 
 	/**
 	 * the ajax request handler for locations
+	 *
+	 * @return void
 	 **/
-	public static function get_locations() {
+	public static function get_locations(): void {
 		// handle local/import map
 		if ( isset( $_POST['cb_map_id'] ) ) {
 			check_ajax_referer( 'cb_map_locations', 'nonce' );
@@ -126,12 +133,15 @@ class MapData {
 	/**
 	 * Returns configured item terms
 	 *
-	 * @return array
+	 * @param array<string, mixed> $settings
+	 * @return list<int|string>
 	 */
-	public static function getItemCategoryTerms( $settings ): array {
-		$terms = [];
+	public static function getItemCategoryTerms( array $settings ): array {
+		/** @var array<int, array{elements?: array<int, array{cat_id: int|string}>}> $categoryGroups */
+		$categoryGroups = $settings['filter_cb_item_categories'];
+		$terms          = [];
 
-		foreach ( $settings['filter_cb_item_categories'] as $categoryGroup ) {
+		foreach ( $categoryGroups as $categoryGroup ) {
 			if ( array_key_exists( 'elements', $categoryGroup ) ) {
 				foreach ( $categoryGroup['elements'] as $category ) {
 					$terms[] = $category['cat_id'];
@@ -144,8 +154,13 @@ class MapData {
 
 	/**
 	 * get the settings for the frontend of the map with given id
-	 **/
-	public static function get_settings( $cb_map_id ): array {
+	 * TODO: Better return param documentation
+	 *
+	 * @param int|\WP_Post $cb_map_id
+	 * @return array<string, mixed>
+	 * @throws \Exception
+	 */
+	public static function get_settings( int|\WP_Post $cb_map_id ): array {
 		$map                = new Map( $cb_map_id );
 		$date_min           = Wordpress::getUTCDateTime();
 		$date_min           = $date_min->format( 'Y-m-d' );

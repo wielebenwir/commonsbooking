@@ -20,12 +20,21 @@ use Exception;
 class BookingRuleApplied extends BookingRule {
 
 	private bool $appliesToAll;
+	/**
+	 * @var array<int, int|string> term ids (item / location categories) the rule applies to
+	 */
 	private array $appliedTerms;
+	/**
+	 * @var array<int, int|string> numeric parameters configured for the rule
+	 */
 	private array $appliedParams;
 	/**
 	 * @var int|string
 	 */
 	private $appliedSelectParam;
+	/**
+	 * @var array<int, string> role slugs the rule is exempt from
+	 */
 	private array $excludedRoles;
 
 	/**
@@ -51,8 +60,8 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Will set what this Booking Rule applies to, either needs to be all or at least one category
 	 *
-	 * @param   bool  $appliesToAll
-	 * @param   array $appliedTerms
+	 * @param   bool                   $appliesToAll
+	 * @param   array<int, int|string> $appliedTerms term ids (item / location categories) the rule applies to
 	 *
 	 * @throws BookingRuleException
 	 */
@@ -67,8 +76,8 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Will set the necessary params for the BookingRule to work
 	 *
-	 * @param   array      $paramsToSet needs to be numeric
-	 * @param   int|string $selectParam needs to be numeric
+	 * @param   array<int, int|string> $paramsToSet needs to be numeric
+	 * @param   int|string             $selectParam needs to be numeric
 	 *
 	 * @throws BookingRuleException - if not enough params were specified for the BookingRule
 	 */
@@ -96,7 +105,7 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Sets the roles that the rule will not apply to
 	 *
-	 * @param   array $excludedRoles
+	 * @param   array<int, string> $excludedRoles role slugs the rule is exempt from
 	 */
 	public function setExcludedRoles( array $excludedRoles ): void {
 		$this->excludedRoles = $excludedRoles;
@@ -109,7 +118,7 @@ class BookingRuleApplied extends BookingRule {
 	 *
 	 * @param Booking $booking - The booking object to check for rule compliance
 	 *
-	 * @return array|null - An array of conflicting bookings or an empty array if the booking complies with all rules
+	 * @return Booking[]|null - An array of conflicting bookings or an empty array / null if the booking complies with all rules
 	 */
 	public function checkBookingCompliance( Booking $booking ): ?array {
 		if ( $booking->isBookingOwnerPrivileged() ) {
@@ -357,7 +366,7 @@ class BookingRuleApplied extends BookingRule {
 	/**
 	 * Will get the args array that belongs to the rule
 	 *
-	 * @return null[]
+	 * @return array<int, int|string|null>
 	 */
 	private function getArgs(): array {
 		$args = $this->appliedParams ?? [ null, null ];

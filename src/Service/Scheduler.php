@@ -28,12 +28,12 @@ class Scheduler {
 	 * It also hooks the appropriate actions that will un-schedule the job upon certain changes.
 	 * We can safely un-schedule the job upon changes, because the job will be re-scheduled with the correct settings when the page is loaded again.
 	 *
-	 * @param string   $jobhook the action hook to run when the event is executed
-	 * @param callable $callback the callback function of that hook
-	 * @param string   $reccurence how often the event should subsequently recur
-	 * @param string   $executionTime takes time of day the job should be executed, only for daily reccurence
-	 * @param array    $option first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
-	 * @param string   $updateHook The WordPress hook that should update the option
+	 * @param string             $jobhook the action hook to run when the event is executed
+	 * @param callable           $callback the callback function of that hook
+	 * @param string             $reccurence how often the event should subsequently recur
+	 * @param string             $executionTime takes time of day the job should be executed, only for daily reccurence
+	 * @param array<int, string> $option first element is the options_key, second is the field_id. If set, the field is checked and determines wether the hook should be ran
+	 * @param string             $updateHook The WordPress hook that should update the option
 	 */
 	function __construct(
 		string $jobhook,
@@ -91,7 +91,7 @@ class Scheduler {
 	/**
 	 * Returns array with custom time intervals.
 	 *
-	 * @return array[]
+	 * @return array<string, array{display: string, interval: int}>
 	 */
 	public static function getIntervals(): array {
 		return array(
@@ -117,11 +117,11 @@ class Scheduler {
 	/**
 	 * Inits custom intervals.
 	 *
-	 * @param $schedules
+	 * @param array<string, array{display: string, interval: int}> $schedules
 	 *
-	 * @return array
+	 * @return array<string, array{display: string, interval: int}>
 	 */
-	public static function initIntervals( $schedules ): array {
+	public static function initIntervals( array $schedules ): array {
 		return array_merge( $schedules, self::getIntervals() );
 	}
 
@@ -251,7 +251,7 @@ class Scheduler {
 	 * There are also jobs still from CommonsBooking 0.X listed here.
 	 * It is important to remove the jobs, because WordPress does not delete them on it's own, not even on plugin deactivation.
 	 */
-	public static function unscheduleOldEvents() {
+	public static function unscheduleOldEvents(): void {
 		$cbCronHooks = [
 			'cb_cron_hook',
 			'cb_reminder_cron_hook',

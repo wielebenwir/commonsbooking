@@ -12,26 +12,29 @@ namespace CommonsBooking\API;
  */
 class Share {
 
-	private $name;
+	private string $name;
 
-	private $enabled;
+	private bool $enabled;
 
-	private $pushUrl;
+	private string $pushUrl;
 
-	private $key;
+	private string $key;
 
-	private $owner;
+	/**
+	 * @var string
+	 */
+	private string $owner;
 
 	/**
 	 * Shares constructor.
 	 *
-	 * @param $name
-	 * @param $enabled
-	 * @param $pushUrl
-	 * @param $key
-	 * @param $owner
+	 * @param string $name
+	 * @param string $enabled 'on' or 'off'
+	 * @param string $pushUrl
+	 * @param string $key
+	 * @param string $owner
 	 */
-	public function __construct( $name, $enabled, $pushUrl, $key, $owner ) {
+	public function __construct( string $name, string $enabled, string $pushUrl, string $key, string $owner ) {
 		$this->name    = $name;
 		$this->enabled = $enabled === 'on';
 		$this->pushUrl = $pushUrl;
@@ -40,37 +43,37 @@ class Share {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->name;
 	}
 
 	/**
-	 * @return mixed
+	 * @return bool
 	 */
-	public function isEnabled() {
+	public function isEnabled(): bool {
 		return $this->enabled;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getPushUrl() {
+	public function getPushUrl(): string {
 		return $this->pushUrl;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getKey() {
+	public function getKey(): string {
 		return $this->key;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getOwner() {
+	public function getOwner(): string {
 		return $this->owner;
 	}
 }

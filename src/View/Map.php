@@ -11,8 +11,14 @@ class Map extends View {
 
 	/**
 	 * load needed assets for the map that provides fine tuning of the location's position
+	 *
+	 * @param \CMB2_Field                      $field             The current CMB2_Field object.
+	 * @param array<string, int|string>|string $escaped_value     The value of this field passed through the escaping filter.
+	 * @param int                              $object_id         The id of the object you are working with. Most commonly, the post id.
+	 * @param string                           $object_type       The type of object you are working with.
+	 * @param \CMB2_Types                      $field_type_object This is an instance of the CMB2_Types object and gives you access to all of the methods
 	 **/
-	public static function render_cb_map( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
+	public static function render_cb_map( \CMB2_Field $field, $escaped_value, int $object_id, string $object_type, \CMB2_Types $field_type_object ): void {
 		// map
 		wp_enqueue_style( 'cb-leaflet' );
 		wp_enqueue_script( 'cb-leaflet' );
@@ -28,7 +34,7 @@ class Map extends View {
 		wp_add_inline_script( 'cb-map-positioning_js', 'cb_map_positioning.defaults =' . wp_json_encode( $defaults ) );
 	}
 
-	public static function renderGeoRefreshButton() {
+	public static function renderGeoRefreshButton(): void {
 		echo '<div class="cmb-row cmb-type-text ">
 			<div class="cmb-th">
 				<label>' . esc_html__( 'Set / Update GPS Coordinates', 'commonsbooking' ) . '</label>

@@ -14,28 +14,41 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
  */
 class RestrictionMessage extends Message {
 
+	/**
+	 * @var \WP_User
+	 */
 	protected $user;
 
-	protected $restriction;
+	/**
+	 * @var Restriction
+	 */
+	protected Restriction $restriction;
 
-	protected $action;
+	protected string $action;
 
-	protected $booking;
+	/**
+	 * @var Booking
+	 */
+	protected Booking $booking;
 
 	protected bool $firstMessage;
 
-	protected $validActions = [
+	/**
+	 * @var string[]
+	 */
+	protected array $validActions = [
 		Restriction::TYPE_REPAIR,
 		Restriction::TYPE_HINT,
 	];
 
 	/**
-	 * @param $restriction Restriction
-	 * @param $user \WP_User
-	 * @param $booking Booking
-	 * @param $action
+	 * @param Restriction $restriction
+	 * @param \WP_User    $user
+	 * @param Booking     $booking
+	 * @param string      $action
+	 * @param bool        $firstMessage
 	 */
-	public function __construct( $restriction, $user, Booking $booking, $action, bool $firstMessage = false ) {
+	public function __construct( Restriction $restriction, \WP_User $user, Booking $booking, string $action, bool $firstMessage = false ) {
 		$this->restriction  = $restriction;
 		$this->user         = $user;
 		$this->booking      = $booking;
@@ -45,78 +58,120 @@ class RestrictionMessage extends Message {
 
 	/**
 	 * Sends mails related to restriction type and state.
+	 *
+	 * @return bool
 	 */
-	public function sendMessage() {
+	public function sendMessage(): bool {
 		if ( $this->getRestriction()->isActive() ) {
 			if ( $this->getRestriction()->getType() == Restriction::TYPE_HINT ) {
 				// send hint mail
-				$this->sendHintMail();
+				return $this->sendHintMail();
 			} else {
 				// Send repair mail
-				$this->sendRepairMail();
+				return $this->sendRepairMail();
 			}
-		}
-
-		if ( $this->getRestriction()->isCancelled() ) {
+		} elseif ( $this->getRestriction()->isCancelled() ) {
 			// send restriction cancellation
-			$this->sendRestrictionCancelationMail();
+			return $this->sendRestrictionCancelationMail();
+		} else {
+			return false;
 		}
 	}
 
 	/**
 	 * Sends hint mail.
+	 *
+	 * @return bool
 	 */
-	protected function sendHintMail() {
+	protected function sendHintMail(): bool {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-body' );
 		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject', 'sanitize_text_field' );
 
-		$this->prepareRestrictionMail(
-			$body,
-			$subject
-		);
+		try {
+			$this->prepareRestrictionMail(
+				$body,
+				$subject
+			);
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing hint mail for restriction message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		$this->sendNotificationMail();
+		return true;
 	}
 
 	/**
 	 * Sends repair mail.
+	 *
+	 * @return bool
 	 */
-	protected function sendRepairMail() {
+	protected function sendRepairMail(): bool {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-body' );
 		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-repair-subject', 'sanitize_text_field' );
 
-		$this->prepareRestrictionMail(
-			$body,
-			$subject
-		);
+		try {
+			$this->prepareRestrictionMail(
+				$body,
+				$subject
+			);
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing repair mail for restriction message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		$this->sendNotificationMail();
+		return true;
 	}
 
 	/**
 	 * Sends mail, when restriction is canceled (not active).
+	 *
+	 * @return bool
 	 */
-	protected function sendRestrictionCancelationMail() {
+	protected function sendRestrictionCancelationMail(): bool {
 		$body    = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-body' );
 		$subject = Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-restriction-cancelled-subject', 'sanitize_text_field' );
 
-		$this->prepareRestrictionMail(
-			$body,
-			$subject
-		);
+		try {
+			$this->prepareRestrictionMail(
+				$body,
+				$subject
+			);
+		} catch ( \Exception $e ) {
+			commonsbooking_write_log(
+				sprintf(
+					'Error preparing restriction cancellation mail for restriction message: %s',
+					$e->getMessage()
+				)
+			);
+			return false;
+		}
 
 		$this->sendNotificationMail();
+		return true;
 	}
 
 	/**
 	 * Prepares mail for sending.
 	 *
-	 * @param $body
-	 * @param $subject
+	 * @param string $body
+	 * @param string $subject
 	 *
+	 * @return void
 	 * @throws \Exception
 	 */
-	protected function prepareRestrictionMail( $body, $subject ) {
+	protected function prepareRestrictionMail( string $body, string $subject ): void {
 		$fromHeader  = 'From: ' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-name', 'sanitize_text_field' ) .
 						' <' . Settings::getOption( 'commonsbooking_options_restrictions', 'restrictions-from-email' ) . '>';
 		$restriction = $this->getRestriction();
@@ -144,16 +199,16 @@ class RestrictionMessage extends Message {
 	}
 
 	/**
-	 * @return mixed
+	 * @return \WP_User
 	 */
-	public function getUser() {
+	public function getUser(): \WP_User {
 		return $this->user;
 	}
 
 	/**
 	 * @return Restriction
 	 */
-	public function getRestriction() {
+	public function getRestriction(): Restriction {
 		return $this->restriction;
 	}
 

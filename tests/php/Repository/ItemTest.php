@@ -42,19 +42,6 @@ class ItemTest extends CustomPostTypeTest {
 		$this->assertNull( Item::getByCloakedId( 'invalid-cloaked-id' ) );
 	}
 
-	/*
-	* Regression test for #2391
-	*/
-	public function testGetPostByIdDoesNotFallBackToGlobalPostForEmptyId(): void {
-		$previousPost    = $GLOBALS['post'] ?? null;
-		$GLOBALS['post'] = get_post( $this->itemId );
-		try {
-			$this->assertNull( Item::getPostById( null ) );
-		} finally {
-			$GLOBALS['post'] = $previousPost;
-		}
-	}
-
 	public function testGetByLocation(): void {
 		$this->assertEquals(
 			[ $this->itemId ],

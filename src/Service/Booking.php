@@ -40,7 +40,10 @@ class Booking {
 		}
 	}
 
-	private static function sendMessagesForDay( int $tsDate, bool $onStartDate, Message $message ) {
+	/**
+	 * @param class-string<Message> $messageClass
+	 */
+	private static function sendMessagesForDay( int $tsDate, bool $onStartDate, string $messageClass, string $messageAction ): void {
 		if ( $onStartDate ) {
 			$bookings = \CommonsBooking\Repository\Booking::getBeginningBookingsByDate( $tsDate );
 		} else {
@@ -51,7 +54,7 @@ class Booking {
 				if ( $booking->hasTotalBreakdown() ) {
 					continue;
 				}
-				$message = new $message( $booking->getPost()->ID, $message->getAction() );
+				$message = new $messageClass( $booking->getPost()->ID, $messageAction );
 				$message->triggerMail();
 			}
 		}
@@ -61,26 +64,27 @@ class Booking {
 	 * Send reminder mail, x days before start of booking.
 	 * is triggered in  Service\Scheduler initHooks()
 	 *
+	 * @return void
 	 * @throws \Exception
 	 */
-	public static function sendReminderMessage() {
+	public static function sendReminderMessage(): void {
 
 		if ( Settings::getOption( 'commonsbooking_options_reminder', 'pre-booking-reminder-activate' ) != 'on' ) {
 			return;
 		}
 
-		$message         = new BookingReminderMessage( 0, 'pre-booking-reminder' );
 		$daysBeforeStart = Settings::getOption( 'commonsbooking_options_reminder', 'pre-booking-days-before' );
-		self::sendMessagesForDay( strtotime( '+' . $daysBeforeStart . ' days midnight' ), true, $message );
+		self::sendMessagesForDay( strtotime( '+' . $daysBeforeStart . ' days midnight' ), true, BookingReminderMessage::class, 'pre-booking-reminder' );
 	}
 
 	/**
 	 * Send feedback mal on same day or the day after end of booking.
 	 * is triggered in  Service\Scheduler initHooks()
 	 *
+	 * @return void
 	 * @throws \Exception
 	 */
-	public static function sendFeedbackMessage() {
+	public static function sendFeedbackMessage(): void {
 
 		if ( Settings::getOption( 'commonsbooking_options_reminder', 'post-booking-notice-activate' ) != 'on' ) {
 			return;
@@ -88,29 +92,29 @@ class Booking {
 
 		// Yesterday at 23:59
 		$endDate = strtotime( 'midnight', time() ) - 1;
-		$message = new BookingReminderMessage( 0, 'post-booking-notice' );
-		self::sendMessagesForDay( $endDate, false, $message );
+		self::sendMessagesForDay( $endDate, false, BookingReminderMessage::class, 'post-booking-notice' );
 	}
 
-	public static function sendBookingStartLocationReminderMessage() {
+	public static function sendBookingStartLocationReminderMessage(): void {
 		self::sendLocationBookingReminderMessage( 'start' );
 	}
 
-	public static function sendBookingEndLocationReminderMessage() {
+	public static function sendBookingEndLocationReminderMessage(): void {
 		self::sendLocationBookingReminderMessage( 'end' );
 	}
 
-	protected static function sendLocationBookingReminderMessage( string $type ) {
+	protected static function sendLocationBookingReminderMessage( string $type ): void {
 
-		if ( Settings::getOption( 'commonsbooking_options_reminder', 'booking-' . $type . '-location-reminder-activate' ) != 'on' ) {
+		$action = 'booking-' . $type . '-location-reminder';
+
+		if ( Settings::getOption( 'commonsbooking_options_reminder', $action . '-activate' ) != 'on' ) {
 			return;
 		}
 
 		// current day is saved in options as 1, this is because 0 is an unset value. Subtract 1 to get the correct day
-		$daysBeforeStart = (int) Settings::getOption( 'commonsbooking_options_reminder', 'booking-' . $type . '-location-reminder-day' ) - 1;
+		$daysBeforeStart = (int) Settings::getOption( 'commonsbooking_options_reminder', $action . '-day' ) - 1;
 		$startDate       = strtotime( '+' . $daysBeforeStart . ' days midnight' );
 
-		$message = new LocationBookingReminderMessage( 0, 'booking-' . $type . '-location-reminder' );
-		self::sendMessagesForDay( $startDate, $type === 'start', $message );
+		self::sendMessagesForDay( $startDate, $type === 'start', LocationBookingReminderMessage::class, $action );
 	}
 }

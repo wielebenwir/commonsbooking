@@ -8,10 +8,10 @@ class Restriction extends View {
 	/**
 	 * Callback function send button.
 	 *
-	 * @param $field_args
-	 * @param $field
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
 	 */
-	public static function renderSendButton( $field_args, $field ) {
+	public static function renderSendButton( array $field_args, \CMB2_Field $field ): void {
 		$id     = $field->args( 'id' );
 		$label  = $field->args( 'name' );
 		$desc   = $field->args( 'desc' );

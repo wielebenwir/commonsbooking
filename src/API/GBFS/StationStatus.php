@@ -7,6 +7,7 @@ use CommonsBooking\Model\Location;
 use CommonsBooking\Repository\Item;
 use stdClass;
 use WP_REST_Response;
+use WP_REST_Request;
 
 class StationStatus extends BaseRoute {
 
@@ -22,11 +23,11 @@ class StationStatus extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_status.json';
+	protected string $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_status.json';
 
 	/**
-	 * @param Location $location
-	 * @param $request
+	 * @param Location                              $location
+	 * @param WP_REST_Request<array<string, mixed>> $request
 	 *
 	 * @return WP_REST_Response
 	 * @throws \Exception
