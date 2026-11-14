@@ -5,8 +5,6 @@ namespace CommonsBooking\View;
 
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\ScssPhp\ScssPhp\Compiler;
-use CommonsBooking\ScssPhp\ScssPhp\ValueConverter;
 use Exception;
 
 /**
@@ -172,47 +170,45 @@ abstract class View {
 	}
 
 	/**
-	 * Compiles the user defined color scheme from settings (templates) using SCSSPHP and returns it
+	 * Builds the CSS custom properties for the user defined color scheme (from settings).
+	 * Only overrides are emitted; static defaults are compiled into public.css.
 	 *
-	 * @return string|false
+	 * Derived variables (error, success, gray-background) mirror _variables.scss; keep both in sync.
+	 *
+	 * @return string|false false if a value is missing or not a hex color.
 	 */
 	public static function getColorCSS() {
-		$compiler    = new Compiler();
-		$var_import  = COMMONSBOOKING_PLUGIN_DIR . 'assets/global/sass/partials/_variables.scss';
-		$import_path = COMMONSBOOKING_PLUGIN_DIR . 'assets/public/sass/partials/';
-		$compiler->setImportPaths( $import_path );
-
-		$variables = [
-			'color-primary' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_primarycolor' ),
-			'color-secondary' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_secondarycolor' ),
-			'color-buttons'   => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_buttoncolor' ),
-			'color-accept' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_acceptcolor' ),
-			'color-cancel' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_cancelcolor' ),
-			'color-holiday' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_holidaycolor' ),
-			'color-greyedout' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_greyedoutcolor' ),
-			'color-bg' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_backgroundcolor' ),
-			'color-noticebg' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_noticebackgroundcolor' ),
-			'color-lighttext' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_lighttext' ),
-			'color-darktext' => Settings::getOption( 'commonsbooking_options_templates', 'colorscheme_darktext' ),
+		$settings = [
+			'color-primary'   => 'colorscheme_primarycolor',
+			'color-secondary' => 'colorscheme_secondarycolor',
+			'color-buttons'   => 'colorscheme_buttoncolor',
+			'color-accept'    => 'colorscheme_acceptcolor',
+			'color-cancel'    => 'colorscheme_cancelcolor',
+			'color-holiday'   => 'colorscheme_holidaycolor',
+			'color-greyedout' => 'colorscheme_greyedoutcolor',
+			'color-bg'        => 'colorscheme_backgroundcolor',
+			'color-noticebg'  => 'colorscheme_noticebackgroundcolor',
+			'textcolor-light' => 'colorscheme_lighttext',
+			'textcolor-dark'  => 'colorscheme_darktext',
 		];
 
-		foreach ( $variables as &$variable ) { // iterate over array, convert valid values.
-			if ( $variable ) {  // values are only converted when set so ValueParser does not throw an error
-				$variable = ValueConverter::parseValue( $variable );
-			} else {
-				return false; // do not return CSS when no values are set
+		$values = [];
+		foreach ( $settings as $property => $option ) {
+			$value = Settings::getOption( 'commonsbooking_options_templates', $option );
+			if ( ! is_string( $value ) || ! preg_match( '/^#[0-9a-f]{3,8}$/i', $value ) ) {
+				return false; // do not return CSS when values are missing or invalid
 			}
+			$values[ $property ] = $value;
 		}
 
-		$compiler->replaceVariables( $variables );
-		$content = '@import "' . $var_import . '";';
-		$result  = $compiler->compileString( $content );
-		$css     = $result->getCss();
+		$values['color-gray-background'] = $values['color-bg'];
+		$values['color-error']           = $values['color-cancel'];
+		$values['color-success']         = $values['color-accept'];
 
-		if ( ! empty( $css ) ) {
-			return $css;
-		} else {
-			return false;
+		$css = ":root {\n";
+		foreach ( $values as $property => $value ) {
+			$css .= "\t--commonsbooking-{$property}: {$value};\n";
 		}
+		return $css . "}\n";
 	}
 }

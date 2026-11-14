@@ -85,6 +85,59 @@ class ViewTest extends CustomPostTypeTest {
 		$this->assertStringContainsString( $defaultValue, $colorCSS );
 	}
 
+	/**
+	 * The static defaults are already compiled into public.css, so the runtime CSS
+	 * must only contain the user-configurable overrides (and their derived values).
+	 */
+	public function testGetColorCSSOnlyContainsOverrides() {
+		AdminOptions::setOptionsDefaultValues();
+		$css = View::getColorCSS();
+
+		$this->assertStringStartsWith( ':root', trim( $css ) );
+		$this->assertStringContainsString( '--commonsbooking-color-primary: #84AE53;', $css );
+		$this->assertStringContainsString( '--commonsbooking-textcolor-dark:', $css );
+		$this->assertStringNotContainsString( '--commonsbooking-font-size', $css );
+		$this->assertStringNotContainsString( '--commonsbooking-spacer', $css );
+		$this->assertStringNotContainsString( '--commonsbooking-radius', $css );
+	}
+
+	public function testGetColorCSSDerivedVariables() {
+		AdminOptions::setOptionsDefaultValues();
+		$options                                = get_option( 'commonsbooking_options_templates' );
+		$options['colorscheme_cancelcolor']     = '#112233';
+		$options['colorscheme_acceptcolor']     = '#445566';
+		$options['colorscheme_backgroundcolor'] = '#778899';
+		update_option( 'commonsbooking_options_templates', $options );
+
+		$css = View::getColorCSS();
+		$this->assertStringContainsString( '--commonsbooking-color-error: #112233;', $css );
+		$this->assertStringContainsString( '--commonsbooking-color-success: #445566;', $css );
+		$this->assertStringContainsString( '--commonsbooking-color-gray-background: #778899;', $css );
+	}
+
+	public function testGetColorCSSRejectsInvalidValue() {
+		AdminOptions::setOptionsDefaultValues();
+		$options                             = get_option( 'commonsbooking_options_templates' );
+		$options['colorscheme_primarycolor'] = 'red;}body{display:none';
+		update_option( 'commonsbooking_options_templates', $options );
+
+		$this->assertFalse( View::getColorCSS() );
+	}
+
+	public function testGetColorCSSReturnsFalseWhenUnset() {
+		update_option( 'commonsbooking_options_templates', [] );
+		$this->assertFalse( View::getColorCSS() );
+	}
+
+	public function testScssphpIsNotARuntimeDependency() {
+		$composer = json_decode( file_get_contents( COMMONSBOOKING_PLUGIN_DIR . 'composer.json' ), true );
+		$this->assertArrayNotHasKey( 'scssphp/scssphp', $composer['require'] );
+		$this->assertStringNotContainsString(
+			'ScssPhp',
+			file_get_contents( COMMONSBOOKING_PLUGIN_DIR . 'src/View/View.php' )
+		);
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
@@ -144,6 +197,7 @@ class ViewTest extends CustomPostTypeTest {
 
 	protected function tearDown(): void {
 		parent::tearDown();
+		delete_option( 'commonsbooking_options_templates' ); // color tests modify it
 		ClockMock::reset();
 	}
 }

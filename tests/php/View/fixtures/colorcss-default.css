@@ -1,0 +1,45 @@
+/**
+ * Variables
+ *
+ * Colors: Brand
+ * Colors: Backgrounds
+ * Font sizes
+ * Layout variables
+ */
+/* Colors: CB Brand */
+/* Colors: text */
+/* Colors: Theme, can be modified by user */
+/* Colors: Text colors, can be modified by user */
+/* Colors: Backgrounds */
+/* Colors: Message statuses */
+/* Font sizes */
+/* Layout Variables */
+/* Fonts */
+:root {
+  --commonsbooking-color-primary: #84AE53;
+  --commonsbooking-color-secondary: #506CA9;
+  --commonsbooking-color-buttons: #74ce3c;
+  --commonsbooking-color-accept: #74ce3c;
+  --commonsbooking-color-cancel: #d5425c;
+  --commonsbooking-color-holiday: #ff9218;
+  --commonsbooking-color-greyedout: #e0e0e0;
+  --commonsbooking-color-bg: #f6f6f6;
+  --commonsbooking-color-noticebg: #FFF9C5;
+  --commonsbooking-textcolor-light: #a0a0a0;
+  --commonsbooking-textcolor-dark: #000;
+  --commonsbooking-color-gray-background: #f6f6f6;
+  --commonsbooking-color-gray-border: #e0e0e0;
+  --commonsbooking-color-error: #d5425c;
+  --commonsbooking-color-success: #74ce3c;
+  --commonsbooking-color-warning: #ff9218;
+  --commonsbooking-font-size-small: 12px;
+  --commonsbooking-font-line-height-small: 13px;
+  --commonsbooking-font-size-normal: 14px;
+  --commonsbooking-font-size-big: 18px;
+  --commonsbooking-font-size-huge: 24px;
+  --commonsbooking-spacer-big: 15px;
+  --commonsbooking-spacer: 10px;
+  --commonsbooking-spacer-small: 5px;
+  --commonsbooking-radius: 8px;
+  --commonsbooking-radius-pill: 8px;
+}
