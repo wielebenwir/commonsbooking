@@ -20,13 +20,6 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 	protected $rest_base = 'gbfs.json';
 
 	/**
-	 * Commons-API schema definition.
-	 *
-	 * @var string
-	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/gbfs.json';
-
-	/**
 	 * Returns feed urls for different endpoints
 	 *
 	 * @param mixed $request
@@ -63,7 +56,7 @@ class Discovery extends \CommonsBooking\API\BaseRoute {
 		$response->ttl          = 86400;
 		$response->version      = '3.1-RC3';
 
-		return $this->respond_with_validation( $response );
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	private function get_feed( $name ): stdClass {

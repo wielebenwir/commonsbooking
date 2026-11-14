@@ -19,6 +19,7 @@ class LocationsRouteTest extends CB_REST_Route_UnitTestCase {
 
 		$data = $response->get_data();
 		$this->assertObjectHasProperty( 'locations', $data );
+		$this->assertMatchesSchema( $data, 'commons-api.locations.schema.json' );
 		$this->assertEquals( 'FeatureCollection', $data->locations->type );
 		$this->assertNotEmpty( $data->locations->features );
 		$this->assertCount( 1, $data->locations->features );

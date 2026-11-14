@@ -44,7 +44,6 @@
     "geocoder-php/nominatim-provider": "^5.7",
     "php-http/curl-client": "^2.3",
     "nyholm/psr7": "^1.8",
-    "opis/json-schema": "^2.3.0",
     "scssphp/scssphp": "^1.11.1",
     "ext-json": "*",
     "ext-curl": "*",
@@ -56,6 +55,7 @@
   },
   "require-dev": {
     "mockery/mockery": "^1.6.6",
+    "opis/json-schema": "^2.3.0",
     "phpunit/phpunit": "^9.6.21",
     "yoast/phpunit-polyfills": "^4.0.0",
     "wp-coding-standards/wpcs": "^3.1",

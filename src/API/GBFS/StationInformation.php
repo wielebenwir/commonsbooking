@@ -19,13 +19,6 @@ class StationInformation extends BaseRoute {
 	protected $rest_base = 'station_information.json';
 
 	/**
-	 * Commons-API schema definition.
-	 *
-	 * @var string
-	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/station_information.json';
-
-	/**
 	 * @param $item Location
 	 * @param $request
 	 *

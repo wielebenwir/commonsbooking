@@ -101,7 +101,7 @@ class ItemsRoute extends BaseRoute {
 			}
 		}
 
-		return $this->respond_with_validation( $data );
+		return new WP_REST_Response( $data, 200 );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class ItemsRoute extends BaseRoute {
 	public function get_item( $request ): WP_REST_Response {
 		$data = $this->getItemData( $request );
 
-		return $this->respond_with_validation( $data );
+		return new WP_REST_Response( $data, 200 );
 	}
 
 	/**

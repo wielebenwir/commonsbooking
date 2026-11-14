@@ -81,7 +81,7 @@ class AvailabilityRoute extends BaseRoute {
 		$data   = new stdClass();
 		try {
 			$data->availability = $this->getItemData( $params['id'] );
-			return $this->respond_with_validation( $data );
+			return new WP_REST_Response( $data, 200 );
 		} catch ( Exception $e ) {
 			return new WP_Error( 'code', $e->getMessage() );
 		}
@@ -109,6 +109,6 @@ class AvailabilityRoute extends BaseRoute {
 			);
 		}
 
-		return $this->respond_with_validation( $data );
+		return new WP_REST_Response( $data, 200 );
 	}
 }

@@ -56,7 +56,7 @@ class LocationsRoute extends BaseRoute {
 		$data            = new stdClass();
 		$data->locations = $this->getItemData( $request );
 
-		return $this->respond_with_validation( $data );
+		return new WP_REST_Response( $data, 200 );
 	}
 
 	public function getItemData( $request ) {

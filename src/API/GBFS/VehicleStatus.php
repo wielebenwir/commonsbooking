@@ -25,13 +25,6 @@ class VehicleStatus extends BaseRoute {
 	protected $rest_base = 'vehicle_status.json';
 
 	/**
-	 * Commons-API schema definition.
-	 *
-	 * @var string
-	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/vehicle_status.json';
-
-	/**
 	 * @param \CommonsBooking\Model\Item $item
 	 * @param $request
 	 *

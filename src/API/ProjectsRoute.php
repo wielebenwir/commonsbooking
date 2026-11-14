@@ -42,7 +42,7 @@ class ProjectsRoute extends BaseRoute {
 		$data           = new stdClass();
 		$data->projects = $this->getItemData();
 
-		return $this->respond_with_validation( $data );
+		return new WP_REST_Response( $data, 200 );
 	}
 
 	/**

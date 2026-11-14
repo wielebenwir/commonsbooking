@@ -18,7 +18,6 @@ use WP_REST_Response;
  *      - implement \WP_REST_Controller::prepare_item_for_response,
  *        which is called in \BaseRoute::getItemData
  *      - implement $rest_base
- *      - implement $schemaUrl
  *      - (if necessary) overwrite getRepository
  *      - (if necessary) overwrite getListName
  */
@@ -39,7 +38,7 @@ class BaseRoute extends \CommonsBooking\API\BaseRoute {
 		$response->ttl                           = 60;
 		$response->version                       = '3.1-RC3';
 
-		return $this->respond_with_validation( $response );
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**

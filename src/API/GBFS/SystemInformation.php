@@ -17,13 +17,6 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 	 */
 	protected $rest_base = 'system_information.json';
 
-	/**
-	 * Commons-API schema definition.
-	 *
-	 * @var string
-	 */
-	protected $schemaUrl = COMMONSBOOKING_PLUGIN_DIR . 'includes/gbfs-json-schema/system_information.json';
-
 	public function get_items( $request ): WP_REST_Response {
 		$tz = timezone_name_get( wp_timezone() );
 		if ( preg_match( '/^(\+|\-)0?(\d+)/', $tz, $matches ) ) {
@@ -47,7 +40,7 @@ class SystemInformation extends \CommonsBooking\API\BaseRoute {
 		$response->ttl                      = 86400;
 		$response->version                  = '3.1-RC3';
 
-		return $this->respond_with_validation( $response );
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	private function isOpen(): bool {

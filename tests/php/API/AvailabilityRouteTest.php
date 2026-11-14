@@ -42,6 +42,7 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( 2, count( $response->get_data()->availability ) );
+		$this->assertMatchesSchema( $response->get_data(), 'commons-api.availability.schema.json' );
 
 		$availabilityStart = new \DateTime( self::CURRENT_DATE );
 		$availabilityEnd   = new \DateTime( self::CURRENT_DATE );

@@ -39,6 +39,7 @@ class ItemsRouteTest extends CB_REST_Route_UnitTestCase {
 		$data = $response->get_data();
 		$this->assertNotEmpty( $data->items );
 		$this->assertCount( 1, $data->items );
+		$this->assertMatchesSchema( $data, 'commons-api.items.schema.json' );
 
 		$item = $data->items[0];
 		$this->assertEquals( (string) $this->itemId, $item->id );

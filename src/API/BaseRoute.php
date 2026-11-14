@@ -3,13 +3,10 @@
 
 namespace CommonsBooking\API;
 
-use Exception;
 use RuntimeException;
 
 use CommonsBooking\Repository\ApiShares;
 use CommonsBooking\Settings\Settings;
-use CommonsBooking\Opis\JsonSchema\Validator;
-use CommonsBooking\Opis\JsonSchema\Errors\ErrorFormatter;
 use WP_REST_Controller;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -22,19 +19,22 @@ use WP_REST_Server;
  *  - get_item
  *  - get_public_item_schema
  *
- * This class relies on WP rest-api.php implementations and another assumption is
- * that commonsbooking json schema files are in place.
+ * This class relies on WP rest-api.php implementations. Routes that set $schemaUrl
+ * serve that JSON schema file on their /schema endpoint; no validation of responses
+ * happens at runtime (see tests/php/API for schema assertions).
  */
 class BaseRoute extends WP_REST_Controller {
 
 	const API_KEY_PARAM = 'apikey';
 
-	// prefix of $id used in schemas (currently the URL of the Github repo)
-	const SCHEMA_URL = 'https://github.com/wielebenwir/commons-api/blob/master/';
-
 	// the location of the .schema.json files locally
 	const SCHEMA_PATH = COMMONSBOOKING_PLUGIN_DIR . 'includes/commons-api-json-schema/';
 
+	/**
+	 * Optional path to a JSON schema file served by the /schema endpoint.
+	 *
+	 * @var string|null
+	 */
 	protected $schemaUrl;
 
 	/**
@@ -90,58 +90,6 @@ class BaseRoute extends WP_REST_Controller {
 	}
 
 	/**
-	 * Validates data against defined schema.
-	 *
-	 * If WP_DEBUG is enabled, prints schema errors or any exceptions that may occur to error_log.
-	 *
-	 * @param object $data instance of stdclass or object to validate.
-	 */
-	public function validateData( $data ) {
-		$validator = new Validator();
-
-		// Opis does not fetch remote $ref targets in getSchemaJson() main schema.
-		// Map schema URLs to local filesystem paths
-		$resolver = $validator->resolver();
-		$resolver->registerPrefix( self::SCHEMA_URL, self::SCHEMA_PATH );
-
-		try {
-			$result = $validator->validate( $data, $this->getSchemaJson() );
-			if ( $result->hasError() ) {
-				if ( WP_DEBUG ) {
-
-					// Get the error
-					$error = $result->error();
-
-					// Create an error formatter
-					$formatter = new ErrorFormatter();
-
-					// Print helper
-					$print = function ( $value ) {
-						echo wp_json_encode( $value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
-					};
-
-					$print(
-						array(
-							'errors'    => $formatter->formatOutput( $error, 'basic' ),
-							'response'  => $data,
-						)
-					);
-
-					die;
-				}
-			}
-		} catch ( Exception $e ) {
-			// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			if ( WP_DEBUG ) {
-				error_log( 'Problem while trying to access wp rest endpoint url for schema ' . $this->schemaUrl );
-				error_log( $e );
-				die;
-			}
-			// phpcs:enable
-		}
-	}
-
-	/**
 	 * Returns schema json for current route.
 	 *
 	 * @throws RuntimeException On missing schema files.
@@ -162,6 +110,9 @@ class BaseRoute extends WP_REST_Controller {
 	 * @return array
 	 */
 	public function add_additional_fields_schema( $schema ): array {
+		if ( empty( $this->schemaUrl ) ) {
+			return $schema;
+		}
 		$schemaArray = json_decode( $this->getSchemaJson(), true );
 
 		return array_merge( $schema, $schemaArray );
@@ -227,18 +178,5 @@ class BaseRoute extends WP_REST_Controller {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Validates data against schema (when WP_DEBUG) and returns REST response.
-	 *
-	 * @param object $data The response data to validate and return.
-	 * @return WP_REST_Response
-	 */
-	protected function respond_with_validation( $data ): WP_REST_Response {
-		if ( WP_DEBUG ) {
-			$this->validateData( $data );
-		}
-		return new WP_REST_Response( $data, 200 );
 	}
 }
