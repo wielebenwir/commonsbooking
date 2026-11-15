@@ -43,6 +43,11 @@ class Day {
 	protected ?array $timeframes = null;
 
 	/**
+	 * @var Restriction[]|null
+	 */
+	protected ?array $restrictions = null;
+
+	/**
 	 * When this is enabled, restrictions are ignored when creating availabilities.
 	 * This is useful when you want to differentiate between an item that is booked / not available
 	 * and an item that would be bookable but is in repair.
@@ -56,13 +61,14 @@ class Day {
 	/**
 	 * Day constructor.
 	 *
-	 * @param string $date
-	 * @param array  $locations
-	 * @param array  $items
-	 * @param array  $types
-	 * @param array  $possibleTimeframes
+	 * @param string             $date
+	 * @param array              $locations
+	 * @param array              $items
+	 * @param array              $types
+	 * @param array|null         $possibleTimeframes
+	 * @param Restriction[]|null $possibleRestrictions
 	 */
-	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], array $possibleTimeframes = [] ) {
+	public function __construct( string $date, array $locations = [], array $items = [], array $types = [], ?array $possibleTimeframes = null, ?array $possibleRestrictions = null ) {
 		$this->date      = $date;
 		$this->locations = array_map(
 			function ( $location ) {
@@ -79,9 +85,16 @@ class Day {
 
 		$this->types = $types;
 
-		if ( ! empty( $possibleTimeframes ) ) {
+		if ( $possibleTimeframes !== null ) {
 			$this->timeframes = \CommonsBooking\Repository\Timeframe::filterTimeframesForTimerange( $possibleTimeframes, $this->getStartTimestamp(), $this->getEndTimestamp() );
 			$this->timeframes = array_filter( $this->timeframes, fn( $timeframe ) => $this->filterTimeframe( $timeframe ) );
+		}
+
+		if ( $possibleRestrictions !== null ) {
+			$this->restrictions = array_filter(
+				$possibleRestrictions,
+				fn( Restriction $restriction ) => $this->filterRestriction( $restriction )
+			);
 		}
 	}
 
@@ -166,6 +179,10 @@ class Day {
 	 * @throws Exception
 	 */
 	public function getRestrictions(): array {
+		if ( $this->restrictions !== null ) {
+			return $this->restrictions;
+		}
+
 		return \CommonsBooking\Repository\Restriction::get(
 			$this->locations,
 			$this->items,
@@ -174,6 +191,29 @@ class Day {
 			null,
 			[ 'publish', 'confirmed', 'unconfirmed' ]
 		);
+	}
+
+	/**
+	 * Check whether a prefetched restriction applies to this day and entity set.
+	 */
+	private function filterRestriction( Restriction $restriction ): bool {
+		if ( $restriction->getStartDate() > $this->getEndTimestamp() || $restriction->getEndDate() < $this->getStartTimestamp() ) {
+			return false;
+		}
+
+		$locationId = (int) $restriction->getLocationId();
+		$itemId     = (int) $restriction->getItemId();
+
+		if ( ! $locationId && ! $itemId ) {
+			return true;
+		}
+
+		$locationMatches = $locationId && in_array( $locationId, $this->locations, true );
+		$itemMatches     = $itemId && in_array( $itemId, $this->items, true );
+
+		return ( ! $locationId && $itemMatches ) ||
+			( ! $itemId && $locationMatches ) ||
+			( $locationMatches && $itemMatches );
 	}
 
 	/**

@@ -46,6 +46,13 @@ class Calendar {
 	protected array $timeframes;
 
 	/**
+	 * Restrictions that are relevant for this calendar.
+	 *
+	 * @var Restriction[]|null
+	 */
+	protected ?array $restrictions;
+
+	/**
 	 * When this is enabled, @see Timeframe::META_BOOKING_START_DAY_OFFSET is ignored.
 	 * This is used for the API routes, where we want to show the actual availability of the items, regardless of the booking start day offset.
 	 *
@@ -69,13 +76,23 @@ class Calendar {
 	/**
 	 * Calendar constructor.
 	 *
-	 * @param Day   $startDate
-	 * @param Day   $endDate
-	 * @param int[] $locations
-	 * @param int[] $items
-	 * @param array $types
+	 * @param Day                $startDate
+	 * @param Day                $endDate
+	 * @param int[]              $locations
+	 * @param int[]              $items
+	 * @param array              $types
+	 * @param Timeframe[]|null   $possibleTimeframes
+	 * @param Restriction[]|null $possibleRestrictions
 	 */
-	public function __construct( Day $startDate, Day $endDate, array $locations = [], array $items = [], array $types = [] ) {
+	public function __construct(
+		Day $startDate,
+		Day $endDate,
+		array $locations = [],
+		array $items = [],
+		array $types = [],
+		?array $possibleTimeframes = null,
+		?array $possibleRestrictions = null
+	) {
 		// check, that it spans at least two days
 		if ( $startDate->getDate() == $endDate->getDate() ) {
 			throw new \InvalidArgumentException( 'Calendar must span at least two days' );
@@ -90,7 +107,7 @@ class Calendar {
 		$this->locations = $locations;
 		$this->types     = $types;
 
-		$this->timeframes = \CommonsBooking\Repository\Timeframe::getInRange(
+		$this->timeframes   = $possibleTimeframes ?? \CommonsBooking\Repository\Timeframe::getInRange(
 			$this->startDate->getStartTimestamp(),
 			$this->endDate->getEndTimestamp(),
 			$this->locations,
@@ -99,6 +116,7 @@ class Calendar {
 			true,
 			[ 'confirmed', 'publish' ]
 		);
+		$this->restrictions = $possibleRestrictions;
 	}
 
 	/**
@@ -124,7 +142,8 @@ class Calendar {
 		if ( $cacheItem ) {
 			return $cacheItem;
 		} else {
-			$weeks = array();
+			$weeks        = array();
+			$restrictions = $this->ignoreRestrictions ? [] : $this->getRestrictions();
 			while ( $startDate <= $endDate ) {
 				$dayOfYear = date( 'z', $startDate );
 				$year      = date( 'Y', $startDate );
@@ -134,7 +153,8 @@ class Calendar {
 					$this->locations,
 					$this->items,
 					$this->types,
-					$this->timeframes
+					$this->timeframes,
+					$restrictions
 				);
 				$startDate = strtotime( 'next monday', $startDate );
 			}
@@ -157,6 +177,10 @@ class Calendar {
 	 * @throws \Exception
 	 */
 	public function getAvailabilitySlots(): array {
+		if ( count( $this->items ) > 1 ) {
+			return $this->getAvailabilitySlotsByItem();
+		}
+
 		$slots     = [];
 		$doneSlots = [];
 		/** @var Week $week */
@@ -209,6 +233,63 @@ class Calendar {
 			}
 		}
 		return $slots;
+	}
+
+	/**
+	 * Build item-specific grids while reusing the timeframes and restrictions
+	 * fetched for the complete item collection.
+	 *
+	 * @return array
+	 * @throws \Exception
+	 */
+	private function getAvailabilitySlotsByItem(): array {
+		$slots            = [];
+		$restrictions     = $this->ignoreRestrictions ? [] : $this->getRestrictions();
+		$timeframesByItem = [];
+
+		foreach ( $this->timeframes as $timeframe ) {
+			foreach ( $timeframe->getItemIDs() as $itemId ) {
+				$timeframesByItem[ $itemId ][] = $timeframe;
+			}
+		}
+
+		foreach ( $this->items as $itemId ) {
+			$itemCalendar = new self(
+				$this->startDate,
+				$this->endDate,
+				$this->locations,
+				[ $itemId ],
+				$this->types,
+				$timeframesByItem[ $itemId ] ?? [],
+				$restrictions
+			);
+			$itemCalendar->setIgnoreStartDayOffset( $this->ignoreStartDayOffset );
+			$itemCalendar->setIgnoreRestrictions( $this->ignoreRestrictions );
+			$slots = array_merge( $slots, $itemCalendar->getAvailabilitySlots() );
+		}
+
+		return $slots;
+	}
+
+	/**
+	 * Fetch restrictions once for the entire calendar range.
+	 *
+	 * @return Restriction[]
+	 * @throws \Exception
+	 */
+	private function getRestrictions(): array {
+		if ( $this->restrictions === null ) {
+			$this->restrictions = \CommonsBooking\Repository\Restriction::get(
+				$this->locations,
+				$this->items,
+				null,
+				true,
+				$this->startDate->getStartTimestamp() - 1,
+				[ 'confirmed', 'unconfirmed', 'publish', 'inherit' ]
+			);
+		}
+
+		return $this->restrictions;
 	}
 
 	public function setIgnoreStartDayOffset( bool $ignoreStartDayOffset ): void {

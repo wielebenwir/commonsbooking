@@ -55,4 +55,26 @@ class AvailabilityRouteTest extends CB_REST_Route_UnitTestCase {
 
 		ClockMock::reset();
 	}
+
+	public function testAvailabilityForMultipleItems() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+
+		$secondLocationId = $this->createLocation( 'Second location', 'publish' );
+		$secondItemId     = $this->createItem( 'Second item', 'publish' );
+		$start            = strtotime( '-1 day', strtotime( self::CURRENT_DATE ) );
+		$end              = strtotime( '+1 day', strtotime( self::CURRENT_DATE ) );
+		$this->createTimeframe( $secondLocationId, $secondItemId, $start, $end );
+
+		$response = rest_do_request( new \WP_REST_Request( 'GET', $this->ENDPOINT ) );
+		$itemIds  = array_unique(
+			array_map(
+				static fn( $availability ) => (int) $availability->itemId,
+				$response->get_data()->availability
+			)
+		);
+
+		$this->assertEqualsCanonicalizing( [ $this->itemId, $secondItemId ], $itemIds );
+
+		ClockMock::reset();
+	}
 }
