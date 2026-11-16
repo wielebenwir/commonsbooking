@@ -474,7 +474,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// If we have the grid size, we use it to calculate right time end
 			$timeframeGridSize = $this->getMeta( self::START_TIMEFRAME_GRIDSIZE );
 			if ( is_numeric( $timeframeGridSize ) ) {
-				$grid = intval( $timeframeGridSize );
+				$grid = floatval( $timeframeGridSize );
 			}
 		}
 
@@ -510,7 +510,7 @@ class Booking extends \CommonsBooking\Model\Timeframe {
 			// If we have the grid size, we use it to calculate right time start
 			$timeframeGridSize = $this->getMeta( self::END_TIMEFRAME_GRIDSIZE );
 			if ( is_numeric( $timeframeGridSize ) ) {
-				$grid = intval( $timeframeGridSize );
+				$grid = floatval( $timeframeGridSize );
 			}
 		}
 
