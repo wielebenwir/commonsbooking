@@ -139,7 +139,7 @@ The codes will be sent to the email addresses stored in the "Location Email" fie
 * Type: Bookable
 * "Full Day": unchecked
 * Grid: "Hourly", "30 minutes", "15 minutes", or "Full slot"
-  * Interval grids show pickup or return slots of the selected duration. Blocking part of a slot makes the entire slot unavailable without shifting later slot boundaries. For example, with a 30-minute grid, a block from 09:15 to 09:30 makes 09:00–09:30 unavailable, while 09:30–10:00 remains available unless another rule blocks it.
+  * Interval grids show pickup or return slots of the selected duration. Users can only book whole slots in the calendar. Blocking timeframes (e.g. repair), restrictions, and admin bookings are not bound to the grid, however. If one of them covers only part of a slot, the entire slot becomes unavailable without shifting later slot boundaries. For example, with a 30-minute grid, a blocking timeframe from 09:15 to 09:30 makes 09:00–09:30 unavailable, while 09:30–10:00 remains available unless another rule blocks it.
   * A booking ending exactly at a slot boundary does not block the following slot. For example, an admin booking from 09:45 to 10:00 makes the hourly slot 09:00–10:00 unavailable, but does not block 10:00–11:00.
   * When "Full Slot" is selected, users can only book the entire time slot from start to end time (e.g. only from 09:00 to 12:00). This setting allows you to provide a coarser booking grid if you do not want to offer detailed 1-hour slots.
 
