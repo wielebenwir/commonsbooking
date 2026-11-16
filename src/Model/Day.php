@@ -22,6 +22,14 @@ class Day {
 	private const MINUTES_PER_CELL = 15;
 
 	/**
+	 * Empty availability cells relative to midnight, keyed by time format.
+	 * The labels are the same for every day, so they are only formatted once per request.
+	 *
+	 * @var array<string, array<int, array<string, string|int>>>
+	 */
+	private static array $cellTemplates = [];
+
+	/**
 	 * @var string
 	 */
 	protected $date;
@@ -464,7 +472,7 @@ class Day {
 
 			// Add timeframe to relevant slots
 			while ( $startSlot < $endSlot ) {
-				if ( ! array_key_exists( 'timeframe', $slots[ $startSlot ] ) || ! $slots[ $startSlot ]['timeframe'] ) {
+				if ( empty( $slots[ $startSlot ]['timeframe'] ) ) {
 					$slots[ $startSlot ]['timeframe']   = $timeframePost;
 					$slots[ $startSlot ]['gridMinutes'] = $gridMinutes;
 				} else {
@@ -542,27 +550,30 @@ class Day {
 	 * @param array $slots Given an array of assocs in fifteen-minute cell resolution.
 	 */
 	protected function sanitizeSlots( array &$slots ) {
-		$this->removeEmptySlots( $slots );
-
 		$sanitizedSlots = [];
-		$run            = [];
-		$previousSlotNr = null;
+		$runStart       = 0;
+		$runLength      = 0;
 		$timeframeId    = null;
 
 		foreach ( $slots as $slotNr => $slot ) {
-			$slot['slotNr']     = $slotNr;
-			$currentTimeframeId = $slot['timeframe']->ID;
-			if ( $run && ( $slotNr !== $previousSlotNr + 1 || $currentTimeframeId !== $timeframeId ) ) {
-				$this->appendSanitizedRun( $run, $sanitizedSlots );
-				$run = [];
+			$timeframe          = $slot['timeframe'] ?? null;
+			$currentTimeframeId = $timeframe instanceof WP_Post ? $timeframe->ID : null;
+			if ( $runLength && ( $currentTimeframeId !== $timeframeId || $slotNr !== $runStart + $runLength ) ) {
+				$this->appendSanitizedRun( $slots, $runStart, $runLength, $sanitizedSlots );
+				$runLength = 0;
 			}
 
-			$run[]          = $slot;
-			$previousSlotNr = $slotNr;
-			$timeframeId    = $currentTimeframeId;
+			// Cells without timeframe are dropped and end the current run.
+			if ( null !== $currentTimeframeId ) {
+				if ( ! $runLength ) {
+					$runStart = $slotNr;
+				}
+				++$runLength;
+			}
+			$timeframeId = $currentTimeframeId;
 		}
-		if ( $run ) {
-			$this->appendSanitizedRun( $run, $sanitizedSlots );
+		if ( $runLength ) {
+			$this->appendSanitizedRun( $slots, $runStart, $runLength, $sanitizedSlots );
 		}
 
 		$slots = $sanitizedSlots;
@@ -571,43 +582,30 @@ class Day {
 	/**
 	 * Merges a contiguous timeframe run, offering only complete, clock-aligned interval slots.
 	 *
-	 * @param non-empty-array $run
-	 * @param array           $sanitizedSlots
+	 * @param array $slots          Availability cells, keyed by consecutive cell index.
+	 * @param int   $runStart       Index of the first cell of the run.
+	 * @param int   $slotCount      Number of cells in the run.
+	 * @param array $sanitizedSlots Merged slots collected so far, keyed by the index of their last cell.
 	 */
-	protected function appendSanitizedRun( array $run, array &$sanitizedSlots ): void {
-		$timeframe    = $run[0]['timeframe'];
-		$gridMinutes  = $run[0]['gridMinutes'];
-		$slotCount    = count( $run );
+	protected function appendSanitizedRun( array $slots, int $runStart, int $slotCount, array &$sanitizedSlots ): void {
+		$timeframe    = $slots[ $runStart ]['timeframe'];
+		$gridMinutes  = $slots[ $runStart ]['gridMinutes'];
 		$isInterval   = get_post_meta( $timeframe->ID, 'full-day', true ) !== 'on' && $gridMinutes > 0;
 		$slotsPerGrid = $isInterval ? intdiv( $gridMinutes, self::MINUTES_PER_CELL ) : $slotCount;
 		$completeOnly = $isInterval && ! $timeframe->locked;
-		$firstSlot    = $completeOnly ? ( $slotsPerGrid - $run[0]['slotNr'] % $slotsPerGrid ) % $slotsPerGrid : 0;
+		$firstSlot    = $completeOnly ? ( $slotsPerGrid - $runStart % $slotsPerGrid ) % $slotsPerGrid : 0;
 
 		for ( $first = $firstSlot; $first < $slotCount; $first += $slotsPerGrid ) {
 			$end = min( $first + $slotsPerGrid, $slotCount );
 			if ( $completeOnly && $end - $first !== $slotsPerGrid ) {
 				break;
 			}
-			$slot                 = $run[ $first ];
-			$lastSlot             = $run[ $end - 1 ];
-			$slot['timeend']      = $lastSlot['timeend'];
-			$slot['timestampend'] = $lastSlot['timestampend'];
-			unset( $slot['slotNr'], $slot['gridMinutes'] );
-			$sanitizedSlots[ $lastSlot['slotNr'] ] = $slot;
-		}
-	}
-
-	/**
-	 * remove slots without timeframes
-	 *
-	 * @param $slots
-	 */
-	protected function removeEmptySlots( &$slots ) {
-		// remove slots without timeframes
-		foreach ( $slots as $slotNr => $slot ) {
-			if ( ! array_key_exists( 'timeframe', $slot ) || ! ( $slot['timeframe'] instanceof WP_Post ) ) {
-				unset( $slots[ $slotNr ] );
-			}
+			$lastSlotNr           = $runStart + $end - 1;
+			$slot                 = $slots[ $runStart + $first ];
+			$slot['timeend']      = $slots[ $lastSlotNr ]['timeend'];
+			$slot['timestampend'] = $slots[ $lastSlotNr ]['timestampend'];
+			unset( $slot['gridMinutes'] );
+			$sanitizedSlots[ $lastSlotNr ] = $slot;
 		}
 	}
 
@@ -633,14 +631,24 @@ class Day {
 			$timeFormat = esc_html( get_option( 'time_format' ) );
 			$dayStart   = $this->getStartTimestamp();
 
+			if ( ! isset( self::$cellTemplates[ $timeFormat ] ) ) {
+				$cellTemplate = [];
+				for ( $i = 0; $i < $slotsPerDay; $i++ ) {
+					$cellTemplate[ $i ] = [
+						'timestart'      => date( $timeFormat, $i * self::MINUTES_PER_CELL * 60 ),
+						'timeend'        => date( $timeFormat, ( $i + 1 ) * self::MINUTES_PER_CELL * 60 ),
+						'timestampstart' => $this->getSlotTimestampStart( $i, 0 ),
+						'timestampend'   => $this->getSlotTimestampEnd( $i, 0 ),
+					];
+				}
+				self::$cellTemplates[ $timeFormat ] = $cellTemplate;
+			}
+
 			// Init slots.
-			for ( $i = 0; $i < $slotsPerDay; $i++ ) {
-				$slots[ $i ] = [
-					'timestart'      => date( $timeFormat, $i * self::MINUTES_PER_CELL * 60 ),
-					'timeend'        => date( $timeFormat, ( $i + 1 ) * self::MINUTES_PER_CELL * 60 ),
-					'timestampstart' => $this->getSlotTimestampStart( $i, $dayStart ),
-					'timestampend'   => $this->getSlotTimestampEnd( $i, $dayStart ),
-				];
+			foreach ( self::$cellTemplates[ $timeFormat ] as $i => $slot ) {
+				$slot['timestampstart'] += $dayStart;
+				$slot['timestampend']   += $dayStart;
+				$slots[ $i ]             = $slot;
 			}
 
 			$this->mapTimeFrames( $slots );
