@@ -39,3 +39,12 @@ You can find detailed information on this under [first steps](../first-steps/).
 
 If the item or location list (the pages with the cb_items or cb_locations shortcode) show an error page after clicking on ‘Book now’, you have to go to the WordPress settings on the ‘Permalinks’ page and click on "Save".
 
+
+## Uninstall
+
+:::info Since UNRELEASED_CB_VERTSION
+:::
+
+Deleting the plugin keeps all your data (items, locations, bookings, settings) by default. To remove everything when
+deleting, add `define( 'COMMONSBOOKING_REMOVE_ALL_DATA', true );` to your `wp-config.php` **before** deleting the plugin.
+This cannot be undone.

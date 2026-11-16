@@ -81,6 +81,9 @@ CommonsBooking was developed for the ["Commons Cargobike" movement](http://commo
 
 ## Changelog
 
+### Unreleased
+ADDED: Optional data removal on uninstall (opt-in via COMMONSBOOKING_REMOVE_ALL_DATA in wp-config.php, data is kept by default)
+
 ### 2.11.3 (12.10.2026)
 ENHANCED: Will not check for unconfirmed bookings anymore if booker is admin / CB-Manager
 ENHANCED: Booking with rule "no simultaneous bookings" active is now ~50% faster

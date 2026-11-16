@@ -50,3 +50,12 @@ cb_locations-Shortcode) nach Klick auf “Jetzt Buchen” keine gültige Seite
 angezeigt wird, müsst ihr einmal in den WordPress Einstellungen auf die Seite
 “Permalinks” gehen und dort auf speichern klicken.
 
+
+## Deinstallation
+
+:::info Seit UNRELEASED_CB_VERSION
+:::
+
+Beim Löschen des Plugins bleiben alle Daten (Artikel, Standorte, Buchungen, Einstellungen) standardmäßig erhalten.
+Um beim Löschen alles zu entfernen, füge **vor** dem Löschen des Plugins `define( 'COMMONSBOOKING_REMOVE_ALL_DATA', true );` in die `wp-config.php` ein.
+Das kann nicht rückgängig gemacht werden.
