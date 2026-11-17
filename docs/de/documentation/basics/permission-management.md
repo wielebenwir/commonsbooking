@@ -20,6 +20,7 @@ Folgende Dinge darf der CommonsBooking Manager:
   * Wenn zugewiesen oder selbst angelegt: Bearbeiten von Artikel, Stationen und Zeitrahmen
   * Selbst angelegte Zeitrahmen können in den Papierkorb gelegt werden (nicht die anderer Personen)
   * Artikel und Stationen können nur dann in den Papierkorb gelegt werden, wenn sie selbst angelegt wurden. Artikel und Stationen, die dem Manager lediglich zugewiesen sind, können nicht gelöscht werden.
+  * Einschränkungen für Artikel und Stationen anlegen und bearbeiten, die sie administrieren. Einschränkungen können nur dann in den Papierkorb gelegt werden, wenn sie selbst angelegt wurden.
   * Buchungen stornieren, die zu Artikel gehören die sie administrieren.
 
 Auf den Artikel- und Stationsseiten können die Rechte zum Verwalten der
@@ -51,6 +52,9 @@ Zeitrahmen anlegen  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
 Zeitrahmen bearbeiten  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
 Zeitrahmen löschen  |  Ja  |  Nein (nur selbst angelegte)
 Buchungen stornieren  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
+Einschränkungen anlegen / bearbeiten  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
+Einschränkungen löschen  |  Ja  |  Nur selbst angelegte
+Karten anlegen / bearbeiten / löschen  |  Ja  |  Ja (**alle** Karten, siehe [unten](#karten))
 
 Darüber hinaus hat der CommonsBooking Manager keine besonderen Berechtigungen was andere Teile der Webseite betrifft.
 Folgende Dinge darf der CommonsBooking Manager zum Beispiel nicht:
@@ -59,6 +63,22 @@ Folgende Dinge darf der CommonsBooking Manager zum Beispiel nicht:
   * Plugins ändern
   * Das Design der Seite ändern
   * usw.
+
+## Einschränkungen {#einschraenkungen}
+
+In der Liste der Einschränkungen im Backend sehen Manager nur die Einschränkungen, die zu Artikeln oder Standorten gehören, die sie administrieren.
+Beim Löschen verhalten sich Einschränkungen wie Artikel: Ein Manager kann nur Einschränkungen in den Papierkorb legen, die er selbst angelegt hat.
+
+## Karten {#karten}
+
+Manager sehen den Menüpunkt "Karten" und können Karten anlegen, bearbeiten und löschen. Anders als Artikel, Standorte und Einschränkungen können Karten nicht einzelnen Managern zugewiesen werden.
+Ein CommonsBooking Manager kann daher **alle** Karten der Webseite bearbeiten und löschen, auch die, die von Administrator*innen angelegt wurden.
+Wenn das nicht gewünscht ist, sollte die Rolle CB-Manager nicht an Personen vergeben werden, die Karten nicht ändern dürfen, oder diesen Personen sollte eine eigene Rolle zugewiesen werden (siehe [Zugriffsrechte anpassen](#zugriffsrechte-anpassen)).
+
+::: warning
+Die Karten-Berechtigungen sollten nicht von der Rolle `cb_manager` selbst entfernt werden. CommonsBooking fügt die Berechtigungen dieser Rolle nach Plugin-Updates wieder hinzu, die Änderung würde also rückgängig gemacht.
+Eine eigene, selbst konfigurierte Rolle ist davon nicht betroffen.
+:::
 
 ## CommonsBooking Manager zum Manager für alle Artikel / Standorte machen {#filterhook-isUserAdmin}
 
@@ -78,7 +98,7 @@ add_filter(
 
 
 
-##  Zugriffsrechte anpassen
+##  Zugriffsrechte anpassen {#zugriffsrechte-anpassen}
 
 Falls die angebotenen Berechtigungen nicht ausreichen oder du eine zweite
 Rolle hinzufügen möchtest, die weniger kann als der CB Manager dann kannst du

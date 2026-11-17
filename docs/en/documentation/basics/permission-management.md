@@ -5,7 +5,7 @@ In CommonsBooking, people with this role are also the ones who create items and 
 Sometimes you may want to define roles that cannot edit everything on the site, but only certain items or locations.
 This allows stations, for example, to administer themselves without always relying on an administrator.
 
-CommonsBooking offers the option to set up so-called **CB Managers**. 
+CommonsBooking offers the option to set up so-called **CB Managers**.
 They can then manage **ONLY** specific items / locations. In practice, these could be employees of the shop where an item is stationed.
 
 The following is allowed for a CommonsBooking Manager:
@@ -14,6 +14,7 @@ The following is allowed for a CommonsBooking Manager:
   * If assigned or self-created: Edit items, locations, and timeframes
   * Self-created timeframes can be moved to the trash (not those of other users)
   * Items and locations can only be moved to the trash if they were created by the manager themselves. Items and locations that were merely assigned to the manager cannot be deleted.
+  * Create restrictions for items and locations they administer, and edit them. Restrictions can only be moved to the trash if the manager created them.
   * Cancel bookings that belong to items they administer.
 
 On the item and location pages, permissions to manage items, locations, and bookings can be assigned.
@@ -39,6 +40,9 @@ Create timeframes  |  Yes  |  Yes (only with assigned items / locations)
 Edit timeframes  |  Yes  |  Yes (only with assigned items / locations)
 Delete timeframes  |  Yes  |  No (only self-created)
 Cancel bookings  |  Yes  |  Yes (only with assigned items / locations)
+Create / edit restrictions  |  Yes  |  Yes (only with assigned items / locations)
+Delete restrictions  |  Yes  |  Only self-created
+Create / edit / delete maps  |  Yes  |  Yes (**all** maps, see [below](#maps))
 
 In addition, CommonsBooking Managers have no special permissions regarding other parts of the website. For example, a CommonsBooking Manager cannot:
 
@@ -46,6 +50,22 @@ In addition, CommonsBooking Managers have no special permissions regarding other
   * Change plugins
   * Change the site design
   * etc.
+
+## Restrictions {#restrictions}
+
+The list of restrictions in the backend only shows the restrictions that belong to items or locations the manager administers.
+Restrictions work like items in terms of deleting: a manager can only move restrictions to the trash that they created themselves.
+
+## Maps {#maps}
+
+Managers see the "Maps" menu item and can create, edit and delete maps. Unlike items, locations and restrictions, maps have no assignment to individual managers.
+A CommonsBooking Manager can therefore edit and delete **all** maps of the website, including those created by administrators.
+If this is not wanted, do not give the CB Manager role to people who should not be able to change maps, or use a separate role for them (see [Adjust access rights](#adjust-access-rights)).
+
+::: warning
+Do not remove map permissions from the `cb_manager` role itself. CommonsBooking adds the permissions of this role again after plugin updates, so the change would be reverted.
+A separate role that you configure yourself is not affected.
+:::
 
 ## Make a CommonsBooking Manager a manager for all items / locations {#filterhook-isUserAdmin}
 
@@ -64,7 +84,7 @@ add_filter(
 );
 ```
 
-## Adjust access rights
+## Adjust access rights {#adjust-access-rights}
 
 If the available permissions are not sufficient or you want to add a second role that has fewer permissions than the CB Manager, you can use plugins to adjust user role permissions (e.g. User Role Editor).
 
@@ -104,7 +124,7 @@ For example, if only the manage_commonsbooking_cb_location permission is set, th
 
 ### Editing permissions
 
-Each type of post (items / locations / timeframes / maps / restrictions) has its own permissions that follow a fixed schema. 
+Each type of post (items / locations / timeframes / maps / restrictions) has its own permissions that follow a fixed schema.
 Since the names are self-explanatory, they are not described here in detail; here is only a screenshot of the permissions for an item.
 
 ![](/img/cb-manager-permissions.png)

@@ -5,17 +5,17 @@ namespace CommonsBooking\Tests\Wordpress;
 use CommonsBooking\Plugin;
 
 /**
- * Characterization test: which of our post types may a CB Manager delete (trash)?
+ * Characterization test: what may a CB Manager do with each of our post types?
  *
- * The user documentation (basics/permission-management) claims that CB Managers
- * can not delete items and locations, while Plugin::addRoleCaps() only removes
- * the "delete_others_*" / "delete_private_*" caps from the manager role.
- * This test pins the *actual* behaviour so docs and code can be aligned.
+ * Plugin::addRoleCaps() gives the manager role all capabilities of the admin for every
+ * custom post type and then only removes "read_private_*", "delete_private_*" and
+ * "delete_others_*". This test pins the resulting behaviour (own vs. assigned vs. foreign
+ * posts) so that the user documentation (basics/permission-management) can be kept in sync.
  *
- * It only checks capabilities (user_can on the "delete_post" meta capability),
+ * It only checks capabilities (user_can on the "delete_post" / "edit_post" meta capabilities),
  * so nothing is actually deleted.
  */
-class ManagerDeleteCapabilityTest extends CustomPostTypeTest {
+class ManagerCapabilitiesTest extends CustomPostTypeTest {
 
 	private int $ownItemId;
 	private int $assignedItemId;
@@ -27,6 +27,12 @@ class ManagerDeleteCapabilityTest extends CustomPostTypeTest {
 
 	private int $ownTimeframeId;
 	private int $foreignTimeframeId;
+
+	private int $ownRestrictionId;
+	private int $foreignRestrictionId;
+
+	private int $ownMapId;
+	private int $foreignMapId;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -85,10 +91,55 @@ class ManagerDeleteCapabilityTest extends CustomPostTypeTest {
 			'',
 			$a
 		);
+
+		$restrictionStart = strtotime( self::CURRENT_DATE );
+		$restrictionEnd   = strtotime( '+3 day', $restrictionStart );
+
+		$this->ownRestrictionId = $this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_HINT,
+			$this->ownLocationId,
+			$this->ownItemId,
+			$restrictionStart,
+			$restrictionEnd,
+			'active',
+			'Hint',
+			$m
+		);
+
+		$this->foreignRestrictionId = $this->createRestriction(
+			\CommonsBooking\Model\Restriction::TYPE_HINT,
+			$this->foreignLocationId,
+			$this->foreignItemId,
+			$restrictionStart,
+			$restrictionEnd,
+			'active',
+			'Hint',
+			$a
+		);
+
+		// maps have no assignment concept, so only the author differs
+		$this->ownMapId = $this->createMap();
+		wp_update_post(
+			[
+				'ID'          => $this->ownMapId,
+				'post_author' => $m,
+			]
+		);
+		$this->foreignMapId = $this->createMap();
+		wp_update_post(
+			[
+				'ID'          => $this->foreignMapId,
+				'post_author' => $a,
+			]
+		);
 	}
 
 	private function managerCanDelete( int $postId ): bool {
 		return user_can( $this->cbManagerUserID, 'delete_post', $postId );
+	}
+
+	private function managerCanEdit( int $postId ): bool {
+		return user_can( $this->cbManagerUserID, 'edit_post', $postId );
 	}
 
 	/**
@@ -143,6 +194,51 @@ class ManagerDeleteCapabilityTest extends CustomPostTypeTest {
 	}
 
 	/**
+	 * Restrictions behave like items: only self-created ones can be deleted.
+	 */
+	public function testManagerCanOnlyDeleteOwnRestrictions() {
+		$this->assertTrue( $this->managerCanDelete( $this->ownRestrictionId ) );
+		$this->assertFalse( $this->managerCanDelete( $this->foreignRestrictionId ) );
+	}
+
+	/**
+	 * Restrictions: managers can create and edit them on capability level.
+	 * Note that the "only for assigned items / locations" rule is NOT part of the capabilities,
+	 * it is enforced by the admin list filter (Restriction::filterAdminList)
+	 * and the post model (Restriction::getAdmins()).
+	 */
+	public function testManagerCapabilitiesForRestrictions() {
+		$role = get_role( Plugin::$CB_MANAGER_ID );
+		$this->assertTrue( $role->has_cap( 'edit_cb_restrictions' ) );
+		$this->assertTrue( $role->has_cap( 'publish_cb_restrictions' ) );
+		$this->assertTrue( $role->has_cap( 'manage_commonsbooking_cb_restriction' ) );
+
+		$this->assertTrue( $this->managerCanEdit( $this->ownRestrictionId ) );
+		// edit_others_* is not removed from the manager role
+		$this->assertTrue( $this->managerCanEdit( $this->foreignRestrictionId ) );
+	}
+
+	/**
+	 * Maps are not part of Plugin::getCBManagerCustomPostTypes(), but the manager role still
+	 * receives all caps for them in Plugin::addCPTRoleCaps().
+	 * Maps are registered without map_meta_cap, so WordPress checks the literal singular caps
+	 * (edit_cb_map / delete_cb_map) and does not distinguish between own and foreign maps.
+	 */
+	public function testManagerCapabilitiesForMaps() {
+		$role = get_role( Plugin::$CB_MANAGER_ID );
+		$this->assertTrue( $role->has_cap( 'manage_commonsbooking_cb_map' ) );
+		$this->assertTrue( $role->has_cap( 'edit_cb_maps' ) );
+		$this->assertTrue( $role->has_cap( 'publish_cb_maps' ) );
+		$this->assertTrue( $role->has_cap( 'edit_cb_map' ) );
+		$this->assertTrue( $role->has_cap( 'delete_cb_map' ) );
+
+		$this->assertTrue( $this->managerCanEdit( $this->ownMapId ) );
+		$this->assertTrue( $this->managerCanEdit( $this->foreignMapId ) );
+		$this->assertTrue( $this->managerCanDelete( $this->ownMapId ) );
+		$this->assertTrue( $this->managerCanDelete( $this->foreignMapId ) );
+	}
+
+	/**
 	 * Control group: administrators may delete everything.
 	 */
 	public function testAdminCanDeleteEverything() {
@@ -154,6 +250,10 @@ class ManagerDeleteCapabilityTest extends CustomPostTypeTest {
 			$this->foreignLocationId,
 			$this->ownTimeframeId,
 			$this->foreignTimeframeId,
+			$this->ownRestrictionId,
+			$this->foreignRestrictionId,
+			$this->ownMapId,
+			$this->foreignMapId,
 		] as $postId ) {
 			$this->assertTrue( user_can( $this->adminUserID, 'delete_post', $postId ), "admin should be able to delete $postId" );
 		}
