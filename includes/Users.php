@@ -176,9 +176,20 @@ function commonsbooking_isCurrentUserAdmin() {
 
 /**
  * Will check if user has one of the admin roles and is therefore considered an admin for CB.
- * Admin roles can be extended with the filter commonsbooking_admin_roles.
  *
- * An admin is allowed to edit and see all posts.
+ * An admin is allowed to edit and see all posts (items, locations, timeframes, bookings etc.),
+ * regardless of whether they are assigned to them.
+ *
+ * There are two ways to influence the result:
+ * - Admin *roles* can be extended with the filter `commonsbooking_admin_roles`
+ *   (see {@see \CommonsBooking\Repository\UserRepository::getAdminRoles()}).
+ * - The final per-user result can be overridden with the filter `commonsbooking_isUserAdmin`
+ *   (applied below), e.g. to treat a single role as admin for all items / locations.
+ *
+ * Note: this is independent of the WordPress capabilities assigned in
+ * {@see \CommonsBooking\Plugin::addRoleCaps()}. A role can have the capabilities to edit our
+ * post types without being an admin in this sense; those users are then only able to edit what
+ * they authored or are assigned to.
  *
  * @param   \WP_User $user
  *
@@ -193,14 +204,14 @@ function commonsbooking_isUserAdmin( \WP_User $user ) {
 		}
 	}
 	/**
-	 * Default value if user is admin.
+	 * Filters whether the given user is considered an admin by CommonsBooking.
 	 *
 	 * @since 2.11   changed from commonsbooking_isCurrentUserAdmin to commonsbooking_isUserAdmin
 	 * @since 2.10.0 add $user param
 	 * @since 2.4.3
 	 *
-	 * @param bool         $isAdmin true or false, if current user is admin
-	 * @param null|WP_User $user current user
+	 * @param bool     $isAdmin true if the user has one of the admin roles (see commonsbooking_admin_roles), false otherwise
+	 * @param \WP_User $user    the user that is checked
 	 */
 	return apply_filters( 'commonsbooking_isUserAdmin', $isAdmin, $user );
 }
