@@ -86,6 +86,7 @@ zurückgibt.
 
   * commonsbooking_custom_metadata
   * [commonsbooking_isUserAdmin](../basics/permission-management#filterhook-isUserAdmin)
+  * [commonsbooking_privileged_roles](../basics/permission-management#filterhook-privileged-roles)
   * commonsbooking_isCurrentUserSubscriber
   * commonsbooking_get_template_part
   * commonsbooking_template_tag

@@ -84,6 +84,29 @@ add_filter(
 );
 ```
 
+## Exempt roles from booking rules {#filterhook-privileged-roles}
+
+Some people should be able to book regardless of the [booking rules](../first-steps/setup-bookingrules), for example to make bookings for others.
+The following people are always exempt from booking rules:
+
+  * Administrators
+  * CommonsBooking Managers (and other users) who are allowed to edit the item or the location of the booking, for example because they are assigned to it or created it
+
+Further roles can be exempted with the filter `commonsbooking_privileged_roles`. In contrast to the manager roles above, this does not give the role any additional editing permissions, it only exempts its members from the booking rules.
+The example adds the role "Editor" (slug `editor`):
+
+```php
+add_filter(
+  'commonsbooking_privileged_roles',
+  function ( array $privilegedRoles ) {
+    $privilegedRoles[] = 'editor';
+    return $privilegedRoles;
+  }
+);
+```
+
+Use the _slug_ of the role. More information: [Exempt groups from all booking rules](../first-steps/setup-bookingrules#exempt-groups-from-all-booking-rules).
+
 ## Adjust access rights {#adjust-access-rights}
 
 If the available permissions are not sufficient or you want to add a second role that has fewer permissions than the CB Manager, you can use plugins to adjust user role permissions (e.g. User Role Editor).

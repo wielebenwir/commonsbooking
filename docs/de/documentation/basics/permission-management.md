@@ -98,6 +98,29 @@ add_filter(
 
 
 
+## Rollen von Buchungsregeln ausnehmen {#filterhook-privileged-roles}
+
+Manche Personen sollen unabhängig von den [Buchungsregeln](../first-steps/setup-bookingrules) buchen können, zum Beispiel um Buchungen für andere vorzunehmen.
+Folgende Personen sind immer von den Buchungsregeln ausgenommen:
+
+  * Administrator*innen
+  * CommonsBooking Manager (und andere Nutzende), die den Artikel oder den Standort der Buchung bearbeiten dürfen, zum Beispiel weil sie zugewiesen sind oder ihn selbst angelegt haben
+
+Weitere Rollen können mit dem Filter `commonsbooking_privileged_roles` ausgenommen werden. Im Gegensatz zu den Manager-Rollen oben erhält die Rolle dadurch keine zusätzlichen Bearbeitungsrechte, ihre Mitglieder sind lediglich von den Buchungsregeln ausgenommen.
+Das Beispiel fügt die Rolle "Redakteur" (Slug `editor`) hinzu:
+
+```php
+add_filter(
+  'commonsbooking_privileged_roles',
+  function ( array $privilegedRoles ) {
+    $privilegedRoles[] = 'editor';
+    return $privilegedRoles;
+  }
+);
+```
+
+Es muss der _Slug_ der Rolle verwendet werden. Mehr dazu: [Bestimmte Rollen grundsätzlich von allen Buchungsregeln ausnehmen](../first-steps/setup-bookingrules).
+
 ##  Zugriffsrechte anpassen {#zugriffsrechte-anpassen}
 
 Falls die angebotenen Berechtigungen nicht ausreichen oder du eine zweite

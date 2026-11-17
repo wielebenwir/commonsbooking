@@ -538,6 +538,44 @@ class TimeframeTest extends CustomPostTypeTest {
 		$this->assertTrue( $timeframe->isUserPrivileged( $currentUser ) );
 	}
 
+	/**
+	 * The filter commonsbooking_privileged_roles exempts additional roles from the booking rules.
+	 * It must only change the privileged status, not grant any editing permissions.
+	 * Documented on the "permission-management" page of the user docs.
+	 */
+	public function testIsUserPrivileged_privilegedRolesFilter() {
+		$this->createEditor();
+		$item      = $this->createItem( 'Item', 'publish' );
+		$location  = $this->createLocation( 'Location', 'publish' );
+		$timeframe = new Timeframe( $this->createBookableTimeFrameIncludingCurrentDay( $location, $item ) );
+		$editor    = new \WP_User( $this->editorUserID );
+
+		// without the filter, an editor with no relation to item / location is not privileged
+		$this->assertFalse( $timeframe->isUserPrivileged( $editor ) );
+
+		$addEditorRole = function ( array $roles ) {
+			$roles[] = 'editor';
+			return $roles;
+		};
+		add_filter( 'commonsbooking_privileged_roles', $addEditorRole );
+		try {
+			$this->assertTrue( $timeframe->isUserPrivileged( $editor ) );
+
+			// the filter only exempts from booking rules, it does not allow editing the item / location
+			$this->assertFalse( commonsbooking_isUserAllowedToEdit( get_post( $item ), $editor ) );
+			$this->assertFalse( commonsbooking_isUserAllowedToEdit( get_post( $location ), $editor ) );
+
+			// other roles stay unaffected
+			$this->createSubscriber();
+			$this->assertFalse( $timeframe->isUserPrivileged( new \WP_User( $this->subscriberId ) ) );
+		} finally {
+			remove_filter( 'commonsbooking_privileged_roles', $addEditorRole );
+		}
+
+		// and the filter does not leak after it is removed
+		$this->assertFalse( $timeframe->isUserPrivileged( $editor ) );
+	}
+
 	public function testisValid_throwsException() {
 
 		$secondLocation = $this->createLocation( 'Newest Location', 'publish' );
