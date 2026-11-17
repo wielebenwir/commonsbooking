@@ -8,8 +8,10 @@ class LocationMapAdmin {
 
 	/**
 	 * load the location administration map
+	 *
+	 * @return void
 	 */
-	public function load_location_map_admin() {
+	public function load_location_map_admin(): void {
 		if ( COMMONSBOOKING_PLUGIN_DIR ) {
 			// render map
 			add_action( 'cmb2_render_cb_map', array( Map::class, 'render_cb_map' ), 10, 5 );

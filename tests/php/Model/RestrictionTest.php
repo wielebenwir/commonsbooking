@@ -3,6 +3,7 @@
 namespace CommonsBooking\Tests\Model;
 
 use CommonsBooking\Model\Restriction;
+use CommonsBooking\Settings\Settings;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 
 class RestrictionTest extends CustomPostTypeTest {
@@ -138,5 +139,47 @@ class RestrictionTest extends CustomPostTypeTest {
 			)
 		);
 		$this->assertEqualsCanonicalizing( [ $this->cbManagerUserID, self::USER_ID ], $restriction->getAdmins() );
+	}
+
+	public function testApplySkipsOnlyFailedRestrictionMail() {
+		// templates and sender have to be configured, otherwise wp_mail rejects the mails
+		Settings::updateOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject', 'Restriction hint' );
+		Settings::updateOption( 'commonsbooking_options_restrictions', 'restrictions-hint-body', 'Restriction body' );
+		Settings::updateOption( 'commonsbooking_options_restrictions', 'restrictions-from-name', 'Test' );
+		Settings::updateOption( 'commonsbooking_options_restrictions', 'restrictions-from-email', 'restrictions@example.com' );
+
+		$this->createSubscriber();
+		$this->createEditor();
+
+		$start = strtotime( self::CURRENT_DATE );
+		$end   = strtotime( '+1 day', $start );
+
+		// the booking of the subscriber is the one whose mail preparation fails
+		$this->createBooking( $this->locationId, $this->itemId, $start, $end, '12:00 AM', '23:59', 'confirmed', $this->subscriberId );
+		$this->createBooking( $this->locationId, $this->itemId, $start, $end, '12:00 AM', '23:59', 'confirmed', $this->editorUserID );
+
+		$restriction = new Restriction( $this->createRestriction( Restriction::TYPE_HINT, $this->locationId, $this->itemId, $start, $end ) );
+
+		// fail while preparing the mail of the subscriber only
+		$failingEmail = get_userdata( $this->subscriberId )->user_email;
+		$failingHook  = static function ( $email ) use ( $failingEmail ) {
+			if ( $email === $failingEmail ) {
+				throw new \Exception( 'mail preparation failed' );
+			}
+		};
+		// this hook is called during preparation, we trigger an exception there
+		add_action( 'wpml_switch_language_for_email', $failingHook );
+
+		reset_phpmailer_instance();
+
+		try {
+			$restriction->apply();
+		} finally {
+			remove_action( 'wpml_switch_language_for_email', $failingHook );
+		}
+
+		$mailer = tests_retrieve_phpmailer_instance();
+		$this->assertCount( 1, $mailer->mock_sent );
+		$this->assertEquals( get_userdata( $this->editorUserID )->user_email, $mailer->get_recipient( 'to' )->address );
 	}
 }

@@ -24,10 +24,10 @@ class ApiShares {
 		if ( is_array( $apiSharesConfig ) ) {
 			foreach ( $apiSharesConfig as $apiShare ) {
 				$apiShares[] = new Share(
-					$apiShare['api_name'],
-					$apiShare['api_enabled'],
-					$apiShare['push_url'],
-					$apiShare['api_key'],
+					$apiShare['api_name'] ?? '',
+					$apiShare['api_enabled'] ?? '',
+					$apiShare['push_url'] ?? '',
+					$apiShare['api_key'] ?? '',
 					get_bloginfo( 'name' )
 				);
 			}
