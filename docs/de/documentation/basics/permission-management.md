@@ -18,8 +18,8 @@ Folgende Dinge darf der CommonsBooking Manager:
 
   * Artikel, Stationen und Zeitrahmen anlegen
   * Wenn zugewiesen oder selbst angelegt: Bearbeiten von Artikel, Stationen und Zeitrahmen
-  * Selbst angelegte Zeitrahmen können in den Papierkorb gelegt werden
-  * Keine Rechte für Löschen bzw. in den Papierkorb legen von Artikeln und Stationen
+  * Selbst angelegte Zeitrahmen können in den Papierkorb gelegt werden (nicht die anderer Personen)
+  * Artikel und Stationen können nur dann in den Papierkorb gelegt werden, wenn sie selbst angelegt wurden. Artikel und Stationen, die dem Manager lediglich zugewiesen sind, können nicht gelöscht werden.
   * Buchungen stornieren, die zu Artikel gehören die sie administrieren.
 
 Auf den Artikel- und Stationsseiten können die Rechte zum Verwalten der
@@ -46,7 +46,7 @@ In der folgenden Tabelle ist exemplarisch dargestellt, was ein CommonsBooking Ma
 ---|---|---
 Artikel / Standorte anlegen  |  Ja  |  Ja
 Artikel / Standorte bearbeiten  |  Ja  |  Ja (nur wenn zugewiesen)
-Artikel / Standorte löschen  |  Ja  |  Nein
+Artikel / Standorte löschen  |  Ja  |  Nur selbst angelegte (nicht, wenn nur zugewiesen)
 Zeitrahmen anlegen  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
 Zeitrahmen bearbeiten  |  Ja  |  Ja (nur mit zugewiesenen Artikeln / Standorten)
 Zeitrahmen löschen  |  Ja  |  Nein (nur selbst angelegte)
@@ -139,7 +139,7 @@ bekommen hat, kann sie auch diese durchführen. Das heißt also, dass z.B. die
 wenn nicht zumindest auch die edit_cb_items Berechtigung oder eine andere
 Berechtigung für Artikel verliehen wird.
 
-Hier auch besonders relevant ist die Berechtigung **edit_other_cb_bookings** .
+Hier auch besonders relevant ist die Berechtigung **edit_others_cb_bookings** .
 Diese bestimmt, ob ein Manager in der Lage ist Buchungen von anderen Nutzenden
 zu stornieren.
 

@@ -12,8 +12,8 @@ The following is allowed for a CommonsBooking Manager:
 
   * Create items, locations, and timeframes
   * If assigned or self-created: Edit items, locations, and timeframes
-  * Self-created timeframes can be moved to the trash
-  * No rights to delete or move items and locations to the trash
+  * Self-created timeframes can be moved to the trash (not those of other users)
+  * Items and locations can only be moved to the trash if they were created by the manager themselves. Items and locations that were merely assigned to the manager cannot be deleted.
   * Cancel bookings that belong to items they administer.
 
 On the item and location pages, permissions to manage items, locations, and bookings can be assigned.
@@ -34,7 +34,7 @@ The following table shows, as an example, what a CommonsBooking Manager can do c
 ---|---|---
 Create items / locations  |  Yes  |  Yes
 Edit items / locations  |  Yes  |  Yes (only if assigned)
-Delete items / locations  |  Yes  |  No
+Delete items / locations  |  Yes  |  Only self-created (not if merely assigned)
 Create timeframes  |  Yes  |  Yes (only with assigned items / locations)
 Edit timeframes  |  Yes  |  Yes (only with assigned items / locations)
 Delete timeframes  |  Yes  |  No (only self-created)
@@ -112,7 +112,7 @@ Since the names are self-explanatory, they are not described here in detail; her
 Only if the corresponding role has the permission for an action can it carry it out.
 That means, for example, granting the `manage_commonsbooking_cb_item` permission makes little sense if you do not also grant the edit_cb_items permission or another item-related permission.
 
-The **edit_other_cb_bookings** permission is especially relevant here.
+The **edit_others_cb_bookings** permission is especially relevant here.
 It determines whether a manager is able to cancel bookings made by other users.
 
 ### Assign other roles to an item / location {#filterhook-manager-roles}
