@@ -71,12 +71,20 @@ class WPPrivacyPersonalDataExporter {
 		}
 		foreach ( $bookings as $booking ) {
 			$bookingID = $booking->ID;
-			// exclude bookings that the user is eligible to see but are not their own
-			// we are only concerned about one user's personal data
-			if ( $booking->getUserData()->user_email !== $emailAddress ) {
+			$user      = $booking->getUserData();
+			// Should not happen, as bookings are queried by author. Guards against a missing user for static analysis and orphaned data.
+			if ( ! $user ) {
 				continue;
 			}
-			$bookingData = [
+			// exclude bookings that the user is eligible to see but are not their own
+			// we are only concerned about one user's personal data
+			if ( $user->user_email !== $emailAddress ) {
+				continue;
+			}
+			// admin_booking_id is only set for bookings made on behalf of a user; the admin account may have been deleted since.
+			$adminBookingId = $booking->getMetaInt( 'admin_booking_id' );
+			$adminUser      = $adminBookingId ? get_user_by( 'id', $adminBookingId ) : false;
+			$bookingData    = [
 				[
 					'name'  => __( 'Booking start', 'commonsbooking' ),
 					'value' => $booking->pickupDatetime(),
@@ -115,7 +123,7 @@ class WPPrivacyPersonalDataExporter {
 				],
 				[
 					'name'  => __( 'Admin booking by', 'commonsbooking' ),
-					'value' => $booking->getMeta( 'admin_booking_id' ) ? get_user_by( 'id', $booking->getMeta( 'admin_booking_id' ) )->display_name : '',
+					'value' => $adminUser ? $adminUser->display_name : '',
 				],
 			];
 
@@ -167,9 +175,14 @@ class WPPrivacyPersonalDataExporter {
 		}
 		foreach ( $bookings as $booking ) {
 			$bookingID = $booking->ID;
+			$user      = $booking->getUserData();
+			// Should not happen, as bookings are queried by author. Guards against a missing user for static analysis and orphaned data.
+			if ( ! $user ) {
+				continue;
+			}
 			// exclude bookings that the user is eligible to see but are not their own
 			// we are only concerned about one user's personal data
-			if ( $booking->getUserData()->user_email !== $emailAddress ) {
+			if ( $user->user_email !== $emailAddress ) {
 				continue;
 			}
 			// Cancel the booking before deletion so that status change emails are sent

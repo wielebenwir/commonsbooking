@@ -77,6 +77,35 @@ class WPPrivacyPersonalDataExporterTest extends CustomPostTypeTest {
 		$this->assertTrue( $lastPartialExport['done'] );
 	}
 
+	/**
+	 * Bookings made on behalf of a user by an admin whose account was deleted since must still be exported.
+	 */
+	public function testExportBookingWithDeletedAdmin() {
+		$bookingId = $this->createBooking(
+			$this->itemId,
+			$this->locationId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+			'08:00 AM',
+			'12:00 PM',
+			'confirmed',
+			$this->subscriberId
+		);
+		// ID of a user that does not exist
+		update_post_meta( $bookingId, 'admin_booking_id', 999999 );
+
+		$export = WPPrivacyPersonalDataExporter::exportUserBookingsByEmail( get_user_by( 'ID', $this->subscriberId )->user_email );
+		$this->assertCount( 1, $export['data'] );
+		$adminField = array_values(
+			array_filter(
+				$export['data'][0]['data'],
+				fn( $field ) => $field['name'] === __( 'Admin booking by', 'commonsbooking' )
+			)
+		);
+		$this->assertCount( 1, $adminField );
+		$this->assertSame( '', $adminField[0]['value'] );
+	}
+
 	public function testRemoveUserBookingsByEmail() {
 		$booking   = new \CommonsBooking\Model\Booking(
 			$this->createBooking(
