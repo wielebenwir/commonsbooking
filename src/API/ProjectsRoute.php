@@ -5,6 +5,7 @@ namespace CommonsBooking\API;
 
 use stdClass;
 use WP_REST_Response;
+use WP_REST_Request;
 
 /**
  * Endpoint for information about the lending organisation.
@@ -26,10 +27,14 @@ class ProjectsRoute extends BaseRoute {
 	 *
 	 * @var string
 	 */
-	protected $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.projects.schema.json';
+	protected string $schemaUrl = BaseRoute::SCHEMA_PATH . 'commons-api.projects.schema.json';
 
 	/**
 	 * Get one item from the collection
+	 *
+	 * @param WP_REST_Request<array<string, mixed>> $request
+	 *
+	 * @return WP_REST_Response
 	 */
 	public function get_item( $request ) {
 		return $this->get_items( $request );
@@ -37,6 +42,10 @@ class ProjectsRoute extends BaseRoute {
 
 	/**
 	 * Get a collection of projects
+	 *
+	 * @param WP_REST_Request<array<string, mixed>> $request
+	 *
+	 * @return WP_REST_Response
 	 */
 	public function get_items( $request ): WP_REST_Response {
 		$data           = new stdClass();

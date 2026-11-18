@@ -3,14 +3,15 @@
 namespace CommonsBooking\Tests\Service;
 
 use CommonsBooking\Model\Booking;
-use CommonsBooking\Tests\CB\CBTest;
 use CommonsBooking\Service\iCalendar;
+use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use DateTimeImmutable;
 
-class iCalendarTest extends CBTest {
+class iCalendarTest extends CustomPostTypeTest {
 
 	private iCalendar $calendar;
 	private Booking $bookingModel;
+	private int $bookingId;
 	private static string $eventTitle       = 'My Test Event';
 	private static string $eventDescription = 'My Test Event Description';
 	public function testGetCalendarData() {
@@ -60,6 +61,7 @@ class iCalendarTest extends CBTest {
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->bookingId    = $this->createConfirmedBookingEndingToday();
 		$this->calendar     = new iCalendar();
 		$this->bookingModel = new Booking( $this->bookingId );
 	}

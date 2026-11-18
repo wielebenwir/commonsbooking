@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Messages;
 
+use CommonsBooking\Exception\PostException;
 use CommonsBooking\Model\BookingCode;
 use CommonsBooking\Model\MessageRecipient;
 use CommonsBooking\Settings\Settings;
@@ -20,8 +21,8 @@ use WP_User;
  */
 class BookingCodesMessage extends Message {
 
-	protected $validActions = [ 'codes' ];
-	protected $to;
+	protected array $validActions = [ 'codes' ];
+	protected string $to;
 	private ?int $tsFrom;
 	private ?int $tsTo;
 
@@ -31,10 +32,11 @@ class BookingCodesMessage extends Message {
 	private ?array $locationAdmins = null; // TODO remove nullable, never is set to null anyway
 
 	/**
-	 * @param int    $postId       ID or Post of timeframe
-	 * @param string $action    Message action
-	 * @param int    $tsFrom  Timestamp of first Booking Code
-	 * @param int    $tsTo    Timestamp of last Booking Code
+	 * @param int    $postId ID or Post of timeframe
+	 * @param string $action Message action
+	 * @param int    $tsFrom Timestamp of first Booking Code
+	 * @param int    $tsTo Timestamp of last Booking Code
+	 * @throws PostException
 	 */
 	public function __construct( int $postId, string $action, int $tsFrom, int $tsTo ) {
 		parent::__construct( $postId, $action );
@@ -144,12 +146,12 @@ class BookingCodesMessage extends Message {
 	 * Updates the information about the last sent email.
 	 * This is triggered through the commonsbooking_mail_sent action.
 	 *
-	 * @param $action
-	 * @param $result
+	 * @param string $action
+	 * @param bool   $result
 	 *
 	 * @return void
 	 */
-	public function updateEmailSent( $action, $result ) {
+	public function updateEmailSent( string $action, bool $result ): void {
 		if ( $this->action != $action ) {
 			return;
 		}
@@ -162,7 +164,7 @@ class BookingCodesMessage extends Message {
 	/**
 	 * filter commonsbooking_mail_to for adding multiple to email addresses
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	public function addMultiTo(): array {
 		$to = array();
@@ -201,7 +203,7 @@ class BookingCodesMessage extends Message {
 	 *
 	 * @param BookingCode[] $bookingCodes   List of BookingCode objects
 	 *
-	 * @return array
+	 * @return array<string, string>
 	 */
 	protected function getIcalAttachment( array $bookingCodes ): array {
 		$calendar = new iCalendar();

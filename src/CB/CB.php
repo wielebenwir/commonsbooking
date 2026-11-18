@@ -12,8 +12,14 @@ use function get_user_by;
 
 class CB {
 
-	protected static $INTERNAL_DATE_FORMAT = 'd.m.Y';
+	/**
+	 * @var string
+	 */
+	protected static string $INTERNAL_DATE_FORMAT = 'd.m.Y';
 
+	/**
+	 * @return string
+	 */
 	public static function getInternalDateFormat(): string {
 		return static::$INTERNAL_DATE_FORMAT;
 	}
@@ -29,10 +35,10 @@ class CB {
 	 *
 	 * @since 2.10.5 parameters in doc are correctly typed.
 	 *
-	 * @return null|string property of (custom) post (sanitized) or null if not found
+	 * @return string property of (custom) post (sanitized) or null if not found
 	 * @throws Exception
 	 */
-	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ) {
+	public static function get( $key, $property, $wpObject = null, $args = null, $sanitizeFunction = 'commonsbooking_sanitizeHTML' ): string {
 
 		// Only CustomPost, WP_User or WP_Post ist allowed.
 		if ( $wpObject && ! (
@@ -47,6 +53,9 @@ class CB {
 		if ( ! $wpObject ) {
 			$postId   = self::getPostId( $key );
 			$wpObject = get_post( $postId );
+			if ( ! $wpObject ) {
+				return strval( apply_filters( "commonsbooking_tag_{$key}_{$property}", null, null, $args ) );
+			}
 		}
 
 		// If possible cast to CB Custom Post Type Model to get additional functions
@@ -68,7 +77,7 @@ class CB {
 		 * @param WP_Post|WP_User|CustomPost $wpObject current post object
 		 * @param mixed|null $args additional args passed to the property/method
 		 */
-		return apply_filters( "commonsbooking_tag_{$key}_{$property}", $result, $wpObject, $args );
+		return strval( apply_filters( "commonsbooking_tag_{$key}_{$property}", $result, $wpObject, $args ) );
 	}
 
 	/**
@@ -114,11 +123,11 @@ class CB {
 	}
 
 	/**
-	 * @param string   $key
-	 * @param string   $property
-	 * @param $post
-	 * @param $args
-	 * @param callable $sanitizeFunction The callable used to remove unwanted tags/characters
+	 * @param string               $key
+	 * @param string               $property
+	 * @param WP_Post|WP_User|null $post
+	 * @param mixed|null           $args
+	 * @param callable             $sanitizeFunction The callable used to remove unwanted tags/characters
 	 *
 	 * @return string|null
 	 * @throws Exception
@@ -146,9 +155,9 @@ class CB {
 	/**
 	 * Tries to get a property of a post with different approaches.
 	 *
-	 * @param $post
-	 * @param $property
-	 * @param $args
+	 * @param int|WP_Post|CustomPost $post
+	 * @param string                 $property
+	 * @param mixed|null             $args
 	 *
 	 * @return mixed|null
 	 */
@@ -182,7 +191,7 @@ class CB {
 	 *
 	 * @param WP_Post|WP_User $post
 	 * @param string          $property
-	 * @param $args
+	 * @param mixed|null      $args
 	 *
 	 * @return int|mixed|null
 	 * @throws Exception
@@ -208,7 +217,7 @@ class CB {
 	}
 
 	/**
-	 * @param $object
+	 * @param WP_Post|WP_User $object
 	 *
 	 * @return false|WP_User
 	 * @throws Exception

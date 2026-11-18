@@ -7,12 +7,12 @@ class Filter {
 	/**
 	 * Renders backend list filter.
 	 *
-	 * @param $postType
-	 * @param $label
-	 * @param $key
-	 * @param $values
+	 * @param string                    $postType
+	 * @param string                    $label
+	 * @param string                    $key
+	 * @param array<int|string, string> $values
 	 */
-	public static function renderFilter( $postType, $label, $key, $values ) {
+	public static function renderFilter( string $postType, string $label, string $key, array $values ): void {
 		// only add filter to post type you want
 		if ( isset( $_GET['post_type'] ) && $postType == $_GET['post_type'] ) {
 			?>
@@ -37,13 +37,13 @@ class Filter {
 	/**
 	 * Renders Start-/Enddate filters for admin lists.
 	 *
-	 * @param $postType
-	 * @param $startDateInputName
-	 * @param $endDateInputName
-	 * @param $from
-	 * @param $to
+	 * @param string $postType
+	 * @param string $startDateInputName
+	 * @param string $endDateInputName
+	 * @param string $from
+	 * @param string $to
 	 */
-	public static function renderDateFilter( $postType, $startDateInputName, $endDateInputName, $from, $to ) {
+	public static function renderDateFilter( string $postType, string $startDateInputName, string $endDateInputName, string $from, string $to ): void {
 		if ( isset( $_GET['post_type'] ) && $postType == sanitize_text_field( $_GET['post_type'] ) ) {
 			echo '<style>
                 input[name=' . commonsbooking_sanitizeHTML( $startDateInputName ) . '], 

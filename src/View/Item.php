@@ -14,10 +14,10 @@ class Item extends View {
 	 *
 	 * @param WP_Post|null $post
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
-	public static function getTemplateData( ?WP_Post $post = null ) {
+	public static function getTemplateData( ?WP_Post $post = null ): array {
 		if ( $post == null ) {
 			global $post;
 		}
@@ -89,12 +89,12 @@ class Item extends View {
 	 *
 	 * A list of items with timeframes.
 	 *
-	 * @param $atts
+	 * @param array<string, mixed>|string $atts
 	 *
 	 * @return false|string
 	 * @throws Exception
 	 */
-	public static function shortcode( $atts ) {
+	public static function shortcode( $atts ): string|false {
 		global $templateData;
 		$templateData = [];
 		$queryArgs    = shortcode_atts( static::$allowedShortCodeArgs, $atts, \CommonsBooking\Wordpress\CustomPostType\Item::getPostType() );
