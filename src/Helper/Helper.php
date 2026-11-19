@@ -68,6 +68,100 @@ class Helper {
 	}
 
 	/**
+	 * Returns the PHP date format of the datepicker fields (CMB2) for the current locale.
+	 *
+	 * We need static types, because german month names don't work for datepicker.
+	 * Dates in this format must be read with {@see Helper::getTimestampFromFormattedDate()}:
+	 * strtotime() reads every date with slashes as m/d/Y, which is wrong for d/m/Y.
+	 *
+	 * @return string d.m.Y for de_*, m/d/Y for en_*, d/m/Y for every other locale.
+	 */
+	public static function getDatepickerDateFormat(): string {
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
+			return 'd.m.Y';
+		}
+
+		if ( str_starts_with( get_locale(), 'en_' ) ) {
+			return 'm/d/Y';
+		}
+
+		return 'd/m/Y';
+	}
+
+	/**
+	 * Returns the timestamp of a date string in a known format, e.g. from a datepicker field.
+	 *
+	 * Unlike strtotime(), this reads 16/11/2026 as 16 November 2026 when the format is d/m/Y.
+	 * Like strtotime(), the date is read in the default timezone (UTC in WordPress).
+	 *
+	 * @param string $date       Date, e.g. 16/11/2026.
+	 * @param string $dateFormat PHP date format of $date, e.g. d/m/Y.
+	 * @param string $time       Optional time, e.g. 08:30. Midnight if empty.
+	 * @param string $timeFormat Optional PHP time format of $time. strtotime() is used if $time does not match it.
+	 *
+	 * @return int|false False if $date does not match $dateFormat, is not a valid date (e.g. 31/02/2026) or $time is not readable.
+	 */
+	public static function getTimestampFromFormattedDate( string $date, string $dateFormat, string $time = '', string $timeFormat = '' ): int|false {
+		$date = trim( $date );
+		$time = trim( $time );
+		if ( $date === '' || $dateFormat === '' ) {
+			return false;
+		}
+
+		// '!' sets the fields that are not in the format to zero instead of the current time.
+		$dateTime = \DateTime::createFromFormat( '!' . $dateFormat, $date );
+		$errors   = \DateTime::getLastErrors();
+		// Warnings mean that PHP would roll the date over, e.g. 31/02 to 03/03.
+		if ( ! $dateTime || ( $errors && ( $errors['warning_count'] || $errors['error_count'] ) ) ) {
+			return false;
+		}
+
+		if ( $time === '' ) {
+			return $dateTime->getTimestamp();
+		}
+
+		$parsedTime = $timeFormat !== '' ? \DateTime::createFromFormat( '!' . $timeFormat, $time ) : false;
+		if ( $parsedTime ) {
+			$dateTime->setTime( (int) $parsedTime->format( 'G' ), (int) $parsedTime->format( 'i' ) );
+
+			return $dateTime->getTimestamp();
+		}
+
+		// e.g. 08:30 from the timepicker when the time format is g:i a
+		return strtotime( $time, $dateTime->getTimestamp() );
+	}
+
+	/**
+	 * CMB2 sanitization callback for text_datetime_timestamp fields.
+	 *
+	 * CMB2 reads date and time with date_create_from_format( date_format ), which always fails because
+	 * of the added time, and then falls back to strtotime(). For d/m/Y this deleted dates with a day > 12
+	 * and swapped day and month otherwise. We read the date in the format of the field instead.
+	 *
+	 * @param mixed                $value      The unsanitized value from the form, array with 'date' and 'time'.
+	 * @param array<string, mixed> $field_args Array of field arguments.
+	 * @param \CMB2_Field          $field      The field object.
+	 *
+	 * @return mixed Timestamp to be stored.
+	 */
+	public static function sanitizeDatetimeTimestamp( mixed $value, array $field_args, \CMB2_Field $field ): mixed {
+		if ( is_array( $value ) && isset( $value['date'], $value['time'] ) && is_string( $value['date'] ) && is_string( $value['time'] ) ) {
+			$timestamp = self::getTimestampFromFormattedDate(
+				wp_unslash( $value['date'] ),
+				(string) ( $field_args['date_format'] ?? '' ),
+				wp_unslash( $value['time'] ),
+				(string) ( $field_args['time_format'] ?? '' )
+			);
+			if ( $timestamp !== false ) {
+				return $timestamp;
+			}
+		}
+
+		// Empty values, timestamps from the REST API or dates in another format (e.g. 2026/11/16) are handled by CMB2 as before.
+		return ( new \CMB2_Sanitize( $field, $value ) )->text_datetime_timestamp();
+	}
+
+	/**
 	 * Returns timestamp of last full hour, needed to get more cache hits.
 	 * Also used to determine if a post is still bookable because it is in the past or not.
 	 *

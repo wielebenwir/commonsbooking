@@ -1,6 +1,7 @@
 <?php
 
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Service\BookingRule;
 use CommonsBooking\View\Migration;
 use CommonsBooking\Helper\Wordpress;
@@ -12,15 +13,7 @@ use CommonsBooking\Wordpress\CustomPostType\Item;
 use CommonsBooking\Wordpress\CustomPostType\Location;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
 
-// We need static types, because german month names don't work for datepicker
-$dateFormat = 'd/m/Y';
-if ( str_starts_with( get_locale(), 'de_' ) ) {
-	$dateFormat = 'd.m.Y';
-}
-
-if ( str_starts_with( get_locale(), 'en_' ) ) {
-	$dateFormat = 'm/d/Y';
-}
+$dateFormat = Helper::getDatepickerDateFormat();
 
 
 /**
