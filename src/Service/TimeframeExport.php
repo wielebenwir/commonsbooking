@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Exception\ExportException;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Settings\Settings;
@@ -140,11 +141,11 @@ class TimeframeExport {
 		} else {
 			$exportType = intval( $exportType );
 		}
-		$startDateTimestamp = strtotime( $exportStartDate );
+		$startDateTimestamp = self::getTimestampFromDateInput( $exportStartDate );
 		if ( ! $startDateTimestamp ) {
 			throw new ExportException( __( 'Invalid start date', 'commonsbooking' ) );
 		}
-		$endDateTimestamp = strtotime( $exportEndDate );
+		$endDateTimestamp = self::getTimestampFromDateInput( $exportEndDate );
 		if ( ! $endDateTimestamp ) {
 			throw new ExportException( __( 'Invalid end date', 'commonsbooking' ) );
 		}
@@ -152,11 +153,12 @@ class TimeframeExport {
 			throw new ExportException( __( 'Start date must not be after the end date.', 'commonsbooking' ) );
 		}
 
+		// The dates are stored as Y-m-d, which is unambiguous for getPeriod() and for the next pages of the export.
 		$this->exportFilename    = 'timeframe-export-' . date( 'Y-m-d-H-i-s' ) . '.csv';
 		$this->transientName     = $transientName ?? COMMONSBOOKING_PLUGIN_SLUG . '-' . $this->exportFilename;
 		$this->exportType        = $exportType;
-		$this->exportStartDate   = $exportStartDate;
-		$this->exportEndDate     = $exportEndDate;
+		$this->exportStartDate   = date( 'Y-m-d', $startDateTimestamp );
+		$this->exportEndDate     = date( 'Y-m-d', $endDateTimestamp );
 		$this->locationFields    = $locationFields;
 		$this->itemFields        = $itemFields;
 		$this->userFields        = $userFields;
@@ -166,6 +168,26 @@ class TimeframeExport {
 		$this->relevantTimeframes = get_transient( $this->transientName ) ?: [];
 	}
 
+
+	/**
+	 * Returns the timestamp of a date from the export date fields.
+	 *
+	 * The fields use the datepicker format of the current locale (d/m/Y for most locales),
+	 * which strtotime() would read as m/d/Y. Other formats (e.g. d.m.Y from the cron export
+	 * or Y-m-d from the next pages of the export) are read with strtotime() as before.
+	 *
+	 * @param string $date Date string, e.g. 16/11/2026.
+	 *
+	 * @return int|false
+	 */
+	private static function getTimestampFromDateInput( string $date ): int|false {
+		$timestamp = Helper::getTimestampFromFormattedDate( $date, Helper::getDatepickerDateFormat() );
+		if ( $timestamp !== false ) {
+			return $timestamp;
+		}
+
+		return strtotime( $date );
+	}
 
 	/**
 	 * @return void

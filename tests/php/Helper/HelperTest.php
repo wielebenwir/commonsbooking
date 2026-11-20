@@ -172,6 +172,35 @@ class HelperTest extends TestCase {
 	 *
 	 * @return \DateTime
 	 */
+	/**
+	 * @return array<string, array{string, string, string, string, string|false}>
+	 */
+	public static function provideFormattedDates(): array {
+		return [
+			'd/m/Y, day > 12'             => [ '16/11/2026', 'd/m/Y', '', '', '2026-11-16 00:00' ],
+			'd/m/Y, day <= 12'            => [ '09/11/2026', 'd/m/Y', '', '', '2026-11-09 00:00' ],
+			'd/m/Y without leading zero'  => [ '9/11/2026', 'd/m/Y', '', '', '2026-11-09 00:00' ],
+			'd.m.Y'                       => [ '16.11.2026', 'd.m.Y', '', '', '2026-11-16 00:00' ],
+			'm/d/Y'                       => [ '11/16/2026', 'm/d/Y', '', '', '2026-11-16 00:00' ],
+			'time in time format'         => [ '16/11/2026', 'd/m/Y', '23:55', 'H:i', '2026-11-16 23:55' ],
+			'time with escaped character' => [ '16/11/2026', 'd/m/Y', '08h30', 'H\hi', '2026-11-16 08:30' ],
+			'time from the timepicker'    => [ '16/11/2026', 'd/m/Y', '08:30', 'g:i a', '2026-11-16 08:30' ],
+			'other date format'           => [ '2026/11/16', 'd/m/Y', '', '', false ],
+			'impossible date'             => [ '31/02/2026', 'd/m/Y', '', '', false ],
+			'empty date'                  => [ '', 'd/m/Y', '00:00', 'H:i', false ],
+			'unreadable time'             => [ '16/11/2026', 'd/m/Y', 'noon-ish', 'H:i', false ],
+		];
+	}
+
+	/**
+	 * @dataProvider provideFormattedDates
+	 */
+	public function testGetTimestampFromFormattedDate( string $date, string $dateFormat, string $time, string $timeFormat, string|false $expected ) {
+		$timestamp = Helper::getTimestampFromFormattedDate( $date, $dateFormat, $time, $timeFormat );
+
+		$this->assertSame( $expected, $timestamp === false ? false : gmdate( 'Y-m-d H:i', $timestamp ) );
+	}
+
 	private function to_ts( string $time_str ): DateTime {
 		return DateTime::createFromFormat( 'Y-m-d', $time_str );
 	}

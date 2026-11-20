@@ -119,6 +119,52 @@ class TimeframeExport_AJAX_Test extends CustomPostType_AJAX_Test {
 		$this->assertEquals( $this->userFieldValue, $exportedBooking->{'user: ' . $this->userFieldKey} );
 	}
 
+	/**
+	 * Export range from 1 July 2021 to 12 or 13 July 2021, as the datepicker writes it for each locale.
+	 *
+	 * @return array<string, array{string, string, string}>
+	 */
+	public static function provideExportRangePerLocale(): array {
+		return [
+			'fr_FR, d/m/Y, end day > 12'  => [ 'fr_FR', '01/07/2021', '13/07/2021' ],
+			'fr_FR, d/m/Y, end day <= 12' => [ 'fr_FR', '01/07/2021', '12/07/2021' ],
+			'nl_NL, d/m/Y'                => [ 'nl_NL', '01/07/2021', '13/07/2021' ],
+			'de_DE, d.m.Y'                => [ 'de_DE', '01.07.2021', '13.07.2021' ],
+			'en_US, m/d/Y'                => [ 'en_US', '07/01/2021', '07/13/2021' ],
+		];
+	}
+
+	/**
+	 * The export date fields are displayed in the locale dependent format (d/m/Y for most locales),
+	 * but were read with strtotime(), which reads every date with slashes as m/d/Y:
+	 * 13/07/2021 was rejected as "Invalid end date" and 01/07/2021 - 12/07/2021 became 7 January - 7 December.
+	 *
+	 * @dataProvider provideExportRangePerLocale
+	 */
+	public function testAjaxExport_readsDatesInFieldFormat( string $locale, string $startDate, string $endDate ) {
+		add_filter(
+			'locale',
+			function () use ( $locale ) {
+				return $locale;
+			}
+		);
+		$bookingInRange    = $this->createBooking( strtotime( '2021-07-05' ), strtotime( '2021-07-06' ) );
+		$bookingOutOfRange = $this->createBooking( strtotime( '2021-09-01' ), strtotime( '2021-09-02' ) );
+
+		$_POST['data']['settings']['exportStartDate'] = $startDate;
+		$_POST['data']['settings']['exportEndDate']   = $endDate;
+		$response                                     = $this->runHook();
+
+		$this->assertTrue( $response->success, $response->message ?? '' );
+		$exportedIds = array_map(
+			function ( $stdObject ) {
+				return (int) $stdObject->ID;
+			},
+			TimeframeExportTest::csvStringToStdObjects( $response->csv )
+		);
+		$this->assertSame( [ $bookingInRange ], $exportedIds );
+	}
+
 	public function set_up() {
 		parent::set_up();
 		update_post_meta( $this->itemID, $this->itemFieldKey, $this->itemFieldValue );

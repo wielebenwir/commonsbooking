@@ -3,6 +3,7 @@
 namespace CommonsBooking\Wordpress\CustomPostType;
 
 use CommonsBooking\Exception\BookingCodeException;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Exception\TimeframeInvalidException;
 use CommonsBooking\Model\BookingCode;
 use WP_Post;
@@ -458,15 +459,7 @@ class Timeframe extends CustomPostType {
 	 * @return array<int, array<string, mixed>>
 	 */
 	protected function getCustomFields(): array {
-		// We need static types, because german month names dont't work for datepicker
-		$dateFormat = 'd/m/Y';
-		if ( str_starts_with( get_locale(), 'de_' ) ) {
-			$dateFormat = 'd.m.Y';
-		}
-
-		if ( str_starts_with( get_locale(), 'en_' ) ) {
-			$dateFormat = 'm/d/Y';
-		}
+		$dateFormat = Helper::getDatepickerDateFormat();
 
 		return array(
 			array(
