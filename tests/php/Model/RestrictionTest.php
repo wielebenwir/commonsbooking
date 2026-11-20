@@ -67,6 +67,30 @@ class RestrictionTest extends CustomPostTypeTest {
 		parent::tearDown();
 	}
 
+	/**
+	 * Creates a restriction double which records the bookings that would have
+	 * been mailed or cancelled instead of doing it. Used to isolate the tests
+	 * of @see Restriction::apply() from the mail and cancellation side effects.
+	 *
+	 * @param int $restrictionId
+	 *
+	 * @return Restriction
+	 */
+	private function createRestrictionWithCapturedSideEffects( int $restrictionId ): Restriction {
+		return new class( $restrictionId ) extends Restriction {
+			public array $mailedBookings    = [];
+			public array $cancelledBookings = [];
+
+			protected function sendRestrictionMails( $bookings ): void {
+				$this->mailedBookings = $bookings;
+			}
+
+			protected function cancelBookings( $bookings ): void {
+				$this->cancelledBookings = $bookings;
+			}
+		};
+	}
+
 	public function testGetEndDate() {
 		$restrictionWithoutEndDate = new Restriction( $this->restrictionWithoutEndDateId );
 		$this->assertTrue( $restrictionWithoutEndDate->getStartDate() == strtotime( self::CURRENT_DATE ) );
@@ -143,6 +167,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	}
 
 	public function testApplySkipsOnlyFailedRestrictionMail() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		// templates and sender have to be configured, otherwise wp_mail rejects the mails
 		Settings::updateOption( 'commonsbooking_options_restrictions', 'restrictions-hint-subject', 'Restriction hint' );
 		Settings::updateOption( 'commonsbooking_options_restrictions', 'restrictions-hint-body', 'Restriction body' );
@@ -185,6 +210,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	}
 
 	public function testApply_Default() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$bookingId = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
@@ -201,18 +227,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		);
 
 		// isolate test behaviour for just apply function
-		$restriction = new class( $restrictionId ) extends Restriction {
-			public array $mailedBookings    = [];
-			public array $cancelledBookings = [];
-
-			protected function sendRestrictionMails( $bookings ) {
-				$this->mailedBookings = $bookings;
-			}
-
-			protected function cancelBookings( $bookings ) {
-				$this->cancelledBookings = $bookings;
-			}
-		};
+		$restriction = $this->createRestrictionWithCapturedSideEffects( $restrictionId );
 
 		$restriction->apply();
 
@@ -228,6 +243,7 @@ class RestrictionTest extends CustomPostTypeTest {
 	 * @return void
 	 */
 	public function testApply_NoCancel() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
 		$bookingId = $this->createBooking(
 			$this->locationId,
 			$this->itemId,
@@ -250,18 +266,7 @@ class RestrictionTest extends CustomPostTypeTest {
 		);
 
 		// isolate test behaviour for just apply function
-		$restriction = new class( $restrictionId ) extends Restriction {
-			public array $mailedBookings    = [];
-			public array $cancelledBookings = [];
-
-			protected function sendRestrictionMails( $bookings ) {
-				$this->mailedBookings = $bookings;
-			}
-
-			protected function cancelBookings( $bookings ) {
-				$this->cancelledBookings = $bookings;
-			}
-		};
+		$restriction = $this->createRestrictionWithCapturedSideEffects( $restrictionId );
 
 		$restriction->apply();
 
@@ -295,18 +300,7 @@ class RestrictionTest extends CustomPostTypeTest {
 			strtotime( '+3 days', strtotime( self::CURRENT_DATE ) )
 		);
 
-		$restriction = new class( $restrictionId ) extends Restriction {
-			public array $mailedBookings    = [];
-			public array $cancelledBookings = [];
-
-			protected function sendRestrictionMails( $bookings ) {
-				$this->mailedBookings = $bookings;
-			}
-
-			protected function cancelBookings( $bookings ) {
-				$this->cancelledBookings = $bookings;
-			}
-		};
+		$restriction = $this->createRestrictionWithCapturedSideEffects( $restrictionId );
 
 		$restriction->apply();
 
