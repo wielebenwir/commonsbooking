@@ -709,6 +709,136 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	/**
+	 * Admin edit of an hourly booking must keep pickup/return windows derived from the timeframe grid (#2419).
+	 */
+	public function testSavePost_adminEditKeepsHourlyPickupAndReturnTimes() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$bookingId = $this->createHourlyFrontendBooking();
+
+		$this->adminEditBookingEnd( $bookingId, '07/04/2021', '17:59' );
+
+		$booking = new \CommonsBooking\Model\Booking( $bookingId );
+		$this->assertEquals( 'July 2, 2021 10:00 am - 11:00 am', $booking->pickupDatetime() );
+		$this->assertEquals( 'July 4, 2021 5:00 pm - 6:00 pm', $booking->returnDatetime() );
+	}
+
+	/**
+	 * Cancelling in the frontend after an admin edit must not change the pickup/return windows (#2419).
+	 */
+	public function testHandleBookingRequest_cancelAfterAdminEditKeepsHourlyPickupAndReturnTimes() {
+		ClockMock::freeze( new \DateTime( self::CURRENT_DATE ) );
+		$bookingId = $this->createHourlyFrontendBooking();
+		$this->adminEditBookingEnd( $bookingId, '07/04/2021', '17:59' );
+
+		wp_set_current_user( $this->subscriberId );
+		$booking = new \CommonsBooking\Model\Booking( $bookingId );
+		Booking::handleBookingRequest(
+			$this->itemId,
+			$this->locationId,
+			'canceled',
+			$bookingId,
+			null,
+			$booking->getStartDate(),
+			$booking->getRawEndDate(),
+			$booking->post_name,
+			null
+		);
+		wp_cache_flush();
+
+		$booking = new \CommonsBooking\Model\Booking( $bookingId );
+		$this->assertTrue( $booking->isCancelled() );
+		$this->assertEquals( 'July 2, 2021 10:00 am - 11:00 am', $booking->pickupDatetime() );
+		$this->assertEquals( 'July 4, 2021 5:00 pm - 6:00 pm', $booking->returnDatetime() );
+	}
+
+	/**
+	 * Books an hourly item from July 2nd 10:00 to July 4th 16:00 through the frontend flow.
+	 */
+	private function createHourlyFrontendBooking(): int {
+		$itemId       = self::createItem( 'HourlyItem' );
+		$this->itemId = $itemId;
+		$this->createTimeframe(
+			$this->locationId,
+			$itemId,
+			strtotime( self::CURRENT_DATE ),
+			strtotime( '+30 days', strtotime( self::CURRENT_DATE ) ),
+			\CommonsBooking\Wordpress\CustomPostType\Timeframe::BOOKABLE_ID,
+			'',
+			'd',
+			1,
+			'8:00 AM',
+			'8:00 PM'
+		);
+
+		$bookingId          = Booking::handleBookingRequest(
+			$itemId,
+			$this->locationId,
+			'unconfirmed',
+			null,
+			null,
+			strtotime( '02.07.2021 10:00:00' ),
+			strtotime( '04.07.2021 15:59:59' ),
+			null,
+			null
+		);
+		$this->bookingIds[] = $bookingId;
+
+		$booking = new \CommonsBooking\Model\Booking( $bookingId );
+		$this->assertEquals( 'July 2, 2021 10:00 am - 11:00 am', $booking->pickupDatetime() );
+		$this->assertEquals( 'July 4, 2021 3:00 pm - 4:00 pm', $booking->returnDatetime() );
+
+		return $bookingId;
+	}
+
+	/**
+	 * Saves the booking like the admin edit form on post.php does: through wp_update_post with the
+	 * real CMB2 metabox hooked in, so CMB2 saves the posted fields on every save_post (#2419).
+	 *
+	 * @param int    $bookingId
+	 * @param string $endDate as posted by the form (m/d/Y), e.g. '07/04/2021'
+	 * @param string $endTime as posted by the timepicker (HH:mm), e.g. '17:59'
+	 */
+	private function adminEditBookingEnd( int $bookingId, string $endDate, string $endTime ): void {
+		global $pagenow;
+		$this->createAdministrator();
+		wp_set_current_user( $this->adminUserID );
+		set_current_screen( 'post' );
+		$pagenow = 'post.php'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
+		( new Booking() )->registerMetabox();
+		$cmb = cmb2_get_metabox( Booking::$postType . '-custom-fields' );
+		\CMB2_hookup::maybe_init_and_hookup( $cmb );
+
+		// values as the edit form posts them, untouched start time in site time format; unticked checkboxes (full-day) are not sent
+		$_POST    = [
+			$cmb->nonce()                                => wp_create_nonce( $cmb->nonce() ),
+			'item-id'                                    => $this->itemId,
+			'location-id'                                => $this->locationId,
+			\CommonsBooking\Model\Timeframe::REPETITION_START => [
+				'date' => '07/02/2021',
+				'time' => '10:00 am',
+			],
+			\CommonsBooking\Model\Timeframe::REPETITION_END => [
+				'date' => $endDate,
+				'time' => $endTime,
+			],
+			COMMONSBOOKING_METABOX_PREFIX . 'bookingcode' => '',
+			'booking_user'                               => $this->subscriberId,
+			'post_status'                                => 'confirmed',
+		];
+		$_REQUEST = $_POST;
+		try {
+			wp_update_post( [ 'ID' => $bookingId ] );
+		} finally {
+			$_POST    = [];
+			$_REQUEST = [];
+			$pagenow  = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			set_current_screen( 'front' );
+			wp_cache_flush();
+		}
+	}
+
+	/**
 	 * Second subscriber for multi-user booking tests.
 	 * @return int
 	 */
