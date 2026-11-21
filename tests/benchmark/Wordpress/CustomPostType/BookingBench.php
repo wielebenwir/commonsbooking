@@ -127,6 +127,21 @@ class BookingBench extends BenchmarkCase {
 
 	public function tearDown(): void {
 		if ( $this->bookingRulesUserId !== null ) {
+			$bookings = get_posts(
+				[
+					'post_type'      => Booking::$postType,
+					'post_status'    => 'any',
+					'author'         => $this->bookingRulesUserId,
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+				]
+			);
+
+			foreach ( $bookings as $bookingId ) {
+				wp_delete_post( $bookingId, true );
+			}
+
 			Settings::updateOption(
 				'commonsbooking_options_restrictions',
 				'rules_group',
