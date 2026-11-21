@@ -45,7 +45,7 @@ class VehicleTypes extends \CommonsBooking\API\BaseRoute {
 		];
 		$response->last_updated        = date( 'c' ); // ISO-8601 timestamp
 		$response->ttl                 = 86400;
-		$response->version             = '3.1-RC3';
+		$response->version             = '3.1';
 
 		return $this->respond_with_validation( $response );
 	}
