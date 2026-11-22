@@ -776,15 +776,7 @@ class Booking extends Timeframe {
 	 * @return array<array<string, mixed>>
 	 */
 	protected function getCustomFields(): array {
-		// We need static types, because german month names dont't work for datepicker
-		$dateFormat = 'd/m/Y';
-		if ( str_starts_with( get_locale(), 'de_' ) ) {
-			$dateFormat = 'd.m.Y';
-		}
-
-		if ( str_starts_with( get_locale(), 'en_' ) ) {
-			$dateFormat = 'm/d/Y';
-		}
+		$dateFormat = \CommonsBooking\Helper\Helper::getDatepickerDateFormat();
 
 		$booking_user = get_user_by( 'ID', get_current_user_id() );
 
@@ -833,6 +825,7 @@ class Booking extends Timeframe {
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
+				'sanitization_cb' => array( \CommonsBooking\Helper\Helper::class, 'sanitizeDatetimeTimestamp' ),
 				'default'     => '00:00',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(
@@ -850,6 +843,7 @@ class Booking extends Timeframe {
 				'type'        => 'text_datetime_timestamp',
 				'time_format' => get_option( 'time_format' ),
 				'date_format' => $dateFormat,
+				'sanitization_cb' => array( \CommonsBooking\Helper\Helper::class, 'sanitizeDatetimeTimestamp' ),
 				'default'     => '23:59',
 				'attributes'  => array(
 					'data-timepicker' => wp_json_encode(

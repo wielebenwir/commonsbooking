@@ -68,6 +68,53 @@ class Helper {
 	}
 
 	/**
+	 * Date format of the datepicker fields: the WordPress date format if it only uses numeric
+	 * day, month and year (month names can't be parsed back), otherwise a fallback per locale.
+	 */
+	public static function getDatepickerDateFormat(): string {
+		$format = get_option( 'date_format' );
+		if ( is_string( $format ) && preg_match( '~^(?=.*[dj])(?=.*[mn])(?=.*[yY])[djmnyY ./-]+$~', $format ) ) {
+			return $format;
+		}
+		if ( str_starts_with( get_locale(), 'de_' ) ) {
+			return 'd.m.Y';
+		}
+
+		return str_starts_with( get_locale(), 'en_' ) ? 'm/d/Y' : 'd/m/Y';
+	}
+
+	/**
+	 * Timestamp of a date in the given format, false if it doesn't match.
+	 * Unlike strtotime(), which reads every date with slashes as m/d/Y.
+	 */
+	public static function parseDate( string $date, string $format ): int|false {
+		$dateTime = \DateTime::createFromFormat( '!' . $format, trim( $date ) );
+		$errors   = \DateTime::getLastErrors();
+
+		return $dateTime && ! ( $errors && $errors['warning_count'] ) ? $dateTime->getTimestamp() : false;
+	}
+
+	/**
+	 * CMB2 sanitization_cb for text_datetime_timestamp fields: reads the date in the field's format.
+	 * Anything else (empty value, timestamp, other format) is handled by CMB2 as before.
+	 *
+	 * @param mixed                $value
+	 * @param array<string, mixed> $field_args
+	 * @param \CMB2_Field          $field
+	 */
+	public static function sanitizeDatetimeTimestamp( mixed $value, array $field_args, \CMB2_Field $field ): mixed {
+		if ( is_array( $value ) && is_string( $value['date'] ?? null ) && is_string( $value['time'] ?? null ) ) {
+			$day       = self::parseDate( wp_unslash( $value['date'] ), (string) $field_args['date_format'] );
+			$timestamp = $day === false ? false : strtotime( wp_unslash( $value['time'] ) ?: '00:00', $day );
+			if ( $timestamp !== false ) {
+				return $timestamp;
+			}
+		}
+
+		return ( new \CMB2_Sanitize( $field, $value ) )->text_datetime_timestamp();
+	}
+
+	/**
 	 * Returns timestamp of last full hour, needed to get more cache hits.
 	 * Also used to determine if a post is still bookable because it is in the past or not.
 	 *

@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Wordpress\CustomPostType;
 
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Model\Restriction;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
 use CommonsBooking\Wordpress\CustomPostType\Restriction as RestrictionPostType;
@@ -35,5 +36,13 @@ class RestrictionDateFormatTest extends CustomPostTypeTest {
 
 		$this->assertEquals( strtotime( '2026-11-09 00:00' ), get_post_meta( $restrictionId, Restriction::META_START, true ) );
 		$this->assertEquals( strtotime( '2026-11-16 23:55' ), get_post_meta( $restrictionId, Restriction::META_END, true ) );
+	}
+
+	public function testDatepickerDateFormatUsesNumericDateFormatOnly() {
+		add_filter( 'locale', fn() => 'fr_FR' );
+		update_option( 'date_format', 'Y-m-d' );
+		$this->assertSame( 'Y-m-d', Helper::getDatepickerDateFormat() );
+		update_option( 'date_format', 'j F Y' ); // month names can't be parsed back
+		$this->assertSame( 'd/m/Y', Helper::getDatepickerDateFormat() );
 	}
 }
