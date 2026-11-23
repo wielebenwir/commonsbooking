@@ -2,6 +2,7 @@
 
 namespace CommonsBooking\Tests\Repository;
 
+use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Model\Timeframe;
 use CommonsBooking\Repository\Booking;
 use CommonsBooking\Tests\Wordpress\CustomPostTypeTest;
@@ -105,6 +106,24 @@ class BookingTest extends CustomPostTypeTest {
 		);
 		$this->assertNull( $booking );
 	}
+
+	/**
+	 * Two bookings for the same slot must throw BookingDeniedException
+	 *
+	 * @return void
+	 * @throws BookingDeniedException
+	 */
+	public function testGetByDate_throwsBookingDeniedWhenMultipleBookings() {
+		$start = strtotime( '+5 days', strtotime( self::CURRENT_DATE ) );
+		$end   = strtotime( '+6 days', strtotime( self::CURRENT_DATE ) );
+
+		$this->createBooking( $this->locationId, $this->itemId, $start, $end, '8:00 AM', '12:00 PM', 'unconfirmed' );
+		$this->createBooking( $this->locationId, $this->itemId, $start, $end, '8:00 AM', '12:00 PM', 'unconfirmed' );
+
+		$this->expectException( BookingDeniedException::class );
+		Booking::getByDate( $start, $end, $this->locationId, $this->itemId );
+	}
+
 	public function testGetByTimerange() {
 		$bookings = Booking::getByTimerange(
 			strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),

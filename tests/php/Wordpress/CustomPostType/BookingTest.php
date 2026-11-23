@@ -340,6 +340,36 @@ class BookingTest extends CustomPostTypeTest {
 	}
 
 	/**
+	 * Booking is rejected while the item/location lock is held.
+	 *
+	 * @return void
+	 * @throws BookingDeniedException
+	 */
+	public function testHandleBookingRequest_rejectsWhileLockHeld() {
+		$lockKey = sprintf( 'cb_booking_lock_%d_%d', $this->itemId, $this->locationId );
+		set_transient( $lockKey, true, 30 );
+
+		$this->expectException( \CommonsBooking\Exception\BookingDeniedException::class );
+		$this->expectExceptionMessageMatches( '/currently being booked/' );
+
+		try {
+			Booking::handleBookingRequest(
+				$this->itemId,
+				$this->locationId,
+				'unconfirmed',
+				null,
+				null,
+				strtotime( self::CURRENT_DATE ),
+				strtotime( '+1 day', strtotime( self::CURRENT_DATE ) ),
+				null,
+				null
+			);
+		} finally {
+			delete_transient( $lockKey );
+		}
+	}
+
+	/**
 	 * regression test for #2367
 	 * Multiple unconfirmed bookings shall be allowed when either a) no booking rule is set or b) the user is admin
 	 * Bc the unconfirmed booking check is expensive, it should be omitted in those cases.

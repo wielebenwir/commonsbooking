@@ -3,6 +3,7 @@
 
 namespace CommonsBooking\Repository;
 
+use CommonsBooking\Exception\BookingDeniedException;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Plugin;
 use CommonsBooking\Wordpress\CustomPostType\Timeframe;
@@ -138,13 +139,18 @@ class Booking extends PostRepository {
 	}
 
 	/**
+	 *
+	 * The function used to get existing bookings during the frontend booking process.
+	 * Since this function is only called by @see \CommonsBooking\Repository\Booking::handleBookingRequest,
+	 * it will throw a BookingDeniedException.
+	 *
 	 * @param int $startDateTimestamp
 	 * @param int $endDateTimestamp
 	 * @param int $locationId
 	 * @param int $itemId
 	 *
 	 * @return null|\CommonsBooking\Model\Booking
-	 * @throws Exception
+	 * @throws BookingDeniedException
 	 */
 	public static function getByDate( int $startDateTimestamp, int $endDateTimestamp, int $locationId, int $itemId ): ?\CommonsBooking\Model\Booking {
 		// Default query
@@ -200,8 +206,8 @@ class Booking extends PostRepository {
 					return $booking;
 				}
 			} elseif ( count( $posts ) > 1 ) {
-				// This shouldn't happen.
-				throw new Exception( __CLASS__ . '::' . __LINE__ . ': Found more than one bookings' );
+				// Can happen after a booking race. See #2373
+				throw new BookingDeniedException( __( 'There is already a booking in this time-range. This notice may also appear if there is an unconfirmed booking in the requested period. Unconfirmed bookings are deleted after about 10 minutes. Please try again in a few minutes.', 'commonsbooking' ) );
 			}
 		}
 
