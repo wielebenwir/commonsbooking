@@ -458,15 +458,7 @@ class Timeframe extends CustomPostType {
 	 * @return array<int, array<string, mixed>>
 	 */
 	protected function getCustomFields(): array {
-		// We need static types, because german month names dont't work for datepicker
-		$dateFormat = 'd/m/Y';
-		if ( str_starts_with( get_locale(), 'de_' ) ) {
-			$dateFormat = 'd.m.Y';
-		}
-
-		if ( str_starts_with( get_locale(), 'en_' ) ) {
-			$dateFormat = 'm/d/Y';
-		}
+		$dateFormat = \CommonsBooking\Helper\Helper::getDatepickerDateFormat();
 
 		return array(
 			array(

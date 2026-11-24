@@ -3,6 +3,7 @@
 namespace CommonsBooking\Service;
 
 use CommonsBooking\Exception\ExportException;
+use CommonsBooking\Helper\Helper;
 use CommonsBooking\Helper\Wordpress;
 use CommonsBooking\Repository\Timeframe;
 use CommonsBooking\Settings\Settings;
@@ -140,11 +141,11 @@ class TimeframeExport {
 		} else {
 			$exportType = intval( $exportType );
 		}
-		$startDateTimestamp = strtotime( $exportStartDate );
+		$startDateTimestamp = Helper::parseDate( $exportStartDate, Helper::getDatepickerDateFormat() ) ?: strtotime( $exportStartDate );
 		if ( ! $startDateTimestamp ) {
 			throw new ExportException( __( 'Invalid start date', 'commonsbooking' ) );
 		}
-		$endDateTimestamp = strtotime( $exportEndDate );
+		$endDateTimestamp = Helper::parseDate( $exportEndDate, Helper::getDatepickerDateFormat() ) ?: strtotime( $exportEndDate );
 		if ( ! $endDateTimestamp ) {
 			throw new ExportException( __( 'Invalid end date', 'commonsbooking' ) );
 		}
@@ -155,8 +156,8 @@ class TimeframeExport {
 		$this->exportFilename    = 'timeframe-export-' . date( 'Y-m-d-H-i-s' ) . '.csv';
 		$this->transientName     = $transientName ?? COMMONSBOOKING_PLUGIN_SLUG . '-' . $this->exportFilename;
 		$this->exportType        = $exportType;
-		$this->exportStartDate   = $exportStartDate;
-		$this->exportEndDate     = $exportEndDate;
+		$this->exportStartDate   = date( 'Y-m-d', $startDateTimestamp ); // unambiguous for getPeriod() and the next pages
+		$this->exportEndDate     = date( 'Y-m-d', $endDateTimestamp );
 		$this->locationFields    = $locationFields;
 		$this->itemFields        = $itemFields;
 		$this->userFields        = $userFields;

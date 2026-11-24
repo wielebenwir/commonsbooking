@@ -119,6 +119,23 @@ class TimeframeExport_AJAX_Test extends CustomPostType_AJAX_Test {
 		$this->assertEquals( $this->userFieldValue, $exportedBooking->{'user: ' . $this->userFieldKey} );
 	}
 
+	/**
+	 * Regression test: with the d/m/Y date format, 13/07/2021 was rejected as "Invalid end date".
+	 */
+	public function testAjaxExport_dayFirstDateFormat() {
+		add_filter( 'locale', fn() => 'fr_FR' );
+		update_option( 'date_format', 'd/m/Y' );
+		$inRange = $this->createBooking( strtotime( '2021-07-05' ), strtotime( '2021-07-06' ) );
+		$this->createBooking( strtotime( '2021-09-01' ), strtotime( '2021-09-02' ) );
+		$_POST['data']['settings']['exportStartDate'] = '01/07/2021';
+		$_POST['data']['settings']['exportEndDate']   = '13/07/2021';
+
+		$response = $this->runHook();
+
+		$this->assertTrue( $response->success, $response->message ?? '' );
+		$this->assertEquals( [ $inRange ], array_column( TimeframeExportTest::csvStringToStdObjects( $response->csv ), 'ID' ) );
+	}
+
 	public function set_up() {
 		parent::set_up();
 		update_post_meta( $this->itemID, $this->itemFieldKey, $this->itemFieldValue );
